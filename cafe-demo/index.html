@@ -1,0 +1,478 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ember &amp; Oak Coffee | Small-batch café in Melbourne (demo)</title>
+  <meta name="description" content="Ember &amp; Oak Coffee is a fictional neighbourhood café used as a concept demo: small-batch coffee, all-day breakfast and a 3D hero cup.">
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#FAF3E7">
+  <link rel="canonical" href="https://example.com/cafe-demo/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Ember &amp; Oak Coffee (concept demo)">
+  <meta property="og:description" content="Small-batch coffee, roasted out back and poured right here. A concept demo website, not a real business.">
+  <meta property="og:url" content="https://example.com/cafe-demo/">
+  <meta property="og:locale" content="en_AU">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%233B2316'/%3E%3Cpath d='M16 5c1 4 6 7 6 12a6 6 0 0 1-12 0c0-2.600 1.400-4.300 2.600-5.600.4 1.400 1 2.200 1.800 2.600C14.200 11 14.600 8 16 5z' fill='%23D9622B'/%3E%3C/svg%3E">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="styles.css">
+
+  <script>document.documentElement.classList.add('js');</script>
+  <!-- Pinned Three.js (exact version) loaded as an ES module through an import map. -->
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+    }
+  }
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- Reusable logo mark (flame inside an oak leaf) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <symbol id="logo-mark" viewBox="0 0 32 32">
+      <path d="M16 3c1.200 4.600 7 7.600 7 13.200a7 7 0 0 1-14 0c0-3 1.600-5 3-6.500.5 1.600 1.200 2.500 2.100 3C14.300 10.600 14.700 6.800 16 3z" fill="#D9622B"/>
+      <path d="M16 29c-3.800-1-6-3.600-6-7 3.400.2 5.400 1.600 6 4 .6-2.400 2.600-3.800 6-4 0 3.400-2.200 6-6 7z" fill="#B98A4E"/>
+    </symbol>
+  </svg>
+
+  <header class="site-header" id="top">
+    <div class="container header-inner">
+      <a class="brand" href="#top" aria-label="Ember &amp; Oak Coffee, back to top">
+        <svg class="brand-mark" width="30" height="30" aria-hidden="true" focusable="false"><use href="#logo-mark"/></svg>
+        <span class="brand-word">Ember <span class="amp">&amp;</span> Oak</span>
+      </a>
+      <nav class="primary-nav" aria-label="Primary">
+        <ul>
+          <li><a href="#menu">Menu</a></li>
+          <li><a href="#story">Story</a></li>
+          <li><a href="#visit">Visit</a></li>
+        </ul>
+      </nav>
+      <a class="btn btn-primary header-cta" href="#reserve">Reserve a table</a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="mobile-nav" aria-label="Open menu">
+        <span class="bars" aria-hidden="true"><span></span><span></span><span></span></span>
+      </button>
+    </div>
+  </header>
+
+  <div class="mobile-nav" id="mobile-nav" role="dialog" aria-modal="true" aria-label="Site menu" hidden>
+    <nav aria-label="Mobile">
+      <ul>
+        <li><a href="#menu">Menu</a></li>
+        <li><a href="#story">Story</a></li>
+        <li><a href="#visit">Visit</a></li>
+      </ul>
+      <a class="btn btn-primary" href="#reserve">Reserve a table</a>
+      <p class="mobile-nav-note">12 Example Street, Melbourne<br>Open 7 days from 7am</p>
+    </nav>
+  </div>
+
+  <main id="main">
+    <!-- 2. HERO -->
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">Neighbourhood café &middot; Melbourne</p>
+          <h1 id="hero-title">Coffee roasted out back, poured right here.</h1>
+          <p class="lead">Flat whites that taste like toasted caramel, a cabinet of things baked before sunrise, and a corner table with your name on it.</p>
+          <div class="btn-row">
+            <a class="btn btn-primary" href="#reserve">Reserve a table</a>
+            <a class="btn btn-secondary" href="#menu">See the menu</a>
+          </div>
+        </div>
+
+        <div class="hero-stage" id="stage">
+          <!-- Fallback / poster illustration: visible until the 3D canvas is ready, and kept if 3D fails -->
+          <svg class="cup-fallback" viewBox="0 0 400 400" role="img" aria-label="Illustration of a steaming coffee cup on a saucer">
+            <defs>
+              <radialGradient id="fb-glow" cx="50%" cy="60%" r="55%">
+                <stop offset="0" stop-color="#D9622B" stop-opacity=".45"/>
+                <stop offset="1" stop-color="#D9622B" stop-opacity="0"/>
+              </radialGradient>
+              <linearGradient id="fb-cup" x1="0" x2="1">
+                <stop offset="0" stop-color="#E9DDCC"/>
+                <stop offset=".45" stop-color="#FFF9F0"/>
+                <stop offset="1" stop-color="#D8C6AE"/>
+              </linearGradient>
+            </defs>
+            <rect width="400" height="400" fill="url(#fb-glow)"/>
+            <g class="fb-steam" fill="none" stroke="#FAF3E7" stroke-linecap="round" stroke-width="7" opacity=".7">
+              <path class="s1" d="M160 150c-18-22 18-36 0-62"/>
+              <path class="s2" d="M200 140c-20-26 20-42 0-74"/>
+              <path class="s3" d="M240 150c-18-22 18-36 0-62"/>
+            </g>
+            <ellipse cx="200" cy="318" rx="140" ry="26" fill="#000" opacity=".25"/>
+            <path d="M52 296c0-14 66-26 148-26s148 12 148 26c0 16-66 28-148 28S52 312 52 296z" fill="url(#fb-cup)"/>
+            <path d="M92 296c0-8 48-16 108-16s108 8 108 16-48 14-108 14S92 304 92 296z" fill="#D8C6AE" opacity=".7"/>
+            <path d="M104 168h192c0 70-12 104-44 118-14 6-38 6-52 6s-38 0-52-6c-32-14-44-48-44-118z" fill="url(#fb-cup)"/>
+            <path d="M296 188c40-8 54 22 38 46-10 14-28 22-48 24" fill="none" stroke="#F3E8D8" stroke-width="16" stroke-linecap="round"/>
+            <ellipse cx="200" cy="170" rx="96" ry="18" fill="#3B2316"/>
+            <path d="M200 160c-14 0-24 6-24 12s10 12 24 12 24-6 24-12-10-12-24-12z" fill="#E8C9A0" opacity=".75"/>
+            <path d="M200 164v14" stroke="#3B2316" stroke-width="2" stroke-linecap="round" opacity=".5"/>
+          </svg>
+          <canvas id="scene" aria-hidden="true"></canvas>
+        </div>
+      </div>
+
+      <div class="container">
+        <ul class="trust" aria-label="Quick facts">
+          <li>
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3c1 3.500 5 5.500 5 9.500a5 5 0 0 1-10 0c0-2 1-3.400 2-4.500.4 1 .9 1.600 1.500 2C10.600 8.500 11 5.500 12 3z"/></svg>
+            <span><strong>Roasted weekly</strong> in our back room</span>
+          </li>
+          <li>
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 19c0-9 5-14 14-14 0 9-5 14-14 14z"/><path d="M5 19c3-5 6-8 10-10"/></svg>
+            <span><strong>Dairy-free options</strong> oat, soy &amp; almond</span>
+          </li>
+          <li>
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+            <span><strong>Open 7 days</strong> from 7am</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 3. MENU -->
+    <section class="section" id="menu" aria-labelledby="menu-title">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="eyebrow">The menu</p>
+          <h2 id="menu-title">Simple, seasonal, made to order.</h2>
+          <p class="lead">Everything here is fictional, including the prices (AUD). Pick a tab to browse.</p>
+        </div>
+
+        <div class="tabs reveal">
+          <div class="tablist" role="tablist" aria-label="Menu categories">
+            <button role="tab" id="tab-coffee" aria-controls="panel-coffee" aria-selected="true" tabindex="0" type="button">Coffee</button>
+            <button role="tab" id="tab-food" aria-controls="panel-food" aria-selected="false" tabindex="-1" type="button">Food</button>
+            <button role="tab" id="tab-cold" aria-controls="panel-cold" aria-selected="false" tabindex="-1" type="button">Cold drinks</button>
+          </div>
+
+          <div role="tabpanel" id="panel-coffee" aria-labelledby="tab-coffee" tabindex="0" class="menu-grid">
+            <article class="menu-item">
+              <div class="menu-line"><h3>Ember Flat White</h3><span class="price">$5.50</span></div>
+              <p>Double ristretto, silky milk, finished with a pinch of toasted cacao.</p>
+              <p class="tags"><abbr title="Vegetarian" class="tag">V</abbr></p>
+            </article>
+            <article class="menu-item">
+              <div class="menu-line"><h3>Oak Long Black</h3><span class="price">$5.00</span></div>
+              <p>Two shots over hot water. Dark honey, cedar and a clean, quiet finish.</p>
+              <p class="tags"><abbr title="Vegan" class="tag">VG</abbr><abbr title="Gluten free" class="tag">GF</abbr></p>
+            </article>
+            <article class="menu-item">
+              <div class="menu-line"><h3>Maple Oat Latte</h3><span class="price">$6.50</span></div>
+              <p>Oat milk, a spoon of dark maple and our rounder, chocolate-forward blend.</p>
+              <p class="tags"><abbr title="Vegan" class="tag">VG</abbr></p>
+            </article>
+            <article class="menu-item">
+              <div class="menu-line"><h3>Batch Brew Filter</h3><span class="price">$5.00</span></div>
+              <p>This week's single-origin lot, brewed in bulk and refilled until you stop us.</p>
+              <p class="tags"><abbr title="Vegan" class="tag">VG</abbr><abbr title="Gluten free" class="tag">GF</abbr></p>
+            </article>
+          </div>
+
+          <div role="tabpanel" id="panel-food" aria-labelledby="tab-food" tabindex="0" class="menu-grid" hidden>
+            <article class="menu-item">
+              <div class="menu-line"><h3>Whipped Ricotta Toast</h3><span class="price">$13.00</span></div>
+              <p>Thick sourdough, lemony ricotta, roasted figs and a drizzle of thyme honey.</p>
+              <p class="tags"><abbr title="Vegetarian" class="tag">V</abbr></p>
+            </article>
+            <article class="menu-item">
+              <div class="menu-line"><h3>Smashed Avo &amp; Dukkah</h3><span class="price">$18.50</span></div>
+              <p>Lime, chilli flakes, pickled red onion and hazelnut dukkah on rye.</p>
+              <p class="tags"><abbr title="Vegan" class="tag">VG</abbr></p>
+            </article>
+            <article class="menu-item">
+              <div class="menu-line"><h3>Brown Butter Banana Bread</h3><span class="price">$8.00</span></div>
+              <p>Toasted on the grill, served with salted butter and cinnamon sugar.</p>
+              <p class="tags"><abbr title="Vegetarian" class="tag">V</abbr></p>
+            </article>
+            <article class="menu-item">
+              <div class="menu-line"><h3>Almond &amp; Orange Cake</h3><span class="price">$7.50</span></div>
+              <p>Moist, flourless and perfumed with whole-orange syrup. Best with a long black.</p>
+              <p class="tags"><abbr title="Vegetarian" class="tag">V</abbr><abbr title="Gluten free" class="tag">GF</abbr></p>
+            </article>
+          </div>
+
+          <div role="tabpanel" id="panel-cold" aria-labelledby="tab-cold" tabindex="0" class="menu-grid" hidden>
+            <article class="menu-item">
+              <div class="menu-line"><h3>Cold Brew Tonic</h3><span class="price">$7.00</span></div>
+              <p>Sixteen-hour cold brew over ice, premium tonic and a strip of grapefruit peel.</p>
+              <p class="tags"><abbr title="Vegan" class="tag">VG</abbr><abbr title="Gluten free" class="tag">GF</abbr></p>
+            </article>
+            <article class="menu-item">
+              <div class="menu-line"><h3>Iced Caramel Oak Latte</h3><span class="price">$6.50</span></div>
+              <p>House caramel, double shot and cold milk poured over big, slow-melting cubes.</p>
+              <p class="tags"><abbr title="Vegetarian" class="tag">V</abbr></p>
+            </article>
+            <article class="menu-item">
+              <div class="menu-line"><h3>Sparkling Blood Orange</h3><span class="price">$6.00</span></div>
+              <p>Fresh-pressed blood orange, mint and soda. Bright, bitter and very refreshing.</p>
+              <p class="tags"><abbr title="Vegan" class="tag">VG</abbr><abbr title="Gluten free" class="tag">GF</abbr></p>
+            </article>
+            <article class="menu-item">
+              <div class="menu-line"><h3>Iced Coconut Matcha</h3><span class="price">$7.20</span></div>
+              <p>Ceremonial-grade matcha whisked with coconut milk and a touch of agave.</p>
+              <p class="tags"><abbr title="Vegan" class="tag">VG</abbr><abbr title="Gluten free" class="tag">GF</abbr></p>
+            </article>
+          </div>
+        </div>
+
+        <p class="legend reveal"><abbr title="Vegetarian" class="tag">V</abbr> Vegetarian &nbsp; <abbr title="Vegan" class="tag">VG</abbr> Vegan &nbsp; <abbr title="Gluten free" class="tag">GF</abbr> Gluten free. Ask us about allergens.</p>
+      </div>
+    </section>
+
+    <!-- 4. STORY -->
+    <section class="section section-dark" id="story" aria-labelledby="story-title">
+      <div class="container story-grid">
+        <div class="reveal">
+          <p class="eyebrow">Our story</p>
+          <h2 id="story-title">Started with a second-hand roaster and a very patient landlord.</h2>
+        </div>
+        <div class="story-copy reveal">
+          <p>Ember &amp; Oak began in 2016 in a converted timber workshop, where a tiny drum roaster sat between the sink and the stockroom. We roasted at night, tasted at dawn and gave away more cups than we sold. The neighbours didn't seem to mind.</p>
+          <p>Today the roaster still lives out back. We buy from a handful of farms we know by name, roast in small batches every week, and bake everything on the premises. The room is warm, the oak tables are scratched, and you're welcome to stay until the second coffee goes cold.</p>
+        </div>
+      </div>
+      <div class="container">
+        <ul class="stats reveal" aria-label="Ember and Oak in numbers">
+          <li><span class="stat-num" data-count="9" data-suffix="">0</span><span class="stat-label">years roasting in the same room</span></li>
+          <li><span class="stat-num" data-count="1800" data-suffix="+">0</span><span class="stat-label">cups poured every week</span></li>
+          <li><span class="stat-num" data-count="14" data-suffix="">0</span><span class="stat-label">farms and co-ops we buy from</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 5. TESTIMONIALS -->
+    <section class="section" id="reviews" aria-labelledby="reviews-title">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="eyebrow">Kind words</p>
+          <h2 id="reviews-title">What the regulars say.</h2>
+          <p class="note"><strong>Sample reviews for demo purposes.</strong> Names and quotes are invented.</p>
+        </div>
+        <div class="review-grid">
+          <figure class="review reveal">
+            <div class="stars" role="img" aria-label="5 out of 5 stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+            <blockquote><p>The flat white is the reason I moved my Friday meetings here. The banana bread is the reason I stay for an hour longer.</p></blockquote>
+            <figcaption><strong>Priya N.</strong><span>Sample reviewer, weekly regular</span></figcaption>
+          </figure>
+          <figure class="review reveal">
+            <div class="stars" role="img" aria-label="5 out of 5 stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+            <blockquote><p>Finally a café that's calm on weekends. Friendly staff, proper oat milk, and my toddler gets a free babyccino without a fuss.</p></blockquote>
+            <figcaption><strong>Tom &amp; Jess</strong><span>Sample reviewers, Saturday crew</span></figcaption>
+          </figure>
+          <figure class="review reveal">
+            <div class="stars" role="img" aria-label="5 out of 5 stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+            <blockquote><p>I came for the cold brew tonic and left with a bag of beans and a booking for my book club. Lovely room, lovely people.</p></blockquote>
+            <figcaption><strong>Marguerite L.</strong><span>Sample reviewer, first-timer</span></figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. GALLERY -->
+    <section class="section section-tint" id="gallery" aria-labelledby="gallery-title">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="eyebrow">Gallery</p>
+          <h2 id="gallery-title">A peek inside the room.</h2>
+          <p class="lead">Illustrated placeholders. A real site would show your own photography here.</p>
+        </div>
+        <ul class="gallery reveal">
+          <li class="tile t1">
+            <svg viewBox="0 0 200 250" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+              <ellipse cx="100" cy="125" rx="78" ry="78" fill="#3B2316"/>
+              <ellipse cx="100" cy="125" rx="68" ry="68" fill="#5A3520"/>
+              <g fill="none" stroke="#F3E3C8" stroke-linecap="round" stroke-width="7" opacity=".92">
+                <path d="M100 82c-22 2-34 12-34 20 0 6 8 8 34 8s34-2 34-8c0-8-12-18-34-20z"/>
+                <path d="M100 112c-18 2-28 10-28 17 0 5 7 7 28 7s28-2 28-7c0-7-10-15-28-17z"/>
+                <path d="M100 138c-12 1-20 6-20 11 0 4 6 5 20 5s20-1 20-5c0-5-8-10-20-11z"/>
+                <path d="M100 80v82" stroke-width="4"/>
+              </g>
+            </svg>
+            <span class="tile-cap">Rosetta pour</span>
+          </li>
+          <li class="tile t2">
+            <svg viewBox="0 0 200 250" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+              <defs>
+                <pattern id="beans" width="46" height="46" patternUnits="userSpaceOnUse" patternTransform="rotate(18)">
+                  <ellipse cx="12" cy="12" rx="9" ry="13" fill="#2B1B12"/>
+                  <path d="M12 0c-5 8 5 16 0 26" fill="none" stroke="#6B3F25" stroke-width="2"/>
+                  <ellipse cx="35" cy="34" rx="9" ry="13" fill="#3B2316"/>
+                  <path d="M35 22c-5 8 5 16 0 26" fill="none" stroke="#7A4A2D" stroke-width="2"/>
+                </pattern>
+              </defs>
+              <rect width="200" height="250" fill="url(#beans)"/>
+            </svg>
+            <span class="tile-cap">Weekly roast</span>
+          </li>
+          <li class="tile t3">
+            <svg viewBox="0 0 200 250" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+              <defs>
+                <pattern id="leaves" width="56" height="56" patternUnits="userSpaceOnUse">
+                  <path d="M10 46c0-18 10-30 28-32 0 18-10 30-28 32z" fill="#B98A4E" opacity=".75"/>
+                  <path d="M10 46c8-10 14-18 24-28" stroke="#FAF3E7" stroke-width="1.500" fill="none"/>
+                  <circle cx="46" cy="44" r="3" fill="#D9622B" opacity=".7"/>
+                </pattern>
+              </defs>
+              <rect width="200" height="250" fill="url(#leaves)"/>
+            </svg>
+            <span class="tile-cap">Oak &amp; leaf</span>
+          </li>
+          <li class="tile t4">
+            <svg viewBox="0 0 200 250" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+              <g fill="none" stroke="#FAF3E7" stroke-width="6" stroke-linecap="round" opacity=".85">
+                <path d="M60 220c-22-30 22-50 0-80s22-50 0-80"/>
+                <path d="M100 230c-22-30 22-50 0-80s22-50 0-80" opacity=".7"/>
+                <path d="M140 220c-22-30 22-50 0-80s22-50 0-80" opacity=".5"/>
+              </g>
+            </svg>
+            <span class="tile-cap">First cup</span>
+          </li>
+          <li class="tile t5">
+            <svg viewBox="0 0 200 250" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+              <defs>
+                <pattern id="floor" width="50" height="50" patternUnits="userSpaceOnUse">
+                  <rect width="25" height="25" fill="#3B2316"/>
+                  <rect x="25" y="25" width="25" height="25" fill="#3B2316"/>
+                  <rect x="25" width="25" height="25" fill="#E8D5B5"/>
+                  <rect y="25" width="25" height="25" fill="#E8D5B5"/>
+                </pattern>
+              </defs>
+              <rect width="200" height="250" fill="url(#floor)"/>
+            </svg>
+            <span class="tile-cap">Corner floor</span>
+          </li>
+          <li class="tile t6">
+            <svg viewBox="0 0 200 250" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+              <g fill="none" stroke="#6B3F25" stroke-width="3" opacity=".8">
+                <circle cx="70" cy="90" r="42"/><circle cx="70" cy="90" r="37" stroke-width="1.500"/>
+                <circle cx="135" cy="150" r="42"/><circle cx="135" cy="150" r="36" stroke-width="1.500"/>
+                <circle cx="60" cy="200" r="30"/>
+              </g>
+            </svg>
+            <span class="tile-cap">Table rings</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 7. VISIT -->
+    <section class="section" id="visit" aria-labelledby="visit-title">
+      <div class="container visit-grid">
+        <div class="reveal">
+          <p class="eyebrow">Visit us</p>
+          <h2 id="visit-title">Come say g'day.</h2>
+          <address>
+            12 Example Street<br>Melbourne VIC 3000<br>
+            <a href="tel:0355500123">03 5550 0123</a>
+          </address>
+          <table class="hours">
+            <caption>Opening hours</caption>
+            <thead class="sr-only"><tr><th scope="col">Day</th><th scope="col">Hours</th></tr></thead>
+            <tbody>
+              <tr data-day="1"><th scope="row">Monday</th><td>7:00am &ndash; 4:00pm</td></tr>
+              <tr data-day="2"><th scope="row">Tuesday</th><td>7:00am &ndash; 4:00pm</td></tr>
+              <tr data-day="3"><th scope="row">Wednesday</th><td>7:00am &ndash; 4:00pm</td></tr>
+              <tr data-day="4"><th scope="row">Thursday</th><td>7:00am &ndash; 4:00pm</td></tr>
+              <tr data-day="5"><th scope="row">Friday</th><td>7:00am &ndash; 5:00pm</td></tr>
+              <tr data-day="6"><th scope="row">Saturday</th><td>7:30am &ndash; 5:00pm</td></tr>
+              <tr data-day="0"><th scope="row">Sunday</th><td>8:00am &ndash; 3:00pm</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="map-box reveal" role="img" aria-label="Map placeholder">
+          <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+            <rect width="400" height="300" fill="#EFE2CC"/>
+            <g stroke="#FAF3E7" stroke-width="14" stroke-linecap="round" fill="none"><path d="M-10 90h420M-10 210h420M110-10v320M290-10v320"/></g>
+            <g stroke="#FAF3E7" stroke-width="6" fill="none"><path d="M-10 150l420-40M200-10l40 320"/></g>
+            <rect x="130" y="104" width="64" height="46" rx="6" fill="#D9C3A0"/>
+            <rect x="312" y="224" width="70" height="56" rx="6" fill="#D9C3A0"/>
+            <rect x="18" y="226" width="72" height="56" rx="6" fill="#D9C3A0"/>
+            <path d="M200 120c-14 0-24 10-24 23 0 18 24 40 24 40s24-22 24-40c0-13-10-23-24-23z" fill="#B84A17"/>
+            <circle cx="200" cy="143" r="8" fill="#FAF3E7"/>
+          </svg>
+          <span class="map-label">Map goes here</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. RESERVATION FORM -->
+    <section class="section section-tint" id="reserve" aria-labelledby="reserve-title">
+      <div class="container reserve-grid">
+        <div class="reveal">
+          <p class="eyebrow">Reservations</p>
+          <h2 id="reserve-title">Save a table for your crew.</h2>
+          <p class="lead">Tell us when and how many. We'll confirm by email, usually within a few hours. (This demo form doesn't send anything.)</p>
+        </div>
+        <div class="form-card reveal">
+          <form id="reserve-form" novalidate>
+            <div class="field">
+              <label for="f-name">Name</label>
+              <input id="f-name" name="name" type="text" autocomplete="name" aria-describedby="e-name">
+              <p class="error" id="e-name" aria-live="polite"></p>
+            </div>
+            <div class="field">
+              <label for="f-email">Email</label>
+              <input id="f-email" name="email" type="email" autocomplete="email" inputmode="email" aria-describedby="e-email">
+              <p class="error" id="e-email" aria-live="polite"></p>
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label for="f-date">Date</label>
+                <input id="f-date" name="date" type="date" aria-describedby="e-date">
+                <p class="error" id="e-date" aria-live="polite"></p>
+              </div>
+              <div class="field">
+                <label for="f-guests">Guests</label>
+                <input id="f-guests" name="guests" type="number" min="1" max="12" inputmode="numeric" value="2" aria-describedby="e-guests">
+                <p class="error" id="e-guests" aria-live="polite"></p>
+              </div>
+            </div>
+            <div class="field">
+              <label for="f-message">Message <span class="optional">(optional)</span></label>
+              <textarea id="f-message" name="message" rows="4" maxlength="500" placeholder="Birthday, pram, allergies, anything we should know" aria-describedby="e-message"></textarea>
+              <p class="error" id="e-message" aria-live="polite"></p>
+            </div>
+            <!--
+              DEMO ONLY: there is no backend. To make this form real, post the data in
+              main.js (see "submit handler") to a form service such as Formspree, Netlify Forms
+              or your own endpoint, and show the success panel only after a 200 response.
+            -->
+            <button class="btn btn-primary btn-block" type="submit">Request a table</button>
+          </form>
+          <div class="form-success" id="form-success" role="status" tabindex="-1" hidden>
+            <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M7.500 12.500l3 3 6-7"/></svg>
+            <h3>Thanks, <span id="ok-name">friend</span>!</h3>
+            <p id="ok-detail"></p>
+            <p class="note">Demo only: no email was sent and nothing was saved.</p>
+            <button class="btn btn-secondary" type="button" id="form-reset">Make another request</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- 9. FOOTER -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <a class="brand brand-light" href="#top" aria-label="Back to top">
+        <svg class="brand-mark" width="28" height="28" aria-hidden="true" focusable="false"><use href="#logo-mark"/></svg>
+        <span class="brand-word">Ember <span class="amp">&amp;</span> Oak</span>
+      </a>
+      <p>Concept demo by KB Ventures. Not a real business.</p>
+      <a class="back-top" href="#top">Back to top &uarr;</a>
+    </div>
+  </footer>
+
+  <script type="module" src="main.js"></script>
+</body>
+</html>

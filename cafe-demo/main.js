@@ -3,11 +3,28 @@ const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').match
 const $ = (sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
 
-/* ---------- Header shadow on scroll ---------- */
-const header = $('.site-header');
-const onScroll = () => header.classList.toggle('is-scrolled', window.scrollY > 8);
-window.addEventListener('scroll', onScroll, { passive: true });
-onScroll();
+/* ---------- Scroll progress bar ---------- */
+(() => {
+  const bar = $('.progress');
+  let ticking = false;
+  const update = () => {
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.setProperty('--p', max > 0 ? Math.min(1, window.scrollY / max).toFixed(4) : 0);
+    ticking = false;
+  };
+  window.addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
+  update();
+})();
+
+/* ---------- Small toast for demo-only actions ---------- */
+const toastEl = $('#toast');
+let toastTimer = 0;
+function toast(msg) {
+  toastEl.textContent = msg;
+  toastEl.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toastEl.classList.remove('show'), 4500);
+}
 
 /* ---------- Mobile menu (aria-expanded, Escape, link click, focus trap) ---------- */
 (() => {
@@ -33,7 +50,7 @@ onScroll();
     if (e.shiftKey && document.activeElement === first) { e.preventDefault(); lastEl.focus(); }
     else if (!e.shiftKey && document.activeElement === lastEl) { e.preventDefault(); first.focus(); }
   });
-  window.matchMedia('(min-width: 900px)').addEventListener('change', (m) => { if (m.matches && !menu.hidden) setOpen(false); });
+  window.matchMedia('(min-width: 1040px)').addEventListener('change', (m) => { if (m.matches && !menu.hidden) setOpen(false); });
 })();
 
 /* ---------- Menu tabs (arrow keys, Home/End, roving tabindex) ---------- */
@@ -62,6 +79,10 @@ onScroll();
 /* ---------- Reveal on scroll + count-up (once) ---------- */
 (() => {
   const reveals = $$('.reveal');
+  reveals.forEach((el) => {
+    const sibs = [...el.parentElement.children].filter((c) => c.classList.contains('reveal'));
+    el.style.setProperty('--d', Math.min(sibs.indexOf(el), 4) * 0.09 + 's');
+  });
   const counters = $$('[data-count]');
   const fmt = (n) => n.toLocaleString('en-AU');
   const finish = (el) => { el.textContent = fmt(+el.dataset.count) + (el.dataset.suffix || ''); };
@@ -117,6 +138,59 @@ onScroll();
   th.insertAdjacentHTML('beforeend', ' <span class="today-badge">Today</span>');
 })();
 
+/* ---------- "Open now" status chip (uses the visitor's local clock) ---------- */
+(() => {
+  // Keep in sync with the opening-hours table: [open hour, close hour] in 24h time, 0 = Sunday.
+  const hours = { 0: [8, 16], 1: [7, 16], 2: [7, 16], 3: [7, 16], 4: [7, 22], 5: [7, 22], 6: [7, 22] };
+  const fmt = (h) => { const hr = h % 12 || 12; return `${hr}:00${h < 12 ? 'am' : 'pm'}`; };
+  const now = new Date();
+  const [open, close] = hours[now.getDay()];
+  const t = now.getHours() + now.getMinutes() / 60;
+  let text, isOpen = false;
+  if (t >= open && t < close) { text = `Open now \u00B7 until ${fmt(close)}`; isOpen = true; }
+  else if (t < open) text = `Closed \u00B7 opens ${fmt(open)} today`;
+  else text = `Closed \u00B7 opens ${fmt(hours[(now.getDay() + 1) % 7][0])} tomorrow`;
+  ['#open-status', '#open-status-2'].forEach((sel) => {
+    const el = $(sel);
+    if (!el) return;
+    el.textContent = text;
+    el.closest('.chip').classList.toggle('is-closed', !isOpen);
+  });
+})();
+
+/* ---------- Links that pre-select the enquiry type in the form ---------- */
+$$('[data-enquiry]').forEach((a) => a.addEventListener('click', () => {
+  const sel = $('#f-type');
+  if (sel) sel.value = a.dataset.enquiry;
+}));
+
+/* ---------- Gift card picker (demo) ---------- */
+(() => {
+  const form = $('#gift-form');
+  const out = $('#gift-amount');
+  const current = () => form.elements.amount.value;
+  form.addEventListener('change', () => { out.textContent = '$' + current(); });
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    toast(`Demo only: a $${current()} gift card would be sent here. No payment was taken.`);
+  });
+})();
+
+/* ---------- Newsletter (demo) ---------- */
+(() => {
+  const form = $('#news-form');
+  const input = $('#n-email');
+  const msg = $('#e-news');
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const ok = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(input.value.trim());
+    msg.className = ok ? 'success' : 'error';
+    msg.textContent = ok ? "You're on the list (demo only: nothing was saved)." : "That email doesn't look quite right. Could you check it?";
+    input.setAttribute('aria-invalid', String(!ok));
+    if (ok) form.reset(); else input.focus();
+  });
+})();
+
 /* ---------- Reservation form (client-side only) ---------- */
 (() => {
   const form = $('#reserve-form');
@@ -157,8 +231,12 @@ onScroll();
     // and the success panel below would be shown after a successful response.
     const date = new Date(dateEl.value + 'T00:00:00').toLocaleDateString('en-AU', { weekday: 'long', day: 'numeric', month: 'long' });
     const guests = Number(field('guests').value);
+    const email = field('email').value.trim();
+    const type = field('type').value;
     $('#ok-name').textContent = field('name').value.trim().split(' ')[0];
-    $('#ok-detail').textContent = `We've noted a table for ${guests} ${guests === 1 ? 'guest' : 'guests'} on ${date}. We'll email ${field('email').value.trim()} to confirm.`;
+    $('#ok-detail').textContent = type === 'table'
+      ? `We've noted a table for ${guests} ${guests === 1 ? 'guest' : 'guests'} on ${date}. We'll email ${email} to confirm.`
+      : `We've received your ${field('type').selectedOptions[0].textContent.toLowerCase()} for ${date}. A team member will email ${email} within one business day.`;
     form.hidden = true;
     success.hidden = false;
     success.focus();
@@ -166,6 +244,7 @@ onScroll();
   $('#form-reset').addEventListener('click', () => {
     form.reset();
     field('guests').value = 2;
+    field('type').value = 'table';
     $$('[aria-invalid]', form).forEach((el) => el.setAttribute('aria-invalid', 'false'));
     success.hidden = true;
     form.hidden = false;

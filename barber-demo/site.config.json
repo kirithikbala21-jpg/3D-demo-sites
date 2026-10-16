@@ -1,0 +1,280 @@
+{
+ "brand": {
+  "name": "Brass & Blade",
+  "nameHtml": "Brass &amp; Blade",
+  "fullName": "Brass & Blade Barbershop",
+  "fullNameHtml": "Brass &amp; Blade Barbershop",
+  "wordmark": "Brass &amp; Blade",
+  "city": "Sydney",
+  "tagline": "Classic cuts, sharp fades and hot towel shaves in the heart of Surry Hills. Walk in, or book your chair.",
+  "description": "Brass & Blade is a fictional barbershop used as a concept demo: classic cuts, skin fades, hot towel shaves, memberships and a spinning 3D barber pole.",
+  "demoFooter": "Concept demo by KB Ventures. Not a real business."
+ },
+ "contact": {
+  "street": "48 Example Lane",
+  "locality": "Surry Hills NSW 2010",
+  "postcode": "2010",
+  "region": "NSW",
+  "phone": "02 5550 0144",
+  "phoneHref": "0255500144",
+  "email": "hello@example.com",
+  "country": "AU",
+  "mapsQuery": "Central Station, Sydney NSW",
+  "lat": -33.8833,
+  "lon": 151.2063
+ },
+ "site": {
+  "baseUrl": "https://kirithikbala21-jpg.github.io/3D-demo-sites/barber-demo/",
+  "noindex": true,
+  "currency": "AUD",
+  "timezone": "Australia/Sydney",
+  "locale": "en-AU"
+ },
+ "theme": {
+  "black": "#0A101C",
+  "wine": "#B3202A",
+  "wineDeep": "#7E1219",
+  "wineNight": "#0F1A30",
+  "goldLight": "#D8B46C",
+  "goldText": "#85601F",
+  "cream": "#F6F1E7",
+  "tint": "#ECE5D5",
+  "ink": "#131722"
+ },
+ "hours": [
+  {
+   "day": 1,
+   "name": "Monday",
+   "open": 10,
+   "close": 18
+  },
+  {
+   "day": 2,
+   "name": "Tuesday",
+   "open": 9,
+   "close": 19
+  },
+  {
+   "day": 3,
+   "name": "Wednesday",
+   "open": 9,
+   "close": 19
+  },
+  {
+   "day": 4,
+   "name": "Thursday",
+   "open": 9,
+   "close": 20
+  },
+  {
+   "day": 5,
+   "name": "Friday",
+   "open": 9,
+   "close": 19
+  },
+  {
+   "day": 6,
+   "name": "Saturday",
+   "open": 9,
+   "close": 17
+  },
+  {
+   "day": 0,
+   "name": "Sunday",
+   "open": 10,
+   "close": 16
+  }
+ ],
+ "hero": {
+  "video": null,
+  "poster": null
+ },
+ "news": [
+  "Walk-ins welcome until 30 minutes before close",
+  "New: monthly memberships from $79",
+  "Father & Son chairs every Saturday morning",
+  "Free beard oil sample with any hot towel shave"
+ ],
+ "nav": [
+  {
+   "label": "Services",
+   "href": "services.html"
+  },
+  {
+   "label": "The crew",
+   "href": "barbers.html"
+  },
+  {
+   "label": "Shop",
+   "href": "shop.html"
+  },
+  {
+   "label": "Membership",
+   "href": "membership.html"
+  },
+  {
+   "label": "Journal",
+   "href": "journal.html"
+  },
+  {
+   "label": "Visit",
+   "href": "visit.html"
+  }
+ ],
+ "pages": [
+  {
+   "file": "index.html",
+   "template": "index",
+   "title": "Home",
+   "description": "Classic cuts, skin fades and hot towel shaves in Surry Hills, Sydney. A concept demo for a fictional barbershop with a 3D barber pole.",
+   "jsonld": true
+  },
+  {
+   "file": "services.html",
+   "template": "services",
+   "title": "Services & prices",
+   "description": "Haircuts, beard and shave, packages and extras with prices and times. Add services to your visit.",
+   "pageHero": true,
+   "h1": "Services & prices",
+   "kicker": "Sharp, clean, unhurried",
+   "lead": "Twenty-four ways to leave looking better than you arrived. Every cut includes a consultation and a hot towel finish.",
+   "crumb": "Services"
+  },
+  {
+   "file": "barbers.html",
+   "template": "barbers",
+   "title": "The crew",
+   "description": "Meet the barbers at Brass & Blade and read the story of the shop.",
+   "pageHero": true,
+   "h1": "The crew",
+   "kicker": "Since 2014",
+   "lead": "Four chairs, four barbers and one very old pole out the front.",
+   "crumb": "The crew"
+  },
+  {
+   "file": "book.html",
+   "template": "book",
+   "title": "Book a chair",
+   "description": "Book a haircut, shave or package with your favourite barber. Demo booking form with live time slots.",
+   "pageHero": true,
+   "h1": "Book a chair",
+   "kicker": "Appointments",
+   "lead": "Pick a service, a barber and a time. Walk-ins are welcome too.",
+   "crumb": "Book"
+  },
+  {
+   "file": "shop.html",
+   "template": "shop",
+   "title": "Shop grooming products",
+   "description": "Pomade, beard oil, shave soap and tools from the shop. Pick up at your appointment or have it delivered (demo).",
+   "pageHero": true,
+   "h1": "The shop",
+   "kicker": "What we use on you",
+   "lead": "The products we use in the chair, plus the tools to keep the cut looking sharp at home.",
+   "crumb": "Shop"
+  },
+  {
+   "file": "membership.html",
+   "template": "membership",
+   "title": "Memberships & gift cards",
+   "description": "Monthly memberships from $79 and gift cards for Brass & Blade (fictional demo).",
+   "pageHero": true,
+   "h1": "Memberships",
+   "kicker": "Stay sharp for less",
+   "lead": "Pay monthly, skip the queue and never wonder when your next cut is due.",
+   "crumb": "Membership"
+  },
+  {
+   "file": "journal.html",
+   "template": "journal",
+   "title": "Journal",
+   "description": "Grooming advice and stories from the chairs at Brass & Blade.",
+   "pageHero": true,
+   "h1": "The journal",
+   "kicker": "Notes from the chairs",
+   "lead": "Honest advice on cuts, beards and looking after yourself.",
+   "crumb": "Journal"
+  },
+  {
+   "file": "visit.html",
+   "template": "visit",
+   "title": "Visit & FAQ",
+   "description": "Opening hours, address, getting here and answers to the questions we hear most.",
+   "pageHero": true,
+   "h1": "Visit us",
+   "kicker": "Find the pole",
+   "lead": "Look for the red, white and blue stripes. Hours, directions and answers below.",
+   "crumb": "Visit",
+   "jsonld": true
+  },
+  {
+   "file": "careers.html",
+   "template": "careers",
+   "title": "Careers",
+   "description": "Join the crew at Brass & Blade: barbers, apprentices and front of house.",
+   "pageHero": true,
+   "h1": "Join the crew",
+   "kicker": "Careers",
+   "lead": "We hire for attitude and teach the rest. These roles are fictional.",
+   "crumb": "Careers"
+  },
+  {
+   "file": "legal.html",
+   "template": "legal",
+   "title": "Privacy, terms & cookies",
+   "description": "Privacy policy, terms of use and cookie information for this demo site.",
+   "pageHero": true,
+   "h1": "Privacy, terms & cookies",
+   "kicker": "Legal",
+   "lead": "A plain-language template. Replace with your own policy before going live.",
+   "crumb": "Legal"
+  }
+ ],
+ "searchExtra": [
+  {
+   "title": "Marco, owner and master barber",
+   "text": "Skin fades and classic cuts, 17 years behind the chair",
+   "url": "barbers.html"
+  },
+  {
+   "title": "Jess, senior barber",
+   "text": "Scissor cuts, long hair and kids",
+   "url": "barbers.html"
+  },
+  {
+   "title": "Dev, beard and shave specialist",
+   "text": "Beard sculpting and straight-razor shaves",
+   "url": "barbers.html"
+  },
+  {
+   "title": "Ollie, apprentice barber",
+   "text": "Budget-friendly cuts while he trains",
+   "url": "barbers.html"
+  },
+  {
+   "title": "The Regular membership",
+   "text": "Two cuts a month, $79 per month",
+   "url": "membership.html"
+  },
+  {
+   "title": "The Gentleman membership",
+   "text": "Two cuts, a hot towel shave and 10% off the shop, $129 per month",
+   "url": "membership.html"
+  },
+  {
+   "title": "Unlimited membership",
+   "text": "Unlimited cuts and beard trims, $179 per month",
+   "url": "membership.html"
+  },
+  {
+   "title": "Gift cards",
+   "text": "Emailed instantly, valid three years",
+   "url": "membership.html#gift-cards"
+  },
+  {
+   "title": "Walk-ins",
+   "text": "Walk-ins welcome until 30 minutes before close",
+   "url": "visit.html#faq"
+  }
+ ]
+}

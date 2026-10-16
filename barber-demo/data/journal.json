@@ -1,0 +1,44 @@
+[
+ {
+  "id": "how-often",
+  "title": "How often should you get a haircut?",
+  "date": "2026-09-22",
+  "dateLabel": "22 September 2026",
+  "tag": "Cuts",
+  "read": "3 min",
+  "excerpt": "There is no magic number, but there is a pattern. Here is how to find yours.",
+  "body": [
+   "The honest answer is: when you stop liking it. A skin fade looks its best for about two weeks and starts to soften by week three, so most fade regulars come every two to three weeks. A scissor cut with some length can happily go six to eight.",
+   "Hair grows about a centimetre a month, so a short cut loses its shape faster than a long one. If you like crisp edges around the ears and neck, you will want a tidy-up between full cuts, and that is what our fifteen-minute Neck & Edge Clean-Up is for.",
+   "If you are not sure, book a consultation with your barber and ask what suits your hair type and your routine. We would rather tell you to wait another week than sell you a cut you do not need."
+  ]
+ },
+ {
+  "id": "beard-care",
+  "title": "Beard care in five minutes a day",
+  "date": "2026-08-14",
+  "dateLabel": "14 August 2026",
+  "tag": "Beards",
+  "read": "4 min",
+  "excerpt": "A good beard is mostly good habits. These are the five that matter.",
+  "body": [
+   "Wash it two or three times a week with a gentle beard wash, not the same shampoo you use on your head. Daily washing strips the natural oils and leaves everything dry and itchy.",
+   "After washing, pat it dry and use a few drops of oil, working it into the skin as well as the hair. Brush or comb it into shape while it is still slightly damp. That is the whole routine and it takes about five minutes.",
+   "Trim every four to six weeks to keep the shape, and keep the neckline about two fingers above your Adam's apple. If you are growing it out, keep going through the awkward stage. Almost everyone wants to quit at week three."
+  ]
+ },
+ {
+  "id": "hot-towels",
+  "title": "Why we still shave with hot towels",
+  "date": "2026-07-03",
+  "dateLabel": "3 July 2026",
+  "tag": "Shave",
+  "read": "3 min",
+  "excerpt": "It looks like theatre, but the hot towel is doing real work.",
+  "body": [
+   "Heat and steam soften the hair and open the skin, which is why a hot towel shave is smoother and kinder than a quick pass with a cartridge razor at home. The towel is the first step, not decoration.",
+   "After the towel we apply a warm lather with a brush, which lifts the hair away from the skin. The straight razor goes with the grain first, then across it if your skin can take it, and a cold towel closes everything up at the end.",
+   "It takes forty-five minutes, which is about forty-four more than most of us give ourselves in a week. People tell us it is the only time they put their phone away."
+  ]
+ }
+]

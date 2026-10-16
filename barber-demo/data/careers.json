@@ -1,0 +1,20 @@
+[
+ {
+  "title": "Barber (full-time)",
+  "where": "Chair",
+  "type": "Full-time",
+  "text": "Your own chair, your own regulars and a team that cares about the craft. At least two years of barbering experience, and a licence."
+ },
+ {
+  "title": "Apprentice barber",
+  "where": "Chair",
+  "type": "Traineeship",
+  "text": "Learn from Marco and Dev over two years, with paid study time. No experience needed, just patience and a steady hand."
+ },
+ {
+  "title": "Front of house (part-time)",
+  "where": "Front desk",
+  "type": "Part-time",
+  "text": "Run the diary, greet walk-ins and make the shop feel like a club. Weekends and one weeknight."
+ }
+]

@@ -1,0 +1,50 @@
+[
+ {
+  "id": "p-clay",
+  "name": "Matte Clay Pomade, 100g",
+  "price": 26,
+  "desc": "Strong hold with a natural matte finish. Our most-used product in the chair.",
+  "badge": "Bestseller",
+  "art": "jar"
+ },
+ {
+  "id": "p-oil",
+  "name": "Cedar &amp; Orange Beard Oil, 30ml",
+  "price": 28,
+  "desc": "Softens, conditions and smells like a very good workshop.",
+  "badge": "",
+  "art": "bottle"
+ },
+ {
+  "id": "p-soap",
+  "name": "Sandalwood Shave Soap",
+  "price": 18,
+  "desc": "A dense, creamy lather that lasts for months. Use with a brush.",
+  "badge": "",
+  "art": "jar"
+ },
+ {
+  "id": "p-comb",
+  "name": "Brass-Tipped Beard Comb",
+  "price": 22,
+  "desc": "Hand-finished, anti-static and small enough for a back pocket.",
+  "badge": "New",
+  "art": "comb"
+ },
+ {
+  "id": "p-razor",
+  "name": "Safety Razor Starter Set",
+  "price": 85,
+  "desc": "A weighty brass razor, ten blades and a travel case. Easy to learn.",
+  "badge": "Gift idea",
+  "art": "razor"
+ },
+ {
+  "id": "p-balm",
+  "name": "Cooling Aftershave Balm, 100ml",
+  "price": 30,
+  "desc": "Calms razor burn and leaves skin soft, not greasy.",
+  "badge": "",
+  "art": "bottle"
+ }
+]

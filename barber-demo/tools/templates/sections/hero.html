@@ -1,0 +1,51 @@
+    <!-- HERO -->
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-bg" aria-hidden="true">
+        {{#if hero.video}}<video class="hero-video" autoplay muted loop playsinline preload="metadata" poster="{{hero.poster}}"><source src="{{hero.video}}"></video>{{/if}}
+        <div class="hero-panel"></div>
+        <div class="hero-glow"></div>
+        <div class="hero-grain"></div>
+      </div>
+      <div class="hero-inner">
+        <div class="hero-head">
+          <p class="hero-kicker">Barbershop &middot; Surry Hills &middot; Est. 2014</p>
+          <h1 id="hero-title" class="wordmark"><span class="wm-1">Brass &amp;</span> <span class="wm-2">Blade</span><span class="sr-only"> Barbershop, {{brand.city}}</span></h1>
+        </div>
+
+        <div class="hero-stage" id="stage">
+          <!-- Fallback / poster illustration: visible until the 3D canvas is ready, and kept if 3D fails -->
+          <svg class="stage-fallback" viewBox="0 0 300 420" role="img" aria-label="Illustration of a spinning red, white and blue barber pole">
+            <defs>
+              <radialGradient id="fb-red" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#E23B47" stop-opacity=".55"/><stop offset="1" stop-color="#E23B47" stop-opacity="0"/></radialGradient>
+              <radialGradient id="fb-blue" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#3C6DE0" stop-opacity=".55"/><stop offset="1" stop-color="#3C6DE0" stop-opacity="0"/></radialGradient>
+              <linearGradient id="fb-brass" x1="0" x2="1"><stop offset="0" stop-color="#8E6A2B"/><stop offset=".45" stop-color="#F0D28C"/><stop offset="1" stop-color="#8E6A2B"/></linearGradient>
+              <linearGradient id="fb-glass" x1="0" x2="1"><stop offset="0" stop-color="#000" stop-opacity=".35"/><stop offset=".3" stop-color="#fff" stop-opacity=".12"/><stop offset=".5" stop-color="#fff" stop-opacity=".02"/><stop offset="1" stop-color="#000" stop-opacity=".4"/></linearGradient>
+              <pattern id="fb-stripes" width="90" height="90" patternUnits="userSpaceOnUse">
+                <rect width="90" height="90" fill="#F6F1E7"/>
+                <g><path d="M0 -15L90 -60L90 -30L0 15Z" fill="#B3202A"/><path d="M0 75L90 30L90 60L0 105Z" fill="#B3202A"/><path d="M0 15L90 -30L90 0L0 45Z" fill="#1F3F8C"/><path d="M0 105L90 60L90 90L0 135Z" fill="#1F3F8C"/><path d="M0 45L90 0L90 30L0 75Z" fill="#B3202A" opacity="0"/></g>
+              </pattern>
+              <clipPath id="fb-clip"><rect x="105" y="78" width="90" height="264" rx="6"/></clipPath>
+            </defs>
+            <ellipse cx="40" cy="210" rx="120" ry="170" fill="url(#fb-red)"/>
+            <ellipse cx="260" cy="210" rx="120" ry="170" fill="url(#fb-blue)"/>
+            <rect x="196" y="190" width="70" height="14" rx="3" fill="url(#fb-brass)" opacity=".9"/>
+            <g clip-path="url(#fb-clip)"><rect class="fb-move" x="105" y="-12" width="90" height="450" fill="url(#fb-stripes)"/></g>
+            <rect x="105" y="78" width="90" height="264" rx="6" fill="url(#fb-glass)"/>
+            <path d="M92 78h116v-12c0-8-8-14-18-16l-14-22c-4-6-12-6-16 0l-14 22c-10 2-18 8-18 16z" fill="url(#fb-brass)"/>
+            <circle cx="150" cy="22" r="9" fill="url(#fb-brass)"/>
+            <path d="M92 342h116v12c0 8-8 14-18 16l-14 8c-4 2-12 2-16 0l-14-8c-10-2-18-8-18-16z" fill="url(#fb-brass)"/>
+          </svg>
+          <canvas id="scene" aria-hidden="true"></canvas>
+        </div>
+
+        <div class="hero-body">
+          <p class="hero-tag">{{brand.tagline}}</p>
+          <p class="chip"><span class="dot" aria-hidden="true"></span><span id="open-status">Open 7 days</span></p>
+          <div class="hero-cta">
+            <a class="btn btn-primary" href="book.html">Book a chair</a>
+            <a class="link-arrow" href="services.html">See services &amp; prices <span aria-hidden="true">&rarr;</span></a>
+          </div>
+        </div>
+      </div>
+      <a class="scroll-cue" href="#facts">Scroll<svg width="14" height="8" viewBox="0 0 14 8" fill="none" stroke="currentColor" stroke-width="1.600" aria-hidden="true"><path d="M1 1l6 5 6-5"/></svg></a>
+    </section>

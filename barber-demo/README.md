@@ -1,0 +1,46 @@
+# Brass & Blade Barbershop: concept demo
+
+A fictional barbershop website built as a sales demo: navy, red and brass, condensed headings, and a full-screen 3D spinning barber pole in the hero. **Everything is fictional** (name, address, phone, prices, reviews, team, numbers). The footer reads "Concept demo by KB Ventures. Not a real business." and pages are `noindex`. It shares its build system and tests with `../cafe-demo-v2/`, which is untouched.
+
+Plain HTML, CSS and JavaScript. No framework, no bundler, no third-party requests (Three.js and the fonts are hosted in this folder). The HTML pages are **generated** from templates by a small Python script and committed, so GitHub Pages serves them as-is.
+
+## Pages
+`index` (home) · `services` (24 services with prices and durations, price list PDF) · `barbers` (the crew, with book-with-this-barber links) · `book` (booking form with duration-aware time slots) · `shop` (grooming products) · `membership` (plans and gift cards) · `journal` · `visit` (hours, map, FAQ) · `careers` · `legal`.
+
+Site-wide: news ticker, full-screen menu, search (press `/`), "Your visit" drawer (add services or products, then book), scripted chat assistant, cookie preferences, optional shop ambience, branded intro on first visit, sticky Call / Book bar on phones.
+
+## Folder map
+| Path | What it is |
+| --- | --- |
+| `site.config.json` | Brand, contact, hours, time zone (Sydney), colours, nav, page list, ticker |
+| `data/*.json` | Services, products, journal posts, jobs, FAQ |
+| `tools/templates/` | `layout.html` (shared header/footer), `pages/` and `sections/` |
+| `tools/build.py` | Builds every `.html` page, `search-data.js` and `sitemap.xml` |
+| `tools/make-assets.mjs` | Makes the PNG icons, `img/og.png` and `price-list.pdf` |
+| `styles.css`, `main.js`, `js/*.js`, `scene.js` | Styles, behaviour modules, the 3D barber pole |
+| `vendor/`, `fonts/` | Self-hosted Three.js 0.160.0, Montserrat and Oswald |
+| `tests/run.mjs` | Automated checks |
+
+## Making changes
+1. Edit `site.config.json`, a file in `data/`, or a template. **Do not edit generated `.html` files by hand.**
+2. Run `python3 tools/build.py` (Python 3, standard library only).
+3. Commit. A GitHub Action rebuilds and fails if committed pages are out of date.
+
+Hours, time zone, colours and contact details live in `site.config.json` and drive the hours table, the "Open now" chip, booking slots, chat answers and search-engine data. After changing services run `node tools/make-assets.mjs` to refresh `price-list.pdf`. The hero background video can be set with `hero.video` / `hero.poster`.
+
+## How the 3D hero and its fallbacks work
+`scene.js` builds the pole in code: helical red, white and blue stripes that scroll inside a glass tube, brass caps and wall mount, red and blue glows and drifting dust. It tilts toward the mouse, speeds up when clicked or dragged, caps pixel ratio at 1.5, pauses off-screen or in a hidden tab, and steps quality down on slow devices.
+
+The page always contains an inline SVG barber pole with animated stripes. `js/hero.js` keeps the SVG if WebGL is unavailable, the library fails, the context is lost, loading takes more than 4 seconds, or Data Saver is on. Reduced-motion visitors get a still frame.
+
+## Tests
+```
+cd tests
+npm install
+npx playwright-core install chromium     # or set CHROME_PATH
+node run.mjs                              # all suites, or --suite=overflow,axe,links,func,fallback,perf
+```
+They cover overflow on every page at 360 to 1920 px, axe accessibility at 375 and 1440 px, tap targets and text sizes, links and anchors, services tabs, the visit drawer, search, chat, booking validation and time slots, cookie banner, menu overlay, every fallback path, the pixel-ratio cap and page weight.
+
+## What is demo-only
+Booking, careers, newsletter, gift card and visit forms validate in the browser and show a confirmation; nothing is sent. See `CLIENT-CHECKLIST.md`.

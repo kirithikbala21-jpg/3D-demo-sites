@@ -1,0 +1,17 @@
+    <section class="section" aria-label="Articles">
+      <div class="container journal">
+        {{#each journal}}
+        <article class="post reveal" id="{{this.id}}" aria-labelledby="{{this.id}}-title">
+          <header>
+            <p class="eyebrow">{{this.tag}} &middot; {{this.read}} read</p>
+            <h2 id="{{this.id}}-title" data-split>{{this.title}}</h2>
+            <p class="post-meta"><time datetime="{{this.date}}">{{this.dateLabel}}</time></p>
+          </header>
+          <div class="post-body">
+            {{#each this.body}}<p>{{value}}</p>{{/each}}
+          </div>
+        </article>
+        {{/each}}
+      </div>
+    </section>
+{{> join}}

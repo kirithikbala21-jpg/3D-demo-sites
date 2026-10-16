@@ -1,0 +1,70 @@
+    <!-- BOOKING -->
+    <section class="section section-dark" id="book" aria-labelledby="book-title">
+      <div class="container reserve-grid">
+        <div class="reveal">
+          <p class="eyebrow">Appointments</p>
+          <h2 id="book-title" data-split>Book your <em>chair.</em></h2>
+          <p class="lead">Tell us what you need and when. We confirm by email, usually within the hour. (This demo form doesn&rsquo;t send anything.)</p>
+          <ul class="reserve-points">
+            <li>Free changes and cancellations up to 24 hours before</li>
+            <li>Every cut includes a consultation and a hot towel finish</li>
+            <li>Running late? Call us on {{contact.phone}} and we&rsquo;ll hold your chair</li>
+          </ul>
+        </div>
+        <div class="form-card reveal">
+          <form id="book-form" novalidate>
+            <div class="field">
+              <label for="f-service">Service</label>
+              <select id="f-service" name="service" aria-describedby="h-service">
+                {{#each menu}}<optgroup label="{{this.label}}">{{#each this.items}}<option value="{{this.slug}}" data-mins="{{this.mins}}" data-price="{{this.price}}">{{this.plainName}} (${{this.price}}, {{this.mins}} min)</option>{{/each}}</optgroup>{{/each}}
+              </select>
+              <p class="hint" id="h-service" aria-live="polite"></p>
+            </div>
+            <div class="field">
+              <label for="f-barber">Barber</label>
+              <select id="f-barber" name="barber"><option value="any">Any available barber</option><option value="marco">Marco (owner)</option><option value="jess">Jess</option><option value="dev">Dev</option><option value="ollie">Ollie (apprentice)</option></select>
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label for="f-date">Date</label>
+                <input id="f-date" name="date" type="date" aria-describedby="e-date">
+                <p class="error" id="e-date" aria-live="polite"></p>
+              </div>
+              <div class="field">
+                <label for="f-time">Time</label>
+                <select id="f-time" name="time" aria-describedby="h-time">{{{timeOptions}}}</select>
+              </div>
+            </div>
+            <p class="hint" id="h-time" aria-live="polite">Choose a date to see which times are open.</p>
+            <div class="field">
+              <label for="f-name">Name</label>
+              <input id="f-name" name="name" type="text" autocomplete="name" aria-describedby="e-name">
+              <p class="error" id="e-name" aria-live="polite"></p>
+            </div>
+            <div class="field">
+              <label for="f-email">Email</label>
+              <input id="f-email" name="email" type="email" autocomplete="email" inputmode="email" aria-describedby="e-email">
+              <p class="error" id="e-email" aria-live="polite"></p>
+            </div>
+            <div class="field">
+              <label for="f-message">Notes <span class="optional">(optional)</span></label>
+              <textarea id="f-message" name="message" rows="3" maxlength="500" placeholder="Reference photo, allergies, anything we should know" aria-describedby="e-message"></textarea>
+              <p class="error" id="e-message" aria-live="polite"></p>
+            </div>
+            <!--
+              DEMO ONLY: there is no backend. To make this form real, post the data in
+              js/forms.js (see "DEMO ONLY") to your booking system (Fresha, Square Appointments,
+              Timely) or a form service, and show the success panel only after a 200 response.
+            -->
+            <button class="btn btn-primary btn-block" type="submit">Request this time</button>
+          </form>
+          <div class="form-success" id="form-success" role="status" tabindex="-1" hidden>
+            <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M7.500 12.500l3 3 6-7"/></svg>
+            <h3>Thanks, <span id="ok-name">friend</span>!</h3>
+            <p id="ok-detail"></p>
+            <p class="note">Demo only: nothing was booked and no email was sent.</p>
+            <button class="btn btn-secondary btn-on-light" type="button" id="form-reset">Book another visit</button>
+          </div>
+        </div>
+      </div>
+    </section>

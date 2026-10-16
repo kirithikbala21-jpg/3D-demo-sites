@@ -7,7 +7,7 @@ Plain HTML, CSS and JavaScript. No framework, no bundler, no third-party request
 ## Pages
 `index` (home) · `menu` (38 items, pick-up ordering, PDF) · `shop` · `experiences` (tours, workshops, events, gift cards) · `story` · `sustainability` · `visit` (hours, map, FAQ) · `reserve` (booking form with time slots) · `journal` · `careers` · `wholesale` · `press` · `legal` (privacy, terms, cookies).
 
-Site-wide: news ticker (pausable), full-screen menu, site search (press `/`), order drawer, scripted chat assistant, cookie preferences, optional ambient sound, branded intro on first visit, custom cursor and magnetic buttons on desktop, sticky Call / Reserve bar on phones.
+Site-wide: news ticker (pausable), full-screen menu, site search (press `/`), order drawer, scripted chat assistant, cookie preferences, optional ambient sound, branded intro on first visit, magnetic buttons on desktop, sticky Call / Reserve bar on phones.
 
 ## Folder map
 | Path | What it is |

@@ -90,7 +90,7 @@ if (want('axe')) {
   const p = await newPage({ viewport: { width: 375, height: 812 }, hasTouch: true }, { webgl: false });
   const tap = [], tiny = [];
   for (const f of PAGES) {
-    await p.goto(base + f); await p.waitForTimeout(500); await p.addStyleTag({ content: force + '.cursor{display:none}' });
+    await p.goto(base + f); await p.waitForTimeout(500); await p.addStyleTag({ content: force });
     const r = await p.evaluate(() => {
       const small = [...document.querySelectorAll('a.btn,button,.header-link,.brand,.link-arrow,.exp-link,.back-top,.footer-col a,.footer-legal a,.crumbs a,.chip-opt span,summary,[role=tab],.icon-btn,.add-btn,.ci-qty button')]
         .filter((e) => (e.offsetParent !== null || getComputedStyle(e).position === 'fixed') && !e.closest('[hidden]')).map((e) => { const r = e.getBoundingClientRect(); return [(e.textContent.trim() || e.getAttribute('aria-label') || e.className).slice(0, 18), Math.round(r.width), Math.round(r.height)]; }).filter(([, w, h]) => h && (h < 44 || w < 44));
@@ -285,7 +285,6 @@ if (want('fallback')) {
   const s1 = await p.locator('#stage').screenshot(); await p.waitForTimeout(1500); const s2 = await p.locator('#stage').screenshot();
   ok('reduced motion: 3D shows a still frame', Buffer.compare(s1, s2) === 0 && (await p.locator('#scene.is-ready').count()) === 1);
   ok('reduced motion: no preloader, hero text visible', (await p.locator('#preloader').count()) === 0 && (await p.evaluate(() => getComputedStyle(document.querySelector('.hero-tag')).opacity)) === '1');
-  ok('reduced motion: no custom cursor', (await p.evaluate(() => getComputedStyle(document.querySelector('.cursor')).display)) === 'none');
   await done(p);
 
 

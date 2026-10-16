@@ -1,4 +1,4 @@
-// Page behaviour: header, full-screen menu, tabs, reveal / split-text / count-up animations, cursor, hours status, map, cookies.
+// Page behaviour: header, full-screen menu, tabs, reveal / split-text / count-up animations, magnetic buttons, hours status, map, cookies.
 import { $, $$, site, reduceMotion, finePointer, cafeNow, hoursFor, fmtHour, store, toast } from './util.js';
 
 /* ---------- Header solid on scroll, progress bar, hero parallax ---------- */
@@ -192,14 +192,9 @@ import { $, $$, site, reduceMotion, finePointer, cafeNow, hoursFor, fmtHour, sto
   });
 })();
 
-/* ---------- Custom cursor + magnetic buttons (fine pointers only, never with reduced motion) ---------- */
+/* ---------- Magnetic buttons (fine pointers only, never with reduced motion) ---------- */
 (() => {
   if (!finePointer || reduceMotion) return;
-  const cur = $('.cursor');
-  let x = -100, y = -100, cx = -100, cy = -100;
-  window.addEventListener('pointermove', (e) => { x = e.clientX; y = e.clientY; cur.classList.add('is-on'); const t = e.target.closest ? e.target : null; cur.classList.toggle('is-link', !!(t && t.closest('a, button, [role="tab"], summary, label, select, input'))); cur.classList.toggle('is-drag', !!(t && t.closest('#scene'))); }, { passive: true });
-  document.addEventListener('pointerleave', () => cur.classList.remove('is-on'));
-  (function loop() { cx += (x - cx) * 0.22; cy += (y - cy) * 0.22; cur.style.transform = `translate3d(${cx}px, ${cy}px, 0)`; requestAnimationFrame(loop); })();
   const mags = $$('.hero .btn, .page-hero .btn, .header-link, .feature-card .btn, .link-arrow');
   window.addEventListener('pointermove', (e) => {
     mags.forEach((el) => {

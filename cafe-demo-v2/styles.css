@@ -534,15 +534,6 @@ main > .section, main > section:not(.hero):not(.page-hero) { content-visibility:
 @keyframes preload-fail { to { opacity: 0; visibility: hidden; } }
 .preloader.is-done { opacity: 0; visibility: hidden; pointer-events: none; }
 
-/* ---------- Custom cursor (fine pointers only) ---------- */
-.cursor { display: none; }
-@media (hover: hover) and (pointer: fine) {
-  .cursor { display: block; position: fixed; left: 0; top: 0; width: 36px; height: 36px; margin: -18px 0 0 -18px; border: 1.5px solid rgba(221, 180, 106, .95); border-radius: 50%; pointer-events: none; z-index: 600; opacity: 0; transition: opacity .25s, width .25s, height .25s, margin .25s, background-color .25s; will-change: transform; }
-  .cursor.is-on { opacity: 1; }
-  .cursor.is-link { width: 68px; height: 68px; margin: -34px 0 0 -34px; background: rgba(221, 180, 106, .2); }
-  .cursor.is-drag { width: 84px; height: 84px; margin: -42px 0 0 -42px; }
-}
-
 /* ---------- Ticker pause ---------- */
 .ticker-pause { flex: none; width: 44px; height: 44px; margin-block: -5px; display: grid; place-items: center; background: transparent; border: 0; color: #fff; cursor: pointer; position: relative; z-index: 2; }
 .ticker-pause:hover { color: var(--gold-light); }
@@ -783,7 +774,7 @@ form[data-demo-form] .form-success { margin-top: 8px; }
 
 /* ---------- Print (also used to make menu.pdf) ---------- */
 @media print {
-  .ticker, .site-header, .mobile-nav, .search, .cart, .scrim, .chat, .cookie, .toast, .mobile-cta, .progress, .cursor, .preloader, .skip-link,
+  .ticker, .site-header, .mobile-nav, .search, .cart, .scrim, .chat, .cookie, .toast, .mobile-cta, .progress, .preloader, .skip-link,
   .hero, .add-btn, .menu-tools, .tablist-wrap, .site-footer .footer-top, .site-footer .footer-legal, .scroll-cue, #join, .legend + .note, .feature-card .btn { display: none !important; }
   html, body { background: #fff !important; color: #000 !important; padding: 0 !important; }
   body { font-size: 10pt; line-height: 1.45; }
@@ -821,7 +812,6 @@ form[data-demo-form] .form-success { margin-top: 8px; }
   .hero-panel { transform: none; }
   .dot { animation: none; }
   .preloader { display: none; }
-  .cursor { display: none !important; }
   .js .wordmark { clip-path: none; }
   .js .hero-tag, .js .hero .chip, .js .hero-cta { opacity: 1; }
   .js [data-split] .w > span { transform: none; }

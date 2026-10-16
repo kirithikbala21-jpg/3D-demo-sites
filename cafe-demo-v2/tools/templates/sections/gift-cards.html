@@ -1,0 +1,30 @@
+    <!-- GIFT CARDS -->
+    <section class="section section-tint" id="gift-cards" aria-labelledby="gift-title">
+      <div class="container gift-grid">
+        <div class="gift-art reveal" aria-hidden="true">
+          <div class="gift-card">
+            <svg width="44" height="44" focusable="false"><use href="#logo-mark"/></svg>
+            <span class="gift-brand">Ember <span class="amp">&amp;</span> Oak</span>
+            <span class="gift-amount" id="gift-amount">$50</span>
+          </div>
+        </div>
+        <div class="reveal">
+          <p class="eyebrow">Gift cards</p>
+          <h2 id="gift-title" data-split>Give a very <em>good morning.</em></h2>
+          <p class="lead">Emailed instantly, valid for three years, redeemable on anything from flat whites to the oak room.</p>
+          <form id="gift-form" class="gift-form" novalidate>
+            <fieldset>
+              <legend>Choose an amount</legend>
+              <div class="chips">
+                <label class="chip-opt"><input type="radio" name="amount" value="25"><span>$25</span></label>
+                <label class="chip-opt"><input type="radio" name="amount" value="50" checked><span>$50</span></label>
+                <label class="chip-opt"><input type="radio" name="amount" value="100"><span>$100</span></label>
+                <label class="chip-opt"><input type="radio" name="amount" value="150"><span>$150</span></label>
+              </div>
+            </fieldset>
+            <button class="btn btn-primary" type="submit">Buy a gift card</button>
+            <!-- DEMO ONLY: connect a payment provider (e.g. Stripe Checkout or Square) here. -->
+          </form>
+        </div>
+      </div>
+    </section>

@@ -1,0 +1,15 @@
+    <!-- FAQ -->
+    <section class="section section-tint" id="faq" aria-labelledby="faq-title">
+      <div class="container faq-grid">
+        <div class="reveal">
+          <p class="eyebrow">Good to know</p>
+          <h2 id="faq-title" data-split>Questions, <em>answered.</em></h2>
+          <p class="lead">Still stuck? Call us on {{contact.phone}} and a human will pick up.</p>
+        </div>
+        <div class="faq reveal">
+          {{#each faq}}
+          <details><summary>{{{this.q}}}</summary><p>{{{this.a}}}</p></details>
+          {{/each}}
+        </div>
+      </div>
+    </section>

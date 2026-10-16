@@ -1,0 +1,25 @@
+    <!-- VISIT -->
+    <section class="section" id="visit" aria-labelledby="visit-title">
+      <div class="container visit-grid">
+        <div class="reveal">
+          <p class="eyebrow">Visit us</p>
+          <h2 id="visit-title" data-split>Come <em>say g&rsquo;day.</em></h2>
+          <p class="chip chip-light"><span class="dot" aria-hidden="true"></span><span id="open-status-2">Open 7 days</span></p>
+          <address>
+            {{contact.street}}<br>{{contact.locality}}<br>
+            <a href="tel:{{contact.phoneHref}}">{{contact.phone}}</a><br>
+            <a href="mailto:{{contact.email}}">{{contact.email}}</a>
+          </address>
+          {{{hoursTable}}}
+        </div>
+        <div class="visit-side reveal">
+          {{> map}}
+          <ul class="info-list">
+            <li><strong>Trams &amp; trains</strong><span>Tram 96 stops outside. Flinders Street Station is a 6-minute walk.</span></li>
+            <li><strong>Parking</strong><span>Two-hour street parking, plus a public car park around the corner.</span></li>
+            <li><strong>Access</strong><span>Step-free entry, an accessible toilet and a quiet corner on request.</span></li>
+            <li><strong>Dogs &amp; prams</strong><span>Well-behaved dogs are welcome on the terrace. Prams are always welcome.</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>

@@ -1,0 +1,50 @@
+[
+ {
+  "id": "p-house",
+  "name": "House Blend, 250g",
+  "price": 22,
+  "desc": "Toasted cacao, caramel and hazelnut. Our all-rounder for espresso and filter.",
+  "badge": "Bestseller",
+  "art": "bag"
+ },
+ {
+  "id": "p-guji",
+  "name": "Ethiopia Guji Natural, 250g",
+  "price": 26,
+  "desc": "Blueberry, jasmine and dark honey. A floral, fruit-forward single origin.",
+  "badge": "New",
+  "art": "bag"
+ },
+ {
+  "id": "p-decaf",
+  "name": "Swiss Water Decaf, 250g",
+  "price": 22,
+  "desc": "Chocolate and orange peel, with all of the flavour and none of the jitters.",
+  "badge": "",
+  "art": "bag"
+ },
+ {
+  "id": "p-cold",
+  "name": "Cold Brew Concentrate, 500ml",
+  "price": 18,
+  "desc": "Sixteen-hour cold brew, ready to dilute. Makes ten tall glasses.",
+  "badge": "",
+  "art": "bottle"
+ },
+ {
+  "id": "p-cup",
+  "name": "Ember Ceramic Cup",
+  "price": 28,
+  "desc": "Hand-glazed in deep burgundy. Holds 220ml and keeps its heat.",
+  "badge": "",
+  "art": "cup"
+ },
+ {
+  "id": "p-kit",
+  "name": "Pour-Over Starter Kit",
+  "price": 64,
+  "desc": "Ceramic dripper, 100 filters and a 250g bag of the week's roast.",
+  "badge": "Gift idea",
+  "art": "dripper"
+ }
+]

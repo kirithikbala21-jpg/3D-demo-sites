@@ -1,0 +1,308 @@
+{
+ "brand": {
+  "name": "Ember & Oak",
+  "nameHtml": "Ember &amp; Oak",
+  "fullName": "Ember & Oak Coffee",
+  "fullNameHtml": "Ember &amp; Oak Coffee",
+  "wordmark": "Ember &amp; Oak",
+  "city": "Melbourne",
+  "tagline": "Join us in seeking the slowest mornings and the best-roasted cup in Melbourne. Coffee roasted out back, poured right here.",
+  "description": "Ember & Oak Coffee is a fictional café used as a concept demo: small-batch coffee, all-day dining, private events and a cinematic 3D hero.",
+  "demoFooter": "Concept demo by KB Ventures. Not a real business."
+ },
+ "contact": {
+  "street": "12 Example Street",
+  "locality": "Melbourne VIC 3000",
+  "postcode": "3000",
+  "region": "VIC",
+  "phone": "03 5550 0123",
+  "phoneHref": "0355500123",
+  "email": "hello@example.com",
+  "country": "AU",
+  "mapsQuery": "Flinders Street Station, Melbourne VIC",
+  "lat": -37.8183,
+  "lon": 144.9671
+ },
+ "site": {
+  "baseUrl": "https://kirithikbala21-jpg.github.io/3D-demo-sites/cafe-demo-v2/",
+  "noindex": true,
+  "currency": "AUD",
+  "timezone": "Australia/Melbourne",
+  "locale": "en-AU"
+ },
+ "theme": {
+  "black": "#0B0707",
+  "wine": "#8B0707",
+  "wineDeep": "#5B0912",
+  "wineNight": "#1E0509",
+  "goldLight": "#DDB46A",
+  "goldText": "#85601F",
+  "cream": "#FBFAF3",
+  "tint": "#F1ECDD",
+  "ink": "#16100E"
+ },
+ "hours": [
+  {
+   "day": 1,
+   "name": "Monday",
+   "open": 7,
+   "close": 16
+  },
+  {
+   "day": 2,
+   "name": "Tuesday",
+   "open": 7,
+   "close": 16
+  },
+  {
+   "day": 3,
+   "name": "Wednesday",
+   "open": 7,
+   "close": 16
+  },
+  {
+   "day": 4,
+   "name": "Thursday",
+   "open": 7,
+   "close": 22
+  },
+  {
+   "day": 5,
+   "name": "Friday",
+   "open": 7,
+   "close": 22
+  },
+  {
+   "day": 6,
+   "name": "Saturday",
+   "open": 7,
+   "close": 22
+  },
+  {
+   "day": 0,
+   "name": "Sunday",
+   "open": 8,
+   "close": 16
+  }
+ ],
+ "hero": {
+  "video": null,
+  "poster": null
+ },
+ "news": [
+  "Christmas bookings are open for the oak room",
+  "Ethiopia Guji Natural lands next week",
+  "Latte art throwdown, last Thursday of the month",
+  "Free beans pick-up on orders over $40"
+ ],
+ "nav": [
+  {
+   "label": "Menu",
+   "href": "menu.html"
+  },
+  {
+   "label": "Shop",
+   "href": "shop.html"
+  },
+  {
+   "label": "Experiences",
+   "href": "experiences.html"
+  },
+  {
+   "label": "Our story",
+   "href": "story.html"
+  },
+  {
+   "label": "Journal",
+   "href": "journal.html"
+  },
+  {
+   "label": "Visit",
+   "href": "visit.html"
+  }
+ ],
+ "pages": [
+  {
+   "file": "index.html",
+   "template": "index",
+   "title": "Home",
+   "description": "Small-batch coffee, all-day dining and long tables in Melbourne. A cinematic concept demo for a fictional café.",
+   "jsonld": true
+  },
+  {
+   "file": "menu.html",
+   "template": "menu",
+   "title": "Menu",
+   "description": "Coffee, breakfast, lunch, bakery, cold drinks and evening cocktails. Order ahead for pick-up (demo).",
+   "pageHero": true,
+   "h1": "The menu",
+   "kicker": "Simple, seasonal, made to order",
+   "lead": "Thirty-eight things to eat and drink, all made on site. Order ahead for pick-up, or just walk in.",
+   "crumb": "Menu"
+  },
+  {
+   "file": "shop.html",
+   "template": "shop",
+   "title": "Shop beans & gear",
+   "description": "Freshly roasted beans, brewing gear and gifts from our roastery. Pick-up or delivery (demo).",
+   "pageHero": true,
+   "h1": "Shop the roastery",
+   "kicker": "Roasted this week",
+   "lead": "Take the roast home. Every bag is roasted to order and shipped within ten days.",
+   "crumb": "Shop"
+  },
+  {
+   "file": "experiences.html",
+   "template": "experiences",
+   "title": "Experiences, events & gift cards",
+   "description": "Roastery tours, barista workshops, private dining, catering, weekly events and gift cards.",
+   "pageHero": true,
+   "h1": "Experiences",
+   "kicker": "Gather, learn, celebrate",
+   "lead": "Tours, workshops, private dining and the regular happenings at the café.",
+   "crumb": "Experiences"
+  },
+  {
+   "file": "story.html",
+   "template": "story",
+   "title": "Our story",
+   "description": "How a second-hand roaster and a patient landlord became Ember & Oak. Our farm-to-cup process and our team.",
+   "pageHero": true,
+   "h1": "Our story",
+   "kicker": "Since 2016",
+   "lead": "A tiny drum roaster, a converted timber workshop and a lot of free cups.",
+   "crumb": "Our story"
+  },
+  {
+   "file": "sustainability.html",
+   "template": "sustainability",
+   "title": "Sustainability",
+   "description": "Compostable cups, farm premiums, roasting energy and how we reduce waste.",
+   "pageHero": true,
+   "h1": "Sustainability",
+   "kicker": "Doing it properly",
+   "lead": "Honest numbers about what we do well, and what we are still fixing.",
+   "crumb": "Sustainability"
+  },
+  {
+   "file": "visit.html",
+   "template": "visit",
+   "title": "Visit & FAQ",
+   "description": "Opening hours, address, getting here, accessibility and frequently asked questions.",
+   "pageHero": true,
+   "h1": "Visit us",
+   "kicker": "Come say g'day",
+   "lead": "Find us, check the hours, and get answers to the questions we hear most.",
+   "crumb": "Visit",
+   "jsonld": true
+  },
+  {
+   "file": "reserve.html",
+   "template": "reserve",
+   "title": "Reserve a table",
+   "description": "Book a table, a class, private dining or catering. Demo form.",
+   "pageHero": true,
+   "h1": "Reserve a table",
+   "kicker": "Reservations & enquiries",
+   "lead": "Tell us when and how many. We confirm by email, usually within a few hours.",
+   "crumb": "Reserve"
+  },
+  {
+   "file": "journal.html",
+   "template": "journal",
+   "title": "Journal",
+   "description": "Stories from the roastery, the kitchen and the oak room.",
+   "pageHero": true,
+   "h1": "The journal",
+   "kicker": "Notes from the roastery",
+   "lead": "Short stories about coffee, baking and the people in our room.",
+   "crumb": "Journal"
+  },
+  {
+   "file": "careers.html",
+   "template": "careers",
+   "title": "Careers",
+   "description": "Join the Ember & Oak crew. Open roles in the café, kitchen and roastery.",
+   "pageHero": true,
+   "h1": "Join the crew",
+   "kicker": "Careers",
+   "lead": "We hire for kindness first and teach the rest. These roles are fictional.",
+   "crumb": "Careers"
+  },
+  {
+   "file": "wholesale.html",
+   "template": "wholesale",
+   "title": "Wholesale",
+   "description": "Freshly roasted beans for cafés, offices and restaurants, with training and equipment support.",
+   "pageHero": true,
+   "h1": "Wholesale",
+   "kicker": "For cafés, offices & restaurants",
+   "lead": "Weekly roasted beans, proper training and a team that picks up the phone.",
+   "crumb": "Wholesale"
+  },
+  {
+   "file": "press.html",
+   "template": "press",
+   "title": "Press",
+   "description": "Press quotes, awards and a media kit for Ember & Oak Coffee (fictional).",
+   "pageHero": true,
+   "h1": "Press",
+   "kicker": "Praise from the (imaginary) press",
+   "lead": "Everything on this page is invented for the demo.",
+   "crumb": "Press"
+  },
+  {
+   "file": "legal.html",
+   "template": "legal",
+   "title": "Privacy, terms & cookies",
+   "description": "Privacy policy, terms of use and cookie information for this demo site.",
+   "pageHero": true,
+   "h1": "Privacy, terms & cookies",
+   "kicker": "Legal",
+   "lead": "A plain-language template. Replace with your own policy before going live.",
+   "crumb": "Legal"
+  }
+ ],
+ "searchExtra": [
+  {
+   "title": "Roastery tour & cupping",
+   "text": "Saturdays 10am, 60 minutes, $35 per person",
+   "url": "experiences.html"
+  },
+  {
+   "title": "Barista basics workshop",
+   "text": "First Sunday monthly, 2 hours, $85 per person",
+   "url": "experiences.html"
+  },
+  {
+   "title": "Private dining (oak room)",
+   "text": "Up to 24 guests, set menus from $75 per person",
+   "url": "experiences.html"
+  },
+  {
+   "title": "Catering & office coffee",
+   "text": "Platters, pastry boxes and a mobile espresso cart",
+   "url": "experiences.html"
+  },
+  {
+   "title": "Gift cards",
+   "text": "Emailed instantly, valid three years",
+   "url": "experiences.html#gift-cards"
+  },
+  {
+   "title": "Friday cupping night",
+   "text": "Every Friday 6pm, $25",
+   "url": "experiences.html#whats-on"
+  },
+  {
+   "title": "Jazz brunch",
+   "text": "First Saturday of the month, 10am, $58",
+   "url": "experiences.html#whats-on"
+  },
+  {
+   "title": "Latte art throwdown",
+   "text": "Last Thursday of the month, 7pm, free",
+   "url": "experiences.html#whats-on"
+  }
+ ]
+}

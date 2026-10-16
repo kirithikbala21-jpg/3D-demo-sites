@@ -1,0 +1,414 @@
+[
+ {
+  "id": "coffee",
+  "label": "Coffee &amp; tea",
+  "note": "Served all day",
+  "items": [
+   {
+    "name": "Ember Flat White",
+    "price": 5.5,
+    "desc": "Double ristretto, silky milk and a pinch of toasted cacao.",
+    "tags": [
+     "V"
+    ],
+    "sig": true
+   },
+   {
+    "name": "Oak Long Black",
+    "price": 5.0,
+    "desc": "Two shots over hot water. Dark honey, cedar and a clean, quiet finish.",
+    "tags": [
+     "VG",
+     "GF",
+     "DF"
+    ],
+    "sig": false
+   },
+   {
+    "name": "Maple Oat Latte",
+    "price": 6.5,
+    "desc": "Oat milk, a spoon of dark maple and our rounder, chocolate-forward blend.",
+    "tags": [
+     "VG",
+     "DF"
+    ],
+    "sig": false
+   },
+   {
+    "name": "Cortado",
+    "price": 5.2,
+    "desc": "Equal parts espresso and warm milk, with nothing to hide behind.",
+    "tags": [
+     "V"
+    ],
+    "sig": false
+   },
+   {
+    "name": "Single-Origin Pour Over",
+    "price": 9.0,
+    "desc": "Hand-poured to order from this week's reserve lot. Allow ten minutes; it's worth it.",
+    "tags": [
+     "VG",
+     "GF",
+     "DF"
+    ],
+    "sig": true
+   },
+   {
+    "name": "Batch Brew Filter",
+    "price": 5.0,
+    "desc": "This week&rsquo;s house lot, brewed in bulk and refilled until you stop us.",
+    "tags": [
+     "VG",
+     "GF",
+     "DF"
+    ],
+    "sig": false
+   },
+   {
+    "name": "Spiced Cacao Mocha",
+    "price": 6.8,
+    "desc": "Dark chocolate, cinnamon and cardamom with a double shot.",
+    "tags": [
+     "V"
+    ],
+    "sig": false
+   },
+   {
+    "name": "Loose-Leaf Tea Pot",
+    "price": 7.5,
+    "desc": "Smoked Earl Grey, jasmine pearl, or fresh mint and ginger.",
+    "tags": [
+     "VG",
+     "GF",
+     "DF"
+    ],
+    "sig": false
+   }
+  ]
+ },
+ {
+  "id": "breakfast",
+  "label": "Breakfast",
+  "note": "Served 7:00am &ndash; 11:30am",
+  "items": [
+   {
+    "name": "Whipped Ricotta Toast",
+    "price": 13.0,
+    "desc": "Thick sourdough, lemony ricotta, roasted figs and thyme honey.",
+    "tags": [
+     "V"
+    ],
+    "sig": false
+   },
+   {
+    "name": "Smashed Avo &amp; Dukkah",
+    "price": 18.5,
+    "desc": "Lime, chilli flakes, pickled red onion and hazelnut dukkah on rye.",
+    "tags": [
+     "VG",
+     "DF"
+    ],
+    "sig": false
+   },
+   {
+    "name": "Ember Chilli Eggs",
+    "price": 19.0,
+    "desc": "Eggs baked in smoky tomato and chilli, whipped feta and grilled flatbread.",
+    "tags": [
+     "V"
+    ],
+    "sig": true
+   },
+   {
+    "name": "House Granola Bowl",
+    "price": 15.5,
+    "desc": "Oat-and-seed granola, poached rhubarb, coconut yoghurt and bee pollen.",
+    "tags": [
+     "V"
+    ],
+    "sig": false
+   },
+   {
+    "name": "Brown Butter Banana Bread",
+    "price": 8.0,
+    "desc": "Grilled and served with salted butter and cinnamon sugar.",
+    "tags": [
+     "V"
+    ],
+    "sig": false
+   },
+   {
+    "name": "The Long Breakfast",
+    "price": 26.0,
+    "desc": "Two eggs your way, sourdough, bacon, field mushrooms, roast tomato and crispy hash.",
+    "tags": [],
+    "sig": false
+   }
+  ]
+ },
+ {
+  "id": "lunch",
+  "label": "Lunch",
+  "note": "Served 11:30am &ndash; 3:00pm",
+  "items": [
+   {
+    "name": "Slow-Braised Beef Brioche",
+    "price": 21.0,
+    "desc": "Eight-hour beef cheek, pickled onion, horseradish cream and a little jus to dip.",
+    "tags": [],
+    "sig": true
+   },
+   {
+    "name": "Roast Pumpkin &amp; Feta Toastie",
+    "price": 14.5,
+    "desc": "Sourdough, burnt-butter pumpkin, whipped feta, sage and caramelised onion.",
+    "tags": [
+     "V"
+    ],
+    "sig": false
+   },
+   {
+    "name": "Charred Cauliflower Salad",
+    "price": 19.5,
+    "desc": "Tahini, pomegranate, herbs, preserved lemon and toasted seeds.",
+    "tags": [
+     "VG",
+     "GF",
+     "DF"
+    ],
+    "sig": false
+   },
+   {
+    "name": "House-Cured Salmon Bagel",
+    "price": 20.0,
+    "desc": "Dill cream cheese, capers, shaved fennel and a squeeze of lemon.",
+    "tags": [],
+    "sig": false
+   },
+   {
+    "name": "Wild Mushroom Risotto",
+    "price": 24.0,
+    "desc": "Arborio, thyme, aged parmesan and a drizzle of truffle oil.",
+    "tags": [
+     "V",
+     "GF"
+    ],
+    "sig": false
+   },
+   {
+    "name": "Soup of the Day",
+    "price": 12.0,
+    "desc": "Made each morning, served with buttered sourdough. Ask what&rsquo;s simmering.",
+    "tags": [
+     "V"
+    ],
+    "sig": false
+   }
+  ]
+ },
+ {
+  "id": "bakery",
+  "label": "Bakery &amp; sweets",
+  "note": "Baked on site from 5:00am",
+  "items": [
+   {
+    "name": "Butter Croissant",
+    "price": 6.0,
+    "desc": "72-hour laminated dough, baked at six. Gone by ten on weekends.",
+    "tags": [
+     "V"
+    ],
+    "sig": false
+   },
+   {
+    "name": "Cardamom Morning Bun",
+    "price": 7.2,
+    "desc": "Spiralled brioche, cardamom sugar and an orange-blossom glaze.",
+    "tags": [
+     "V"
+    ],
+    "sig": true
+   },
+   {
+    "name": "Pain au Chocolat",
+    "price": 6.8,
+    "desc": "Two batons of dark chocolate in flaky, golden pastry.",
+    "tags": [
+     "V"
+    ],
+    "sig": false
+   },
+   {
+    "name": "Almond &amp; Orange Cake",
+    "price": 7.5,
+    "desc": "Moist, flourless and perfumed with whole-orange syrup.",
+    "tags": [
+     "V",
+     "GF"
+    ],
+    "sig": false
+   },
+   {
+    "name": "Burnt Basque Cheesecake",
+    "price": 11.0,
+    "desc": "Caramelised top, soft centre and seasonal compote.",
+    "tags": [
+     "V",
+     "GF"
+    ],
+    "sig": false
+   },
+   {
+    "name": "Dark Chocolate Tart",
+    "price": 11.5,
+    "desc": "Salted caramel, cocoa crumb and a spoon of cr&egrave;me fra&icirc;che.",
+    "tags": [
+     "V"
+    ],
+    "sig": false
+   }
+  ]
+ },
+ {
+  "id": "cold",
+  "label": "Cold drinks",
+  "note": "Served all day",
+  "items": [
+   {
+    "name": "Cold Brew Tonic",
+    "price": 7.0,
+    "desc": "Sixteen-hour cold brew over ice, premium tonic and a strip of grapefruit peel.",
+    "tags": [
+     "VG",
+     "GF",
+     "DF"
+    ],
+    "sig": true
+   },
+   {
+    "name": "Iced Caramel Oak Latte",
+    "price": 6.5,
+    "desc": "House caramel, a double shot and cold milk over big, slow-melting cubes.",
+    "tags": [
+     "V"
+    ],
+    "sig": false
+   },
+   {
+    "name": "Sparkling Blood Orange",
+    "price": 6.0,
+    "desc": "Fresh-pressed blood orange, mint and soda. Bright, bitter, very refreshing.",
+    "tags": [
+     "VG",
+     "GF",
+     "DF"
+    ],
+    "sig": false
+   },
+   {
+    "name": "Iced Coconut Matcha",
+    "price": 7.2,
+    "desc": "Ceremonial-grade matcha whisked with coconut milk and a touch of agave.",
+    "tags": [
+     "VG",
+     "GF",
+     "DF"
+    ],
+    "sig": false
+   },
+   {
+    "name": "Affogato",
+    "price": 9.0,
+    "desc": "Vanilla bean gelato drowned in a double espresso.",
+    "tags": [
+     "V",
+     "GF"
+    ],
+    "sig": false
+   },
+   {
+    "name": "Green Press",
+    "price": 9.5,
+    "desc": "Apple, cucumber, celery, lime and mint, pressed to order.",
+    "tags": [
+     "VG",
+     "GF",
+     "DF"
+    ],
+    "sig": false
+   }
+  ]
+ },
+ {
+  "id": "evening",
+  "label": "Evening",
+  "note": "Thu &ndash; Sat from 4:00pm",
+  "items": [
+   {
+    "name": "Oak-Aged Negroni",
+    "price": 20.0,
+    "desc": "Gin, vermouth and bitters rested in a small oak barrel for six weeks.",
+    "tags": [
+     "VG",
+     "GF",
+     "DF"
+    ],
+    "sig": true
+   },
+   {
+    "name": "Espresso Martini",
+    "price": 19.0,
+    "desc": "Vodka, fresh espresso and vanilla, shaken hard until it foams.",
+    "tags": [
+     "VG",
+     "GF",
+     "DF"
+    ],
+    "sig": false
+   },
+   {
+    "name": "Ember Old Fashioned",
+    "price": 21.0,
+    "desc": "Bourbon, smoked maple and orange oils, stirred over one large cube.",
+    "tags": [
+     "VG",
+     "GF",
+     "DF"
+    ],
+    "sig": false
+   },
+   {
+    "name": "Zero-Proof Spritz",
+    "price": 11.0,
+    "desc": "Bitter orange, rosemary and tonic, with a long finish and no regrets.",
+    "tags": [
+     "VG",
+     "GF",
+     "DF"
+    ],
+    "sig": false
+   },
+   {
+    "name": "Natural Wine, by the glass",
+    "price": 15.0,
+    "desc": "A rotating small-producer pour. Ask what&rsquo;s open tonight.",
+    "tags": [
+     "VG",
+     "GF"
+    ],
+    "sig": false
+   },
+   {
+    "name": "Sparkling, by the glass",
+    "price": 14.0,
+    "desc": "Crisp, dry and local, served very cold.",
+    "tags": [
+     "VG",
+     "GF"
+    ],
+    "sig": false
+   }
+  ]
+ }
+]

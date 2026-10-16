@@ -1,0 +1,44 @@
+[
+ {
+  "id": "slow-mornings",
+  "title": "Why we roast slowly",
+  "date": "2026-09-18",
+  "dateLabel": "18 September 2026",
+  "tag": "Roastery",
+  "read": "4 min",
+  "excerpt": "Our drum is small and our batches are slower than most. Here is why that is the whole point.",
+  "body": [
+   "A fifteen kilogram drum roaster is the smallest thing a serious café can run, and it is slow. A batch takes just under twelve minutes, and we only roast one origin at a time. That slows us down on purpose.",
+   "Heat is the easiest thing to get wrong in coffee. Push it too hard and the outside of the bean scorches while the inside stays raw and grassy. Go gently and the sugars have time to caramelise evenly, so the sweetness you taste in the cup is the sweetness that was in the cherry.",
+   "We cup every batch the next morning, tasting it blind with the whole team. If it is not better than last week, it does not go on the shelf. It is a very short feedback loop, and it is why regulars can tell when we have changed something before we tell them."
+  ]
+ },
+ {
+  "id": "oak-negroni",
+  "title": "Six weeks in a very small barrel",
+  "date": "2026-08-27",
+  "dateLabel": "27 August 2026",
+  "tag": "Oak room",
+  "read": "3 min",
+  "excerpt": "The story of the Oak-Aged Negroni, and why we named the whole café after the barrel.",
+  "body": [
+   "The oak barrel in the corner of the bar holds ten litres, which sounds like a lot until a Saturday night. We fill it with gin, vermouth and bitters every six weeks and let the wood do its quiet work.",
+   "What comes out is rounder and softer than a fresh negroni, with a vanilla edge from the oak. Joss thinks it tastes like a library. Ines thinks it tastes like a very good Sunday. They are both right.",
+   "The barrel is also why the café has its name. The ember is the roaster out back, and the oak is the barrel, the tables and the long communal bench. Everything here is meant to feel warm and a little bit worn in."
+  ]
+ },
+ {
+  "id": "cardamom-bun",
+  "title": "The morning bun problem",
+  "date": "2026-07-30",
+  "dateLabel": "30 July 2026",
+  "tag": "Kitchen",
+  "read": "3 min",
+  "excerpt": "Every day we bake forty cardamom buns, and every day they sell out by ten. We are trying to fix that.",
+  "body": [
+   "Forty buns a day was the right number when we started. Then it became a habit, then a queue, and now it is a small daily heartbreak for anyone who arrives after ten.",
+   "The honest limit is the oven. Each tray takes forty minutes and the kitchen has one deck oven. We are not going to compromise the dough by rushing it, and we do not want to make worse buns just to make more of them.",
+   "So here is the plan: a second oven in the spring, a pre-order slot on the website for the first thirty buns, and a rule that the last bun of the day goes to whoever is next in line, no questions asked."
+  ]
+ }
+]

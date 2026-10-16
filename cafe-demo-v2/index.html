@@ -3,37 +3,44 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Ember &amp; Oak Coffee | Cinematic café in Melbourne (concept demo v2)</title>
-  <meta name="description" content="Ember &amp; Oak Coffee is a fictional café used as a concept demo: small-batch coffee, all-day dining, private events and a cinematic 3D hero.">
+  <title>Ember &amp; Oak Coffee (concept demo v2)</title>
+  <meta name="description" content="Small-batch coffee, all-day dining and long tables in Melbourne. A cinematic concept demo for a fictional café.">
   <meta name="robots" content="noindex">
   <meta name="theme-color" content="#0B0707">
-  <link rel="canonical" href="https://example.com/cafe-demo-v2/">
+  <link rel="canonical" href="https://kirithikbala21-jpg.github.io/3D-demo-sites/cafe-demo-v2/">
   <meta property="og:type" content="website">
   <meta property="og:title" content="Ember &amp; Oak Coffee (concept demo v2)">
-  <meta property="og:description" content="Small-batch coffee, roasted out back and poured right here. A concept demo website, not a real business.">
-  <meta property="og:url" content="https://example.com/cafe-demo-v2/">
+  <meta property="og:description" content="Small-batch coffee, all-day dining and long tables in Melbourne. A cinematic concept demo for a fictional café.">
+  <meta property="og:url" content="https://kirithikbala21-jpg.github.io/3D-demo-sites/cafe-demo-v2/">
+  <meta property="og:image" content="https://kirithikbala21-jpg.github.io/3D-demo-sites/cafe-demo-v2/img/og.png">
   <meta property="og:locale" content="en_AU">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230B0707'/%3E%3Cpath d='M16 5c1 4 6 7 6 12a6 6 0 0 1-12 0c0-2.600 1.400-4.300 2.600-5.600.4 1.400 1 2.200 1.800 2.600C14.200 11 14.600 8 16 5z' fill='%23DDB46A'/%3E%3C/svg%3E">
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Mrs+Saint+Delafield&display=swap">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="img/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="preload" href="fonts/montserrat-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/mrs-saint-delafield-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="styles.css">
-
-  <script>document.documentElement.classList.add('js');</script>
-  <!-- Pinned Three.js (exact version) loaded as an ES module through an import map. -->
-  <script type="importmap">
-  {
-    "imports": {
-      "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
-      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
-    }
-  }
+  <style>:root{--black:#0B0707;--wine:#8B0707;--wine-deep:#5B0912;--wine-night:#1E0509;--gold-light:#DDB46A;--gold-text:#85601F;--cream:#FBFAF3;--tint:#F1ECDD;--ink:#16100E}</style>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "CafeOrCoffeeShop", "name": "Ember & Oak Coffee", "description": "Ember & Oak Coffee is a fictional café used as a concept demo: small-batch coffee, all-day dining, private events and a cinematic 3D hero.", "url": "https://kirithikbala21-jpg.github.io/3D-demo-sites/cafe-demo-v2/", "telephone": "03 5550 0123", "email": "hello@example.com", "priceRange": "$$", "servesCuisine": ["Coffee", "Brunch", "Bakery"], "hasMenu": "https://kirithikbala21-jpg.github.io/3D-demo-sites/cafe-demo-v2/menu.html", "address": {"@type": "PostalAddress", "streetAddress": "12 Example Street", "addressLocality": "Melbourne", "addressRegion": "VIC", "postalCode": "3000", "addressCountry": "AU"}, "openingHoursSpecification": [{"@type": "OpeningHoursSpecification", "dayOfWeek": "Monday", "opens": "07:00", "closes": "16:00"}, {"@type": "OpeningHoursSpecification", "dayOfWeek": "Tuesday", "opens": "07:00", "closes": "16:00"}, {"@type": "OpeningHoursSpecification", "dayOfWeek": "Wednesday", "opens": "07:00", "closes": "16:00"}, {"@type": "OpeningHoursSpecification", "dayOfWeek": "Thursday", "opens": "07:00", "closes": "22:00"}, {"@type": "OpeningHoursSpecification", "dayOfWeek": "Friday", "opens": "07:00", "closes": "22:00"}, {"@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "07:00", "closes": "22:00"}, {"@type": "OpeningHoursSpecification", "dayOfWeek": "Sunday", "opens": "08:00", "closes": "16:00"}]}</script>
+  
+  <script>
+    document.documentElement.classList.add('js');
+    // Safety net: never leave the hero hidden if the main script fails to start.
+    setTimeout(function () { document.documentElement.classList.add('is-ready'); }, 4500);
   </script>
+  
+  <!-- Three.js is self-hosted (exact version 0.160.0) and loaded as an ES module through this import map. -->
+  <script type="importmap">{"imports":{"three":"./vendor/three.module.min.js","three/addons/":"./vendor/addons/"}}</script>
+  
 </head>
-<body>
+<body class="page-index">
+  
+  <div class="preloader" id="preloader" aria-hidden="true"><span class="script">Ember &amp; Oak</span></div>
+  
   <a class="skip-link" href="#main">Skip to content</a>
   <div class="progress" aria-hidden="true"><span></span></div>
+  <div class="cursor" aria-hidden="true"></div>
 
   <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
     <symbol id="logo-mark" viewBox="0 0 32 32">
@@ -42,38 +49,39 @@
     </symbol>
   </svg>
 
-  <!-- Top ticker: news + venue tabs (decorative, duplicated text is hidden from screen readers) -->
-  <div class="ticker">
+  <!-- Top ticker: news + venue tabs. Moving text is hidden from screen readers; a static copy follows. -->
+  <div class="ticker" id="ticker" role="region" aria-label="Latest news">
     <span class="ticker-label">News</span>
     <div class="ticker-viewport" aria-hidden="true">
       <div class="ticker-track">
-        <span>Christmas bookings are open for the oak room</span>
-        <span>Ethiopia Guji Natural lands next week</span>
-        <span>Latte art throwdown, last Thursday of the month</span>
-        <span>Free beans pick-up on orders over $40</span>
-        <span>Christmas bookings are open for the oak room</span>
-        <span>Ethiopia Guji Natural lands next week</span>
-        <span>Latte art throwdown, last Thursday of the month</span>
-        <span>Free beans pick-up on orders over $40</span>
+        <span>Christmas bookings are open for the oak room</span><span>Ethiopia Guji Natural lands next week</span><span>Latte art throwdown, last Thursday of the month</span><span>Free beans pick-up on orders over $40</span><span>Christmas bookings are open for the oak room</span><span>Ethiopia Guji Natural lands next week</span><span>Latte art throwdown, last Thursday of the month</span><span>Free beans pick-up on orders over $40</span>
       </div>
     </div>
-    <p class="sr-only">Christmas bookings are open for the oak room. Ethiopia Guji Natural lands next week. Latte art throwdown on the last Thursday of the month.</p>
+    <p class="sr-only">Christmas bookings are open for the oak room. Ethiopia Guji Natural lands next week. Latte art throwdown, last Thursday of the month. Free beans pick-up on orders over $40.</p>
+    <button class="ticker-pause" type="button" aria-pressed="false" aria-label="Pause the news ticker">
+      <svg class="i-pause" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><rect x="2" y="1" width="3" height="10" fill="currentColor"/><rect x="7" y="1" width="3" height="10" fill="currentColor"/></svg>
+      <svg class="i-play" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 1l8 5-8 5z" fill="currentColor"/></svg>
+    </button>
     <nav class="ticker-venues" aria-label="Our spaces">
-      <a href="#menu" aria-current="true"><svg width="14" height="14" aria-hidden="true" focusable="false"><use href="#logo-mark"/></svg>Café</a>
-      <a href="#story"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M4 12h16"/></svg>Roastery</a>
-      <a href="#experiences"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 19c0-9 5-14 14-14 0 9-5 14-14 14z"/></svg>Oak room</a>
-      <a href="#visit"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 11h12v4a5 5 0 0 1-5 5h-2a5 5 0 0 1-5-5z"/></svg>Visit</a>
+      <a href="menu.html"><svg width="14" height="14" aria-hidden="true" focusable="false"><use href="#logo-mark"/></svg>Café</a><a href="story.html"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M4 12h16"/></svg>Roastery</a><a href="experiences.html"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 19c0-9 5-14 14-14 0 9-5 14-14 14z"/></svg>Oak room</a><a href="visit.html"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 11h12v4a5 5 0 0 1-5 5h-2a5 5 0 0 1-5-5z"/></svg>Visit</a>
     </nav>
     <span class="ticker-label ticker-label-r">Now pouring</span>
   </div>
 
   <header class="site-header" id="top">
     <div class="header-inner">
-      <a class="brand" href="#top" aria-label="Ember &amp; Oak Coffee, back to top">
+      <a class="brand" href="index.html" aria-label="Ember &amp; Oak Coffee, home">
         <svg width="26" height="26" aria-hidden="true" focusable="false"><use href="#logo-mark"/></svg>
       </a>
       <div class="header-actions">
-        <a class="header-link" href="#reserve">Reserve</a>
+        <button class="icon-btn" type="button" id="search-open" aria-label="Search the site" aria-haspopup="dialog">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+        </button>
+        <button class="icon-btn cart-btn" type="button" id="cart-open" aria-label="Your order, empty" aria-haspopup="dialog">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1.500 12h-11zM9 8a3 3 0 0 1 6 0"/></svg>
+          <span class="cart-count" id="cart-count" aria-hidden="true" hidden>0</span>
+        </button>
+        <a class="header-link" href="reserve.html">Reserve</a>
         <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="mobile-nav" aria-label="Open menu">
           <span class="bars" aria-hidden="true"><span></span><span></span><span></span></span>
         </button>
@@ -85,14 +93,15 @@
     <div class="overlay-inner">
       <nav aria-label="Main">
         <ul>
-          <li><a href="#menu"><span class="n" aria-hidden="true">01</span>Menu</a></li>
-          <li><a href="#experiences"><span class="n" aria-hidden="true">02</span>Experiences</a></li>
-          <li><a href="#story"><span class="n" aria-hidden="true">03</span>Our story</a></li>
-          <li><a href="#whats-on"><span class="n" aria-hidden="true">04</span>What&rsquo;s on</a></li>
-          <li><a href="#gift-cards"><span class="n" aria-hidden="true">05</span>Gift cards</a></li>
-          <li><a href="#visit"><span class="n" aria-hidden="true">06</span>Visit</a></li>
+          <li><a href="menu.html"><span class="n" aria-hidden="true">01</span>Menu</a></li><li><a href="shop.html"><span class="n" aria-hidden="true">02</span>Shop</a></li><li><a href="experiences.html"><span class="n" aria-hidden="true">03</span>Experiences</a></li><li><a href="story.html"><span class="n" aria-hidden="true">04</span>Our story</a></li><li><a href="journal.html"><span class="n" aria-hidden="true">05</span>Journal</a></li><li><a href="visit.html"><span class="n" aria-hidden="true">06</span>Visit</a></li>
         </ul>
-        <a class="btn btn-primary" href="#reserve">Reserve a table</a>
+        <a class="btn btn-primary" href="reserve.html">Reserve a table</a>
+        <ul class="overlay-sub" aria-label="More">
+          <li><a href="sustainability.html">Sustainability</a></li>
+          <li><a href="wholesale.html">Wholesale</a></li>
+          <li><a href="press.html">Press</a></li>
+          <li><a href="careers.html">Careers</a></li>
+        </ul>
       </nav>
       <div class="overlay-info">
         <p class="label">Find us</p>
@@ -100,27 +109,77 @@
         <p><a href="tel:0355500123">03 5550 0123</a><br><a href="mailto:hello@example.com">hello@example.com</a></p>
         <p class="label">Hours</p>
         <p>Mon &ndash; Wed 7am &ndash; 4pm<br>Thu &ndash; Sat 7am &ndash; 10pm<br>Sun 8am &ndash; 4pm</p>
+        <p class="label">Atmosphere</p>
+        <p><button type="button" class="sound-btn" data-sound aria-pressed="false">Ambient sound: <span data-sound-state>off</span></button></p>
       </div>
     </div>
   </div>
 
+  <!-- Site search -->
+  <div class="search" id="search" role="dialog" aria-modal="true" aria-label="Search the site" hidden>
+    <div class="search-inner">
+      <form id="search-form" role="search" novalidate>
+        <label class="sr-only" for="search-input">Search the menu, shop and pages</label>
+        <input id="search-input" type="search" placeholder="Search the menu, shop and pages" autocomplete="off" spellcheck="false">
+        <button type="button" class="icon-btn search-close" id="search-close" aria-label="Close search">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg>
+        </button>
+      </form>
+      <p class="search-hint" id="search-hint" aria-live="polite">Try &ldquo;flat white&rdquo;, &ldquo;gluten free&rdquo; or &ldquo;parking&rdquo;.</p>
+      <ul class="search-results" id="search-results"></ul>
+    </div>
+  </div>
+
+  <!-- Order / cart drawer (demo) -->
+  <div class="scrim" id="scrim" hidden></div>
+  <aside class="cart" id="cart" role="dialog" aria-modal="true" aria-labelledby="cart-title" hidden>
+    <div class="cart-head">
+      <h2 id="cart-title">Your order</h2>
+      <button class="icon-btn" type="button" id="cart-close" aria-label="Close your order">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg>
+      </button>
+    </div>
+    <div class="cart-body">
+      <p class="cart-empty" id="cart-empty">Your order is empty. Add something from the <a href="menu.html">menu</a> or the <a href="shop.html">shop</a>.</p>
+      <ul class="cart-list" id="cart-list"></ul>
+    </div>
+    <form class="cart-foot" id="cart-form" novalidate hidden>
+      <div class="cart-total"><span>Total</span><strong id="cart-total">$0.00</strong></div>
+      <div class="field">
+        <label for="cart-name">Name for the order</label>
+        <input id="cart-name" name="name" type="text" autocomplete="name" aria-describedby="e-cart-name">
+        <p class="error" id="e-cart-name" aria-live="polite"></p>
+      </div>
+      <div class="field">
+        <label for="cart-when">Pick-up time</label>
+        <select id="cart-when" name="when"></select>
+      </div>
+      <button class="btn btn-primary btn-block" type="submit">Place order (demo)</button>
+      <button class="cart-clear" type="button" id="cart-clear">Clear order</button>
+      <!-- DEMO ONLY: send the order to your ordering system or payment provider here (see main.js / cart.js). -->
+    </form>
+    <div class="cart-done" id="cart-done" role="status" tabindex="-1" hidden>
+      <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M7.500 12.500l3 3 6-7"/></svg>
+      <h3>Thanks, <span id="done-name">friend</span>!</h3>
+      <p id="done-detail"></p>
+      <p class="note">Demo only: no order was sent and nothing was charged.</p>
+      <button class="btn btn-secondary" type="button" id="done-close">Close</button>
+    </div>
+  </aside>
+
   <main id="main">
+
     <!-- HERO -->
     <section class="hero" aria-labelledby="hero-title">
       <div class="hero-bg" aria-hidden="true">
+        
         <div class="hero-panel"></div>
         <div class="hero-glow"></div>
         <div class="hero-grain"></div>
       </div>
       <div class="hero-inner">
-        <div class="hero-copy">
+        <div class="hero-head">
           <h1 id="hero-title" class="wordmark"><span>Ember &amp; Oak</span><span class="sr-only"> Coffee, Melbourne</span></h1>
-          <p class="hero-tag">Join us in seeking the slowest mornings and the best-roasted cup in Melbourne. Coffee roasted out back, poured right here.</p>
-          <p class="chip"><span class="dot" aria-hidden="true"></span><span id="open-status">Open 7 days from 7am</span></p>
-          <div class="hero-cta">
-            <a class="link-arrow" href="#now-pouring">Explore the menu <span aria-hidden="true">&rarr;</span></a>
-            <a class="btn btn-primary" href="#reserve">Reserve a table</a>
-          </div>
         </div>
 
         <div class="hero-stage" id="stage">
@@ -154,6 +213,15 @@
           </svg>
           <canvas id="scene" aria-hidden="true"></canvas>
         </div>
+
+        <div class="hero-body">
+          <p class="hero-tag">Join us in seeking the slowest mornings and the best-roasted cup in Melbourne. Coffee roasted out back, poured right here.</p>
+          <p class="chip"><span class="dot" aria-hidden="true"></span><span id="open-status">Open 7 days from 7am</span></p>
+          <div class="hero-cta">
+            <a class="link-arrow" href="menu.html">Explore the menu <span aria-hidden="true">&rarr;</span></a>
+            <a class="btn btn-primary" href="reserve.html">Reserve a table</a>
+          </div>
+        </div>
       </div>
       <a class="scroll-cue" href="#facts">Scroll<svg width="14" height="8" viewBox="0 0 14 8" fill="none" stroke="currentColor" stroke-width="1.600" aria-hidden="true"><path d="M1 1l6 5 6-5"/></svg></a>
     </section>
@@ -170,7 +238,7 @@
       <div class="container">
         <div class="section-head reveal">
           <p class="eyebrow">Trending now</p>
-          <h2 id="pour-title">Three things we&rsquo;re <em>known for.</em></h2>
+          <h2 id="pour-title" data-split>Three things we&rsquo;re <em>known for.</em></h2>
           <p class="lead">If it&rsquo;s your first visit, start here.</p>
         </div>
       </div>
@@ -191,7 +259,7 @@
             <h3>Ember Flat White</h3>
             <p class="notes">Toasted cacao | Caramel | Hazelnut</p>
             <p>Our Colombian and Ethiopian house blend, pulled as a double ristretto and finished with a pinch of toasted cacao. The cup that started it all, and still the one regulars order first.</p>
-            <a class="link-arrow" href="#menu">See on the menu <span aria-hidden="true">&rarr;</span></a>
+            <a class="link-arrow" href="menu.html">See on the menu <span aria-hidden="true">&rarr;</span></a>
           </div>
         </article>
         <article class="feature reveal">
@@ -211,7 +279,7 @@
             <h3>Ethiopia Guji Natural</h3>
             <p class="notes">Blueberry | Jasmine | Dark honey</p>
             <p>Hand-poured to order from this week&rsquo;s reserve lot. Fruit-forward, floral and syrupy, a coffee to sip slowly with the cardamom bun. Allow ten minutes; it&rsquo;s worth every one of them.</p>
-            <a class="link-arrow" href="#menu">See on the menu <span aria-hidden="true">&rarr;</span></a>
+            <a class="link-arrow" href="menu.html">See on the menu <span aria-hidden="true">&rarr;</span></a>
           </div>
         </article>
         <article class="feature reveal">
@@ -230,361 +298,63 @@
             <h3>Cardamom Morning Bun</h3>
             <p class="notes">Cardamom | Orange blossom | Brown butter</p>
             <p>Spiralled brioche rolled with cardamom sugar and glazed with orange blossom. Warm from the oven by seven, and usually gone by ten, so come early or call ahead.</p>
-            <a class="link-arrow" href="#menu">See on the menu <span aria-hidden="true">&rarr;</span></a>
+            <a class="link-arrow" href="menu.html">See on the menu <span aria-hidden="true">&rarr;</span></a>
           </div>
         </article>
       </div>
     </section>
 
-    <!-- MENU -->
-    <section class="section" id="menu" aria-labelledby="menu-title">
+    <!-- EXPLORE -->
+    <section class="section section-tint" id="explore" aria-labelledby="explore-title">
       <div class="container">
         <div class="section-head reveal">
-          <p class="eyebrow">The menu</p>
-          <h2 id="menu-title">Simple, seasonal, <em>made to order.</em></h2>
-          <p class="lead">Everything here is fictional, including the prices (AUD). Pick a tab to browse.</p>
+          <p class="eyebrow">Explore</p>
+          <h2 id="explore-title" data-split>Everything under <em>one roof.</em></h2>
         </div>
-
-        <div class="tabs reveal">
-          <div class="tablist-wrap">
-            <div class="tablist" role="tablist" aria-label="Menu categories">
-            <button role="tab" id="tab-coffee" aria-controls="panel-coffee" aria-selected="true" tabindex="0" type="button">Coffee &amp; tea</button>
-            <button role="tab" id="tab-breakfast" aria-controls="panel-breakfast" aria-selected="false" tabindex="-1" type="button">Breakfast</button>
-            <button role="tab" id="tab-lunch" aria-controls="panel-lunch" aria-selected="false" tabindex="-1" type="button">Lunch</button>
-            <button role="tab" id="tab-bakery" aria-controls="panel-bakery" aria-selected="false" tabindex="-1" type="button">Bakery &amp; sweets</button>
-            <button role="tab" id="tab-cold" aria-controls="panel-cold" aria-selected="false" tabindex="-1" type="button">Cold drinks</button>
-            <button role="tab" id="tab-evening" aria-controls="panel-evening" aria-selected="false" tabindex="-1" type="button">Evening</button>
-            </div>
-          </div>
-          <div role="tabpanel" id="panel-coffee" aria-labelledby="tab-coffee" tabindex="0" class="menu-panel">
-            <p class="panel-note">Served all day</p>
-            <div class="menu-grid">
-            <article class="menu-item">
-              <div class="menu-line"><h3>Ember Flat White</h3><span class="leader" aria-hidden="true"></span><span class="price">$5.50</span></div>
-              <p>Double ristretto, silky milk and a pinch of toasted cacao.</p>
-              <p class="tags"><span class="sig"><span aria-hidden="true">&#9733;</span> Signature</span><abbr title="Vegetarian" class="tag">V</abbr></p>
-            </article>
-            <article class="menu-item">
-              <div class="menu-line"><h3>Oak Long Black</h3><span class="leader" aria-hidden="true"></span><span class="price">$5.00</span></div>
-              <p>Two shots over hot water. Dark honey, cedar and a clean, quiet finish.</p>
-              <p class="tags"><abbr title="Vegan" class="tag">VG</abbr><abbr title="Gluten free" class="tag">GF</abbr><abbr title="Dairy free" class="tag">DF</abbr></p>
-            </article>
-            <article class="menu-item">
-              <div class="menu-line"><h3>Maple Oat Latte</h3><span class="leader" aria-hidden="true"></span><span class="price">$6.50</span></div>
-              <p>Oat milk, a spoon of dark maple and our rounder, chocolate-forward blend.</p>
-              <p class="tags"><abbr title="Vegan" class="tag">VG</abbr><abbr title="Dairy free" class="tag">DF</abbr></p>
-            </article>
-            <article class="menu-item">
-              <div class="menu-line"><h3>Cortado</h3><span class="leader" aria-hidden="true"></span><span class="price">$5.20</span></div>
-              <p>Equal parts espresso and warm milk, with nothing to hide behind.</p>
-              <p class="tags"><abbr title="Vegetarian" class="tag">V</abbr></p>
-            </article>
-            <article class="menu-item">
-              <div class="menu-line"><h3>Single-Origin Pour Over</h3><span class="leader" aria-hidden="true"></span><span class="price">$9.00</span></div>
-              <p>Hand-poured to order from this week's reserve lot. Allow ten minutes; it's worth it.</p>
-              <p class="tags"><span class="sig"><span aria-hidden="true">&#9733;</span> Signature</span><abbr title="Vegan" class="tag">VG</abbr><abbr title="Gluten free" class="tag">GF</abbr><abbr title="Dairy free" class="tag">DF</abbr></p>
-            </article>
-            <article class="menu-item">
-              <div class="menu-line"><h3>Batch Brew Filter</h3><span class="leader" aria-hidden="true"></span><span class="price">$5.00</span></div>
-              <p>This week&rsquo;s house lot, brewed in bulk and refilled until you stop us.</p>
-              <p class="tags"><abbr title="Vegan" class="tag">VG</abbr><abbr title="Gluten free" class="tag">GF</abbr><abbr title="Dairy free" class="tag">DF</abbr></p>
-            </article>
-            <article class="menu-item">
-              <div class="menu-line"><h3>Spiced Cacao Mocha</h3><span class="leader" aria-hidden="true"></span><span class="price">$6.80</span></div>
-              <p>Dark chocolate, cinnamon and cardamom with a double shot.</p>
-              <p class="tags"><abbr title="Vegetarian" class="tag">V</abbr></p>
-            </article>
-            <article class="menu-item">
-              <div class="menu-line"><h3>Loose-Leaf Tea Pot</h3><span class="leader" aria-hidden="true"></span><span class="price">$7.50</span></div>
-              <p>Smoked Earl Grey, jasmine pearl, or fresh mint and ginger.</p>
-              <p class="tags"><abbr title="Vegan" class="tag">VG</abbr><abbr title="Gluten free" class="tag">GF</abbr><abbr title="Dairy free" class="tag">DF</abbr></p>
-            </article>
-            </div>
-          </div>
-          <div role="tabpanel" id="panel-breakfast" aria-labelledby="tab-breakfast" tabindex="0" class="menu-panel" hidden>
-            <p class="panel-note">Served 7:00am &ndash; 11:30am</p>
-            <div class="menu-grid">
-            <article class="menu-item">
-              <div class="menu-line"><h3>Whipped Ricotta Toast</h3><span class="leader" aria-hidden="true"></span><span class="price">$13.00</span></div>
-              <p>Thick sourdough, lemony ricotta, roasted figs and thyme honey.</p>
-              <p class="tags"><abbr title="Vegetarian" class="tag">V</abbr></p>
-            </article>
-            <article class="menu-item">
-              <div class="menu-line"><h3>Smashed Avo &amp; Dukkah</h3><span class="leader" aria-hidden="true"></span><span class="price">$18.50</span></div>
-              <p>Lime, chilli flakes, pickled red onion and hazelnut dukkah on rye.</p>
-              <p class="tags"><abbr title="Vegan" class="tag">VG</abbr><abbr title="Dairy free" class="tag">DF</abbr></p>
-            </article>
-            <article class="menu-item">
-              <div class="menu-line"><h3>Ember Chilli Eggs</h3><span class="leader" aria-hidden="true"></span><span class="price">$19.00</span></div>
-              <p>Eggs baked in smoky tomato and chilli, whipped feta and grilled flatbread.</p>
-              <p class="tags"><span class="sig"><span aria-hidden="true">&#9733;</span> Signature</span><abbr title="Vegetarian" class="tag">V</abbr></p>
-            </article>
-            <article class="menu-item">
-              <div class="menu-line"><h3>House Granola Bowl</h3><span class="leader" aria-hidden="true"></span><span class="price">$15.50</span></div>
-              <p>Oat-and-seed granola, poached rhubarb, coconut yoghurt and bee pollen.</p>
-              <p class="tags"><abbr title="Vegetarian" class="tag">V</abbr></p>
-            </article>
-            <article class="menu-item">
-              <div class="menu-line"><h3>Brown Butter Banana Bread</h3><span class="leader" aria-hidden="true"></span><span class="price">$8.00</span></div>
-              <p>Grilled and served with salted butter and cinnamon sugar.</p>
-              <p class="tags"><abbr title="Vegetarian" class="tag">V</abbr></p>
-            </article>
-            <article class="menu-item">
-              <div class="menu-line"><h3>The Long Breakfast</h3><span class="leader" aria-hidden="true"></span><span class="price">$26.00</span></div>
-              <p>Two eggs your way, sourdough, bacon, field mushrooms, roast tomato and crispy hash.</p>
-            </article>
-            </div>
-          </div>
-          <div role="tabpanel" id="panel-lunch" aria-labelledby="tab-lunch" tabindex="0" class="menu-panel" hidden>
-            <p class="panel-note">Served 11:30am &ndash; 3:00pm</p>
-            <div class="menu-grid">
-            <article class="menu-item">
-              <div class="menu-line"><h3>Slow-Braised Beef Brioche</h3><span class="leader" aria-hidden="true"></span><span class="price">$21.00</span></div>
-              <p>Eight-hour beef cheek, pickled onion, horseradish cream and a little jus to dip.</p>
-              <p class="tags"><span class="sig"><span aria-hidden="true">&#9733;</span> Signature</span></p>
-            </article>
-            <article class="menu-item">
-              <div class="menu-line"><h3>Roast Pumpkin &amp; Feta Toastie</h3><span class="leader" aria-hidden="true"></span><span class="price">$14.50</span></div>
-              <p>Sourdough, burnt-butter pumpkin, whipped feta, sage and caramelised onion.</p>
-              <p class="tags"><abbr title="Vegetarian" class="tag">V</abbr></p>
-            </article>
-            <article class="menu-item">
-              <div class="menu-line"><h3>Charred Cauliflower Salad</h3><span class="leader" aria-hidden="true"></span><span class="price">$19.50</span></div>
-              <p>Tahini, pomegranate, herbs, preserved lemon and toasted seeds.</p>
-              <p class="tags"><abbr title="Vegan" class="tag">VG</abbr><abbr title="Gluten free" class="tag">GF</abbr><abbr title="Dairy free" class="tag">DF</abbr></p>
-            </article>
-            <article class="menu-item">
-              <div class="menu-line"><h3>House-Cured Salmon Bagel</h3><span class="leader" aria-hidden="true"></span><span class="price">$20.00</span></div>
-              <p>Dill cream cheese, capers, shaved fennel and a squeeze of lemon.</p>
-            </article>
-            <article class="menu-item">
-              <div class="menu-line"><h3>Wild Mushroom Risotto</h3><span class="leader" aria-hidden="true"></span><span class="price">$24.00</span></div>
-              <p>Arborio, thyme, aged parmesan and a drizzle of truffle oil.</p>
-              <p class="tags"><abbr title="Vegetarian" class="tag">V</abbr><abbr title="Gluten free" class="tag">GF</abbr></p>
-            </article>
-            <article class="menu-item">
-              <div class="menu-line"><h3>Soup of the Day</h3><span class="leader" aria-hidden="true"></span><span class="price">$12.00</span></div>
-              <p>Made each morning, served with buttered sourdough. Ask what&rsquo;s simmering.</p>
-              <p class="tags"><abbr title="Vegetarian" class="tag">V</abbr></p>
-            </article>
-            </div>
-          </div>
-          <div role="tabpanel" id="panel-bakery" aria-labelledby="tab-bakery" tabindex="0" class="menu-panel" hidden>
-            <p class="panel-note">Baked on site from 5:00am</p>
-            <div class="menu-grid">
-            <article class="menu-item">
-              <div class="menu-line"><h3>Butter Croissant</h3><span class="leader" aria-hidden="true"></span><span class="price">$6.00</span></div>
-              <p>72-hour laminated dough, baked at six. Gone by ten on weekends.</p>
-              <p class="tags"><abbr title="Vegetarian" class="tag">V</abbr></p>
-            </article>
-            <article class="menu-item">
-              <div class="menu-line"><h3>Cardamom Morning Bun</h3><span class="leader" aria-hidden="true"></span><span class="price">$7.20</span></div>
-              <p>Spiralled brioche, cardamom sugar and an orange-blossom glaze.</p>
-              <p class="tags"><span class="sig"><span aria-hidden="true">&#9733;</span> Signature</span><abbr title="Vegetarian" class="tag">V</abbr></p>
-            </article>
-            <article class="menu-item">
-              <div class="menu-line"><h3>Pain au Chocolat</h3><span class="leader" aria-hidden="true"></span><span class="price">$6.80</span></div>
-              <p>Two batons of dark chocolate in flaky, golden pastry.</p>
-              <p class="tags"><abbr title="Vegetarian" class="tag">V</abbr></p>
-            </article>
-            <article class="menu-item">
-              <div class="menu-line"><h3>Almond &amp; Orange Cake</h3><span class="leader" aria-hidden="true"></span><span class="price">$7.50</span></div>
-              <p>Moist, flourless and perfumed with whole-orange syrup.</p>
-              <p class="tags"><abbr title="Vegetarian" class="tag">V</abbr><abbr title="Gluten free" class="tag">GF</abbr></p>
-            </article>
-            <article class="menu-item">
-              <div class="menu-line"><h3>Burnt Basque Cheesecake</h3><span class="leader" aria-hidden="true"></span><span class="price">$11.00</span></div>
-              <p>Caramelised top, soft centre and seasonal compote.</p>
-              <p class="tags"><abbr title="Vegetarian" class="tag">V</abbr><abbr title="Gluten free" class="tag">GF</abbr></p>
-            </article>
-            <article class="menu-item">
-              <div class="menu-line"><h3>Dark Chocolate Tart</h3><span class="leader" aria-hidden="true"></span><span class="price">$11.50</span></div>
-              <p>Salted caramel, cocoa crumb and a spoon of cr&egrave;me fra&icirc;che.</p>
-              <p class="tags"><abbr title="Vegetarian" class="tag">V</abbr></p>
-            </article>
-            </div>
-          </div>
-          <div role="tabpanel" id="panel-cold" aria-labelledby="tab-cold" tabindex="0" class="menu-panel" hidden>
-            <p class="panel-note">Served all day</p>
-            <div class="menu-grid">
-            <article class="menu-item">
-              <div class="menu-line"><h3>Cold Brew Tonic</h3><span class="leader" aria-hidden="true"></span><span class="price">$7.00</span></div>
-              <p>Sixteen-hour cold brew over ice, premium tonic and a strip of grapefruit peel.</p>
-              <p class="tags"><span class="sig"><span aria-hidden="true">&#9733;</span> Signature</span><abbr title="Vegan" class="tag">VG</abbr><abbr title="Gluten free" class="tag">GF</abbr><abbr title="Dairy free" class="tag">DF</abbr></p>
-            </article>
-            <article class="menu-item">
-              <div class="menu-line"><h3>Iced Caramel Oak Latte</h3><span class="leader" aria-hidden="true"></span><span class="price">$6.50</span></div>
-              <p>House caramel, a double shot and cold milk over big, slow-melting cubes.</p>
-              <p class="tags"><abbr title="Vegetarian" class="tag">V</abbr></p>
-            </article>
-            <article class="menu-item">
-              <div class="menu-line"><h3>Sparkling Blood Orange</h3><span class="leader" aria-hidden="true"></span><span class="price">$6.00</span></div>
-              <p>Fresh-pressed blood orange, mint and soda. Bright, bitter, very refreshing.</p>
-              <p class="tags"><abbr title="Vegan" class="tag">VG</abbr><abbr title="Gluten free" class="tag">GF</abbr><abbr title="Dairy free" class="tag">DF</abbr></p>
-            </article>
-            <article class="menu-item">
-              <div class="menu-line"><h3>Iced Coconut Matcha</h3><span class="leader" aria-hidden="true"></span><span class="price">$7.20</span></div>
-              <p>Ceremonial-grade matcha whisked with coconut milk and a touch of agave.</p>
-              <p class="tags"><abbr title="Vegan" class="tag">VG</abbr><abbr title="Gluten free" class="tag">GF</abbr><abbr title="Dairy free" class="tag">DF</abbr></p>
-            </article>
-            <article class="menu-item">
-              <div class="menu-line"><h3>Affogato</h3><span class="leader" aria-hidden="true"></span><span class="price">$9.00</span></div>
-              <p>Vanilla bean gelato drowned in a double espresso.</p>
-              <p class="tags"><abbr title="Vegetarian" class="tag">V</abbr><abbr title="Gluten free" class="tag">GF</abbr></p>
-            </article>
-            <article class="menu-item">
-              <div class="menu-line"><h3>Green Press</h3><span class="leader" aria-hidden="true"></span><span class="price">$9.50</span></div>
-              <p>Apple, cucumber, celery, lime and mint, pressed to order.</p>
-              <p class="tags"><abbr title="Vegan" class="tag">VG</abbr><abbr title="Gluten free" class="tag">GF</abbr><abbr title="Dairy free" class="tag">DF</abbr></p>
-            </article>
-            </div>
-          </div>
-          <div role="tabpanel" id="panel-evening" aria-labelledby="tab-evening" tabindex="0" class="menu-panel" hidden>
-            <p class="panel-note">Thu &ndash; Sat from 4:00pm</p>
-            <div class="menu-grid">
-            <article class="menu-item">
-              <div class="menu-line"><h3>Oak-Aged Negroni</h3><span class="leader" aria-hidden="true"></span><span class="price">$20.00</span></div>
-              <p>Gin, vermouth and bitters rested in a small oak barrel for six weeks.</p>
-              <p class="tags"><span class="sig"><span aria-hidden="true">&#9733;</span> Signature</span><abbr title="Vegan" class="tag">VG</abbr><abbr title="Gluten free" class="tag">GF</abbr><abbr title="Dairy free" class="tag">DF</abbr></p>
-            </article>
-            <article class="menu-item">
-              <div class="menu-line"><h3>Espresso Martini</h3><span class="leader" aria-hidden="true"></span><span class="price">$19.00</span></div>
-              <p>Vodka, fresh espresso and vanilla, shaken hard until it foams.</p>
-              <p class="tags"><abbr title="Vegan" class="tag">VG</abbr><abbr title="Gluten free" class="tag">GF</abbr><abbr title="Dairy free" class="tag">DF</abbr></p>
-            </article>
-            <article class="menu-item">
-              <div class="menu-line"><h3>Ember Old Fashioned</h3><span class="leader" aria-hidden="true"></span><span class="price">$21.00</span></div>
-              <p>Bourbon, smoked maple and orange oils, stirred over one large cube.</p>
-              <p class="tags"><abbr title="Vegan" class="tag">VG</abbr><abbr title="Gluten free" class="tag">GF</abbr><abbr title="Dairy free" class="tag">DF</abbr></p>
-            </article>
-            <article class="menu-item">
-              <div class="menu-line"><h3>Zero-Proof Spritz</h3><span class="leader" aria-hidden="true"></span><span class="price">$11.00</span></div>
-              <p>Bitter orange, rosemary and tonic, with a long finish and no regrets.</p>
-              <p class="tags"><abbr title="Vegan" class="tag">VG</abbr><abbr title="Gluten free" class="tag">GF</abbr><abbr title="Dairy free" class="tag">DF</abbr></p>
-            </article>
-            <article class="menu-item">
-              <div class="menu-line"><h3>Natural Wine, by the glass</h3><span class="leader" aria-hidden="true"></span><span class="price">$15.00</span></div>
-              <p>A rotating small-producer pour. Ask what&rsquo;s open tonight.</p>
-              <p class="tags"><abbr title="Vegan" class="tag">VG</abbr><abbr title="Gluten free" class="tag">GF</abbr></p>
-            </article>
-            <article class="menu-item">
-              <div class="menu-line"><h3>Sparkling, by the glass</h3><span class="leader" aria-hidden="true"></span><span class="price">$14.00</span></div>
-              <p>Crisp, dry and local, served very cold.</p>
-              <p class="tags"><abbr title="Vegan" class="tag">VG</abbr><abbr title="Gluten free" class="tag">GF</abbr></p>
-            </article>
-            </div>
-          </div>
-        </div>
-
-        <p class="legend reveal">
-          <span><span class="sig"><span aria-hidden="true">&#9733;</span> Signature</span> house favourite</span>
-          <span><abbr title="Vegetarian" class="tag">V</abbr> Vegetarian</span>
-          <span><abbr title="Vegan" class="tag">VG</abbr> Vegan</span>
-          <span><abbr title="Gluten free" class="tag">GF</abbr> Gluten free</span>
-          <span><abbr title="Dairy free" class="tag">DF</abbr> Dairy free</span>
-        </p>
-        <p class="note reveal">Please tell us about any allergies. We handle nuts, gluten, eggs and dairy in a shared kitchen. A 10% surcharge applies on public holidays.</p>
-
-        <aside class="feature-card reveal" aria-labelledby="long-table-title">
-          <div>
-            <p class="eyebrow">Weekends only</p>
-            <h3 id="long-table-title">The Long Table breakfast</h3>
-            <p>A shared feast for the whole table: eggs, sourdough, house-cured salmon, roasted mushrooms, a pastry basket and bottomless filter coffee.</p>
-          </div>
-          <div class="feature-price"><span>$58</span><small>per person, min. 2 guests</small><a class="btn btn-primary" href="#reserve" data-enquiry="table">Book the Long Table</a></div>
-        </aside>
-      </div>
-    </section>
-
-    <!-- EXPERIENCES -->
-    <section class="section section-tint" id="experiences" aria-labelledby="exp-title">
-      <div class="container">
-        <div class="section-head reveal">
-          <p class="eyebrow">Experiences</p>
-          <h2 id="exp-title">More than a <em>coffee stop.</em></h2>
-          <p class="lead">Learn, gather, celebrate or take the roast home. Prices are fictional.</p>
-        </div>
-        <ul class="exp-grid">
-          <li class="exp-card reveal">
-            <svg class="exp-icon" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.600" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 11h12v4a5 5 0 0 1-5 5h-2a5 5 0 0 1-5-5v-4zM17 12h1.500a2.500 2.500 0 0 1 0 5H17M9 3c-1 1.500 1 2.500 0 4M13 3c-1 1.500 1 2.500 0 4"/></svg>
-            <h3>Roastery tour &amp; cupping</h3>
-            <p>Watch a batch come off the drum, then taste five origins side by side with our head roaster.</p>
-            <p class="exp-meta">Saturdays 10am &middot; 60 min &middot; $35 pp</p>
-            <a class="exp-link" href="#reserve" data-enquiry="experience">Book a spot<span class="sr-only"> for the roastery tour</span> &rarr;</a>
-          </li>
-          <li class="exp-card reveal">
-            <svg class="exp-icon" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.600" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7c2 2 2 6 0 10M12 7c-2 2-2 6 0 10"/></svg>
-            <h3>Barista basics workshop</h3>
-            <p>Two hours behind the machine: dialling in, milk texture and your first latte art heart. Small groups only.</p>
-            <p class="exp-meta">First Sunday monthly &middot; 2 hrs &middot; $85 pp</p>
-            <a class="exp-link" href="#reserve" data-enquiry="experience">Reserve a place<span class="sr-only"> in the workshop</span> &rarr;</a>
-          </li>
-          <li class="exp-card reveal">
-            <svg class="exp-icon" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.600" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10l8-6 8 6v10M9 20v-6h6v6"/></svg>
-            <h3>Private dining</h3>
-            <p>Our oak room seats up to 24 for birthdays, wakes, launches and long lunches, with set menus and a dedicated host.</p>
-            <p class="exp-meta">Up to 24 guests &middot; Set menus from $75 pp</p>
-            <a class="exp-link" href="#reserve" data-enquiry="private">Enquire about the oak room &rarr;</a>
-          </li>
-          <li class="exp-card reveal">
-            <svg class="exp-icon" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.600" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h18v10H3zM3 12h18M8 8V5h8v3"/></svg>
-            <h3>Catering &amp; office coffee</h3>
-            <p>Platters, pastry boxes and a mobile espresso cart for meetings, weddings and offices anywhere in the city.</p>
-            <p class="exp-meta">Min. 10 guests &middot; 3 days&rsquo; notice</p>
-            <a class="exp-link" href="#reserve" data-enquiry="catering">Request a quote &rarr;</a>
-          </li>
-          <li class="exp-card reveal">
-            <svg class="exp-icon" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.600" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1.500 12h-11zM9 8a3 3 0 0 1 6 0M9 13h6"/></svg>
-            <h3>Beans by subscription</h3>
-            <p>A fresh bag of our weekly roast, delivered to your door or ready to collect. Pause or skip any time.</p>
-            <p class="exp-meta">From $22 per 250g bag</p>
-            <a class="exp-link" href="#reserve" data-enquiry="other">Ask about subscriptions &rarr;</a>
-          </li>
-          <li class="exp-card reveal">
-            <svg class="exp-icon" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.600" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 11h18M8 15h3"/></svg>
-            <h3>Gift cards</h3>
-            <p>Send a table, a tasting flight or simply a very good morning. Valid for three years on anything in the café.</p>
-            <p class="exp-meta">From $25 &middot; Delivered by email</p>
-            <a class="exp-link" href="#gift-cards">Choose an amount &rarr;</a>
-          </li>
+        <ul class="explore">
+          <li class="reveal"><a class="explore-card" href="menu.html">
+            <span class="explore-n" aria-hidden="true">01</span>
+            <span class="explore-title">The menu</span>
+            <span class="explore-text">Thirty-eight things to eat and drink, with pick-up ordering.</span>
+            <span class="link-arrow">Browse <span aria-hidden="true">&rarr;</span></span></a></li>
+          <li class="reveal"><a class="explore-card" href="shop.html">
+            <span class="explore-n" aria-hidden="true">02</span>
+            <span class="explore-title">The shop</span>
+            <span class="explore-text">Beans roasted this week, plus cups and brewing gear.</span>
+            <span class="link-arrow">Shop <span aria-hidden="true">&rarr;</span></span></a></li>
+          <li class="reveal"><a class="explore-card" href="experiences.html">
+            <span class="explore-n" aria-hidden="true">03</span>
+            <span class="explore-title">Experiences</span>
+            <span class="explore-text">Tours, workshops, private dining, events and gift cards.</span>
+            <span class="link-arrow">Discover <span aria-hidden="true">&rarr;</span></span></a></li>
+          <li class="reveal"><a class="explore-card" href="visit.html">
+            <span class="explore-n" aria-hidden="true">04</span>
+            <span class="explore-title">Visit us</span>
+            <span class="explore-text">Hours, directions, access and answers to common questions.</span>
+            <span class="link-arrow">Plan a visit <span aria-hidden="true">&rarr;</span></span></a></li>
         </ul>
       </div>
     </section>
 
-    <!-- STORY -->
-    <section class="section section-night" id="story" aria-labelledby="story-title">
+    <!-- STORY TEASER -->
+    <section class="section section-night" id="story-teaser" aria-labelledby="story-title">
       <div class="container story-grid">
         <div class="reveal">
           <p class="eyebrow">Our story</p>
-          <h2 id="story-title">Started with a second-hand roaster and a very <em>patient landlord.</em></h2>
+          <h2 id="story-title" data-split>Started with a second-hand roaster and a very <em>patient landlord.</em></h2>
         </div>
         <div class="story-copy reveal">
-          <p>Ember &amp; Oak began in 2016 in a converted timber workshop, where a tiny drum roaster sat between the sink and the stockroom. We roasted at night, tasted at dawn and gave away more cups than we sold. The neighbours didn&rsquo;t seem to mind.</p>
-          <p>Today the roaster still lives out back. We buy from a handful of farms we know by name, roast in small batches every week, and bake everything on the premises. The room is warm, the oak tables are scratched, and you&rsquo;re welcome to stay until the second coffee goes cold.</p>
+          <p>Ember &amp; Oak began in 2016 in a converted timber workshop, where a tiny drum roaster sat between the sink and the stockroom. We roasted at night, tasted at dawn and gave away more cups than we sold.</p>
+          <p>Today the roaster still lives out back, and the oak tables are still scratched. You are welcome to stay until the second coffee goes cold.</p>
+          <a class="link-arrow" href="story.html">Read the full story <span aria-hidden="true">&rarr;</span></a>
         </div>
       </div>
       <div class="container">
-        <ul class="stats reveal" aria-label="Ember and Oak in numbers">
+        <ul class="stats reveal" aria-label="Ember &amp; Oak in numbers">
           <li><span class="stat-num" data-count="9" data-suffix="">0</span><span class="stat-label">years roasting in the same room</span></li>
           <li><span class="stat-num" data-count="1800" data-suffix="+">0</span><span class="stat-label">cups poured every week</span></li>
           <li><span class="stat-num" data-count="14" data-suffix="">0</span><span class="stat-label">farms and co-ops we buy from</span></li>
         </ul>
-
-        <h3 class="sub-title reveal">From farm to cup</h3>
-        <ol class="journey">
-          <li class="reveal"><span class="step-n" aria-hidden="true">01</span><h4>Source</h4><p>We visit or call every producer, pay above fair-trade floor prices and buy by the lot, not the sack.</p></li>
-          <li class="reveal"><span class="step-n" aria-hidden="true">02</span><h4>Roast</h4><p>Small, slow batches on a 15kg drum, cupped the next morning and sold within ten days.</p></li>
-          <li class="reveal"><span class="step-n" aria-hidden="true">03</span><h4>Brew</h4><p>Water, grind and time dialled in every day, because humidity and weather change the shot.</p></li>
-          <li class="reveal"><span class="step-n" aria-hidden="true">04</span><h4>Pour</h4><p>Served in warm ceramic, with compostable cups and a ten-cent discount if you bring your own.</p></li>
-        </ol>
-
-        <h3 class="sub-title reveal">Meet the crew</h3>
-        <ul class="team">
-          <li class="reveal"><span class="avatar" aria-hidden="true">M</span><div><strong>Mara</strong><span>Head roaster</span><p>Tastes everything twice and trusts her nose over the timer.</p></div></li>
-          <li class="reveal"><span class="avatar" aria-hidden="true">J</span><div><strong>Joss</strong><span>Head chef</span><p>Bakes the morning buns and refuses to share the cardamom ratio.</p></div></li>
-          <li class="reveal"><span class="avatar" aria-hidden="true">I</span><div><strong>Ines</strong><span>Front of house</span><p>Remembers your order, your dog&rsquo;s name and which table you like.</p></div></li>
-        </ul>
-        <p class="note team-note">Sample team members for demo purposes.</p>
       </div>
     </section>
 
@@ -593,7 +363,7 @@
       <div class="container">
         <div class="section-head reveal">
           <p class="eyebrow">Kind words</p>
-          <h2 id="reviews-title">What the <em>regulars</em> say.</h2>
+          <h2 id="reviews-title" data-split>What the <em>regulars</em> say.</h2>
           <p class="note"><strong>Sample reviews for demo purposes.</strong> Names and quotes are invented.</p>
         </div>
         <div class="review-grid">
@@ -621,7 +391,7 @@
       <div class="container">
         <div class="section-head reveal">
           <p class="eyebrow">Gallery</p>
-          <h2 id="gallery-title">A peek <em>inside the room.</em></h2>
+          <h2 id="gallery-title" data-split>A peek <em>inside the room.</em></h2>
           <p class="lead">Illustrated placeholders. A real site would show your own photography here.</p>
         </div>
         <ul class="gallery reveal">
@@ -729,208 +499,11 @@
       </div>
     </section>
 
-    <!-- WHAT'S ON -->
-    <section class="section" id="whats-on" aria-labelledby="events-title">
-      <div class="container">
-        <div class="section-head reveal">
-          <p class="eyebrow">What&rsquo;s on</p>
-          <h2 id="events-title">Reasons to <em>come back.</em></h2>
-          <p class="lead">Regular happenings at the café. All dates and prices are fictional.</p>
-        </div>
-        <ul class="events">
-          <li class="event reveal">
-            <div class="event-date"><span>Every</span><strong>Fri</strong></div>
-            <div class="event-body"><h3>Friday cupping night</h3><p>Taste three new coffees blind with our roaster, with cheese and chocolate pairings.</p></div>
-            <div class="event-meta"><span>6:00pm &middot; $25</span><a class="btn btn-secondary btn-sm" href="#reserve" data-enquiry="experience">Book<span class="sr-only"> Friday cupping night</span></a></div>
-          </li>
-          <li class="event reveal">
-            <div class="event-date"><span>1st</span><strong>Sat</strong></div>
-            <div class="event-body"><h3>Jazz brunch</h3><p>A live trio, bottomless filter coffee and the Long Table menu in the oak room.</p></div>
-            <div class="event-meta"><span>10:00am &middot; $58</span><a class="btn btn-secondary btn-sm" href="#reserve" data-enquiry="table">Book<span class="sr-only"> jazz brunch</span></a></div>
-          </li>
-          <li class="event reveal">
-            <div class="event-date"><span>Last</span><strong>Thu</strong></div>
-            <div class="event-body"><h3>Latte art throwdown</h3><p>Local baristas compete head to head. Spectators welcome, with free pastries for the crowd.</p></div>
-            <div class="event-meta"><span>7:00pm &middot; Free</span><a class="btn btn-secondary btn-sm" href="#reserve" data-enquiry="table">Reserve a seat<span class="sr-only"> for the throwdown</span></a></div>
-          </li>
-        </ul>
-      </div>
-    </section>
-
-    <!-- GIFT CARDS -->
-    <section class="section section-tint" id="gift-cards" aria-labelledby="gift-title">
-      <div class="container gift-grid">
-        <div class="gift-art reveal" aria-hidden="true">
-          <div class="gift-card">
-            <svg width="44" height="44" focusable="false"><use href="#logo-mark"/></svg>
-            <span class="gift-brand">Ember <span class="amp">&amp;</span> Oak</span>
-            <span class="gift-amount" id="gift-amount">$50</span>
-          </div>
-        </div>
-        <div class="reveal">
-          <p class="eyebrow">Gift cards</p>
-          <h2 id="gift-title">Give a very <em>good morning.</em></h2>
-          <p class="lead">Emailed instantly, valid for three years, redeemable on anything from flat whites to the oak room.</p>
-          <form id="gift-form" class="gift-form" novalidate>
-            <fieldset>
-              <legend>Choose an amount</legend>
-              <div class="chips">
-                <label class="chip-opt"><input type="radio" name="amount" value="25"><span>$25</span></label>
-                <label class="chip-opt"><input type="radio" name="amount" value="50" checked><span>$50</span></label>
-                <label class="chip-opt"><input type="radio" name="amount" value="100"><span>$100</span></label>
-                <label class="chip-opt"><input type="radio" name="amount" value="150"><span>$150</span></label>
-              </div>
-            </fieldset>
-            <button class="btn btn-primary" type="submit">Buy a gift card</button>
-            <!-- DEMO ONLY: connect a payment provider (e.g. Stripe Checkout or Square) here. -->
-          </form>
-        </div>
-      </div>
-    </section>
-
-    <!-- VISIT -->
-    <section class="section" id="visit" aria-labelledby="visit-title">
-      <div class="container visit-grid">
-        <div class="reveal">
-          <p class="eyebrow">Visit us</p>
-          <h2 id="visit-title">Come <em>say g&rsquo;day.</em></h2>
-          <p class="chip chip-light"><span class="dot" aria-hidden="true"></span><span id="open-status-2">Open 7 days</span></p>
-          <address>
-            12 Example Street<br>Melbourne VIC 3000<br>
-            <a href="tel:0355500123">03 5550 0123</a><br>
-            <a href="mailto:hello@example.com">hello@example.com</a>
-          </address>
-          <table class="hours">
-            <caption>Opening hours</caption>
-            <thead class="sr-only"><tr><th scope="col">Day</th><th scope="col">Hours</th></tr></thead>
-            <tbody>
-              <tr data-day="1"><th scope="row">Monday</th><td>7:00am &ndash; 4:00pm</td></tr>
-              <tr data-day="2"><th scope="row">Tuesday</th><td>7:00am &ndash; 4:00pm</td></tr>
-              <tr data-day="3"><th scope="row">Wednesday</th><td>7:00am &ndash; 4:00pm</td></tr>
-              <tr data-day="4"><th scope="row">Thursday</th><td>7:00am &ndash; 10:00pm</td></tr>
-              <tr data-day="5"><th scope="row">Friday</th><td>7:00am &ndash; 10:00pm</td></tr>
-              <tr data-day="6"><th scope="row">Saturday</th><td>7:00am &ndash; 10:00pm</td></tr>
-              <tr data-day="0"><th scope="row">Sunday</th><td>8:00am &ndash; 4:00pm</td></tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="visit-side reveal">
-          <div class="map-box" role="img" aria-label="Map placeholder">
-            <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
-              <rect width="400" height="300" fill="#EFE2CC"/>
-              <g stroke="#FAF3E7" stroke-width="14" stroke-linecap="round" fill="none"><path d="M-10 90h420M-10 210h420M110-10v320M290-10v320"/></g>
-              <g stroke="#FAF3E7" stroke-width="6" fill="none"><path d="M-10 150l420-40M200-10l40 320"/></g>
-              <rect x="130" y="104" width="64" height="46" rx="6" fill="#D9C3A0"/>
-              <rect x="312" y="224" width="70" height="56" rx="6" fill="#D9C3A0"/>
-              <rect x="18" y="226" width="72" height="56" rx="6" fill="#D9C3A0"/>
-              <path d="M200 120c-14 0-24 10-24 23 0 18 24 40 24 40s24-22 24-40c0-13-10-23-24-23z" fill="#B84A17"/>
-              <circle cx="200" cy="143" r="8" fill="#FAF3E7"/>
-            </svg>
-            <span class="map-label">Map goes here</span>
-          </div>
-          <ul class="info-list">
-            <li><strong>Trams &amp; trains</strong><span>Tram 96 stops outside. Flinders Street Station is a 6-minute walk.</span></li>
-            <li><strong>Parking</strong><span>Two-hour street parking, plus a public car park around the corner.</span></li>
-            <li><strong>Access</strong><span>Step-free entry, an accessible toilet and a quiet corner on request.</span></li>
-            <li><strong>Dogs &amp; prams</strong><span>Well-behaved dogs are welcome on the terrace. Prams are always welcome.</span></li>
-          </ul>
-        </div>
-      </div>
-    </section>
-
-    <!-- FAQ -->
-    <section class="section section-tint" id="faq" aria-labelledby="faq-title">
-      <div class="container faq-grid">
-        <div class="reveal">
-          <p class="eyebrow">Good to know</p>
-          <h2 id="faq-title">Questions, <em>answered.</em></h2>
-          <p class="lead">Still stuck? Call us on 03 5550 0123 and a human will pick up.</p>
-        </div>
-        <div class="faq reveal">
-          <details><summary>Do I need to book?</summary><p>Walk-ins are always welcome. We recommend booking for weekend brunch, evenings and any group of 6 or more.</p></details>
-          <details><summary>Can you cater for allergies and dietary needs?</summary><p>Yes. Most of the menu can be made vegetarian, vegan, gluten free or dairy free. Tell us when you book, and we&rsquo;ll talk you through it on the day. We do handle nuts and gluten in our kitchen.</p></details>
-          <details><summary>Is there a minimum spend for private dining?</summary><p>The oak room has a minimum spend that varies by day and season. Send an enquiry and we&rsquo;ll reply within one business day.</p></details>
-          <details><summary>Do you do takeaway and online orders?</summary><p>Yes. Order at the counter, and our beans are available to take home any time. A pre-order service is coming soon (in this fictional world).</p></details>
-          <details><summary>Can I bring my own cup?</summary><p>Please do. You&rsquo;ll get ten cents off every drink, and our compostable cups are one less thing in landfill.</p></details>
-          <details><summary>Do gift cards expire?</summary><p>Never within three years, and they can be used for anything in the café, including events and private dining.</p></details>
-        </div>
-      </div>
-    </section>
-
-    <!-- RESERVATION FORM -->
-    <section class="section section-dark" id="reserve" aria-labelledby="reserve-title">
-      <div class="container reserve-grid">
-        <div class="reveal">
-          <p class="eyebrow">Reservations &amp; enquiries</p>
-          <h2 id="reserve-title">Save a table <em>for your crew.</em></h2>
-          <p class="lead">Tell us when and how many. We&rsquo;ll confirm by email, usually within a few hours. (This demo form doesn&rsquo;t send anything.)</p>
-          <ul class="reserve-points">
-            <li>Free cancellation up to 24 hours before</li>
-            <li>High chairs, accessible seating and dog-friendly terrace tables</li>
-            <li>Groups of 6+ get a dedicated host</li>
-          </ul>
-        </div>
-        <div class="form-card reveal">
-          <form id="reserve-form" novalidate>
-            <div class="field">
-              <label for="f-type">I&rsquo;d like to&hellip;</label>
-              <select id="f-type" name="type">
-                <option value="table">Book a table</option>
-                <option value="experience">Book an experience or class</option>
-                <option value="private">Enquire about private dining</option>
-                <option value="catering">Request catering</option>
-                <option value="other">Ask something else</option>
-              </select>
-            </div>
-            <div class="field">
-              <label for="f-name">Name</label>
-              <input id="f-name" name="name" type="text" autocomplete="name" aria-describedby="e-name">
-              <p class="error" id="e-name" aria-live="polite"></p>
-            </div>
-            <div class="field">
-              <label for="f-email">Email</label>
-              <input id="f-email" name="email" type="email" autocomplete="email" inputmode="email" aria-describedby="e-email">
-              <p class="error" id="e-email" aria-live="polite"></p>
-            </div>
-            <div class="field-row">
-              <div class="field">
-                <label for="f-date">Date</label>
-                <input id="f-date" name="date" type="date" aria-describedby="e-date">
-                <p class="error" id="e-date" aria-live="polite"></p>
-              </div>
-              <div class="field">
-                <label for="f-guests">Guests</label>
-                <input id="f-guests" name="guests" type="number" min="1" max="12" inputmode="numeric" value="2" aria-describedby="e-guests">
-                <p class="error" id="e-guests" aria-live="polite"></p>
-              </div>
-            </div>
-            <div class="field">
-              <label for="f-message">Message <span class="optional">(optional)</span></label>
-              <textarea id="f-message" name="message" rows="4" maxlength="500" placeholder="Birthday, pram, allergies, anything we should know" aria-describedby="e-message"></textarea>
-              <p class="error" id="e-message" aria-live="polite"></p>
-            </div>
-            <!--
-              DEMO ONLY: there is no backend. To make this form real, post the data in
-              main.js (see "submit handler") to a form service such as Formspree, Netlify Forms
-              or your own endpoint, and show the success panel only after a 200 response.
-            -->
-            <button class="btn btn-primary btn-block" type="submit">Send request</button>
-          </form>
-          <div class="form-success" id="form-success" role="status" tabindex="-1" hidden>
-            <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M7.500 12.500l3 3 6-7"/></svg>
-            <h3>Thanks, <span id="ok-name">friend</span>!</h3>
-            <p id="ok-detail"></p>
-            <p class="note">Demo only: no email was sent and nothing was saved.</p>
-            <button class="btn btn-secondary btn-on-light" type="button" id="form-reset">Make another request</button>
-          </div>
-        </div>
-      </div>
-    </section>
     <!-- NEWSLETTER -->
     <section class="section section-wine" id="join" aria-labelledby="join-title">
       <div class="container join-inner">
         <p class="eyebrow">The Ember letter</p>
-        <h2 id="join-title">Join the <em>slow mornings</em> list.</h2>
+        <h2 id="join-title" data-split>Join the <em>slow mornings</em> list.</h2>
         <p class="lead">Seasonal menus, new coffee releases and invites to tastings, once a month. No spam, ever.</p>
         <form id="news-form" novalidate>
           <label class="sr-only" for="n-email">Email address</label>
@@ -943,6 +516,8 @@
         </form>
       </div>
     </section>
+
+
   </main>
 
   <!-- FOOTER -->
@@ -950,7 +525,7 @@
     <div class="container">
       <div class="footer-top">
         <div class="footer-brand">
-          <a class="brand brand-wide" href="#top" aria-label="Back to top">
+          <a class="brand-wide" href="index.html" aria-label="Ember &amp; Oak, home page">
             <svg width="30" height="30" aria-hidden="true" focusable="false"><use href="#logo-mark"/></svg>
             <span class="script">Ember &amp; Oak</span>
           </a>
@@ -959,11 +534,8 @@
         <nav class="footer-col" aria-label="Footer: explore">
           <h2>Explore</h2>
           <ul>
-            <li><a href="#menu">Menu</a></li>
-            <li><a href="#experiences">Experiences</a></li>
-            <li><a href="#whats-on">What&rsquo;s on</a></li>
-            <li><a href="#gift-cards">Gift cards</a></li>
-            <li><a href="#faq">FAQ</a></li>
+            <li><a href="menu.html">Menu</a></li><li><a href="shop.html">Shop</a></li><li><a href="experiences.html">Experiences</a></li><li><a href="story.html">Our story</a></li><li><a href="journal.html">Journal</a></li><li><a href="visit.html">Visit</a></li>
+            <li><a href="reserve.html">Reserve</a></li>
           </ul>
         </nav>
         <div class="footer-col">
@@ -973,9 +545,19 @@
         </div>
         <div class="footer-col">
           <h2>Hours</h2>
-          <p>Mon &ndash; Wed &nbsp;7am &ndash; 4pm<br>Thu &ndash; Sat &nbsp;7am &ndash; 10pm<br>Sun &nbsp;8am &ndash; 4pm</p>
+          <p>Mon &ndash; Wed 7am &ndash; 4pm<br>Thu &ndash; Sat 7am &ndash; 10pm<br>Sun 8am &ndash; 4pm</p>
         </div>
       </div>
+      <nav class="footer-legal" aria-label="Footer: more">
+        <a href="sustainability.html">Sustainability</a>
+        <a href="wholesale.html">Wholesale</a>
+        <a href="press.html">Press</a>
+        <a href="careers.html">Careers</a>
+        <a href="legal.html#privacy">Privacy</a>
+        <a href="legal.html#terms">Terms</a>
+        <a href="legal.html#cookies">Cookies</a>
+        <button type="button" class="sound-btn" data-sound aria-pressed="false">Ambient sound: <span data-sound-state>off</span></button>
+      </nav>
       <div class="footer-bottom">
         <p>Concept demo by KB Ventures. Not a real business.</p>
         <a class="back-top" href="#top">Back to top &uarr;</a>
@@ -984,12 +566,35 @@
   </footer>
 
   <!-- Mobile quick actions -->
-  <div class="mobile-cta">
+  <nav class="mobile-cta" aria-label="Quick actions">
     <a class="btn btn-secondary" href="tel:0355500123">Call</a>
-    <a class="btn btn-primary" href="#reserve">Reserve a table</a>
+    <a class="btn btn-primary" href="reserve.html">Reserve a table</a>
+  </nav>
+
+  <!-- Chat widget (scripted demo, no backend) -->
+  <div class="chat" id="chat">
+    <button class="chat-toggle" type="button" id="chat-toggle" aria-expanded="false" aria-controls="chat-panel">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/></svg>
+      <span>Chat</span>
+    </button>
+    <section class="chat-panel" id="chat-panel" role="dialog" aria-label="Chat with us (demo)" hidden>
+      <header><strong>Ask Ember</strong><span>Demo assistant, scripted answers</span></header>
+      <div class="chat-log" id="chat-log" role="log" aria-live="polite"></div>
+      <div class="chat-quick" id="chat-quick"></div>
+    </section>
+  </div>
+
+  <!-- Cookie preferences -->
+  <div class="cookie" id="cookie" role="region" aria-label="Cookie preferences" hidden>
+    <p><strong>Your privacy.</strong> This demo sets no tracking cookies. If you opt in, we would use simple analytics to improve the site. <a href="legal.html#cookies">Details</a></p>
+    <div class="cookie-actions">
+      <button class="btn btn-primary btn-sm" type="button" data-cookie="yes">Accept</button>
+      <button class="btn btn-secondary btn-sm" type="button" data-cookie="no">Decline</button>
+    </div>
   </div>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script type="application/json" id="site-data">{"name": "Ember & Oak", "phone": "03 5550 0123", "phoneHref": "0355500123", "email": "hello@example.com", "timezone": "Australia/Melbourne", "locale": "en-AU", "currency": "AUD", "hours": [{"day": 1, "name": "Monday", "open": 7, "close": 16}, {"day": 2, "name": "Tuesday", "open": 7, "close": 16}, {"day": 3, "name": "Wednesday", "open": 7, "close": 16}, {"day": 4, "name": "Thursday", "open": 7, "close": 22}, {"day": 5, "name": "Friday", "open": 7, "close": 22}, {"day": 6, "name": "Saturday", "open": 7, "close": 22}, {"day": 0, "name": "Sunday", "open": 8, "close": 16}]}</script>
   <script type="module" src="main.js"></script>
 </body>
 </html>

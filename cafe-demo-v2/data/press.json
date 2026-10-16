@@ -1,0 +1,26 @@
+[
+ {
+  "name": "The Weekend Table",
+  "quote": "Best flat white north of the river.",
+  "year": "2025",
+  "kind": "Review"
+ },
+ {
+  "name": "Golden Crumb Guide",
+  "quote": "Croissants worth setting an alarm for.",
+  "year": "2025",
+  "kind": "Guide"
+ },
+ {
+  "name": "The Daily Pour",
+  "quote": "A room you never want to leave.",
+  "year": "2024",
+  "kind": "Feature"
+ },
+ {
+  "name": "Little Roasters Quarterly",
+  "quote": "The smallest drum with the biggest personality.",
+  "year": "2024",
+  "kind": "Profile"
+ }
+]

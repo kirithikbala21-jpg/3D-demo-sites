@@ -67,6 +67,33 @@ function makeBlobTexture(inner, outer) {
   return tex;
 }
 
+/** Tall, soft, streaky texture for steam wisps. */
+function makeWispTexture() {
+  const c = document.createElement('canvas');
+  c.width = 128; c.height = 256;
+  const g = c.getContext('2d');
+  g.filter = 'blur(6px)';
+  for (let i = 0; i < 7; i++) {
+    const x = 64 + (i - 3) * 9;
+    g.strokeStyle = `rgba(255,246,235,${0.22 + (i % 3) * 0.08})`;
+    g.lineWidth = 10 + (i % 4) * 4;
+    g.lineCap = 'round';
+    g.beginPath();
+    g.moveTo(x, 246);
+    g.bezierCurveTo(x - 38 + i * 6, 180, x + 40 - i * 5, 100, x + (i - 3) * 3, 10);
+    g.stroke();
+  }
+  // fade the top and bottom edges
+  const fade = g.createLinearGradient(0, 0, 0, 256);
+  fade.addColorStop(0, 'rgba(0,0,0,0)'); fade.addColorStop(0.5, 'rgba(0,0,0,1)'); fade.addColorStop(1, 'rgba(0,0,0,0)');
+  g.globalCompositeOperation = 'destination-in';
+  g.filter = 'none';
+  g.fillStyle = fade; g.fillRect(0, 0, 128, 256);
+  const tex = new THREE.CanvasTexture(c);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  return tex;
+}
+
 /** Smooth a list of [r, y] points into a lathe profile. */
 function smooth(points, divisions) {
   const curve = new THREE.SplineCurve(points.map(([x, y]) => new THREE.Vector2(x, y)));
@@ -78,7 +105,7 @@ function smooth(points, divisions) {
  * @param {{reduceMotion?: boolean, onLost?: () => void}} opts
  * @returns {Promise<{dispose: () => void}>}
  */
-export async function initScene(canvas, { reduceMotion = false, onLost = () => {} } = {}) {
+export async function initScene(canvas, { reduceMotion = false, lowEnd = false, onLost = () => {} } = {}) {
   const stage = canvas.parentElement;
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
@@ -91,17 +118,9 @@ export async function initScene(canvas, { reduceMotion = false, onLost = () => {
   const camera = new THREE.PerspectiveCamera(32, 1, 0.1, 50);
 
   // ---------- Image-based light so the glaze has something to reflect ----------
+  // Built after the first frame (see the end of this function) so the cup appears sooner.
   let envTarget = null;
-  try {
-    const { RoomEnvironment } = await import('three/addons/environments/RoomEnvironment.js');
-    const pmrem = new THREE.PMREMGenerator(renderer);
-    envTarget = pmrem.fromScene(new RoomEnvironment(), 0.04);
-    scene.environment = envTarget.texture;
-    pmrem.dispose();
-  } catch (err) {
-    // Optional nicety: the scene still looks fine with the direct lights below.
-  }
-  const envIntensity = envTarget ? 0.45 : 0;
+  const envIntensity = lowEnd ? 0 : 0.45;
 
   // ---------- Lighting: hemisphere + warm key + cool-ish rim ----------
   scene.add(new THREE.HemisphereLight(0xffe6cc, 0x5a1820, 0.55));
@@ -132,11 +151,12 @@ export async function initScene(canvas, { reduceMotion = false, onLost = () => {
   cup.position.y = 0.11;
 
   // Handle
-  const handleGeo = track(new THREE.TorusGeometry(0.34, 0.07, 20, 40, Math.PI * 1.15));
+  const handleCurve = new THREE.CatmullRomCurve3([
+    new THREE.Vector3(0.74, 0.88, 0), new THREE.Vector3(1.08, 0.99, 0), new THREE.Vector3(1.36, 0.68, 0),
+    new THREE.Vector3(1.14, 0.31, 0), new THREE.Vector3(0.56, 0.25, 0),
+  ]);
+  const handleGeo = track(new THREE.TubeGeometry(handleCurve, 48, 0.072, 16, false));
   const handle = new THREE.Mesh(handleGeo, ceramic);
-  handle.scale.set(0.95, 1.25, 1);
-  handle.position.set(0.86, 0.66, 0);
-  handle.rotation.z = -Math.PI * 1.15 / 2;
   cup.add(handle);
 
   // Coffee surface
@@ -198,9 +218,41 @@ export async function initScene(canvas, { reduceMotion = false, onLost = () => {
     emberMat.opacity = 0.65 + 0.25 * Math.sin(time * 2.4);
   }
 
-  // Steam: 26 soft sprites that rise, sway, grow and fade
+  // Floating coffee beans: two instanced meshes (body + groove) so 16 beans cost two draw calls
+  const BEAN_COUNT = 16;
+  const beanGeo = track(new THREE.SphereGeometry(0.5, 20, 14));
+  const beanMat = track(new THREE.MeshStandardMaterial({ color: 0x3a1d10, roughness: 0.5, metalness: 0 }));
+  const grooveGeo = track(new THREE.SphereGeometry(0.5, 12, 8));
+  const grooveMat = track(new THREE.MeshStandardMaterial({ color: 0x14080a, roughness: 0.8 }));
+  const beanBodies = new THREE.InstancedMesh(beanGeo, beanMat, BEAN_COUNT);
+  const beanGrooves = new THREE.InstancedMesh(grooveGeo, grooveMat, BEAN_COUNT);
+  const beans = Array.from({ length: BEAN_COUNT }, (_, i) => {
+    const a = (i / BEAN_COUNT) * Math.PI * 2 + Math.sin(i * 3.7) * 0.4;
+    const r = 2.1 + ((i * 0.618) % 1) * 1.3;
+    return { x: Math.cos(a) * r, y: -0.2 + ((i * 0.37) % 1) * 2.6, z: Math.sin(a) * r * 0.55 - 0.6, size: 0.16 + ((i * 0.29) % 1) * 0.1, rx: i * 1.3, ry: i * 0.7, spin: 0.25 + ((i * 0.53) % 1) * 0.5, phase: i * 1.9 };
+  });
+  const _m = new THREE.Matrix4(), _g = new THREE.Matrix4(), _q = new THREE.Quaternion(), _e = new THREE.Euler(), _v = new THREE.Vector3(), _s = new THREE.Vector3();
+  const _gl = new THREE.Matrix4().compose(new THREE.Vector3(0, 0.3, 0), new THREE.Quaternion(), new THREE.Vector3(0.96, 0.1, 0.12));
+  function updateBeans(time) {
+    beans.forEach((b, i) => {
+      _e.set(b.rx + time * b.spin, b.ry + time * b.spin * 0.7, 0.4);
+      _q.setFromEuler(_e);
+      _v.set(b.x, b.y + Math.sin(time * 0.6 + b.phase) * 0.14, b.z);
+      _s.set(b.size * 1.5, b.size * 0.95, b.size);
+      _m.compose(_v, _q, _s);
+      beanBodies.setMatrixAt(i, _m);
+      _g.multiplyMatrices(_m, _gl);
+      beanGrooves.setMatrixAt(i, _g);
+    });
+    beanBodies.instanceMatrix.needsUpdate = true;
+    beanGrooves.instanceMatrix.needsUpdate = true;
+  }
+  beanBodies.frustumCulled = false; beanGrooves.frustumCulled = false;
+  tilt.add(beanBodies, beanGrooves);
+
+  // Steam: soft sprites that rise, sway, grow and fade
   const steamTex = track(makeBlobTexture('rgba(255,248,238,1)', 'rgba(255,244,230,A)'));
-  const STEAM_COUNT = 26;
+  const STEAM_COUNT = 22;
   const steam = [];
   for (let i = 0; i < STEAM_COUNT; i++) {
     const mat = track(new THREE.SpriteMaterial({ map: steamTex, transparent: true, depthWrite: false, opacity: 0 }));
@@ -213,7 +265,17 @@ export async function initScene(canvas, { reduceMotion = false, onLost = () => {
       x: (Math.sin(i * 12.9898) * 0.5) * 0.7,
       z: (Math.cos(i * 78.233) * 0.5) * 0.5,
       phase: i * 1.7,
+      q: 1,
     });
+  }
+  // Wisps: tall, streaky sprites that give the steam a more natural, curling look
+  const wispTex = track(makeWispTexture());
+  const wisps = [];
+  for (let i = 0; i < 8; i++) {
+    const mat = track(new THREE.SpriteMaterial({ map: wispTex, transparent: true, depthWrite: false, opacity: 0 }));
+    const sprite = new THREE.Sprite(mat);
+    tilt.add(sprite);
+    wisps.push({ sprite, offset: i / 8, speed: 0.07 + (i % 3) * 0.01, x: Math.sin(i * 5.1) * 0.35, z: Math.cos(i * 2.7) * 0.25, phase: i * 2.2, q: 1 });
   }
   function updateSteam(time) {
     for (const s of steam) {
@@ -226,7 +288,15 @@ export async function initScene(canvas, { reduceMotion = false, onLost = () => {
       );
       const size = 0.5 + t * 1.05;
       s.sprite.scale.set(size, size, 1);
-      s.sprite.material.opacity = Math.pow(fade, 1.4) * 0.62;
+      s.sprite.material.opacity = Math.pow(fade, 1.4) * 0.6 * s.q;
+    }
+    for (const w of wisps) {
+      const t = (time * w.speed + w.offset) % 1;
+      w.sprite.position.set(w.x + Math.sin(t * 3.2 + w.phase) * 0.22, 0.5 + t * 2.4, w.z);
+      const h = 0.9 + t * 1.5;
+      w.sprite.scale.set(0.5 + t * 0.5, h, 1);
+      w.sprite.material.rotation = Math.sin(t * 2.4 + w.phase) * 0.35;
+      w.sprite.material.opacity = Math.pow(Math.sin(Math.PI * t), 1.2) * 0.55 * w.q;
     }
   }
 
@@ -268,8 +338,9 @@ export async function initScene(canvas, { reduceMotion = false, onLost = () => {
       }, { passive: true });
     }
     // Touch / mouse drag to spin
+    let downX = 0, downT = 0;
     on(canvas, 'pointerdown', (e) => {
-      dragging = true; lastX = e.clientX; dragVel = 0;
+      dragging = true; lastX = e.clientX; dragVel = 0; downX = e.clientX; downT = performance.now();
       try { canvas.setPointerCapture(e.pointerId); } catch (_) { /* ignore */ }
       if (e.pointerType === 'touch') requestTiltPermissionOnce();
     });
@@ -279,7 +350,11 @@ export async function initScene(canvas, { reduceMotion = false, onLost = () => {
       dragYaw += dx * 0.012; dragVel = dx * 0.012;
     });
     const end = () => { dragging = false; };
-    on(canvas, 'pointerup', end);
+    on(canvas, 'pointerup', (e) => {
+      // a quick tap or click (not a drag) gives the cup a spin
+      if (Math.abs(e.clientX - downX) < 6 && performance.now() - downT < 350) dragVel = 0.32;
+      end();
+    });
     on(canvas, 'pointercancel', end);
 
     // Device tilt: only where no permission prompt is needed, or after a user tap on iOS.
@@ -314,11 +389,28 @@ export async function initScene(canvas, { reduceMotion = false, onLost = () => {
     tilt.position.y = -0.55 + scrollP * 0.35;
     updateSteam(reduceMotion ? 0.35 : time);
     updateEmbers(reduceMotion ? 1.7 : time);
+    updateBeans(reduceMotion ? 2.1 : time);
     renderer.render(scene, camera);
+  }
+  let quality = 0, slow = 0, slowN = 0, warm = 0;
+  function setQuality(q) {
+    quality = q;
+    if (q >= 1) {
+      renderer.setPixelRatio(1); resize();
+      beanBodies.visible = beanGrooves.visible = false;
+      emberGeo.setDrawRange(0, 30);
+    }
+    if (q >= 2) {
+      steam.forEach((s, i) => { s.q = i % 2 ? 0 : 1; });
+      wisps.forEach((w) => { w.q = 0; });
+      emberGeo.setDrawRange(0, 0);
+    }
   }
   function frame(now) {
     raf = requestAnimationFrame(frame);
-    const dt = Math.min(0.05, (now - last) / 1000 || 0.016);
+    const raw = (now - last) / 1000;
+    if (++warm > 30 && raw < 0.25 && quality < 2) { slow += raw; slowN++; if (slow >= 2) { if (slow / slowN > 0.034) setQuality(quality + 1); slow = 0; slowN = 0; } }
+    const dt = Math.min(0.05, raw || 0.016);
     last = now; time += dt;
     yaw += dt * 0.35;
     if (!dragging) { dragYaw += dragVel; dragVel *= 0.92; }
@@ -354,8 +446,24 @@ export async function initScene(canvas, { reduceMotion = false, onLost = () => {
   }
   on(window, 'pagehide', dispose);
 
+  if (lowEnd) setQuality(1);
   resize();
   draw(); // first frame before fade-in so the canvas is never blank
   sync();
+  if (!lowEnd) {
+    const later = window.requestIdleCallback ? (f) => window.requestIdleCallback(f, { timeout: 800 }) : (f) => setTimeout(f, 250);
+    later(async () => {
+      try {
+        if (disposed) return;
+        const { RoomEnvironment } = await import('three/addons/environments/RoomEnvironment.js');
+        if (disposed) return;
+        const pmrem = new THREE.PMREMGenerator(renderer);
+        envTarget = pmrem.fromScene(new RoomEnvironment(), 0.04);
+        scene.environment = envTarget.texture;
+        pmrem.dispose();
+        if (reduceMotion) draw();
+      } catch (err) { /* optional nicety: the direct lights still look fine without it */ }
+    });
+  }
   return { dispose };
 }

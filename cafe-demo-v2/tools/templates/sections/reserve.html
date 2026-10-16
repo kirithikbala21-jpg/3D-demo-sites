@@ -1,0 +1,74 @@
+    <!-- RESERVATION FORM -->
+    <section class="section section-dark" id="reserve" aria-labelledby="reserve-title">
+      <div class="container reserve-grid">
+        <div class="reveal">
+          <p class="eyebrow">Reservations &amp; enquiries</p>
+          <h2 id="reserve-title" data-split>Save a table <em>for your crew.</em></h2>
+          <p class="lead">Tell us when and how many. We&rsquo;ll confirm by email, usually within a few hours. (This demo form doesn&rsquo;t send anything.)</p>
+          <ul class="reserve-points">
+            <li>Free cancellation up to 24 hours before</li>
+            <li>High chairs, accessible seating and dog-friendly terrace tables</li>
+            <li>Groups of 6+ get a dedicated host</li>
+          </ul>
+        </div>
+        <div class="form-card reveal">
+          <form id="reserve-form" novalidate>
+            <div class="field">
+              <label for="f-type">I&rsquo;d like to&hellip;</label>
+              <select id="f-type" name="type">
+                <option value="table">Book a table</option>
+                <option value="experience">Book an experience or class</option>
+                <option value="private">Enquire about private dining</option>
+                <option value="catering">Request catering</option>
+                <option value="other">Ask something else</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="f-name">Name</label>
+              <input id="f-name" name="name" type="text" autocomplete="name" aria-describedby="e-name">
+              <p class="error" id="e-name" aria-live="polite"></p>
+            </div>
+            <div class="field">
+              <label for="f-email">Email</label>
+              <input id="f-email" name="email" type="email" autocomplete="email" inputmode="email" aria-describedby="e-email">
+              <p class="error" id="e-email" aria-live="polite"></p>
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label for="f-date">Date</label>
+                <input id="f-date" name="date" type="date" aria-describedby="e-date">
+                <p class="error" id="e-date" aria-live="polite"></p>
+              </div>
+              <div class="field">
+                <label for="f-guests">Guests</label>
+                <input id="f-guests" name="guests" type="number" min="1" max="12" inputmode="numeric" value="2" aria-describedby="e-guests">
+                <p class="error" id="e-guests" aria-live="polite"></p>
+              </div>
+            </div>
+            <div class="field">
+              <label for="f-time">Preferred time</label>
+              <select id="f-time" name="time" aria-describedby="h-time">{{{timeOptions}}}</select>
+              <p class="hint" id="h-time" aria-live="polite">Choose a date to see which times are open.</p>
+            </div>
+            <div class="field">
+              <label for="f-message">Message <span class="optional">(optional)</span></label>
+              <textarea id="f-message" name="message" rows="4" maxlength="500" placeholder="Birthday, pram, allergies, anything we should know" aria-describedby="e-message"></textarea>
+              <p class="error" id="e-message" aria-live="polite"></p>
+            </div>
+            <!--
+              DEMO ONLY: there is no backend. To make this form real, post the data in
+              main.js (see "submit handler") to a form service such as Formspree, Netlify Forms
+              or your own endpoint, and show the success panel only after a 200 response.
+            -->
+            <button class="btn btn-primary btn-block" type="submit">Send request</button>
+          </form>
+          <div class="form-success" id="form-success" role="status" tabindex="-1" hidden>
+            <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M7.500 12.500l3 3 6-7"/></svg>
+            <h3>Thanks, <span id="ok-name">friend</span>!</h3>
+            <p id="ok-detail"></p>
+            <p class="note">Demo only: no email was sent and nothing was saved.</p>
+            <button class="btn btn-secondary btn-on-light" type="button" id="form-reset">Make another request</button>
+          </div>
+        </div>
+      </div>
+    </section>

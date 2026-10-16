@@ -1,0 +1,56 @@
+    <!-- HERO -->
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-bg" aria-hidden="true">
+        {{#if hero.video}}<video class="hero-video" autoplay muted loop playsinline preload="metadata" poster="{{hero.poster}}"><source src="{{hero.video}}"></video>{{/if}}
+        <div class="hero-panel"></div>
+        <div class="hero-glow"></div>
+        <div class="hero-grain"></div>
+      </div>
+      <div class="hero-inner">
+        <div class="hero-head">
+          <h1 id="hero-title" class="wordmark"><span>{{{brand.wordmark}}}</span><span class="sr-only"> Coffee, {{brand.city}}</span></h1>
+        </div>
+
+        <div class="hero-stage" id="stage">
+          <!-- Fallback / poster illustration: visible until the 3D canvas is ready, and kept if 3D fails -->
+          <svg class="cup-fallback" viewBox="0 0 400 400" role="img" aria-label="Illustration of a steaming coffee cup on a saucer">
+            <defs>
+              <radialGradient id="fb-glow" cx="50%" cy="50%" r="50%">
+                <stop offset="0" stop-color="#C21F2B" stop-opacity=".5"/>
+                <stop offset="1" stop-color="#C21F2B" stop-opacity="0"/>
+              </radialGradient>
+              <linearGradient id="fb-cup" x1="0" x2="1">
+                <stop offset="0" stop-color="#E9DDCC"/>
+                <stop offset=".45" stop-color="#FFF9F0"/>
+                <stop offset="1" stop-color="#D8C6AE"/>
+              </linearGradient>
+            </defs>
+            <rect width="400" height="400" fill="url(#fb-glow)"/>
+            <g class="fb-steam" fill="none" stroke="#FBFAF3" stroke-linecap="round" stroke-width="7" opacity=".7">
+              <path class="s1" d="M160 150c-18-22 18-36 0-62"/>
+              <path class="s2" d="M200 140c-20-26 20-42 0-74"/>
+              <path class="s3" d="M240 150c-18-22 18-36 0-62"/>
+            </g>
+            <ellipse cx="200" cy="318" rx="140" ry="26" fill="#000" opacity=".35"/>
+            <path d="M52 296c0-14 66-26 148-26s148 12 148 26c0 16-66 28-148 28S52 312 52 296z" fill="url(#fb-cup)"/>
+            <path d="M92 296c0-8 48-16 108-16s108 8 108 16-48 14-108 14S92 304 92 296z" fill="#D8C6AE" opacity=".7"/>
+            <path d="M104 168h192c0 70-12 104-44 118-14 6-38 6-52 6s-38 0-52-6c-32-14-44-48-44-118z" fill="url(#fb-cup)"/>
+            <path d="M296 188c40-8 54 22 38 46-10 14-28 22-48 24" fill="none" stroke="#F3E8D8" stroke-width="16" stroke-linecap="round"/>
+            <ellipse cx="200" cy="170" rx="96" ry="18" fill="#2A140C"/>
+            <path d="M200 160c-14 0-24 6-24 12s10 12 24 12 24-6 24-12-10-12-24-12z" fill="#E8C9A0" opacity=".75"/>
+            <path d="M200 164v14" stroke="#2A140C" stroke-width="2" stroke-linecap="round" opacity=".5"/>
+          </svg>
+          <canvas id="scene" aria-hidden="true"></canvas>
+        </div>
+
+        <div class="hero-body">
+          <p class="hero-tag">{{brand.tagline}}</p>
+          <p class="chip"><span class="dot" aria-hidden="true"></span><span id="open-status">Open 7 days from 7am</span></p>
+          <div class="hero-cta">
+            <a class="link-arrow" href="menu.html">Explore the menu <span aria-hidden="true">&rarr;</span></a>
+            <a class="btn btn-primary" href="reserve.html">Reserve a table</a>
+          </div>
+        </div>
+      </div>
+      <a class="scroll-cue" href="#facts">Scroll<svg width="14" height="8" viewBox="0 0 14 8" fill="none" stroke="currentColor" stroke-width="1.600" aria-hidden="true"><path d="M1 1l6 5 6-5"/></svg></a>
+    </section>

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://kirithikbala21-jpg.github.io/3D-demo-sites/cafe-demo-v2/sitemap.xml

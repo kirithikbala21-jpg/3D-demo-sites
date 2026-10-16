@@ -1,0 +1,17 @@
+<div class="map-box" id="map-box" data-src="{{osmEmbed}}">
+            <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+              <rect width="400" height="300" fill="#EFE2CC"/>
+              <g stroke="#FBFAF3" stroke-width="14" stroke-linecap="round" fill="none"><path d="M-10 90h420M-10 210h420M110-10v320M290-10v320"/></g>
+              <g stroke="#FBFAF3" stroke-width="6" fill="none"><path d="M-10 150l420-40M200-10l40 320"/></g>
+              <rect x="130" y="104" width="64" height="46" fill="#D9C3A0"/>
+              <rect x="312" y="224" width="70" height="56" fill="#D9C3A0"/>
+              <rect x="18" y="226" width="72" height="56" fill="#D9C3A0"/>
+              <path d="M200 120c-14 0-24 10-24 23 0 18 24 40 24 40s24-22 24-40c0-13-10-23-24-23z" fill="#8B0707"/>
+              <circle cx="200" cy="143" r="8" fill="#FBFAF3"/>
+            </svg>
+            <div class="map-actions">
+              <button type="button" class="btn btn-primary btn-sm" id="map-load">Load interactive map</button>
+              <a class="btn btn-secondary btn-sm" href="{{mapsUrl}}" target="_blank" rel="noopener">Directions<span class="sr-only"> (opens in a new tab)</span></a>
+            </div>
+            <span class="map-note">Demo map of central Melbourne. Loading it contacts OpenStreetMap.</span>
+          </div>

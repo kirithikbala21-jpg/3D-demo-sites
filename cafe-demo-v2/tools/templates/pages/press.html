@@ -1,0 +1,19 @@
+    <section class="section" aria-labelledby="praise-title">
+      <div class="container">
+        <div class="section-head reveal"><p class="eyebrow">In the news</p><h2 id="praise-title" data-split>What the <em>papers say.</em></h2><p class="note">Publication names and quotes are invented for this demo.</p></div>
+        <ul class="press-wall">
+          {{#each press}}<li class="reveal"><p class="press-kind">{{this.kind}} &middot; {{this.year}}</p><p class="press-name">{{this.name}}</p><p class="press-quote">&ldquo;{{this.quote}}&rdquo;</p></li>{{/each}}
+        </ul>
+      </div>
+    </section>
+    <section class="section section-tint" aria-labelledby="kit-title">
+      <div class="container reserve-grid">
+        <div class="reveal"><p class="eyebrow">Media kit</p><h2 id="kit-title" data-split>Quick <em>facts.</em></h2><p class="lead">Everything a journalist needs in one place.</p></div>
+        <ul class="info-list reveal">
+          <li><strong>Founded</strong><span>2016, in a converted timber workshop</span></li>
+          <li><strong>Team</strong><span>Eighteen people across the café, kitchen and roastery</span></li>
+          <li><strong>Roastery</strong><span>15kg drum roaster, roasting twice a week</span></li>
+          <li><strong>Press contact</strong><span><a href="mailto:{{contact.email}}">{{contact.email}}</a> or <a href="tel:{{contact.phoneHref}}">{{contact.phone}}</a></span></li>
+        </ul>
+      </div>
+    </section>

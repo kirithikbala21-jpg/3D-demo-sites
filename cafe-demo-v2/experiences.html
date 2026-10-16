@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Experiences, events &amp; gift cards | Ember &amp; Oak Coffee (concept demo v2)</title>
+  <meta name="description" content="Roastery tours, barista workshops, private dining, catering, weekly events and gift cards.">
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#0B0707">
+  <link rel="canonical" href="https://kirithikbala21-jpg.github.io/3D-demo-sites/cafe-demo-v2/experiences.html">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Experiences, events &amp; gift cards | Ember &amp; Oak Coffee (concept demo v2)">
+  <meta property="og:description" content="Roastery tours, barista workshops, private dining, catering, weekly events and gift cards.">
+  <meta property="og:url" content="https://kirithikbala21-jpg.github.io/3D-demo-sites/cafe-demo-v2/experiences.html">
+  <meta property="og:image" content="https://kirithikbala21-jpg.github.io/3D-demo-sites/cafe-demo-v2/img/og.png">
+  <meta property="og:locale" content="en_AU">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="img/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="preload" href="fonts/montserrat-latin.woff2" as="font" type="font/woff2" crossorigin>
+  
+  <link rel="stylesheet" href="styles.css">
+  <style>:root{--black:#0B0707;--wine:#8B0707;--wine-deep:#5B0912;--wine-night:#1E0509;--gold-light:#DDB46A;--gold-text:#85601F;--cream:#FBFAF3;--tint:#F1ECDD;--ink:#16100E}</style>
+  
+  <script>
+    document.documentElement.classList.add('js');
+    // Safety net: never leave the hero hidden if the main script fails to start.
+    setTimeout(function () { document.documentElement.classList.add('is-ready'); }, 4500);
+  </script>
+  
+</head>
+<body class="page-experiences">
+  
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="progress" aria-hidden="true"><span></span></div>
+  <div class="cursor" aria-hidden="true"></div>
+
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <symbol id="logo-mark" viewBox="0 0 32 32">
+      <path d="M16 3c1.200 4.600 7 7.600 7 13.200a7 7 0 0 1-14 0c0-3 1.600-5 3-6.500.5 1.600 1.200 2.500 2.100 3C14.300 10.600 14.700 6.800 16 3z" fill="currentColor"/>
+      <path d="M16 29c-3.800-1-6-3.600-6-7 3.400.2 5.400 1.600 6 4 .6-2.400 2.600-3.800 6-4 0 3.400-2.200 6-6 7z" fill="none" stroke="currentColor" stroke-width="1.400"/>
+    </symbol>
+  </svg>
+
+  <!-- Top ticker: news + venue tabs. Moving text is hidden from screen readers; a static copy follows. -->
+  <div class="ticker" id="ticker" role="region" aria-label="Latest news">
+    <span class="ticker-label">News</span>
+    <div class="ticker-viewport" aria-hidden="true">
+      <div class="ticker-track">
+        <span>Christmas bookings are open for the oak room</span><span>Ethiopia Guji Natural lands next week</span><span>Latte art throwdown, last Thursday of the month</span><span>Free beans pick-up on orders over $40</span><span>Christmas bookings are open for the oak room</span><span>Ethiopia Guji Natural lands next week</span><span>Latte art throwdown, last Thursday of the month</span><span>Free beans pick-up on orders over $40</span>
+      </div>
+    </div>
+    <p class="sr-only">Christmas bookings are open for the oak room. Ethiopia Guji Natural lands next week. Latte art throwdown, last Thursday of the month. Free beans pick-up on orders over $40.</p>
+    <button class="ticker-pause" type="button" aria-pressed="false" aria-label="Pause the news ticker">
+      <svg class="i-pause" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><rect x="2" y="1" width="3" height="10" fill="currentColor"/><rect x="7" y="1" width="3" height="10" fill="currentColor"/></svg>
+      <svg class="i-play" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 1l8 5-8 5z" fill="currentColor"/></svg>
+    </button>
+    <nav class="ticker-venues" aria-label="Our spaces">
+      <a href="menu.html"><svg width="14" height="14" aria-hidden="true" focusable="false"><use href="#logo-mark"/></svg>Café</a><a href="story.html"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M4 12h16"/></svg>Roastery</a><a href="experiences.html" aria-current="page"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 19c0-9 5-14 14-14 0 9-5 14-14 14z"/></svg>Oak room</a><a href="visit.html"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 11h12v4a5 5 0 0 1-5 5h-2a5 5 0 0 1-5-5z"/></svg>Visit</a>
+    </nav>
+    <span class="ticker-label ticker-label-r">Now pouring</span>
+  </div>
+
+  <header class="site-header" id="top">
+    <div class="header-inner">
+      <a class="brand" href="index.html" aria-label="Ember &amp; Oak Coffee, home">
+        <svg width="26" height="26" aria-hidden="true" focusable="false"><use href="#logo-mark"/></svg>
+      </a>
+      <div class="header-actions">
+        <button class="icon-btn" type="button" id="search-open" aria-label="Search the site" aria-haspopup="dialog">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+        </button>
+        <button class="icon-btn cart-btn" type="button" id="cart-open" aria-label="Your order, empty" aria-haspopup="dialog">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1.500 12h-11zM9 8a3 3 0 0 1 6 0"/></svg>
+          <span class="cart-count" id="cart-count" aria-hidden="true" hidden>0</span>
+        </button>
+        <a class="header-link" href="reserve.html">Reserve</a>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="mobile-nav" aria-label="Open menu">
+          <span class="bars" aria-hidden="true"><span></span><span></span><span></span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="mobile-nav" id="mobile-nav" role="dialog" aria-modal="true" aria-label="Site menu" hidden>
+    <div class="overlay-inner">
+      <nav aria-label="Main">
+        <ul>
+          <li><a href="menu.html"><span class="n" aria-hidden="true">01</span>Menu</a></li><li><a href="shop.html"><span class="n" aria-hidden="true">02</span>Shop</a></li><li><a href="experiences.html"><span class="n" aria-hidden="true">03</span>Experiences</a></li><li><a href="story.html"><span class="n" aria-hidden="true">04</span>Our story</a></li><li><a href="journal.html"><span class="n" aria-hidden="true">05</span>Journal</a></li><li><a href="visit.html"><span class="n" aria-hidden="true">06</span>Visit</a></li>
+        </ul>
+        <a class="btn btn-primary" href="reserve.html">Reserve a table</a>
+        <ul class="overlay-sub" aria-label="More">
+          <li><a href="sustainability.html">Sustainability</a></li>
+          <li><a href="wholesale.html">Wholesale</a></li>
+          <li><a href="press.html">Press</a></li>
+          <li><a href="careers.html">Careers</a></li>
+        </ul>
+      </nav>
+      <div class="overlay-info">
+        <p class="label">Find us</p>
+        <p>12 Example Street<br>Melbourne VIC 3000</p>
+        <p><a href="tel:0355500123">03 5550 0123</a><br><a href="mailto:hello@example.com">hello@example.com</a></p>
+        <p class="label">Hours</p>
+        <p>Mon &ndash; Wed 7am &ndash; 4pm<br>Thu &ndash; Sat 7am &ndash; 10pm<br>Sun 8am &ndash; 4pm</p>
+        <p class="label">Atmosphere</p>
+        <p><button type="button" class="sound-btn" data-sound aria-pressed="false">Ambient sound: <span data-sound-state>off</span></button></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Site search -->
+  <div class="search" id="search" role="dialog" aria-modal="true" aria-label="Search the site" hidden>
+    <div class="search-inner">
+      <form id="search-form" role="search" novalidate>
+        <label class="sr-only" for="search-input">Search the menu, shop and pages</label>
+        <input id="search-input" type="search" placeholder="Search the menu, shop and pages" autocomplete="off" spellcheck="false">
+        <button type="button" class="icon-btn search-close" id="search-close" aria-label="Close search">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg>
+        </button>
+      </form>
+      <p class="search-hint" id="search-hint" aria-live="polite">Try &ldquo;flat white&rdquo;, &ldquo;gluten free&rdquo; or &ldquo;parking&rdquo;.</p>
+      <ul class="search-results" id="search-results"></ul>
+    </div>
+  </div>
+
+  <!-- Order / cart drawer (demo) -->
+  <div class="scrim" id="scrim" hidden></div>
+  <aside class="cart" id="cart" role="dialog" aria-modal="true" aria-labelledby="cart-title" hidden>
+    <div class="cart-head">
+      <h2 id="cart-title">Your order</h2>
+      <button class="icon-btn" type="button" id="cart-close" aria-label="Close your order">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg>
+      </button>
+    </div>
+    <div class="cart-body">
+      <p class="cart-empty" id="cart-empty">Your order is empty. Add something from the <a href="menu.html">menu</a> or the <a href="shop.html">shop</a>.</p>
+      <ul class="cart-list" id="cart-list"></ul>
+    </div>
+    <form class="cart-foot" id="cart-form" novalidate hidden>
+      <div class="cart-total"><span>Total</span><strong id="cart-total">$0.00</strong></div>
+      <div class="field">
+        <label for="cart-name">Name for the order</label>
+        <input id="cart-name" name="name" type="text" autocomplete="name" aria-describedby="e-cart-name">
+        <p class="error" id="e-cart-name" aria-live="polite"></p>
+      </div>
+      <div class="field">
+        <label for="cart-when">Pick-up time</label>
+        <select id="cart-when" name="when"></select>
+      </div>
+      <button class="btn btn-primary btn-block" type="submit">Place order (demo)</button>
+      <button class="cart-clear" type="button" id="cart-clear">Clear order</button>
+      <!-- DEMO ONLY: send the order to your ordering system or payment provider here (see main.js / cart.js). -->
+    </form>
+    <div class="cart-done" id="cart-done" role="status" tabindex="-1" hidden>
+      <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M7.500 12.500l3 3 6-7"/></svg>
+      <h3>Thanks, <span id="done-name">friend</span>!</h3>
+      <p id="done-detail"></p>
+      <p class="note">Demo only: no order was sent and nothing was charged.</p>
+      <button class="btn btn-secondary" type="button" id="done-close">Close</button>
+    </div>
+  </aside>
+
+  <main id="main">
+
+    <section class="page-hero" aria-labelledby="page-title">
+      <div class="container">
+        <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="index.html">Home</a></li><li aria-current="page">Experiences</li></ol></nav>
+        <p class="eyebrow">Gather, learn, celebrate</p>
+        <h1 id="page-title" data-split>Experiences</h1>
+        <p class="lead">Tours, workshops, private dining and the regular happenings at the café.</p>
+      </div>
+    </section>
+
+    <!-- EXPERIENCES -->
+    <section class="section section-tint" id="experiences" aria-labelledby="exp-title">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="eyebrow">Experiences</p>
+          <h2 id="exp-title" data-split>More than a <em>coffee stop.</em></h2>
+          <p class="lead">Learn, gather, celebrate or take the roast home. Prices are fictional.</p>
+        </div>
+        <ul class="exp-grid">
+          <li class="exp-card reveal">
+            <svg class="exp-icon" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.600" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 11h12v4a5 5 0 0 1-5 5h-2a5 5 0 0 1-5-5v-4zM17 12h1.500a2.500 2.500 0 0 1 0 5H17M9 3c-1 1.500 1 2.500 0 4M13 3c-1 1.500 1 2.500 0 4"/></svg>
+            <h3>Roastery tour &amp; cupping</h3>
+            <p>Watch a batch come off the drum, then taste five origins side by side with our head roaster.</p>
+            <p class="exp-meta">Saturdays 10am &middot; 60 min &middot; $35 pp</p>
+            <a class="exp-link" href="reserve.html?type=experience">Book a spot<span class="sr-only"> for the roastery tour</span> &rarr;</a>
+          </li>
+          <li class="exp-card reveal">
+            <svg class="exp-icon" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.600" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7c2 2 2 6 0 10M12 7c-2 2-2 6 0 10"/></svg>
+            <h3>Barista basics workshop</h3>
+            <p>Two hours behind the machine: dialling in, milk texture and your first latte art heart. Small groups only.</p>
+            <p class="exp-meta">First Sunday monthly &middot; 2 hrs &middot; $85 pp</p>
+            <a class="exp-link" href="reserve.html?type=experience">Reserve a place<span class="sr-only"> in the workshop</span> &rarr;</a>
+          </li>
+          <li class="exp-card reveal">
+            <svg class="exp-icon" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.600" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10l8-6 8 6v10M9 20v-6h6v6"/></svg>
+            <h3>Private dining</h3>
+            <p>Our oak room seats up to 24 for birthdays, wakes, launches and long lunches, with set menus and a dedicated host.</p>
+            <p class="exp-meta">Up to 24 guests &middot; Set menus from $75 pp</p>
+            <a class="exp-link" href="reserve.html?type=private">Enquire about the oak room &rarr;</a>
+          </li>
+          <li class="exp-card reveal">
+            <svg class="exp-icon" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.600" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h18v10H3zM3 12h18M8 8V5h8v3"/></svg>
+            <h3>Catering &amp; office coffee</h3>
+            <p>Platters, pastry boxes and a mobile espresso cart for meetings, weddings and offices anywhere in the city.</p>
+            <p class="exp-meta">Min. 10 guests &middot; 3 days&rsquo; notice</p>
+            <a class="exp-link" href="reserve.html?type=catering">Request a quote &rarr;</a>
+          </li>
+          <li class="exp-card reveal">
+            <svg class="exp-icon" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.600" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1.500 12h-11zM9 8a3 3 0 0 1 6 0M9 13h6"/></svg>
+            <h3>Beans by subscription</h3>
+            <p>A fresh bag of our weekly roast, delivered to your door or ready to collect. Pause or skip any time.</p>
+            <p class="exp-meta">From $22 per 250g bag</p>
+            <a class="exp-link" href="reserve.html?type=other">Ask about subscriptions &rarr;</a>
+          </li>
+          <li class="exp-card reveal">
+            <svg class="exp-icon" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.600" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 11h18M8 15h3"/></svg>
+            <h3>Gift cards</h3>
+            <p>Send a table, a tasting flight or simply a very good morning. Valid for three years on anything in the café.</p>
+            <p class="exp-meta">From $25 &middot; Delivered by email</p>
+            <a class="exp-link" href="experiences.html#gift-cards">Choose an amount &rarr;</a>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- WHAT'S ON -->
+    <section class="section" id="whats-on" aria-labelledby="events-title">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="eyebrow">What&rsquo;s on</p>
+          <h2 id="events-title" data-split>Reasons to <em>come back.</em></h2>
+          <p class="lead">Regular happenings at the café. All dates and prices are fictional.</p>
+        </div>
+        <ul class="events">
+          <li class="event reveal">
+            <div class="event-date"><span>Every</span><strong>Fri</strong></div>
+            <div class="event-body"><h3>Friday cupping night</h3><p>Taste three new coffees blind with our roaster, with cheese and chocolate pairings.</p></div>
+            <div class="event-meta"><span>6:00pm &middot; $25</span><a class="btn btn-secondary btn-sm" href="reserve.html?type=experience">Book<span class="sr-only"> Friday cupping night</span></a></div>
+          </li>
+          <li class="event reveal">
+            <div class="event-date"><span>1st</span><strong>Sat</strong></div>
+            <div class="event-body"><h3>Jazz brunch</h3><p>A live trio, bottomless filter coffee and the Long Table menu in the oak room.</p></div>
+            <div class="event-meta"><span>10:00am &middot; $58</span><a class="btn btn-secondary btn-sm" href="reserve.html?type=table">Book<span class="sr-only"> jazz brunch</span></a></div>
+          </li>
+          <li class="event reveal">
+            <div class="event-date"><span>Last</span><strong>Thu</strong></div>
+            <div class="event-body"><h3>Latte art throwdown</h3><p>Local baristas compete head to head. Spectators welcome, with free pastries for the crowd.</p></div>
+            <div class="event-meta"><span>7:00pm &middot; Free</span><a class="btn btn-secondary btn-sm" href="reserve.html?type=table">Reserve a seat<span class="sr-only"> for the throwdown</span></a></div>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- GIFT CARDS -->
+    <section class="section section-tint" id="gift-cards" aria-labelledby="gift-title">
+      <div class="container gift-grid">
+        <div class="gift-art reveal" aria-hidden="true">
+          <div class="gift-card">
+            <svg width="44" height="44" focusable="false"><use href="#logo-mark"/></svg>
+            <span class="gift-brand">Ember <span class="amp">&amp;</span> Oak</span>
+            <span class="gift-amount" id="gift-amount">$50</span>
+          </div>
+        </div>
+        <div class="reveal">
+          <p class="eyebrow">Gift cards</p>
+          <h2 id="gift-title" data-split>Give a very <em>good morning.</em></h2>
+          <p class="lead">Emailed instantly, valid for three years, redeemable on anything from flat whites to the oak room.</p>
+          <form id="gift-form" class="gift-form" novalidate>
+            <fieldset>
+              <legend>Choose an amount</legend>
+              <div class="chips">
+                <label class="chip-opt"><input type="radio" name="amount" value="25"><span>$25</span></label>
+                <label class="chip-opt"><input type="radio" name="amount" value="50" checked><span>$50</span></label>
+                <label class="chip-opt"><input type="radio" name="amount" value="100"><span>$100</span></label>
+                <label class="chip-opt"><input type="radio" name="amount" value="150"><span>$150</span></label>
+              </div>
+            </fieldset>
+            <button class="btn btn-primary" type="submit">Buy a gift card</button>
+            <!-- DEMO ONLY: connect a payment provider (e.g. Stripe Checkout or Square) here. -->
+          </form>
+        </div>
+      </div>
+    </section>
+
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a class="brand-wide" href="index.html" aria-label="Ember &amp; Oak, home page">
+            <svg width="30" height="30" aria-hidden="true" focusable="false"><use href="#logo-mark"/></svg>
+            <span class="script">Ember &amp; Oak</span>
+          </a>
+          <p>Small-batch coffee, all-day dining and long tables in the heart of Melbourne.</p>
+        </div>
+        <nav class="footer-col" aria-label="Footer: explore">
+          <h2>Explore</h2>
+          <ul>
+            <li><a href="menu.html">Menu</a></li><li><a href="shop.html">Shop</a></li><li><a href="experiences.html">Experiences</a></li><li><a href="story.html">Our story</a></li><li><a href="journal.html">Journal</a></li><li><a href="visit.html">Visit</a></li>
+            <li><a href="reserve.html">Reserve</a></li>
+          </ul>
+        </nav>
+        <div class="footer-col">
+          <h2>Visit</h2>
+          <p>12 Example Street<br>Melbourne VIC 3000</p>
+          <p><a href="tel:0355500123">03 5550 0123</a><br><a href="mailto:hello@example.com">hello@example.com</a></p>
+        </div>
+        <div class="footer-col">
+          <h2>Hours</h2>
+          <p>Mon &ndash; Wed 7am &ndash; 4pm<br>Thu &ndash; Sat 7am &ndash; 10pm<br>Sun 8am &ndash; 4pm</p>
+        </div>
+      </div>
+      <nav class="footer-legal" aria-label="Footer: more">
+        <a href="sustainability.html">Sustainability</a>
+        <a href="wholesale.html">Wholesale</a>
+        <a href="press.html">Press</a>
+        <a href="careers.html">Careers</a>
+        <a href="legal.html#privacy">Privacy</a>
+        <a href="legal.html#terms">Terms</a>
+        <a href="legal.html#cookies">Cookies</a>
+        <button type="button" class="sound-btn" data-sound aria-pressed="false">Ambient sound: <span data-sound-state>off</span></button>
+      </nav>
+      <div class="footer-bottom">
+        <p>Concept demo by KB Ventures. Not a real business.</p>
+        <a class="back-top" href="#top">Back to top &uarr;</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Mobile quick actions -->
+  <nav class="mobile-cta" aria-label="Quick actions">
+    <a class="btn btn-secondary" href="tel:0355500123">Call</a>
+    <a class="btn btn-primary" href="reserve.html">Reserve a table</a>
+  </nav>
+
+  <!-- Chat widget (scripted demo, no backend) -->
+  <div class="chat" id="chat">
+    <button class="chat-toggle" type="button" id="chat-toggle" aria-expanded="false" aria-controls="chat-panel">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/></svg>
+      <span>Chat</span>
+    </button>
+    <section class="chat-panel" id="chat-panel" role="dialog" aria-label="Chat with us (demo)" hidden>
+      <header><strong>Ask Ember</strong><span>Demo assistant, scripted answers</span></header>
+      <div class="chat-log" id="chat-log" role="log" aria-live="polite"></div>
+      <div class="chat-quick" id="chat-quick"></div>
+    </section>
+  </div>
+
+  <!-- Cookie preferences -->
+  <div class="cookie" id="cookie" role="region" aria-label="Cookie preferences" hidden>
+    <p><strong>Your privacy.</strong> This demo sets no tracking cookies. If you opt in, we would use simple analytics to improve the site. <a href="legal.html#cookies">Details</a></p>
+    <div class="cookie-actions">
+      <button class="btn btn-primary btn-sm" type="button" data-cookie="yes">Accept</button>
+      <button class="btn btn-secondary btn-sm" type="button" data-cookie="no">Decline</button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script type="application/json" id="site-data">{"name": "Ember & Oak", "phone": "03 5550 0123", "phoneHref": "0355500123", "email": "hello@example.com", "timezone": "Australia/Melbourne", "locale": "en-AU", "currency": "AUD", "hours": [{"day": 1, "name": "Monday", "open": 7, "close": 16}, {"day": 2, "name": "Tuesday", "open": 7, "close": 16}, {"day": 3, "name": "Wednesday", "open": 7, "close": 16}, {"day": 4, "name": "Thursday", "open": 7, "close": 22}, {"day": 5, "name": "Friday", "open": 7, "close": 22}, {"day": 6, "name": "Saturday", "open": 7, "close": 22}, {"day": 0, "name": "Sunday", "open": 8, "close": 16}]}</script>
+  <script type="module" src="main.js"></script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+name: cafe-demo-v2 checks
+
+on:
+  push:
+    paths: ['cafe-demo-v2/**', '.github/workflows/cafe-demo-v2-checks.yml']
+  pull_request:
+    paths: ['cafe-demo-v2/**']
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Generated pages match the templates
+        run: |
+          python3 cafe-demo-v2/tools/build.py
+          git diff --exit-code -- cafe-demo-v2
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install test dependencies
+        working-directory: cafe-demo-v2/tests
+        run: |
+          npm install
+          npx playwright-core install --with-deps chromium
+
+      - name: Overflow, accessibility, links, behaviour, fallbacks and weight
+        working-directory: cafe-demo-v2/tests
+        run: node run.mjs

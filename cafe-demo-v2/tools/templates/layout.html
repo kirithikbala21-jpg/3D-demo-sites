@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{page.fullTitle}}</title>
+  <meta name="description" content="{{page.description}}">
+  {{#if site.noindex}}<meta name="robots" content="noindex">{{/if}}
+  <meta name="theme-color" content="{{theme.black}}">
+  <link rel="canonical" href="{{page.canonical}}">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="{{page.fullTitle}}">
+  <meta property="og:description" content="{{page.description}}">
+  <meta property="og:url" content="{{page.canonical}}">
+  <meta property="og:image" content="{{site.baseUrl}}img/og.png">
+  <meta property="og:locale" content="en_AU">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="img/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="preload" href="fonts/montserrat-latin.woff2" as="font" type="font/woff2" crossorigin>
+  {{#if page.isHome}}<link rel="preload" href="fonts/mrs-saint-delafield-latin.woff2" as="font" type="font/woff2" crossorigin>{{/if}}
+  <link rel="stylesheet" href="styles.css">
+  <style>:root{--black:{{theme.black}};--wine:{{theme.wine}};--wine-deep:{{theme.wineDeep}};--wine-night:{{theme.wineNight}};--gold-light:{{theme.goldLight}};--gold-text:{{theme.goldText}};--cream:{{theme.cream}};--tint:{{theme.tint}};--ink:{{theme.ink}}}</style>
+  {{{jsonld}}}
+  <script>
+    document.documentElement.classList.add('js');
+    // Safety net: never leave the hero hidden if the main script fails to start.
+    setTimeout(function () { document.documentElement.classList.add('is-ready'); }, 4500);
+  </script>
+  {{#if page.isHome}}
+  <!-- Three.js is self-hosted (exact version 0.160.0) and loaded as an ES module through this import map. -->
+  <script type="importmap">{"imports":{"three":"./vendor/three.module.min.js","three/addons/":"./vendor/addons/"}}</script>
+  {{/if}}
+</head>
+<body class="page-{{page.template}}">
+  {{#if page.isHome}}
+  <div class="preloader" id="preloader" aria-hidden="true"><span class="script">{{{brand.wordmark}}}</span></div>
+  {{/if}}
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="progress" aria-hidden="true"><span></span></div>
+  <div class="cursor" aria-hidden="true"></div>
+
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <symbol id="logo-mark" viewBox="0 0 32 32">
+      <path d="M16 3c1.200 4.600 7 7.600 7 13.200a7 7 0 0 1-14 0c0-3 1.600-5 3-6.500.5 1.600 1.200 2.500 2.100 3C14.300 10.600 14.700 6.800 16 3z" fill="currentColor"/>
+      <path d="M16 29c-3.800-1-6-3.600-6-7 3.400.2 5.400 1.600 6 4 .6-2.400 2.600-3.800 6-4 0 3.400-2.200 6-6 7z" fill="none" stroke="currentColor" stroke-width="1.400"/>
+    </symbol>
+  </svg>
+
+  <!-- Top ticker: news + venue tabs. Moving text is hidden from screen readers; a static copy follows. -->
+  <div class="ticker" id="ticker" role="region" aria-label="Latest news">
+    <span class="ticker-label">News</span>
+    <div class="ticker-viewport" aria-hidden="true">
+      <div class="ticker-track">
+        {{#each newsLoop}}<span>{{value}}</span>{{/each}}
+      </div>
+    </div>
+    <p class="sr-only">{{newsText}}</p>
+    <button class="ticker-pause" type="button" aria-pressed="false" aria-label="Pause the news ticker">
+      <svg class="i-pause" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><rect x="2" y="1" width="3" height="10" fill="currentColor"/><rect x="7" y="1" width="3" height="10" fill="currentColor"/></svg>
+      <svg class="i-play" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 1l8 5-8 5z" fill="currentColor"/></svg>
+    </button>
+    <nav class="ticker-venues" aria-label="Our spaces">
+      {{#each venues}}<a href="{{this.href}}"{{#if this.current}} aria-current="page"{{/if}}>{{{this.icon}}}{{this.label}}</a>{{/each}}
+    </nav>
+    <span class="ticker-label ticker-label-r">Now pouring</span>
+  </div>
+
+  <header class="site-header" id="top">
+    <div class="header-inner">
+      <a class="brand" href="index.html" aria-label="{{brand.fullName}}, home">
+        <svg width="26" height="26" aria-hidden="true" focusable="false"><use href="#logo-mark"/></svg>
+      </a>
+      <div class="header-actions">
+        <button class="icon-btn" type="button" id="search-open" aria-label="Search the site" aria-haspopup="dialog">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+        </button>
+        <button class="icon-btn cart-btn" type="button" id="cart-open" aria-label="Your order, empty" aria-haspopup="dialog">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1.500 12h-11zM9 8a3 3 0 0 1 6 0"/></svg>
+          <span class="cart-count" id="cart-count" aria-hidden="true" hidden>0</span>
+        </button>
+        <a class="header-link" href="reserve.html">Reserve</a>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="mobile-nav" aria-label="Open menu">
+          <span class="bars" aria-hidden="true"><span></span><span></span><span></span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="mobile-nav" id="mobile-nav" role="dialog" aria-modal="true" aria-label="Site menu" hidden>
+    <div class="overlay-inner">
+      <nav aria-label="Main">
+        <ul>
+          {{#each nav}}<li><a href="{{this.href}}"><span class="n" aria-hidden="true">0{{n}}</span>{{this.label}}</a></li>{{/each}}
+        </ul>
+        <a class="btn btn-primary" href="reserve.html">Reserve a table</a>
+        <ul class="overlay-sub" aria-label="More">
+          <li><a href="sustainability.html">Sustainability</a></li>
+          <li><a href="wholesale.html">Wholesale</a></li>
+          <li><a href="press.html">Press</a></li>
+          <li><a href="careers.html">Careers</a></li>
+        </ul>
+      </nav>
+      <div class="overlay-info">
+        <p class="label">Find us</p>
+        <p>{{contact.street}}<br>{{contact.locality}}</p>
+        <p><a href="tel:{{contact.phoneHref}}">{{contact.phone}}</a><br><a href="mailto:{{contact.email}}">{{contact.email}}</a></p>
+        <p class="label">Hours</p>
+        <p>{{{hoursSummary}}}</p>
+        <p class="label">Atmosphere</p>
+        <p><button type="button" class="sound-btn" data-sound aria-pressed="false">Ambient sound: <span data-sound-state>off</span></button></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Site search -->
+  <div class="search" id="search" role="dialog" aria-modal="true" aria-label="Search the site" hidden>
+    <div class="search-inner">
+      <form id="search-form" role="search" novalidate>
+        <label class="sr-only" for="search-input">Search the menu, shop and pages</label>
+        <input id="search-input" type="search" placeholder="Search the menu, shop and pages" autocomplete="off" spellcheck="false">
+        <button type="button" class="icon-btn search-close" id="search-close" aria-label="Close search">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg>
+        </button>
+      </form>
+      <p class="search-hint" id="search-hint" aria-live="polite">Try &ldquo;flat white&rdquo;, &ldquo;gluten free&rdquo; or &ldquo;parking&rdquo;.</p>
+      <ul class="search-results" id="search-results"></ul>
+    </div>
+  </div>
+
+  <!-- Order / cart drawer (demo) -->
+  <div class="scrim" id="scrim" hidden></div>
+  <aside class="cart" id="cart" role="dialog" aria-modal="true" aria-labelledby="cart-title" hidden>
+    <div class="cart-head">
+      <h2 id="cart-title">Your order</h2>
+      <button class="icon-btn" type="button" id="cart-close" aria-label="Close your order">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg>
+      </button>
+    </div>
+    <div class="cart-body">
+      <p class="cart-empty" id="cart-empty">Your order is empty. Add something from the <a href="menu.html">menu</a> or the <a href="shop.html">shop</a>.</p>
+      <ul class="cart-list" id="cart-list"></ul>
+    </div>
+    <form class="cart-foot" id="cart-form" novalidate hidden>
+      <div class="cart-total"><span>Total</span><strong id="cart-total">$0.00</strong></div>
+      <div class="field">
+        <label for="cart-name">Name for the order</label>
+        <input id="cart-name" name="name" type="text" autocomplete="name" aria-describedby="e-cart-name">
+        <p class="error" id="e-cart-name" aria-live="polite"></p>
+      </div>
+      <div class="field">
+        <label for="cart-when">Pick-up time</label>
+        <select id="cart-when" name="when"></select>
+      </div>
+      <button class="btn btn-primary btn-block" type="submit">Place order (demo)</button>
+      <button class="cart-clear" type="button" id="cart-clear">Clear order</button>
+      <!-- DEMO ONLY: send the order to your ordering system or payment provider here (see main.js / cart.js). -->
+    </form>
+    <div class="cart-done" id="cart-done" role="status" tabindex="-1" hidden>
+      <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M7.500 12.500l3 3 6-7"/></svg>
+      <h3>Thanks, <span id="done-name">friend</span>!</h3>
+      <p id="done-detail"></p>
+      <p class="note">Demo only: no order was sent and nothing was charged.</p>
+      <button class="btn btn-secondary" type="button" id="done-close">Close</button>
+    </div>
+  </aside>
+
+  <main id="main">
+{{#if page.pageHero}}
+    <section class="page-hero" aria-labelledby="page-title">
+      <div class="container">
+        <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="index.html">Home</a></li><li aria-current="page">{{page.crumb}}</li></ol></nav>
+        <p class="eyebrow">{{page.kicker}}</p>
+        <h1 id="page-title" data-split>{{page.h1}}</h1>
+        <p class="lead">{{page.lead}}</p>
+      </div>
+    </section>
+{{/if}}
+{{{content}}}
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a class="brand-wide" href="index.html" aria-label="{{brand.name}}, home page">
+            <svg width="30" height="30" aria-hidden="true" focusable="false"><use href="#logo-mark"/></svg>
+            <span class="script">{{{brand.wordmark}}}</span>
+          </a>
+          <p>Small-batch coffee, all-day dining and long tables in the heart of {{brand.city}}.</p>
+        </div>
+        <nav class="footer-col" aria-label="Footer: explore">
+          <h2>Explore</h2>
+          <ul>
+            {{#each nav}}<li><a href="{{this.href}}">{{this.label}}</a></li>{{/each}}
+            <li><a href="reserve.html">Reserve</a></li>
+          </ul>
+        </nav>
+        <div class="footer-col">
+          <h2>Visit</h2>
+          <p>{{contact.street}}<br>{{contact.locality}}</p>
+          <p><a href="tel:{{contact.phoneHref}}">{{contact.phone}}</a><br><a href="mailto:{{contact.email}}">{{contact.email}}</a></p>
+        </div>
+        <div class="footer-col">
+          <h2>Hours</h2>
+          <p>{{{hoursSummary}}}</p>
+        </div>
+      </div>
+      <nav class="footer-legal" aria-label="Footer: more">
+        <a href="sustainability.html">Sustainability</a>
+        <a href="wholesale.html">Wholesale</a>
+        <a href="press.html">Press</a>
+        <a href="careers.html">Careers</a>
+        <a href="legal.html#privacy">Privacy</a>
+        <a href="legal.html#terms">Terms</a>
+        <a href="legal.html#cookies">Cookies</a>
+        <button type="button" class="sound-btn" data-sound aria-pressed="false">Ambient sound: <span data-sound-state>off</span></button>
+      </nav>
+      <div class="footer-bottom">
+        <p>{{brand.demoFooter}}</p>
+        <a class="back-top" href="#top">Back to top &uarr;</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Mobile quick actions -->
+  <nav class="mobile-cta" aria-label="Quick actions">
+    <a class="btn btn-secondary" href="tel:{{contact.phoneHref}}">Call</a>
+    <a class="btn btn-primary" href="reserve.html">Reserve a table</a>
+  </nav>
+
+  <!-- Chat widget (scripted demo, no backend) -->
+  <div class="chat" id="chat">
+    <button class="chat-toggle" type="button" id="chat-toggle" aria-expanded="false" aria-controls="chat-panel">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/></svg>
+      <span>Chat</span>
+    </button>
+    <section class="chat-panel" id="chat-panel" role="dialog" aria-label="Chat with us (demo)" hidden>
+      <header><strong>Ask Ember</strong><span>Demo assistant, scripted answers</span></header>
+      <div class="chat-log" id="chat-log" role="log" aria-live="polite"></div>
+      <div class="chat-quick" id="chat-quick"></div>
+    </section>
+  </div>
+
+  <!-- Cookie preferences -->
+  <div class="cookie" id="cookie" role="region" aria-label="Cookie preferences" hidden>
+    <p><strong>Your privacy.</strong> This demo sets no tracking cookies. If you opt in, we would use simple analytics to improve the site. <a href="legal.html#cookies">Details</a></p>
+    <div class="cookie-actions">
+      <button class="btn btn-primary btn-sm" type="button" data-cookie="yes">Accept</button>
+      <button class="btn btn-secondary btn-sm" type="button" data-cookie="no">Decline</button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script type="application/json" id="site-data">{{{siteData}}}</script>
+  <script type="module" src="main.js"></script>
+</body>
+</html>

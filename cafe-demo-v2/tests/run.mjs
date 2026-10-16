@@ -288,6 +288,20 @@ if (want('fallback')) {
   ok('reduced motion: no custom cursor', (await p.evaluate(() => getComputedStyle(document.querySelector('.cursor')).display)) === 'none');
   await done(p);
 
+
+  // JavaScript off, or the main script failing: the site must still be usable
+  p = await newPage({ viewport: { width: 1440, height: 900 }, javaScriptEnabled: false }, { quiet: false });
+  await p.goto(base + 'index.html'); await p.waitForTimeout(800);
+  ok('no JavaScript: no stuck intro overlay', !(await p.evaluate(() => { const e = document.getElementById('preloader'); return e && getComputedStyle(e).display !== 'none'; })));
+  ok('no JavaScript: navigation links are visible', (await p.evaluate(() => [...document.querySelectorAll('#mobile-nav a')].filter((a) => a.offsetParent).length)) >= 6);
+  await p.goto(base + 'menu.html');
+  ok('no JavaScript: all six menu categories are readable', (await p.evaluate(() => [...document.querySelectorAll('[role=tabpanel]')].filter((e) => e.offsetParent).length)) === 6);
+  await done(p);
+  p = await newPage({ viewport: { width: 1440, height: 900 } }, { quiet: false });
+  await p.context().route('**/main.js', (r) => r.fulfill({ status: 200, contentType: 'text/javascript', body: 'throw new Error("boom")' }));
+  await p.goto(base + 'index.html'); await p.waitForTimeout(6000);
+  ok('main script fails: the intro overlay clears itself and the hero is visible', await p.evaluate(() => { const e = document.getElementById('preloader'); return !e || getComputedStyle(e).visibility === 'hidden' || getComputedStyle(e).opacity === '0'; }) && (await p.evaluate(() => getComputedStyle(document.querySelector('.hero-tag')).opacity)) === '1');
+  await done(p);
   p = await newPage({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 3 });
   await p.goto(base + 'index.html'); await p.waitForTimeout(4000);
   const ratio = await p.evaluate(() => { const c = document.querySelector('#scene'); return c.width / c.clientWidth; });

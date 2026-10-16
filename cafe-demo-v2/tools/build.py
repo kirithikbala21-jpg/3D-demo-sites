@@ -153,7 +153,7 @@ def menu_html():
             )
         hid = "" if i == 0 else " hidden"
         panels.append(
-            f'          <div role="tabpanel" id="panel-{cat["id"]}" aria-labelledby="tab-{cat["id"]}" tabindex="0" class="menu-panel"{hid}>\n'
+            f'          <div role="tabpanel" id="panel-{cat["id"]}" aria-labelledby="tab-{cat["id"]}" tabindex="0" class="menu-panel" data-label="{cat["label"]}"{hid}>\n'
             f'            <p class="panel-note">{cat["note"]}</p>\n            <div class="menu-grid">\n{"".join(items)}            </div>\n          </div>\n'
         )
     return "".join(tabs), "".join(panels)

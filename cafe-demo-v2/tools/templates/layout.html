@@ -23,10 +23,19 @@
   <link rel="stylesheet" href="styles.css">
   <style>:root{--black:{{theme.black}};--wine:{{theme.wine}};--wine-deep:{{theme.wineDeep}};--wine-night:{{theme.wineNight}};--gold-light:{{theme.goldLight}};--gold-text:{{theme.goldText}};--cream:{{theme.cream}};--tint:{{theme.tint}};--ink:{{theme.ink}}}</style>
   {{{jsonld}}}
+  <noscript><style>
+    /* Without JavaScript: show the navigation and every menu category as plain content. */
+    .preloader, .nav-toggle, .icon-btn, .chat, .ticker-pause, .cursor { display: none !important; }
+    .mobile-nav[hidden] { display: block !important; position: static !important; animation: none; padding-top: calc(var(--header-h) + 8px) !important; padding-bottom: 8px !important; }
+    .tablist-wrap { display: none; }
+    .menu-panel[hidden] { display: block !important; }
+    .menu-panel::before { content: attr(data-label); display: block; font: 600 1.6rem var(--font); margin: 32px 0 8px; }
+    .menu-panel:first-of-type::before { margin-top: 0; }
+  </style></noscript>
   <script>
     document.documentElement.classList.add('js');
     // Safety net: never leave the hero hidden if the main script fails to start.
-    setTimeout(function () { document.documentElement.classList.add('is-ready'); }, 4500);
+    setTimeout(function () { var d = document.documentElement; if (!d.classList.contains('is-ready')) d.classList.add('is-ready', 'is-failsafe'); }, 4500);
   </script>
   {{#if page.isHome}}
   <!-- Three.js is self-hosted (exact version 0.160.0) and loaded as an ES module through this import map. -->

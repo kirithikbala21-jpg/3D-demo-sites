@@ -23,10 +23,19 @@
   <link rel="stylesheet" href="styles.css">
   <style>:root{--black:#0B0707;--wine:#8B0707;--wine-deep:#5B0912;--wine-night:#1E0509;--gold-light:#DDB46A;--gold-text:#85601F;--cream:#FBFAF3;--tint:#F1ECDD;--ink:#16100E}</style>
   
+  <noscript><style>
+    /* Without JavaScript: show the navigation and every menu category as plain content. */
+    .preloader, .nav-toggle, .icon-btn, .chat, .ticker-pause, .cursor { display: none !important; }
+    .mobile-nav[hidden] { display: block !important; position: static !important; animation: none; padding-top: calc(var(--header-h) + 8px) !important; padding-bottom: 8px !important; }
+    .tablist-wrap { display: none; }
+    .menu-panel[hidden] { display: block !important; }
+    .menu-panel::before { content: attr(data-label); display: block; font: 600 1.6rem var(--font); margin: 32px 0 8px; }
+    .menu-panel:first-of-type::before { margin-top: 0; }
+  </style></noscript>
   <script>
     document.documentElement.classList.add('js');
     // Safety net: never leave the hero hidden if the main script fails to start.
-    setTimeout(function () { document.documentElement.classList.add('is-ready'); }, 4500);
+    setTimeout(function () { var d = document.documentElement; if (!d.classList.contains('is-ready')) d.classList.add('is-ready', 'is-failsafe'); }, 4500);
   </script>
   
 </head>

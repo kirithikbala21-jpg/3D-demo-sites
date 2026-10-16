@@ -83,12 +83,15 @@ function makeWispTexture() {
     g.bezierCurveTo(x - 38 + i * 6, 180, x + 40 - i * 5, 100, x + (i - 3) * 3, 10);
     g.stroke();
   }
-  // fade the top and bottom edges
-  const fade = g.createLinearGradient(0, 0, 0, 256);
-  fade.addColorStop(0, 'rgba(0,0,0,0)'); fade.addColorStop(0.5, 'rgba(0,0,0,1)'); fade.addColorStop(1, 'rgba(0,0,0,0)');
+  // fade every edge so the sprite never shows a hard rectangle: soft top and bottom, then soft left and right
   g.globalCompositeOperation = 'destination-in';
   g.filter = 'none';
+  const fade = g.createLinearGradient(0, 0, 0, 256);
+  fade.addColorStop(0, 'rgba(0,0,0,0)'); fade.addColorStop(0.5, 'rgba(0,0,0,1)'); fade.addColorStop(1, 'rgba(0,0,0,0)');
   g.fillStyle = fade; g.fillRect(0, 0, 128, 256);
+  const side = g.createLinearGradient(0, 0, 128, 0);
+  side.addColorStop(0, 'rgba(0,0,0,0)'); side.addColorStop(0.3, 'rgba(0,0,0,1)'); side.addColorStop(0.7, 'rgba(0,0,0,1)'); side.addColorStop(1, 'rgba(0,0,0,0)');
+  g.fillStyle = side; g.fillRect(0, 0, 128, 256);
   const tex = new THREE.CanvasTexture(c);
   tex.colorSpace = THREE.SRGBColorSpace;
   return tex;

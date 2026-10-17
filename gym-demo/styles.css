@@ -727,3 +727,15 @@ h1, h2, h3 { line-height: 1.18; }
   .tile-cap { left: 8px; bottom: 8px; padding: 4px 10px; font-size: .8125rem; }
 }
 .stat-num { white-space: nowrap; min-width: 4.5ch; }
+
+/* ---------- Coaches on phones: a swipe row, one card about 80% wide with the next one peeking in ---------- */
+.swipe-hint { display: none; }
+@media (max-width: 767px) {
+  .coach-grid { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; margin-inline: -20px; padding: 0 20px 8px; scroll-padding-inline: 20px; scrollbar-width: none; overscroll-behavior-x: contain; }
+  .coach-grid::-webkit-scrollbar { display: none; }
+  .coach { flex: 0 0 80%; scroll-snap-align: start; gap: var(--space-2); }
+  .coach-photo { aspect-ratio: 4 / 5; }
+  .coach-body p:not(.coach-tags):not(.coach-leads) { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; font-size: .9375rem; line-height: 1.5; margin-bottom: var(--space-1); }
+  .coach-leads { display: none; }
+  .swipe-hint { display: block; margin: var(--space-1) 0 0; font-size: .875rem; color: var(--muted, #C9CDC4); }
+}

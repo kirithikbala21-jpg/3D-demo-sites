@@ -122,10 +122,10 @@
    "file": "classes.html",
    "template": "classes",
    "title": "Class timetable",
-   "description": "Sixty classes a week: strength, HIIT, yoga, mobility and boxing. Pick a day, filter by type and book a spot.",
+   "description": "Thirty-two classes a week: strength, HIIT, yoga, mobility and boxing. Pick a day, filter by type and book a spot.",
    "pageHero": true,
    "h1": "Class timetable",
-   "kicker": "60 classes a week",
+   "kicker": "32 classes a week",
    "lead": "Strength, HIIT, yoga, mobility and boxing from 5:30am. Pick a day, filter by type, then book a spot.",
    "crumb": "Classes"
   },

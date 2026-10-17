@@ -24,18 +24,6 @@
   "desc": "Forty-five minutes of intervals on bikes, sleds, rowers and kettlebells."
  },
  {
-  "id": "mon-0900-vinyasa-flow",
-  "day": "mon",
-  "start": "09:00",
-  "mins": 60,
-  "name": "Vinyasa Flow",
-  "type": "Yoga",
-  "coach": "dev",
-  "level": "All levels",
-  "capacity": 18,
-  "desc": "A moving, breath-led flow to open the hips, spine and shoulders."
- },
- {
   "id": "mon-1215-mobility-reset",
   "day": "mon",
   "start": "12:15",
@@ -46,18 +34,6 @@
   "level": "All levels",
   "capacity": 16,
   "desc": "Joint-by-joint work to move better in the gym and at your desk."
- },
- {
-  "id": "mon-1630-boxing-fundamentals",
-  "day": "mon",
-  "start": "16:30",
-  "mins": 45,
-  "name": "Boxing Fundamentals",
-  "type": "Boxing",
-  "coach": "jonah",
-  "level": "Beginner",
-  "capacity": 14,
-  "desc": "Stance, footwork and the basic combinations on the bags. No sparring."
  },
  {
   "id": "mon-1730-barbell-basics",
@@ -72,18 +48,6 @@
   "desc": "Learn the squat, hinge, press and row with a coach on every set."
  },
  {
-  "id": "mon-1830-engine-room",
-  "day": "mon",
-  "start": "18:30",
-  "mins": 45,
-  "name": "Engine Room",
-  "type": "HIIT",
-  "coach": "dex",
-  "level": "Intermediate",
-  "capacity": 16,
-  "desc": "Conditioning circuits that build your engine without wrecking your joints."
- },
- {
   "id": "mon-1915-slow-yoga",
   "day": "mon",
   "start": "19:15",
@@ -96,18 +60,6 @@
   "desc": "Long holds, simple poses and plenty of time to find them."
  },
  {
-  "id": "mon-2000-stretch-club",
-  "day": "mon",
-  "start": "20:00",
-  "mins": 45,
-  "name": "Stretch Club",
-  "type": "Mobility",
-  "coach": "dev",
-  "level": "Beginner",
-  "capacity": 16,
-  "desc": "Easy, guided stretching with foam rollers and bands."
- },
- {
   "id": "tue-0530-lift-lab",
   "day": "tue",
   "start": "05:30",
@@ -118,18 +70,6 @@
   "level": "Intermediate",
   "capacity": 12,
   "desc": "Programmed strength work with tempo, pauses and plenty of coaching."
- },
- {
-  "id": "tue-0630-sprint-intervals",
-  "day": "tue",
-  "start": "06:30",
-  "mins": 45,
-  "name": "Sprint Intervals",
-  "type": "HIIT",
-  "coach": "jonah",
-  "level": "Advanced",
-  "capacity": 16,
-  "desc": "Short, sharp sprints and hard rests. Bring a good attitude and a towel."
  },
  {
   "id": "tue-0915-hips-shoulders",
@@ -156,18 +96,6 @@
   "desc": "Forty-five minutes of intervals on bikes, sleds, rowers and kettlebells."
  },
  {
-  "id": "tue-1630-bag-work",
-  "day": "tue",
-  "start": "16:30",
-  "mins": 45,
-  "name": "Bag Work",
-  "type": "Boxing",
-  "coach": "jonah",
-  "level": "Intermediate",
-  "capacity": 14,
-  "desc": "Rounds on the heavy bags with combinations and conditioning between."
- },
- {
   "id": "tue-1730-power-hour",
   "day": "tue",
   "start": "17:30",
@@ -180,18 +108,6 @@
   "desc": "Heavy compound lifts, built around a squat, press or pull of the day."
  },
  {
-  "id": "tue-1830-vinyasa-flow",
-  "day": "tue",
-  "start": "18:30",
-  "mins": 60,
-  "name": "Vinyasa Flow",
-  "type": "Yoga",
-  "coach": "dev",
-  "level": "All levels",
-  "capacity": 18,
-  "desc": "A moving, breath-led flow to open the hips, spine and shoulders."
- },
- {
   "id": "tue-1900-boxing-fundamentals",
   "day": "tue",
   "start": "19:00",
@@ -202,30 +118,6 @@
   "level": "Beginner",
   "capacity": 14,
   "desc": "Stance, footwork and the basic combinations on the bags. No sparring."
- },
- {
-  "id": "tue-2000-yin-restore",
-  "day": "tue",
-  "start": "20:00",
-  "mins": 60,
-  "name": "Yin & Restore",
-  "type": "Yoga",
-  "coach": "dev",
-  "level": "All levels",
-  "capacity": 18,
-  "desc": "Deep, still stretches and long exhales to wind the week down."
- },
- {
-  "id": "wed-0530-barbell-basics",
-  "day": "wed",
-  "start": "05:30",
-  "mins": 45,
-  "name": "Barbell Basics",
-  "type": "Strength",
-  "coach": "marcus",
-  "level": "Beginner",
-  "capacity": 12,
-  "desc": "Learn the squat, hinge, press and row with a coach on every set."
  },
  {
   "id": "wed-0630-engine-room",
@@ -252,18 +144,6 @@
   "desc": "Long holds, simple poses and plenty of time to find them."
  },
  {
-  "id": "wed-1215-lift-lab",
-  "day": "wed",
-  "start": "12:15",
-  "mins": 45,
-  "name": "Lift Lab",
-  "type": "Strength",
-  "coach": "marcus",
-  "level": "Intermediate",
-  "capacity": 12,
-  "desc": "Programmed strength work with tempo, pauses and plenty of coaching."
- },
- {
   "id": "wed-1630-ember-hiit",
   "day": "wed",
   "start": "16:30",
@@ -274,18 +154,6 @@
   "level": "All levels",
   "capacity": 16,
   "desc": "Forty-five minutes of intervals on bikes, sleds, rowers and kettlebells."
- },
- {
-  "id": "wed-1730-boxing-conditioning",
-  "day": "wed",
-  "start": "17:30",
-  "mins": 45,
-  "name": "Boxing Conditioning",
-  "type": "Boxing",
-  "coach": "jonah",
-  "level": "Advanced",
-  "capacity": 14,
-  "desc": "Fast rounds, pad work and core finishers. Wraps are provided."
  },
  {
   "id": "wed-1815-power-hour",
@@ -312,18 +180,6 @@
   "desc": "Joint-by-joint work to move better in the gym and at your desk."
  },
  {
-  "id": "wed-2000-vinyasa-flow",
-  "day": "wed",
-  "start": "20:00",
-  "mins": 60,
-  "name": "Vinyasa Flow",
-  "type": "Yoga",
-  "coach": "dev",
-  "level": "All levels",
-  "capacity": 18,
-  "desc": "A moving, breath-led flow to open the hips, spine and shoulders."
- },
- {
   "id": "thu-0530-power-hour",
   "day": "thu",
   "start": "05:30",
@@ -336,30 +192,6 @@
   "desc": "Heavy compound lifts, built around a squat, press or pull of the day."
  },
  {
-  "id": "thu-0630-ember-hiit",
-  "day": "thu",
-  "start": "06:30",
-  "mins": 45,
-  "name": "Ember HIIT",
-  "type": "HIIT",
-  "coach": "jonah",
-  "level": "All levels",
-  "capacity": 16,
-  "desc": "Forty-five minutes of intervals on bikes, sleds, rowers and kettlebells."
- },
- {
-  "id": "thu-0900-vinyasa-flow",
-  "day": "thu",
-  "start": "09:00",
-  "mins": 60,
-  "name": "Vinyasa Flow",
-  "type": "Yoga",
-  "coach": "dev",
-  "level": "All levels",
-  "capacity": 18,
-  "desc": "A moving, breath-led flow to open the hips, spine and shoulders."
- },
- {
   "id": "thu-1215-stretch-club",
   "day": "thu",
   "start": "12:15",
@@ -370,18 +202,6 @@
   "level": "Beginner",
   "capacity": 16,
   "desc": "Easy, guided stretching with foam rollers and bands."
- },
- {
-  "id": "thu-1630-boxing-fundamentals",
-  "day": "thu",
-  "start": "16:30",
-  "mins": 45,
-  "name": "Boxing Fundamentals",
-  "type": "Boxing",
-  "coach": "jonah",
-  "level": "Beginner",
-  "capacity": 14,
-  "desc": "Stance, footwork and the basic combinations on the bags. No sparring."
  },
  {
   "id": "thu-1730-lift-lab",
@@ -406,18 +226,6 @@
   "level": "Advanced",
   "capacity": 16,
   "desc": "Short, sharp sprints and hard rests. Bring a good attitude and a towel."
- },
- {
-  "id": "thu-1915-hips-shoulders",
-  "day": "thu",
-  "start": "19:15",
-  "mins": 45,
-  "name": "Hips & Shoulders",
-  "type": "Mobility",
-  "coach": "marcus",
-  "level": "All levels",
-  "capacity": 16,
-  "desc": "Targeted mobility for the two joints that limit most lifters."
  },
  {
   "id": "thu-2000-yin-restore",
@@ -456,42 +264,6 @@
   "desc": "Conditioning circuits that build your engine without wrecking your joints."
  },
  {
-  "id": "fri-0900-slow-yoga",
-  "day": "fri",
-  "start": "09:00",
-  "mins": 60,
-  "name": "Slow Yoga",
-  "type": "Yoga",
-  "coach": "dev",
-  "level": "Beginner",
-  "capacity": 18,
-  "desc": "Long holds, simple poses and plenty of time to find them."
- },
- {
-  "id": "fri-1215-ember-hiit",
-  "day": "fri",
-  "start": "12:15",
-  "mins": 45,
-  "name": "Ember HIIT",
-  "type": "HIIT",
-  "coach": "jonah",
-  "level": "All levels",
-  "capacity": 16,
-  "desc": "Forty-five minutes of intervals on bikes, sleds, rowers and kettlebells."
- },
- {
-  "id": "fri-1630-bag-work",
-  "day": "fri",
-  "start": "16:30",
-  "mins": 45,
-  "name": "Bag Work",
-  "type": "Boxing",
-  "coach": "jonah",
-  "level": "Intermediate",
-  "capacity": 14,
-  "desc": "Rounds on the heavy bags with combinations and conditioning between."
- },
- {
   "id": "fri-1730-barbell-basics",
   "day": "fri",
   "start": "17:30",
@@ -514,30 +286,6 @@
   "level": "Advanced",
   "capacity": 14,
   "desc": "Fast rounds, pad work and core finishers. Wraps are provided."
- },
- {
-  "id": "fri-1915-mobility-reset",
-  "day": "fri",
-  "start": "19:15",
-  "mins": 45,
-  "name": "Mobility Reset",
-  "type": "Mobility",
-  "coach": "dev",
-  "level": "All levels",
-  "capacity": 16,
-  "desc": "Joint-by-joint work to move better in the gym and at your desk."
- },
- {
-  "id": "fri-2000-vinyasa-flow",
-  "day": "fri",
-  "start": "20:00",
-  "mins": 60,
-  "name": "Vinyasa Flow",
-  "type": "Yoga",
-  "coach": "dev",
-  "level": "All levels",
-  "capacity": 18,
-  "desc": "A moving, breath-led flow to open the hips, spine and shoulders."
  },
  {
   "id": "sat-0730-power-hour",
@@ -600,54 +348,6 @@
   "desc": "Joint-by-joint work to move better in the gym and at your desk."
  },
  {
-  "id": "sat-1300-barbell-basics",
-  "day": "sat",
-  "start": "13:00",
-  "mins": 60,
-  "name": "Barbell Basics",
-  "type": "Strength",
-  "coach": "marcus",
-  "level": "Beginner",
-  "capacity": 12,
-  "desc": "Learn the squat, hinge, press and row with a coach on every set."
- },
- {
-  "id": "sat-1400-bag-work",
-  "day": "sat",
-  "start": "14:00",
-  "mins": 45,
-  "name": "Bag Work",
-  "type": "Boxing",
-  "coach": "jonah",
-  "level": "Intermediate",
-  "capacity": 14,
-  "desc": "Rounds on the heavy bags with combinations and conditioning between."
- },
- {
-  "id": "sat-1530-yin-restore",
-  "day": "sat",
-  "start": "15:30",
-  "mins": 60,
-  "name": "Yin & Restore",
-  "type": "Yoga",
-  "coach": "dev",
-  "level": "All levels",
-  "capacity": 18,
-  "desc": "Deep, still stretches and long exhales to wind the week down."
- },
- {
-  "id": "sun-0800-slow-yoga",
-  "day": "sun",
-  "start": "08:00",
-  "mins": 60,
-  "name": "Slow Yoga",
-  "type": "Yoga",
-  "coach": "dev",
-  "level": "Beginner",
-  "capacity": 18,
-  "desc": "Long holds, simple poses and plenty of time to find them."
- },
- {
   "id": "sun-0900-lift-lab",
   "day": "sun",
   "start": "09:00",
@@ -672,30 +372,6 @@
   "desc": "Forty-five minutes of intervals on bikes, sleds, rowers and kettlebells."
  },
  {
-  "id": "sun-1100-boxing-fundamentals",
-  "day": "sun",
-  "start": "11:00",
-  "mins": 45,
-  "name": "Boxing Fundamentals",
-  "type": "Boxing",
-  "coach": "jonah",
-  "level": "Beginner",
-  "capacity": 14,
-  "desc": "Stance, footwork and the basic combinations on the bags. No sparring."
- },
- {
-  "id": "sun-1200-hips-shoulders",
-  "day": "sun",
-  "start": "12:00",
-  "mins": 45,
-  "name": "Hips & Shoulders",
-  "type": "Mobility",
-  "coach": "marcus",
-  "level": "All levels",
-  "capacity": 16,
-  "desc": "Targeted mobility for the two joints that limit most lifters."
- },
- {
   "id": "sun-1500-yin-restore",
   "day": "sun",
   "start": "15:00",
@@ -706,17 +382,5 @@
   "level": "All levels",
   "capacity": 18,
   "desc": "Deep, still stretches and long exhales to wind the week down."
- },
- {
-  "id": "sun-1630-stretch-club",
-  "day": "sun",
-  "start": "16:30",
-  "mins": 45,
-  "name": "Stretch Club",
-  "type": "Mobility",
-  "coach": "dev",
-  "level": "Beginner",
-  "capacity": 16,
-  "desc": "Easy, guided stretching with foam rollers and bands."
  }
 ]

@@ -165,8 +165,8 @@ if (want('links')) {
   const search = fs.readFileSync(path.join(SITE, 'search-data.js'), 'utf8');
   const urls = [...search.matchAll(/"url": "([^"]+)"/g)].map((m) => m[1]);
   const badSearch = urls.filter((u) => { const [file, hash] = u.split('#'); return !PAGES.includes(file) || (hash && !ids.get(file).includes(hash)); });
-  ok(`search index: all ${urls.length} result links point at real pages and anchors`, urls.length > 80 && !badSearch.length, badSearch.slice(0, 4).join(' | '));
-  ok('all 60 classes have a row with a deep-link id', classes.length === 60 && classes.every((c) => ids.get('classes.html').includes('c-' + c.id)));
+  ok(`search index: all ${urls.length} result links point at real pages and anchors`, urls.length > 45 && !badSearch.length, badSearch.slice(0, 4).join(' | '));
+  ok('all 32 classes have a row with a deep-link id', classes.length === 32 && classes.every((c) => ids.get('classes.html').includes('c-' + c.id)));
   await done(p);
 }
 
@@ -212,7 +212,7 @@ if (want('func')) {
   // Classes: day tabs, deep links, filters, Book links, deterministic spots
   p = await newPage({ viewport: { width: 1440, height: 900 } }, { webgl: false });
   await p.goto(p.base + 'classes.html'); await p.waitForTimeout(800);
-  ok('classes: 60 classes in 7 day tabs (Mon-Sun)', (await p.locator('.class-row').count()) === 60 && (await p.locator('[role=tab]').count()) === 7 && (await p.locator('[role=tab]').evaluateAll((ts) => ts.map((t) => t.textContent).join(','))) === 'Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday');
+  ok('classes: 32 classes in 7 day tabs (Mon-Sun)', (await p.locator('.class-row').count()) === 32 && (await p.locator('[role=tab]').count()) === 7 && (await p.locator('[role=tab]').evaluateAll((ts) => ts.map((t) => t.textContent).join(','))) === 'Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday');
   await p.locator('#tab-mon').focus(); await p.keyboard.press('ArrowRight');
   ok('day tabs: ArrowRight moves to Tuesday and shows its panel', (await p.locator('#tab-tue').getAttribute('aria-selected')) === 'true' && (await p.locator('#day-tue').isVisible()) && !(await p.locator('#day-mon').isVisible()));
   await p.keyboard.press('End'); ok('day tabs: End selects Sunday', (await p.locator('#tab-sun').getAttribute('aria-selected')) === 'true');
@@ -224,8 +224,8 @@ if (want('func')) {
   ok('clicking a tab updates the URL hash for deep links', (await p.evaluate(() => location.hash)) === '#day-wed');
   await p.goto(p.base + 'classes.html#day-thu'); await p.waitForTimeout(700);
   ok('deep link #day-thu opens Thursday', (await p.locator('#tab-thu').getAttribute('aria-selected')) === 'true' && (await p.locator('#day-thu').isVisible()));
-  await p.goto(p.base + 'classes.html#c-tue-0630-sprint-intervals'); await p.waitForTimeout(900);
-  ok('search deep link #c-<class> opens the right day', (await p.locator('#tab-tue').getAttribute('aria-selected')) === 'true' && (await p.locator('#c-tue-0630-sprint-intervals').isVisible()));
+  await p.goto(p.base + 'classes.html#c-tue-1730-power-hour'); await p.waitForTimeout(900);
+  ok('search deep link #c-<class> opens the right day', (await p.locator('#tab-tue').getAttribute('aria-selected')) === 'true' && (await p.locator('#c-tue-1730-power-hour').isVisible()));
   await p.locator('#tab-mon').click();
   const monAll = await p.locator('#day-mon .class-row:visible').count();
   await p.locator('[data-filter=Yoga]').click();
@@ -237,14 +237,14 @@ if (want('func')) {
   const types = []; for (const t of ['Strength', 'HIIT', 'Mobility', 'Boxing']) { await p.locator(`[data-filter=${t}]`).click(); types.push(await p.locator('#day-sat .class-row:visible').evaluateAll((rs, t) => rs.length > 0 && rs.every((r) => r.dataset.type === t), t)); }
   ok('filter: Strength, HIIT, Mobility and Boxing all work', types.every(Boolean), JSON.stringify(types));
   await p.locator('[data-filter=all]').click();
-  ok('filter: All restores every class', (await p.locator('#day-sat .class-row:visible').count()) === 8);
+  ok('filter: All restores every class', (await p.locator('#day-sat .class-row:visible').count()) === 5);
   const spots1 = await p.locator('.spots').allTextContents();
   await p.reload(); await p.waitForTimeout(500);
   ok('spots left are deterministic across reloads and some classes are full', JSON.stringify(spots1) === JSON.stringify(await p.locator('.spots').allTextContents()) && spots1.some((s) => /Full/.test(s)) && spots1.some((s) => /\d+ spots? left/.test(s)));
   const hrefs = await p.locator('.class-row .btn').evaluateAll((as) => as.map((a) => a.getAttribute('href')));
-  ok('every class has a Book button linking to trial.html?class=<id>', hrefs.length === 60 && hrefs.every((h) => /^trial\.html\?class=[a-z0-9-]+$/.test(h)) && (await p.locator('.class-row .btn').evaluateAll((as) => as.filter((a) => /^Book|^Waitlist/.test(a.textContent)).length)) === 60);
-  await p.locator('#tab-tue').click(); await p.locator('#c-tue-0630-sprint-intervals .btn').click(); await p.waitForURL(/trial\.html\?class=tue-0630-sprint-intervals/);
-  ok('Book goes to the trial page with the class pre-selected', (await p.locator('#f-session').inputValue()) === 'tue-0630-sprint-intervals');
+  ok('every class has a Book button linking to trial.html?class=<id>', hrefs.length === 32 && hrefs.every((h) => /^trial\.html\?class=[a-z0-9-]+$/.test(h)) && (await p.locator('.class-row .btn').evaluateAll((as) => as.filter((a) => /^Book|^Waitlist/.test(a.textContent)).length)) === 32);
+  await p.locator('#tab-tue').click(); await p.locator('#c-tue-1730-power-hour .btn').click(); await p.waitForURL(/trial\.html\?class=tue-1730-power-hour/);
+  ok('Book goes to the trial page with the class pre-selected', (await p.locator('#f-session').inputValue()) === 'tue-1730-power-hour');
   await done(p);
 
   // Coaches
@@ -290,13 +290,13 @@ if (want('func')) {
 
   // Free trial / booking: deep links, calendar, duration-aware time grid, validation, confirmation, localStorage
   p = await newPage({ viewport: { width: 1440, height: 900 } }, { webgl: false });
-  await p.goto(p.base + 'trial.html?class=tue-0630-sprint-intervals&coach=marcus'); await p.waitForTimeout(500);
-  ok('trial: ?class= pre-selects the class', (await p.locator('#f-session option:checked').textContent()).includes('Sprint Intervals'));
-  ok("trial: in class mode the class's coach is chosen and the coach choice is locked", (await p.locator('input[name=coach]:checked').getAttribute('value')) === 'jonah' && (await p.locator('input[name=coach]:disabled').count()) === 5 && /Jonah Reyes/.test(await p.locator('#h-coach').textContent()));
+  await p.goto(p.base + 'trial.html?class=tue-1730-power-hour&coach=marcus'); await p.waitForTimeout(500);
+  ok('trial: ?class= pre-selects the class', (await p.locator('#f-session option:checked').textContent()).includes('Power Hour'));
+  ok("trial: in class mode the class's coach is chosen and the coach choice is locked", (await p.locator('input[name=coach]:checked').getAttribute('value')) === 'dex' && (await p.locator('input[name=coach]:disabled').count()) === 5 && /Dex Holloway/.test(await p.locator('#h-coach').textContent()));
   const wd = await p.locator('.cal-day:not(:disabled)').evaluateAll((bs) => bs.map((b) => new Date(b.dataset.date + 'T00:00:00Z').getUTCDay()));
   ok('trial: a class can only be booked on its own weekday (Tuesday)', wd.length >= 2 && wd.every((d) => d === 2), JSON.stringify(wd));
   await p.locator('.cal-day:not(:disabled)').nth(1).click();
-  ok('trial: class mode shows the one class time', (await p.locator('.slot').count()) === 1 && (await p.locator('.slot').first().textContent()) === '6:30am', await p.locator('.slot').allTextContents().then((a) => a.join(',')));
+  ok('trial: class mode shows the one class time', (await p.locator('.slot').count()) === 1 && (await p.locator('.slot').first().textContent()) === '5:30pm', await p.locator('.slot').allTextContents().then((a) => a.join(',')));
   await p.goto(p.base + 'trial.html?coach=dex'); await p.waitForTimeout(500);
   ok('trial: ?coach= pre-selects the coach (free trial is the default session)', (await p.locator('input[name=coach]:checked').getAttribute('value')) === 'dex' && (await p.locator('#f-session').inputValue()) === 'trial');
   ok('trial: coach cards for any plus four coaches', (await p.locator('input[name=coach]').count()) === 5);
@@ -336,8 +336,8 @@ if (want('func')) {
   p = await newPage({ viewport: { width: 1440, height: 900 } }, { webgl: false });
   await p.goto(p.base + 'journal.html');
   ok('journal: three posts', (await p.locator('article.post').count()) === 3);
-  await p.goto(p.base + 'index.html'); await p.waitForTimeout(1500); const was0 = (await p.locator('.stat-num').allTextContents()).join('|'); await p.waitForFunction(() => { document.querySelector('.stats').scrollIntoView({ block: 'center' }); return [...document.querySelectorAll('.stat-num')].map((e) => e.textContent).join('|') === '14|3,200|60'; }, null, { timeout: 15000, polling: 400 }).catch(() => {});
-  ok('stats count up once visible and end on the real numbers', (await p.locator('.stat-num').allTextContents()).join('|') === '14|3,200|60', (await p.locator('.stat-num').allTextContents()).join('|'));
+  await p.goto(p.base + 'index.html'); await p.waitForTimeout(1500); const was0 = (await p.locator('.stat-num').allTextContents()).join('|'); await p.waitForFunction(() => { document.querySelector('.stats').scrollIntoView({ block: 'center' }); return [...document.querySelectorAll('.stat-num')].map((e) => e.textContent).join('|') === '14|3,200|32'; }, null, { timeout: 15000, polling: 400 }).catch(() => {});
+  ok('stats count up once visible and end on the real numbers', (await p.locator('.stat-num').allTextContents()).join('|') === '14|3,200|32', (await p.locator('.stat-num').allTextContents()).join('|'));
   await done(p);
 
   // Mobile menu + cookie card
@@ -375,7 +375,7 @@ if (want('func')) {
   await done(p);
   p = await newPage({ viewport: { width: 1440, height: 900 }, javaScriptEnabled: false }, { quiet: false });
   await p.goto(p.base + 'index.html');
-  ok('no JavaScript: counters show real numbers, not 0', (await p.locator('.stat-num').allTextContents()).join('|') === '14|3,200|60');
+  ok('no JavaScript: counters show real numbers, not 0', (await p.locator('.stat-num').allTextContents()).join('|') === '14|3,200|32');
   await done(p);
 
   // Titles, nav labels vs footer, footer lines, heading scale
@@ -406,7 +406,8 @@ if (want('func')) {
     p = await newPage({ viewport: { width: w, height: 900 } }, { webgl: false });
     await p.goto(p.base + 'index.html'); await p.waitForTimeout(600);
     await p.evaluate(async () => { for (let y = 0; y < document.body.scrollHeight; y += 400) { window.scrollTo(0, y); await new Promise((r) => setTimeout(r, 200)); } });
-    await p.waitForTimeout(500);
+    await p.evaluate(async () => { const g = document.querySelector('.coach-grid'); g.scrollIntoView({ block: 'center' }); await new Promise((r) => setTimeout(r, 400)); for (let x = 0; x <= g.scrollWidth; x += 200) { g.scrollLeft = x; await new Promise((r) => setTimeout(r, 120)); } g.scrollLeft = 0; });
+    await p.waitForTimeout(700);
     const info = await p.evaluate(() => { const imgs = [...document.querySelectorAll('main img')]; return { n: imgs.length, empty: document.querySelectorAll('.slot-empty').length, broken: imgs.filter((i) => !(i.complete && i.naturalWidth > 0)).length, noAlt: imgs.filter((i) => !i.alt.trim()).length, noSize: imgs.filter((i) => !i.getAttribute('width') || !i.getAttribute('height')).length, eager: imgs.filter((i) => i.loading !== 'lazy').map((i) => !!i.closest('.hero-photo')), notCover: imgs.filter((i) => getComputedStyle(i).objectFit !== 'cover').length, squashed: imgs.filter((i) => { const r = i.getBoundingClientRect(), n = i.naturalWidth / i.naturalHeight; return false && r && n; }).length }; });
     ok(`photos @${w}px: 15 real photos on the home page, none broken, all with alt text and width/height, object-fit cover, only the hero eager, no placeholders left`, info.n === 15 && info.empty === 0 && info.broken === 0 && info.noAlt === 0 && info.noSize === 0 && info.notCover === 0 && info.eager.length === 1 && info.eager[0] === true, JSON.stringify(info));
     const a2 = await p.evaluate(audit); ok(`photos @${w}px: no horizontal overflow`, a2.scrollW <= a2.W && !a2.bad.length, JSON.stringify(a2.bad));

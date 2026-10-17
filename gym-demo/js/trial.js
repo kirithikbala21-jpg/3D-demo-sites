@@ -26,7 +26,7 @@ import { $, $$, site, hoursFor, fmtHour, fmtClock, gymNow, pad, reduceMotion } f
   const coachVal = () => (form.querySelector('input[name=coach]:checked') || {}).value || 'any';
   const coachName = () => { const r = form.querySelector('input[name=coach]:checked'); return r ? r.closest('label').querySelector('strong').textContent : 'Next available'; };
 
-  // Links such as trial.html?class=tue-0630-sprint-intervals&coach=marcus pre-select the choices
+  // Links such as trial.html?class=tue-1730-power-hour&coach=marcus pre-select the choices
   const q = new URLSearchParams(location.search);
   if (q.get('class') && [...sessEl.options].some((o) => o.value === q.get('class'))) sessEl.value = q.get('class');
   const qc = coachRadios.find((r) => r.value === (q.get('coach') || '').replace(/[^a-z]/g, ''));

@@ -8,7 +8,7 @@ export default [
 },
 {
 "title": "Class timetable",
-"text": "Sixty classes a week: strength, HIIT, yoga, mobility and boxing. Pick a day, filter by type and book a spot.",
+"text": "Thirty-two classes a week: strength, HIIT, yoga, mobility and boxing. Pick a day, filter by type and book a spot.",
 "url": "classes.html",
 "type": "Page"
 },
@@ -67,21 +67,9 @@ export default [
 "type": "Classes"
 },
 {
-"title": "Vinyasa Flow (Monday 9:00am)",
-"text": "Yoga class with Dev Nair, 60 min, All levels. A moving, breath-led flow to open the hips, spine and shoulders.",
-"url": "classes.html#c-mon-0900-vinyasa-flow",
-"type": "Classes"
-},
-{
 "title": "Mobility Reset (Monday 12:15pm)",
 "text": "Mobility class with Dev Nair, 45 min, All levels. Joint-by-joint work to move better in the gym and at your desk.",
 "url": "classes.html#c-mon-1215-mobility-reset",
-"type": "Classes"
-},
-{
-"title": "Boxing Fundamentals (Monday 4:30pm)",
-"text": "Boxing class with Jonah Reyes, 45 min, Beginner. Stance, footwork and the basic combinations on the bags. No sparring.",
-"url": "classes.html#c-mon-1630-boxing-fundamentals",
 "type": "Classes"
 },
 {
@@ -91,33 +79,15 @@ export default [
 "type": "Classes"
 },
 {
-"title": "Engine Room (Monday 6:30pm)",
-"text": "HIIT class with Dex Holloway, 45 min, Intermediate. Conditioning circuits that build your engine without wrecking your joints.",
-"url": "classes.html#c-mon-1830-engine-room",
-"type": "Classes"
-},
-{
 "title": "Slow Yoga (Monday 7:15pm)",
 "text": "Yoga class with Dev Nair, 60 min, Beginner. Long holds, simple poses and plenty of time to find them.",
 "url": "classes.html#c-mon-1915-slow-yoga",
 "type": "Classes"
 },
 {
-"title": "Stretch Club (Monday 8:00pm)",
-"text": "Mobility class with Dev Nair, 45 min, Beginner. Easy, guided stretching with foam rollers and bands.",
-"url": "classes.html#c-mon-2000-stretch-club",
-"type": "Classes"
-},
-{
 "title": "Lift Lab (Tuesday 5:30am)",
 "text": "Strength class with Marcus Quinn, 45 min, Intermediate. Programmed strength work with tempo, pauses and plenty of coaching.",
 "url": "classes.html#c-tue-0530-lift-lab",
-"type": "Classes"
-},
-{
-"title": "Sprint Intervals (Tuesday 6:30am)",
-"text": "HIIT class with Jonah Reyes, 45 min, Advanced. Short, sharp sprints and hard rests. Bring a good attitude and a towel.",
-"url": "classes.html#c-tue-0630-sprint-intervals",
 "type": "Classes"
 },
 {
@@ -133,39 +103,15 @@ export default [
 "type": "Classes"
 },
 {
-"title": "Bag Work (Tuesday 4:30pm)",
-"text": "Boxing class with Jonah Reyes, 45 min, Intermediate. Rounds on the heavy bags with combinations and conditioning between.",
-"url": "classes.html#c-tue-1630-bag-work",
-"type": "Classes"
-},
-{
 "title": "Power Hour (Tuesday 5:30pm)",
 "text": "Strength class with Dex Holloway, 60 min, Intermediate. Heavy compound lifts, built around a squat, press or pull of the day.",
 "url": "classes.html#c-tue-1730-power-hour",
 "type": "Classes"
 },
 {
-"title": "Vinyasa Flow (Tuesday 6:30pm)",
-"text": "Yoga class with Dev Nair, 60 min, All levels. A moving, breath-led flow to open the hips, spine and shoulders.",
-"url": "classes.html#c-tue-1830-vinyasa-flow",
-"type": "Classes"
-},
-{
 "title": "Boxing Fundamentals (Tuesday 7:00pm)",
 "text": "Boxing class with Jonah Reyes, 45 min, Beginner. Stance, footwork and the basic combinations on the bags. No sparring.",
 "url": "classes.html#c-tue-1900-boxing-fundamentals",
-"type": "Classes"
-},
-{
-"title": "Yin & Restore (Tuesday 8:00pm)",
-"text": "Yoga class with Dev Nair, 60 min, All levels. Deep, still stretches and long exhales to wind the week down.",
-"url": "classes.html#c-tue-2000-yin-restore",
-"type": "Classes"
-},
-{
-"title": "Barbell Basics (Wednesday 5:30am)",
-"text": "Strength class with Marcus Quinn, 45 min, Beginner. Learn the squat, hinge, press and row with a coach on every set.",
-"url": "classes.html#c-wed-0530-barbell-basics",
 "type": "Classes"
 },
 {
@@ -181,21 +127,9 @@ export default [
 "type": "Classes"
 },
 {
-"title": "Lift Lab (Wednesday 12:15pm)",
-"text": "Strength class with Marcus Quinn, 45 min, Intermediate. Programmed strength work with tempo, pauses and plenty of coaching.",
-"url": "classes.html#c-wed-1215-lift-lab",
-"type": "Classes"
-},
-{
 "title": "Ember HIIT (Wednesday 4:30pm)",
 "text": "HIIT class with Jonah Reyes, 45 min, All levels. Forty-five minutes of intervals on bikes, sleds, rowers and kettlebells.",
 "url": "classes.html#c-wed-1630-ember-hiit",
-"type": "Classes"
-},
-{
-"title": "Boxing Conditioning (Wednesday 5:30pm)",
-"text": "Boxing class with Jonah Reyes, 45 min, Advanced. Fast rounds, pad work and core finishers. Wraps are provided.",
-"url": "classes.html#c-wed-1730-boxing-conditioning",
 "type": "Classes"
 },
 {
@@ -211,39 +145,15 @@ export default [
 "type": "Classes"
 },
 {
-"title": "Vinyasa Flow (Wednesday 8:00pm)",
-"text": "Yoga class with Dev Nair, 60 min, All levels. A moving, breath-led flow to open the hips, spine and shoulders.",
-"url": "classes.html#c-wed-2000-vinyasa-flow",
-"type": "Classes"
-},
-{
 "title": "Power Hour (Thursday 5:30am)",
 "text": "Strength class with Dex Holloway, 45 min, Intermediate. Heavy compound lifts, built around a squat, press or pull of the day.",
 "url": "classes.html#c-thu-0530-power-hour",
 "type": "Classes"
 },
 {
-"title": "Ember HIIT (Thursday 6:30am)",
-"text": "HIIT class with Jonah Reyes, 45 min, All levels. Forty-five minutes of intervals on bikes, sleds, rowers and kettlebells.",
-"url": "classes.html#c-thu-0630-ember-hiit",
-"type": "Classes"
-},
-{
-"title": "Vinyasa Flow (Thursday 9:00am)",
-"text": "Yoga class with Dev Nair, 60 min, All levels. A moving, breath-led flow to open the hips, spine and shoulders.",
-"url": "classes.html#c-thu-0900-vinyasa-flow",
-"type": "Classes"
-},
-{
 "title": "Stretch Club (Thursday 12:15pm)",
 "text": "Mobility class with Dev Nair, 45 min, Beginner. Easy, guided stretching with foam rollers and bands.",
 "url": "classes.html#c-thu-1215-stretch-club",
-"type": "Classes"
-},
-{
-"title": "Boxing Fundamentals (Thursday 4:30pm)",
-"text": "Boxing class with Jonah Reyes, 45 min, Beginner. Stance, footwork and the basic combinations on the bags. No sparring.",
-"url": "classes.html#c-thu-1630-boxing-fundamentals",
 "type": "Classes"
 },
 {
@@ -256,12 +166,6 @@ export default [
 "title": "Sprint Intervals (Thursday 6:30pm)",
 "text": "HIIT class with Jonah Reyes, 45 min, Advanced. Short, sharp sprints and hard rests. Bring a good attitude and a towel.",
 "url": "classes.html#c-thu-1830-sprint-intervals",
-"type": "Classes"
-},
-{
-"title": "Hips & Shoulders (Thursday 7:15pm)",
-"text": "Mobility class with Marcus Quinn, 45 min, All levels. Targeted mobility for the two joints that limit most lifters.",
-"url": "classes.html#c-thu-1915-hips-shoulders",
 "type": "Classes"
 },
 {
@@ -283,24 +187,6 @@ export default [
 "type": "Classes"
 },
 {
-"title": "Slow Yoga (Friday 9:00am)",
-"text": "Yoga class with Dev Nair, 60 min, Beginner. Long holds, simple poses and plenty of time to find them.",
-"url": "classes.html#c-fri-0900-slow-yoga",
-"type": "Classes"
-},
-{
-"title": "Ember HIIT (Friday 12:15pm)",
-"text": "HIIT class with Jonah Reyes, 45 min, All levels. Forty-five minutes of intervals on bikes, sleds, rowers and kettlebells.",
-"url": "classes.html#c-fri-1215-ember-hiit",
-"type": "Classes"
-},
-{
-"title": "Bag Work (Friday 4:30pm)",
-"text": "Boxing class with Jonah Reyes, 45 min, Intermediate. Rounds on the heavy bags with combinations and conditioning between.",
-"url": "classes.html#c-fri-1630-bag-work",
-"type": "Classes"
-},
-{
 "title": "Barbell Basics (Friday 5:30pm)",
 "text": "Strength class with Marcus Quinn, 60 min, Beginner. Learn the squat, hinge, press and row with a coach on every set.",
 "url": "classes.html#c-fri-1730-barbell-basics",
@@ -310,18 +196,6 @@ export default [
 "title": "Boxing Conditioning (Friday 6:30pm)",
 "text": "Boxing class with Jonah Reyes, 45 min, Advanced. Fast rounds, pad work and core finishers. Wraps are provided.",
 "url": "classes.html#c-fri-1830-boxing-conditioning",
-"type": "Classes"
-},
-{
-"title": "Mobility Reset (Friday 7:15pm)",
-"text": "Mobility class with Dev Nair, 45 min, All levels. Joint-by-joint work to move better in the gym and at your desk.",
-"url": "classes.html#c-fri-1915-mobility-reset",
-"type": "Classes"
-},
-{
-"title": "Vinyasa Flow (Friday 8:00pm)",
-"text": "Yoga class with Dev Nair, 60 min, All levels. A moving, breath-led flow to open the hips, spine and shoulders.",
-"url": "classes.html#c-fri-2000-vinyasa-flow",
 "type": "Classes"
 },
 {
@@ -355,30 +229,6 @@ export default [
 "type": "Classes"
 },
 {
-"title": "Barbell Basics (Saturday 1:00pm)",
-"text": "Strength class with Marcus Quinn, 60 min, Beginner. Learn the squat, hinge, press and row with a coach on every set.",
-"url": "classes.html#c-sat-1300-barbell-basics",
-"type": "Classes"
-},
-{
-"title": "Bag Work (Saturday 2:00pm)",
-"text": "Boxing class with Jonah Reyes, 45 min, Intermediate. Rounds on the heavy bags with combinations and conditioning between.",
-"url": "classes.html#c-sat-1400-bag-work",
-"type": "Classes"
-},
-{
-"title": "Yin & Restore (Saturday 3:30pm)",
-"text": "Yoga class with Dev Nair, 60 min, All levels. Deep, still stretches and long exhales to wind the week down.",
-"url": "classes.html#c-sat-1530-yin-restore",
-"type": "Classes"
-},
-{
-"title": "Slow Yoga (Sunday 8:00am)",
-"text": "Yoga class with Dev Nair, 60 min, Beginner. Long holds, simple poses and plenty of time to find them.",
-"url": "classes.html#c-sun-0800-slow-yoga",
-"type": "Classes"
-},
-{
 "title": "Lift Lab (Sunday 9:00am)",
 "text": "Strength class with Marcus Quinn, 60 min, Intermediate. Programmed strength work with tempo, pauses and plenty of coaching.",
 "url": "classes.html#c-sun-0900-lift-lab",
@@ -391,27 +241,9 @@ export default [
 "type": "Classes"
 },
 {
-"title": "Boxing Fundamentals (Sunday 11:00am)",
-"text": "Boxing class with Jonah Reyes, 45 min, Beginner. Stance, footwork and the basic combinations on the bags. No sparring.",
-"url": "classes.html#c-sun-1100-boxing-fundamentals",
-"type": "Classes"
-},
-{
-"title": "Hips & Shoulders (Sunday 12:00pm)",
-"text": "Mobility class with Marcus Quinn, 45 min, All levels. Targeted mobility for the two joints that limit most lifters.",
-"url": "classes.html#c-sun-1200-hips-shoulders",
-"type": "Classes"
-},
-{
 "title": "Yin & Restore (Sunday 3:00pm)",
 "text": "Yoga class with Dev Nair, 60 min, All levels. Deep, still stretches and long exhales to wind the week down.",
 "url": "classes.html#c-sun-1500-yin-restore",
-"type": "Classes"
-},
-{
-"title": "Stretch Club (Sunday 4:30pm)",
-"text": "Mobility class with Dev Nair, 45 min, Beginner. Easy, guided stretching with foam rollers and bands.",
-"url": "classes.html#c-sun-1630-stretch-club",
 "type": "Classes"
 },
 {

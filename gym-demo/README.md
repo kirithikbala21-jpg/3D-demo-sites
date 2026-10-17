@@ -11,7 +11,7 @@ The home page is one long page, in this order: announcement bar, hero, the offer
 | Path | What it is |
 | --- | --- |
 | `site.config.json` | Brand, contact, hours, time zone, theme colours, nav, page list, announcement text, hero video |
-| `data/*.json` | `classes` (the 60-class timetable), `coaches`, `plans`, `planfaq`, `faq`, `journal`, `careers`, `photos` |
+| `data/*.json` | `classes` (the 32-class timetable), `coaches`, `plans`, `planfaq`, `faq`, `journal`, `careers`, `photos` |
 | `tools/templates/` | `layout.html` (shared header/footer), `pages/` and `sections/` |
 | `tools/build.py` | Builds every `.html` page, `search-data.js`, `sitemap.xml` and `site.webmanifest` |
 | `tools/make-assets.mjs` | Makes the PNG icons, `favicon.ico` and `img/og.png` (a real screenshot of the 3D hero) |
@@ -44,7 +44,7 @@ After any change run `python3 tools/build.py`; after colour or name changes also
 | **Offer wording (7-day trial)** | `tools/templates/sections/offer.html`, announcement text in `site.config.json` > `announcement` |
 | **Hero** | Headline and buttons in `tools/templates/sections/hero.html`; background photo slot `hero`, or a video via `hero` > `video` / `poster` in `site.config.json` |
 | **Photos** | `PHOTO-SLOTS.md` and `data/photos.json` (all 15 slots are filled; sources in `img/source/`, credits in `CREDITS-TODO.md`) |
-| **Numbers (14 years, 3,200 members, 60 classes)** | `tools/templates/sections/results.html` (`data-count` and the visible text) |
+| **Numbers (14 years, 3,200 members, 32 classes)** | `tools/templates/sections/results.html` (`data-count` and the visible text) |
 | **Sample quote** | `tools/templates/sections/results.html` |
 
 ## Hero background and video

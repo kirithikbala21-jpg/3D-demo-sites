@@ -8,7 +8,7 @@ Work through this list when a gym or studio (or any business using this template
 - [ ] Rewrite the section copy in `tools/templates/sections/` (offer, results, plans) and the page copy in `tools/templates/pages/`.
 - [ ] Remove every "Sample", "fictional" and "demo" label, and the demo footer line (`brand.demoFooter`).
 - [ ] Use the owner's real photography with `tools/add-photo.py` (see `PHOTO-SLOTS.md`). Make sure the owner has the rights to every photo, review and coach bio.
-- [ ] Replace the invented quote, coaches and numbers (14 years, 3,200 members, 60 classes) with real, permitted ones, or remove those blocks.
+- [ ] Replace the invented quote, coaches and numbers (14 years, 3,200 members, 32 classes) with real, permitted ones, or remove those blocks.
 
 ## Make it work for real
 - [ ] **Bookings:** connect `#trial-form` (see `js/trial.js`, "DEMO ONLY") to the booking system (Mindbody, Glofox, Pike13, Cal.com) and replace the demo availability and "spots left" logic with real data.

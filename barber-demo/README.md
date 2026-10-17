@@ -31,7 +31,7 @@ Site-wide: news ticker, full-screen menu, search (press `/`), "Your visit" drawe
 Hours, time zone, colours and contact details live in `site.config.json` and drive the hours table, the "Open now" chip, booking slots, chat answers and search-engine data. After changing services run `node tools/make-assets.mjs` to refresh `price-list.pdf`. The hero background video can be set with `hero.video` / `hero.poster`.
 
 ## Photos
-The site ships with illustrations because no photographs could be downloaded when it was built. Every gallery tile, signature-service panel and barber portrait has a photo slot in `data/photos.json`. Add licensed photos (Unsplash or Pexels are fine) with:
+The hero background, "Our story" background, the three signature-service panels and all eight gallery tiles use real photos (originals and crops in `img/source/`, compressed WebP in `img/photos/`). Credits currently read "Photo: Unsplash"; see `CREDITS-TODO.md` for the photographer names still to add. The four barber portraits are still monogram circles. Every slot lives in `data/photos.json`; slots with no file fall back to an illustration. Add licensed photos (Unsplash or Pexels are fine) with:
 ```
 python3 tools/add-photo.py ~/Downloads/chair.jpg gallery6 --alt "Leather barber chair under warm light" --credit "Jane Doe / Unsplash"
 python3 tools/build.py

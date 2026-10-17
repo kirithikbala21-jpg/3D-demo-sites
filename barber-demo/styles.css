@@ -182,7 +182,7 @@ body.no-scroll .mobile-cta { display: none; }
 .section-dark, .section-night, .section-wine { color: #F2EBDD; position: relative; overflow: hidden; }
 .section-dark { background: var(--black); }
 .section-night { background: var(--wine-night); }
-.section-wine { background: linear-gradient(135deg, var(--wine-deep), var(--wine-night)); }
+.section-wine { background: radial-gradient(700px 360px at 50% 0%, rgba(201, 162, 75, .22), transparent 70%), linear-gradient(135deg, #1f1b13, var(--black)); }
 .section-dark h2, .section-night h2, .section-wine h2 { color: #F2EBDD; }
 :where(.section-dark, .section-night, .section-wine) h2 em { color: var(--gold-light); }
 .section-dark p, .section-night p, .section-wine p { font-weight: 450; }
@@ -922,3 +922,19 @@ form[data-demo-form] .form-success { margin-top: 8px; }
 @media (prefers-reduced-motion: reduce) { .product:hover, .plan:hover, .post-card:hover, .crew li:hover, .event:hover, .back-top:hover { transform: none; } }
 
 .feature-photo { position: relative; min-height: 320px; overflow: hidden; }
+
+/* ---------- Photos: gold hairline, hero background and story background ---------- */
+.photo::before { content: ""; position: absolute; inset: 0; z-index: 2; box-shadow: inset 0 0 0 1px rgba(201, 162, 75, .6); pointer-events: none; }
+.feature-photo { min-height: 380px; }
+.hero-photo { position: absolute; inset: 0; }
+.hero-photo .photo::before { display: none; }
+.hero-photo .photo img { object-position: 50% 45%; filter: saturate(.9); }
+.hero-photo .photo::after { background: linear-gradient(90deg, rgba(11, 11, 12, .9) 0%, rgba(11, 11, 12, .68) 45%, rgba(11, 11, 12, .3) 100%), linear-gradient(180deg, rgba(11, 11, 12, .5), rgba(11, 11, 12, 0) 28%, rgba(11, 11, 12, .8)); }
+.hero-bg.has-photo .hero-panel { background: linear-gradient(180deg, rgba(38, 37, 34, .18), rgba(11, 11, 12, .3)); }
+.hero-bg.has-photo .hero-panel::before { opacity: .6; }
+.section-photo { position: absolute; inset: 0; z-index: 0; }
+.section-photo .photo::before { display: none; }
+.section-photo .photo img { object-position: 50% 40%; }
+.section-photo .photo::after { background: linear-gradient(90deg, rgba(11, 11, 12, .93), rgba(11, 11, 12, .82) 55%, rgba(11, 11, 12, .7)); }
+.has-bg-photo > .container { position: relative; z-index: 1; }
+@media (max-width: 899px) { .hero-photo .photo::after { background: linear-gradient(180deg, rgba(11, 11, 12, .85), rgba(11, 11, 12, .72) 50%, rgba(11, 11, 12, .92)); } }

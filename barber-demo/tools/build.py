@@ -269,16 +269,19 @@ def time_options():
 def photo_slots():
     """Real photos live in img/photos/ and are listed in data/photos.json (see tools/add-photo.py). A slot renders only when its file exists."""
     slots = DATA.get("photos", {}).get("slots", {})
-    html_by_slot, credits = {}, []
+    html_by_slot, credits = {}, {}
     for key, sl in slots.items():
         if (ROOT / sl["file"]).exists():
+            load = 'fetchpriority="high" decoding="async"' if sl.get("eager") else 'loading="lazy" decoding="async"'
             html_by_slot[key] = (f'<span class="photo"><img src="{sl["file"]}" alt="{html.escape(sl["alt"], quote=True)}" '
-                                 f'width="{sl["w"]}" height="{sl["h"]}" loading="lazy" decoding="async"></span>')
+                                 f'width="{sl["w"]}" height="{sl["h"]}" {load}></span>')
             if sl.get("credit"):
-                credits.append(sl["credit"])
+                credits.setdefault(sl["credit"], {})[sl["file"]] = sl.get("label", "")
         else:
             html_by_slot[key] = ""
-    return html_by_slot, "; ".join(dict.fromkeys(credits))
+    # one line per distinct credit, listing the photos it covers: "Photo: Unsplash (Hero chair, Skin fade, ...)"
+    text = "; ".join(f'{c} ({", ".join(l for l in dict.fromkeys(files.values()) if l)})' if any(files.values()) else c for c, files in credits.items())
+    return html_by_slot, text
 
 
 def build():

@@ -1,61 +1,110 @@
 {
  "_readme": "Add a real photo with: python3 tools/add-photo.py SOURCE.jpg SLOT --alt 'Describe it' --credit 'Photographer, Source'. Slots with no file on disk fall back to the illustration.",
  "slots": {
+  "hero": {
+   "file": "img/photos/hero-interior-chair.webp",
+   "alt": "Low-angle view of a vintage barber chair with tufted brown leather, chrome frame and white armrests in a dimly lit shop",
+   "credit": "Photo: Unsplash",
+   "label": "Hero chair",
+   "w": 900,
+   "h": 600,
+   "eager": true
+  },
+  "story": {
+   "file": "img/photos/hero-interior-chair.webp",
+   "alt": "Low-angle view of a vintage barber chair with tufted brown leather, chrome frame and white armrests in a dimly lit shop",
+   "credit": "Photo: Unsplash",
+   "label": "Hero chair",
+   "w": 900,
+   "h": 600
+  },
+  "signature1": {
+   "file": "img/photos/service-skin-fade.webp",
+   "alt": "Close-up of a barber's straight razor shaping the neckline of a skin fade on a client wearing a grey cape",
+   "credit": "Photo: Unsplash",
+   "label": "Skin fade",
+   "w": 900,
+   "h": 1125
+  },
+  "signature2": {
+   "file": "img/photos/service-hot-towel-shave.webp",
+   "alt": "Black and white photo of a tattooed barber trimming a client's beard with scissors, the client lying back under a striped cape",
+   "credit": "Photo: Unsplash",
+   "label": "Hot towel shave",
+   "w": 900,
+   "h": 1355
+  },
+  "signature3": {
+   "file": "img/photos/service-full-works.webp",
+   "alt": "A barber in glasses and a black t-shirt spraying hairspray while styling a seated client's hair",
+   "credit": "Photo: Unsplash",
+   "label": "The full works",
+   "w": 900,
+   "h": 1350
+  },
   "gallery1": {
-   "file": "img/photos/gallery-1.webp",
-   "alt": "",
-   "credit": "",
-   "w": 1600,
-   "h": 1067
+   "file": "img/photos/gallery-red-chair-room.webp",
+   "alt": "A red leather barber chair in a dark wood-panelled room hung with framed paintings, leather armchairs behind",
+   "credit": "Photo: Unsplash",
+   "label": "Red chair room",
+   "w": 900,
+   "h": 623
   },
   "gallery2": {
-   "file": "img/photos/gallery-2.webp",
-   "alt": "",
-   "credit": "",
-   "w": 1600,
-   "h": 1067
+   "file": "img/photos/gallery-tools.webp",
+   "alt": "Barber's tools on a wooden counter: scissors, black combs, a brush, a leather tool roll and a shaving brush",
+   "credit": "Photo: Unsplash",
+   "label": "Tools",
+   "w": 900,
+   "h": 600
   },
   "gallery3": {
-   "file": "img/photos/gallery-3.webp",
-   "alt": "",
-   "credit": "",
-   "w": 1600,
-   "h": 1067
+   "file": "img/photos/gallery-products.webp",
+   "alt": "A barber's counter with spray bottles, shaving brushes, a tin of pomade, a pump bottle and a scissors case",
+   "credit": "Photo: Unsplash",
+   "label": "Products",
+   "w": 900,
+   "h": 1350
   },
   "gallery4": {
-   "file": "img/photos/gallery-4.webp",
-   "alt": "",
-   "credit": "",
-   "w": 1600,
-   "h": 1067
+   "file": "img/photos/gallery-fade-gloves.webp",
+   "alt": "A barber in black gloves shaping a client's curly hair with clippers, with a fade along the side of the head",
+   "credit": "Photo: Unsplash",
+   "label": "Fade in progress",
+   "w": 900,
+   "h": 1197
   },
   "gallery5": {
-   "file": "img/photos/gallery-5.webp",
-   "alt": "",
-   "credit": "",
-   "w": 1600,
-   "h": 1067
+   "file": "img/photos/gallery-tools-detail.webp",
+   "alt": "Scissors, thinning shears, black combs and a small brush laid out on a polished wooden counter",
+   "credit": "Photo: Unsplash",
+   "label": "Tools detail",
+   "w": 430,
+   "h": 410
   },
   "gallery6": {
-   "file": "img/photos/gallery-6.webp",
-   "alt": "",
-   "credit": "",
-   "w": 1600,
-   "h": 1067
+   "file": "img/photos/gallery-red-chair-detail.webp",
+   "alt": "Close view of a red leather and chrome barber chair with its footrest",
+   "credit": "Photo: Unsplash",
+   "label": "Red chair detail",
+   "w": 390,
+   "h": 370
   },
   "gallery7": {
-   "file": "img/photos/gallery-7.webp",
-   "alt": "",
-   "credit": "",
-   "w": 1600,
-   "h": 1067
+   "file": "img/photos/gallery-fade-detail.webp",
+   "alt": "Side view of a client's curly hair with a clean fade at the temple",
+   "credit": "Photo: Unsplash",
+   "label": "Fade detail",
+   "w": 600,
+   "h": 677
   },
   "gallery8": {
-   "file": "img/photos/gallery-8.webp",
-   "alt": "",
-   "credit": "",
-   "w": 1600,
-   "h": 1067
+   "file": "img/photos/gallery-products-strip.webp",
+   "alt": "Close view of brown barber spray bottles and white shaving brushes on a black counter",
+   "credit": "Photo: Unsplash",
+   "label": "Products strip",
+   "w": 900,
+   "h": 290
   },
   "barberMarco": {
    "file": "img/photos/barber-marco.webp",
@@ -84,27 +133,6 @@
    "credit": "",
    "w": 1200,
    "h": 1500
-  },
-  "signature1": {
-   "file": "img/photos/signature-1.webp",
-   "alt": "",
-   "credit": "",
-   "w": 1600,
-   "h": 1067
-  },
-  "signature2": {
-   "file": "img/photos/signature-2.webp",
-   "alt": "",
-   "credit": "",
-   "w": 1600,
-   "h": 1067
-  },
-  "signature3": {
-   "file": "img/photos/signature-3.webp",
-   "alt": "",
-   "credit": "",
-   "w": 1600,
-   "h": 1067
   }
  }
 }

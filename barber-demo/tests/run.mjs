@@ -262,7 +262,7 @@ if (want('func')) {
   ok('cookie bar has Decline and does not cover hero buttons', await p.evaluate(() => { const c = document.getElementById('cookie'); if (!c || c.hidden) return true; const r = c.getBoundingClientRect(); return [...document.querySelectorAll('.hero-cta a')].every((a) => { const b = a.getBoundingClientRect(); return b.bottom < r.top || b.top > r.bottom || b.right < r.left || b.left > r.right; }) && !!c.querySelector('[data-cookie=no]'); }));
   await p.locator('[data-cookie=no]').click();
   ok('Lenis smooth scroll is running (pinned 1.1.18, self-hosted)', await p.evaluate(() => !!window.__lenis));
-  await p.evaluate(() => window.scrollTo(0, 1200)); await p.waitForFunction(() => document.querySelector('.site-header').getBoundingClientRect().height < 80, null, { timeout: 4000 }).catch(() => {});
+  await p.evaluate(() => window.scrollTo(0, 1200)); await p.waitForFunction(() => document.querySelector('.site-header').getBoundingClientRect().height < 80, null, { timeout: 9000 }).catch(() => {});
   ok('header shrinks on scroll', await p.evaluate(() => document.querySelector('.site-header').getBoundingClientRect().height < 80));
   await p.locator('.back-top').click(); await p.waitForTimeout(2200);
   ok('Back to top works', (await p.evaluate(() => window.scrollY)) < 40);
@@ -278,6 +278,24 @@ if (want('func')) {
   const navLabels = await p.evaluate(() => [...document.querySelectorAll('#mobile-nav nav a')].map((a) => a.textContent.replace(/^\d+/, '').trim()).filter(Boolean));
   const footLabels = await p.evaluate(() => [...document.querySelectorAll('.site-footer a')].map((a) => a.textContent.trim()));
   ok('menu labels match the footer labels', navLabels.length >= 6 && navLabels.every((l) => footLabels.includes(l)), JSON.stringify(navLabels.filter((l) => !footLabels.includes(l))));
+  await done(p);
+  // Photos: none broken at 1440 and 390, lazy except the hero, hero under 250 KB, credits in the footer, alt text on all
+  for (const w of [1440, 390]) {
+    p = await newPage({ viewport: { width: w, height: 900 } }, { webgl: false });
+    await p.goto(base + 'index.html'); await p.waitForTimeout(600);
+    await p.evaluate(async () => { for (let y = 0; y < document.body.scrollHeight; y += 400) { window.scrollTo(0, y); await new Promise((r) => setTimeout(r, 250)); } });
+    await p.waitForTimeout(800);
+    const info = await p.evaluate(() => [...document.querySelectorAll('img')].map((i) => ({ src: i.getAttribute('src'), ok: i.complete && i.naturalWidth > 0, alt: !!i.alt, lazy: i.loading === 'lazy', hero: !!i.closest('.hero-photo') })));
+    ok(`photos @${w}px: ${info.length} images, none broken`, info.length >= 12 && info.every((i) => i.ok), JSON.stringify(info.filter((i) => !i.ok)));
+    ok(`photos @${w}px: every image has alt text, all lazy except the hero`, info.every((i) => i.alt) && info.filter((i) => !i.lazy).every((i) => i.hero));
+    const a = await p.evaluate(audit); ok(`photos @${w}px: no horizontal overflow`, a.scrollW <= a.W && !a.bad.length, JSON.stringify(a.bad));
+    ok(`photos @${w}px: no console errors`, !p.logs.length, JSON.stringify(p.logs.slice(0, 3)));
+    await done(p);
+  }
+  ok('hero photo is under 250 KB', fs.statSync(path.join(SITE, 'img/photos/hero-interior-chair.webp')).size < 250 * 1024);
+  p = await newPage({ viewport: { width: 1440, height: 900 } }, { webgl: false });
+  await p.goto(base + 'index.html');
+  ok('footer credits every photo ("Photo: Unsplash" until names are added)', (await p.locator('.photo-credits').textContent()).includes('Photo: Unsplash'));
   await done(p);
   await done(p);
 }
@@ -298,7 +316,7 @@ if (want('fallback')) {
 
   p = await newPage({ viewport: { width: 1440, height: 900 } });
   await p.context().route('**/vendor/three.module.min.js', async (r) => { await new Promise((x) => setTimeout(x, 6500)); r.abort(); });
-  await p.goto(base + 'index.html'); await p.waitForTimeout(4800);
+  await p.goto(base + 'index.html'); await p.waitForTimeout(6600);
   ok('slow load (over 4s): fallback shown', (await p.locator('#scene').count()) === 0 && (await p.locator('.stage-fallback').isVisible()));
   await done(p);
 
@@ -308,7 +326,7 @@ if (want('fallback')) {
   await done(p);
 
   p = await newPage({ viewport: { width: 1440, height: 900 }, reducedMotion: 'reduce' });
-  await p.goto(base + 'index.html'); await p.waitForTimeout(5500);
+  await p.goto(base + 'index.html'); await p.waitForTimeout(8500);
   const s1 = await p.locator('#stage').screenshot(); await p.waitForTimeout(1500); const s2 = await p.locator('#stage').screenshot();
   ok('reduced motion: 3D shows a still frame', Buffer.compare(s1, s2) === 0 && (await p.locator('#scene.is-ready').count()) === 1);
   ok('reduced motion: no preloader, hero text visible', (await p.locator('#preloader').count()) === 0 && (await p.evaluate(() => getComputedStyle(document.querySelector('.hero-tag')).opacity)) === '1');

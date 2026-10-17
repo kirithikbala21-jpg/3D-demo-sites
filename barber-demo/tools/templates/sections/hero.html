@@ -1,6 +1,7 @@
     <!-- HERO -->
     <section class="hero" aria-labelledby="hero-title">
-      <div class="hero-bg" aria-hidden="true">
+      <div class="hero-bg{{#if photos.hero}} has-photo{{/if}}">
+        {{#if photos.hero}}<div class="hero-photo">{{{photos.hero}}}</div>{{/if}}
         {{#if hero.video}}<video class="hero-video" autoplay muted loop playsinline preload="metadata" poster="{{hero.poster}}"><source src="{{hero.video}}"></video>{{/if}}
         <div class="hero-panel"></div>
         <div class="hero-glow"></div>

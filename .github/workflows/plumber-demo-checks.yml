@@ -1,0 +1,36 @@
+name: plumber-demo checks
+
+on:
+  push:
+    paths: ['plumber-demo/**', '.github/workflows/plumber-demo-checks.yml']
+  pull_request:
+    paths: ['plumber-demo/**']
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Generated pages match the templates
+        run: |
+          python3 plumber-demo/tools/build.py
+          git diff --exit-code -- plumber-demo
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install test dependencies
+        working-directory: plumber-demo/tests
+        run: |
+          npm install
+          npx playwright-core install --with-deps chromium
+
+      - name: Overflow, accessibility, links, behaviour, fallbacks and weight
+        working-directory: plumber-demo/tests
+        run: node run.mjs

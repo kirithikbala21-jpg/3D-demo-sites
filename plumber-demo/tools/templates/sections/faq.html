@@ -1,0 +1,12 @@
+    <section class="section" id="faq" aria-labelledby="faq-title">
+      <div class="container narrow">
+        <div class="sec-head reveal">
+          <p class="eyebrow">Questions</p>
+          <h2 id="faq-title" data-pipe>Straight answers</h2>
+        </div>
+        <div class="faq-list reveal">
+          {{#each faq}}<details class="faq"><summary>{{q}}</summary><p>{{a}}</p></details>
+          {{/each}}
+        </div>
+      </div>
+    </section>

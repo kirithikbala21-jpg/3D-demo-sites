@@ -1,0 +1,26 @@
+[
+ {
+  "n": 1,
+  "title": "Call or request a quote",
+  "text": "Tell us what is wrong. We ask a few quick questions and book a time.",
+  "icon": "phone"
+ },
+ {
+  "n": 2,
+  "title": "A plumber arrives in the time window",
+  "text": "You get a window, not a whole day. We call when we are on the way.",
+  "icon": "van"
+ },
+ {
+  "n": 3,
+  "title": "Fixed price agreed before work",
+  "text": "We find the problem, quote a price and wait for your yes.",
+  "icon": "tag"
+ },
+ {
+  "n": 4,
+  "title": "Job done and guaranteed",
+  "text": "We clean up, test everything and back our work for 12 months.",
+  "icon": "shield"
+ }
+]

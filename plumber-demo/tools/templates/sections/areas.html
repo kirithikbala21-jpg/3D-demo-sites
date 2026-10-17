@@ -1,0 +1,28 @@
+    <section class="section section-grey" id="areas" aria-labelledby="areas-title">
+      <div class="container">
+        <div class="sec-head reveal">
+          <p class="eyebrow">Service areas</p>
+          <h2 id="areas-title" data-pipe>Do we come to you?</h2>
+          <p class="sec-lead">We cover {{suburbCount}} suburbs in south-east Melbourne.</p>
+        </div>
+        <noscript><p class="demo-note">We service {{suburbList}}. Most are within 30 to 60 minutes. Not sure about yours? Call <a href="tel:{{contact.phoneHref}}">{{contact.phone}}</a>.</p></noscript>
+        <div class="areas-grid">
+          <div class="card checker area-form-js reveal">
+            <form id="area-form" novalidate>
+              <label for="area-input">Your suburb or postcode</label>
+              <div class="input-row">
+                <input id="area-input" name="area" type="text" autocomplete="off" autocapitalize="words" spellcheck="false" placeholder="Clayton or 3168" aria-describedby="area-result">
+                <button class="btn btn-navy" type="submit">Check</button>
+              </div>
+            </form>
+            <p class="area-result" id="area-result" role="status" aria-live="polite" data-state="idle">Type a suburb or postcode to check.</p>
+          </div>
+          <div class="chips-wrap area-form-js reveal">
+            <p class="chips-label" id="chips-label">Or tap your suburb</p>
+            <ul class="chips" aria-labelledby="chips-label">
+              {{#each suburbs}}<li><button class="chip" type="button" data-suburb="{{name}}">{{name}}<span class="chip-pc">{{postcode}}</span></button></li>{{/each}}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>

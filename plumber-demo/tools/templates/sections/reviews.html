@@ -1,0 +1,21 @@
+    <section class="section" id="reviews" aria-labelledby="reviews-title">
+      <div class="container">
+        <div class="sec-head reveal">
+          <p class="eyebrow">Reviews</p>
+          <h2 id="reviews-title" data-pipe>What customers say</h2>
+          <div class="rating-summary">
+            <span class="rating-num">{{reviewsSummary.rating}}</span>
+            <span class="rating-meta"><span class="stars" role="img" aria-label="{{reviewsSummary.rating}} out of 5 stars">{{{starsRow}}}</span><span>Average of {{reviewsSummary.count}} sample reviews</span></span>
+            <span class="sample-tag">Sample reviews. Fictional.</span>
+          </div>
+        </div>
+        <p class="swipe-hint">Swipe for more</p>
+        <ul class="swipe reviews-row" data-lenis-prevent tabindex="0" aria-label="Customer reviews">
+          {{#each reviews}}
+          <li class="review"><span class="stars" role="img" aria-label="5 out of 5 stars">{{{stars}}}</span>
+            <blockquote><p>{{text}}</p></blockquote>
+            <p class="review-by"><strong>{{name}}</strong>, {{suburb}}<span class="review-job">{{job}}</span></p></li>
+          {{/each}}
+        </ul>
+      </div>
+    </section>

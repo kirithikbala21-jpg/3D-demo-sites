@@ -1,0 +1,20 @@
+    <section class="section section-grey" id="team" aria-labelledby="team-title">
+      <div class="container">
+        <div class="sec-head reveal">
+          <p class="eyebrow">Meet the team</p>
+          <h2 id="team-title" data-pipe>The people who turn up</h2>
+          <p class="sec-lead">Four of our {{brand.plumbers}} plumbers. All licensed, all local.</p>
+        </div>
+        <p class="swipe-hint">Swipe for more</p>
+        <ul class="swipe team-row" data-lenis-prevent tabindex="0" aria-label="Our plumbers">
+          {{#each team}}
+          <li class="member">
+            <div class="frame frame-team">{{{photoHtml}}}</div>
+            <h3 class="h-card">{{name}}</h3>
+            <p class="member-role">{{role}}</p>
+            <p class="member-meta">{{years}} years experience<br>{{contact.licence}}</p>
+          </li>
+          {{/each}}
+        </ul>
+      </div>
+    </section>

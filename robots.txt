@@ -4,3 +4,4 @@ Allow: /
 Sitemap: https://kirithikbala21-jpg.github.io/3D-demo-sites/cafe-demo-v2/sitemap.xml
 Sitemap: https://kirithikbala21-jpg.github.io/3D-demo-sites/barber-demo/sitemap.xml
 Sitemap: https://kirithikbala21-jpg.github.io/3D-demo-sites/gym-demo/sitemap.xml
+Sitemap: https://kirithikbala21-jpg.github.io/3D-demo-sites/plumber-demo/sitemap.xml

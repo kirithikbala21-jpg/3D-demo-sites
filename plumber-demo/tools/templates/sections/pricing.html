@@ -1,0 +1,20 @@
+    <section class="section" id="pricing" aria-labelledby="pricing-title">
+      <div class="container">
+        <div class="sec-head reveal">
+          <p class="eyebrow">Pricing guide</p>
+          <h2 id="pricing-title" data-pipe>What it usually costs</h2>
+          <p class="sec-lead">Typical starting prices. We quote the exact price before any work starts.</p>
+        </div>
+        <div class="pricing-wrap reveal">
+          <table class="price-table">
+            <caption class="sr-only">Typical starting prices in Australian dollars, GST included</caption>
+            <thead><tr><th scope="col">Job</th><th scope="col" class="num">Starting price</th></tr></thead>
+            <tbody>
+              {{#each pricing}}<tr data-price="{{priceAttr}}"><th scope="row">{{item}}<span class="pt-note">{{note}}</span></th><td class="num"><strong>{{priceText}}</strong></td></tr>
+              {{/each}}
+            </tbody>
+          </table>
+          <p class="price-note">Prices include GST. Final price quoted before work starts.</p>
+        </div>
+      </div>
+    </section>

@@ -1,0 +1,163 @@
+{
+ "brand": {
+  "name": "Waverley Plumbing & Gas",
+  "short": "Waverley Plumbing",
+  "line1": "Waverley",
+  "line2": "Plumbing & Gas",
+  "tagline": "Family plumbers in south-east Melbourne",
+  "description": "Licensed family plumbers and gas fitters in Glen Waverley and south-east Melbourne. 24/7 emergency plumbing, blocked drains, hot water and gas. Upfront prices before we start.",
+  "established": 2009,
+  "plumbers": 6,
+  "yearsInBusiness": 17,
+  "city": "Melbourne",
+  "demoFooter": "Demo website by KB Ventures",
+  "demoNotice": "Concept demo. Names, prices and reviews are fictional."
+ },
+ "contact": {
+  "phone": "03 5550 0142",
+  "phoneHref": "0355500142",
+  "email": "hello@example.com",
+  "street": "14 Example Road",
+  "locality": "Glen Waverley VIC 3150",
+  "suburb": "Glen Waverley",
+  "region": "VIC",
+  "postcode": "3150",
+  "country": "AU",
+  "abn": "00 000 000 000",
+  "licence": "Lic. 000000",
+  "mapsQuery": "14 Example Road, Glen Waverley VIC 3150"
+ },
+ "site": {
+  "baseUrl": "https://kirithikbala21-jpg.github.io/3D-demo-sites/plumber-demo/",
+  "folder": "plumber-demo",
+  "noindex": true,
+  "currency": "AUD",
+  "timezone": "Australia/Melbourne",
+  "timezoneLabel": "Melbourne",
+  "locale": "en-AU"
+ },
+ "theme": {
+  "navy": "#0b2545",
+  "orange": "#ff6a13",
+  "white": "#ffffff",
+  "grey": "#f2f4f7",
+  "text": "#1a2433",
+  "green": "#1e9e5a",
+  "greenText": "#0f6b3a",
+  "copper": "#c47a3d",
+  "bg": "#0b2545"
+ },
+ "hours": [
+  {
+   "day": 1,
+   "name": "Monday",
+   "open": 7,
+   "close": 20
+  },
+  {
+   "day": 2,
+   "name": "Tuesday",
+   "open": 7,
+   "close": 20
+  },
+  {
+   "day": 3,
+   "name": "Wednesday",
+   "open": 7,
+   "close": 20
+  },
+  {
+   "day": 4,
+   "name": "Thursday",
+   "open": 7,
+   "close": 20
+  },
+  {
+   "day": 5,
+   "name": "Friday",
+   "open": 7,
+   "close": 20
+  },
+  {
+   "day": 6,
+   "name": "Saturday",
+   "open": 8,
+   "close": 17
+  },
+  {
+   "day": 0,
+   "name": "Sunday",
+   "open": 8,
+   "close": 17
+  }
+ ],
+ "service": {
+  "arriveMinutes": 60,
+  "callbackMinutes": 15,
+  "warrantyMonths": 12,
+  "bigJobFinance": "Afterpay"
+ },
+ "reviewsSummary": {
+  "rating": "4.9",
+  "count": 212
+ },
+ "announcement": {
+  "text": "We answer 24/7.",
+  "lead": "Burst pipe? Blocked drain? ",
+  "link": "Call 03 5550 0142",
+  "href": "tel:0355500142"
+ },
+ "form": {
+  "endpoint": "",
+  "method": "POST",
+  "todo": "TODO: connect the quote form. Set form.endpoint to a form service URL (for example a Formspree, Basin or Getform endpoint) or to your own server route that emails hello@example.com. While endpoint is empty the form only validates, shows the confirmation and saves to this browser (localStorage key wp-quotes). Photo uploads need a service that accepts files."
+ },
+ "nav": [
+  {
+   "label": "Services",
+   "href": "#services"
+  },
+  {
+   "label": "Areas",
+   "href": "#areas"
+  },
+  {
+   "label": "Pricing",
+   "href": "#pricing"
+  },
+  {
+   "label": "Reviews",
+   "href": "#reviews"
+  },
+  {
+   "label": "Contact",
+   "href": "#contact"
+  }
+ ],
+ "pages": [
+  {
+   "file": "index.html",
+   "template": "index",
+   "title": "Emergency plumber in Glen Waverley",
+   "description": "Licensed plumbers and gas fitters across south-east Melbourne. 24/7 emergency line, upfront prices and a 12-month workmanship guarantee. Call 03 5550 0142.",
+   "jsonld": true
+  },
+  {
+   "file": "privacy.html",
+   "template": "privacy",
+   "title": "Privacy",
+   "description": "How this demo site handles your details, cookies and quote requests.",
+   "h1": "Privacy",
+   "crumb": "Privacy"
+  },
+  {
+   "file": "404.html",
+   "template": "notfound",
+   "title": "Page not found",
+   "description": "This page could not be found. Call us on 03 5550 0142 or head back to the home page.",
+   "h1": "That page has gone down the drain",
+   "crumb": "Page not found",
+   "hidden": true
+  }
+ ]
+}

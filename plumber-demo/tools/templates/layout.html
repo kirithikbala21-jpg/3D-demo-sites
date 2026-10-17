@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  {{#if page.isNotFound}}<script>document.write('<base href="' + (location.pathname.match(/^.*\/{{site.folder}}\//) || ['/'])[0] + '">');</script>{{/if}}
+  <title>{{page.fullTitle}}</title>
+  <meta name="description" content="{{page.description}}">
+  {{#if site.noindex}}<meta name="robots" content="noindex">{{/if}}
+  <meta name="theme-color" content="{{theme.bg}}">
+  <link rel="canonical" href="{{page.canonical}}">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="{{page.fullTitle}}">
+  <meta property="og:description" content="{{page.description}}">
+  <meta property="og:url" content="{{page.canonical}}">
+  <meta property="og:image" content="{{site.baseUrl}}img/og.png">
+  <meta property="og:locale" content="en_AU">
+  <meta property="og:site_name" content="{{brand.name}} (concept demo)">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="{{brand.name}}: Plumbers who turn up when they say they will. Call 03 5550 0142.">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{page.fullTitle}}">
+  <meta name="twitter:description" content="{{page.description}}">
+  <meta name="twitter:image" content="{{site.baseUrl}}img/og.png">
+  <link rel="icon" href="img/icon.svg" type="image/svg+xml">
+  <link rel="icon" href="favicon.ico" sizes="48x48">
+  <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="preload" href="fonts/barlow-condensed-700.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <style id="theme-tokens">{{{themeCss}}}</style>
+  <link rel="stylesheet" href="vendor/lenis-1.1.18.css">
+  <link rel="stylesheet" href="styles.css">
+  {{{jsonld}}}
+  <noscript><style>
+    /* Without JavaScript: show every job and the plain navigation as normal content. */
+    .nav-toggle, .tabs, .ba-range, .ba-knob, .swipe-hint, .area-form-js { display: none !important; }
+    .job-panel[hidden] { display: block !important; }
+    .job-panel + .job-panel { margin-top: 40px; }
+    .menu[hidden] { display: none !important; }
+    @media (max-width: 1039px) {
+      .header-inner { flex-wrap: wrap; }
+      .header-nav { display: flex !important; order: 9; width: 100%; overflow-x: auto; gap: 4px; padding-bottom: 8px; }
+      .header-nav a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 12px; white-space: nowrap; font-weight: 600; text-decoration: none; }
+    }
+  </style></noscript>
+  <script>
+    document.documentElement.classList.add('js');
+    /* Applied before first paint: no flash of the announcement bar once it has been dismissed. */
+    try { if (localStorage.getItem('wp-announce') === 'off') document.documentElement.classList.add('no-announce'); } catch (e) { /* ignore */ }
+  </script>
+</head>
+<body class="page-{{page.template}}" id="top">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <symbol id="logo-mark" viewBox="0 0 64 64">
+      <rect width="64" height="64" rx="14" fill="#0b2545"/>
+      <g transform="rotate(42 32 32)">
+        <rect x="28" y="24" width="8" height="34" rx="4" fill="#fff"/>
+        <path d="M32 3a12 12 0 0 0-8.500 20.500h17A12 12 0 0 0 32 3z" fill="#fff"/>
+        <rect x="28.500" y="1" width="7" height="12" fill="#0b2545"/>
+      </g>
+      <path d="M47 36s-8 8.500-8 14a8 8 0 0 0 16 0c0-5.500-8-14-8-14z" fill="#ff6a13"/>
+    </symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24"><path d="M5 3.500h4l2 5-2.500 1.500a11 11 0 0 0 5 5l1.500-2.500 5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 5.500a2 2 0 0 1 2-2z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 4.500-3.400 8-8 9-4.600-1-8-4.500-8-9V6z M8.500 12l2.500 2.500 4.500-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-tag" viewBox="0 0 24 24"><path d="M3 12.500V4h8.500L21 13.500 13.500 21z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="8" cy="9" r="1.600" fill="currentColor"/></symbol>
+    <symbol id="i-doc" viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z M14.500 3v5H19 M9 13h7 M9 17h5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 12.500l3 3 5-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-van" viewBox="0 0 24 24"><path d="M2 6.500h12v10H2z M14 10h4.500l3 3.500v3H14" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="7" cy="18" r="2" fill="#fff" stroke="currentColor" stroke-width="2"/><circle cx="17.500" cy="18" r="2" fill="#fff" stroke="currentColor" stroke-width="2"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.200 7-11.500A7 7 0 0 0 5 9.500C5 14.800 12 21 12 21z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="12" cy="9.500" r="2.500" fill="none" stroke="currentColor" stroke-width="2"/></symbol>
+    <symbol id="i-mail" viewBox="0 0 24 24"><path d="M3 5.500h18v13H3z M3.500 6.500L12 13l8.500-6.500" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 7v5.500l3.500 2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14 M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  </svg>
+
+  <!-- Announcement bar: one line, dismissible, remembered in localStorage (wp-announce) -->
+  <div class="announce" id="announce" role="region" aria-label="Announcement">
+    <p><span class="a-long">{{announcement.lead}}</span>{{announcement.text}} <a href="{{announcement.href}}">{{announcement.link}}</a></p>
+    <button class="announce-close" type="button" id="announce-close" aria-label="Dismiss announcement"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" focusable="false"><path d="M2 2l10 10M12 2L2 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+  </div>
+
+  <header class="site-header">
+    <div class="header-inner container">
+      <a class="brand" href="{{page.homeHref}}" aria-label="{{brand.name}}, home">
+        <svg class="brand-mark" width="40" height="40" aria-hidden="true" focusable="false"><use href="#logo-mark"/></svg>
+        <span class="brand-text"><span class="b1">{{brand.line1}}</span> <span class="b2">{{brand.line2}}</span></span>
+      </a>
+      <nav class="header-nav" aria-label="Main">
+        {{#each nav}}<a href="{{page.navBase}}{{this.href}}">{{this.label}}</a>{{/each}}
+      </nav>
+      <a class="btn btn-call header-call" href="tel:{{contact.phoneHref}}"><svg width="22" height="22" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg><span class="hc-text">Call {{contact.phone}}</span></a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="menu" aria-label="Open menu">
+        <span class="bars" aria-hidden="true"><span></span><span></span><span></span></span>
+      </button>
+    </div>
+  </header>
+
+  <div class="menu" id="menu" role="dialog" aria-modal="true" aria-label="Site menu" hidden data-lenis-prevent>
+    <div class="menu-inner">
+      <nav aria-label="Menu">
+        <ul>
+          <li><a href="{{page.homeHref}}">Home</a></li>
+          {{#each nav}}<li><a href="{{page.navBase}}{{this.href}}">{{this.label}}</a></li>{{/each}}
+          <li><a href="{{page.navBase}}#quote">Get a free quote</a></li>
+        </ul>
+      </nav>
+      <a class="btn btn-call btn-lg" href="tel:{{contact.phoneHref}}"><svg width="22" height="22" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg>Call {{contact.phone}}</a>
+      <p class="menu-note">Emergency line open 24/7.<br>{{{hoursSummary}}}</p>
+    </div>
+  </div>
+
+  <main id="main">
+{{{content}}}
+  </main>
+
+  <footer class="site-footer" id="footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <a class="brand brand-on-dark" href="{{page.homeHref}}" aria-label="{{brand.name}}, home">
+          <svg class="brand-mark" width="40" height="40" aria-hidden="true" focusable="false"><use href="#logo-mark"/></svg>
+          <span class="brand-text"><span class="b1">{{brand.line1}}</span> <span class="b2">{{brand.line2}}</span></span>
+        </a>
+        <p>{{brand.tagline}}. Family owned since {{brand.established}}.</p>
+        <p class="legal-ids"><span>{{contact.licence}}</span> <span>ABN {{contact.abn}}</span></p>
+      </div>
+      <div class="footer-col">
+        <h2 class="footer-h">Contact</h2>
+        <address>
+          <a class="foot-phone" href="tel:{{contact.phoneHref}}">{{contact.phone}}</a><br>
+          <a href="mailto:{{contact.email}}">{{contact.email}}</a><br>
+          {{contact.street}}<br>{{contact.locality}}
+        </address>
+      </div>
+      <div class="footer-col">
+        <h2 class="footer-h">Hours</h2>
+        <p>{{{hoursSummary}}}<br>Emergency line: 24/7</p>
+        <p class="open-status" data-open-status data-tone="dark">Emergency line open 24/7</p>
+      </div>
+      <div class="footer-col">
+        <h2 class="footer-h">Service areas</h2>
+        <p>{{suburbList}}.</p>
+      </div>
+      <div class="footer-col">
+        <h2 class="footer-h">Payment</h2>
+        <p>Card on the day. {{service.bigJobFinance}} for big jobs. Invoice for businesses. All prices in AUD, GST included.</p>
+        <p><a href="privacy.html">Privacy</a></p>
+      </div>
+    </div>
+    <div class="container footer-end">
+      <div class="gauge" id="gauge" data-pipe-end role="img" aria-label="Decorative water gauge. It fills as the pipe reaches the bottom of the page.">
+        <svg class="gauge-svg" width="220" height="44" viewBox="0 0 220 44" aria-hidden="true" focusable="false">
+          <defs><clipPath id="gauge-clip"><rect x="4" y="16" width="212" height="24" rx="12"/></clipPath></defs>
+          <rect x="4" y="16" width="212" height="24" rx="12" fill="rgba(255,255,255,.08)" stroke="rgba(255,255,255,.6)" stroke-width="2"/>
+          <g clip-path="url(#gauge-clip)"><rect class="gauge-fill" x="4" y="16" width="212" height="24" fill="#bfe3ff"/></g>
+          <g stroke="rgba(11,37,69,.55)" stroke-width="1.500"><path d="M57 16v8M110 16v8M163 16v8"/></g>
+          <g transform="translate(110 4)"><g class="gauge-drop"><path d="M0 -4s-4 4.500-4 7.500a4 4 0 0 0 8 0C4 0.500 0 -4 0 -4z" fill="#bfe3ff"/></g></g>
+        </svg>
+        <span class="gauge-label">Pipe pressure: <span class="gauge-pct" data-gauge-pct>100%</span></span>
+      </div>
+      <p class="footer-demo">{{brand.demoFooter}}</p>
+      <p class="footer-demo">{{brand.demoNotice}}</p>
+      <p class="footer-links"><a href="{{page.homeHref}}">Home</a> <a href="#top">Back to top</a></p>
+      {{#if photoCredits}}<p class="footer-credit">Photos: {{photoCredits}}</p>{{/if}}
+    </div>
+  </footer>
+
+  <nav class="sticky-bar" id="sticky-bar" aria-label="Call or get a quote">
+    <a class="btn btn-call" href="tel:{{contact.phoneHref}}"><svg width="22" height="22" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg>Call {{contact.phone}}</a>
+    <a class="btn btn-outline" href="{{page.navBase}}#quote">Get quote</a>
+  </nav>
+
+  <div class="cookie" id="cookie" role="region" aria-label="Cookie notice" hidden>
+    <p>We use basic cookies.</p>
+    <div class="cookie-actions">
+      <button type="button" class="cookie-btn cookie-yes" data-cookie="yes">Accept</button>
+      <button type="button" class="cookie-btn cookie-no" data-cookie="no">Decline</button>
+    </div>
+  </div>
+
+  <script type="application/json" id="site-data">{{{siteData}}}</script>
+  <script defer src="vendor/lenis-1.1.18.min.js"></script>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

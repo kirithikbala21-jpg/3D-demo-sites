@@ -1,0 +1,34 @@
+[
+ {
+  "q": "Do you charge a call-out fee?",
+  "a": "We quote a fixed price before work starts, and it includes getting to you. Emergency call-outs start from $199 and include the first 30 minutes of work. We tell you the call-out fee before the plumber leaves the depot."
+ },
+ {
+  "q": "Are you licensed and insured?",
+  "a": "Yes. Every plumber and gas fitter on our team is licensed (Lic. 000000) and we carry public liability insurance. Our licence number is on every quote and invoice."
+ },
+ {
+  "q": "Do you work weekends?",
+  "a": "Yes. We answer the phones from 8am to 5pm on Saturday and Sunday, and the emergency line is open 24/7, including public holidays."
+ },
+ {
+  "q": "Do you do gas?",
+  "a": "Yes. We do gas fitting, appliance installs and gas leak checks from $169. If you smell gas, leave the house, do not touch any switches and call us on 03 5550 0142. In an emergency call 000."
+ },
+ {
+  "q": "How fast can you come?",
+  "a": "In our service area, a plumber is usually at your door within 60 minutes. Closer suburbs are often 30 to 45 minutes. Check your suburb in the service areas section."
+ },
+ {
+  "q": "Do you give a warranty?",
+  "a": "Yes. All our work carries a 12-month workmanship guarantee. Parts and hot water systems also carry the manufacturer's warranty, which is often longer."
+ },
+ {
+  "q": "Do you work with insurers?",
+  "a": "Yes. We can supply photos, a written report and an itemised invoice for your insurance claim. It is worth checking with your insurer first about any approved providers."
+ },
+ {
+  "q": "Do you take card?",
+  "a": "Yes. Pay by card on the day. Afterpay is available on big jobs, and businesses can pay by invoice."
+ }
+]

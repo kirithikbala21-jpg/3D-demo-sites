@@ -1,0 +1,14 @@
+    <section class="section" id="how" aria-labelledby="how-title">
+      <div class="container">
+        <div class="sec-head reveal">
+          <p class="eyebrow">How it works</p>
+          <h2 id="how-title" data-pipe>Four steps, no surprises</h2>
+        </div>
+        <ol class="steps">
+          {{#each steps}}
+          <li class="step reveal"><span class="step-icon"><svg width="26" height="26" aria-hidden="true" focusable="false"><use href="#i-{{icon}}"/></svg></span>
+            <div><h3 class="h-card"><span class="step-n" aria-hidden="true">{{n}}</span>{{title}}</h3><p>{{text}}</p></div></li>
+          {{/each}}
+        </ol>
+      </div>
+    </section>

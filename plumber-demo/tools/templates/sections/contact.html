@@ -1,0 +1,19 @@
+    <section class="section section-grey" id="contact" aria-labelledby="contact-title">
+      <div class="container contact-grid">
+        <div class="contact-info reveal">
+          <p class="eyebrow">Find us</p>
+          <h2 id="contact-title" data-pipe>Contact and hours</h2>
+          <ul class="contact-list">
+            <li><svg width="24" height="24" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg><span><a class="contact-phone" href="tel:{{contact.phoneHref}}">{{contact.phone}}</a><br>Emergency line open 24/7</span></li>
+            <li><svg width="24" height="24" aria-hidden="true" focusable="false"><use href="#i-pin"/></svg><span>{{contact.street}}<br>{{contact.locality}}</span></li>
+            <li><svg width="24" height="24" aria-hidden="true" focusable="false"><use href="#i-mail"/></svg><span><a href="mailto:{{contact.email}}">{{contact.email}}</a></span></li>
+            <li><svg width="24" height="24" aria-hidden="true" focusable="false"><use href="#i-clock"/></svg><span>Office and booking hours<br>{{{hoursSummary}}}</span></li>
+          </ul>
+          <p class="open-status" data-open-status data-tone="light">Emergency line open 24/7</p>
+        </div>
+        <div class="map-wrap reveal">
+          <iframe class="map" title="Map showing {{contact.street}}, {{contact.locality}}" src="{{gmapEmbed}}" width="600" height="320" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          <p class="map-link"><a href="{{mapsUrl}}" target="_blank" rel="noopener">Open in Google Maps<span class="sr-only"> (opens in a new tab)</span></a></p>
+        </div>
+      </div>
+    </section>

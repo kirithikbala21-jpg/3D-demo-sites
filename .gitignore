@@ -2,3 +2,4 @@ node_modules/
 *.log
 barber-demo/tests/node_modules
 gym-demo/tests/node_modules
+plumber-demo/tests/node_modules

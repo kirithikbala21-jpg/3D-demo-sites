@@ -1,0 +1,21 @@
+    <section class="section" id="services" aria-labelledby="services-title">
+      <div class="container">
+        <div class="sec-head reveal">
+          <p class="eyebrow">Services</p>
+          <h2 id="services-title" data-pipe>What do you need?</h2>
+          <p class="sec-lead">Tap one and we will start your quote.</p>
+        </div>
+        <ul class="svc-grid">
+          {{#each services}}
+          <li class="reveal"><a class="svc-card" href="#quote" data-service="{{id}}" data-urgency="{{urgency}}">
+            <span class="frame frame-svc">{{{photoHtml}}}</span>
+            <span class="svc-body">
+              <h3 class="h-card">{{name}}</h3>
+              <span class="svc-promise">{{promise}}</span>
+              <span class="svc-price"><span class="price-chip"><span class="pc-label">{{label}}</span><span class="pc-num">{{priceBig}}</span></span></span>
+            </span>
+          </a></li>
+          {{/each}}
+        </ul>
+      </div>
+    </section>

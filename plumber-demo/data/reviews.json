@@ -1,0 +1,38 @@
+[
+ {
+  "name": "Priya",
+  "suburb": "Mount Waverley",
+  "text": "Came out at 9pm on a Sunday, fixed the burst pipe in 40 minutes. The price was the one they quoted on the phone.",
+  "job": "Burst pipe"
+ },
+ {
+  "name": "Dave",
+  "suburb": "Clayton",
+  "text": "Blocked drain had us stuck for two days. Cleared in an hour, and he showed us the camera footage so we knew what caused it.",
+  "job": "Blocked drain"
+ },
+ {
+  "name": "Sophie",
+  "suburb": "Oakleigh",
+  "text": "Hot water died on a freezing Tuesday. New unit installed by the afternoon, and they took the old one away.",
+  "job": "Hot water system"
+ },
+ {
+  "name": "Michael",
+  "suburb": "Box Hill",
+  "text": "Plumbing for our bathroom reno was done on the day they said. Tidy, quiet and no surprises on the invoice.",
+  "job": "Bathroom renovation"
+ },
+ {
+  "name": "Jenny",
+  "suburb": "Wheelers Hill",
+  "text": "Smelt gas at 6am and rang the emergency line. A real person answered, and a plumber was here in 35 minutes.",
+  "job": "Gas leak"
+ },
+ {
+  "name": "Tom",
+  "suburb": "Burwood",
+  "text": "Two taps and a leaking toilet valve fixed in one visit. Fair price, and he wiped down the vanity before he left.",
+  "job": "Taps and toilet"
+ }
+]

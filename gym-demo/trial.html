@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <title>Free trial &amp; class booking | Iron &amp; Ember Athletic Club (concept demo)</title>
+  <meta name="description" content="Start your 7-day free trial or book a class. Choose a coach, a date and a time. Demo booking with live time slots.">
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#0b0b0c">
+  <link rel="canonical" href="https://kirithikbala21-jpg.github.io/3D-demo-sites/gym-demo/trial.html">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Free trial &amp; class booking | Iron &amp; Ember Athletic Club (concept demo)">
+  <meta property="og:description" content="Start your 7-day free trial or book a class. Choose a coach, a date and a time. Demo booking with live time slots.">
+  <meta property="og:url" content="https://kirithikbala21-jpg.github.io/3D-demo-sites/gym-demo/trial.html">
+  <meta property="og:image" content="https://kirithikbala21-jpg.github.io/3D-demo-sites/gym-demo/img/og.png">
+  <meta property="og:locale" content="en_AU">
+  <meta property="og:site_name" content="Iron &amp; Ember Athletic Club (concept demo)">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Iron &amp; Ember Athletic Club: a bold headline over a dark gym photo with a small 3D Olympic barbell">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Free trial &amp; class booking | Iron &amp; Ember Athletic Club (concept demo)">
+  <meta name="twitter:description" content="Start your 7-day free trial or book a class. Choose a coach, a date and a time. Demo booking with live time slots.">
+  <meta name="twitter:image" content="https://kirithikbala21-jpg.github.io/3D-demo-sites/gym-demo/img/og.png">
+  <link rel="icon" href="img/icon.svg" type="image/svg+xml">
+  <link rel="icon" href="favicon.ico" sizes="48x48">
+  <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="preload" href="fonts/barlow-condensed-700.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/montserrat-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="vendor/lenis-1.1.18.css">
+  <link rel="stylesheet" href="styles.css">
+  
+  <noscript><style>
+    /* Without JavaScript: show the navigation and every timetable day as plain content. */
+    .preloader, .nav-toggle, .icon-btn, .announce-close, .filter-bar, .tablist-wrap { display: none !important; }
+    .mobile-nav[hidden] { display: block !important; position: static !important; animation: none; padding-top: calc(var(--header-h) + 8px) !important; padding-bottom: 8px !important; }
+    .day-panel[hidden] { display: block !important; }
+    .day-panel::before { content: attr(data-label); display: block; font: 700 1.75rem var(--font-head); text-transform: uppercase; margin: 32px 0 8px; color: var(--ink); }
+    .day-panel:first-of-type::before { margin-top: 0; }
+  </style></noscript>
+  <script>
+    document.documentElement.classList.add('js');
+    try { if (localStorage.getItem('vc-announce') === 'off') document.documentElement.classList.add('no-announce'); } catch (e) { /* ignore */ }
+    // Safety net: never leave the hero hidden if the main script fails to start.
+    setTimeout(function () { var d = document.documentElement; if (!d.classList.contains('is-ready')) d.classList.add('is-ready', 'is-failsafe'); }, 4500);
+  </script>
+  
+</head>
+<body class="page-trial">
+  
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="progress" aria-hidden="true"><span></span></div>
+
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <symbol id="logo-mark" viewBox="0 0 32 32">
+      <path d="M3 5h5.500v22H3zM12.500 5H29v5H18v4h9v5h-9v3h11v5H12.500z" fill="currentColor"/>
+    </symbol>
+  </svg>
+
+  <!-- Announcement bar: one static line, dismissible, remembered in localStorage (vc-announce) -->
+  <div class="announce" id="announce" role="region" aria-label="Announcement">
+    <p>First week free. No lock-in. <a href="trial.html">Start your trial</a></p>
+    <button class="announce-close" type="button" id="announce-close" aria-label="Dismiss announcement"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" focusable="false"><path d="M2 2l10 10M12 2L2 12" stroke="currentColor" stroke-width="1.600" stroke-linecap="round"/></svg></button>
+  </div>
+
+  <header class="site-header" id="top">
+    <div class="header-inner">
+      <a class="brand" href="index.html" aria-label="Iron &amp; Ember Athletic Club, home">
+        <span class="brand-mark"><svg width="26" height="26" aria-hidden="true" focusable="false"><use href="#logo-mark"/></svg></span>
+        <span class="brand-text" aria-hidden="true">Iron &amp; Ember</span>
+      </a>
+      <nav class="header-nav" aria-label="Quick links">
+        <a href="index.html">Home</a>
+        <a href="classes.html">Classes</a>
+        <a href="coaches.html">Coaches</a>
+        <a href="membership.html">Membership</a>
+        <a href="visit.html">Visit</a>
+      </nav>
+      <div class="header-actions">
+        <button class="icon-btn" type="button" id="search-open" aria-label="Search the site" aria-haspopup="dialog">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+        </button>
+        <a class="header-link" href="trial.html">Free trial</a>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="mobile-nav" aria-label="Open menu">
+          <span class="bars" aria-hidden="true"><span></span><span></span><span></span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="mobile-nav" id="mobile-nav" data-lenis-prevent role="dialog" aria-modal="true" aria-label="Site menu" hidden>
+    <div class="overlay-inner">
+      <nav aria-label="Main">
+        <ul>
+          <li><a href="index.html"><span class="n" aria-hidden="true">01</span>Home</a></li><li><a href="classes.html"><span class="n" aria-hidden="true">02</span>Classes</a></li><li><a href="coaches.html"><span class="n" aria-hidden="true">03</span>Coaches</a></li><li><a href="membership.html"><span class="n" aria-hidden="true">04</span>Membership</a></li><li><a href="journal.html"><span class="n" aria-hidden="true">05</span>Journal</a></li><li><a href="visit.html"><span class="n" aria-hidden="true">06</span>Visit</a></li>
+        </ul>
+        <a class="btn btn-primary" href="trial.html">Free trial</a>
+        <ul class="overlay-sub" aria-label="More">
+          <li><a href="membership.html#day-pass">Day pass &amp; gifts</a></li>
+          <li><a href="careers.html">Careers</a></li>
+          <li><a href="legal.html#privacy">Privacy</a></li>
+        </ul>
+      </nav>
+      <div class="overlay-info">
+        <p class="label">Find us</p>
+        <p>22 Example Street<br>Fortitude Valley QLD 4006</p>
+        <p><a href="tel:0755500188">07 5550 0188</a><br><a href="mailto:hello@example.com">hello@example.com</a></p>
+        <p class="label">Hours</p>
+        <p>Mon &ndash; Fri 5am &ndash; 10pm<br>Sat &ndash; Sun 7am &ndash; 6pm</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Site search -->
+  <div class="search" id="search" role="dialog" aria-modal="true" aria-label="Search the site" hidden>
+    <div class="search-inner">
+      <form id="search-form" role="search" novalidate>
+        <label class="sr-only" for="search-input">Search classes, coaches and pages</label>
+        <input id="search-input" type="search" placeholder="Search classes, coaches and pages" autocomplete="off" spellcheck="false">
+        <button type="button" class="icon-btn search-close" id="search-close" aria-label="Close search">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg>
+        </button>
+      </form>
+      <p class="search-hint" id="search-hint" aria-live="polite">Try &ldquo;yoga&rdquo;, &ldquo;boxing&rdquo; or &ldquo;parking&rdquo;.</p>
+      <ul class="search-results" id="search-results" data-lenis-prevent></ul>
+    </div>
+  </div>
+
+  <main id="main">
+
+    <section class="page-hero" aria-labelledby="page-title">
+      <div class="container">
+        <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="index.html">Home</a></li><li aria-current="page">Free trial</li></ol></nav>
+        <p class="eyebrow">First session on us</p>
+        <h1 id="page-title" data-split>Book a free trial</h1>
+        <p class="lead">Book your first coached session to start your 7-day free trial, or reserve a spot in any class. Pick a coach, a day and a time.</p>
+      </div>
+    </section>
+
+    <!-- FREE TRIAL / CLASS BOOKING -->
+    <section class="section section-dark" id="book" aria-labelledby="book-title">
+      <div class="container reserve-grid">
+        <div class="reveal">
+          <p class="eyebrow">Free trial &amp; classes</p>
+          <h2 id="book-title" data-split>Reserve your spot.</h2>
+          <p class="lead">Choose a free trial or a class, then a coach, a day and a time. You&rsquo;ll see your confirmation straight away. (This is a demo: nothing is sent.)</p>
+          <ul class="reserve-points">
+            <li>Your first coached session is free, with no card and no contract</li>
+            <li>Classes keep the same weekday and time every week</li>
+            <li>Cancel or change up to 4 hours before. Call us on 07 5550 0188 if you are running late</li>
+          </ul>
+        </div>
+        <div class="form-card reveal">
+          <form id="trial-form" novalidate>
+            <p class="step-label"><span aria-hidden="true">1</span> What would you like to book?</p>
+            <div class="field">
+              <label for="f-session" class="sr-only">Session</label>
+              <select id="f-session" name="session" aria-describedby="h-session">
+                <option value="trial" data-mins="45">Free trial session (45 min)</option><optgroup label="Monday classes"><option value="mon-0530-power-hour" data-mins="45" data-day="1" data-start="05:30" data-coach="dex">5:30am Power Hour (45 min)</option><option value="mon-0630-ember-hiit" data-mins="45" data-day="1" data-start="06:30" data-coach="jonah">6:30am Ember HIIT (45 min)</option><option value="mon-0900-vinyasa-flow" data-mins="60" data-day="1" data-start="09:00" data-coach="dev">9:00am Vinyasa Flow (60 min)</option><option value="mon-1215-mobility-reset" data-mins="45" data-day="1" data-start="12:15" data-coach="dev">12:15pm Mobility Reset (45 min)</option><option value="mon-1630-boxing-fundamentals" data-mins="45" data-day="1" data-start="16:30" data-coach="jonah">4:30pm Boxing Fundamentals (45 min)</option><option value="mon-1730-barbell-basics" data-mins="60" data-day="1" data-start="17:30" data-coach="marcus">5:30pm Barbell Basics (60 min)</option><option value="mon-1830-engine-room" data-mins="45" data-day="1" data-start="18:30" data-coach="dex">6:30pm Engine Room (45 min)</option><option value="mon-1915-slow-yoga" data-mins="60" data-day="1" data-start="19:15" data-coach="dev">7:15pm Slow Yoga (60 min)</option><option value="mon-2000-stretch-club" data-mins="45" data-day="1" data-start="20:00" data-coach="dev">8:00pm Stretch Club (45 min)</option></optgroup><optgroup label="Tuesday classes"><option value="tue-0530-lift-lab" data-mins="45" data-day="2" data-start="05:30" data-coach="marcus">5:30am Lift Lab (45 min)</option><option value="tue-0630-sprint-intervals" data-mins="45" data-day="2" data-start="06:30" data-coach="jonah">6:30am Sprint Intervals (45 min)</option><option value="tue-0915-hips-shoulders" data-mins="45" data-day="2" data-start="09:15" data-coach="marcus">9:15am Hips &amp; Shoulders (45 min)</option><option value="tue-1215-ember-hiit" data-mins="45" data-day="2" data-start="12:15" data-coach="jonah">12:15pm Ember HIIT (45 min)</option><option value="tue-1630-bag-work" data-mins="45" data-day="2" data-start="16:30" data-coach="jonah">4:30pm Bag Work (45 min)</option><option value="tue-1730-power-hour" data-mins="60" data-day="2" data-start="17:30" data-coach="dex">5:30pm Power Hour (60 min)</option><option value="tue-1830-vinyasa-flow" data-mins="60" data-day="2" data-start="18:30" data-coach="dev">6:30pm Vinyasa Flow (60 min)</option><option value="tue-1900-boxing-fundamentals" data-mins="45" data-day="2" data-start="19:00" data-coach="jonah">7:00pm Boxing Fundamentals (45 min)</option><option value="tue-2000-yin-restore" data-mins="60" data-day="2" data-start="20:00" data-coach="dev">8:00pm Yin &amp; Restore (60 min)</option></optgroup><optgroup label="Wednesday classes"><option value="wed-0530-barbell-basics" data-mins="45" data-day="3" data-start="05:30" data-coach="marcus">5:30am Barbell Basics (45 min)</option><option value="wed-0630-engine-room" data-mins="45" data-day="3" data-start="06:30" data-coach="dex">6:30am Engine Room (45 min)</option><option value="wed-0900-slow-yoga" data-mins="60" data-day="3" data-start="09:00" data-coach="dev">9:00am Slow Yoga (60 min)</option><option value="wed-1215-lift-lab" data-mins="45" data-day="3" data-start="12:15" data-coach="marcus">12:15pm Lift Lab (45 min)</option><option value="wed-1630-ember-hiit" data-mins="45" data-day="3" data-start="16:30" data-coach="jonah">4:30pm Ember HIIT (45 min)</option><option value="wed-1730-boxing-conditioning" data-mins="45" data-day="3" data-start="17:30" data-coach="jonah">5:30pm Boxing Conditioning (45 min)</option><option value="wed-1815-power-hour" data-mins="60" data-day="3" data-start="18:15" data-coach="dex">6:15pm Power Hour (60 min)</option><option value="wed-1915-mobility-reset" data-mins="45" data-day="3" data-start="19:15" data-coach="dev">7:15pm Mobility Reset (45 min)</option><option value="wed-2000-vinyasa-flow" data-mins="60" data-day="3" data-start="20:00" data-coach="dev">8:00pm Vinyasa Flow (60 min)</option></optgroup><optgroup label="Thursday classes"><option value="thu-0530-power-hour" data-mins="45" data-day="4" data-start="05:30" data-coach="dex">5:30am Power Hour (45 min)</option><option value="thu-0630-ember-hiit" data-mins="45" data-day="4" data-start="06:30" data-coach="jonah">6:30am Ember HIIT (45 min)</option><option value="thu-0900-vinyasa-flow" data-mins="60" data-day="4" data-start="09:00" data-coach="dev">9:00am Vinyasa Flow (60 min)</option><option value="thu-1215-stretch-club" data-mins="45" data-day="4" data-start="12:15" data-coach="dev">12:15pm Stretch Club (45 min)</option><option value="thu-1630-boxing-fundamentals" data-mins="45" data-day="4" data-start="16:30" data-coach="jonah">4:30pm Boxing Fundamentals (45 min)</option><option value="thu-1730-lift-lab" data-mins="60" data-day="4" data-start="17:30" data-coach="marcus">5:30pm Lift Lab (60 min)</option><option value="thu-1830-sprint-intervals" data-mins="45" data-day="4" data-start="18:30" data-coach="jonah">6:30pm Sprint Intervals (45 min)</option><option value="thu-1915-hips-shoulders" data-mins="45" data-day="4" data-start="19:15" data-coach="marcus">7:15pm Hips &amp; Shoulders (45 min)</option><option value="thu-2000-yin-restore" data-mins="60" data-day="4" data-start="20:00" data-coach="dev">8:00pm Yin &amp; Restore (60 min)</option></optgroup><optgroup label="Friday classes"><option value="fri-0530-lift-lab" data-mins="45" data-day="5" data-start="05:30" data-coach="marcus">5:30am Lift Lab (45 min)</option><option value="fri-0630-engine-room" data-mins="45" data-day="5" data-start="06:30" data-coach="dex">6:30am Engine Room (45 min)</option><option value="fri-0900-slow-yoga" data-mins="60" data-day="5" data-start="09:00" data-coach="dev">9:00am Slow Yoga (60 min)</option><option value="fri-1215-ember-hiit" data-mins="45" data-day="5" data-start="12:15" data-coach="jonah">12:15pm Ember HIIT (45 min)</option><option value="fri-1630-bag-work" data-mins="45" data-day="5" data-start="16:30" data-coach="jonah">4:30pm Bag Work (45 min)</option><option value="fri-1730-barbell-basics" data-mins="60" data-day="5" data-start="17:30" data-coach="marcus">5:30pm Barbell Basics (60 min)</option><option value="fri-1830-boxing-conditioning" data-mins="45" data-day="5" data-start="18:30" data-coach="jonah">6:30pm Boxing Conditioning (45 min)</option><option value="fri-1915-mobility-reset" data-mins="45" data-day="5" data-start="19:15" data-coach="dev">7:15pm Mobility Reset (45 min)</option><option value="fri-2000-vinyasa-flow" data-mins="60" data-day="5" data-start="20:00" data-coach="dev">8:00pm Vinyasa Flow (60 min)</option></optgroup><optgroup label="Saturday classes"><option value="sat-0730-power-hour" data-mins="45" data-day="6" data-start="07:30" data-coach="dex">7:30am Power Hour (45 min)</option><option value="sat-0830-ember-hiit" data-mins="45" data-day="6" data-start="08:30" data-coach="jonah">8:30am Ember HIIT (45 min)</option><option value="sat-0930-vinyasa-flow" data-mins="60" data-day="6" data-start="09:30" data-coach="dev">9:30am Vinyasa Flow (60 min)</option><option value="sat-1030-boxing-fundamentals" data-mins="45" data-day="6" data-start="10:30" data-coach="jonah">10:30am Boxing Fundamentals (45 min)</option><option value="sat-1130-mobility-reset" data-mins="45" data-day="6" data-start="11:30" data-coach="dev">11:30am Mobility Reset (45 min)</option><option value="sat-1300-barbell-basics" data-mins="60" data-day="6" data-start="13:00" data-coach="marcus">1:00pm Barbell Basics (60 min)</option><option value="sat-1400-bag-work" data-mins="45" data-day="6" data-start="14:00" data-coach="jonah">2:00pm Bag Work (45 min)</option><option value="sat-1530-yin-restore" data-mins="60" data-day="6" data-start="15:30" data-coach="dev">3:30pm Yin &amp; Restore (60 min)</option></optgroup><optgroup label="Sunday classes"><option value="sun-0800-slow-yoga" data-mins="60" data-day="0" data-start="08:00" data-coach="dev">8:00am Slow Yoga (60 min)</option><option value="sun-0900-lift-lab" data-mins="60" data-day="0" data-start="09:00" data-coach="marcus">9:00am Lift Lab (60 min)</option><option value="sun-1000-ember-hiit" data-mins="45" data-day="0" data-start="10:00" data-coach="jonah">10:00am Ember HIIT (45 min)</option><option value="sun-1100-boxing-fundamentals" data-mins="45" data-day="0" data-start="11:00" data-coach="jonah">11:00am Boxing Fundamentals (45 min)</option><option value="sun-1200-hips-shoulders" data-mins="45" data-day="0" data-start="12:00" data-coach="marcus">12:00pm Hips &amp; Shoulders (45 min)</option><option value="sun-1500-yin-restore" data-mins="60" data-day="0" data-start="15:00" data-coach="dev">3:00pm Yin &amp; Restore (60 min)</option><option value="sun-1630-stretch-club" data-mins="45" data-day="0" data-start="16:30" data-coach="dev">4:30pm Stretch Club (45 min)</option></optgroup>
+              </select>
+              <p class="hint" id="h-session" aria-live="polite"></p>
+            </div>
+
+            <fieldset class="coach-pick">
+              <legend class="step-label"><span aria-hidden="true">2</span> Coach</legend>
+              <label class="bp bp-any"><input type="radio" name="coach" value="any" checked><span class="bp-card"><span class="bp-ph" aria-hidden="true">Any</span><span class="bp-txt"><strong>Next available</strong><small>Shortest wait</small></span></span></label>
+              
+              <label class="bp"><input type="radio" name="coach" value="marcus"><span class="bp-card"><span class="bp-ph" aria-hidden="true">M</span><span class="bp-txt"><strong>Marcus Quinn</strong><small>Strength &middot; Powerlifting basics &middot; Return to training</small></span></span></label>
+              
+              <label class="bp"><input type="radio" name="coach" value="jonah"><span class="bp-card"><span class="bp-ph" aria-hidden="true">J</span><span class="bp-txt"><strong>Jonah Reyes</strong><small>HIIT &middot; Boxing &middot; Fat loss</small></span></span></label>
+              
+              <label class="bp"><input type="radio" name="coach" value="dev"><span class="bp-card"><span class="bp-ph" aria-hidden="true">D</span><span class="bp-txt"><strong>Dev Nair</strong><small>Yoga &middot; Mobility &middot; Recovery</small></span></span></label>
+              
+              <label class="bp"><input type="radio" name="coach" value="dex"><span class="bp-card"><span class="bp-ph" aria-hidden="true">D</span><span class="bp-txt"><strong>Dex Holloway</strong><small>Olympic lifting &middot; Strength &middot; Conditioning</small></span></span></label>
+              
+            </fieldset>
+            <p class="hint" id="h-coach" aria-live="polite"></p>
+
+            <p class="step-label"><span aria-hidden="true">3</span> Date</p>
+            <div class="cal" id="cal">
+              <div class="cal-head">
+                <button type="button" class="cal-nav" id="cal-prev" aria-label="Previous month">&lsaquo;</button>
+                <strong id="cal-title" aria-live="polite"></strong>
+                <button type="button" class="cal-nav" id="cal-next" aria-label="Next month">&rsaquo;</button>
+              </div>
+              <div class="cal-dow" aria-hidden="true"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span></div>
+              <div class="cal-grid" id="cal-grid" role="group" aria-label="Days"></div>
+            </div>
+            <input type="hidden" id="f-date" name="date">
+            <p class="error" id="e-date" aria-live="polite"></p>
+
+            <p class="step-label"><span aria-hidden="true">4</span> Time</p>
+            <div class="slots" id="slots" role="group" aria-label="Available times"></div>
+            <input type="hidden" id="f-time" name="time">
+            <p class="hint" id="h-time" aria-live="polite">Choose a date to see which times are open.</p>
+            <p class="error" id="e-time" aria-live="polite"></p>
+
+            <p class="step-label"><span aria-hidden="true">5</span> Your details</p>
+            <div class="field">
+              <label for="f-name">Name</label>
+              <input id="f-name" name="name" type="text" autocomplete="name" aria-describedby="e-name">
+              <p class="error" id="e-name" aria-live="polite"></p>
+            </div>
+            <div class="field">
+              <label for="f-phone">Phone</label>
+              <input id="f-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="e.g. 07 5550 0100" aria-describedby="e-phone">
+              <p class="error" id="e-phone" aria-live="polite"></p>
+            </div>
+            <div class="field">
+              <label for="f-message">Notes <span class="optional">(optional)</span></label>
+              <textarea id="f-message" name="message" rows="2" maxlength="500" placeholder="Injuries, goals, anything your coach should know" aria-describedby="e-message"></textarea>
+              <p class="error" id="e-message" aria-live="polite"></p>
+            </div>
+            <!--
+              DEMO ONLY: there is no backend. The booking is saved to this browser (localStorage key "vc-bookings").
+              To make it real, post the data in js/trial.js (see "DEMO ONLY") to your booking system
+              (Mindbody, Glofox, Pike13, Cal.com) and show the confirmation after a 200 response.
+            -->
+            <button class="btn btn-primary btn-block" type="submit">Confirm booking</button>
+            <p class="note">Demo only: nothing is sent to a real gym.</p>
+          </form>
+          <div class="form-success" id="form-success" role="status" tabindex="-1" hidden>
+            <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M7.500 12.500l3 3 6-7"/></svg>
+            <h3>You&rsquo;re in, <span id="ok-name">friend</span>.</h3>
+            <p id="ok-detail"></p>
+            <dl class="ok-summary" id="ok-summary"></dl>
+            <p class="demo-banner"><strong>This is a demo, no real booking was made.</strong> The details were saved only in this browser.</p>
+            <button class="btn btn-secondary" type="button" id="form-reset">Book another session</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a class="brand-wide" href="index.html" aria-label="Iron &amp; Ember Athletic Club, home page">
+            <svg width="30" height="30" aria-hidden="true" focusable="false"><use href="#logo-mark"/></svg>
+            <span class="script">Iron &amp; Ember Athletic Club</span>
+          </a>
+          <p>Strength coaching, group classes and open gym in the heart of Fortitude Valley.</p>
+        </div>
+        <nav class="footer-col" aria-label="Footer: explore">
+          <h2>Explore</h2>
+          <ul>
+            <li><a href="index.html">Home</a></li><li><a href="classes.html">Classes</a></li><li><a href="coaches.html">Coaches</a></li><li><a href="membership.html">Membership</a></li><li><a href="journal.html">Journal</a></li><li><a href="visit.html">Visit</a></li>
+            <li><a href="trial.html">Free trial</a></li>
+          </ul>
+        </nav>
+        <div class="footer-col">
+          <h2>Visit</h2>
+          <p>22 Example Street<br>Fortitude Valley QLD 4006</p>
+          <p><a href="tel:0755500188">07 5550 0188</a><br><a href="mailto:hello@example.com">hello@example.com</a></p>
+        </div>
+        <div class="footer-col">
+          <h2>Hours</h2>
+          <p>Mon &ndash; Fri 5am &ndash; 10pm<br>Sat &ndash; Sun 7am &ndash; 6pm</p>
+        </div>
+      </div>
+      <nav class="footer-legal" aria-label="Footer: more">
+        <a href="membership.html#day-pass">Day pass &amp; gifts</a>
+        <a href="careers.html">Careers</a>
+        <a href="legal.html#privacy">Privacy</a>
+        <a href="legal.html#terms">Terms</a>
+        <a href="legal.html#cookies">Cookies</a>
+      </nav>
+      <div class="footer-bottom">
+        <p>Concept demo by KB Ventures. Not a real business.</p>
+        <p class="brandline">Demo website by KB Ventures</p>
+        <p class="photo-credits">Photo: Unsplash (Hero, Class studio, Banner, Coaching, Weights floor, Kettlebells, Cardio and rowing, Recovery, Treadmills, Equipment rack, Sled track, Coach portrait 1, Coach portrait 2, Coach portrait 3, Coach portrait 4)</p>
+        <a class="back-top" href="#top">Back to top &uarr;</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Mobile quick actions -->
+  <nav class="mobile-cta" aria-label="Quick actions">
+    <a class="btn btn-secondary" href="tel:0755500188">Call</a>
+    <a class="btn btn-primary" href="trial.html">Free trial</a>
+  </nav>
+
+  <!-- Cookie preferences: a small card, bottom-left -->
+  <div class="cookie" id="cookie" role="region" aria-label="Cookie preferences" hidden>
+    <p><strong>No tracking by default.</strong> Allow simple analytics? <a href="legal.html#cookies">Details</a></p>
+    <div class="cookie-actions">
+      <button class="btn btn-primary btn-sm" type="button" data-cookie="yes">Accept</button>
+      <button class="btn btn-secondary btn-sm" type="button" data-cookie="no">Decline</button>
+    </div>
+  </div>
+
+  
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script type="application/json" id="site-data">{"name": "Iron & Ember Athletic Club", "phone": "07 5550 0188", "phoneHref": "0755500188", "email": "hello@example.com", "timezone": "Australia/Brisbane", "timezoneLabel": "Brisbane", "locale": "en-AU", "currency": "AUD", "hours": [{"day": 1, "name": "Monday", "open": 5, "close": 22}, {"day": 2, "name": "Tuesday", "open": 5, "close": 22}, {"day": 3, "name": "Wednesday", "open": 5, "close": 22}, {"day": 4, "name": "Thursday", "open": 5, "close": 22}, {"day": 5, "name": "Friday", "open": 5, "close": 22}, {"day": 6, "name": "Saturday", "open": 7, "close": 18}, {"day": 0, "name": "Sunday", "open": 7, "close": 18}], "coaches": {"marcus": "Marcus Quinn", "jonah": "Jonah Reyes", "dev": "Dev Nair", "dex": "Dex Holloway"}}</script>
+  <script defer src="vendor/lenis-1.1.18.min.js"></script><!-- Lenis 1.1.18 (MIT), self-hosted, pinned -->
+  <script type="module" src="main.js"></script>
+</body>
+</html>

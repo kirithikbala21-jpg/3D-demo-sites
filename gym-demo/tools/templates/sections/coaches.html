@@ -1,0 +1,24 @@
+    <!-- COACHES -->
+    <section class="section" id="coaches" aria-labelledby="coaches-title">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="eyebrow">Meet the coaches</p>
+          <h2 id="coaches-title" data-split>Four coaches. One standard.</h2>
+        </div>
+        <ul class="coach-grid">
+          {{#each coaches}}
+          <li class="coach reveal" id="coach-{{this.id}}">
+            <div class="coach-photo">{{{this.photoHtml}}}</div>
+            <div class="coach-body">
+              <h3>{{this.name}}</h3>
+              <p class="coach-tags">{{{this.tagsLine}}}</p>
+              <p>{{{this.bio}}}</p>
+              <p class="coach-leads"><strong>Leads:</strong> {{this.classNames}}</p>
+              <a class="link-arrow" href="trial.html?coach={{this.id}}">Book with {{this.first}} <span aria-hidden="true">&rarr;</span></a>
+            </div>
+          </li>
+          {{/each}}
+        </ul>
+        <p class="note team-note">Sample coaches for demo purposes. Names, bios and numbers are invented.</p>
+      </div>
+    </section>

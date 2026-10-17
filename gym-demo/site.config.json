@@ -1,0 +1,275 @@
+{
+ "brand": {
+  "name": "Iron & Ember Athletic Club",
+  "nameHtml": "Iron &amp; Ember Athletic Club",
+  "fullName": "Iron & Ember Athletic Club",
+  "fullNameHtml": "Iron &amp; Ember Athletic Club",
+  "wordmark": "Iron &amp; Ember Athletic Club",
+  "short": "Iron & Ember",
+  "city": "Fortitude Valley",
+  "tagline": "Train hard. Recover well. Strength coaching, group classes and open gym in the heart of Fortitude Valley.",
+  "description": "Iron & Ember Athletic Club is a fictional gym used as a concept demo: strength coaching, group classes, open gym, recovery and a spinning 3D barbell.",
+  "demoFooter": "Concept demo by KB Ventures. Not a real business."
+ },
+ "contact": {
+  "street": "22 Example Street",
+  "locality": "Fortitude Valley QLD 4006",
+  "postcode": "4006",
+  "region": "QLD",
+  "phone": "07 5550 0188",
+  "phoneHref": "0755500188",
+  "email": "hello@example.com",
+  "country": "AU",
+  "mapsQuery": "Fortitude Valley QLD"
+ },
+ "site": {
+  "baseUrl": "https://kirithikbala21-jpg.github.io/3D-demo-sites/gym-demo/",
+  "folder": "gym-demo",
+  "noindex": true,
+  "currency": "AUD",
+  "timezone": "Australia/Brisbane",
+  "timezoneLabel": "Brisbane",
+  "locale": "en-AU"
+ },
+ "theme": {
+  "bg": "#0b0b0c",
+  "card": "#161618",
+  "accent": "#ffe000"
+ },
+ "hours": [
+  {
+   "day": 1,
+   "name": "Monday",
+   "open": 5,
+   "close": 22
+  },
+  {
+   "day": 2,
+   "name": "Tuesday",
+   "open": 5,
+   "close": 22
+  },
+  {
+   "day": 3,
+   "name": "Wednesday",
+   "open": 5,
+   "close": 22
+  },
+  {
+   "day": 4,
+   "name": "Thursday",
+   "open": 5,
+   "close": 22
+  },
+  {
+   "day": 5,
+   "name": "Friday",
+   "open": 5,
+   "close": 22
+  },
+  {
+   "day": 6,
+   "name": "Saturday",
+   "open": 7,
+   "close": 18
+  },
+  {
+   "day": 0,
+   "name": "Sunday",
+   "open": 7,
+   "close": 18
+  }
+ ],
+ "hero": {
+  "video": null,
+  "poster": null
+ },
+ "nav": [
+  {
+   "label": "Home",
+   "href": "index.html"
+  },
+  {
+   "label": "Classes",
+   "href": "classes.html"
+  },
+  {
+   "label": "Coaches",
+   "href": "coaches.html"
+  },
+  {
+   "label": "Membership",
+   "href": "membership.html"
+  },
+  {
+   "label": "Journal",
+   "href": "journal.html"
+  },
+  {
+   "label": "Visit",
+   "href": "visit.html"
+  }
+ ],
+ "pages": [
+  {
+   "file": "index.html",
+   "template": "index",
+   "title": "Home",
+   "description": "Strength coaching, group classes and open gym in Fortitude Valley, Brisbane. A concept demo for a fictional gym with a slowly rotating 3D barbell.",
+   "jsonld": true
+  },
+  {
+   "file": "classes.html",
+   "template": "classes",
+   "title": "Class timetable",
+   "description": "Sixty classes a week: strength, HIIT, yoga, mobility and boxing. Pick a day, filter by type and book a spot.",
+   "pageHero": true,
+   "h1": "Class timetable",
+   "kicker": "60 classes a week",
+   "lead": "Strength, HIIT, yoga, mobility and boxing from 5:30am. Pick a day, filter by type, then book a spot.",
+   "crumb": "Classes"
+  },
+  {
+   "file": "coaches.html",
+   "template": "coaches",
+   "title": "Coaches",
+   "description": "Meet the four coaches at Iron & Ember Athletic Club and book a session with the one that fits your goals.",
+   "pageHero": true,
+   "h1": "The coaches",
+   "kicker": "Since 2012",
+   "lead": "Four coaches, one rule: every rep has a reason. Pick the one who suits your goals and book a session.",
+   "crumb": "Coaches"
+  },
+  {
+   "file": "trial.html",
+   "template": "trial",
+   "title": "Free trial & class booking",
+   "description": "Start your 7-day free trial or book a class. Choose a coach, a date and a time. Demo booking with live time slots.",
+   "pageHero": true,
+   "h1": "Book a free trial",
+   "kicker": "First session on us",
+   "lead": "Book your first coached session to start your 7-day free trial, or reserve a spot in any class. Pick a coach, a day and a time.",
+   "crumb": "Free trial"
+  },
+  {
+   "file": "membership.html",
+   "template": "membership",
+   "title": "Membership & day passes",
+   "description": "Three memberships from $79 a month on annual billing, plus day passes and gift vouchers for Iron & Ember Athletic Club (fictional demo).",
+   "pageHero": true,
+   "h1": "Membership",
+   "kicker": "No lock-in on monthly",
+   "lead": "Three ways to train. Switch plans, pause or cancel on monthly billing with 14 days notice.",
+   "crumb": "Membership"
+  },
+  {
+   "file": "journal.html",
+   "template": "journal",
+   "title": "Journal",
+   "description": "Training, recovery and coaching notes from the floor at Iron & Ember Athletic Club.",
+   "pageHero": true,
+   "h1": "The journal",
+   "kicker": "Notes from the floor",
+   "lead": "Honest training advice from the people who coach it every day.",
+   "crumb": "Journal"
+  },
+  {
+   "file": "visit.html",
+   "template": "visit",
+   "title": "Visit & FAQ",
+   "description": "Opening hours, address, getting here and answers to the questions we hear most.",
+   "pageHero": true,
+   "h1": "Find us",
+   "kicker": "Fortitude Valley",
+   "lead": "Hours, directions and answers to the questions we hear most.",
+   "crumb": "Visit",
+   "jsonld": true
+  },
+  {
+   "file": "careers.html",
+   "template": "careers",
+   "title": "Careers",
+   "description": "Join the team at Iron & Ember Athletic Club: coaches, front of house and class instructors.",
+   "pageHero": true,
+   "h1": "Join the team",
+   "kicker": "Careers",
+   "lead": "We hire for attitude and teach the rest. These roles are fictional.",
+   "crumb": "Careers"
+  },
+  {
+   "file": "legal.html",
+   "template": "legal",
+   "title": "Privacy, terms & cookies",
+   "description": "Privacy policy, terms of use and cookie information for this demo site.",
+   "pageHero": true,
+   "h1": "Privacy, terms & cookies",
+   "kicker": "Legal",
+   "lead": "A plain-language template. Replace with your own policy before going live.",
+   "crumb": "Legal"
+  },
+  {
+   "file": "404.html",
+   "template": "notfound",
+   "title": "Page not found",
+   "description": "This page could not be found. Head back to the home page, the class timetable or the free trial page.",
+   "pageHero": true,
+   "h1": "Page not found",
+   "kicker": "Error 404",
+   "lead": "That page skipped leg day. Here are a few places to pick up the trail.",
+   "crumb": "Page not found",
+   "hidden": true
+  }
+ ],
+ "searchExtra": [
+  {
+   "title": "Open gym",
+   "text": "Racks, platforms, free weights and conditioning, open every day",
+   "url": "membership.html#plans"
+  },
+  {
+   "title": "Free trial session",
+   "text": "A 45 minute coached session, no card needed",
+   "url": "trial.html"
+  },
+  {
+   "title": "Off-Peak membership",
+   "text": "Open gym on weekdays 9am to 4pm and weekends, from $79 a month on annual billing",
+   "url": "membership.html#plans"
+  },
+  {
+   "title": "All Access membership",
+   "text": "Open gym and unlimited classes, from $145 a month on annual billing",
+   "url": "membership.html#plans"
+  },
+  {
+   "title": "Coached membership",
+   "text": "All Access plus four one-to-one sessions a month",
+   "url": "membership.html#plans"
+  },
+  {
+   "title": "Day pass",
+   "text": "Train for a day, $28",
+   "url": "membership.html#day-pass"
+  },
+  {
+   "title": "Gift vouchers",
+   "text": "Emailed instantly, valid for 12 months",
+   "url": "membership.html#day-pass"
+  },
+  {
+   "title": "Recovery room",
+   "text": "Sauna, cold plunge and mobility zone",
+   "url": "visit.html#faq"
+  },
+  {
+   "title": "Parking",
+   "text": "Street parking and public car parks nearby",
+   "url": "visit.html#faq"
+  }
+ ],
+ "announcement": {
+  "text": "First week free. No lock-in.",
+  "link": "Start your trial",
+  "href": "trial.html"
+ }
+}

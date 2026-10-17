@@ -1,0 +1,20 @@
+    <!-- FIND US -->
+    <section class="section" id="visit" aria-labelledby="find-title">
+      <div class="container visit-grid">
+        <div class="reveal">
+          <p class="eyebrow">Find us</p>
+          <h2 id="find-title" data-split>Visit us</h2>
+          <p class="chip chip-light"><span class="dot" aria-hidden="true"></span><span id="open-status-3">Open 7 days</span></p>
+          <address>
+            {{contact.street}}<br>{{contact.locality}}<br>
+            <a href="tel:{{contact.phoneHref}}">{{contact.phone}}</a><br>
+            <a href="mailto:{{contact.email}}">{{contact.email}}</a>
+          </address>
+          {{{hoursTable}}}
+          <p class="visit-cta"><button type="button" class="btn btn-primary" data-visit-open>Schedule a visit</button></p>
+        </div>
+        <div class="visit-side reveal">
+          {{> gmap}}
+        </div>
+      </div>
+    </section>

@@ -1,0 +1,18 @@
+    <!-- CLASSES + TIMETABLE (home: compact) -->
+    <section class="section section-night timetable-compact" id="timetable" aria-labelledby="tt-title">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="eyebrow">Classes</p>
+          <h2 id="tt-title" data-split>This week&rsquo;s timetable</h2>
+          <p class="lead">{{classCount}} classes a week: strength, HIIT, yoga, mobility and boxing. Pick a day.</p>
+        </div>
+        <figure class="studio-banner">{{{photos.studio}}}</figure>
+        <div class="tabs">
+          <div class="tablist-wrap">
+            <div class="tablist" role="tablist" aria-label="Day of the week">
+{{{classTabs}}}            </div>
+          </div>
+{{{classPanels}}}        </div>
+        <p class="note timetable-note">Spots left are a demo, not live availability. <a href="classes.html">See the full timetable with filters</a>.</p>
+      </div>
+    </section>

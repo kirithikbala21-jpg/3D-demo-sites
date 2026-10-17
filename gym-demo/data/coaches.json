@@ -1,0 +1,58 @@
+[
+ {
+  "id": "marcus",
+  "name": "Marcus Quinn",
+  "initial": "M",
+  "role": "Head coach &amp; founder",
+  "years": "14 years coaching",
+  "bio": "Marcus opened Iron &amp; Ember in 2012 after a decade coaching in other people&rsquo;s gyms. He runs the strength programs and still coaches the 5:30am crowd.",
+  "tags": [
+   "Strength",
+   "Powerlifting basics",
+   "Return to training"
+  ],
+  "photo": "coach-1"
+ },
+ {
+  "id": "jonah",
+  "name": "Jonah Reyes",
+  "initial": "J",
+  "role": "Conditioning &amp; boxing coach",
+  "years": "9 years coaching",
+  "bio": "A former amateur boxer who turned his footwork into a coaching career. Jonah runs the HIIT and boxing classes with a loud playlist and a quiet eye for technique.",
+  "tags": [
+   "HIIT",
+   "Boxing",
+   "Fat loss"
+  ],
+  "photo": "coach-2"
+ },
+ {
+  "id": "dev",
+  "name": "Dev Nair",
+  "initial": "D",
+  "role": "Yoga &amp; mobility coach",
+  "years": "11 years teaching",
+  "bio": "Dev teaches yoga and mobility for people who lift, run and sit at desks. Expect clear cues, honest modifications and a very long exhale.",
+  "tags": [
+   "Yoga",
+   "Mobility",
+   "Recovery"
+  ],
+  "photo": "coach-3"
+ },
+ {
+  "id": "dex",
+  "name": "Dex Holloway",
+  "initial": "D",
+  "role": "Strength &amp; performance coach",
+  "years": "7 years coaching",
+  "bio": "Dex coaches the heavy lifts and the engine-room conditioning. He loves a good deadlift, a better warm-up and explaining why your knees do that.",
+  "tags": [
+   "Olympic lifting",
+   "Strength",
+   "Conditioning"
+  ],
+  "photo": "coach-4"
+ }
+]

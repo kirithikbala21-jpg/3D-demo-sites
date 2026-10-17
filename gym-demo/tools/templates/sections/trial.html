@@ -1,0 +1,87 @@
+    <!-- FREE TRIAL / CLASS BOOKING -->
+    <section class="section section-dark" id="book" aria-labelledby="book-title">
+      <div class="container reserve-grid">
+        <div class="reveal">
+          <p class="eyebrow">Free trial &amp; classes</p>
+          <h2 id="book-title" data-split>Reserve your spot.</h2>
+          <p class="lead">Choose a free trial or a class, then a coach, a day and a time. You&rsquo;ll see your confirmation straight away. (This is a demo: nothing is sent.)</p>
+          <ul class="reserve-points">
+            <li>Your first coached session is free, with no card and no contract</li>
+            <li>Classes keep the same weekday and time every week</li>
+            <li>Cancel or change up to 4 hours before. Call us on {{contact.phone}} if you are running late</li>
+          </ul>
+        </div>
+        <div class="form-card reveal">
+          <form id="trial-form" novalidate>
+            <p class="step-label"><span aria-hidden="true">1</span> What would you like to book?</p>
+            <div class="field">
+              <label for="f-session" class="sr-only">Session</label>
+              <select id="f-session" name="session" aria-describedby="h-session">
+                {{{sessionOptions}}}
+              </select>
+              <p class="hint" id="h-session" aria-live="polite"></p>
+            </div>
+
+            <fieldset class="coach-pick">
+              <legend class="step-label"><span aria-hidden="true">2</span> Coach</legend>
+              <label class="bp bp-any"><input type="radio" name="coach" value="any" checked><span class="bp-card"><span class="bp-ph" aria-hidden="true">Any</span><span class="bp-txt"><strong>Next available</strong><small>Shortest wait</small></span></span></label>
+              {{#each coaches}}
+              <label class="bp"><input type="radio" name="coach" value="{{this.id}}"><span class="bp-card"><span class="bp-ph" aria-hidden="true">{{this.initial}}</span><span class="bp-txt"><strong>{{this.name}}</strong><small>{{{this.tagsLine}}}</small></span></span></label>
+              {{/each}}
+            </fieldset>
+            <p class="hint" id="h-coach" aria-live="polite"></p>
+
+            <p class="step-label"><span aria-hidden="true">3</span> Date</p>
+            <div class="cal" id="cal">
+              <div class="cal-head">
+                <button type="button" class="cal-nav" id="cal-prev" aria-label="Previous month">&lsaquo;</button>
+                <strong id="cal-title" aria-live="polite"></strong>
+                <button type="button" class="cal-nav" id="cal-next" aria-label="Next month">&rsaquo;</button>
+              </div>
+              <div class="cal-dow" aria-hidden="true"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span></div>
+              <div class="cal-grid" id="cal-grid" role="group" aria-label="Days"></div>
+            </div>
+            <input type="hidden" id="f-date" name="date">
+            <p class="error" id="e-date" aria-live="polite"></p>
+
+            <p class="step-label"><span aria-hidden="true">4</span> Time</p>
+            <div class="slots" id="slots" role="group" aria-label="Available times"></div>
+            <input type="hidden" id="f-time" name="time">
+            <p class="hint" id="h-time" aria-live="polite">Choose a date to see which times are open.</p>
+            <p class="error" id="e-time" aria-live="polite"></p>
+
+            <p class="step-label"><span aria-hidden="true">5</span> Your details</p>
+            <div class="field">
+              <label for="f-name">Name</label>
+              <input id="f-name" name="name" type="text" autocomplete="name" aria-describedby="e-name">
+              <p class="error" id="e-name" aria-live="polite"></p>
+            </div>
+            <div class="field">
+              <label for="f-phone">Phone</label>
+              <input id="f-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="e.g. 07 5550 0100" aria-describedby="e-phone">
+              <p class="error" id="e-phone" aria-live="polite"></p>
+            </div>
+            <div class="field">
+              <label for="f-message">Notes <span class="optional">(optional)</span></label>
+              <textarea id="f-message" name="message" rows="2" maxlength="500" placeholder="Injuries, goals, anything your coach should know" aria-describedby="e-message"></textarea>
+              <p class="error" id="e-message" aria-live="polite"></p>
+            </div>
+            <!--
+              DEMO ONLY: there is no backend. The booking is saved to this browser (localStorage key "vc-bookings").
+              To make it real, post the data in js/trial.js (see "DEMO ONLY") to your booking system
+              (Mindbody, Glofox, Pike13, Cal.com) and show the confirmation after a 200 response.
+            -->
+            <button class="btn btn-primary btn-block" type="submit">Confirm booking</button>
+            <p class="note">Demo only: nothing is sent to a real gym.</p>
+          </form>
+          <div class="form-success" id="form-success" role="status" tabindex="-1" hidden>
+            <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M7.500 12.500l3 3 6-7"/></svg>
+            <h3>You&rsquo;re in, <span id="ok-name">friend</span>.</h3>
+            <p id="ok-detail"></p>
+            <dl class="ok-summary" id="ok-summary"></dl>
+            <p class="demo-banner"><strong>This is a demo, no real booking was made.</strong> The details were saved only in this browser.</p>
+            <button class="btn btn-secondary" type="button" id="form-reset">Book another session</button>
+          </div>
+        </div>
+      </div>
+    </section>

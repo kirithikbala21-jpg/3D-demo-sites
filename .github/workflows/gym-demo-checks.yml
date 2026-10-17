@@ -1,0 +1,36 @@
+name: gym-demo checks
+
+on:
+  push:
+    paths: ['gym-demo/**', '.github/workflows/gym-demo-checks.yml']
+  pull_request:
+    paths: ['gym-demo/**']
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Generated pages match the templates
+        run: |
+          python3 gym-demo/tools/build.py
+          git diff --exit-code -- gym-demo
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install test dependencies
+        working-directory: gym-demo/tests
+        run: |
+          npm install
+          npx playwright-core install --with-deps chromium
+
+      - name: Overflow, accessibility, links, behaviour, fallbacks and weight
+        working-directory: gym-demo/tests
+        run: node run.mjs

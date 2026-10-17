@@ -1,0 +1,26 @@
+    <!-- VISIT -->
+    <section class="section" id="visit" aria-labelledby="visit-title">
+      <div class="container visit-grid">
+        <div class="reveal">
+          <p class="eyebrow">Visit us</p>
+          <h2 id="visit-title" data-split>Find the club</h2>
+          <p class="chip chip-light"><span class="dot" aria-hidden="true"></span><span id="open-status-2">Open 7 days</span></p>
+          <address>
+            {{contact.street}}<br>{{contact.locality}}<br>
+            <a href="tel:{{contact.phoneHref}}">{{contact.phone}}</a><br>
+            <a href="mailto:{{contact.email}}">{{contact.email}}</a>
+          </address>
+          {{{hoursTable}}}
+          <p class="visit-cta"><button type="button" class="btn btn-primary" data-visit-open>Schedule a visit</button></p>
+        </div>
+        <div class="visit-side reveal">
+          {{> gmap}}
+          <ul class="info-list">
+            <li><strong>Trains &amp; buses</strong><span>Fortitude Valley station is a short walk, with frequent buses on the main streets nearby.</span></li>
+            <li><strong>Parking</strong><span>Metered street parking nearby, plus public car parks within five minutes on foot.</span></li>
+            <li><strong>Access</strong><span>Step-free entry, wide aisles, an accessible change room and a lift to the mezzanine.</span></li>
+            <li><strong>Bike racks</strong><span>Secure bike racks out the front and a towel service at reception.</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>

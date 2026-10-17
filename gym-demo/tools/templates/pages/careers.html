@@ -1,0 +1,23 @@
+    <section class="section" aria-labelledby="roles-title">
+      <div class="container reserve-grid">
+        <div class="reveal">
+          <p class="eyebrow">Open roles</p>
+          <h2 id="roles-title" data-split>Come and coach with us.</h2>
+          <ul class="roles">
+            {{#each careers}}<li><h3>{{{this.title}}}</h3><p class="role-meta">{{this.where}} &middot; {{this.type}}</p><p>{{this.text}}</p></li>{{/each}}
+          </ul>
+          <p class="note">These roles are fictional. Nothing you submit here is sent anywhere.</p>
+        </div>
+        <div class="form-card reveal">
+          <form data-demo-form novalidate>
+            <div class="field"><label for="c-name">Name</label><input id="c-name" name="name" type="text" autocomplete="name" data-rule="required min:2" aria-describedby="e-c-name"><p class="error" id="e-c-name" aria-live="polite"></p></div>
+            <div class="field"><label for="c-email">Email</label><input id="c-email" name="email" type="email" autocomplete="email" data-rule="required email" aria-describedby="e-c-email"><p class="error" id="e-c-email" aria-live="polite"></p></div>
+            <div class="field"><label for="c-role">Role</label><select id="c-role" name="role">{{#each careers}}<option>{{{this.title}}}</option>{{/each}}<option>Something else</option></select></div>
+            <div class="field"><label for="c-msg">Tell us about yourself</label><textarea id="c-msg" name="message" rows="5" maxlength="800" data-rule="required min:10" aria-describedby="e-c-msg"></textarea><p class="error" id="e-c-msg" aria-live="polite"></p></div>
+            <!-- DEMO ONLY: post to your applicant tracking system or a form service here. -->
+            <button class="btn btn-primary btn-block" type="submit">Send application</button>
+            <div class="form-success" role="status" tabindex="-1" hidden><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M7.500 12.500l3 3 6-7"/></svg><h3>Thanks, <span data-name>friend</span>!</h3><p>Your application would be on its way. <span class="note">Demo only: nothing was sent.</span></p></div>
+          </form>
+        </div>
+      </div>
+    </section>

@@ -1,0 +1,31 @@
+    <!-- MEMBERSHIP -->
+    <section class="section" id="plans" aria-labelledby="plans-title">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="eyebrow">Plans</p>
+          <h2 id="plans-title" data-split>Memberships</h2>
+          <p class="note">Plans and prices are fictional (AUD, GST included). Every plan starts with a 7-day free trial.</p>
+        </div>
+        <div class="billing reveal" role="group" aria-label="Billing period">
+          <button type="button" class="billing-opt" data-billing="monthly" aria-pressed="true">Monthly</button>
+          <button type="button" class="billing-opt" data-billing="annual" aria-pressed="false">Annual <span class="save">Save up to {{maxSave}}%</span></button>
+        </div>
+        <p class="sr-only" id="billing-status" role="status" aria-live="polite"></p>
+        <ul class="plan-grid">
+          {{#each plans}}
+          <li class="plan{{this.featuredClass}} reveal" id="plan-{{this.id}}">
+            {{#if this.featured}}<span class="badge">Most popular</span>{{/if}}
+            <p class="eyebrow">{{this.tag}}</p>
+            <h3>{{this.name}}</h3>
+            <p class="plan-price"><span class="price-amt" data-monthly="{{this.monthly}}" data-annual="{{this.annual}}">${{this.monthly}}</span><span class="per"> a month</span></p>
+            <p class="plan-bill" data-monthly="Billed monthly. No lock-in." data-annual="Billed ${{this.annualTotal}} once a year. You save {{this.save}}%.">Billed monthly. No lock-in.</p>
+            <ul class="plan-features">
+              {{#each this.features}}<li>{{value}}</li>{{/each}}
+            </ul>
+            <a class="btn btn-primary" href="trial.html">Try it free first<span class="sr-only">: {{this.name}} plan</span></a>
+          </li>
+          {{/each}}
+        </ul>
+      </div>
+    </section>
+

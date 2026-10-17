@@ -1,0 +1,606 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <title>Class timetable | Iron &amp; Ember Athletic Club (concept demo)</title>
+  <meta name="description" content="Sixty classes a week: strength, HIIT, yoga, mobility and boxing. Pick a day, filter by type and book a spot.">
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#0b0b0c">
+  <link rel="canonical" href="https://kirithikbala21-jpg.github.io/3D-demo-sites/gym-demo/classes.html">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Class timetable | Iron &amp; Ember Athletic Club (concept demo)">
+  <meta property="og:description" content="Sixty classes a week: strength, HIIT, yoga, mobility and boxing. Pick a day, filter by type and book a spot.">
+  <meta property="og:url" content="https://kirithikbala21-jpg.github.io/3D-demo-sites/gym-demo/classes.html">
+  <meta property="og:image" content="https://kirithikbala21-jpg.github.io/3D-demo-sites/gym-demo/img/og.png">
+  <meta property="og:locale" content="en_AU">
+  <meta property="og:site_name" content="Iron &amp; Ember Athletic Club (concept demo)">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Iron &amp; Ember Athletic Club: a bold headline over a dark gym photo with a small 3D Olympic barbell">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Class timetable | Iron &amp; Ember Athletic Club (concept demo)">
+  <meta name="twitter:description" content="Sixty classes a week: strength, HIIT, yoga, mobility and boxing. Pick a day, filter by type and book a spot.">
+  <meta name="twitter:image" content="https://kirithikbala21-jpg.github.io/3D-demo-sites/gym-demo/img/og.png">
+  <link rel="icon" href="img/icon.svg" type="image/svg+xml">
+  <link rel="icon" href="favicon.ico" sizes="48x48">
+  <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="preload" href="fonts/barlow-condensed-700.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/montserrat-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="vendor/lenis-1.1.18.css">
+  <link rel="stylesheet" href="styles.css">
+  
+  <noscript><style>
+    /* Without JavaScript: show the navigation and every timetable day as plain content. */
+    .preloader, .nav-toggle, .icon-btn, .announce-close, .filter-bar, .tablist-wrap { display: none !important; }
+    .mobile-nav[hidden] { display: block !important; position: static !important; animation: none; padding-top: calc(var(--header-h) + 8px) !important; padding-bottom: 8px !important; }
+    .day-panel[hidden] { display: block !important; }
+    .day-panel::before { content: attr(data-label); display: block; font: 700 1.75rem var(--font-head); text-transform: uppercase; margin: 32px 0 8px; color: var(--ink); }
+    .day-panel:first-of-type::before { margin-top: 0; }
+  </style></noscript>
+  <script>
+    document.documentElement.classList.add('js');
+    try { if (localStorage.getItem('vc-announce') === 'off') document.documentElement.classList.add('no-announce'); } catch (e) { /* ignore */ }
+    // Safety net: never leave the hero hidden if the main script fails to start.
+    setTimeout(function () { var d = document.documentElement; if (!d.classList.contains('is-ready')) d.classList.add('is-ready', 'is-failsafe'); }, 4500);
+  </script>
+  
+</head>
+<body class="page-classes">
+  
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="progress" aria-hidden="true"><span></span></div>
+
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <symbol id="logo-mark" viewBox="0 0 32 32">
+      <path d="M3 5h5.500v22H3zM12.500 5H29v5H18v4h9v5h-9v3h11v5H12.500z" fill="currentColor"/>
+    </symbol>
+  </svg>
+
+  <!-- Announcement bar: one static line, dismissible, remembered in localStorage (vc-announce) -->
+  <div class="announce" id="announce" role="region" aria-label="Announcement">
+    <p>First week free. No lock-in. <a href="trial.html">Start your trial</a></p>
+    <button class="announce-close" type="button" id="announce-close" aria-label="Dismiss announcement"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" focusable="false"><path d="M2 2l10 10M12 2L2 12" stroke="currentColor" stroke-width="1.600" stroke-linecap="round"/></svg></button>
+  </div>
+
+  <header class="site-header" id="top">
+    <div class="header-inner">
+      <a class="brand" href="index.html" aria-label="Iron &amp; Ember Athletic Club, home">
+        <span class="brand-mark"><svg width="26" height="26" aria-hidden="true" focusable="false"><use href="#logo-mark"/></svg></span>
+        <span class="brand-text" aria-hidden="true">Iron &amp; Ember</span>
+      </a>
+      <nav class="header-nav" aria-label="Quick links">
+        <a href="index.html">Home</a>
+        <a href="classes.html">Classes</a>
+        <a href="coaches.html">Coaches</a>
+        <a href="membership.html">Membership</a>
+        <a href="visit.html">Visit</a>
+      </nav>
+      <div class="header-actions">
+        <button class="icon-btn" type="button" id="search-open" aria-label="Search the site" aria-haspopup="dialog">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+        </button>
+        <a class="header-link" href="trial.html">Free trial</a>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="mobile-nav" aria-label="Open menu">
+          <span class="bars" aria-hidden="true"><span></span><span></span><span></span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="mobile-nav" id="mobile-nav" data-lenis-prevent role="dialog" aria-modal="true" aria-label="Site menu" hidden>
+    <div class="overlay-inner">
+      <nav aria-label="Main">
+        <ul>
+          <li><a href="index.html"><span class="n" aria-hidden="true">01</span>Home</a></li><li><a href="classes.html"><span class="n" aria-hidden="true">02</span>Classes</a></li><li><a href="coaches.html"><span class="n" aria-hidden="true">03</span>Coaches</a></li><li><a href="membership.html"><span class="n" aria-hidden="true">04</span>Membership</a></li><li><a href="journal.html"><span class="n" aria-hidden="true">05</span>Journal</a></li><li><a href="visit.html"><span class="n" aria-hidden="true">06</span>Visit</a></li>
+        </ul>
+        <a class="btn btn-primary" href="trial.html">Free trial</a>
+        <ul class="overlay-sub" aria-label="More">
+          <li><a href="membership.html#day-pass">Day pass &amp; gifts</a></li>
+          <li><a href="careers.html">Careers</a></li>
+          <li><a href="legal.html#privacy">Privacy</a></li>
+        </ul>
+      </nav>
+      <div class="overlay-info">
+        <p class="label">Find us</p>
+        <p>22 Example Street<br>Fortitude Valley QLD 4006</p>
+        <p><a href="tel:0755500188">07 5550 0188</a><br><a href="mailto:hello@example.com">hello@example.com</a></p>
+        <p class="label">Hours</p>
+        <p>Mon &ndash; Fri 5am &ndash; 10pm<br>Sat &ndash; Sun 7am &ndash; 6pm</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Site search -->
+  <div class="search" id="search" role="dialog" aria-modal="true" aria-label="Search the site" hidden>
+    <div class="search-inner">
+      <form id="search-form" role="search" novalidate>
+        <label class="sr-only" for="search-input">Search classes, coaches and pages</label>
+        <input id="search-input" type="search" placeholder="Search classes, coaches and pages" autocomplete="off" spellcheck="false">
+        <button type="button" class="icon-btn search-close" id="search-close" aria-label="Close search">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg>
+        </button>
+      </form>
+      <p class="search-hint" id="search-hint" aria-live="polite">Try &ldquo;yoga&rdquo;, &ldquo;boxing&rdquo; or &ldquo;parking&rdquo;.</p>
+      <ul class="search-results" id="search-results" data-lenis-prevent></ul>
+    </div>
+  </div>
+
+  <main id="main">
+
+    <section class="page-hero" aria-labelledby="page-title">
+      <div class="container">
+        <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="index.html">Home</a></li><li aria-current="page">Classes</li></ol></nav>
+        <p class="eyebrow">60 classes a week</p>
+        <h1 id="page-title" data-split>Class timetable</h1>
+        <p class="lead">Strength, HIIT, yoga, mobility and boxing from 5:30am. Pick a day, filter by type, then book a spot.</p>
+      </div>
+    </section>
+
+    <!-- TIMETABLE -->
+    <section class="section" id="timetable" aria-label="Weekly timetable">
+      <div class="container">
+        <h2 class="sr-only">Weekly timetable</h2>
+        <div class="filter-bar" role="group" aria-label="Filter by class type">
+          <span class="filter-label" aria-hidden="true">Class type</span>
+          <button type="button" class="filter-chip" data-filter="all" aria-pressed="true">All</button><button type="button" class="filter-chip" data-filter="Strength" aria-pressed="false">Strength</button><button type="button" class="filter-chip" data-filter="HIIT" aria-pressed="false">HIIT</button><button type="button" class="filter-chip" data-filter="Yoga" aria-pressed="false">Yoga</button><button type="button" class="filter-chip" data-filter="Mobility" aria-pressed="false">Mobility</button><button type="button" class="filter-chip" data-filter="Boxing" aria-pressed="false">Boxing</button>
+        </div>
+        <p class="sr-only" id="filter-status" role="status" aria-live="polite"></p>
+        <div class="tabs">
+          <div class="tablist-wrap">
+            <div class="tablist" role="tablist" aria-label="Day of the week">
+            <button role="tab" id="tab-mon" aria-controls="day-mon" aria-selected="true" tabindex="0" type="button" data-n="9"><span class="tab-day">Mon<span class="sr-only">day</span></span></button>
+            <button role="tab" id="tab-tue" aria-controls="day-tue" aria-selected="false" tabindex="-1" type="button" data-n="9"><span class="tab-day">Tue<span class="sr-only">sday</span></span></button>
+            <button role="tab" id="tab-wed" aria-controls="day-wed" aria-selected="false" tabindex="-1" type="button" data-n="9"><span class="tab-day">Wed<span class="sr-only">nesday</span></span></button>
+            <button role="tab" id="tab-thu" aria-controls="day-thu" aria-selected="false" tabindex="-1" type="button" data-n="9"><span class="tab-day">Thu<span class="sr-only">rsday</span></span></button>
+            <button role="tab" id="tab-fri" aria-controls="day-fri" aria-selected="false" tabindex="-1" type="button" data-n="9"><span class="tab-day">Fri<span class="sr-only">day</span></span></button>
+            <button role="tab" id="tab-sat" aria-controls="day-sat" aria-selected="false" tabindex="-1" type="button" data-n="8"><span class="tab-day">Sat<span class="sr-only">urday</span></span></button>
+            <button role="tab" id="tab-sun" aria-controls="day-sun" aria-selected="false" tabindex="-1" type="button" data-n="7"><span class="tab-day">Sun<span class="sr-only">day</span></span></button>
+            </div>
+          </div>
+          <div role="tabpanel" id="day-mon" aria-labelledby="tab-mon" tabindex="0" class="day-panel" data-label="Monday" data-day="mon">
+            <p class="panel-note">Monday: 9 classes, from 5:30am</p>
+            <ul class="class-list">
+            <li class="class-row" id="c-mon-0530-power-hour" data-type="Strength">
+              <div class="cr-time"><strong>5:30am</strong><span>45 min</span></div>
+              <div class="cr-main"><h3>Power Hour</h3><p class="cr-meta"><span class="type-pill">Strength</span><span>with Dex Holloway</span><span>Intermediate</span></p><p class="cr-desc">Heavy compound lifts, built around a squat, press or pull of the day.</p></div>
+              <div class="cr-book"><span class="spots">5 spots left</span><a class="btn btn-primary btn-sm" href="trial.html?class=mon-0530-power-hour">Book<span class="sr-only"> Power Hour, Monday 5:30am</span></a></div>
+            </li>
+            <li class="class-row" id="c-mon-0630-ember-hiit" data-type="HIIT">
+              <div class="cr-time"><strong>6:30am</strong><span>45 min</span></div>
+              <div class="cr-main"><h3>Ember HIIT</h3><p class="cr-meta"><span class="type-pill">HIIT</span><span>with Jonah Reyes</span><span>All levels</span></p><p class="cr-desc">Forty-five minutes of intervals on bikes, sleds, rowers and kettlebells.</p></div>
+              <div class="cr-book"><span class="spots">9 spots left</span><a class="btn btn-primary btn-sm" href="trial.html?class=mon-0630-ember-hiit">Book<span class="sr-only"> Ember HIIT, Monday 6:30am</span></a></div>
+            </li>
+            <li class="class-row" id="c-mon-0900-vinyasa-flow" data-type="Yoga">
+              <div class="cr-time"><strong>9:00am</strong><span>60 min</span></div>
+              <div class="cr-main"><h3>Vinyasa Flow</h3><p class="cr-meta"><span class="type-pill">Yoga</span><span>with Dev Nair</span><span>All levels</span></p><p class="cr-desc">A moving, breath-led flow to open the hips, spine and shoulders.</p></div>
+              <div class="cr-book"><span class="spots is-low">3 spots left</span><a class="btn btn-primary btn-sm" href="trial.html?class=mon-0900-vinyasa-flow">Book<span class="sr-only"> Vinyasa Flow, Monday 9:00am</span></a></div>
+            </li>
+            <li class="class-row" id="c-mon-1215-mobility-reset" data-type="Mobility">
+              <div class="cr-time"><strong>12:15pm</strong><span>45 min</span></div>
+              <div class="cr-main"><h3>Mobility Reset</h3><p class="cr-meta"><span class="type-pill">Mobility</span><span>with Dev Nair</span><span>All levels</span></p><p class="cr-desc">Joint-by-joint work to move better in the gym and at your desk.</p></div>
+              <div class="cr-book"><span class="spots is-full">Full</span><a class="btn btn-primary btn-sm" href="trial.html?class=mon-1215-mobility-reset">Waitlist<span class="sr-only"> Mobility Reset, Monday 12:15pm</span></a></div>
+            </li>
+            <li class="class-row" id="c-mon-1630-boxing-fundamentals" data-type="Boxing">
+              <div class="cr-time"><strong>4:30pm</strong><span>45 min</span></div>
+              <div class="cr-main"><h3>Boxing Fundamentals</h3><p class="cr-meta"><span class="type-pill">Boxing</span><span>with Jonah Reyes</span><span>Beginner</span></p><p class="cr-desc">Stance, footwork and the basic combinations on the bags. No sparring.</p></div>
+              <div class="cr-book"><span class="spots">4 spots left</span><a class="btn btn-primary btn-sm" href="trial.html?class=mon-1630-boxing-fundamentals">Book<span class="sr-only"> Boxing Fundamentals, Monday 4:30pm</span></a></div>
+            </li>
+            <li class="class-row" id="c-mon-1730-barbell-basics" data-type="Strength">
+              <div class="cr-time"><strong>5:30pm</strong><span>60 min</span></div>
+              <div class="cr-main"><h3>Barbell Basics</h3><p class="cr-meta"><span class="type-pill">Strength</span><span>with Marcus Quinn</span><span>Beginner</span></p><p class="cr-desc">Learn the squat, hinge, press and row with a coach on every set.</p></div>
+              <div class="cr-book"><span class="spots">12 spots left</span><a class="btn btn-primary btn-sm" href="trial.html?class=mon-1730-barbell-basics">Book<span class="sr-only"> Barbell Basics, Monday 5:30pm</span></a></div>
+            </li>
+            <li class="class-row" id="c-mon-1830-engine-room" data-type="HIIT">
+              <div class="cr-time"><strong>6:30pm</strong><span>45 min</span></div>
+              <div class="cr-main"><h3>Engine Room</h3><p class="cr-meta"><span class="type-pill">HIIT</span><span>with Dex Holloway</span><span>Intermediate</span></p><p class="cr-desc">Conditioning circuits that build your engine without wrecking your joints.</p></div>
+              <div class="cr-book"><span class="spots is-low">2 spots left</span><a class="btn btn-primary btn-sm" href="trial.html?class=mon-1830-engine-room">Book<span class="sr-only"> Engine Room, Monday 6:30pm</span></a></div>
+            </li>
+            <li class="class-row" id="c-mon-1915-slow-yoga" data-type="Yoga">
+              <div class="cr-time"><strong>7:15pm</strong><span>60 min</span></div>
+              <div class="cr-main"><h3>Slow Yoga</h3><p class="cr-meta"><span class="type-pill">Yoga</span><span>with Dev Nair</span><span>Beginner</span></p><p class="cr-desc">Long holds, simple poses and plenty of time to find them.</p></div>
+              <div class="cr-book"><span class="spots">18 spots left</span><a class="btn btn-primary btn-sm" href="trial.html?class=mon-1915-slow-yoga">Book<span class="sr-only"> Slow Yoga, Monday 7:15pm</span></a></div>
+            </li>
+            <li class="class-row" id="c-mon-2000-stretch-club" data-type="Mobility">
+              <div class="cr-time"><strong>8:00pm</strong><span>45 min</span></div>
+              <div class="cr-main"><h3>Stretch Club</h3><p class="cr-meta"><span class="type-pill">Mobility</span><span>with Dev Nair</span><span>Beginner</span></p><p class="cr-desc">Easy, guided stretching with foam rollers and bands.</p></div>
+              <div class="cr-book"><span class="spots is-full">Full</span><a class="btn btn-primary btn-sm" href="trial.html?class=mon-2000-stretch-club">Waitlist<span class="sr-only"> Stretch Club, Monday 8:00pm</span></a></div>
+            </li>
+            </ul>
+            <p class="empty-note" hidden>No classes of that type on Monday. Try another day or clear the filter.</p>
+          </div>
+          <div role="tabpanel" id="day-tue" aria-labelledby="tab-tue" tabindex="0" class="day-panel" data-label="Tuesday" data-day="tue" hidden>
+            <p class="panel-note">Tuesday: 9 classes, from 5:30am</p>
+            <ul class="class-list">
+            <li class="class-row" id="c-tue-0530-lift-lab" data-type="Strength">
+              <div class="cr-time"><strong>5:30am</strong><span>45 min</span></div>
+              <div class="cr-main"><h3>Lift Lab</h3><p class="cr-meta"><span class="type-pill">Strength</span><span>with Marcus Quinn</span><span>Intermediate</span></p><p class="cr-desc">Programmed strength work with tempo, pauses and plenty of coaching.</p></div>
+              <div class="cr-book"><span class="spots">7 spots left</span><a class="btn btn-primary btn-sm" href="trial.html?class=tue-0530-lift-lab">Book<span class="sr-only"> Lift Lab, Tuesday 5:30am</span></a></div>
+            </li>
+            <li class="class-row" id="c-tue-0630-sprint-intervals" data-type="HIIT">
+              <div class="cr-time"><strong>6:30am</strong><span>45 min</span></div>
+              <div class="cr-main"><h3>Sprint Intervals</h3><p class="cr-meta"><span class="type-pill">HIIT</span><span>with Jonah Reyes</span><span>Advanced</span></p><p class="cr-desc">Short, sharp sprints and hard rests. Bring a good attitude and a towel.</p></div>
+              <div class="cr-book"><span class="spots">7 spots left</span><a class="btn btn-primary btn-sm" href="trial.html?class=tue-0630-sprint-intervals">Book<span class="sr-only"> Sprint Intervals, Tuesday 6:30am</span></a></div>
+            </li>
+            <li class="class-row" id="c-tue-0915-hips-shoulders" data-type="Mobility">
+              <div class="cr-time"><strong>9:15am</strong><span>45 min</span></div>
+              <div class="cr-main"><h3>Hips &amp; Shoulders</h3><p class="cr-meta"><span class="type-pill">Mobility</span><span>with Marcus Quinn</span><span>All levels</span></p><p class="cr-desc">Targeted mobility for the two joints that limit most lifters.</p></div>
+              <div class="cr-book"><span class="spots is-low">3 spots left</span><a class="btn btn-primary btn-sm" href="trial.html?class=tue-0915-hips-shoulders">Book<span class="sr-only"> Hips &amp; Shoulders, Tuesday 9:15am</span></a></div>
+            </li>
+            <li class="class-row" id="c-tue-1215-ember-hiit" data-type="HIIT">
+              <div class="cr-time"><strong>12:15pm</strong><span>45 min</span></div>
+              <div class="cr-main"><h3>Ember HIIT</h3><p class="cr-meta"><span class="type-pill">HIIT</span><span>with Jonah Reyes</span><span>All levels</span></p><p class="cr-desc">Forty-five minutes of intervals on bikes, sleds, rowers and kettlebells.</p></div>
+              <div class="cr-book"><span class="spots">15 spots left</span><a class="btn btn-primary btn-sm" href="trial.html?class=tue-1215-ember-hiit">Book<span class="sr-only"> Ember HIIT, Tuesday 12:15pm</span></a></div>
+            </li>
+            <li class="class-row" id="c-tue-1630-bag-work" data-type="Boxing">
+              <div class="cr-time"><strong>4:30pm</strong><span>45 min</span></div>
+              <div class="cr-main"><h3>Bag Work</h3><p class="cr-meta"><span class="type-pill">Boxing</span><span>with Jonah Reyes</span><span>Intermediate</span></p><p class="cr-desc">Rounds on the heavy bags with combinations and conditioning between.</p></div>
+              <div class="cr-book"><span class="spots">11 spots left</span><a class="btn btn-primary btn-sm" href="trial.html?class=tue-1630-bag-work">Book<span class="sr-only"> Bag Work, Tuesday 4:30pm</span></a></div>
+            </li>
+            <li class="class-row" id="c-tue-1730-power-hour" data-type="Strength">
+              <div class="cr-time"><strong>5:30pm</strong><span>60 min</span></div>
+              <div class="cr-main"><h3>Power Hour</h3><p class="cr-meta"><span class="type-pill">Strength</span><span>with Dex Holloway</span><span>Intermediate</span></p><p class="cr-desc">Heavy compound lifts, built around a squat, press or pull of the day.</p></div>
+              <div class="cr-book"><span class="spots is-full">Full</span><a class="btn btn-primary btn-sm" href="trial.html?class=tue-1730-power-hour">Waitlist<span class="sr-only"> Power Hour, Tuesday 5:30pm</span></a></div>
+            </li>
+            <li class="class-row" id="c-tue-1830-vinyasa-flow" data-type="Yoga">
+              <div class="cr-time"><strong>6:30pm</strong><span>60 min</span></div>
+              <div class="cr-main"><h3>Vinyasa Flow</h3><p class="cr-meta"><span class="type-pill">Yoga</span><span>with Dev Nair</span><span>All levels</span></p><p class="cr-desc">A moving, breath-led flow to open the hips, spine and shoulders.</p></div>
+              <div class="cr-book"><span class="spots">11 spots left</span><a class="btn btn-primary btn-sm" href="trial.html?class=tue-1830-vinyasa-flow">Book<span class="sr-only"> Vinyasa Flow, Tuesday 6:30pm</span></a></div>
+            </li>
+            <li class="class-row" id="c-tue-1900-boxing-fundamentals" data-type="Boxing">
+              <div class="cr-time"><strong>7:00pm</strong><span>45 min</span></div>
+              <div class="cr-main"><h3>Boxing Fundamentals</h3><p class="cr-meta"><span class="type-pill">Boxing</span><span>with Jonah Reyes</span><span>Beginner</span></p><p class="cr-desc">Stance, footwork and the basic combinations on the bags. No sparring.</p></div>
+              <div class="cr-book"><span class="spots">9 spots left</span><a class="btn btn-primary btn-sm" href="trial.html?class=tue-1900-boxing-fundamentals">Book<span class="sr-only"> Boxing Fundamentals, Tuesday 7:00pm</span></a></div>
+            </li>
+            <li class="class-row" id="c-tue-2000-yin-restore" data-type="Yoga">
+              <div class="cr-time"><strong>8:00pm</strong><span>60 min</span></div>
+              <div class="cr-main"><h3>Yin &amp; Restore</h3><p class="cr-meta"><span class="type-pill">Yoga</span><span>with Dev Nair</span><span>All levels</span></p><p class="cr-desc">Deep, still stretches and long exhales to wind the week down.</p></div>
+              <div class="cr-book"><span class="spots">12 spots left</span><a class="btn btn-primary btn-sm" href="trial.html?class=tue-2000-yin-restore">Book<span class="sr-only"> Yin &amp; Restore, Tuesday 8:00pm</span></a></div>
+            </li>
+            </ul>
+            <p class="empty-note" hidden>No classes of that type on Tuesday. Try another day or clear the filter.</p>
+          </div>
+          <div role="tabpanel" id="day-wed" aria-labelledby="tab-wed" tabindex="0" class="day-panel" data-label="Wednesday" data-day="wed" hidden>
+            <p class="panel-note">Wednesday: 9 classes, from 5:30am</p>
+            <ul class="class-list">
+            <li class="class-row" id="c-wed-0530-barbell-basics" data-type="Strength">
+              <div class="cr-time"><strong>5:30am</strong><span>45 min</span></div>
+              <div class="cr-main"><h3>Barbell Basics</h3><p class="cr-meta"><span class="type-pill">Strength</span><span>with Marcus Quinn</span><span>Beginner</span></p><p class="cr-desc">Learn the squat, hinge, press and row with a coach on every set.</p></div>
+              <div class="cr-book"><span class="spots is-low">2 spots left</span><a class="btn btn-primary btn-sm" href="trial.html?class=wed-0530-barbell-basics">Book<span class="sr-only"> Barbell Basics, Wednesday 5:30am</span></a></div>
+            </li>
+            <li class="class-row" id="c-wed-0630-engine-room" data-type="HIIT">
+              <div class="cr-time"><strong>6:30am</strong><span>45 min</span></div>
+              <div class="cr-main"><h3>Engine Room</h3><p class="cr-meta"><span class="type-pill">HIIT</span><span>with Dex Holloway</span><span>Intermediate</span></p><p class="cr-desc">Conditioning circuits that build your engine without wrecking your joints.</p></div>
+              <div class="cr-book"><span class="spots">14 spots left</span><a class="btn btn-primary btn-sm" href="trial.html?class=wed-0630-engine-room">Book<span class="sr-only"> Engine Room, Wednesday 6:30am</span></a></div>
+            </li>
+            <li class="class-row" id="c-wed-0900-slow-yoga" data-type="Yoga">
+              <div class="cr-time"><strong>9:00am</strong><span>60 min</span></div>
+              <div class="cr-main"><h3>Slow Yoga</h3><p class="cr-meta"><span class="type-pill">Yoga</span><span>with Dev Nair</span><span>Beginner</span></p><p class="cr-desc">Long holds, simple poses and plenty of time to find them.</p></div>
+              <div class="cr-book"><span class="spots">18 spots left</span><a class="btn btn-primary btn-sm" href="trial.html?class=wed-0900-slow-yoga">Book<span class="sr-only"> Slow Yoga, Wednesday 9:00am</span></a></div>
+            </li>
+            <li class="class-row" id="c-wed-1215-lift-lab" data-type="Strength">
+              <div class="cr-time"><strong>12:15pm</strong><span>45 min</span></div>
+              <div class="cr-main"><h3>Lift Lab</h3><p class="cr-meta"><span class="type-pill">Strength</span><span>with Marcus Quinn</span><span>Intermediate</span></p><p class="cr-desc">Programmed strength work with tempo, pauses and plenty of coaching.</p></div>
+              <div class="cr-book"><span class="spots is-low">1 spot left</span><a class="btn btn-primary btn-sm" href="trial.html?class=wed-1215-lift-lab">Book<span class="sr-only"> Lift Lab, Wednesday 12:15pm</span></a></div>
+            </li>
+            <li class="class-row" id="c-wed-1630-ember-hiit" data-type="HIIT">
+              <div class="cr-time"><strong>4:30pm</strong><span>45 min</span></div>
+              <div class="cr-main"><h3>Ember HIIT</h3><p class="cr-meta"><span class="type-pill">HIIT</span><span>with Jonah Reyes</span><span>All levels</span></p><p class="cr-desc">Forty-five minutes of intervals on bikes, sleds, rowers and kettlebells.</p></div>
+              <div class="cr-book"><span class="spots">15 spots left</span><a class="btn btn-primary btn-sm" href="trial.html?class=wed-1630-ember-hiit">Book<span class="sr-only"> Ember HIIT, Wednesday 4:30pm</span></a></div>
+            </li>
+            <li class="class-row" id="c-wed-1730-boxing-conditioning" data-type="Boxing">
+              <div class="cr-time"><strong>5:30pm</strong><span>45 min</span></div>
+              <div class="cr-main"><h3>Boxing Conditioning</h3><p class="cr-meta"><span class="type-pill">Boxing</span><span>with Jonah Reyes</span><span>Advanced</span></p><p class="cr-desc">Fast rounds, pad work and core finishers. Wraps are provided.</p></div>
+              <div class="cr-book"><span class="spots">11 spots left</span><a class="btn btn-primary btn-sm" href="trial.html?class=wed-1730-boxing-conditioning">Book<span class="sr-only"> Boxing Conditioning, Wednesday 5:30pm</span></a></div>
+            </li>
+            <li class="class-row" id="c-wed-1815-power-hour" data-type="Strength">
+              <div class="cr-time"><strong>6:15pm</strong><span>60 min</span></div>
+              <div class="cr-main"><h3>Power Hour</h3><p class="cr-meta"><span class="type-pill">Strength</span><span>with Dex Holloway</span><span>Intermediate</span></p><p class="cr-desc">Heavy compound lifts, built around a squat, press or pull of the day.</p></div>
+              <div class="cr-book"><span class="spots is-low">3 spots left</span><a class="btn btn-primary btn-sm" href="trial.html?class=wed-1815-power-hour">Book<span class="sr-only"> Power Hour, Wednesday 6:15pm</span></a></div>
+            </li>
+            <li class="class-row" id="c-wed-1915-mobility-reset" data-type="Mobility">
+              <div class="cr-time"><strong>7:15pm</strong><span>45 min</span></div>
+              <div class="cr-main"><h3>Mobility Reset</h3><p class="cr-meta"><span class="type-pill">Mobility</span><span>with Dev Nair</span><span>All levels</span></p><p class="cr-desc">Joint-by-joint work to move better in the gym and at your desk.</p></div>
+              <div class="cr-book"><span class="spots is-low">2 spots left</span><a class="btn btn-primary btn-sm" href="trial.html?class=wed-1915-mobility-reset">Book<span class="sr-only"> Mobility Reset, Wednesday 7:15pm</span></a></div>
+            </li>
+            <li class="class-row" id="c-wed-2000-vinyasa-flow" data-type="Yoga">
+              <div class="cr-time"><strong>8:00pm</strong><span>60 min</span></div>
+              <div class="cr-main"><h3>Vinyasa Flow</h3><p class="cr-meta"><span class="type-pill">Yoga</span><span>with Dev Nair</span><span>All levels</span></p><p class="cr-desc">A moving, breath-led flow to open the hips, spine and shoulders.</p></div>
+              <div class="cr-book"><span class="spots">6 spots left</span><a class="btn btn-primary btn-sm" href="trial.html?class=wed-2000-vinyasa-flow">Book<span class="sr-only"> Vinyasa Flow, Wednesday 8:00pm</span></a></div>
+            </li>
+            </ul>
+            <p class="empty-note" hidden>No classes of that type on Wednesday. Try another day or clear the filter.</p>
+          </div>
+          <div role="tabpanel" id="day-thu" aria-labelledby="tab-thu" tabindex="0" class="day-panel" data-label="Thursday" data-day="thu" hidden>
+            <p class="panel-note">Thursday: 9 classes, from 5:30am</p>
+            <ul class="class-list">
+            <li class="class-row" id="c-thu-0530-power-hour" data-type="Strength">
+              <div class="cr-time"><strong>5:30am</strong><span>45 min</span></div>
+              <div class="cr-main"><h3>Power Hour</h3><p class="cr-meta"><span class="type-pill">Strength</span><span>with Dex Holloway</span><span>Intermediate</span></p><p class="cr-desc">Heavy compound lifts, built around a squat, press or pull of the day.</p></div>
+              <div class="cr-book"><span class="spots">4 spots left</span><a class="btn btn-primary btn-sm" href="trial.html?class=thu-0530-power-hour">Book<span class="sr-only"> Power Hour, Thursday 5:30am</span></a></div>
+            </li>
+            <li class="class-row" id="c-thu-0630-ember-hiit" data-type="HIIT">
+              <div class="cr-time"><strong>6:30am</strong><span>45 min</span></div>
+              <div class="cr-main"><h3>Ember HIIT</h3><p class="cr-meta"><span class="type-pill">HIIT</span><span>with Jonah Reyes</span><span>All levels</span></p><p class="cr-desc">Forty-five minutes of intervals on bikes, sleds, rowers and kettlebells.</p></div>
+              <div class="cr-book"><span class="spots">4 spots left</span><a class="btn btn-primary btn-sm" href="trial.html?class=thu-0630-ember-hiit">Book<span class="sr-only"> Ember HIIT, Thursday 6:30am</span></a></div>
+            </li>
+            <li class="class-row" id="c-thu-0900-vinyasa-flow" data-type="Yoga">
+              <div class="cr-time"><strong>9:00am</strong><span>60 min</span></div>
+              <div class="cr-main"><h3>Vinyasa Flow</h3><p class="cr-meta"><span class="type-pill">Yoga</span><span>with Dev Nair</span><span>All levels</span></p><p class="cr-desc">A moving, breath-led flow to open the hips, spine and shoulders.</p></div>
+              <div class="cr-book"><span class="spots">9 spots left</span><a class="btn btn-primary btn-sm" href="trial.html?class=thu-0900-vinyasa-flow">Book<span class="sr-only"> Vinyasa Flow, Thursday 9:00am</span></a></div>
+            </li>
+            <li class="class-row" id="c-thu-1215-stretch-club" data-type="Mobility">
+              <div class="cr-time"><strong>12:15pm</strong><span>45 min</span></div>
+              <div class="cr-main"><h3>Stretch Club</h3><p class="cr-meta"><span class="type-pill">Mobility</span><span>with Dev Nair</span><span>Beginner</span></p><p class="cr-desc">Easy, guided stretching with foam rollers and bands.</p></div>
+              <div class="cr-book"><span class="spots is-low">3 spots left</span><a class="btn btn-primary btn-sm" href="trial.html?class=thu-1215-stretch-club">Book<span class="sr-only"> Stretch Club, Thursday 12:15pm</span></a></div>
+            </li>
+            <li class="class-row" id="c-thu-1630-boxing-fundamentals" data-type="Boxing">
+              <div class="cr-time"><strong>4:30pm</strong><span>45 min</span></div>
+              <div class="cr-main"><h3>Boxing Fundamentals</h3><p class="cr-meta"><span class="type-pill">Boxing</span><span>with Jonah Reyes</span><span>Beginner</span></p><p class="cr-desc">Stance, footwork and the basic combinations on the bags. No sparring.</p></div>
+              <div class="cr-book"><span class="spots">5 spots left</span><a class="btn btn-primary btn-sm" href="trial.html?class=thu-1630-boxing-fundamentals">Book<span class="sr-only"> Boxing Fundamentals, Thursday 4:30pm</span></a></div>
+            </li>
+            <li class="class-row" id="c-thu-1730-lift-lab" data-type="Strength">
+              <div class="cr-time"><strong>5:30pm</strong><span>60 min</span></div>
+              <div class="cr-main"><h3>Lift Lab</h3><p class="cr-meta"><span class="type-pill">Strength</span><span>with Marcus Quinn</span><span>Intermediate</span></p><p class="cr-desc">Programmed strength work with tempo, pauses and plenty of coaching.</p></div>
+              <div class="cr-book"><span class="spots is-low">2 spots left</span><a class="btn btn-primary btn-sm" href="trial.html?class=thu-1730-lift-lab">Book<span class="sr-only"> Lift Lab, Thursday 5:30pm</span></a></div>
+            </li>
+            <li class="class-row" id="c-thu-1830-sprint-intervals" data-type="HIIT">
+              <div class="cr-time"><strong>6:30pm</strong><span>45 min</span></div>
+              <div class="cr-main"><h3>Sprint Intervals</h3><p class="cr-meta"><span class="type-pill">HIIT</span><span>with Jonah Reyes</span><span>Advanced</span></p><p class="cr-desc">Short, sharp sprints and hard rests. Bring a good attitude and a towel.</p></div>
+              <div class="cr-book"><span class="spots is-low">2 spots left</span><a class="btn btn-primary btn-sm" href="trial.html?class=thu-1830-sprint-intervals">Book<span class="sr-only"> Sprint Intervals, Thursday 6:30pm</span></a></div>
+            </li>
+            <li class="class-row" id="c-thu-1915-hips-shoulders" data-type="Mobility">
+              <div class="cr-time"><strong>7:15pm</strong><span>45 min</span></div>
+              <div class="cr-main"><h3>Hips &amp; Shoulders</h3><p class="cr-meta"><span class="type-pill">Mobility</span><span>with Marcus Quinn</span><span>All levels</span></p><p class="cr-desc">Targeted mobility for the two joints that limit most lifters.</p></div>
+              <div class="cr-book"><span class="spots is-low">2 spots left</span><a class="btn btn-primary btn-sm" href="trial.html?class=thu-1915-hips-shoulders">Book<span class="sr-only"> Hips &amp; Shoulders, Thursday 7:15pm</span></a></div>
+            </li>
+            <li class="class-row" id="c-thu-2000-yin-restore" data-type="Yoga">
+              <div class="cr-time"><strong>8:00pm</strong><span>60 min</span></div>
+              <div class="cr-main"><h3>Yin &amp; Restore</h3><p class="cr-meta"><span class="type-pill">Yoga</span><span>with Dev Nair</span><span>All levels</span></p><p class="cr-desc">Deep, still stretches and long exhales to wind the week down.</p></div>
+              <div class="cr-book"><span class="spots">7 spots left</span><a class="btn btn-primary btn-sm" href="trial.html?class=thu-2000-yin-restore">Book<span class="sr-only"> Yin &amp; Restore, Thursday 8:00pm</span></a></div>
+            </li>
+            </ul>
+            <p class="empty-note" hidden>No classes of that type on Thursday. Try another day or clear the filter.</p>
+          </div>
+          <div role="tabpanel" id="day-fri" aria-labelledby="tab-fri" tabindex="0" class="day-panel" data-label="Friday" data-day="fri" hidden>
+            <p class="panel-note">Friday: 9 classes, from 5:30am</p>
+            <ul class="class-list">
+            <li class="class-row" id="c-fri-0530-lift-lab" data-type="Strength">
+              <div class="cr-time"><strong>5:30am</strong><span>45 min</span></div>
+              <div class="cr-main"><h3>Lift Lab</h3><p class="cr-meta"><span class="type-pill">Strength</span><span>with Marcus Quinn</span><span>Intermediate</span></p><p class="cr-desc">Programmed strength work with tempo, pauses and plenty of coaching.</p></div>
+              <div class="cr-book"><span class="spots">10 spots left</span><a class="btn btn-primary btn-sm" href="trial.html?class=fri-0530-lift-lab">Book<span class="sr-only"> Lift Lab, Friday 5:30am</span></a></div>
+            </li>
+            <li class="class-row" id="c-fri-0630-engine-room" data-type="HIIT">
+              <div class="cr-time"><strong>6:30am</strong><span>45 min</span></div>
+              <div class="cr-main"><h3>Engine Room</h3><p class="cr-meta"><span class="type-pill">HIIT</span><span>with Dex Holloway</span><span>Intermediate</span></p><p class="cr-desc">Conditioning circuits that build your engine without wrecking your joints.</p></div>
+              <div class="cr-book"><span class="spots">11 spots left</span><a class="btn btn-primary btn-sm" href="trial.html?class=fri-0630-engine-room">Book<span class="sr-only"> Engine Room, Friday 6:30am</span></a></div>
+            </li>
+            <li class="class-row" id="c-fri-0900-slow-yoga" data-type="Yoga">
+              <div class="cr-time"><strong>9:00am</strong><span>60 min</span></div>
+              <div class="cr-main"><h3>Slow Yoga</h3><p class="cr-meta"><span class="type-pill">Yoga</span><span>with Dev Nair</span><span>Beginner</span></p><p class="cr-desc">Long holds, simple poses and plenty of time to find them.</p></div>
+              <div class="cr-book"><span class="spots">9 spots left</span><a class="btn btn-primary btn-sm" href="trial.html?class=fri-0900-slow-yoga">Book<span class="sr-only"> Slow Yoga, Friday 9:00am</span></a></div>
+            </li>
+            <li class="class-row" id="c-fri-1215-ember-hiit" data-type="HIIT">
+              <div class="cr-time"><strong>12:15pm</strong><span>45 min</span></div>
+              <div class="cr-main"><h3>Ember HIIT</h3><p class="cr-meta"><span class="type-pill">HIIT</span><span>with Jonah Reyes</span><span>All levels</span></p><p class="cr-desc">Forty-five minutes of intervals on bikes, sleds, rowers and kettlebells.</p></div>
+              <div class="cr-book"><span class="spots">13 spots left</span><a class="btn btn-primary btn-sm" href="trial.html?class=fri-1215-ember-hiit">Book<span class="sr-only"> Ember HIIT, Friday 12:15pm</span></a></div>
+            </li>
+            <li class="class-row" id="c-fri-1630-bag-work" data-type="Boxing">
+              <div class="cr-time"><strong>4:30pm</strong><span>45 min</span></div>
+              <div class="cr-main"><h3>Bag Work</h3><p class="cr-meta"><span class="type-pill">Boxing</span><span>with Jonah Reyes</span><span>Intermediate</span></p><p class="cr-desc">Rounds on the heavy bags with combinations and conditioning between.</p></div>
+              <div class="cr-book"><span class="spots">9 spots left</span><a class="btn btn-primary btn-sm" href="trial.html?class=fri-1630-bag-work">Book<span class="sr-only"> Bag Work, Friday 4:30pm</span></a></div>
+            </li>
+            <li class="class-row" id="c-fri-1730-barbell-basics" data-type="Strength">
+              <div class="cr-time"><strong>5:30pm</strong><span>60 min</span></div>
+              <div class="cr-main"><h3>Barbell Basics</h3><p class="cr-meta"><span class="type-pill">Strength</span><span>with Marcus Quinn</span><span>Beginner</span></p><p class="cr-desc">Learn the squat, hinge, press and row with a coach on every set.</p></div>
+              <div class="cr-book"><span class="spots is-low">2 spots left</span><a class="btn btn-primary btn-sm" href="trial.html?class=fri-1730-barbell-basics">Book<span class="sr-only"> Barbell Basics, Friday 5:30pm</span></a></div>
+            </li>
+            <li class="class-row" id="c-fri-1830-boxing-conditioning" data-type="Boxing">
+              <div class="cr-time"><strong>6:30pm</strong><span>45 min</span></div>
+              <div class="cr-main"><h3>Boxing Conditioning</h3><p class="cr-meta"><span class="type-pill">Boxing</span><span>with Jonah Reyes</span><span>Advanced</span></p><p class="cr-desc">Fast rounds, pad work and core finishers. Wraps are provided.</p></div>
+              <div class="cr-book"><span class="spots">10 spots left</span><a class="btn btn-primary btn-sm" href="trial.html?class=fri-1830-boxing-conditioning">Book<span class="sr-only"> Boxing Conditioning, Friday 6:30pm</span></a></div>
+            </li>
+            <li class="class-row" id="c-fri-1915-mobility-reset" data-type="Mobility">
+              <div class="cr-time"><strong>7:15pm</strong><span>45 min</span></div>
+              <div class="cr-main"><h3>Mobility Reset</h3><p class="cr-meta"><span class="type-pill">Mobility</span><span>with Dev Nair</span><span>All levels</span></p><p class="cr-desc">Joint-by-joint work to move better in the gym and at your desk.</p></div>
+              <div class="cr-book"><span class="spots">6 spots left</span><a class="btn btn-primary btn-sm" href="trial.html?class=fri-1915-mobility-reset">Book<span class="sr-only"> Mobility Reset, Friday 7:15pm</span></a></div>
+            </li>
+            <li class="class-row" id="c-fri-2000-vinyasa-flow" data-type="Yoga">
+              <div class="cr-time"><strong>8:00pm</strong><span>60 min</span></div>
+              <div class="cr-main"><h3>Vinyasa Flow</h3><p class="cr-meta"><span class="type-pill">Yoga</span><span>with Dev Nair</span><span>All levels</span></p><p class="cr-desc">A moving, breath-led flow to open the hips, spine and shoulders.</p></div>
+              <div class="cr-book"><span class="spots">13 spots left</span><a class="btn btn-primary btn-sm" href="trial.html?class=fri-2000-vinyasa-flow">Book<span class="sr-only"> Vinyasa Flow, Friday 8:00pm</span></a></div>
+            </li>
+            </ul>
+            <p class="empty-note" hidden>No classes of that type on Friday. Try another day or clear the filter.</p>
+          </div>
+          <div role="tabpanel" id="day-sat" aria-labelledby="tab-sat" tabindex="0" class="day-panel" data-label="Saturday" data-day="sat" hidden>
+            <p class="panel-note">Saturday: 8 classes, from 7:30am</p>
+            <ul class="class-list">
+            <li class="class-row" id="c-sat-0730-power-hour" data-type="Strength">
+              <div class="cr-time"><strong>7:30am</strong><span>45 min</span></div>
+              <div class="cr-main"><h3>Power Hour</h3><p class="cr-meta"><span class="type-pill">Strength</span><span>with Dex Holloway</span><span>Intermediate</span></p><p class="cr-desc">Heavy compound lifts, built around a squat, press or pull of the day.</p></div>
+              <div class="cr-book"><span class="spots">9 spots left</span><a class="btn btn-primary btn-sm" href="trial.html?class=sat-0730-power-hour">Book<span class="sr-only"> Power Hour, Saturday 7:30am</span></a></div>
+            </li>
+            <li class="class-row" id="c-sat-0830-ember-hiit" data-type="HIIT">
+              <div class="cr-time"><strong>8:30am</strong><span>45 min</span></div>
+              <div class="cr-main"><h3>Ember HIIT</h3><p class="cr-meta"><span class="type-pill">HIIT</span><span>with Jonah Reyes</span><span>All levels</span></p><p class="cr-desc">Forty-five minutes of intervals on bikes, sleds, rowers and kettlebells.</p></div>
+              <div class="cr-book"><span class="spots is-low">1 spot left</span><a class="btn btn-primary btn-sm" href="trial.html?class=sat-0830-ember-hiit">Book<span class="sr-only"> Ember HIIT, Saturday 8:30am</span></a></div>
+            </li>
+            <li class="class-row" id="c-sat-0930-vinyasa-flow" data-type="Yoga">
+              <div class="cr-time"><strong>9:30am</strong><span>60 min</span></div>
+              <div class="cr-main"><h3>Vinyasa Flow</h3><p class="cr-meta"><span class="type-pill">Yoga</span><span>with Dev Nair</span><span>All levels</span></p><p class="cr-desc">A moving, breath-led flow to open the hips, spine and shoulders.</p></div>
+              <div class="cr-book"><span class="spots">16 spots left</span><a class="btn btn-primary btn-sm" href="trial.html?class=sat-0930-vinyasa-flow">Book<span class="sr-only"> Vinyasa Flow, Saturday 9:30am</span></a></div>
+            </li>
+            <li class="class-row" id="c-sat-1030-boxing-fundamentals" data-type="Boxing">
+              <div class="cr-time"><strong>10:30am</strong><span>45 min</span></div>
+              <div class="cr-main"><h3>Boxing Fundamentals</h3><p class="cr-meta"><span class="type-pill">Boxing</span><span>with Jonah Reyes</span><span>Beginner</span></p><p class="cr-desc">Stance, footwork and the basic combinations on the bags. No sparring.</p></div>
+              <div class="cr-book"><span class="spots">8 spots left</span><a class="btn btn-primary btn-sm" href="trial.html?class=sat-1030-boxing-fundamentals">Book<span class="sr-only"> Boxing Fundamentals, Saturday 10:30am</span></a></div>
+            </li>
+            <li class="class-row" id="c-sat-1130-mobility-reset" data-type="Mobility">
+              <div class="cr-time"><strong>11:30am</strong><span>45 min</span></div>
+              <div class="cr-main"><h3>Mobility Reset</h3><p class="cr-meta"><span class="type-pill">Mobility</span><span>with Dev Nair</span><span>All levels</span></p><p class="cr-desc">Joint-by-joint work to move better in the gym and at your desk.</p></div>
+              <div class="cr-book"><span class="spots">11 spots left</span><a class="btn btn-primary btn-sm" href="trial.html?class=sat-1130-mobility-reset">Book<span class="sr-only"> Mobility Reset, Saturday 11:30am</span></a></div>
+            </li>
+            <li class="class-row" id="c-sat-1300-barbell-basics" data-type="Strength">
+              <div class="cr-time"><strong>1:00pm</strong><span>60 min</span></div>
+              <div class="cr-main"><h3>Barbell Basics</h3><p class="cr-meta"><span class="type-pill">Strength</span><span>with Marcus Quinn</span><span>Beginner</span></p><p class="cr-desc">Learn the squat, hinge, press and row with a coach on every set.</p></div>
+              <div class="cr-book"><span class="spots">10 spots left</span><a class="btn btn-primary btn-sm" href="trial.html?class=sat-1300-barbell-basics">Book<span class="sr-only"> Barbell Basics, Saturday 1:00pm</span></a></div>
+            </li>
+            <li class="class-row" id="c-sat-1400-bag-work" data-type="Boxing">
+              <div class="cr-time"><strong>2:00pm</strong><span>45 min</span></div>
+              <div class="cr-main"><h3>Bag Work</h3><p class="cr-meta"><span class="type-pill">Boxing</span><span>with Jonah Reyes</span><span>Intermediate</span></p><p class="cr-desc">Rounds on the heavy bags with combinations and conditioning between.</p></div>
+              <div class="cr-book"><span class="spots is-full">Full</span><a class="btn btn-primary btn-sm" href="trial.html?class=sat-1400-bag-work">Waitlist<span class="sr-only"> Bag Work, Saturday 2:00pm</span></a></div>
+            </li>
+            <li class="class-row" id="c-sat-1530-yin-restore" data-type="Yoga">
+              <div class="cr-time"><strong>3:30pm</strong><span>60 min</span></div>
+              <div class="cr-main"><h3>Yin &amp; Restore</h3><p class="cr-meta"><span class="type-pill">Yoga</span><span>with Dev Nair</span><span>All levels</span></p><p class="cr-desc">Deep, still stretches and long exhales to wind the week down.</p></div>
+              <div class="cr-book"><span class="spots">12 spots left</span><a class="btn btn-primary btn-sm" href="trial.html?class=sat-1530-yin-restore">Book<span class="sr-only"> Yin &amp; Restore, Saturday 3:30pm</span></a></div>
+            </li>
+            </ul>
+            <p class="empty-note" hidden>No classes of that type on Saturday. Try another day or clear the filter.</p>
+          </div>
+          <div role="tabpanel" id="day-sun" aria-labelledby="tab-sun" tabindex="0" class="day-panel" data-label="Sunday" data-day="sun" hidden>
+            <p class="panel-note">Sunday: 7 classes, from 8:00am</p>
+            <ul class="class-list">
+            <li class="class-row" id="c-sun-0800-slow-yoga" data-type="Yoga">
+              <div class="cr-time"><strong>8:00am</strong><span>60 min</span></div>
+              <div class="cr-main"><h3>Slow Yoga</h3><p class="cr-meta"><span class="type-pill">Yoga</span><span>with Dev Nair</span><span>Beginner</span></p><p class="cr-desc">Long holds, simple poses and plenty of time to find them.</p></div>
+              <div class="cr-book"><span class="spots">15 spots left</span><a class="btn btn-primary btn-sm" href="trial.html?class=sun-0800-slow-yoga">Book<span class="sr-only"> Slow Yoga, Sunday 8:00am</span></a></div>
+            </li>
+            <li class="class-row" id="c-sun-0900-lift-lab" data-type="Strength">
+              <div class="cr-time"><strong>9:00am</strong><span>60 min</span></div>
+              <div class="cr-main"><h3>Lift Lab</h3><p class="cr-meta"><span class="type-pill">Strength</span><span>with Marcus Quinn</span><span>Intermediate</span></p><p class="cr-desc">Programmed strength work with tempo, pauses and plenty of coaching.</p></div>
+              <div class="cr-book"><span class="spots">9 spots left</span><a class="btn btn-primary btn-sm" href="trial.html?class=sun-0900-lift-lab">Book<span class="sr-only"> Lift Lab, Sunday 9:00am</span></a></div>
+            </li>
+            <li class="class-row" id="c-sun-1000-ember-hiit" data-type="HIIT">
+              <div class="cr-time"><strong>10:00am</strong><span>45 min</span></div>
+              <div class="cr-main"><h3>Ember HIIT</h3><p class="cr-meta"><span class="type-pill">HIIT</span><span>with Jonah Reyes</span><span>All levels</span></p><p class="cr-desc">Forty-five minutes of intervals on bikes, sleds, rowers and kettlebells.</p></div>
+              <div class="cr-book"><span class="spots">11 spots left</span><a class="btn btn-primary btn-sm" href="trial.html?class=sun-1000-ember-hiit">Book<span class="sr-only"> Ember HIIT, Sunday 10:00am</span></a></div>
+            </li>
+            <li class="class-row" id="c-sun-1100-boxing-fundamentals" data-type="Boxing">
+              <div class="cr-time"><strong>11:00am</strong><span>45 min</span></div>
+              <div class="cr-main"><h3>Boxing Fundamentals</h3><p class="cr-meta"><span class="type-pill">Boxing</span><span>with Jonah Reyes</span><span>Beginner</span></p><p class="cr-desc">Stance, footwork and the basic combinations on the bags. No sparring.</p></div>
+              <div class="cr-book"><span class="spots">11 spots left</span><a class="btn btn-primary btn-sm" href="trial.html?class=sun-1100-boxing-fundamentals">Book<span class="sr-only"> Boxing Fundamentals, Sunday 11:00am</span></a></div>
+            </li>
+            <li class="class-row" id="c-sun-1200-hips-shoulders" data-type="Mobility">
+              <div class="cr-time"><strong>12:00pm</strong><span>45 min</span></div>
+              <div class="cr-main"><h3>Hips &amp; Shoulders</h3><p class="cr-meta"><span class="type-pill">Mobility</span><span>with Marcus Quinn</span><span>All levels</span></p><p class="cr-desc">Targeted mobility for the two joints that limit most lifters.</p></div>
+              <div class="cr-book"><span class="spots">9 spots left</span><a class="btn btn-primary btn-sm" href="trial.html?class=sun-1200-hips-shoulders">Book<span class="sr-only"> Hips &amp; Shoulders, Sunday 12:00pm</span></a></div>
+            </li>
+            <li class="class-row" id="c-sun-1500-yin-restore" data-type="Yoga">
+              <div class="cr-time"><strong>3:00pm</strong><span>60 min</span></div>
+              <div class="cr-main"><h3>Yin &amp; Restore</h3><p class="cr-meta"><span class="type-pill">Yoga</span><span>with Dev Nair</span><span>All levels</span></p><p class="cr-desc">Deep, still stretches and long exhales to wind the week down.</p></div>
+              <div class="cr-book"><span class="spots is-full">Full</span><a class="btn btn-primary btn-sm" href="trial.html?class=sun-1500-yin-restore">Waitlist<span class="sr-only"> Yin &amp; Restore, Sunday 3:00pm</span></a></div>
+            </li>
+            <li class="class-row" id="c-sun-1630-stretch-club" data-type="Mobility">
+              <div class="cr-time"><strong>4:30pm</strong><span>45 min</span></div>
+              <div class="cr-main"><h3>Stretch Club</h3><p class="cr-meta"><span class="type-pill">Mobility</span><span>with Dev Nair</span><span>Beginner</span></p><p class="cr-desc">Easy, guided stretching with foam rollers and bands.</p></div>
+              <div class="cr-book"><span class="spots">15 spots left</span><a class="btn btn-primary btn-sm" href="trial.html?class=sun-1630-stretch-club">Book<span class="sr-only"> Stretch Club, Sunday 4:30pm</span></a></div>
+            </li>
+            </ul>
+            <p class="empty-note" hidden>No classes of that type on Sunday. Try another day or clear the filter.</p>
+          </div>
+        </div>
+        <p class="note timetable-note">Spots left are a deterministic demo, not live availability. Tap Book to choose a date: classes run on the same weekday and time every week. Please book ahead, because classes fill up.</p>
+
+        <aside class="feature-card" aria-labelledby="newhere-title">
+          <div>
+            <p class="eyebrow">New here?</p>
+            <h3 id="newhere-title">Start with a free trial</h3>
+            <p>A 45 minute coached session with a tour of the floor. No card, no contract and no pressure to join. Pick a coach and a time that suits.</p>
+          </div>
+          <div class="feature-price"><span>$0</span><small>for your first session</small><a class="btn btn-primary" href="trial.html">Book a free trial</a></div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- NEWSLETTER -->
+    <section class="section section-cta" id="join" aria-labelledby="join-title">
+      <div class="container join-inner">
+        <p class="eyebrow">The Ember letter</p>
+        <h2 id="join-title" data-split>Train smarter.</h2>
+        <p class="lead">One email a month: a workout to try, a recovery tip and first dibs on new classes. No spam, ever.</p>
+        <form id="news-form" novalidate>
+          <label class="sr-only" for="n-email">Email address</label>
+          <div class="news-row">
+            <input id="n-email" name="email" type="email" placeholder="you@example.com" autocomplete="email" aria-describedby="e-news">
+            <button class="btn btn-primary" type="submit">Join</button>
+          </div>
+          <p class="error" id="e-news" role="status" aria-live="polite"></p>
+          <p class="note privacy-note">We only use your email for this letter. Unsubscribe any time. <a href="legal.html#privacy">Privacy</a></p>
+          <!-- DEMO ONLY: connect Mailchimp, Beehiiv or similar here. -->
+        </form>
+      </div>
+    </section>
+
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a class="brand-wide" href="index.html" aria-label="Iron &amp; Ember Athletic Club, home page">
+            <svg width="30" height="30" aria-hidden="true" focusable="false"><use href="#logo-mark"/></svg>
+            <span class="script">Iron &amp; Ember Athletic Club</span>
+          </a>
+          <p>Strength coaching, group classes and open gym in the heart of Fortitude Valley.</p>
+        </div>
+        <nav class="footer-col" aria-label="Footer: explore">
+          <h2>Explore</h2>
+          <ul>
+            <li><a href="index.html">Home</a></li><li><a href="classes.html">Classes</a></li><li><a href="coaches.html">Coaches</a></li><li><a href="membership.html">Membership</a></li><li><a href="journal.html">Journal</a></li><li><a href="visit.html">Visit</a></li>
+            <li><a href="trial.html">Free trial</a></li>
+          </ul>
+        </nav>
+        <div class="footer-col">
+          <h2>Visit</h2>
+          <p>22 Example Street<br>Fortitude Valley QLD 4006</p>
+          <p><a href="tel:0755500188">07 5550 0188</a><br><a href="mailto:hello@example.com">hello@example.com</a></p>
+        </div>
+        <div class="footer-col">
+          <h2>Hours</h2>
+          <p>Mon &ndash; Fri 5am &ndash; 10pm<br>Sat &ndash; Sun 7am &ndash; 6pm</p>
+        </div>
+      </div>
+      <nav class="footer-legal" aria-label="Footer: more">
+        <a href="membership.html#day-pass">Day pass &amp; gifts</a>
+        <a href="careers.html">Careers</a>
+        <a href="legal.html#privacy">Privacy</a>
+        <a href="legal.html#terms">Terms</a>
+        <a href="legal.html#cookies">Cookies</a>
+      </nav>
+      <div class="footer-bottom">
+        <p>Concept demo by KB Ventures. Not a real business.</p>
+        <p class="brandline">Demo website by KB Ventures</p>
+        <p class="photo-credits">Photo: Unsplash (Hero, Class studio, Banner, Coaching, Weights floor, Kettlebells, Cardio and rowing, Recovery, Treadmills, Equipment rack, Sled track, Coach portrait 1, Coach portrait 2, Coach portrait 3, Coach portrait 4)</p>
+        <a class="back-top" href="#top">Back to top &uarr;</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Mobile quick actions -->
+  <nav class="mobile-cta" aria-label="Quick actions">
+    <a class="btn btn-secondary" href="tel:0755500188">Call</a>
+    <a class="btn btn-primary" href="trial.html">Free trial</a>
+  </nav>
+
+  <!-- Cookie preferences: a small card, bottom-left -->
+  <div class="cookie" id="cookie" role="region" aria-label="Cookie preferences" hidden>
+    <p><strong>No tracking by default.</strong> Allow simple analytics? <a href="legal.html#cookies">Details</a></p>
+    <div class="cookie-actions">
+      <button class="btn btn-primary btn-sm" type="button" data-cookie="yes">Accept</button>
+      <button class="btn btn-secondary btn-sm" type="button" data-cookie="no">Decline</button>
+    </div>
+  </div>
+
+  
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script type="application/json" id="site-data">{"name": "Iron & Ember Athletic Club", "phone": "07 5550 0188", "phoneHref": "0755500188", "email": "hello@example.com", "timezone": "Australia/Brisbane", "timezoneLabel": "Brisbane", "locale": "en-AU", "currency": "AUD", "hours": [{"day": 1, "name": "Monday", "open": 5, "close": 22}, {"day": 2, "name": "Tuesday", "open": 5, "close": 22}, {"day": 3, "name": "Wednesday", "open": 5, "close": 22}, {"day": 4, "name": "Thursday", "open": 5, "close": 22}, {"day": 5, "name": "Friday", "open": 5, "close": 22}, {"day": 6, "name": "Saturday", "open": 7, "close": 18}, {"day": 0, "name": "Sunday", "open": 7, "close": 18}], "coaches": {"marcus": "Marcus Quinn", "jonah": "Jonah Reyes", "dev": "Dev Nair", "dex": "Dex Holloway"}}</script>
+  <script defer src="vendor/lenis-1.1.18.min.js"></script><!-- Lenis 1.1.18 (MIT), self-hosted, pinned -->
+  <script type="module" src="main.js"></script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+    <!-- HERO: full-screen background (photo with a slow zoom; set hero.video + hero.poster in site.config.json to use a looping video instead) -->
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-bg">
+        <div class="hero-photo">{{{photos.hero}}}</div>
+        {{#if hero.video}}<video class="hero-video" autoplay muted loop playsinline preload="metadata" poster="{{hero.poster}}"><source src="{{hero.video}}"></video>{{/if}}
+      </div>
+      <div class="hero-inner">
+        <div class="hero-main">
+          <p class="hero-kicker">{{brand.name}} &middot; {{brand.city}}</p>
+          <h1 id="hero-title" class="hero-h1">It&rsquo;s not just training. It&rsquo;s how you live.</h1>
+          <div class="hero-cta">
+            <a class="btn btn-primary" href="trial.html">Start your free trial</a>
+            <a class="btn btn-secondary" href="#visit">Book a visit</a>
+          </div>
+          <p class="chip"><span class="dot" aria-hidden="true"></span><span id="open-status">Open 7 days</span></p>
+        </div>
+        <div class="hero-stage" id="stage">
+          <!-- Poster: an inline SVG barbell, visible instantly and kept if 3D is skipped or fails -->
+          <svg class="stage-fallback" viewBox="0 0 600 300" role="img" aria-label="Illustration of an Olympic barbell with black plates, yellow rings and a yellow collar">
+            <defs>
+              <linearGradient id="fb-chrome" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F4F6F2"/><stop offset=".35" stop-color="#AEB4B8"/><stop offset=".62" stop-color="#6E757B"/><stop offset="1" stop-color="#C9CED1"/></linearGradient>
+              <linearGradient id="fb-rubber" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#1B1E22"/><stop offset=".5" stop-color="#101215"/><stop offset="1" stop-color="#07080A"/></linearGradient>
+              <g id="fb-side">
+                <rect x="40" y="139" width="190" height="22" rx="4" fill="url(#fb-chrome)"/>
+                <rect x="62" y="126" width="22" height="48" rx="5" fill="#FFE000"/>
+                <rect x="88" y="72" width="34" height="156" rx="9" fill="url(#fb-rubber)" stroke="#2E3238"/>
+                <rect x="91" y="86" width="2.600" height="128" rx="1.300" fill="#FFE000"/>
+                <rect x="127" y="36" width="38" height="228" rx="10" fill="url(#fb-rubber)" stroke="#2E3238"/>
+                <rect x="130" y="52" width="2.600" height="196" rx="1.300" fill="#FFE000"/>
+                <rect x="170" y="36" width="38" height="228" rx="10" fill="url(#fb-rubber)" stroke="#2E3238"/>
+                <rect x="173" y="52" width="2.600" height="196" rx="1.300" fill="#FFE000"/>
+                <rect x="210" y="133" width="12" height="34" rx="3" fill="url(#fb-chrome)"/>
+              </g>
+            </defs>
+            <ellipse cx="300" cy="284" rx="230" ry="9" fill="#000" opacity=".5"/>
+            <g class="fb-bar" transform="rotate(-8 300 150)">
+              <rect x="150" y="145" width="300" height="10" rx="3" fill="url(#fb-chrome)"/>
+              <use href="#fb-side"/>
+              <g transform="translate(600 0) scale(-1 1)"><use href="#fb-side"/></g>
+            </g>
+          </svg>
+          <canvas id="scene" aria-hidden="true"></canvas>
+        </div>
+      </div>
+      <a class="scroll-cue" href="#offer">Scroll<svg width="14" height="8" viewBox="0 0 14 8" fill="none" stroke="currentColor" stroke-width="1.600" aria-hidden="true"><path d="M1 1l6 5 6-5"/></svg></a>
+    </section>

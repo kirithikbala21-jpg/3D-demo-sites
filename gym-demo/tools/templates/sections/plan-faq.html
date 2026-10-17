@@ -1,0 +1,14 @@
+    <section class="section section-tint" id="plan-faq" aria-labelledby="plan-faq-title">
+      <div class="container faq-grid">
+        <div class="reveal">
+          <p class="eyebrow">Membership FAQ</p>
+          <h2 id="plan-faq-title" data-split>Before you join</h2>
+          <p class="lead">Questions about plans, pausing and prices. Anything else, call {{contact.phone}}.</p>
+        </div>
+        <div class="faq reveal">
+          {{#each planfaq}}
+          <details><summary>{{{this.q}}}</summary><p>{{{this.a}}}</p></details>
+          {{/each}}
+        </div>
+      </div>
+    </section>

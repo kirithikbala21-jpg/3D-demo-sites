@@ -1,0 +1,156 @@
+{
+ "_readme": "Add a real photo with: python3 tools/add-photo.py SOURCE.jpg SLOT --alt 'Describe it' --credit 'Photographer / Source'. Until a slot has a file the site shows a clearly labelled placeholder (its `needs` text). The build only writes an <img> once the file exists. See PHOTO-SLOTS.md.",
+ "slots": {
+  "hero": {
+   "file": "img/photos/hero.webp",
+   "alt": "Wide view of a dark industrial gym floor with racks, plates and tall windows",
+   "credit": "Photo: Unsplash",
+   "label": "Hero",
+   "w": 900,
+   "h": 600,
+   "pos": "50% 58%",
+   "needs": "full-screen background, landscape 16:9, min 1600px wide, a lifter mid-rep or the weights floor in moody light",
+   "eager": true
+  },
+  "studio": {
+   "file": "img/photos/studio.webp",
+   "alt": "Members silhouetted against large windows in the group-class studio",
+   "credit": "Photo: Unsplash",
+   "label": "Class studio",
+   "w": 900,
+   "h": 600,
+   "pos": "50% 45%",
+   "needs": "group-class studio, wide banner 16:7, min 1600px wide, a class mid-session"
+  },
+  "banner": {
+   "file": "img/photos/banner.webp",
+   "alt": "Shirtless lifter looking down while curling a barbell in a dim gym",
+   "credit": "Photo: Unsplash",
+   "label": "Banner",
+   "w": 900,
+   "h": 1350,
+   "pos": "50% 20%",
+   "needs": "full-width banner, wide 16:6, min 1600px wide, an athlete mid-effort with space for one short line"
+  },
+  "coaching": {
+   "file": "img/photos/coaching.webp",
+   "alt": "Two trainers talking in a bright gym beside a mirror and medicine balls",
+   "credit": "Photo: Unsplash",
+   "label": "Coaching",
+   "w": 900,
+   "h": 600,
+   "pos": "50% 50%",
+   "needs": "two coaches talking on the floor, landscape 3:2, min 1200px wide"
+  },
+  "gallery-1": {
+   "file": "img/photos/gallery-1.webp",
+   "alt": "Dim weights floor lit by a neon strip, with rows of machines and benches",
+   "credit": "Photo: Unsplash",
+   "label": "Weights floor",
+   "w": 900,
+   "h": 600,
+   "pos": "50% 50%",
+   "needs": "weights floor, landscape 3:2, min 900px wide"
+  },
+  "gallery-2": {
+   "file": "img/photos/gallery-2.webp",
+   "alt": "Rows of black kettlebells on rubber flooring, in black and white",
+   "credit": "Photo: Unsplash",
+   "label": "Kettlebells",
+   "w": 900,
+   "h": 600,
+   "pos": "50% 55%",
+   "needs": "kettlebells, landscape 3:2, min 900px wide"
+  },
+  "gallery-3": {
+   "file": "img/photos/gallery-3.webp",
+   "alt": "A long row of treadmills in a teal-lit cardio hall",
+   "credit": "Photo: Unsplash",
+   "label": "Cardio and rowing",
+   "w": 900,
+   "h": 600,
+   "pos": "50% 50%",
+   "needs": "cardio and rowing, landscape 3:2, min 900px wide"
+  },
+  "gallery-4": {
+   "file": "img/photos/gallery-4.webp",
+   "alt": "Empty wooden sauna with a softly lit bench",
+   "credit": "Photo: Unsplash",
+   "label": "Recovery",
+   "w": 900,
+   "h": 1200,
+   "pos": "50% 62%",
+   "needs": "recovery, portrait 3:4, min 900px wide"
+  },
+  "gallery-5": {
+   "file": "img/photos/gallery-5.webp",
+   "alt": "Treadmills and cross-trainers beside large windows in a bright gym",
+   "credit": "Photo: Unsplash",
+   "label": "Treadmills",
+   "w": 900,
+   "h": 1200,
+   "pos": "50% 50%",
+   "needs": "treadmills, portrait 3:4, min 900px wide"
+  },
+  "gallery-6": {
+   "file": "img/photos/gallery-6.webp",
+   "alt": "Wall-mounted rack holding an exercise ball, kettlebells and weights beside wooden wall bars",
+   "credit": "Photo: Unsplash",
+   "label": "Equipment rack",
+   "w": 900,
+   "h": 1600,
+   "pos": "50% 32%",
+   "needs": "equipment rack, portrait 4:7, min 900px wide"
+  },
+  "gallery-7": {
+   "file": "img/photos/gallery-7.webp",
+   "alt": "Dark sled track with white lane lines running toward a doorway",
+   "credit": "Photo: Unsplash",
+   "label": "Sled track",
+   "w": 900,
+   "h": 1352,
+   "pos": "50% 55%",
+   "needs": "sled track, portrait 2:3, min 900px wide"
+  },
+  "coach-1": {
+   "file": "img/photos/coach-1.webp",
+   "alt": "Coach in a dark sleeveless top standing between heavy battle ropes",
+   "credit": "Photo: Unsplash",
+   "label": "Coach portrait 1",
+   "w": 900,
+   "h": 597,
+   "pos": "50% 22%",
+   "needs": "portrait of coach 1, portrait 4:5, min 900px wide"
+  },
+  "coach-2": {
+   "file": "img/photos/coach-2.webp",
+   "alt": "Coach in black training gear standing against a dark wall, upper body",
+   "credit": "Photo: Unsplash",
+   "label": "Coach portrait 2",
+   "w": 370,
+   "h": 462,
+   "pos": "50% 30%",
+   "needs": "portrait of coach 2, portrait 4:5, min 900px wide"
+  },
+  "coach-3": {
+   "file": "img/photos/coach-3.webp",
+   "alt": "Bearded coach in a grey training shirt with arms crossed",
+   "credit": "Photo: Unsplash",
+   "label": "Coach portrait 3",
+   "w": 900,
+   "h": 1350,
+   "pos": "50% 25%",
+   "needs": "portrait of coach 3, portrait 4:5, min 900px wide"
+  },
+  "coach-4": {
+   "file": "img/photos/coach-4.webp",
+   "alt": "Coach in a dark green t-shirt with arms crossed under blue light",
+   "credit": "Photo: Unsplash",
+   "label": "Coach portrait 4",
+   "w": 520,
+   "h": 650,
+   "pos": "50% 30%",
+   "needs": "portrait of coach 4, portrait 4:5, min 900px wide"
+  }
+ }
+}

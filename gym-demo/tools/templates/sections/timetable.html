@@ -1,0 +1,27 @@
+    <!-- TIMETABLE -->
+    <section class="section" id="timetable" aria-label="Weekly timetable">
+      <div class="container">
+        <h2 class="sr-only">Weekly timetable</h2>
+        <div class="filter-bar" role="group" aria-label="Filter by class type">
+          <span class="filter-label" aria-hidden="true">Class type</span>
+          {{{classChips}}}
+        </div>
+        <p class="sr-only" id="filter-status" role="status" aria-live="polite"></p>
+        <div class="tabs">
+          <div class="tablist-wrap">
+            <div class="tablist" role="tablist" aria-label="Day of the week">
+{{{classTabs}}}            </div>
+          </div>
+{{{classPanels}}}        </div>
+        <p class="note timetable-note">Spots left are a deterministic demo, not live availability. Tap Book to choose a date: classes run on the same weekday and time every week. Please book ahead, because classes fill up.</p>
+
+        <aside class="feature-card" aria-labelledby="newhere-title">
+          <div>
+            <p class="eyebrow">New here?</p>
+            <h3 id="newhere-title">Start with a free trial</h3>
+            <p>A 45 minute coached session with a tour of the floor. No card, no contract and no pressure to join. Pick a coach and a time that suits.</p>
+          </div>
+          <div class="feature-price"><span>$0</span><small>for your first session</small><a class="btn btn-primary" href="trial.html">Book a free trial</a></div>
+        </aside>
+      </div>
+    </section>

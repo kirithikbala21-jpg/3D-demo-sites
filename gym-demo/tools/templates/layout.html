@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  {{#if page.isNotFound}}<script>document.write('<base href="' + (location.pathname.match(/^.*\/{{site.folder}}\//) || ['/'])[0] + '">');</script>{{/if}}
+  <title>{{page.fullTitle}}</title>
+  <meta name="description" content="{{page.description}}">
+  {{#if site.noindex}}<meta name="robots" content="noindex">{{/if}}
+  <meta name="theme-color" content="{{theme.bg}}">
+  <link rel="canonical" href="{{page.canonical}}">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="{{page.fullTitle}}">
+  <meta property="og:description" content="{{page.description}}">
+  <meta property="og:url" content="{{page.canonical}}">
+  <meta property="og:image" content="{{site.baseUrl}}img/og.png">
+  <meta property="og:locale" content="en_AU">
+  <meta property="og:site_name" content="{{brand.fullName}} (concept demo)">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Iron &amp; Ember Athletic Club: a bold headline over a dark gym photo with a small 3D Olympic barbell">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{page.fullTitle}}">
+  <meta name="twitter:description" content="{{page.description}}">
+  <meta name="twitter:image" content="{{site.baseUrl}}img/og.png">
+  <link rel="icon" href="img/icon.svg" type="image/svg+xml">
+  <link rel="icon" href="favicon.ico" sizes="48x48">
+  <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="preload" href="fonts/barlow-condensed-700.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/montserrat-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="vendor/lenis-1.1.18.css">
+  <link rel="stylesheet" href="styles.css">
+  {{{jsonld}}}
+  <noscript><style>
+    /* Without JavaScript: show the navigation and every timetable day as plain content. */
+    .preloader, .nav-toggle, .icon-btn, .announce-close, .filter-bar, .tablist-wrap { display: none !important; }
+    .mobile-nav[hidden] { display: block !important; position: static !important; animation: none; padding-top: calc(var(--header-h) + 8px) !important; padding-bottom: 8px !important; }
+    .day-panel[hidden] { display: block !important; }
+    .day-panel::before { content: attr(data-label); display: block; font: 700 1.75rem var(--font-head); text-transform: uppercase; margin: 32px 0 8px; color: var(--ink); }
+    .day-panel:first-of-type::before { margin-top: 0; }
+  </style></noscript>
+  <script>
+    document.documentElement.classList.add('js');
+    try { if (localStorage.getItem('vc-announce') === 'off') document.documentElement.classList.add('no-announce'); } catch (e) { /* ignore */ }
+    // Safety net: never leave the hero hidden if the main script fails to start.
+    setTimeout(function () { var d = document.documentElement; if (!d.classList.contains('is-ready')) d.classList.add('is-ready', 'is-failsafe'); }, 4500);
+  </script>
+  {{#if page.isHome}}
+  <!-- Three.js is self-hosted (exact version 0.160.0) and loaded as an ES module through this import map. -->
+  <script type="importmap">{"imports":{"three":"./vendor/three.module.min.js","three/addons/":"./vendor/addons/"}}</script>
+  {{/if}}
+</head>
+<body class="page-{{page.template}}">
+  {{#if page.isHome}}
+  <div class="preloader" id="preloader" aria-hidden="true"><span class="script">{{{brand.wordmark}}}</span></div>
+  {{/if}}
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="progress" aria-hidden="true"><span></span></div>
+
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <symbol id="logo-mark" viewBox="0 0 32 32">
+      <path d="M3 5h5.500v22H3zM12.500 5H29v5H18v4h9v5h-9v3h11v5H12.500z" fill="currentColor"/>
+    </symbol>
+  </svg>
+
+  <!-- Announcement bar: one static line, dismissible, remembered in localStorage (vc-announce) -->
+  <div class="announce" id="announce" role="region" aria-label="Announcement">
+    <p>{{announcement.text}} <a href="{{announcement.href}}">{{announcement.link}}</a></p>
+    <button class="announce-close" type="button" id="announce-close" aria-label="Dismiss announcement"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" focusable="false"><path d="M2 2l10 10M12 2L2 12" stroke="currentColor" stroke-width="1.600" stroke-linecap="round"/></svg></button>
+  </div>
+
+  <header class="site-header" id="top">
+    <div class="header-inner">
+      <a class="brand" href="index.html" aria-label="{{brand.fullName}}, home">
+        <span class="brand-mark"><svg width="26" height="26" aria-hidden="true" focusable="false"><use href="#logo-mark"/></svg></span>
+        <span class="brand-text" aria-hidden="true">Iron &amp; Ember</span>
+      </a>
+      <nav class="header-nav" aria-label="Quick links">
+        <a href="index.html">Home</a>
+        <a href="classes.html">Classes</a>
+        <a href="coaches.html">Coaches</a>
+        <a href="membership.html">Membership</a>
+        <a href="visit.html">Visit</a>
+      </nav>
+      <div class="header-actions">
+        <button class="icon-btn" type="button" id="search-open" aria-label="Search the site" aria-haspopup="dialog">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+        </button>
+        <a class="header-link" href="trial.html">Free trial</a>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="mobile-nav" aria-label="Open menu">
+          <span class="bars" aria-hidden="true"><span></span><span></span><span></span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="mobile-nav" id="mobile-nav" data-lenis-prevent role="dialog" aria-modal="true" aria-label="Site menu" hidden>
+    <div class="overlay-inner">
+      <nav aria-label="Main">
+        <ul>
+          {{#each nav}}<li><a href="{{this.href}}"><span class="n" aria-hidden="true">0{{n}}</span>{{this.label}}</a></li>{{/each}}
+        </ul>
+        <a class="btn btn-primary" href="trial.html">Free trial</a>
+        <ul class="overlay-sub" aria-label="More">
+          <li><a href="membership.html#day-pass">Day pass &amp; gifts</a></li>
+          <li><a href="careers.html">Careers</a></li>
+          <li><a href="legal.html#privacy">Privacy</a></li>
+        </ul>
+      </nav>
+      <div class="overlay-info">
+        <p class="label">Find us</p>
+        <p>{{contact.street}}<br>{{contact.locality}}</p>
+        <p><a href="tel:{{contact.phoneHref}}">{{contact.phone}}</a><br><a href="mailto:{{contact.email}}">{{contact.email}}</a></p>
+        <p class="label">Hours</p>
+        <p>{{{hoursSummary}}}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Site search -->
+  <div class="search" id="search" role="dialog" aria-modal="true" aria-label="Search the site" hidden>
+    <div class="search-inner">
+      <form id="search-form" role="search" novalidate>
+        <label class="sr-only" for="search-input">Search classes, coaches and pages</label>
+        <input id="search-input" type="search" placeholder="Search classes, coaches and pages" autocomplete="off" spellcheck="false">
+        <button type="button" class="icon-btn search-close" id="search-close" aria-label="Close search">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg>
+        </button>
+      </form>
+      <p class="search-hint" id="search-hint" aria-live="polite">Try &ldquo;yoga&rdquo;, &ldquo;boxing&rdquo; or &ldquo;parking&rdquo;.</p>
+      <ul class="search-results" id="search-results" data-lenis-prevent></ul>
+    </div>
+  </div>
+
+  <main id="main">
+{{#if page.pageHero}}
+    <section class="page-hero" aria-labelledby="page-title">
+      <div class="container">
+        <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="index.html">Home</a></li><li aria-current="page">{{page.crumb}}</li></ol></nav>
+        <p class="eyebrow">{{page.kicker}}</p>
+        <h1 id="page-title" data-split>{{page.h1}}</h1>
+        <p class="lead">{{page.lead}}</p>
+      </div>
+    </section>
+{{/if}}
+{{{content}}}
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a class="brand-wide" href="index.html" aria-label="{{brand.name}}, home page">
+            <svg width="30" height="30" aria-hidden="true" focusable="false"><use href="#logo-mark"/></svg>
+            <span class="script">{{{brand.wordmark}}}</span>
+          </a>
+          <p>Strength coaching, group classes and open gym in the heart of {{brand.city}}.</p>
+        </div>
+        <nav class="footer-col" aria-label="Footer: explore">
+          <h2>Explore</h2>
+          <ul>
+            {{#each nav}}<li><a href="{{this.href}}">{{this.label}}</a></li>{{/each}}
+            <li><a href="trial.html">Free trial</a></li>
+          </ul>
+        </nav>
+        <div class="footer-col">
+          <h2>Visit</h2>
+          <p>{{contact.street}}<br>{{contact.locality}}</p>
+          <p><a href="tel:{{contact.phoneHref}}">{{contact.phone}}</a><br><a href="mailto:{{contact.email}}">{{contact.email}}</a></p>
+        </div>
+        <div class="footer-col">
+          <h2>Hours</h2>
+          <p>{{{hoursSummary}}}</p>
+        </div>
+      </div>
+      <nav class="footer-legal" aria-label="Footer: more">
+        <a href="membership.html#day-pass">Day pass &amp; gifts</a>
+        <a href="careers.html">Careers</a>
+        <a href="legal.html#privacy">Privacy</a>
+        <a href="legal.html#terms">Terms</a>
+        <a href="legal.html#cookies">Cookies</a>
+      </nav>
+      <div class="footer-bottom">
+        <p>{{brand.demoFooter}}</p>
+        <p class="brandline">Demo website by KB Ventures</p>
+        {{#if photoCredits}}<p class="photo-credits">{{photoCredits}}</p>{{/if}}
+        <a class="back-top" href="#top">Back to top &uarr;</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Mobile quick actions -->
+  <nav class="mobile-cta" aria-label="Quick actions">
+    <a class="btn btn-secondary" href="tel:{{contact.phoneHref}}">Call</a>
+    <a class="btn btn-primary" href="trial.html">Free trial</a>
+  </nav>
+
+  <!-- Cookie preferences: a small card, bottom-left -->
+  <div class="cookie" id="cookie" role="region" aria-label="Cookie preferences" hidden>
+    <p><strong>No tracking by default.</strong> Allow simple analytics? <a href="legal.html#cookies">Details</a></p>
+    <div class="cookie-actions">
+      <button class="btn btn-primary btn-sm" type="button" data-cookie="yes">Accept</button>
+      <button class="btn btn-secondary btn-sm" type="button" data-cookie="no">Decline</button>
+    </div>
+  </div>
+
+  {{#if page.hasVisitModal}}{{> visit-modal}}{{/if}}
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script type="application/json" id="site-data">{{{siteData}}}</script>
+  <script defer src="vendor/lenis-1.1.18.min.js"></script><!-- Lenis 1.1.18 (MIT), self-hosted, pinned -->
+  <script type="module" src="main.js"></script>
+</body>
+</html>

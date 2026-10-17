@@ -1,0 +1,44 @@
+{
+ "name": "Iron & Ember Athletic Club (concept demo)",
+ "short_name": "Iron & Ember",
+ "id": "./index.html",
+ "start_url": "./index.html",
+ "scope": "./",
+ "display": "standalone",
+ "orientation": "portrait",
+ "background_color": "#0b0b0c",
+ "theme_color": "#0b0b0c",
+ "lang": "en-AU",
+ "description": "Concept website for a fictional gym: strength coaching, group classes, open gym and a free trial booking.",
+ "categories": [
+  "fitness",
+  "health",
+  "lifestyle"
+ ],
+ "icons": [
+  {
+   "src": "img/icon-192.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "img/icon-512.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "img/icon-maskable-512.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "maskable"
+  },
+  {
+   "src": "img/icon.svg",
+   "sizes": "any",
+   "type": "image/svg+xml",
+   "purpose": "any"
+  }
+ ]
+}

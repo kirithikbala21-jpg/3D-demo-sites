@@ -119,7 +119,7 @@
    "label": "Coach portrait 1",
    "w": 900,
    "h": 597,
-   "pos": "50% 22%",
+   "pos": "50% 15%",
    "needs": "portrait of coach 1, portrait 4:5, min 900px wide"
   },
   "coach-2": {
@@ -129,7 +129,7 @@
    "label": "Coach portrait 2",
    "w": 370,
    "h": 462,
-   "pos": "50% 30%",
+   "pos": "50% 15%",
    "needs": "portrait of coach 2, portrait 4:5, min 900px wide"
   },
   "coach-3": {
@@ -139,7 +139,7 @@
    "label": "Coach portrait 3",
    "w": 900,
    "h": 1350,
-   "pos": "50% 25%",
+   "pos": "50% 15%",
    "needs": "portrait of coach 3, portrait 4:5, min 900px wide"
   },
   "coach-4": {
@@ -149,7 +149,7 @@
    "label": "Coach portrait 4",
    "w": 520,
    "h": 650,
-   "pos": "50% 30%",
+   "pos": "50% 15%",
    "needs": "portrait of coach 4, portrait 4:5, min 900px wide"
   }
  }

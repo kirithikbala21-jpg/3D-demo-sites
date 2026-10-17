@@ -16,7 +16,6 @@ Work through this list when a barbershop (or any business using this template) s
 - [ ] **Gift cards:** connect `#gift-form` to a gift card provider.
 - [ ] **Newsletter, careers, wholesale forms:** connect to your email tool and inbox.
 - [ ] **Map:** replace the demo OpenStreetMap location (`contact.lat`, `contact.lon` in `site.config.json`) with the real one.
-- [ ] **Chat:** the assistant is scripted. Replace it with a real chat service or remove it (`js/chat.js` and the markup in `layout.html`).
 - [ ] **Analytics:** add your snippet in `js/ui.js` ("DEMO ONLY: add your analytics snippet"). It runs only after the visitor accepts cookies.
 
 ## Legal and trust

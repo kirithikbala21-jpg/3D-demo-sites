@@ -1,5 +1,5 @@
 {
- "_about": "Photo slots. Add a real photo with: python3 tools/add-photo.py SOURCE.jpg SLOT --alt \"...\" --credit \"Photographer, Source\". A slot shows its photo only when the file exists; otherwise the illustration stays. See README, Photos.",
+ "_about": "Photo slots. Add a real photo with: python3 tools/add-photo.py SOURCE.jpg SLOT --alt \"...\" --credit \"Photographer, Source\". A slot shows its photo only when the file exists; otherwise the illustration stays. See README, Photos. Optional \"pos\" sets object-position (x% y%) so the subject is not cropped, for example \"50% 30%\".",
  "slots": {
   "hero": {
    "label": "Hero interior",
@@ -8,7 +8,8 @@
    "credit": "Photo: Unsplash",
    "w": 900,
    "h": 600,
-   "eager": true
+   "eager": true,
+   "pos": "62% 55%"
   },
   "oak-room": {
    "label": "Hero interior",
@@ -16,7 +17,8 @@
    "alt": "A busy café with tall windows, a warm-lit wooden counter, pastries in a glass case and customers at tables",
    "credit": "Photo: Unsplash",
    "w": 900,
-   "h": 600
+   "h": 600,
+   "pos": "55% 62%"
   },
   "roastery": {
    "label": "Roastery",
@@ -24,7 +26,8 @@
    "alt": "Freshly roasted coffee beans in the cooling tray of a small drum roaster",
    "credit": "Photo: Unsplash",
    "w": 900,
-   "h": 1347
+   "h": 1347,
+   "pos": "50% 62%"
   },
   "feature-flat-white": {
    "label": "Flat white",
@@ -32,7 +35,8 @@
    "alt": "A barista pouring steamed milk from a steel jug into a glass of coffee, making a heart-shaped latte art pattern",
    "credit": "Photo: Unsplash",
    "w": 900,
-   "h": 1350
+   "h": 1350,
+   "pos": "50% 45%"
   },
   "feature-pour-over": {
    "label": "Ethiopia pour-over",
@@ -40,7 +44,8 @@
    "alt": "A hand pouring hot water from a gooseneck kettle over a paper filter in a Chemex, with a cup of coffee beans beside it",
    "credit": "Photo: Unsplash",
    "w": 900,
-   "h": 1350
+   "h": 1350,
+   "pos": "50% 35%"
   },
   "feature-bun": {
    "label": "Cardamom bun",
@@ -48,7 +53,8 @@
    "alt": "A tray of freshly baked cardamom buns twisted into knots and topped with pearl sugar",
    "credit": "Photo: Unsplash",
    "w": 900,
-   "h": 1124
+   "h": 1124,
+   "pos": "50% 50%"
   },
   "gallery-1": {
    "label": "Latte cup",
@@ -56,7 +62,8 @@
    "alt": "A cappuccino with leaf-shaped latte art in a grey cup on a saucer, on a round wooden table",
    "credit": "Photo: Unsplash",
    "w": 900,
-   "h": 600
+   "h": 600,
+   "pos": "62% 40%"
   },
   "gallery-2": {
    "label": "Beans",
@@ -64,7 +71,8 @@
    "alt": "Close view of dark roasted coffee beans",
    "credit": "Photo: Unsplash",
    "w": 900,
-   "h": 1355
+   "h": 1355,
+   "pos": "50% 50%"
   },
   "gallery-3": {
    "label": "Espresso shot",
@@ -72,7 +80,8 @@
    "alt": "Close-up of espresso pouring from a portafilter spout into a cup",
    "credit": "Photo: Unsplash",
    "w": 900,
-   "h": 1349
+   "h": 1349,
+   "pos": "50% 40%"
   },
   "gallery-4": {
    "label": "Barista pour",
@@ -80,7 +89,8 @@
    "alt": "A barista in a brown apron pouring steamed milk into a grey cup at the counter",
    "credit": "Photo: Unsplash",
    "w": 900,
-   "h": 620
+   "h": 620,
+   "pos": "82% 25%"
   },
   "gallery-5": {
    "label": "Espresso machine",
@@ -88,7 +98,8 @@
    "alt": "Espresso pouring from a chrome machine into a black paper cup",
    "credit": "Photo: Unsplash",
    "w": 900,
-   "h": 600
+   "h": 600,
+   "pos": "92% 50%"
   },
   "gallery-6": {
    "label": "Chemex pour",
@@ -96,7 +107,8 @@
    "alt": "A Chemex pour-over brewing as a kettle drips water over the filter, by a café window",
    "credit": "Photo: Unsplash",
    "w": 900,
-   "h": 600
+   "h": 600,
+   "pos": "76% 50%"
   },
   "gallery-7": {
    "label": "Espresso flat lay",
@@ -104,7 +116,8 @@
    "alt": "Top-down view of two wooden boards with ground coffee, beans, portafilters and a latte with heart-shaped art",
    "credit": "Photo: Unsplash",
    "w": 900,
-   "h": 600
+   "h": 600,
+   "pos": "85% 50%"
   },
   "gallery-8": {
    "label": "Latte strip",
@@ -112,7 +125,8 @@
    "alt": "A cappuccino with leaf latte art on a saucer and a wooden table, in a wide crop",
    "credit": "Photo: Unsplash",
    "w": 900,
-   "h": 320
+   "h": 320,
+   "pos": "70% 40%"
   }
  }
 }

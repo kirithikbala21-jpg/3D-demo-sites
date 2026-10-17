@@ -38,7 +38,11 @@ export function initHero() {
   const conn = navigator.connection;
   // Data Saver, 2G connections and very weak devices keep the still illustration (the poster) instead of the 3D scene.
   const verySlow = (conn && (conn.saveData || /(^|-)2g$/.test(conn.effectiveType || ''))) || (navigator.deviceMemory && navigator.deviceMemory <= 1) || (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 1);
-  if (!webglAvailable() || verySlow) { useFallback(); return; }
+  // Low-power phones: a small screen AND a modest CPU or memory. They keep the poster and never download the 3D library.
+  const smallScreen = Math.min(screen.width, screen.height) <= 480 || window.innerWidth <= 480;
+  const weakDevice = (navigator.hardwareConcurrency !== undefined && navigator.hardwareConcurrency <= 4) || (navigator.deviceMemory !== undefined && navigator.deviceMemory <= 4);
+  const lowPower = smallScreen && weakDevice;
+  if (verySlow || lowPower || !webglAvailable()) { useFallback(); return; }
 
   const timer = setTimeout(useFallback, 4000);
   // Start the 3D only after the page has loaded and the browser is idle, so text and images paint first.

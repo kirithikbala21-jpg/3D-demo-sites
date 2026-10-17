@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  
   <title>Shop grooming products | Brass &amp; Blade Barbershop (concept demo)</title>
   <meta name="description" content="Pomade, beard oil, shave soap and tools from the shop. Pick up at your appointment or have it delivered (demo).">
   <meta name="robots" content="noindex">
@@ -23,6 +24,7 @@
   <meta name="twitter:description" content="Pomade, beard oil, shave soap and tools from the shop. Pick up at your appointment or have it delivered (demo).">
   <meta name="twitter:image" content="https://kirithikbala21-jpg.github.io/3D-demo-sites/barber-demo/img/og.png">
   <link rel="icon" href="img/icon.svg" type="image/svg+xml">
+  <link rel="icon" href="favicon.ico" sizes="48x48">
   <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
   <link rel="manifest" href="site.webmanifest">
   <link rel="preload" href="fonts/montserrat-latin.woff2" as="font" type="font/woff2" crossorigin>
@@ -33,7 +35,7 @@
   
   <noscript><style>
     /* Without JavaScript: show the navigation and every menu category as plain content. */
-    .preloader, .nav-toggle, .icon-btn, .chat, .ticker-pause { display: none !important; }
+    .preloader, .nav-toggle, .icon-btn, .announce-close { display: none !important; }
     .mobile-nav[hidden] { display: block !important; position: static !important; animation: none; padding-top: calc(var(--header-h) + 8px) !important; padding-bottom: 8px !important; }
     .tablist-wrap { display: none; }
     .menu-panel[hidden] { display: block !important; }
@@ -42,6 +44,7 @@
   </style></noscript>
   <script>
     document.documentElement.classList.add('js');
+    try { if (localStorage.getItem('bb-announce') === 'off') document.documentElement.classList.add('no-announce'); } catch (e) { /* ignore */ }
     // Safety net: never leave the hero hidden if the main script fails to start.
     setTimeout(function () { var d = document.documentElement; if (!d.classList.contains('is-ready')) d.classList.add('is-ready', 'is-failsafe'); }, 4500);
   </script>
@@ -61,23 +64,10 @@
     </symbol>
   </svg>
 
-  <!-- Top ticker: news + venue tabs. Moving text is hidden from screen readers; a static copy follows. -->
-  <div class="ticker" id="ticker" role="region" aria-label="Latest news">
-    <span class="ticker-label">News</span>
-    <div class="ticker-viewport" aria-hidden="true">
-      <div class="ticker-track">
-        <span>Walk-ins welcome until 30 minutes before close</span><span>New: monthly memberships from $79</span><span>Father &amp; Son chairs every Saturday morning</span><span>Free beard oil sample with any hot towel shave</span><span>Walk-ins welcome until 30 minutes before close</span><span>New: monthly memberships from $79</span><span>Father &amp; Son chairs every Saturday morning</span><span>Free beard oil sample with any hot towel shave</span>
-      </div>
-    </div>
-    <p class="sr-only">Walk-ins welcome until 30 minutes before close. New: monthly memberships from $79. Father &amp; Son chairs every Saturday morning. Free beard oil sample with any hot towel shave.</p>
-    <button class="ticker-pause" type="button" aria-pressed="false" aria-label="Pause the news ticker">
-      <svg class="i-pause" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><rect x="2" y="1" width="3" height="10" fill="currentColor"/><rect x="7" y="1" width="3" height="10" fill="currentColor"/></svg>
-      <svg class="i-play" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 1l8 5-8 5z" fill="currentColor"/></svg>
-    </button>
-    <nav class="ticker-venues" aria-label="Our spaces">
-      <a href="services.html"><svg width="14" height="14" aria-hidden="true" focusable="false"><use href="#logo-mark"/></svg>Barbershop</a><a href="barbers.html"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-5 4-8 8-8s8 3 8 8"/></svg>The crew</a><a href="shop.html" aria-current="page"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 8h14l-1.500 12h-11zM9 8a3 3 0 0 1 6 0"/></svg>Shop</a><a href="visit.html"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 21s7-6 7-12a7 7 0 0 0-14 0c0 6 7 12 7 12z"/><circle cx="12" cy="9" r="2.500"/></svg>Visit</a>
-    </nav>
-    <span class="ticker-label ticker-label-r">Walk-ins welcome</span>
+  <!-- Announcement bar: one calm line, dismissible, remembered in localStorage -->
+  <div class="announce" id="announce" role="region" aria-label="Announcement">
+    <p>Walk-ins welcome. Memberships from $79. <a href="membership.html">See plans</a></p>
+    <button class="announce-close" type="button" id="announce-close" aria-label="Dismiss announcement"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" focusable="false"><path d="M2 2l10 10M12 2L2 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
   </div>
 
   <header class="site-header" id="top">
@@ -387,6 +377,7 @@
       </nav>
       <div class="footer-bottom">
         <p>Concept demo by KB Ventures. Not a real business.</p>
+        <p class="brandline">Concept website by KB Ventures. Want one for your business?</p>
         <p class="photo-credits">Photo credits: Photo: Unsplash (Hero chair, Skin fade, Hot towel shave, The full works, Red chair room, Tools, Products, Fade in progress, Tools detail, Red chair detail, Fade detail, Products strip)</p>
         <a class="back-top" href="#top">Back to top &uarr;</a>
       </div>
@@ -398,19 +389,6 @@
     <a class="btn btn-secondary" href="tel:0255500144">Call</a>
     <a class="btn btn-primary" href="book.html">Book a chair</a>
   </nav>
-
-  <!-- Chat widget (scripted demo, no backend) -->
-  <div class="chat" id="chat">
-    <button class="chat-toggle" type="button" id="chat-toggle" aria-expanded="false" aria-controls="chat-panel">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/></svg>
-      <span>Chat</span>
-    </button>
-    <section class="chat-panel" id="chat-panel" role="dialog" aria-label="Chat with us (demo)" hidden>
-      <header><strong>Ask Brass</strong><span>Demo assistant, scripted answers</span></header>
-      <div class="chat-log" id="chat-log" data-lenis-prevent role="log" aria-live="polite"></div>
-      <div class="chat-quick" id="chat-quick"></div>
-    </section>
-  </div>
 
   <!-- Cookie preferences -->
   <div class="cookie" id="cookie" role="region" aria-label="Cookie preferences" hidden>

@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  
   <title>Brass &amp; Blade Barbershop (concept demo)</title>
   <meta name="description" content="Classic cuts, skin fades and hot towel shaves in Surry Hills, Sydney. A concept demo for a fictional barbershop with a 3D barber pole.">
   <meta name="robots" content="noindex">
@@ -23,6 +24,7 @@
   <meta name="twitter:description" content="Classic cuts, skin fades and hot towel shaves in Surry Hills, Sydney. A concept demo for a fictional barbershop with a 3D barber pole.">
   <meta name="twitter:image" content="https://kirithikbala21-jpg.github.io/3D-demo-sites/barber-demo/img/og.png">
   <link rel="icon" href="img/icon.svg" type="image/svg+xml">
+  <link rel="icon" href="favicon.ico" sizes="48x48">
   <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
   <link rel="manifest" href="site.webmanifest">
   <link rel="preload" href="fonts/montserrat-latin.woff2" as="font" type="font/woff2" crossorigin>
@@ -34,7 +36,7 @@
   
   <noscript><style>
     /* Without JavaScript: show the navigation and every menu category as plain content. */
-    .preloader, .nav-toggle, .icon-btn, .chat, .ticker-pause { display: none !important; }
+    .preloader, .nav-toggle, .icon-btn, .announce-close { display: none !important; }
     .mobile-nav[hidden] { display: block !important; position: static !important; animation: none; padding-top: calc(var(--header-h) + 8px) !important; padding-bottom: 8px !important; }
     .tablist-wrap { display: none; }
     .menu-panel[hidden] { display: block !important; }
@@ -43,6 +45,7 @@
   </style></noscript>
   <script>
     document.documentElement.classList.add('js');
+    try { if (localStorage.getItem('bb-announce') === 'off') document.documentElement.classList.add('no-announce'); } catch (e) { /* ignore */ }
     // Safety net: never leave the hero hidden if the main script fails to start.
     setTimeout(function () { var d = document.documentElement; if (!d.classList.contains('is-ready')) d.classList.add('is-ready', 'is-failsafe'); }, 4500);
   </script>
@@ -67,23 +70,10 @@
     </symbol>
   </svg>
 
-  <!-- Top ticker: news + venue tabs. Moving text is hidden from screen readers; a static copy follows. -->
-  <div class="ticker" id="ticker" role="region" aria-label="Latest news">
-    <span class="ticker-label">News</span>
-    <div class="ticker-viewport" aria-hidden="true">
-      <div class="ticker-track">
-        <span>Walk-ins welcome until 30 minutes before close</span><span>New: monthly memberships from $79</span><span>Father &amp; Son chairs every Saturday morning</span><span>Free beard oil sample with any hot towel shave</span><span>Walk-ins welcome until 30 minutes before close</span><span>New: monthly memberships from $79</span><span>Father &amp; Son chairs every Saturday morning</span><span>Free beard oil sample with any hot towel shave</span>
-      </div>
-    </div>
-    <p class="sr-only">Walk-ins welcome until 30 minutes before close. New: monthly memberships from $79. Father &amp; Son chairs every Saturday morning. Free beard oil sample with any hot towel shave.</p>
-    <button class="ticker-pause" type="button" aria-pressed="false" aria-label="Pause the news ticker">
-      <svg class="i-pause" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><rect x="2" y="1" width="3" height="10" fill="currentColor"/><rect x="7" y="1" width="3" height="10" fill="currentColor"/></svg>
-      <svg class="i-play" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 1l8 5-8 5z" fill="currentColor"/></svg>
-    </button>
-    <nav class="ticker-venues" aria-label="Our spaces">
-      <a href="services.html"><svg width="14" height="14" aria-hidden="true" focusable="false"><use href="#logo-mark"/></svg>Barbershop</a><a href="barbers.html"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-5 4-8 8-8s8 3 8 8"/></svg>The crew</a><a href="shop.html"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 8h14l-1.500 12h-11zM9 8a3 3 0 0 1 6 0"/></svg>Shop</a><a href="visit.html"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 21s7-6 7-12a7 7 0 0 0-14 0c0 6 7 12 7 12z"/><circle cx="12" cy="9" r="2.500"/></svg>Visit</a>
-    </nav>
-    <span class="ticker-label ticker-label-r">Walk-ins welcome</span>
+  <!-- Announcement bar: one calm line, dismissible, remembered in localStorage -->
+  <div class="announce" id="announce" role="region" aria-label="Announcement">
+    <p>Walk-ins welcome. Memberships from $79. <a href="membership.html">See plans</a></p>
+    <button class="announce-close" type="button" id="announce-close" aria-label="Dismiss announcement"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" focusable="false"><path d="M2 2l10 10M12 2L2 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
   </div>
 
   <header class="site-header" id="top">
@@ -194,7 +184,7 @@
     <!-- HERO -->
     <section class="hero" aria-labelledby="hero-title">
       <div class="hero-bg has-photo">
-        <div class="hero-photo"><span class="photo"><img src="img/photos/hero-interior-chair.webp" alt="Low-angle view of a vintage barber chair with tufted brown leather, chrome frame and white armrests in a dimly lit shop" width="900" height="600" fetchpriority="high" decoding="async"></span></div>
+        <div class="hero-photo"><span class="photo"><img src="img/photos/hero-interior-chair.webp" alt="Low-angle view of a vintage barber chair with tufted brown leather, chrome frame and white armrests in a dimly lit shop" width="900" height="600" fetchpriority="high" decoding="async" style="object-position:50% 55%"></span></div>
         
         <div class="hero-panel"></div>
         <div class="hero-glow"></div>
@@ -262,7 +252,7 @@
       </div>
       <div class="features">
         <article class="feature reveal">
-          <div class="feature-art feature-photo"><span class="photo"><img src="img/photos/service-skin-fade.webp" alt="Close-up of a barber&#x27;s straight razor shaping the neckline of a skin fade on a client wearing a grey cape" width="900" height="1125" loading="lazy" decoding="async"></span></div>
+          <div class="feature-art feature-photo"><span class="photo"><img src="img/photos/service-skin-fade.webp" alt="Close-up of a barber&#x27;s straight razor shaping the neckline of a skin fade on a client wearing a grey cape" width="900" height="1125" loading="lazy" decoding="async" style="object-position:50% 52%"></span></div>
           <div class="feature-text">
             <p class="eyebrow">Haircut</p>
             <h3>Skin Fade</h3>
@@ -272,7 +262,7 @@
           </div>
         </article>
         <article class="feature reveal">
-          <div class="feature-art feature-photo"><span class="photo"><img src="img/photos/service-hot-towel-shave.webp" alt="Black and white photo of a tattooed barber trimming a client&#x27;s beard with scissors, the client lying back under a striped cape" width="900" height="1355" loading="lazy" decoding="async"></span></div>
+          <div class="feature-art feature-photo"><span class="photo"><img src="img/photos/service-hot-towel-shave.webp" alt="Black and white photo of a tattooed barber trimming a client&#x27;s beard with scissors, the client lying back under a striped cape" width="900" height="1355" loading="lazy" decoding="async" style="object-position:50% 45%"></span></div>
           <div class="feature-text">
             <p class="eyebrow">Beard &amp; shave</p>
             <h3>Hot Towel Shave</h3>
@@ -282,7 +272,7 @@
           </div>
         </article>
         <article class="feature reveal">
-          <div class="feature-art feature-photo"><span class="photo"><img src="img/photos/service-full-works.webp" alt="A barber in glasses and a black t-shirt spraying hairspray while styling a seated client&#x27;s hair" width="900" height="1350" loading="lazy" decoding="async"></span></div>
+          <div class="feature-art feature-photo"><span class="photo"><img src="img/photos/service-full-works.webp" alt="A barber in glasses and a black t-shirt spraying hairspray while styling a seated client&#x27;s hair" width="900" height="1350" loading="lazy" decoding="async" style="object-position:50% 25%"></span></div>
           <div class="feature-text">
             <p class="eyebrow">Package</p>
             <h3>The Full Works</h3>
@@ -328,7 +318,7 @@
 
     <!-- STORY TEASER -->
     <section class="section section-night has-bg-photo" id="story-teaser" aria-labelledby="story-title">
-      <div class="section-photo"><span class="photo"><img src="img/photos/hero-interior-chair.webp" alt="Low-angle view of a vintage barber chair with tufted brown leather, chrome frame and white armrests in a dimly lit shop" width="900" height="600" loading="lazy" decoding="async"></span></div>
+      <div class="section-photo"><span class="photo"><img src="img/photos/hero-interior-chair.webp" alt="Low-angle view of a vintage barber chair with tufted brown leather, chrome frame and white armrests in a dimly lit shop" width="900" height="600" loading="lazy" decoding="async" style="object-position:50% 40%"></span></div>
       <div class="container story-grid">
         <div class="reveal">
           <p class="eyebrow">Our story</p>
@@ -358,20 +348,20 @@
           <p class="note"><strong>Sample reviews for demo purposes.</strong> Names and quotes are invented.</p>
         </div>
         <div class="review-grid">
-          <figure class="review reveal">
+          <figure class="review gr reveal">
+            <figcaption class="gr-head"><span class="gr-avatar" aria-hidden="true">D</span><span class="gr-who"><strong>Daniel K.</strong><span>Sample review &middot; 2 weeks ago</span></span></figcaption>
             <div class="stars" role="img" aria-label="5 out of 5 stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
             <blockquote><p>Best fade I have had in ten years of trying. Marco listened, took his time, and the neckline is still sharp three weeks later.</p></blockquote>
-            <figcaption><strong>Daniel K.</strong><span>Sample reviewer, fortnightly regular</span></figcaption>
           </figure>
-          <figure class="review reveal">
+          <figure class="review gr reveal">
+            <figcaption class="gr-head"><span class="gr-avatar" aria-hidden="true">P</span><span class="gr-who"><strong>Priya A.</strong><span>Sample review &middot; a month ago</span></span></figcaption>
             <div class="stars" role="img" aria-label="5 out of 5 stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
             <blockquote><p>I took my son for his first proper haircut. Jess was so patient with him and he left talking about the hot towel for the whole drive home.</p></blockquote>
-            <figcaption><strong>Priya &amp; Arjun</strong><span>Sample reviewers, Father &amp; Son</span></figcaption>
           </figure>
-          <figure class="review reveal">
+          <figure class="review gr reveal">
+            <figcaption class="gr-head"><span class="gr-avatar" aria-hidden="true">L</span><span class="gr-who"><strong>Liam T.</strong><span>Sample review &middot; 2 months ago</span></span></figcaption>
             <div class="stars" role="img" aria-label="5 out of 5 stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
             <blockquote><p>Booked the groom&rsquo;s package for my brother&rsquo;s wedding. Dev looked after six of us and nobody left without a perfect shave.</p></blockquote>
-            <figcaption><strong>Liam T.</strong><span>Sample reviewer, wedding party</span></figcaption>
           </figure>
         </div>
       </div>
@@ -387,38 +377,73 @@
         </div>
         <ul class="gallery reveal">
           <li class="tile t1 wide">
-            <span class="photo"><img src="img/photos/gallery-red-chair-room.webp" alt="A red leather barber chair in a dark wood-panelled room hung with framed paintings, leather armchairs behind" width="900" height="623" loading="lazy" decoding="async"></span>
+            <span class="photo"><img src="img/photos/gallery-red-chair-room.webp" alt="A red leather barber chair in a dark wood-panelled room hung with framed paintings, leather armchairs behind" width="900" height="623" loading="lazy" decoding="async" style="object-position:50% 60%"></span>
             <span class="tile-cap">Red chair room</span>
           </li>
           <li class="tile t2">
-            <span class="photo"><img src="img/photos/gallery-tools.webp" alt="Barber&#x27;s tools on a wooden counter: scissors, black combs, a brush, a leather tool roll and a shaving brush" width="900" height="600" loading="lazy" decoding="async"></span>
+            <span class="photo"><img src="img/photos/gallery-tools.webp" alt="Barber&#x27;s tools on a wooden counter: scissors, black combs, a brush, a leather tool roll and a shaving brush" width="900" height="600" loading="lazy" decoding="async" style="object-position:50% 50%"></span>
             <span class="tile-cap">Tools of the trade</span>
           </li>
           <li class="tile t3">
-            <span class="photo"><img src="img/photos/gallery-products.webp" alt="A barber&#x27;s counter with spray bottles, shaving brushes, a tin of pomade, a pump bottle and a scissors case" width="900" height="1350" loading="lazy" decoding="async"></span>
+            <span class="photo"><img src="img/photos/gallery-products.webp" alt="A barber&#x27;s counter with spray bottles, shaving brushes, a tin of pomade, a pump bottle and a scissors case" width="900" height="1350" loading="lazy" decoding="async" style="object-position:50% 45%"></span>
             <span class="tile-cap">On the counter</span>
           </li>
           <li class="tile t4">
-            <span class="photo"><img src="img/photos/gallery-fade-gloves.webp" alt="A barber in black gloves shaping a client&#x27;s curly hair with clippers, with a fade along the side of the head" width="900" height="1197" loading="lazy" decoding="async"></span>
+            <span class="photo"><img src="img/photos/gallery-fade-gloves.webp" alt="A barber in black gloves shaping a client&#x27;s curly hair with clippers, with a fade along the side of the head" width="900" height="1197" loading="lazy" decoding="async" style="object-position:50% 30%"></span>
             <span class="tile-cap">Fade in progress</span>
           </li>
           <li class="tile t5">
-            <span class="photo"><img src="img/photos/gallery-tools-detail.webp" alt="Scissors, thinning shears, black combs and a small brush laid out on a polished wooden counter" width="430" height="410" loading="lazy" decoding="async"></span>
+            <span class="photo"><img src="img/photos/gallery-tools-detail.webp" alt="Scissors, thinning shears, black combs and a small brush laid out on a polished wooden counter" width="430" height="410" loading="lazy" decoding="async" style="object-position:50% 50%"></span>
             <span class="tile-cap">Shears and combs</span>
           </li>
           <li class="tile t6">
-            <span class="photo"><img src="img/photos/gallery-red-chair-detail.webp" alt="Close view of a red leather and chrome barber chair with its footrest" width="390" height="370" loading="lazy" decoding="async"></span>
+            <span class="photo"><img src="img/photos/gallery-red-chair-detail.webp" alt="Close view of a red leather and chrome barber chair with its footrest" width="390" height="370" loading="lazy" decoding="async" style="object-position:50% 50%"></span>
             <span class="tile-cap">The red chair</span>
           </li>
           <li class="tile t7">
-            <span class="photo"><img src="img/photos/gallery-fade-detail.webp" alt="Side view of a client&#x27;s curly hair with a clean fade at the temple" width="600" height="677" loading="lazy" decoding="async"></span>
+            <span class="photo"><img src="img/photos/gallery-fade-detail.webp" alt="Side view of a client&#x27;s curly hair with a clean fade at the temple" width="600" height="677" loading="lazy" decoding="async" style="object-position:50% 40%"></span>
             <span class="tile-cap">The finish</span>
           </li>
           <li class="tile t8 wide">
-            <span class="photo"><img src="img/photos/gallery-products-strip.webp" alt="Close view of brown barber spray bottles and white shaving brushes on a black counter" width="900" height="290" loading="lazy" decoding="async"></span>
+            <span class="photo"><img src="img/photos/gallery-products-strip.webp" alt="Close view of brown barber spray bottles and white shaving brushes on a black counter" width="900" height="290" loading="lazy" decoding="async" style="object-position:14% 38%"></span>
             <span class="tile-cap">Bottles and brushes</span>
           </li>
         </ul>
+      </div>
+    </section>
+
+    <!-- FIND US -->
+    <section class="section" id="find-us" aria-labelledby="find-title">
+      <div class="container visit-grid">
+        <div class="reveal">
+          <p class="eyebrow">Find us</p>
+          <h2 id="find-title" data-split>Come and <em>say g&rsquo;day.</em></h2>
+          <p class="chip chip-light"><span class="dot" aria-hidden="true"></span><span id="open-status-3">Mon 10am &amp;ndash; 6pm&lt;br&gt;Tue &amp;ndash; Wed 9am &amp;ndash; 7pm&lt;br&gt;Thu 9am &amp;ndash; 8pm&lt;br&gt;Fri 9am &amp;ndash; 7pm&lt;br&gt;Sat 9am &amp;ndash; 5pm&lt;br&gt;Sun 10am &amp;ndash; 4pm</span></p>
+          <address>
+            48 Example Lane<br>Surry Hills NSW 2010<br>
+            <a href="tel:0255500144">02 5550 0144</a><br>
+            <a href="mailto:hello@example.com">hello@example.com</a>
+          </address>
+          <table class="hours">
+            <caption>Opening hours</caption>
+            <thead class="sr-only"><tr><th scope="col">Day</th><th scope="col">Hours</th></tr></thead>
+            <tbody>
+              <tr data-day="1" data-open="10" data-close="18"><th scope="row">Monday</th><td>10:00am &ndash; 6:00pm</td></tr>
+              <tr data-day="2" data-open="9" data-close="19"><th scope="row">Tuesday</th><td>9:00am &ndash; 7:00pm</td></tr>
+              <tr data-day="3" data-open="9" data-close="19"><th scope="row">Wednesday</th><td>9:00am &ndash; 7:00pm</td></tr>
+              <tr data-day="4" data-open="9" data-close="20"><th scope="row">Thursday</th><td>9:00am &ndash; 8:00pm</td></tr>
+              <tr data-day="5" data-open="9" data-close="19"><th scope="row">Friday</th><td>9:00am &ndash; 7:00pm</td></tr>
+              <tr data-day="6" data-open="9" data-close="17"><th scope="row">Saturday</th><td>9:00am &ndash; 5:00pm</td></tr>
+              <tr data-day="0" data-open="10" data-close="16"><th scope="row">Sunday</th><td>10:00am &ndash; 4:00pm</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="visit-side reveal">
+          <div class="map-box gmap">
+            <iframe src="https://maps.google.com/maps?q=Central%20Station%2C%20Sydney%20NSW&amp;output=embed" title="Map of central Sydney, the placeholder location for Brass &amp; Blade Barbershop" width="600" height="400" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+          </div>
+          <p class="map-caption"><a href="https://www.google.com/maps/search/?api=1&amp;query=Central%20Station%2C%20Sydney%20NSW" target="_blank" rel="noopener">Open in Google Maps<span class="sr-only"> (opens in a new tab)</span></a> &middot; Placeholder map of central Sydney. Loading it contacts Google.</p>
+        </div>
       </div>
     </section>
 
@@ -482,6 +507,7 @@
       </nav>
       <div class="footer-bottom">
         <p>Concept demo by KB Ventures. Not a real business.</p>
+        <p class="brandline">Concept website by KB Ventures. Want one for your business?</p>
         <p class="photo-credits">Photo credits: Photo: Unsplash (Hero chair, Skin fade, Hot towel shave, The full works, Red chair room, Tools, Products, Fade in progress, Tools detail, Red chair detail, Fade detail, Products strip)</p>
         <a class="back-top" href="#top">Back to top &uarr;</a>
       </div>
@@ -493,19 +519,6 @@
     <a class="btn btn-secondary" href="tel:0255500144">Call</a>
     <a class="btn btn-primary" href="book.html">Book a chair</a>
   </nav>
-
-  <!-- Chat widget (scripted demo, no backend) -->
-  <div class="chat" id="chat">
-    <button class="chat-toggle" type="button" id="chat-toggle" aria-expanded="false" aria-controls="chat-panel">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/></svg>
-      <span>Chat</span>
-    </button>
-    <section class="chat-panel" id="chat-panel" role="dialog" aria-label="Chat with us (demo)" hidden>
-      <header><strong>Ask Brass</strong><span>Demo assistant, scripted answers</span></header>
-      <div class="chat-log" id="chat-log" data-lenis-prevent role="log" aria-live="polite"></div>
-      <div class="chat-quick" id="chat-quick"></div>
-    </section>
-  </div>
 
   <!-- Cookie preferences -->
   <div class="cookie" id="cookie" role="region" aria-label="Cookie preferences" hidden>

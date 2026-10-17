@@ -5,18 +5,18 @@ A fictional café website built as a sales demo: dark, minimal, editorial, with 
 Plain HTML, CSS and JavaScript. No framework, no bundler, no third-party requests (Three.js and the fonts are hosted in this folder). The HTML pages are **generated** from templates by a small Python script and committed, so GitHub Pages serves them as-is.
 
 ## Pages
-`index` (home) · `menu` (41 items in Coffee, Tea, Food, Bakery, Cold drinks and Evening; pick-up ordering, PDF) · `shop` · `experiences` (tours, workshops, events, gift cards) · `story` · `sustainability` · `visit` (hours, map, FAQ) · `reserve` (booking form with time slots) · `journal` · `careers` · `wholesale` · `press` · `legal` (privacy, terms, cookies).
+`index` (home) · `menu` (41 items in Coffee, Tea, Food, Bakery, Cold drinks and Evening; pick-up ordering, PDF) · `shop` · `experiences` (tours, workshops, events, gift cards) · `story` · `sustainability` · `visit` (hours, map, FAQ); the home page also has a "Find us" section (Google Maps embed, live open/closed chip, hours); `404.html` is a themed not-found page · `reserve` (booking form with time slots) · `journal` · `careers` · `wholesale` · `press` · `legal` (privacy, terms, cookies).
 
-Site-wide: news ticker (pausable), full-screen menu, site search (press `/`), order drawer, scripted chat assistant, compact cookie bar, optional ambient sound (a visible "Ambient sound: Off/On" button), a branded intro of about one second on the first visit, Lenis smooth scrolling (off for reduced motion), scroll-reveal, magnetic buttons on desktop, a header that shrinks on scroll, sticky Call / Reserve bar on phones.
+Site-wide: one calm announcement bar (dismissible, remembered), full-screen menu, site search (press `/`), order drawer, a small cookie card (bottom-left), optional ambient sound (a visible "Ambient sound: Off/On" button), a branded intro of about one second on the first visit, Lenis smooth scrolling (off for reduced motion), scroll-reveal, magnetic buttons on desktop, a header that shrinks on scroll, sticky Call / Reserve bar on phones.
 
 ## Folder map
 | Path | What it is |
 | --- | --- |
-| `site.config.json` | Brand, contact, hours, time zone, colours, nav, page list, news ticker, hero video slot |
+| `site.config.json` | Brand, contact, hours, time zone, colours, nav, page list, announcement bar, 404 page, hero video slot |
 | `data/*.json` | Menu, products, journal posts, jobs, press quotes, FAQ |
 | `tools/templates/` | `layout.html` (shared header/footer), `pages/` and `sections/` content blocks |
 | `tools/build.py` | Builds every `.html` page, `search-data.js` and `sitemap.xml` |
-| `tools/make-assets.mjs` | Makes the PNG icons, `img/og.png` (a real screenshot of the 3D hero, 1200x630) and `menu.pdf` |
+| `tools/make-assets.mjs` | Makes the PNG icons (incl. maskable), `favicon.ico` (Pillow), `img/og.png` (a real screenshot of the 3D hero, 1200x630) and `menu.pdf` |
 | `tools/add-photo.py` | Adds a real photo to a slot (resize, WebP under 250 KB, alt + credit, rebuild). See "Photos" |
 | `data/photos.json` | The photo slots (gallery tiles and the three feature rows) |
 | `styles.css`, `main.js`, `js/*.js`, `scene.js` | Styles, behaviour modules, the 3D scene |
@@ -29,7 +29,7 @@ Site-wide: news ticker (pausable), full-screen menu, site search (press `/`), or
 3. Commit the changed files. A GitHub Action rebuilds and fails if the committed pages are out of date.
 
 Common edits:
-- **Name, address, phone, email, hours, colours, time zone:** `site.config.json`. Hours drive the hours table, the "Open now" chip, the booking time slots, the chat answers and the search-engine data. The "Open now" status uses the café's time zone, not the visitor's.
+- **Name, address, phone, email, hours, colours, time zone:** `site.config.json`. Hours drive the hours table, the "Open now" chip, the booking time slots, the announcement bar and the search-engine data. The "Open now" status uses the café's time zone, not the visitor's, and says "(Melbourne time)" when the visitor's clock differs. `announcement` holds the bar text; `contact.mapsQuery` feeds the Google Maps embed and link.
 - **Menu:** `data/menu.json` (categories, items, prices, tags `V VG GF DF`, `sig` for a Signature star). Optional photo per item: add `"img": "img/dish.jpg", "imgAlt": "..."`.
 - **Shop, journal, jobs, press, FAQ:** the matching file in `data/`.
 - **Experiences, events, gallery, story, reviews, gift cards:** the files in `tools/templates/sections/`.
@@ -65,7 +65,13 @@ npm install
 npx playwright-core install chromium     # or set CHROME_PATH to an existing Chromium
 node run.mjs                              # all suites, or --suite=overflow,axe,links,func,fallback,perf,final
 ```
-They cover: no horizontal overflow on all 13 pages at 360, 375, 414, 768, 1024, 1280 and 1920 px; axe-core accessibility on every page at 375 and 1440 px; tap targets, text sizes, links and anchors; the menu, ordering, search, chat, forms, cookie banner, time slots and menu overlay; every fallback path; the pixel-ratio cap; hours, tagline, counters, nav labels, titles and SEO tags on every page; the intro finishing in under 1.5 s; smooth scrolling and its pause while menus are open; the cookie bar's position; and a final sweep of every page at 1440x900 and 390x844 (no horizontal scroll, no broken images, no overlapping text, no console errors or 404s); and page weight with no third-party requests. The same checks run on GitHub Actions for every change to this folder.
+They cover: no horizontal overflow on all 13 pages at 360, 375, 414, 768, 1024, 1280 and 1920 px; axe-core accessibility on every page at 375 and 1440 px; tap targets, text sizes, links and anchors; the menu, ordering, search, forms, cookie banner, time slots and menu overlay; every fallback path; the pixel-ratio cap; hours, tagline, counters, nav labels, titles and SEO tags on every page; the intro finishing in under 1.5 s; smooth scrolling and its pause while menus are open; the cookie bar's position; and a final sweep of every page at 1440x900 and 390x844 (no horizontal scroll, no broken images, no overlapping text, no console errors or 404s); and page weight with no third-party requests. The same checks run on GitHub Actions for every change to this folder.
 
 ## What is demo-only
 The booking, careers, wholesale, newsletter, gift card and order forms validate in the browser and show a confirmation; nothing is sent. A confirmed order and a confirmed reservation are also kept in this browser's localStorage (`eo-orders`, `eo-reservations`) so you can see the flow end to end. Look for the `DEMO ONLY` comments. See `CLIENT-CHECKLIST.md` for turning this into a real site.
+
+## Design system notes (v2.3)
+- **Headings:** one scale in `:root` (`--fs-h1..h4`): 56/40/28/20px from 1024px, fluid down to 36/30/24/19px at 390px. **Spacing:** `--space-1` (8px) to `--space-12` (96px), plus 128 and 160. Sections use 96px (phones) and 160px (desktop). Running text is capped at 68ch. Only two font families load: Montserrat and Mrs Saint Delafield.
+- **Photos:** every `.photo img` gets the same grade (`--photo-grade`), overlay, ember hairline and 6px radius; full-bleed backgrounds get grade and overlay only. Each slot in `data/photos.json` can set `pos` (object-position, e.g. `"50% 30%"`, or `--pos` in `add-photo.py`) so the subject is never cropped.
+- **3D start:** after the intro, the window `load` event and an idle callback. Data Saver, 2G, 1-core devices and low-power phones (screen or window 480px or less AND 4 or fewer cores or 4 GB or less memory) keep the SVG poster and never download Three.js.
+- **Third parties:** none, except the lazy Google Maps iframe in "Find us" (no API key) and the click-to-load OpenStreetMap on the visit page.

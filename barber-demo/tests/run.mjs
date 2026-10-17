@@ -33,7 +33,7 @@ async function newPage(opts = {}, { webgl = true, quiet = true, extraInit } = {}
   if (quiet) await ctx.addInitScript(QUIET);
   if (!webgl) await ctx.addInitScript(NO_WEBGL);
   if (extraInit) await ctx.addInitScript(extraInit);
-  await ctx.route(/openstreetmap\.org/, (r) => r.fulfill({ status: 200, contentType: 'text/html', body: '<p>map</p>' }));
+  await ctx.route(/openstreetmap\.org|maps\.google\.com/, (r) => r.fulfill({ status: 200, contentType: 'text/html', body: '<p>map</p>' }));
   const p = await ctx.newPage();
   p.logs = [];
   p.on('console', (m) => { if (['error', 'warning'].includes(m.type())) p.logs.push(m.text()); });
@@ -94,7 +94,7 @@ if (want('axe')) {
     const r = await p.evaluate(() => {
       const small = [...document.querySelectorAll('a.btn,button,.header-link,.brand,.link-arrow,.exp-link,.back-top,.footer-col a,.footer-legal a,.crumbs a,.chip-opt span,summary,[role=tab],.icon-btn,.add-btn,.ci-qty button')]
         .filter((e) => (e.offsetParent !== null || getComputedStyle(e).position === 'fixed') && !e.closest('[hidden]')).map((e) => { const r = e.getBoundingClientRect(); return [(e.textContent.trim() || e.getAttribute('aria-label') || e.className).slice(0, 18), Math.round(r.width), Math.round(r.height)]; }).filter(([, w, h]) => h && (h < 44 || w < 44));
-      const t = [...document.querySelectorAll('p,li,td,th,address,label,dd')].filter((e) => e.offsetParent && !e.closest('.ticker,[hidden]') && parseFloat(getComputedStyle(e).fontSize) < 14).map((e) => e.textContent.trim().slice(0, 25));
+      const t = [...document.querySelectorAll('p,li,td,th,address,label,dd')].filter((e) => e.offsetParent && !e.closest('.announce,[hidden]') && parseFloat(getComputedStyle(e).fontSize) < 14).map((e) => e.textContent.trim().slice(0, 25));
       return { small: small.slice(0, 4), t: t.slice(0, 4), body: parseFloat(getComputedStyle(document.body).fontSize) };
     });
     if (r.small.length) tap.push(`${f}: ${JSON.stringify(r.small)}`);
@@ -141,8 +141,9 @@ if (want('func')) {
   ok('full-screen menu opens on desktop', await p.locator('#mobile-nav').isVisible());
   await p.keyboard.press('Escape');
   ok('Escape closes the menu', !(await p.locator('#mobile-nav').isVisible()));
-  const pause = p.locator('.ticker-pause'); await pause.click();
-  ok('ticker can be paused (WCAG 2.2.2)', (await pause.getAttribute('aria-pressed')) === 'true' && (await p.locator('.ticker.is-paused').count()) === 1);
+  ok('announcement bar is one static line with a dismiss button', (await p.locator('#announce').isVisible()) && (await p.locator('#announce-close').isVisible()) && (await p.locator('.ticker, .ticker-track').count()) === 0 && (await p.locator('#announce').evaluate((e) => e.getBoundingClientRect().height)) < 60);
+  await p.locator('#announce-close').click();
+  ok('dismissing the announcement hides it and it stays hidden after a reload', !(await p.locator('#announce').isVisible()) && (await (async () => { await p.reload(); await p.waitForTimeout(500); return !(await p.locator('#announce').isVisible()); })()));
   // search
   await p.locator('#search-open').click(); await p.keyboard.type('fade');
   await p.waitForTimeout(500);
@@ -150,10 +151,7 @@ if (want('func')) {
   await p.keyboard.press('Escape');
   await p.keyboard.press('/');
   ok('"/" opens search', await p.locator('#search').isVisible()); await p.keyboard.press('Escape');
-  // chat
-  await p.locator('#chat-toggle').click(); await p.locator('#chat-quick button', { hasText: 'Opening hours' }).click(); await p.waitForTimeout(800);
-  ok('chat answers from the shared hours data', (await p.locator('#chat-log .bot').last().textContent()).includes('9:00am'));
-  await p.keyboard.press('Escape');
+  ok('no chat widget on the page', (await p.locator('#chat, #chat-toggle, .chat').count()) === 0);
   // sound toggle
   await p.locator('.footer-legal [data-sound]').click();
   ok('ambient sound toggle flips state', (await p.locator('.footer-legal [data-sound]').getAttribute('aria-pressed')) === 'true'); await p.locator('.footer-legal [data-sound]').click();
@@ -194,8 +192,8 @@ if (want('func')) {
   p = await newPage({ viewport: { width: 1440, height: 900 } }, { webgl: false });
   await p.goto(base + 'visit.html'); await p.waitForTimeout(600);
   ok("today's hours row is highlighted (Sydney time zone)", (await p.locator('.hours tr.is-today').count()) === 1);
-  await p.locator('#map-load').click(); await p.waitForTimeout(300);
-  ok('map loads only after a click', (await p.locator('#map-box iframe').count()) === 1);
+  const gm = p.locator('.gmap iframe');
+  ok('visit: Google map embed is lazy, titled and sized', (await gm.count()) === 1 && (await gm.getAttribute('loading')) === 'lazy' && /maps\.google\.com\/maps\?q=.*output=embed/.test(await gm.getAttribute('src')) && !!(await gm.getAttribute('title')) && !!(await gm.getAttribute('width')) && !!(await gm.getAttribute('height')));
   await p.locator('details').first().locator('summary').click();
   ok('FAQ opens', await p.locator('details').first().evaluate((d) => d.open));
   await done(p);
@@ -297,6 +295,15 @@ if (want('func')) {
   await p.goto(base + 'index.html');
   ok('footer credits every photo ("Photo: Unsplash" until names are added)', (await p.locator('.photo-credits').textContent()).includes('Photo: Unsplash'));
   await done(p);
+  // Find us, sample reviews, 404
+  p = await newPage({ viewport: { width: 1440, height: 900 } }, { webgl: false });
+  await p.goto(base + 'index.html'); await p.waitForTimeout(600);
+  ok('home: Find us has the map, the hours table and a live status', (await p.locator('#find-us .gmap iframe').count()) === 1 && (await p.locator('#find-us .hours').count()) === 1 && /^(Open now|Closed)/.test(await p.locator('#open-status-3').textContent()), await p.locator('#open-status-3').textContent());
+  ok('home: reviews look like a review feed and stay labelled as samples', (await p.locator('.review.gr .gr-avatar').count()) === 3 && (await p.locator('.review.gr .stars[aria-label]').count()) === 3 && (await p.locator('#reviews').textContent()).includes('Sample reviews for demo purposes'));
+  ok('footer has the quiet KB Ventures line', (await p.locator('.site-footer').textContent()).includes('Concept website by KB Ventures. Want one for your business?'));
+  await p.goto(base + '404.html');
+  ok('custom 404 page is themed and offers a way home', (await p.locator('h1').textContent()).includes('not found') && (await p.locator('a[href="index.html"]').count()) > 0);
+  await done(p);
   await done(p);
 }
 
@@ -318,6 +325,11 @@ if (want('fallback')) {
   await p.context().route('**/vendor/three.module.min.js', async (r) => { await new Promise((x) => setTimeout(x, 6500)); r.abort(); });
   await p.goto(base + 'index.html'); await p.waitForTimeout(6600);
   ok('slow load (over 4s): fallback shown', (await p.locator('#scene').count()) === 0 && (await p.locator('.stage-fallback').isVisible()));
+  await done(p);
+
+  p = await newPage({ viewport: { width: 390, height: 844 } }, { extraInit: () => Object.defineProperty(navigator, 'hardwareConcurrency', { value: 2 }) });
+  await p.goto(base + 'index.html'); await p.waitForTimeout(3500);
+  ok('weak phone (390px, 2 CPU cores): 3D skipped, still poster shown', (await p.locator('#scene').count()) === 0 && (await p.locator('.stage-fallback').isVisible()));
   await done(p);
 
   p = await newPage({ viewport: { width: 1440, height: 900 } }, { extraInit: () => Object.defineProperty(navigator, 'connection', { value: { saveData: true } }) });

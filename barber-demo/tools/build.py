@@ -225,7 +225,7 @@ def jsonld(page):
 
 def search_data():
     pages = {p["file"]: p for p in cfg["pages"]}
-    entries = [{"title": p["title"], "text": p["description"], "url": p["file"], "type": "Page"} for p in cfg["pages"]]
+    entries = [{"title": p["title"], "text": p["description"], "url": p["file"], "type": "Page"} for p in cfg["pages"] if not p.get("hidden")]
     for cat in DATA["menu"]:
         for it in cat["items"]:
             tag_words = ", ".join(it["tags"]) + (", popular" if it["sig"] else "")
@@ -272,9 +272,10 @@ def photo_slots():
     html_by_slot, credits = {}, {}
     for key, sl in slots.items():
         if (ROOT / sl["file"]).exists():
+            pos = f' style="object-position:{sl["pos"]}"' if sl.get("pos") else ""
             load = 'fetchpriority="high" decoding="async"' if sl.get("eager") else 'loading="lazy" decoding="async"'
             html_by_slot[key] = (f'<span class="photo"><img src="{sl["file"]}" alt="{html.escape(sl["alt"], quote=True)}" '
-                                 f'width="{sl["w"]}" height="{sl["h"]}" {load}></span>')
+                                 f'width="{sl["w"]}" height="{sl["h"]}" {load}{pos}></span>')
             if sl.get("credit"):
                 credits.setdefault(sl["credit"], {})[sl["file"]] = sl.get("label", "")
         else:
@@ -304,22 +305,20 @@ def build():
         **cfg, **DATA,
         "menuTabs": tabs, "menuPanels": panels, "hoursTable": hours_table(), "hoursSummary": hours_summary(),
         "siteData": json.dumps(site_data, ensure_ascii=False).replace("</", "<\\/"),
-        "newsLoop": cfg["news"] + cfg["news"],
-        "newsText": ". ".join(cfg["news"]) + ".",
         "year": 2026,
         "timeOptions": time_options(),
         "photos": photo_slots()[0], "photoCredits": photo_slots()[1],
+        "gmapEmbed": "https://maps.google.com/maps?q=" + urllib.parse.quote(cfg["contact"]["mapsQuery"]) + "&output=embed",
         "mapsUrl": "https://www.google.com/maps/search/?api=1&query=" + urllib.parse.quote(cfg["contact"]["mapsQuery"]),
         "osmEmbed": "https://www.openstreetmap.org/export/embed.html?bbox=%s%%2C%s%%2C%s%%2C%s&layer=mapnik&marker=%s%%2C%s" % (
             cfg["contact"]["lon"] - 0.01, cfg["contact"]["lat"] - 0.006, cfg["contact"]["lon"] + 0.01, cfg["contact"]["lat"] + 0.006, cfg["contact"]["lat"], cfg["contact"]["lon"]),
     }
     layout = parse((TPL / "layout.html").read_text())
     for page in cfg["pages"]:
-        ctx = {**base, "page": {**page, "isHome": page["file"] == "index.html",
+        ctx = {**base, "page": {**page, "isHome": page["file"] == "index.html", "isNotFound": page["file"] == "404.html",
                                 "canonical": cfg["site"]["baseUrl"] + ("" if page["file"] == "index.html" else page["file"]),
                                 "fullTitle": ("" if page["file"] == "index.html" else page["title"] + " | ") + cfg["brand"]["fullName"] + " (concept demo)"},
                "currentFile": page["file"]}
-        ctx["venues"] = [{"label": l, "href": h, "icon": i, "current": h == page["file"]} for l, h, i in VENUES]
         ctx["jsonld"] = jsonld(page) if page.get("jsonld") else ""
         content = render_nodes(parse((TPL / "pages" / f'{page["template"]}.html').read_text()), [ctx])
         ctx["content"] = content
@@ -327,7 +326,7 @@ def build():
         (ROOT / page["file"]).write_text(out)
         print("wrote", page["file"], len(out))
     (ROOT / "search-data.js").write_text(search_data())
-    urls = "".join(f'  <url><loc>{cfg["site"]["baseUrl"]}{"" if p["file"] == "index.html" else p["file"]}</loc></url>\n' for p in cfg["pages"])
+    urls = "".join(f'  <url><loc>{cfg["site"]["baseUrl"]}{"" if p["file"] == "index.html" else p["file"]}</loc></url>\n' for p in cfg["pages"] if not p.get("hidden"))
     (ROOT / "sitemap.xml").write_text(f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{urls}</urlset>\n')
     print("wrote search-data.js, sitemap.xml")
 

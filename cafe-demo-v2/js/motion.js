@@ -60,7 +60,7 @@ if (lenis) {
   new MutationObserver(sync).observe(document.body, { attributes: true, attributeFilter: ['class'] });
   sync();
   // Scrollable panels keep their own wheel scrolling.
-  $$('.chat-log, .cart-body, .mobile-nav, .search, .tablist').forEach((el) => el.setAttribute('data-lenis-prevent', ''));
+  $$('.cart-body, .mobile-nav, .search, .tablist').forEach((el) => el.setAttribute('data-lenis-prevent', ''));
 }
 
 /* Photos: a slow, subtle zoom as they cross the screen (skipped for reduced motion; the CSS also disables it). */

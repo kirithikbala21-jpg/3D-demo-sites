@@ -8,7 +8,8 @@
   "city": "Melbourne",
   "tagline": "Slow mornings. Small-batch coffee. Roasted out the back, poured right here.",
   "description": "Ember & Oak Coffee is a fictional café used as a concept demo: small-batch coffee, all-day dining, private events and a cinematic 3D hero.",
-  "demoFooter": "Concept demo by KB Ventures. Not a real business."
+  "demoFooter": "Concept demo by KB Ventures. Not a real business.",
+  "conceptLine": "Concept website by KB Ventures. Want one for your business?"
  },
  "contact": {
   "street": "12 Example Street",
@@ -19,9 +20,9 @@
   "phoneHref": "0355500123",
   "email": "hello@example.com",
   "country": "AU",
-  "mapsQuery": "Flinders Street Station, Melbourne VIC",
-  "lat": -37.8183,
-  "lon": 144.9671
+  "mapsQuery": "Federation Square, Melbourne VIC",
+  "lat": -37.818,
+  "lon": 144.969
  },
  "site": {
   "baseUrl": "https://kirithikbala21-jpg.github.io/3D-demo-sites/cafe-demo-v2/",
@@ -89,12 +90,6 @@
   "video": null,
   "poster": null
  },
- "news": [
-  "Christmas bookings are open for the oak room",
-  "Ethiopia Guji Natural lands next week",
-  "Latte art throwdown, last Thursday of the month",
-  "Free beans pick-up on orders over $40"
- ],
  "nav": [
   {
    "label": "Home",
@@ -308,5 +303,20 @@
    "text": "Last Thursday of the month, 7pm, free",
    "url": "experiences.html#whats-on"
   }
- ]
+ ],
+ "announcement": {
+  "short": "New: Guji Natural lands next week",
+  "text": "New: Ethiopia Guji Natural lands next week"
+ },
+ "errorPage": {
+  "file": "404.html",
+  "template": "notfound",
+  "title": "Page not found",
+  "description": "That page does not exist. Head back to the Ember & Oak home page, the menu or the reservation form.",
+  "pageHero": true,
+  "h1": "Page not found",
+  "kicker": "Error 404",
+  "lead": "That page has wandered off. Try one of these instead.",
+  "crumb": "Page not found"
+ }
 }

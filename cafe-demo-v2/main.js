@@ -4,7 +4,6 @@ import './js/motion.js';
 import './js/ui.js';
 import './js/cart.js';
 import './js/search.js';
-import './js/chat.js';
 import './js/sound.js';
 import './js/forms.js';
 

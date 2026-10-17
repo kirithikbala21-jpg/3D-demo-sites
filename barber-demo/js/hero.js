@@ -36,7 +36,11 @@ export function initHero() {
     try { const c = document.createElement('canvas'); return !!(window.WebGLRenderingContext && (c.getContext('webgl2') || c.getContext('webgl'))); } catch (_) { return false; }
   }
   const conn = navigator.connection;
-  if (!webglAvailable() || (conn && conn.saveData)) { useFallback(); return; } // Data Saver users get the light illustration
+  // Low-powered phone: a small screen plus few CPU cores (or little memory) keeps the still poster and skips 3D entirely.
+  const smallScreen = Math.min(screen.width || 9999, screen.height || 9999) <= 480 || window.innerWidth <= 480;
+  const weak = (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4) || (navigator.deviceMemory && navigator.deviceMemory <= 4);
+  const forced = /[?&]3d=on\b/.test(location.search); // testing aid: ?3d=on turns 3D on even for a low-powered phone profile
+  if (!webglAvailable() || (conn && conn.saveData) || (!forced && smallScreen && weak)) { useFallback(); return; } // Data Saver and weak phones get the light poster
 
   const timer = setTimeout(useFallback, 4000);
   // Start the 3D only after the page has loaded and the browser is idle, so text and images paint first.

@@ -89,12 +89,6 @@
   "video": null,
   "poster": null
  },
- "news": [
-  "Walk-ins welcome until 30 minutes before close",
-  "New: monthly memberships from $79",
-  "Father & Son chairs every Saturday morning",
-  "Free beard oil sample with any hot towel shave"
- ],
  "nav": [
   {
    "label": "Home",
@@ -232,6 +226,18 @@
    "kicker": "Legal",
    "lead": "A plain-language template. Replace with your own policy before going live.",
    "crumb": "Legal"
+  },
+  {
+   "file": "404.html",
+   "template": "notfound",
+   "title": "Page not found",
+   "description": "This page could not be found. Head back to the home page, the services list or the booking page.",
+   "pageHero": true,
+   "h1": "Page not found",
+   "kicker": "Error 404",
+   "lead": "That page has wandered off for a trim. Here are a few places to pick up the trail.",
+   "crumb": "Page not found",
+   "hidden": true
   }
  ],
  "searchExtra": [
@@ -280,5 +286,10 @@
    "text": "Walk-ins welcome until 30 minutes before close",
    "url": "visit.html#faq"
   }
- ]
+ ],
+ "announcement": {
+  "text": "Walk-ins welcome. Memberships from $79.",
+  "link": "See plans",
+  "href": "membership.html"
+ }
 }

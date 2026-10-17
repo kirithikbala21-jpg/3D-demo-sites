@@ -29,7 +29,7 @@ for (const [name, size] of [['apple-touch-icon.png', 180], ['icon-192.png', 192]
   await ctx.addInitScript(() => { try { sessionStorage.setItem('eo-seen', '1'); localStorage.setItem('eo-cookie', 'no'); } catch (e) { /* ignore */ } });
   const p = await ctx.newPage();
   await p.goto(`http://localhost:${server.address().port}/index.html`);
-  await p.addStyleTag({ content: '.ticker,.chat,.cookie,.mobile-cta,.scroll-cue,.hero .chip{display:none!important}' });
+  await p.addStyleTag({ content: '.announce,.chat,.cookie,.mobile-cta,.scroll-cue,.hero .chip{display:none!important}' });
   await p.waitForSelector('#scene.is-ready', { timeout: 20000 }).catch(() => {});
   await p.waitForTimeout(3500);
   await p.screenshot({ path: path.join(SITE, 'img/og.png') });

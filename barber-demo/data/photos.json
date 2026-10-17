@@ -8,7 +8,8 @@
    "label": "Hero chair",
    "w": 900,
    "h": 600,
-   "eager": true
+   "eager": true,
+   "pos": "50% 55%"
   },
   "story": {
    "file": "img/photos/hero-interior-chair.webp",
@@ -16,7 +17,8 @@
    "credit": "Photo: Unsplash",
    "label": "Hero chair",
    "w": 900,
-   "h": 600
+   "h": 600,
+   "pos": "50% 40%"
   },
   "signature1": {
    "file": "img/photos/service-skin-fade.webp",
@@ -24,7 +26,8 @@
    "credit": "Photo: Unsplash",
    "label": "Skin fade",
    "w": 900,
-   "h": 1125
+   "h": 1125,
+   "pos": "50% 52%"
   },
   "signature2": {
    "file": "img/photos/service-hot-towel-shave.webp",
@@ -32,7 +35,8 @@
    "credit": "Photo: Unsplash",
    "label": "Hot towel shave",
    "w": 900,
-   "h": 1355
+   "h": 1355,
+   "pos": "50% 45%"
   },
   "signature3": {
    "file": "img/photos/service-full-works.webp",
@@ -40,7 +44,8 @@
    "credit": "Photo: Unsplash",
    "label": "The full works",
    "w": 900,
-   "h": 1350
+   "h": 1350,
+   "pos": "50% 25%"
   },
   "gallery1": {
    "file": "img/photos/gallery-red-chair-room.webp",
@@ -48,7 +53,8 @@
    "credit": "Photo: Unsplash",
    "label": "Red chair room",
    "w": 900,
-   "h": 623
+   "h": 623,
+   "pos": "50% 60%"
   },
   "gallery2": {
    "file": "img/photos/gallery-tools.webp",
@@ -56,7 +62,8 @@
    "credit": "Photo: Unsplash",
    "label": "Tools",
    "w": 900,
-   "h": 600
+   "h": 600,
+   "pos": "50% 50%"
   },
   "gallery3": {
    "file": "img/photos/gallery-products.webp",
@@ -64,7 +71,8 @@
    "credit": "Photo: Unsplash",
    "label": "Products",
    "w": 900,
-   "h": 1350
+   "h": 1350,
+   "pos": "50% 45%"
   },
   "gallery4": {
    "file": "img/photos/gallery-fade-gloves.webp",
@@ -72,7 +80,8 @@
    "credit": "Photo: Unsplash",
    "label": "Fade in progress",
    "w": 900,
-   "h": 1197
+   "h": 1197,
+   "pos": "50% 30%"
   },
   "gallery5": {
    "file": "img/photos/gallery-tools-detail.webp",
@@ -80,7 +89,8 @@
    "credit": "Photo: Unsplash",
    "label": "Tools detail",
    "w": 430,
-   "h": 410
+   "h": 410,
+   "pos": "50% 50%"
   },
   "gallery6": {
    "file": "img/photos/gallery-red-chair-detail.webp",
@@ -88,7 +98,8 @@
    "credit": "Photo: Unsplash",
    "label": "Red chair detail",
    "w": 390,
-   "h": 370
+   "h": 370,
+   "pos": "50% 50%"
   },
   "gallery7": {
    "file": "img/photos/gallery-fade-detail.webp",
@@ -96,7 +107,8 @@
    "credit": "Photo: Unsplash",
    "label": "Fade detail",
    "w": 600,
-   "h": 677
+   "h": 677,
+   "pos": "50% 40%"
   },
   "gallery8": {
    "file": "img/photos/gallery-products-strip.webp",
@@ -104,7 +116,8 @@
    "credit": "Photo: Unsplash",
    "label": "Products strip",
    "w": 900,
-   "h": 290
+   "h": 290,
+   "pos": "14% 38%"
   },
   "barberMarco": {
    "file": "img/photos/barber-marco.webp",

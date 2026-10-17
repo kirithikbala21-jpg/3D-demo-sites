@@ -1,0 +1,25 @@
+    <!-- FIND US: Google Maps embed (no API key) + address, contact, live open/closed status and the hours table -->
+    <section class="section" id="find-us" aria-labelledby="find-title">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="eyebrow">Find us</p>
+          <h2 id="find-title" data-split>Pull up a chair, <em>we&rsquo;re easy to find.</em></h2>
+        </div>
+        <div class="find-grid">
+          <div class="find-map reveal">
+            <iframe src="{{googleEmbed}}" title="Map showing Federation Square, Melbourne (placeholder location)" width="600" height="450" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          </div>
+          <div class="find-info reveal">
+            <p class="chip chip-light" data-open-chip><span class="chip-main"><span class="dot" aria-hidden="true"></span><span class="chip-status" data-open-status>Open {{hoursPhrase}}</span></span></p>
+            <address>
+              {{contact.street}}<br>{{contact.locality}}<br>
+              <a href="tel:{{contact.phoneHref}}">{{contact.phone}}</a><br>
+              <a href="mailto:{{contact.email}}">{{contact.email}}</a>
+            </address>
+            {{{hoursTable}}}
+            <p class="note find-note">Placeholder address and contact details for this concept demo.</p>
+            <a class="link-arrow" href="{{mapsUrl}}" target="_blank" rel="noopener">Open in Google Maps<span class="sr-only"> (opens in a new tab)</span> <span aria-hidden="true">&rarr;</span></a>
+          </div>
+        </div>
+      </div>
+    </section>

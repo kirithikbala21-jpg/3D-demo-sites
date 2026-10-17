@@ -50,6 +50,7 @@ def main():
     ap.add_argument("slot", nargs="?", help="slot name from data/photos.json")
     ap.add_argument("--alt", help="alt text: what the picture shows (for screen readers)")
     ap.add_argument("--credit", help='photographer and source, e.g. "Jane Doe, Unsplash"')
+    ap.add_argument("--pos", help='optional focal point as object-position, for example "50% 30%" (x then y), so crops keep the subject')
     ap.add_argument("--list", action="store_true")
     ap.add_argument("--no-build", action="store_true", help="do not run tools/build.py afterwards")
     a = ap.parse_args()
@@ -78,6 +79,8 @@ def main():
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_bytes(data_bytes)
     slots[a.slot].update({"alt": a.alt.strip(), "credit": a.credit.strip(), "w": img.width, "h": img.height})
+    if a.pos:
+        slots[a.slot]["pos"] = a.pos.strip()
     PHOTOS.write_text(json.dumps(data, indent=1, ensure_ascii=False) + "\n")
     print(f"saved {out.relative_to(ROOT)}  {img.width}x{img.height}  quality {quality}  {len(data_bytes) / 1024:.0f} KB")
     if not a.no_build:

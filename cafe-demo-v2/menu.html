@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  
   <title>Menu | Ember &amp; Oak Coffee (concept demo v2)</title>
   <meta name="description" content="Coffee, tea, food, bakery, cold drinks and evening cocktails. Order ahead for pick-up (demo).">
   <meta name="robots" content="noindex">
@@ -15,13 +16,14 @@
   <meta property="og:image" content="https://kirithikbala21-jpg.github.io/3D-demo-sites/cafe-demo-v2/img/og.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="A steaming coffee cup above the Ember &amp; Oak wordmark on a deep wine background">
+  <meta property="og:image:alt" content="A steaming coffee cup above the Ember &amp; Oak wordmark on a dark espresso background">
   <meta property="og:site_name" content="Ember &amp; Oak Coffee">
   <meta property="og:locale" content="en_AU">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Menu | Ember &amp; Oak Coffee (concept demo v2)">
   <meta name="twitter:description" content="Coffee, tea, food, bakery, cold drinks and evening cocktails. Order ahead for pick-up (demo).">
   <meta name="twitter:image" content="https://kirithikbala21-jpg.github.io/3D-demo-sites/cafe-demo-v2/img/og.png">
+  <link rel="icon" href="favicon.ico" sizes="16x16 32x32 48x48">
   <link rel="icon" href="img/icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
   <link rel="manifest" href="site.webmanifest">
@@ -33,7 +35,7 @@
   
   <noscript><style>
     /* Without JavaScript: show the navigation and every menu category as plain content. */
-    .preloader, .nav-toggle, .icon-btn, .chat, .ticker-pause, [data-sound] { display: none !important; }
+    .preloader, .nav-toggle, .icon-btn, .announce-close, [data-sound] { display: none !important; }
     .mobile-nav[hidden] { display: block !important; position: static !important; animation: none; padding-top: calc(var(--header-h) + 8px) !important; padding-bottom: 8px !important; }
     .tablist-wrap { display: none; }
     .menu-panel[hidden] { display: block !important; }
@@ -42,6 +44,8 @@
   </style></noscript>
   <script>
     document.documentElement.classList.add('js');
+    // A dismissed announcement stays dismissed (set before first paint, so there is no flash and no layout jump).
+    try { if (localStorage.getItem('eo-announce') === 'off') { document.documentElement.classList.add('announce-off'); document.documentElement.style.setProperty('--ticker-h', '0px'); } } catch (e) {}
     // Safety net: never leave the hero hidden if the main script fails to start.
     setTimeout(function () { var d = document.documentElement; if (!d.classList.contains('is-ready')) d.classList.add('is-ready', 'is-failsafe'); }, 4500);
   </script>
@@ -57,25 +61,17 @@
       <path d="M16 3c1.200 4.600 7 7.600 7 13.200a7 7 0 0 1-14 0c0-3 1.600-5 3-6.500.5 1.600 1.200 2.500 2.100 3C14.300 10.600 14.700 6.800 16 3z" fill="currentColor"/>
       <path d="M16 29c-3.800-1-6-3.600-6-7 3.400.2 5.400 1.600 6 4 .6-2.400 2.600-3.800 6-4 0 3.400-2.200 6-6 7z" fill="none" stroke="currentColor" stroke-width="1.400"/>
     </symbol>
+    <symbol id="star" viewBox="0 0 24 24">
+      <path d="M12 2.500l2.900 6.300 6.900.8-5.100 4.700 1.400 6.800L12 17.700l-6.100 3.400 1.400-6.800-5.100-4.700 6.900-.8z" fill="currentColor"/>
+    </symbol>
   </svg>
 
-  <!-- Top ticker: news + venue tabs. Moving text is hidden from screen readers; a static copy follows. -->
-  <div class="ticker" id="ticker" role="region" aria-label="Latest news">
-    <span class="ticker-label">News</span>
-    <div class="ticker-viewport" aria-hidden="true">
-      <div class="ticker-track">
-        <span>Christmas bookings are open for the oak room</span><span>Ethiopia Guji Natural lands next week</span><span>Latte art throwdown, last Thursday of the month</span><span>Free beans pick-up on orders over $40</span><span>Christmas bookings are open for the oak room</span><span>Ethiopia Guji Natural lands next week</span><span>Latte art throwdown, last Thursday of the month</span><span>Free beans pick-up on orders over $40</span>
-      </div>
-    </div>
-    <p class="sr-only">Christmas bookings are open for the oak room. Ethiopia Guji Natural lands next week. Latte art throwdown, last Thursday of the month. Free beans pick-up on orders over $40.</p>
-    <button class="ticker-pause" type="button" aria-pressed="false" aria-label="Pause the news ticker">
-      <svg class="i-pause" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><rect x="2" y="1" width="3" height="10" fill="currentColor"/><rect x="7" y="1" width="3" height="10" fill="currentColor"/></svg>
-      <svg class="i-play" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 1l8 5-8 5z" fill="currentColor"/></svg>
+  <!-- Announcement bar: one calm, static line. Dismissible; the choice is remembered. -->
+  <div class="announce" id="announce" role="region" aria-label="Announcement">
+    <p class="announce-text"><span class="a-short">New: Guji Natural lands next week</span><span class="a-text">New: Ethiopia Guji Natural lands next week</span><span class="a-hours"> &middot; Open 7 days, from 7am (Sundays 8am)</span></p>
+    <button class="announce-close" type="button" aria-label="Dismiss announcement">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M3 3l10 10M13 3L3 13"/></svg>
     </button>
-    <nav class="ticker-venues" aria-label="Our spaces">
-      <a href="menu.html" aria-current="page"><svg width="14" height="14" aria-hidden="true" focusable="false"><use href="#logo-mark"/></svg>Menu</a><a href="story.html"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M4 12h16"/></svg>Our story</a><a href="experiences.html"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 19c0-9 5-14 14-14 0 9-5 14-14 14z"/></svg>Experiences</a><a href="visit.html"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 11h12v4a5 5 0 0 1-5 5h-2a5 5 0 0 1-5-5z"/></svg>Visit</a>
-    </nav>
-    <span class="ticker-label ticker-label-r">Now pouring</span>
   </div>
 
   <header class="site-header" id="top">
@@ -522,7 +518,10 @@
       </nav>
       <p class="photo-credits">Photo credits: Photo: Unsplash (Hero interior, Roastery, Flat white, Ethiopia pour-over, Cardamom bun, Latte cup, Beans, Espresso shot, Barista pour, Espresso machine, Chemex pour, Espresso flat lay, Latte strip)</p>
       <div class="footer-bottom">
-        <p>Concept demo by KB Ventures. Not a real business.</p>
+        <div class="footer-notes">
+          <p>Concept demo by KB Ventures. Not a real business.</p>
+          <p class="footer-concept">Concept website by KB Ventures. Want one for your business?</p>
+        </div>
         <a class="back-top" href="#top">Back to top &uarr;</a>
       </div>
     </div>
@@ -534,19 +533,6 @@
     <a class="btn btn-primary" href="reserve.html">Reserve a table</a>
   </nav>
 
-  <!-- Chat widget (scripted demo, no backend) -->
-  <div class="chat" id="chat">
-    <button class="chat-toggle" type="button" id="chat-toggle" aria-expanded="false" aria-controls="chat-panel">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/></svg>
-      <span>Chat</span>
-    </button>
-    <section class="chat-panel" id="chat-panel" role="dialog" aria-label="Chat with us (demo)" hidden>
-      <header><strong>Ask Ember</strong><span>Demo assistant, scripted answers</span></header>
-      <div class="chat-log" id="chat-log" role="log" aria-live="polite"></div>
-      <div class="chat-quick" id="chat-quick"></div>
-    </section>
-  </div>
-
   <!-- Cookie preferences -->
   <div class="cookie" id="cookie" role="region" aria-label="Cookie preferences" hidden>
     <p><strong>Cookies.</strong> None are set unless you accept analytics. <a href="legal.html#cookies">Details</a></p>
@@ -557,7 +543,7 @@
   </div>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <script type="application/json" id="site-data">{"name": "Ember & Oak", "phone": "03 5550 0123", "phoneHref": "0355500123", "email": "hello@example.com", "timezone": "Australia/Melbourne", "locale": "en-AU", "currency": "AUD", "hours": [{"day": 1, "name": "Monday", "open": 7, "close": 16}, {"day": 2, "name": "Tuesday", "open": 7, "close": 16}, {"day": 3, "name": "Wednesday", "open": 7, "close": 16}, {"day": 4, "name": "Thursday", "open": 7, "close": 22}, {"day": 5, "name": "Friday", "open": 7, "close": 22}, {"day": 6, "name": "Saturday", "open": 7, "close": 22}, {"day": 0, "name": "Sunday", "open": 8, "close": 16}], "hoursPhrase": "7 days, from 7am (Sundays 8am)"}</script>
+  <script type="application/json" id="site-data">{"name": "Ember & Oak", "phone": "03 5550 0123", "phoneHref": "0355500123", "email": "hello@example.com", "timezone": "Australia/Melbourne", "locale": "en-AU", "currency": "AUD", "hours": [{"day": 1, "name": "Monday", "open": 7, "close": 16}, {"day": 2, "name": "Tuesday", "open": 7, "close": 16}, {"day": 3, "name": "Wednesday", "open": 7, "close": 16}, {"day": 4, "name": "Thursday", "open": 7, "close": 22}, {"day": 5, "name": "Friday", "open": 7, "close": 22}, {"day": 6, "name": "Saturday", "open": 7, "close": 22}, {"day": 0, "name": "Sunday", "open": 8, "close": 16}], "city": "Melbourne", "hoursPhrase": "7 days, from 7am (Sundays 8am)"}</script>
   <script defer src="vendor/lenis-1.1.18.min.js"></script>
   <script type="module" src="main.js"></script>
 </body>

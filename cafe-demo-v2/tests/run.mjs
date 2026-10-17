@@ -10,10 +10,10 @@ import { chromium } from 'playwright-core';
 const require = createRequire(import.meta.url);
 const SITE = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const cfg = JSON.parse(fs.readFileSync(path.join(SITE, 'site.config.json'), 'utf8'));
-const PAGES = cfg.pages.map((p) => p.file);
+const PAGES = [...cfg.pages.map((p) => p.file), cfg.errorPage.file];
 const arg = (process.argv.find((a) => a.startsWith('--suite=')) || '--suite=all').slice(8).split(',');
 const want = (n) => arg.includes('all') || arg.includes(n);
-const MIME = { '.html': 'text/html', '.css': 'text/css', '.js': 'text/javascript', '.json': 'application/json', '.woff2': 'font/woff2', '.svg': 'image/svg+xml', '.pdf': 'application/pdf', '.xml': 'application/xml', '.webmanifest': 'application/manifest+json', '.png': 'image/png', '.webp': 'image/webp' };
+const MIME = { '.html': 'text/html', '.css': 'text/css', '.js': 'text/javascript', '.json': 'application/json', '.woff2': 'font/woff2', '.svg': 'image/svg+xml', '.pdf': 'application/pdf', '.xml': 'application/xml', '.webmanifest': 'application/manifest+json', '.png': 'image/png', '.webp': 'image/webp', '.ico': 'image/x-icon' };
 
 const server = await new Promise((res) => {
   const s = http.createServer((q, r) => {
@@ -33,6 +33,7 @@ async function newPage(opts = {}, { webgl = true, quiet = true, extraInit } = {}
   if (quiet) await ctx.addInitScript(QUIET);
   if (!webgl) await ctx.addInitScript(NO_WEBGL);
   if (extraInit) await ctx.addInitScript(extraInit);
+  await ctx.route(/google\.com\/maps/, (r) => r.fulfill({ status: 200, contentType: 'text/html', body: '<p>map</p>' }));
   await ctx.route(/openstreetmap\.org/, (r) => r.fulfill({ status: 200, contentType: 'text/html', body: '<p>map</p>' }));
   const p = await ctx.newPage();
   p.logs = [];
@@ -92,9 +93,9 @@ if (want('axe')) {
   for (const f of PAGES) {
     await p.goto(base + f); await p.waitForTimeout(500); await p.addStyleTag({ content: force });
     const r = await p.evaluate(() => {
-      const small = [...document.querySelectorAll('a.btn,button,.header-link,.brand,.link-arrow,.exp-link,.back-top,.footer-col a,.footer-legal a,.crumbs a,.chip-opt span,summary,[role=tab],.icon-btn,.add-btn,.ci-qty button')]
+      const small = [...document.querySelectorAll('a.btn,button,.header-link,.brand,.link-arrow,.exp-link,.back-top,.footer-col a,.footer-legal a,.crumbs a,.chip-opt span,summary,[role=tab],.icon-btn,.add-btn,.ci-qty button,.announce-close,.cookie .btn')]
         .filter((e) => (e.offsetParent !== null || getComputedStyle(e).position === 'fixed') && !e.closest('[hidden]')).map((e) => { const r = e.getBoundingClientRect(); return [(e.textContent.trim() || e.getAttribute('aria-label') || e.className).slice(0, 18), Math.round(r.width), Math.round(r.height)]; }).filter(([, w, h]) => h && (h < 44 || w < 44));
-      const t = [...document.querySelectorAll('p,li,td,th,address,label,dd')].filter((e) => e.offsetParent && !e.closest('.ticker,[hidden]') && parseFloat(getComputedStyle(e).fontSize) < 14).map((e) => e.textContent.trim().slice(0, 25));
+      const t = [...document.querySelectorAll('p,li,td,th,address,label,dd')].filter((e) => e.offsetParent && !e.closest('[hidden]') && parseFloat(getComputedStyle(e).fontSize) < 14).map((e) => e.textContent.trim().slice(0, 25));
       return { small: small.slice(0, 4), t: t.slice(0, 4), body: parseFloat(getComputedStyle(document.body).fontSize) };
     });
     if (r.small.length) tap.push(`${f}: ${JSON.stringify(r.small)}`);
@@ -141,14 +142,16 @@ if (want('func')) {
   ok('full-screen menu opens on desktop', await p.locator('#mobile-nav').isVisible());
   await p.keyboard.press('Escape');
   ok('Escape closes the menu', !(await p.locator('#mobile-nav').isVisible()));
-  const pause = p.locator('.ticker-pause');
-  ok('ticker: moving copy is aria-hidden, a static copy is available to screen readers', (await p.locator('.ticker-viewport[aria-hidden="true"]').count()) === 1 && (await p.locator('.ticker p.sr-only').count()) === 1);
-  await pause.focus(); await p.keyboard.press('Enter');
-  ok('ticker can be paused with the keyboard (WCAG 2.2.2)', (await pause.getAttribute('aria-pressed')) === 'true' && (await p.locator('.ticker.is-paused').count()) === 1 && (await p.evaluate(() => getComputedStyle(document.querySelector('.ticker-track')).animationPlayState)) === 'paused');
-  await p.keyboard.press('Space');
-  ok('ticker can be resumed with the keyboard', (await pause.getAttribute('aria-pressed')) === 'false' && (await p.locator('.ticker.is-paused').count()) === 0);
-  await pause.click();
-  ok('ticker pause works with the mouse too', (await pause.getAttribute('aria-pressed')) === 'true');
+  // announcement bar: static, dismissible, remembered
+  ok('announcement: one static line, no moving track, no pause button, no venue tabs', (await p.locator('.announce').count()) === 1 && (await p.locator('.ticker, .ticker-track, .ticker-pause, .ticker-venues').count()) === 0 && (await p.evaluate(() => getComputedStyle(document.querySelector('.announce-text')).animationName)) === 'none');
+  ok('announcement: says the new coffee and the hours (wide screens)', /Guji Natural/.test(await p.locator('.announce-text').innerText()) && /Open 7 days, from 7am \(Sundays 8am\)/.test(await p.locator('.announce-text').innerText()));
+  const ab = await p.locator('.announce-close').boundingBox();
+  ok('announcement: Dismiss button is 44px with the right label', ab.width >= 43.5 && ab.height >= 43.5 && (await p.locator('.announce-close').getAttribute('aria-label')) === 'Dismiss announcement');
+  const th0 = await p.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue('--ticker-h').trim());
+  await p.locator('.announce-close').click();
+  ok('announcement: dismiss hides it, sets --ticker-h to 0 and remembers the choice', !(await p.locator('.announce').isVisible()) && (await p.evaluate(() => document.documentElement.style.getPropertyValue('--ticker-h'))) === '0px' && (await p.evaluate(() => localStorage.getItem('eo-announce'))) === 'off' && th0 === '44px', th0);
+  await p.reload(); await p.waitForTimeout(500);
+  ok('announcement: stays dismissed after a reload, with no layout jump (--ticker-h is 0 from the first paint)', !(await p.locator('.announce').isVisible()) && (await p.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue('--ticker-h').trim() === '0px' && Math.round(document.querySelector('.hero').getBoundingClientRect().top + scrollY) === 0)));
   // search
   await p.locator('#search-open').click(); await p.keyboard.type('gluten');
   await p.waitForTimeout(500);
@@ -156,10 +159,7 @@ if (want('func')) {
   await p.keyboard.press('Escape');
   await p.keyboard.press('/');
   ok('"/" opens search', await p.locator('#search').isVisible()); await p.keyboard.press('Escape');
-  // chat
-  await p.locator('#chat-toggle').click(); await p.locator('#chat-quick button', { hasText: 'Opening hours' }).click(); await p.waitForTimeout(800);
-  ok('chat answers from the shared hours data', (await p.locator('#chat-log .bot').last().textContent()).includes('7am') || (await p.locator('#chat-log .bot').last().textContent()).includes('7:00am'));
-  await p.keyboard.press('Escape');
+  ok('chat: the floating chat button, panel and script are gone', (await p.locator('#chat, .chat, #chat-toggle').count()) === 0 && !fs.existsSync(path.join(SITE, 'js/chat.js')) && !/chat/i.test(fs.readFileSync(path.join(SITE, 'main.js'), 'utf8')));
   // sound toggle
   const snd = p.locator('.footer-legal [data-sound]');
   ok('ambient sound: visible label "Ambient sound: Off" before use', (await snd.innerText()).replace(/\s+/g, ' ').trim() === 'Ambient sound: Off' && (await snd.getAttribute('aria-pressed')) === 'false');
@@ -277,7 +277,7 @@ if (want('func')) {
   ok('mobile menu link navigates to the page', p.url().endsWith('visit.html'));
   await done(p);
 
-  // Cookie bar geometry: compact, never covering the hero buttons, the Call / Reserve bar or the chat button
+  // Cookie card geometry: small, bottom-left, never full width, never covering the hero buttons or the Call / Reserve bar
   for (const [w, h, mobile] of [[390, 844, true], [1440, 900, false]]) {
     p = await newPage({ viewport: { width: w, height: h }, hasTouch: mobile }, { webgl: false, quiet: false });
     await p.addInitScript(() => { try { sessionStorage.setItem('eo-seen', '1'); } catch (e) { /* ignore */ } });
@@ -286,15 +286,79 @@ if (want('func')) {
       const box = (sel) => { const e = document.querySelector(sel); if (!e || e.offsetParent === null && getComputedStyle(e).position !== 'fixed') return null; const r = e.getBoundingClientRect(); return { l: r.left, t: r.top, r: r.right, b: r.bottom, w: r.width, h: r.height }; };
       const hit = (a, b) => a && b && a.l < b.r && a.r > b.l && a.t < b.b && a.b > b.t;
       const c = box('#cookie');
-      const ctas = [...document.querySelectorAll('.hero-cta a')].map((e) => { const r = e.getBoundingClientRect(); return { l: r.left, t: r.top, r: r.right, b: r.bottom }; });
-      return { c, vw: innerWidth, vh: innerHeight, overCta: ctas.some((x) => hit(c, x)), overBar: hit(c, box('.mobile-cta')), overChat: hit(c, box('.chat-toggle')) };
+      const btns = [...document.querySelectorAll('.hero a.btn, .hero a.link-arrow, .scroll-cue, .header-link, .icon-btn, .nav-toggle')].map((e) => { const r = e.getBoundingClientRect(); return { l: r.left, t: r.top, r: r.right, b: r.bottom }; }).filter((r) => r.b > 0 && r.t < innerHeight && r.r > r.l);
+      return { c, vw: innerWidth, vh: innerHeight, overBtn: btns.some((x) => hit(c, x)), overBar: hit(c, box('.mobile-cta')) };
     });
-    ok(`cookie bar @${w}: visible, compact (${g.c ? Math.round(g.c.w) + 'x' + Math.round(g.c.h) : 'none'})`, g.c && (mobile ? g.c.h <= 130 && g.c.w >= w - 30 : g.c.w <= 362 && g.c.l < 40 && g.c.b > g.vh - 40));
-    ok(`cookie bar @${w}: covers no hero button, no Call/Reserve bar, no chat button`, !g.overCta && !g.overBar && !g.overChat, JSON.stringify({ cta: g.overCta, bar: g.overBar, chat: g.overChat }));
+    ok(`cookie card @${w}: visible, small (${g.c ? Math.round(g.c.w) + 'x' + Math.round(g.c.h) : 'none'}), max 320px wide, bottom-left, not full width`, g.c && g.c.w <= 321 && g.c.w < g.vw - 20 && g.c.l < 30 && g.c.b > g.vh - (mobile ? 200 : 40));
+    ok(`cookie card @${w}: covers no button in view and not the Call/Reserve bar`, !g.overBtn && !g.overBar, JSON.stringify({ btn: g.overBtn, bar: g.overBar }));
     const [da, dd] = await Promise.all([p.locator('#cookie [data-cookie="yes"]').boundingBox(), p.locator('#cookie [data-cookie="no"]').boundingBox()]);
-    ok(`cookie bar @${w}: Accept and Decline are side-by-side 44px buttons`, da && dd && da.height >= 43.5 && dd.height >= 43.5 && Math.abs(da.y - dd.y) < 2);
+    ok(`cookie card @${w}: Accept and Decline are side-by-side 44px buttons`, da && dd && da.height >= 43.5 && dd.height >= 43.5 && Math.abs(da.y - dd.y) < 2);
     await done(p);
   }
+
+  // Find us, status chip in another time zone, reviews, footer line
+  p = await newPage({ viewport: { width: 1440, height: 900 }, timezoneId: 'America/New_York' }, { webgl: false });
+  await p.goto(base + 'index.html'); await p.waitForTimeout(800);
+  const fu = await p.evaluate(() => { const f = document.querySelector('#find-us iframe'); const sec = document.querySelector('#find-us'); const nl = document.querySelector('#join'); return { src: f && f.getAttribute('src'), title: f && f.title, w: f && f.getAttribute('width'), h: f && f.getAttribute('height'), lazy: f && f.loading, ref: f && f.referrerPolicy, link: [...sec.querySelectorAll('a')].some((a) => /Open in Google Maps/.test(a.textContent) && /google\.com\/maps/.test(a.href)), before: !!(sec.compareDocumentPosition(nl) & Node.DOCUMENT_POSITION_FOLLOWING), table: !!sec.querySelector('table.hours'), addr: /12 Example Street/.test(sec.textContent), chip: sec.querySelector('[data-open-status]').textContent };
+  });
+  ok('find us: Google map iframe (no key), lazy, titled, sized, referrer policy, link, before the newsletter', /^https:\/\/maps\.google\.com\/maps\?q=Federation%20Square%2C%20Melbourne%20VIC&output=embed$/.test(fu.src) && fu.title && fu.w && fu.h && fu.lazy === 'lazy' && fu.ref === 'no-referrer-when-downgrade' && fu.link && fu.before && fu.table && fu.addr, JSON.stringify(fu));
+  ok('find us: open/closed chip follows café time and says so for a visitor in New York', /^(Open now|Closed now) \u00b7 .*\(Melbourne time\)$/.test(fu.chip), fu.chip);
+  await done(p);
+  p = await newPage({ viewport: { width: 1440, height: 900 }, timezoneId: 'Australia/Melbourne' }, { webgl: false });
+  await p.goto(base + 'index.html'); await p.waitForTimeout(800);
+  ok('find us: no time-zone note for a visitor in Melbourne', !/Melbourne time/.test(await p.locator('#find-us [data-open-status]').textContent()), await p.locator('#find-us [data-open-status]').textContent());
+  const rv = await p.evaluate(() => [...document.querySelectorAll('.review')].map((r) => ({ av: !!r.querySelector('.review-avatar') && getComputedStyle(r.querySelector('.review-avatar')).borderRadius === '50%', st: r.querySelector('.stars').getAttribute('aria-label'), date: /ago/.test(r.querySelector('.review-date').textContent), name: !!r.querySelector('.review-who strong') })));
+  ok('reviews: card with round avatar, name, 5-star label and "ago" date; sample label kept; no real-rating claims', rv.length === 3 && rv.every((r) => r.av && r.st === '5 out of 5 stars' && r.date && r.name) && /Sample reviews for demo purposes/.test(await p.locator('#reviews').textContent()) && !/google rating|reviews on google|\d\.\d.*stars/i.test(await p.locator('#reviews').textContent()));
+  ok('footer: concept-website line plus the original not-a-real-business line', /Concept website by KB Ventures\. Want one for your business\?/.test(await p.locator('.site-footer').innerText()) && /Concept demo by KB Ventures\. Not a real business\./.test(await p.locator('.site-footer').innerText()));
+  await done(p);
+  p = await newPage({ viewport: { width: 1280, height: 900 }, javaScriptEnabled: false }, { quiet: false });
+  await p.goto(base + 'index.html');
+  ok('find us without JavaScript: plain hours text and the hours table are visible', /Open 7 days, from 7am/.test(await p.locator('#find-us [data-open-status]').textContent()) && (await p.locator('#find-us table.hours').isVisible()));
+  await done(p);
+
+  // Photos: one grade, frame and overlay
+  p = await newPage({ viewport: { width: 1440, height: 900 } }, { webgl: false });
+  await p.goto(base + 'index.html'); await p.waitForTimeout(500);
+  const ph = await p.evaluate(() => [...document.querySelectorAll('.photo')].map((e) => { const i = e.querySelector('img'), cs = getComputedStyle(i), full = !!e.closest('.hero-photo,.section-photo'); const b = getComputedStyle(e, '::before'), a = getComputedStyle(e, '::after'); return { grade: cs.filter, fit: cs.objectFit, full, radius: getComputedStyle(e).borderRadius, line: b.boxShadow, border: b.display, overlay: a.backgroundImage.slice(0, 40), pos: i.style.objectPosition }; }));
+  ok(`photos: all ${ph.length} on home share one grade (sepia/saturate/contrast), object-fit cover, a gradient overlay and an inline pos`, ph.length === 13 && ph.every((x) => /sepia\(0\.12\)/.test(x.grade) && /saturate\(0\.85\)/.test(x.grade) && /contrast\(1\.03\)/.test(x.grade) && x.fit === 'cover' && /linear-gradient/.test(x.overlay) && /^\d+% \d+%$/.test(x.pos)), JSON.stringify(ph[0]));
+  ok('photos: framed ones have a 6px radius and the ember hairline; full-bleed ones have neither', ph.filter((x) => !x.full).every((x) => x.radius === '6px' && /rgba\(224, 120, 43/.test(x.line)) && ph.filter((x) => x.full).every((x) => x.radius === '0px' && x.border === 'none'));
+  ok('photos: every slot in photos.json has a valid pos', Object.values(JSON.parse(fs.readFileSync(path.join(SITE, 'data/photos.json'), 'utf8')).slots).every((x) => /^\d{1,3}% \d{1,3}%$/.test(x.pos || '')));
+  await p.evaluate(() => window.scrollTo(0, 1500)); await p.waitForTimeout(700);
+  ok('photos: slow scroll zoom is wired to every kind (hero, section, feature, gallery)', await p.evaluate(() => ['.hero-photo .photo', '.section-photo .photo', '.feature-art .photo', '.tile .photo'].every((q) => document.querySelector(q).hasAttribute('data-photo'))));
+  await done(p);
+  p = await newPage({ viewport: { width: 1440, height: 900 }, reducedMotion: 'reduce' }, { webgl: false });
+  await p.goto(base + 'index.html'); await p.waitForTimeout(500);
+  ok('photos: no zoom transform with reduced motion', await p.evaluate(() => [...document.querySelectorAll('.photo img')].every((i) => getComputedStyle(i).transform === 'none')));
+  await done(p);
+
+  // Typography and spacing
+  for (const [w, exp] of [[1440, [56, 40, 28, 20]], [390, [36, 30, 24, 19]]]) {
+    p = await newPage({ viewport: { width: w, height: 900 } }, { webgl: false });
+    await p.goto(base + 'visit.html'); await p.waitForTimeout(400);
+    const hs = await p.evaluate(() => { const px = (v) => Math.round(parseFloat(v)); const r = document.documentElement; const t = (tag) => { const e = document.createElement(tag); document.body.appendChild(e); const f = px(getComputedStyle(e).fontSize); e.remove(); return f; }; return { h: [t('h1'), t('h2'), t('h3'), t('h4')], pad: getComputedStyle(document.querySelector('main > .section')).paddingTop, sp: getComputedStyle(r).getPropertyValue('--space-12').trim() + '/' + getComputedStyle(r).getPropertyValue('--space-1').trim(), lh: getComputedStyle(document.body).lineHeight, fs: getComputedStyle(document.body).fontSize }; });
+    ok(`typography @${w}: heading scale h1-h4 = ${exp.join('/')}px`, hs.h.every((v, i) => Math.abs(v - exp[i]) <= 1), JSON.stringify(hs.h));
+    ok(`spacing @${w}: 8px scale tokens, section padding ${w >= 1024 ? 160 : 96}px, body 17px at line-height 1.6`, hs.sp === '96px/8px' && hs.pad === (w >= 1024 ? '160px' : '96px') && Math.abs(parseFloat(hs.lh) / parseFloat(hs.fs) - 1.6) < .01, JSON.stringify(hs));
+    await done(p);
+  }
+  p = await newPage({ viewport: { width: 1280, height: 900 } }, { webgl: false });
+  await p.goto(base + 'index.html'); await p.waitForTimeout(1200);
+  const fam = await p.evaluate(async () => { await document.fonts.ready; const loaded = [...document.fonts].filter((f) => f.status === 'loaded').map((f) => f.family.replace(/"/g, '')); const used = new Set([...document.querySelectorAll('body *')].map((e) => getComputedStyle(e).fontFamily.split(',')[0].replace(/["']/g, '').trim())); return { loaded: [...new Set(loaded)], used: [...used] }; });
+  ok('fonts: only Montserrat and Mrs Saint Delafield are loaded or used as primary families', fam.loaded.every((f) => ['Montserrat', 'Mrs Saint Delafield'].includes(f)) && fam.used.every((f) => ['Montserrat', 'Mrs Saint Delafield'].includes(f)), JSON.stringify(fam));
+  const meas = await p.evaluate(() => [...document.querySelectorAll('main p')].filter((e) => e.offsetParent && !e.closest('.join-inner,.hero-body,.form-success,.cart-done') && e.getBoundingClientRect().width > 0).map((e) => e.getBoundingClientRect().width / parseFloat(getComputedStyle(e).fontSize)).reduce((m, v) => Math.max(m, v), 0));
+  ok('typography: running text is limited to about 68ch', meas <= 68 * 0.6 + 40, String(meas.toFixed(1)));
+  await done(p);
+
+  // Favicons, manifest, 404
+  const mf = JSON.parse(fs.readFileSync(path.join(SITE, 'site.webmanifest'), 'utf8'));
+  ok('manifest: name, short_name, description, lang, id, start_url, scope, display, orientation, categories, colours', ['name', 'short_name', 'description', 'lang', 'id', 'start_url', 'scope', 'display', 'orientation', 'categories'].every((k) => mf[k]) && mf.theme_color === '#120D0A' && mf.background_color === '#120D0A');
+  ok('manifest: 192 + 512 "any" icons and a 512 "maskable" icon that exist', ['192x192:any', '512x512:any', '512x512:maskable'].every((k) => mf.icons.some((i) => i.sizes + ':' + i.purpose === k && fs.existsSync(path.join(SITE, i.src)))));
+  const ico = fs.readFileSync(path.join(SITE, 'favicon.ico'));
+  ok('favicon.ico is a real ICO with 16, 32 and 48 px images; svg + apple-touch icons exist and are linked', ico.readUInt16LE(2) === 1 && ico.readUInt16LE(4) === 3 && fs.existsSync(path.join(SITE, 'img/icon.svg')) && fs.existsSync(path.join(SITE, 'img/apple-touch-icon.png')) && PAGES.every((f) => { const h = fs.readFileSync(path.join(SITE, f), 'utf8'); return /rel="icon" href="favicon\.ico"/.test(h) && /rel="icon" href="img\/icon\.svg"/.test(h) && /rel="apple-touch-icon"/.test(h); }));
+  p = await newPage({ viewport: { width: 1280, height: 900 } }, { webgl: false });
+  await p.goto(base + '404.html'); await p.waitForTimeout(500);
+  ok('404 page: themed, noindex, links back to Home, Menu and Reserve', (await p.locator('h1').textContent()) === 'Page not found' && (await p.locator('meta[name=robots]').getAttribute('content')) === 'noindex' && (await p.locator('main .btn-row a').allTextContents()).join() === 'Home,Menu,Reserve');
+  ok('404 page is not in the sitemap', !/404/.test(fs.readFileSync(path.join(SITE, 'sitemap.xml'), 'utf8')));
+  await done(p);
 
   // Header shrinks on scroll, back-to-top, anchors and tab deep links (with smooth scrolling on)
   p = await newPage({ viewport: { width: 1440, height: 900 } }, { webgl: false });
@@ -360,10 +424,9 @@ if (want('func') || want('content')) {
     const h = html(f);
     const overlay = lbl(h.split('id="mobile-nav"')[1].split('overlay-sub')[0], /<li><a href="[^"]+">(?:<span class="n"[^>]*>[^<]*<\/span>)?([^<]+)<\/a><\/li>/g);
     const foot = lbl(h.split('aria-label="Footer: explore"')[1].split('</nav>')[0], /<li><a href="[^"]+">([^<]+)<\/a><\/li>/g).filter((x) => x !== 'Reserve');
-    const venues = lbl(h.split('aria-label="Our spaces"')[1].split('</nav>')[0], /<a href="[^"]+"[^>]*>(?:<svg[\s\S]*?<\/svg>)([^<]+)<\/a>/g);
-    if (overlay.join() !== foot.join() || overlay.join() !== cfg.nav.map((n) => n.label).join() || !venues.every((v) => overlay.includes(v))) navBad.push(`${f}: ${overlay} | ${foot} | ${venues}`);
+    if (overlay.join() !== foot.join() || overlay.join() !== cfg.nav.map((n) => n.label).join()) navBad.push(`${f}: ${overlay} | ${foot}`);
   }
-  ok('nav labels: overlay menu, footer and top tabs use the same labels on every page', !navBad.length, navBad[0]);
+  ok('nav labels: overlay menu, footer and config use the same labels on every page', !navBad.length, navBad[0]);
   ok('no visible "index.html" text on any page', PAGES.every((f) => !/>[^<]*index\.html[^<]*</.test(html(f).replace(/<script[\s\S]*?<\/script>/g, ''))));
   const phot = JSON.parse(fs.readFileSync(path.join(SITE, 'data/photos.json'), 'utf8')).slots;
   const shown = Object.values(phot).filter((x) => fs.existsSync(path.join(SITE, x.file)));
@@ -419,6 +482,15 @@ if (want('fallback')) {
   p = await newPage({ viewport: { width: 1440, height: 900 } }, { extraInit: () => Object.defineProperty(navigator, 'connection', { value: { saveData: true } }) });
   await p.goto(base + 'index.html'); await p.waitForTimeout(1200);
   ok('Data Saver: 3D skipped, light illustration shown', (await p.locator('#scene').count()) === 0 && (await p.locator('.cup-fallback').isVisible()));
+  await done(p);
+
+  p = await newPage({ viewport: { width: 390, height: 844 }, hasTouch: true }, { extraInit: () => Object.defineProperty(navigator, 'hardwareConcurrency', { value: 2 }) });
+  await p.goto(base + 'index.html'); await p.waitForTimeout(3500);
+  ok('low-power phone (390px wide, 2 cores): no canvas, the SVG poster stays visible, 3D library never requested', (await p.locator('#scene').count()) === 0 && (await p.locator('.cup-fallback').isVisible()) && !(await p.evaluate(() => performance.getEntriesByType('resource').some((r) => /three\.module/.test(r.name)))));
+  await done(p);
+  p = await newPage({ viewport: { width: 1440, height: 900 } }, { extraInit: () => Object.defineProperty(navigator, 'hardwareConcurrency', { value: 2 }) });
+  await p.goto(base + 'index.html'); await p.waitForTimeout(4500);
+  ok('large screen with 2 cores is not treated as low-power (3D still starts)', (await p.locator('#stage.has-3d').count()) === 1);
   await done(p);
 
   p = await newPage({ viewport: { width: 1440, height: 900 }, reducedMotion: 'reduce' });
@@ -484,6 +556,9 @@ if (want('perf')) {
   await p.goto(base + 'index.html'); await p.waitForTimeout(5000);
   const total = Object.entries(sizes).filter(([k]) => !k.startsWith('vendor/')).reduce((n, [, v]) => n + v, 0);
   ok('home page weight excluding Three.js is under 600 KB', total < 600 * 1024, `${(total / 1024).toFixed(0)} KB`);
+  const heroKb = fs.statSync(path.join(SITE, 'img/photos/hero-interior.webp')).size / 1024;
+  ok('hero image is under 250 KB', heroKb < 250, heroKb.toFixed(0) + ' KB');
+  ok('every iframe/img has width+height; everything below the fold is lazy', await p.evaluate(() => [...document.querySelectorAll('iframe,img')].every((e) => e.getAttribute('width') && e.getAttribute('height')) && [...document.querySelectorAll('iframe,img')].filter((e) => !e.closest('.hero')).every((e) => e.loading === 'lazy')));
   ok('home page makes no third-party requests', Object.keys(sizes).every((k) => !/^https?:/.test(k)));
   const ld = await p.evaluate(() => [...document.querySelectorAll('script[type="application/ld+json"]')].map((s) => JSON.parse(s.textContent)['@type']));
   ok('home has CafeOrCoffeeShop structured data', ld.includes('CafeOrCoffeeShop'), JSON.stringify(ld));
@@ -505,7 +580,7 @@ if (want('final')) {
         const fixedish = (e) => { for (let a = e; a && a !== document.body; a = a.parentElement) { const c = getComputedStyle(a); if (/(fixed|sticky|absolute)/.test(c.position) || a.hidden || a.getAttribute('aria-hidden') === 'true' || a.classList.contains('sr-only') || a.classList.contains('hero') && false) return true; } return false; };
         const els = [...document.querySelectorAll('h1,h2,h3,h4,p,li,a,button,label,th,td,summary,figcaption,address,dt,dd')].filter((e) => {
           const dt = e.closest('details'); if (dt && !dt.open && !e.closest('summary')) return false;
-          if (e.offsetParent === null || fixedish(e) || e.closest('.hero-stage,.ticker,.mobile-nav,.cart,.search,.chat,[hidden]')) return false;
+          if (e.offsetParent === null || fixedish(e) || e.closest('.hero-stage,.mobile-nav,.cart,.search,[hidden]')) return false;
           const r = e.getBoundingClientRect(); return r.width > 2 && r.height > 2 && [...e.childNodes].some((n) => n.nodeType === 3 && n.textContent.trim());
         });
         const boxes = els.map((e) => [e, e.getBoundingClientRect()]);

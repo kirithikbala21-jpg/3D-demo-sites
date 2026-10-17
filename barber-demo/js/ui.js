@@ -40,15 +40,14 @@ import { $, $$, site, reduceMotion, finePointer, cafeNow, hoursFor, fmtHour, sto
   });
 })();
 
-/* ---------- Ticker pause (WCAG 2.2.2) ---------- */
+/* ---------- Announcement bar: dismiss and remember ---------- */
 (() => {
-  const btn = $('.ticker-pause'), ticker = $('#ticker');
-  if (!btn) return;
+  const btn = $('#announce-close'), bar = $('#announce');
+  if (!btn || !bar) return;
   btn.addEventListener('click', () => {
-    const on = btn.getAttribute('aria-pressed') !== 'true';
-    btn.setAttribute('aria-pressed', String(on));
-    btn.setAttribute('aria-label', on ? 'Play the news ticker' : 'Pause the news ticker');
-    ticker.classList.toggle('is-paused', on);
+    document.documentElement.classList.add('no-announce');
+    try { localStorage.setItem('bb-announce', 'off'); } catch (_) { /* ignore */ }
+    const link = $('.brand'); if (link) link.focus();
   });
 })();
 
@@ -165,33 +164,25 @@ import { $, $$, site, reduceMotion, finePointer, cafeNow, hoursFor, fmtHour, sto
   });
 })();
 
-/* ---------- Opening hours: today's row + "Open now" chip, in the café's own time zone ---------- */
+/* ---------- Opening hours: today's row + "Open now" chip, in the shop's own time zone ---------- */
 (() => {
   const { day, hour } = cafeNow();
-  const row = $(`.hours tr[data-day="${day}"]`);
-  if (row) { row.classList.add('is-today'); $('th', row).insertAdjacentHTML('beforeend', ' <span class="today-badge">Today</span>'); }
+  $$(`.hours tr[data-day="${day}"]`).forEach((row) => { row.classList.add('is-today'); $('th', row).insertAdjacentHTML('beforeend', ' <span class="today-badge">Today</span>'); });
   const t = hoursFor(day);
   let text, isOpen = false;
   if (t && hour >= t.open && hour < t.close) { text = `Open now · until ${fmtHour(t.close)}`; isOpen = true; }
   else if (t && hour < t.open) text = `Closed · opens ${fmtHour(t.open)} today`;
   else { const nx = hoursFor((day + 1) % 7); text = `Closed · opens ${fmtHour(nx.open)} tomorrow`; }
-  ['#open-status', '#open-status-2'].forEach((sel) => {
+  let away = false;
+  try { away = Intl.DateTimeFormat().resolvedOptions().timeZone !== site.timezone; } catch (_) { /* ignore */ }
+  if (away) text += ' (Sydney time)';
+  ['#open-status', '#open-status-2', '#open-status-3'].forEach((sel) => {
     const el = $(sel); if (!el) return;
     el.textContent = text;
     el.closest('.chip').classList.toggle('is-closed', !isOpen);
   });
 })();
 
-/* ---------- Map: load the interactive map only when asked (privacy + speed) ---------- */
-(() => {
-  const box = $('#map-box'), btn = $('#map-load');
-  if (!box || !btn) return;
-  btn.addEventListener('click', () => {
-    const f = document.createElement('iframe');
-    f.src = box.dataset.src; f.title = 'Map of central Sydney (demo)'; f.loading = 'lazy'; f.referrerPolicy = 'no-referrer';
-    box.prepend(f); box.classList.add('is-loaded'); box.removeAttribute('role');
-  });
-})();
 
 /* ---------- Magnetic buttons (fine pointers only, never with reduced motion) ---------- */
 (() => {
@@ -210,8 +201,8 @@ import { $, $$, site, reduceMotion, finePointer, cafeNow, hoursFor, fmtHour, sto
 (() => {
   const box = $('#cookie'); if (!box) return;
   const KEY = 'eo-cookie';
-  const show = () => { box.hidden = false; document.documentElement.style.setProperty('--cookie-h', box.offsetHeight + 12 + 'px'); };
-  const hide = () => { box.hidden = true; document.documentElement.style.removeProperty('--cookie-h'); };
+  const show = () => { box.hidden = false; };
+  const hide = () => { box.hidden = true; };
   const choice = store(KEY);
   if (choice === 'yes') loadAnalytics();
   else if (!choice) setTimeout(show, 1400);

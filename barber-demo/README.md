@@ -7,12 +7,12 @@ Plain HTML, CSS and JavaScript. No framework, no bundler, no third-party request
 ## Pages
 `index` (home) · `services` (24 services with prices and durations, price list PDF) · `barbers` (the crew, with book-with-this-barber links) · `book` (booking form with duration-aware time slots) · `shop` (grooming products) · `membership` (plans and gift cards) · `journal` · `visit` (hours, map, FAQ) · `careers` · `legal`.
 
-Site-wide: news ticker, full-screen menu, search (press `/`), "Your visit" drawer (add services or products, then book), scripted chat assistant, cookie preferences, optional shop ambience, branded intro on first visit, sticky Call / Book bar on phones.
+Site-wide: a calm dismissible announcement bar, full-screen menu, search (press `/`), "Your visit" drawer (add services or products, then book), cookie preferences, optional shop ambience, branded intro on first visit, sticky Call / Book bar on phones.
 
 ## Folder map
 | Path | What it is |
 | --- | --- |
-| `site.config.json` | Brand, contact, hours, time zone (Sydney), colours, nav, page list, ticker |
+| `site.config.json` | Brand, contact, hours, time zone (Sydney), colours, nav, page list, announcement bar text |
 | `data/*.json` | Services, products, journal posts, jobs, FAQ |
 | `tools/templates/` | `layout.html` (shared header/footer), `pages/` and `sections/` |
 | `tools/build.py` | Builds every `.html` page, `search-data.js` and `sitemap.xml` |
@@ -28,7 +28,7 @@ Site-wide: news ticker, full-screen menu, search (press `/`), "Your visit" drawe
 2. Run `python3 tools/build.py` (Python 3, standard library only).
 3. Commit. A GitHub Action rebuilds and fails if committed pages are out of date.
 
-Hours, time zone, colours and contact details live in `site.config.json` and drive the hours table, the "Open now" chip, booking slots, chat answers and search-engine data. After changing services run `node tools/make-assets.mjs` to refresh `price-list.pdf`. The hero background video can be set with `hero.video` / `hero.poster`.
+Hours, time zone, colours and contact details live in `site.config.json` and drive the hours table, the "Open now" chip, booking slots and search-engine data. After changing services run `node tools/make-assets.mjs` to refresh `price-list.pdf`. The hero background video can be set with `hero.video` / `hero.poster`.
 
 ## Photos
 The hero background, "Our story" background, the three signature-service panels and all eight gallery tiles use real photos (originals and crops in `img/source/`, compressed WebP in `img/photos/`). Credits currently read "Photo: Unsplash"; see `CREDITS-TODO.md` for the photographer names still to add. The four barber portraits are still monogram circles. Every slot lives in `data/photos.json`; slots with no file fall back to an illustration. Add licensed photos (Unsplash or Pexels are fine) with:
@@ -50,7 +50,15 @@ npm install
 npx playwright-core install chromium     # or set CHROME_PATH
 node run.mjs                              # all suites, or --suite=overflow,axe,links,func,fallback,perf
 ```
-They cover overflow on every page at 360 to 1920 px, axe accessibility at 375 and 1440 px, tap targets and text sizes, links and anchors, services tabs, the visit drawer, search, chat, booking validation and time slots, cookie banner, menu overlay, every fallback path, the pixel-ratio cap and page weight.
+They cover overflow on every page at 360 to 1920 px, axe accessibility at 375 and 1440 px, tap targets and text sizes, links and anchors, services tabs, the visit drawer, search, announcement bar, booking validation and time slots, cookie banner, menu overlay, every fallback path, the pixel-ratio cap and page weight.
 
 ## What is demo-only
 Booking, careers, newsletter, gift card and visit forms validate in the browser and show a confirmation; nothing is sent. See `CLIENT-CHECKLIST.md`.
+
+## Design system notes
+- **Type:** two families only (Oswald for headings, Montserrat for text). Heading scale 56 / 40 / 28 / 20 px on desktop, fluid down to about 36 / 30 / 24 / 19 px on a phone (`--fs-h1` to `--fs-h4`). Spacing is an 8px scale (`--space-1` to `--space-20`).
+- **Photos:** one look for every photo (warm sepia and lowered saturation, one dark gradient, a 1px gold hairline and 6px corners; full-bleed hero and section photos skip the border and radius). Set each photo's crop with a `pos` value in `data/photos.json`.
+- **Announcement bar:** one static line, dismissible (remembered in `localStorage` key `bb-announce`). Edit the text in `site.config.json` under `announcement`.
+- **Find us:** a lazy-loaded Google Maps embed (no API key) of the placeholder location from `contact.mapsQuery`, plus the hours table with an "Open now / Closed" chip computed from the visitor's clock in the shop's time zone.
+- **404:** `404.html` is built from the `notfound` template. GitHub Pages only serves the repo-root `404.html`, which forwards missing URLs inside this folder to it.
+- **3D hero:** the still poster shows instantly; 3D starts after the page load event and the intro, and is skipped on low-powered phones (small screen with 4 or fewer cores), Data Saver, or no WebGL.

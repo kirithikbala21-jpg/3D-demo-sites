@@ -1,8 +1,9 @@
-// Generates the binary assets that cannot be hand-written: PNG icons, the share image (og.png, a screenshot of the real hero) and menu.pdf.
+// Generates the binary assets that cannot be hand-written: PNG icons (plain, apple-touch and maskable), favicon.ico (via Pillow), the share image (og.png, a screenshot of the real hero) and menu.pdf.
 // Usage (from the site folder):  node tools/make-assets.mjs     (needs tests/node_modules; set CHROME_PATH if Chromium is not auto-detected)
 import http from 'node:http';
 import path from 'node:path';
 import fs from 'node:fs';
+import { execFileSync } from 'node:child_process';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const SITE = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -17,6 +18,16 @@ for (const [name, size] of [['apple-touch-icon.png', 180], ['icon-192.png', 192]
   await p.screenshot({ path: path.join(SITE, 'img', name) });
   await p.close();
 }
+// Maskable icon: the same art at 80% on a full-bleed espresso square, so it survives any circle / squircle crop (safe zone).
+{
+  const p = await browser.newPage({ viewport: { width: 512, height: 512 } });
+  await p.goto(url('img/icon.svg'));
+  await p.evaluate(() => { const svg = document.documentElement; svg.setAttribute('viewBox', '-8 -8 80 80'); svg.style.background = '#120D0A'; });
+  await p.screenshot({ path: path.join(SITE, 'img', 'icon-maskable-512.png') });
+  await p.close();
+}
+// favicon.ico (16, 32 and 48 px) from the 512 px icon, with Pillow
+execFileSync('python3', [path.join(SITE, 'tools', 'make-favicon.py')], { stdio: 'inherit' });
 // Share image: a real screenshot of the home page hero (3D cup + wordmark), 1200x630.
 // The page is served from a throwaway local server (the 3D scene is an ES module, which file:// cannot load).
 {
@@ -32,7 +43,7 @@ for (const [name, size] of [['apple-touch-icon.png', 180], ['icon-192.png', 192]
   const p = await ctx.newPage();
   await p.goto(`http://localhost:${server.address().port}/index.html`);
   await p.waitForSelector('#stage.has-3d', { timeout: 20000 }); // fail loudly rather than ship a fallback image
-  await p.addStyleTag({ content: '.ticker,.site-header,.chat,.cookie,.mobile-cta,.scroll-cue,.progress,.toast,.hero-tag,.chip,.hero-cta{display:none!important}.hero{min-height:630px!important;height:630px}.hero-inner{padding-bottom:0!important}.hero-stage{height:600px!important;max-height:none!important}' });
+  await p.addStyleTag({ content: '.announce,.site-header,.cookie,.mobile-cta,.scroll-cue,.progress,.toast,.hero-tag,.chip,.hero-cta{display:none!important}.hero{min-height:630px!important;height:630px}.hero-inner{padding-bottom:0!important}.hero-stage{height:600px!important;max-height:none!important}' });
   await p.evaluate(() => document.fonts.ready);
   await p.waitForTimeout(2500); // let the steam and the wordmark wipe settle
   await p.screenshot({ path: path.join(SITE, 'img/og.png') });
@@ -47,4 +58,4 @@ for (const [name, size] of [['apple-touch-icon.png', 180], ['icon-192.png', 192]
   await p.close();
 }
 await browser.close();
-for (const f of ['img/apple-touch-icon.png', 'img/icon-192.png', 'img/icon-512.png', 'img/og.png', 'menu.pdf']) console.log(f, fs.statSync(path.join(SITE, f)).size, 'bytes');
+for (const f of ['favicon.ico', 'img/apple-touch-icon.png', 'img/icon-192.png', 'img/icon-512.png', 'img/icon-maskable-512.png', 'img/og.png', 'menu.pdf']) console.log(f, fs.statSync(path.join(SITE, f)).size, 'bytes');

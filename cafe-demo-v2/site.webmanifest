@@ -3,8 +3,8 @@
  "short_name": "Ember & Oak",
  "start_url": "./index.html",
  "display": "standalone",
- "background_color": "#0B0707",
- "theme_color": "#0B0707",
+ "background_color": "#120D0A",
+ "theme_color": "#120D0A",
  "icons": [
   {
    "src": "img/icon-192.png",

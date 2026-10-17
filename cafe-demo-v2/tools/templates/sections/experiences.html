@@ -21,7 +21,8 @@
             <p class="exp-meta">First Sunday monthly &middot; 2 hrs &middot; $85 pp</p>
             <a class="exp-link" href="reserve.html?type=experience">Reserve a place<span class="sr-only"> in the workshop</span> &rarr;</a>
           </li>
-          <li class="exp-card reveal">
+          <li class="exp-card reveal{{#if photo.oak-room.has}} has-exp-photo{{/if}}">
+            {{#if photo.oak-room.has}}<div class="exp-photo">{{{photo.oak-room.html}}}</div>{{/if}}
             <svg class="exp-icon" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.600" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10l8-6 8 6v10M9 20v-6h6v6"/></svg>
             <h3>Private dining</h3>
             <p>Our oak room seats up to 24 for birthdays, wakes, launches and long lunches, with set menus and a dedicated host.</p>

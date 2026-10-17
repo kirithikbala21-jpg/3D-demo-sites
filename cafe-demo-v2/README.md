@@ -37,6 +37,8 @@ Common edits:
 - **After changing the menu:** run `node tools/make-assets.mjs` to refresh `menu.pdf`.
 
 ## Photos
+The site now uses 12 real photos (originals and crops in `img/source/`, compressed WebP in `img/photos/`; credits read "Photo: Unsplash" until names are added, see `CREDITS-TODO.md`). Palette: dark roast and cream, with warm ember orange `#E0782B` as the one accent (edit the `:root` variables in `styles.css` and `theme` in `site.config.json`).
+
 The site ships with illustrations, not photographs (none can be invented). Every picture position is a **slot** in `data/photos.json` (`gallery-latte-art`, `gallery-roastery`, `gallery-pastries`, `feature-pour-over` and so on; run `python3 tools/add-photo.py --list`). A slot shows its real photo, with a soft gradient for text legibility and a slow zoom as you scroll (disabled for reduced motion), as soon as its file exists. Until then the illustration stays.
 
 Add a photo (needs Pillow: `pip install pillow`):

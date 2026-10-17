@@ -6,7 +6,7 @@
   <title>Ember &amp; Oak Coffee (concept demo v2)</title>
   <meta name="description" content="Small-batch coffee, all-day dining and long tables in Melbourne. A cinematic concept demo for a fictional café.">
   <meta name="robots" content="noindex">
-  <meta name="theme-color" content="#0B0707">
+  <meta name="theme-color" content="#120D0A">
   <link rel="canonical" href="https://kirithikbala21-jpg.github.io/3D-demo-sites/cafe-demo-v2/">
   <meta property="og:type" content="website">
   <meta property="og:title" content="Ember &amp; Oak Coffee (concept demo v2)">
@@ -29,7 +29,7 @@
   <link rel="preload" href="fonts/mrs-saint-delafield-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="vendor/lenis-1.1.18.css">
   <link rel="stylesheet" href="styles.css">
-  <style>:root{--black:#0B0707;--wine:#8B0707;--wine-deep:#5B0912;--wine-night:#1E0509;--gold-light:#DDB46A;--gold-text:#85601F;--cream:#FBFAF3;--tint:#F1ECDD;--ink:#16100E}</style>
+  <style>:root{--black:#0D0907;--wine:#E0782B;--wine-deep:#F29049;--wine-night:#1C1511;--gold-light:#E0782B;--gold-text:#E0782B;--cream:#120D0A;--tint:#17110D;--ink:#F3E9DA}</style>
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "CafeOrCoffeeShop", "name": "Ember & Oak Coffee", "description": "Ember & Oak Coffee is a fictional café used as a concept demo: small-batch coffee, all-day dining, private events and a cinematic 3D hero. Open 7 days, from 7am (Sundays 8am).", "url": "https://kirithikbala21-jpg.github.io/3D-demo-sites/cafe-demo-v2/", "telephone": "03 5550 0123", "email": "hello@example.com", "priceRange": "$$", "servesCuisine": ["Coffee", "Brunch", "Bakery"], "hasMenu": "https://kirithikbala21-jpg.github.io/3D-demo-sites/cafe-demo-v2/menu.html", "address": {"@type": "PostalAddress", "streetAddress": "12 Example Street", "addressLocality": "Melbourne", "addressRegion": "VIC", "postalCode": "3000", "addressCountry": "AU"}, "openingHoursSpecification": [{"@type": "OpeningHoursSpecification", "dayOfWeek": "Monday", "opens": "07:00", "closes": "16:00"}, {"@type": "OpeningHoursSpecification", "dayOfWeek": "Tuesday", "opens": "07:00", "closes": "16:00"}, {"@type": "OpeningHoursSpecification", "dayOfWeek": "Wednesday", "opens": "07:00", "closes": "16:00"}, {"@type": "OpeningHoursSpecification", "dayOfWeek": "Thursday", "opens": "07:00", "closes": "22:00"}, {"@type": "OpeningHoursSpecification", "dayOfWeek": "Friday", "opens": "07:00", "closes": "22:00"}, {"@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "07:00", "closes": "22:00"}, {"@type": "OpeningHoursSpecification", "dayOfWeek": "Sunday", "opens": "08:00", "closes": "16:00"}]}</script>
   
   <noscript><style>
@@ -188,7 +188,8 @@
 
     <!-- HERO -->
     <section class="hero" aria-labelledby="hero-title">
-      <div class="hero-bg" aria-hidden="true">
+      <div class="hero-bg has-hero-photo" aria-hidden="true">
+        <div class="hero-photo"><span class="photo" data-photo><img src="img/photos/hero-interior.webp" width="900" height="600" fetchpriority="high" decoding="async" alt="A busy café with tall windows, a warm-lit wooden counter, pastries in a glass case and customers at tables"></span></div>
         
         <div class="hero-panel"></div>
         <div class="hero-glow"></div>
@@ -204,8 +205,8 @@
           <svg class="cup-fallback" viewBox="0 0 400 400" role="img" aria-label="Illustration of a steaming coffee cup on a saucer">
             <defs>
               <radialGradient id="fb-glow" cx="50%" cy="50%" r="50%">
-                <stop offset="0" stop-color="#C21F2B" stop-opacity=".5"/>
-                <stop offset="1" stop-color="#C21F2B" stop-opacity="0"/>
+                <stop offset="0" stop-color="#E0782B" stop-opacity=".5"/>
+                <stop offset="1" stop-color="#E0782B" stop-opacity="0"/>
               </radialGradient>
               <linearGradient id="fb-cup" x1="0" x2="1">
                 <stop offset="0" stop-color="#E9DDCC"/>
@@ -214,7 +215,7 @@
               </linearGradient>
             </defs>
             <rect width="400" height="400" fill="url(#fb-glow)"/>
-            <g class="fb-steam" fill="none" stroke="#FBFAF3" stroke-linecap="round" stroke-width="7" opacity=".7">
+            <g class="fb-steam" fill="none" stroke="#F3E9DA" stroke-linecap="round" stroke-width="7" opacity=".7">
               <path class="s1" d="M160 150c-18-22 18-36 0-62"/>
               <path class="s2" d="M200 140c-20-26 20-42 0-74"/>
               <path class="s3" d="M240 150c-18-22 18-36 0-62"/>
@@ -261,8 +262,8 @@
       </div>
       <div class="features">
         <article class="feature reveal">
-          <div class="feature-art" aria-hidden="true">
-            
+          <div class="feature-art has-photo">
+            <span class="photo" data-photo><img src="img/photos/card-flat-white-latte.webp" width="900" height="1350" loading="lazy" decoding="async" alt="A barista pouring steamed milk from a steel jug into a glass of coffee, making a heart-shaped latte art pattern"></span>
             <svg viewBox="0 0 200 160" focusable="false">
               <ellipse cx="100" cy="132" rx="76" ry="14" fill="#000" opacity=".4"/>
               <path d="M22 122c0-10 34-18 78-18s78 8 78 18-34 18-78 18-78-8-78-18z" fill="#F3E8D8"/>
@@ -281,13 +282,13 @@
           </div>
         </article>
         <article class="feature reveal">
-          <div class="feature-art" aria-hidden="true">
-            
+          <div class="feature-art has-photo">
+            <span class="photo" data-photo><img src="img/photos/card-ethiopia-pour-over.webp" width="900" height="1350" loading="lazy" decoding="async" alt="A hand pouring hot water from a gooseneck kettle over a paper filter in a Chemex, with a cup of coffee beans beside it"></span>
             <svg viewBox="0 0 200 160" focusable="false">
               <ellipse cx="100" cy="144" rx="62" ry="9" fill="#000" opacity=".4"/>
               <path d="M62 30h76l-20 40H82z" fill="#F3E8D8"/>
-              <path d="M70 30h60" stroke="#B8883A" stroke-width="5" stroke-linecap="round"/>
-              <path d="M100 76v10" stroke="#DDB46A" stroke-width="3" stroke-linecap="round" stroke-dasharray="3 6"/>
+              <path d="M70 30h60" stroke="#C9661F" stroke-width="5" stroke-linecap="round"/>
+              <path d="M100 76v10" stroke="#E0782B" stroke-width="3" stroke-linecap="round" stroke-dasharray="3 6"/>
               <path d="M70 92h60c4 0 6 3 6 8 0 24-6 40-36 40s-36-16-36-40c0-5 2-8 6-8z" fill="#FFF9F0"/>
               <path d="M74 112h52c0 18-6 24-26 24s-26-6-26-24z" fill="#5A2A12"/>
               <path d="M136 100c14-2 16 14 6 20" fill="none" stroke="#F3E8D8" stroke-width="7" stroke-linecap="round"/>
@@ -302,8 +303,8 @@
           </div>
         </article>
         <article class="feature reveal">
-          <div class="feature-art" aria-hidden="true">
-            
+          <div class="feature-art has-photo">
+            <span class="photo" data-photo><img src="img/photos/card-cardamom-bun.webp" width="900" height="1124" loading="lazy" decoding="async" alt="A tray of freshly baked cardamom buns twisted into knots and topped with pearl sugar"></span>
             <svg viewBox="0 0 200 160" focusable="false">
               <ellipse cx="100" cy="134" rx="72" ry="12" fill="#000" opacity=".4"/>
               <circle cx="100" cy="82" r="54" fill="#C98C48"/>
@@ -357,7 +358,8 @@
     </section>
 
     <!-- STORY TEASER -->
-    <section class="section section-night" id="story-teaser" aria-labelledby="story-title">
+    <section class="section section-night has-bg-photo" id="story-teaser" aria-labelledby="story-title">
+      <div class="section-photo"><span class="photo" data-photo><img src="img/photos/roastery-roaster.webp" width="900" height="1347" loading="lazy" decoding="async" alt="Freshly roasted coffee beans in the cooling tray of a small drum roaster"></span></div>
       <div class="container story-grid">
         <div class="reveal">
           <p class="eyebrow">Our story</p>
@@ -412,11 +414,11 @@
         <div class="section-head reveal">
           <p class="eyebrow">Gallery</p>
           <h2 id="gallery-title" data-split>A peek <em>inside the room.</em></h2>
-          <p class="lead">Illustrated placeholders. A real site would show your own photography here.</p>
+          <p class="lead">Pours, beans and the bar, from the café floor.</p>
         </div>
         <ul class="gallery reveal">
-          <li class="tile t1 wide">
-            
+          <li class="tile t1 wide has-photo">
+            <span class="photo" data-photo><img src="img/photos/gallery-latte-cup.webp" width="900" height="600" loading="lazy" decoding="async" alt="A cappuccino with leaf-shaped latte art in a grey cup on a saucer, on a round wooden table"></span>
             <svg viewBox="0 0 200 250" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
               <ellipse cx="100" cy="125" rx="78" ry="78" fill="#3B2316"/>
               <ellipse cx="100" cy="125" rx="68" ry="68" fill="#5A3520"/>
@@ -427,10 +429,10 @@
                 <path d="M100 80v82" stroke-width="4"/>
               </g>
             </svg>
-            <span class="tile-cap">Rosetta pour</span>
+            <span class="tile-cap">Latte art</span>
           </li>
-          <li class="tile t2">
-            
+          <li class="tile t2 has-photo">
+            <span class="photo" data-photo><img src="img/photos/gallery-beans.webp" width="900" height="1355" loading="lazy" decoding="async" alt="Close view of dark roasted coffee beans"></span>
             <svg viewBox="0 0 200 250" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
               <defs>
                 <pattern id="beans" width="46" height="46" patternUnits="userSpaceOnUse" patternTransform="rotate(18)">
@@ -442,24 +444,24 @@
               </defs>
               <rect width="200" height="250" fill="url(#beans)"/>
             </svg>
-            <span class="tile-cap">Weekly roast</span>
+            <span class="tile-cap">Fresh roast</span>
           </li>
-          <li class="tile t3">
-            
+          <li class="tile t3 has-photo">
+            <span class="photo" data-photo><img src="img/photos/gallery-espresso-shot.webp" width="900" height="1349" loading="lazy" decoding="async" alt="Close-up of espresso pouring from a portafilter spout into a cup"></span>
             <svg viewBox="0 0 200 250" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
               <defs>
                 <pattern id="leaves" width="56" height="56" patternUnits="userSpaceOnUse">
                   <path d="M10 46c0-18 10-30 28-32 0 18-10 30-28 32z" fill="#B98A4E" opacity=".75"/>
                   <path d="M10 46c8-10 14-18 24-28" stroke="#FAF3E7" stroke-width="1.500" fill="none"/>
-                  <circle cx="46" cy="44" r="3" fill="#D9622B" opacity=".7"/>
+                  <circle cx="46" cy="44" r="3" fill="#E0782B" opacity=".7"/>
                 </pattern>
               </defs>
               <rect width="200" height="250" fill="url(#leaves)"/>
             </svg>
-            <span class="tile-cap">Oak &amp; leaf</span>
+            <span class="tile-cap">The pull</span>
           </li>
-          <li class="tile t4">
-            
+          <li class="tile t4 has-photo">
+            <span class="photo" data-photo><img src="img/photos/gallery-barista-pour.webp" width="900" height="620" loading="lazy" decoding="async" alt="A barista in a brown apron pouring steamed milk into a grey cup at the counter"></span>
             <svg viewBox="0 0 200 250" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
               <g fill="none" stroke="#FAF3E7" stroke-width="6" stroke-linecap="round" opacity=".85">
                 <path d="M60 220c-22-30 22-50 0-80s22-50 0-80"/>
@@ -467,10 +469,10 @@
                 <path d="M140 220c-22-30 22-50 0-80s22-50 0-80" opacity=".5"/>
               </g>
             </svg>
-            <span class="tile-cap">First cup</span>
+            <span class="tile-cap">At the bar</span>
           </li>
-          <li class="tile t5">
-            
+          <li class="tile t5 has-photo">
+            <span class="photo" data-photo><img src="img/photos/gallery-espresso-machine.webp" width="900" height="600" loading="lazy" decoding="async" alt="Espresso pouring from a chrome machine into a black paper cup"></span>
             <svg viewBox="0 0 200 250" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
               <defs>
                 <pattern id="floor" width="50" height="50" patternUnits="userSpaceOnUse">
@@ -482,10 +484,10 @@
               </defs>
               <rect width="200" height="250" fill="url(#floor)"/>
             </svg>
-            <span class="tile-cap">Corner floor</span>
+            <span class="tile-cap">The machine</span>
           </li>
-          <li class="tile t6">
-            
+          <li class="tile t6 has-photo">
+            <span class="photo" data-photo><img src="img/photos/gallery-chemex-pour.webp" width="900" height="600" loading="lazy" decoding="async" alt="A Chemex pour-over brewing as a kettle drips water over the filter, by a café window"></span>
             <svg viewBox="0 0 200 250" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
               <g fill="none" stroke="#6B3F25" stroke-width="3" opacity=".8">
                 <circle cx="70" cy="90" r="42"/><circle cx="70" cy="90" r="37" stroke-width="1.500"/>
@@ -493,10 +495,10 @@
                 <circle cx="60" cy="200" r="30"/>
               </g>
             </svg>
-            <span class="tile-cap">Table rings</span>
+            <span class="tile-cap">Pour-over</span>
           </li>
-          <li class="tile t7">
-            
+          <li class="tile t7 has-photo">
+            <span class="photo" data-photo><img src="img/photos/gallery-espresso-flatlay.webp" width="900" height="600" loading="lazy" decoding="async" alt="Top-down view of two wooden boards with ground coffee, beans, portafilters and a latte with heart-shaped art"></span>
             <svg viewBox="0 0 200 250" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
               <defs>
                 <pattern id="stripes" width="24" height="24" patternUnits="userSpaceOnUse" patternTransform="rotate(30)">
@@ -505,12 +507,12 @@
               </defs>
               <rect width="200" height="250" fill="url(#stripes)"/>
               <circle cx="100" cy="125" r="46" fill="#FAF3E7" opacity=".9"/>
-              <path d="M100 98c8 12 20 18 20 32a20 20 0 0 1-40 0c0-8 5-14 10-19 1 5 4 8 7 9-2-8-1-14 3-22z" fill="#D9622B"/>
+              <path d="M100 98c8 12 20 18 20 32a20 20 0 0 1-40 0c0-8 5-14 10-19 1 5 4 8 7 9-2-8-1-14 3-22z" fill="#E0782B"/>
             </svg>
-            <span class="tile-cap">Evening glow</span>
+            <span class="tile-cap">Beans and boards</span>
           </li>
-          <li class="tile t8 wide">
-            
+          <li class="tile t8 wide has-photo">
+            <span class="photo" data-photo><img src="img/photos/gallery-latte-strip.webp" width="900" height="320" loading="lazy" decoding="async" alt="A cappuccino with leaf latte art on a saucer and a wooden table, in a wide crop"></span>
             <svg viewBox="0 0 200 250" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
               <defs>
                 <pattern id="dots" width="22" height="22" patternUnits="userSpaceOnUse">
@@ -521,7 +523,7 @@
               <path d="M30 170c20-40 60-60 140-60-4 50-40 80-100 80-20 0-30-6-40-20z" fill="#C98C48" opacity=".9"/>
               <path d="M50 168c30-20 60-30 100-40" stroke="#FAF3E7" stroke-width="3" fill="none" stroke-linecap="round"/>
             </svg>
-            <span class="tile-cap">Fresh from the oven</span>
+            <span class="tile-cap">Cappuccino</span>
           </li>
         </ul>
       </div>
@@ -587,7 +589,7 @@
         <a href="legal.html#cookies">Cookies</a>
         <button type="button" class="sound-btn" data-sound aria-pressed="false">Ambient sound: <span data-sound-state>Off</span></button>
       </nav>
-      
+      <p class="photo-credits">Photo credits: Photo: Unsplash (Hero interior, Roastery, Flat white, Ethiopia pour-over, Cardamom bun, Latte cup, Beans, Espresso shot, Barista pour, Espresso machine, Chemex pour, Espresso flat lay, Latte strip)</p>
       <div class="footer-bottom">
         <p>Concept demo by KB Ventures. Not a real business.</p>
         <a class="back-top" href="#top">Back to top &uarr;</a>

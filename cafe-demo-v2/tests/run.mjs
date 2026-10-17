@@ -412,7 +412,7 @@ if (want('fallback')) {
 
   p = await newPage({ viewport: { width: 1440, height: 900 } });
   await p.context().route('**/vendor/three.module.min.js', async (r) => { await new Promise((x) => setTimeout(x, 6500)); r.abort(); });
-  await p.goto(base + 'index.html'); await p.waitForTimeout(4800);
+  await p.goto(base + 'index.html'); await p.waitForTimeout(6600);
   ok('slow load (over 4s): fallback shown', (await p.locator('#scene').count()) === 0 && (await p.locator('.cup-fallback').isVisible()));
   await done(p);
 

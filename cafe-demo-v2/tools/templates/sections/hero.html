@@ -1,6 +1,7 @@
     <!-- HERO -->
     <section class="hero" aria-labelledby="hero-title">
-      <div class="hero-bg" aria-hidden="true">
+      <div class="hero-bg{{#if photo.hero.has}} has-hero-photo{{/if}}" aria-hidden="true">
+        {{#if photo.hero.has}}<div class="hero-photo">{{{photo.hero.html}}}</div>{{/if}}
         {{#if hero.video}}<video class="hero-video" autoplay muted loop playsinline preload="metadata" poster="{{hero.poster}}"><source src="{{hero.video}}"></video>{{/if}}
         <div class="hero-panel"></div>
         <div class="hero-glow"></div>
@@ -16,8 +17,8 @@
           <svg class="cup-fallback" viewBox="0 0 400 400" role="img" aria-label="Illustration of a steaming coffee cup on a saucer">
             <defs>
               <radialGradient id="fb-glow" cx="50%" cy="50%" r="50%">
-                <stop offset="0" stop-color="#C21F2B" stop-opacity=".5"/>
-                <stop offset="1" stop-color="#C21F2B" stop-opacity="0"/>
+                <stop offset="0" stop-color="#E0782B" stop-opacity=".5"/>
+                <stop offset="1" stop-color="#E0782B" stop-opacity="0"/>
               </radialGradient>
               <linearGradient id="fb-cup" x1="0" x2="1">
                 <stop offset="0" stop-color="#E9DDCC"/>
@@ -26,7 +27,7 @@
               </linearGradient>
             </defs>
             <rect width="400" height="400" fill="url(#fb-glow)"/>
-            <g class="fb-steam" fill="none" stroke="#FBFAF3" stroke-linecap="round" stroke-width="7" opacity=".7">
+            <g class="fb-steam" fill="none" stroke="#F3E9DA" stroke-linecap="round" stroke-width="7" opacity=".7">
               <path class="s1" d="M160 150c-18-22 18-36 0-62"/>
               <path class="s2" d="M200 140c-20-26 20-42 0-74"/>
               <path class="s3" d="M240 150c-18-22 18-36 0-62"/>

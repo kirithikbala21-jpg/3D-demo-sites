@@ -126,11 +126,11 @@ export async function initScene(canvas, { reduceMotion = false, lowEnd = false, 
   const envIntensity = lowEnd ? 0 : 0.45;
 
   // ---------- Lighting: hemisphere + warm key + cool-ish rim ----------
-  scene.add(new THREE.HemisphereLight(0xffe6cc, 0x5a1820, 0.55));
+  scene.add(new THREE.HemisphereLight(0xffe6cc, 0x3a2012, 0.55));
   const key = new THREE.DirectionalLight(0xffe0b8, 3.6);
   key.position.set(-3.5, 5, 4);
   scene.add(key);
-  const rim = new THREE.DirectionalLight(0xff4a3a, 3.4); // crimson rim to match the burgundy backdrop
+  const rim = new THREE.DirectionalLight(0xe0782b, 3.4); // ember rim to match the dark roast palette
   rim.position.set(4, 2.5, -4);
   scene.add(rim);
   const fill = new THREE.PointLight(0xffe7c8, 18, 12, 2);
@@ -226,7 +226,7 @@ export async function initScene(canvas, { reduceMotion = false, lowEnd = false, 
   const beanGeo = track(new THREE.SphereGeometry(0.5, 20, 14));
   const beanMat = track(new THREE.MeshStandardMaterial({ color: 0x3a1d10, roughness: 0.5, metalness: 0 }));
   const grooveGeo = track(new THREE.SphereGeometry(0.5, 12, 8));
-  const grooveMat = track(new THREE.MeshStandardMaterial({ color: 0x14080a, roughness: 0.8 }));
+  const grooveMat = track(new THREE.MeshStandardMaterial({ color: 0x120d0a, roughness: 0.8 }));
   const beanBodies = new THREE.InstancedMesh(beanGeo, beanMat, BEAN_COUNT);
   const beanGrooves = new THREE.InstancedMesh(grooveGeo, grooveMat, BEAN_COUNT);
   const beans = Array.from({ length: BEAN_COUNT }, (_, i) => {

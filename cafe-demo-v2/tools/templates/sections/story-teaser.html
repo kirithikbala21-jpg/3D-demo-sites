@@ -1,5 +1,6 @@
     <!-- STORY TEASER -->
-    <section class="section section-night" id="story-teaser" aria-labelledby="story-title">
+    <section class="section section-night{{#if photo.roastery.has}} has-bg-photo{{/if}}" id="story-teaser" aria-labelledby="story-title">
+      {{#if photo.roastery.has}}<div class="section-photo">{{{photo.roastery.html}}}</div>{{/if}}
       <div class="container story-grid">
         <div class="reveal">
           <p class="eyebrow">Our story</p>

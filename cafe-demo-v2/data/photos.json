@@ -1,104 +1,118 @@
 {
  "_about": "Photo slots. Add a real photo with: python3 tools/add-photo.py SOURCE.jpg SLOT --alt \"...\" --credit \"Photographer, Source\". A slot shows its photo only when the file exists; otherwise the illustration stays. See README, Photos.",
  "slots": {
-  "gallery-latte-art": {
-   "label": "Latte art",
-   "file": "img/photos/gallery-latte-art.webp",
-   "alt": "",
-   "suggestedAlt": "A rosetta poured into a flat white",
-   "credit": "",
-   "w": 1600,
-   "h": 1000
+  "hero": {
+   "label": "Hero interior",
+   "file": "img/photos/hero-interior.webp",
+   "alt": "A busy café with tall windows, a warm-lit wooden counter, pastries in a glass case and customers at tables",
+   "credit": "Photo: Unsplash",
+   "w": 900,
+   "h": 600,
+   "eager": true
   },
-  "gallery-roastery": {
+  "oak-room": {
+   "label": "Hero interior",
+   "file": "img/photos/hero-interior.webp",
+   "alt": "A busy café with tall windows, a warm-lit wooden counter, pastries in a glass case and customers at tables",
+   "credit": "Photo: Unsplash",
+   "w": 900,
+   "h": 600
+  },
+  "roastery": {
    "label": "Roastery",
-   "file": "img/photos/gallery-roastery.webp",
-   "alt": "",
-   "suggestedAlt": "Freshly roasted beans cooling in the roastery",
-   "credit": "",
-   "w": 1200,
-   "h": 1500
-  },
-  "gallery-oak-leaf": {
-   "label": "Interior detail",
-   "file": "img/photos/gallery-oak-leaf.webp",
-   "alt": "",
-   "suggestedAlt": "Oak table and a leaf-pattern detail in the café",
-   "credit": "",
-   "w": 1200,
-   "h": 1500
-  },
-  "gallery-first-cup": {
-   "label": "First cup",
-   "file": "img/photos/gallery-first-cup.webp",
-   "alt": "",
-   "suggestedAlt": "Steam rising from the first cup of the day",
-   "credit": "",
-   "w": 1200,
-   "h": 1500
-  },
-  "gallery-floor": {
-   "label": "Interior",
-   "file": "img/photos/gallery-floor.webp",
-   "alt": "",
-   "suggestedAlt": "The tiled corner floor of the café",
-   "credit": "",
-   "w": 1200,
-   "h": 1500
-  },
-  "gallery-table": {
-   "label": "Interior",
-   "file": "img/photos/gallery-table.webp",
-   "alt": "",
-   "suggestedAlt": "Worn oak tabletop with cup rings",
-   "credit": "",
-   "w": 1200,
-   "h": 1500
-  },
-  "gallery-evening": {
-   "label": "Evening",
-   "file": "img/photos/gallery-evening.webp",
-   "alt": "",
-   "suggestedAlt": "The café glowing at dusk",
-   "credit": "",
-   "w": 1200,
-   "h": 1500
-  },
-  "gallery-pastries": {
-   "label": "Pastries",
-   "file": "img/photos/gallery-pastries.webp",
-   "alt": "",
-   "suggestedAlt": "Morning buns fresh from the oven",
-   "credit": "",
-   "w": 1600,
-   "h": 1000
+   "file": "img/photos/roastery-roaster.webp",
+   "alt": "Freshly roasted coffee beans in the cooling tray of a small drum roaster",
+   "credit": "Photo: Unsplash",
+   "w": 900,
+   "h": 1347
   },
   "feature-flat-white": {
    "label": "Flat white",
-   "file": "img/photos/feature-flat-white.webp",
-   "alt": "",
-   "suggestedAlt": "A flat white on an oak table",
-   "credit": "",
-   "w": 1200,
-   "h": 1100
+   "file": "img/photos/card-flat-white-latte.webp",
+   "alt": "A barista pouring steamed milk from a steel jug into a glass of coffee, making a heart-shaped latte art pattern",
+   "credit": "Photo: Unsplash",
+   "w": 900,
+   "h": 1350
   },
   "feature-pour-over": {
-   "label": "Pour-over",
-   "file": "img/photos/feature-pour-over.webp",
-   "alt": "",
-   "suggestedAlt": "Pour-over coffee being brewed by hand",
-   "credit": "",
-   "w": 1200,
-   "h": 1100
+   "label": "Ethiopia pour-over",
+   "file": "img/photos/card-ethiopia-pour-over.webp",
+   "alt": "A hand pouring hot water from a gooseneck kettle over a paper filter in a Chemex, with a cup of coffee beans beside it",
+   "credit": "Photo: Unsplash",
+   "w": 900,
+   "h": 1350
   },
   "feature-bun": {
-   "label": "Pastries",
-   "file": "img/photos/feature-bun.webp",
-   "alt": "",
-   "suggestedAlt": "A cardamom morning bun on a plate",
-   "credit": "",
-   "w": 1200,
-   "h": 1100
+   "label": "Cardamom bun",
+   "file": "img/photos/card-cardamom-bun.webp",
+   "alt": "A tray of freshly baked cardamom buns twisted into knots and topped with pearl sugar",
+   "credit": "Photo: Unsplash",
+   "w": 900,
+   "h": 1124
+  },
+  "gallery-1": {
+   "label": "Latte cup",
+   "file": "img/photos/gallery-latte-cup.webp",
+   "alt": "A cappuccino with leaf-shaped latte art in a grey cup on a saucer, on a round wooden table",
+   "credit": "Photo: Unsplash",
+   "w": 900,
+   "h": 600
+  },
+  "gallery-2": {
+   "label": "Beans",
+   "file": "img/photos/gallery-beans.webp",
+   "alt": "Close view of dark roasted coffee beans",
+   "credit": "Photo: Unsplash",
+   "w": 900,
+   "h": 1355
+  },
+  "gallery-3": {
+   "label": "Espresso shot",
+   "file": "img/photos/gallery-espresso-shot.webp",
+   "alt": "Close-up of espresso pouring from a portafilter spout into a cup",
+   "credit": "Photo: Unsplash",
+   "w": 900,
+   "h": 1349
+  },
+  "gallery-4": {
+   "label": "Barista pour",
+   "file": "img/photos/gallery-barista-pour.webp",
+   "alt": "A barista in a brown apron pouring steamed milk into a grey cup at the counter",
+   "credit": "Photo: Unsplash",
+   "w": 900,
+   "h": 620
+  },
+  "gallery-5": {
+   "label": "Espresso machine",
+   "file": "img/photos/gallery-espresso-machine.webp",
+   "alt": "Espresso pouring from a chrome machine into a black paper cup",
+   "credit": "Photo: Unsplash",
+   "w": 900,
+   "h": 600
+  },
+  "gallery-6": {
+   "label": "Chemex pour",
+   "file": "img/photos/gallery-chemex-pour.webp",
+   "alt": "A Chemex pour-over brewing as a kettle drips water over the filter, by a café window",
+   "credit": "Photo: Unsplash",
+   "w": 900,
+   "h": 600
+  },
+  "gallery-7": {
+   "label": "Espresso flat lay",
+   "file": "img/photos/gallery-espresso-flatlay.webp",
+   "alt": "Top-down view of two wooden boards with ground coffee, beans, portafilters and a latte with heart-shaped art",
+   "credit": "Photo: Unsplash",
+   "w": 900,
+   "h": 600
+  },
+  "gallery-8": {
+   "label": "Latte strip",
+   "file": "img/photos/gallery-latte-strip.webp",
+   "alt": "A cappuccino with leaf latte art on a saucer and a wooden table, in a wide crop",
+   "credit": "Photo: Unsplash",
+   "w": 900,
+   "h": 320
   }
  }
 }

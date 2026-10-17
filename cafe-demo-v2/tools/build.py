@@ -269,7 +269,7 @@ VENUES = [
 def photos_ctx():
     """Slots from data/photos.json. A slot renders a real <img> only when its file exists on disk; otherwise the template keeps its illustration."""
     slots = DATA.get("photos", {}).get("slots", {})
-    out, credits = {}, []
+    out, credits = {}, {}
     for name, s in slots.items():
         exists = (ROOT / s["file"]).is_file()
         if exists and not (s.get("alt", "").strip() and s.get("credit", "").strip()):
@@ -277,11 +277,14 @@ def photos_ctx():
         if not exists:
             out[name] = {"has": False, "html": "", "attr": ' aria-hidden="true"'}
             continue
+        load = 'fetchpriority="high" decoding="async"' if s.get("eager") else 'loading="lazy" decoding="async"'
         img = (f'<span class="photo" data-photo><img src="{html.escape(s["file"])}" width="{int(s["w"])}" height="{int(s["h"])}" '
-               f'loading="lazy" decoding="async" alt="{html.escape(s["alt"])}"></span>')
+               f'{load} alt="{html.escape(s["alt"])}"></span>')
         out[name] = {"has": True, "html": img, "attr": ""}
-        credits.append(f'{s.get("label") or name.replace("-", " ").capitalize()}: {s["credit"].strip()}')
-    return out, " \u00b7 ".join(credits)
+        credits.setdefault(s["credit"].strip(), {})[s["file"]] = s.get("label") or name.replace("-", " ").capitalize()
+    # one line per distinct credit, listing the photos it covers: "Photo: Unsplash (Hero interior, Roastery, ...)"
+    text = "; ".join(f'{c} ({", ".join(dict.fromkeys(files.values()))})' for c, files in credits.items())
+    return out, text
 
 
 # ----------------------------------------------------------------------------- build

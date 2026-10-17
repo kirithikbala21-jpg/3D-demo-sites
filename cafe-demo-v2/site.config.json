@@ -97,6 +97,10 @@
  ],
  "nav": [
   {
+   "label": "Home",
+   "href": "index.html"
+  },
+  {
    "label": "Menu",
    "href": "menu.html"
   },

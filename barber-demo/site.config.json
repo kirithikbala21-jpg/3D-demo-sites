@@ -32,14 +32,14 @@
  },
  "theme": {
   "black": "#0B0B0C",
-  "wine": "#7A5A12",
-  "wineDeep": "#5A410A",
+  "wine": "#E4C77A",
+  "wineDeep": "#F2EBDD",
   "wineNight": "#161617",
   "goldLight": "#E4C77A",
-  "goldText": "#7A5A12",
-  "cream": "#F2EBDD",
-  "tint": "#E8DFCB",
-  "ink": "#141414"
+  "goldText": "#E4C77A",
+  "cream": "#0B0B0C",
+  "tint": "#121213",
+  "ink": "#F2EBDD"
  },
  "hours": [
   {
@@ -96,6 +96,10 @@
   "Free beard oil sample with any hot towel shave"
  ],
  "nav": [
+  {
+   "label": "Home",
+   "href": "index.html"
+  },
   {
    "label": "Services",
    "href": "services.html"

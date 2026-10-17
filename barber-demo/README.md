@@ -16,9 +16,11 @@ Site-wide: news ticker, full-screen menu, search (press `/`), "Your visit" drawe
 | `data/*.json` | Services, products, journal posts, jobs, FAQ |
 | `tools/templates/` | `layout.html` (shared header/footer), `pages/` and `sections/` |
 | `tools/build.py` | Builds every `.html` page, `search-data.js` and `sitemap.xml` |
-| `tools/make-assets.mjs` | Makes the PNG icons, `img/og.png` and `price-list.pdf` |
+| `tools/make-assets.mjs` | Makes the PNG icons, `price-list.pdf` and `img/og.png` (a real screenshot of the 3D hero) |
+| `tools/add-photo.py` | Adds a licensed photo to a slot: resizes to 1600px, WebP under 250 KB, records alt text and credit |
+| `data/photos.json` | Photo slots (gallery, signature services, barbers) with alt text and photographer credits |
 | `styles.css`, `main.js`, `js/*.js`, `scene.js` | Styles, behaviour modules, the 3D barber pole |
-| `vendor/`, `fonts/` | Self-hosted Three.js 0.160.0, Montserrat and Oswald |
+| `vendor/`, `fonts/` | Self-hosted Three.js 0.160.0, Lenis 1.1.18 (smooth scroll), Montserrat and Oswald |
 | `tests/run.mjs` | Automated checks |
 
 ## Making changes
@@ -27,6 +29,14 @@ Site-wide: news ticker, full-screen menu, search (press `/`), "Your visit" drawe
 3. Commit. A GitHub Action rebuilds and fails if committed pages are out of date.
 
 Hours, time zone, colours and contact details live in `site.config.json` and drive the hours table, the "Open now" chip, booking slots, chat answers and search-engine data. After changing services run `node tools/make-assets.mjs` to refresh `price-list.pdf`. The hero background video can be set with `hero.video` / `hero.poster`.
+
+## Photos
+The site ships with illustrations because no photographs could be downloaded when it was built. Every gallery tile, signature-service panel and barber portrait has a photo slot in `data/photos.json`. Add licensed photos (Unsplash or Pexels are fine) with:
+```
+python3 tools/add-photo.py ~/Downloads/chair.jpg gallery6 --alt "Leather barber chair under warm light" --credit "Jane Doe / Unsplash"
+python3 tools/build.py
+```
+The photo replaces the illustration, gets a slow zoom on scroll and a dark/gold overlay, and the credit appears in the footer automatically. Suggested shots: barber at work, hot towel, razor, interior, barbershop chairs, a portrait of each barber. For one photo per service row, add `"img"` and `"imgAlt"` to an item in `data/menu.json`.
 
 ## How the 3D hero and its fallbacks work
 `scene.js` builds the pole in code: helical red, white and blue stripes that scroll inside a glass tube, brass caps and wall mount, red and blue glows and drifting dust. It tilts toward the mouse, speeds up when clicked or dragged, caps pixel ratio at 1.5, pauses off-screen or in a hidden tab, and steps quality down on slow devices.

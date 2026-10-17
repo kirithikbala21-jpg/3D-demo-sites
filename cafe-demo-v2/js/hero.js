@@ -8,12 +8,13 @@ export async function startUp() {
   try { seen = sessionStorage.getItem('eo-seen'); } catch (_) { /* ignore */ }
   if (!pre || reduceMotion || seen) { if (pre) pre.remove(); html.classList.add('is-ready'); return; }
   try { sessionStorage.setItem('eo-seen', '1'); } catch (_) { /* ignore */ }
-  const wait = new Promise((r) => setTimeout(r, 1900));
+  // Short on purpose: the whole intro (wordmark wipe, fade-out) finishes in about a second.
+  const wait = new Promise((r) => setTimeout(r, 500));
   const fonts = document.fonts ? document.fonts.ready : Promise.resolve();
-  await Promise.race([Promise.all([wait, fonts]), new Promise((r) => setTimeout(r, 3200))]);
+  await Promise.race([Promise.all([wait, fonts]), new Promise((r) => setTimeout(r, 900))]);
   pre.classList.add('is-done');
   html.classList.add('is-ready');
-  setTimeout(() => pre.remove(), 900);
+  setTimeout(() => pre.remove(), 400);
 }
 
 export function initHero() {
@@ -35,7 +36,9 @@ export function initHero() {
     try { const c = document.createElement('canvas'); return !!(window.WebGLRenderingContext && (c.getContext('webgl2') || c.getContext('webgl'))); } catch (_) { return false; }
   }
   const conn = navigator.connection;
-  if (!webglAvailable() || (conn && conn.saveData)) { useFallback(); return; } // Data Saver users get the light illustration
+  // Data Saver, 2G connections and very weak devices keep the still illustration (the poster) instead of the 3D scene.
+  const verySlow = (conn && (conn.saveData || /(^|-)2g$/.test(conn.effectiveType || ''))) || (navigator.deviceMemory && navigator.deviceMemory <= 1) || (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 1);
+  if (!webglAvailable() || verySlow) { useFallback(); return; }
 
   const timer = setTimeout(useFallback, 4000);
   // Start the 3D only after the page has loaded and the browser is idle, so text and images paint first.

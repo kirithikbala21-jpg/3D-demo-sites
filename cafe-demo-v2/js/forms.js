@@ -1,5 +1,5 @@
 // All forms are demo-only: they validate in the browser and show a confirmation. Nothing is sent anywhere.
-import { $, $$, site, toast, cafeNow, hoursFor, fmtHour } from './util.js';
+import { $, $$, site, toast, cafeNow, hoursFor, fmtHour, store } from './util.js';
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 const NOUNS = { experience: 'experience booking', private: 'private dining enquiry', catering: 'catering request', other: 'question' };
@@ -76,6 +76,12 @@ const NOUNS = { experience: 'experience booking', private: 'private dining enqui
     const email = field('email').value.trim();
     const kind = field('type').value;
     const at = timeEl.value ? ` at ${timeEl.selectedOptions[0].textContent}` : '';
+    // DEMO ONLY: the confirmed request is kept in this browser (localStorage 'eo-reservations'); nothing is sent anywhere.
+    try {
+      const all = JSON.parse(store('eo-reservations') || '[]');
+      all.push({ id: 'ER-' + Date.now().toString(36).toUpperCase(), saved: new Date().toISOString(), type: kind, name: field('name').value.trim(), email, date: dateEl.value, time: timeEl.value || null, guests, message: field('message').value.trim() });
+      store('eo-reservations', JSON.stringify(all.slice(-20)));
+    } catch (_) { /* storage unavailable: carry on */ }
     $('#ok-name').textContent = field('name').value.trim().split(' ')[0];
     $('#ok-detail').textContent = kind === 'table'
       ? `We've noted a table for ${guests} ${guests === 1 ? 'guest' : 'guests'} on ${date}${at}. We'll email ${email} to confirm.`

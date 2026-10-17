@@ -6,14 +6,15 @@ export async function startUp() {
   const html = document.documentElement, pre = $('#preloader');
   let seen = null;
   try { seen = sessionStorage.getItem('eo-seen'); } catch (_) { /* ignore */ }
-  if (!pre || reduceMotion || seen) { if (pre) pre.remove(); html.classList.add('is-ready'); return; }
+  if (!pre || reduceMotion || seen) { if (pre) pre.remove(); html.classList.add('is-ready'); html.dataset.readyAt = String(Math.round(performance.now())); return; }
   try { sessionStorage.setItem('eo-seen', '1'); } catch (_) { /* ignore */ }
-  const wait = new Promise((r) => setTimeout(r, 1900));
+  const wait = new Promise((r) => setTimeout(r, 700));
   const fonts = document.fonts ? document.fonts.ready : Promise.resolve();
-  await Promise.race([Promise.all([wait, fonts]), new Promise((r) => setTimeout(r, 3200))]);
+  await Promise.race([Promise.all([wait, fonts]), new Promise((r) => setTimeout(r, 1300))]);
   pre.classList.add('is-done');
   html.classList.add('is-ready');
-  setTimeout(() => pre.remove(), 900);
+  html.dataset.readyAt = String(Math.round(performance.now())); // ms since navigation start, used by the tests
+  setTimeout(() => pre.remove(), 500);
 }
 
 export function initHero() {

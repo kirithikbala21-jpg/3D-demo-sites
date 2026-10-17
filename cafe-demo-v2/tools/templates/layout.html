@@ -13,19 +13,27 @@
   <meta property="og:description" content="{{page.description}}">
   <meta property="og:url" content="{{page.canonical}}">
   <meta property="og:image" content="{{site.baseUrl}}img/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="A steaming coffee cup above the Ember &amp; Oak wordmark on a deep wine background">
+  <meta property="og:site_name" content="{{brand.fullName}}">
   <meta property="og:locale" content="en_AU">
   <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{page.fullTitle}}">
+  <meta name="twitter:description" content="{{page.description}}">
+  <meta name="twitter:image" content="{{site.baseUrl}}img/og.png">
   <link rel="icon" href="img/icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
   <link rel="manifest" href="site.webmanifest">
   <link rel="preload" href="fonts/montserrat-latin.woff2" as="font" type="font/woff2" crossorigin>
   {{#if page.isHome}}<link rel="preload" href="fonts/mrs-saint-delafield-latin.woff2" as="font" type="font/woff2" crossorigin>{{/if}}
+  <link rel="stylesheet" href="vendor/lenis-1.1.18.css">
   <link rel="stylesheet" href="styles.css">
   <style>:root{--black:{{theme.black}};--wine:{{theme.wine}};--wine-deep:{{theme.wineDeep}};--wine-night:{{theme.wineNight}};--gold-light:{{theme.goldLight}};--gold-text:{{theme.goldText}};--cream:{{theme.cream}};--tint:{{theme.tint}};--ink:{{theme.ink}}}</style>
   {{{jsonld}}}
   <noscript><style>
     /* Without JavaScript: show the navigation and every menu category as plain content. */
-    .preloader, .nav-toggle, .icon-btn, .chat, .ticker-pause { display: none !important; }
+    .preloader, .nav-toggle, .icon-btn, .chat, .ticker-pause, [data-sound] { display: none !important; }
     .mobile-nav[hidden] { display: block !important; position: static !important; animation: none; padding-top: calc(var(--header-h) + 8px) !important; padding-bottom: 8px !important; }
     .tablist-wrap { display: none; }
     .menu-panel[hidden] { display: block !important; }
@@ -102,7 +110,7 @@
         <ul>
           {{#each nav}}<li><a href="{{this.href}}"><span class="n" aria-hidden="true">0{{n}}</span>{{this.label}}</a></li>{{/each}}
         </ul>
-        <a class="btn btn-primary" href="reserve.html">Reserve a table</a>
+        <a class="btn btn-primary" href="reserve.html">Reserve</a>
         <ul class="overlay-sub" aria-label="More">
           <li><a href="sustainability.html">Sustainability</a></li>
           <li><a href="wholesale.html">Wholesale</a></li>
@@ -117,7 +125,7 @@
         <p class="label">Hours</p>
         <p>{{{hoursSummary}}}</p>
         <p class="label">Atmosphere</p>
-        <p><button type="button" class="sound-btn" data-sound aria-pressed="false">Ambient sound: <span data-sound-state>off</span></button></p>
+        <p><button type="button" class="sound-btn" data-sound aria-pressed="false">Ambient sound: <span data-sound-state>Off</span></button></p>
       </div>
     </div>
   </div>
@@ -161,6 +169,7 @@
         <label for="cart-when">Pick-up time</label>
         <select id="cart-when" name="when"></select>
       </div>
+      <p class="demo-note" id="cart-demo-note"><strong>Demo checkout.</strong> No payment is taken and no order is sent. Your order is only saved in this browser.</p>
       <button class="btn btn-primary btn-block" type="submit">Place order (demo)</button>
       <button class="cart-clear" type="button" id="cart-clear">Clear order</button>
       <!-- DEMO ONLY: send the order to your ordering system or payment provider here (see main.js / cart.js). -->
@@ -169,7 +178,7 @@
       <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M7.500 12.500l3 3 6-7"/></svg>
       <h3>Thanks, <span id="done-name">friend</span>!</h3>
       <p id="done-detail"></p>
-      <p class="note">Demo only: no order was sent and nothing was charged.</p>
+      <p class="note">Demo only: no order was sent and nothing was charged. A copy is saved in this browser only.</p>
       <button class="btn btn-secondary" type="button" id="done-close">Close</button>
     </div>
   </aside>
@@ -224,8 +233,9 @@
         <a href="legal.html#privacy">Privacy</a>
         <a href="legal.html#terms">Terms</a>
         <a href="legal.html#cookies">Cookies</a>
-        <button type="button" class="sound-btn" data-sound aria-pressed="false">Ambient sound: <span data-sound-state>off</span></button>
+        <button type="button" class="sound-btn" data-sound aria-pressed="false">Ambient sound: <span data-sound-state>Off</span></button>
       </nav>
+      {{#if photoCredits}}<p class="photo-credits">Photo credits: {{photoCredits}}</p>{{/if}}
       <div class="footer-bottom">
         <p>{{brand.demoFooter}}</p>
         <a class="back-top" href="#top">Back to top &uarr;</a>
@@ -254,7 +264,7 @@
 
   <!-- Cookie preferences -->
   <div class="cookie" id="cookie" role="region" aria-label="Cookie preferences" hidden>
-    <p><strong>Your privacy.</strong> This demo sets no tracking cookies. If you opt in, we would use simple analytics to improve the site. <a href="legal.html#cookies">Details</a></p>
+    <p><strong>Cookies.</strong> None are set unless you accept analytics. <a href="legal.html#cookies">Details</a></p>
     <div class="cookie-actions">
       <button class="btn btn-primary btn-sm" type="button" data-cookie="yes">Accept</button>
       <button class="btn btn-secondary btn-sm" type="button" data-cookie="no">Decline</button>
@@ -263,6 +273,7 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <script type="application/json" id="site-data">{{{siteData}}}</script>
+  <script defer src="vendor/lenis-1.1.18.min.js"></script>
   <script type="module" src="main.js"></script>
 </body>
 </html>

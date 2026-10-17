@@ -1,6 +1,6 @@
 // Brass & Blade: hero 3D scene (the only 3D feature on the site).
-// A barber pole built from code: a glass tube, helical red / white / blue stripes that spin,
-// brass caps and wall mount, red and blue neon halos, and a few drifting dust motes.
+// A barber pole built from code: a glass tube, helical black / off-white stripes with a thin red accent that spin,
+// brass caps and wall mount, warm gold halos, and a few drifting dust motes.
 import * as THREE from 'three';
 
 const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
@@ -10,12 +10,12 @@ function makeStripeTexture() {
   const c = document.createElement('canvas');
   c.width = c.height = 256;
   const g = c.getContext('2d');
-  g.fillStyle = '#F6F1E7';
+  g.fillStyle = '#F2EBDD';
   g.fillRect(0, 0, 256, 256);
-  for (const [col, off] of [['#C21F2B', 0], ['#1F3F8C', 128]]) {
+  for (const [col, off, h] of [['#1B1B1C', 0, 70], ['#B3202A', 128, 22]]) {
     g.fillStyle = col;
     for (let k = -2; k <= 2; k++) {
-      const y = off + k * 256, h = 64;
+      const y = off + k * 256;
       g.beginPath();
       g.moveTo(0, y); g.lineTo(256, y - 256); g.lineTo(256, y - 256 + h); g.lineTo(0, y + h);
       g.closePath(); g.fill();
@@ -66,15 +66,15 @@ export async function initScene(canvas, { reduceMotion = false, lowEnd = false, 
   let envTarget = null;
   const envIntensity = lowEnd ? 0.15 : 1;
 
-  // ---------- Lighting: cool sky, warm key, red and blue shop-sign colours, glow inside the tube ----------
+  // ---------- Lighting: cool sky, warm key, warm gold glows, glow inside the tube ----------
   scene.add(new THREE.HemisphereLight(0xdfe8ff, 0x2a1418, 0.7));
   const key = new THREE.DirectionalLight(0xffe2b0, 2.6);
   key.position.set(-3, 4, 5);
   scene.add(key);
-  const redLight = new THREE.PointLight(0xff3345, 30, 14, 2);
+  const redLight = new THREE.PointLight(0xffd08a, 26, 14, 2);
   redLight.position.set(-3.2, 0.4, 2.2);
   scene.add(redLight);
-  const blueLight = new THREE.PointLight(0x4a7dff, 30, 14, 2);
+  const blueLight = new THREE.PointLight(0xc9a24b, 26, 14, 2);
   blueLight.position.set(3.2, 0.4, 2.2);
   scene.add(blueLight);
   const inner = new THREE.PointLight(0xfff2d6, 5, 5, 2);
@@ -128,10 +128,10 @@ export async function initScene(canvas, { reduceMotion = false, lowEnd = false, 
 
   // Neon halos: soft red on the left, blue on the right
   const blobTex = track(makeBlobTexture());
-  const haloRed = new THREE.Sprite(track(new THREE.SpriteMaterial({ map: blobTex, color: 0xff3b4a, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, opacity: 0.55 })));
-  haloRed.position.set(-1.5, 0.3, -1.6); haloRed.scale.set(5.4, 6.4, 1);
-  const haloBlue = new THREE.Sprite(track(new THREE.SpriteMaterial({ map: blobTex, color: 0x3c6de0, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, opacity: 0.55 })));
-  haloBlue.position.set(1.5, 0.3, -1.6); haloBlue.scale.set(5.4, 6.4, 1);
+  const haloRed = new THREE.Sprite(track(new THREE.SpriteMaterial({ map: blobTex, color: 0xc9a24b, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, opacity: 0.55 })));
+  haloRed.position.set(-0.9, 0.2, -1.6); haloRed.scale.set(3.2, 4.4, 1);
+  const haloBlue = new THREE.Sprite(track(new THREE.SpriteMaterial({ map: blobTex, color: 0xe4c77a, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, opacity: 0.55 })));
+  haloBlue.position.set(0.9, 0.2, -1.6); haloBlue.scale.set(3.2, 4.4, 1);
   scene.add(haloRed, haloBlue);
 
   // Dust motes drifting up through the light

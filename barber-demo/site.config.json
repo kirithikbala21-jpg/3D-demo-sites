@@ -31,15 +31,15 @@
   "locale": "en-AU"
  },
  "theme": {
-  "black": "#0A101C",
-  "wine": "#B3202A",
-  "wineDeep": "#7E1219",
-  "wineNight": "#0F1A30",
-  "goldLight": "#D8B46C",
-  "goldText": "#85601F",
-  "cream": "#F6F1E7",
-  "tint": "#ECE5D5",
-  "ink": "#131722"
+  "black": "#0B0B0C",
+  "wine": "#7A5A12",
+  "wineDeep": "#5A410A",
+  "wineNight": "#161617",
+  "goldLight": "#E4C77A",
+  "goldText": "#7A5A12",
+  "cream": "#F2EBDD",
+  "tint": "#E8DFCB",
+  "ink": "#141414"
  },
  "hours": [
   {

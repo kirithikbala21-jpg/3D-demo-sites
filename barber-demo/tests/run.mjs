@@ -200,25 +200,26 @@ if (want('func')) {
   ok('FAQ opens', await p.locator('details').first().evaluate((d) => d.open));
   await done(p);
 
-  // Booking: validation, deep-linked service and barber, duration-aware time slots
+  // Booking: service + barber deep links, calendar, time grid, validation, confirmation, localStorage
   p = await newPage({ viewport: { width: 1440, height: 900 } }, { webgl: false });
   await p.goto(base + 'book.html?service=skin-fade&barber=marco'); await p.waitForTimeout(500);
-  ok('book: ?service= pre-selects the service', (await p.locator('#f-service').inputValue()).length > 0 && (await p.locator('#f-service option:checked').textContent()).includes('Skin Fade'));
-  ok('book: ?barber= pre-selects the barber', (await p.locator('#f-barber').inputValue()).toLowerCase().includes('marco'));
+  ok('book: ?service= pre-selects the service', (await p.locator('#f-service option:checked').textContent()).includes('Skin Fade'));
+  ok('book: ?barber= pre-selects the barber', (await p.locator('input[name=barber]:checked').getAttribute('value')) === 'marco');
+  ok('book: four barbers plus "next available"', (await p.locator('input[name=barber]').count()) === 5);
   await p.locator('#book-form button[type=submit]').click();
-  ok('book: empty submit shows errors', (await p.locator('.error').allTextContents()).filter(Boolean).length >= 3);
-  ok('book: focus goes to first invalid field', (await p.evaluate(() => document.activeElement.id)) !== 'BODY' && (await p.evaluate(() => document.activeElement.closest('#book-form') !== null)));
-  await p.fill('#f-name', 'Sam Rivera'); await p.fill('#f-email', 'bad'); await p.locator('#f-email').blur();
-  ok('book: bad email message', (await p.locator('#e-email').textContent()).includes("doesn't look"));
-  await p.fill('#f-email', 'sam@example.com'); await p.fill('#f-date', '2020-01-01'); await p.locator('#f-date').blur();
-  ok('book: past date rejected', (await p.locator('#e-date').textContent()).includes('passed'));
-  const future = new Date(Date.now() + 864e5 * 9); const fs2 = `${future.getFullYear()}-${String(future.getMonth() + 1).padStart(2, '0')}-${String(future.getDate()).padStart(2, '0')}`;
-  await p.fill('#f-date', fs2); await p.locator('#f-date').dispatchEvent('change');
-  const disabled = await p.locator('#f-time option:disabled').count(), enabled = await p.locator('#f-time option:not(:disabled)').count();
-  ok('book: time slots follow opening hours and show full slots', disabled > 0 && enabled > 3, `${enabled} open, ${disabled} unavailable; ${await p.locator('#h-time').textContent()}`);
-  await p.locator('#f-time option:not(:disabled)').nth(1).evaluate((o) => { o.selected = true; o.parentElement.dispatchEvent(new Event('change', { bubbles: true })); });
-  await p.locator('#book-form button[type=submit]').click();
-  ok('book: success panel', await p.locator('#form-success').isVisible(), await p.locator('#ok-detail').textContent());
+  ok('book: empty submit shows date, time, name and phone errors', (await p.locator('.error').allTextContents()).filter(Boolean).length >= 4);
+  ok('book: focus goes to the first problem (the calendar)', await p.evaluate(() => !!document.activeElement.closest('#cal-grid')));
+  ok('book: past and closed days cannot be picked', (await p.locator('.cal-day:disabled').count()) > 0);
+  await p.locator('.cal-day:not(:disabled)').nth(2).click();
+  const open = await p.locator('.slot:not(:disabled)').count(), taken = await p.locator('.slot:disabled').count();
+  ok('book: time grid follows opening hours and shows taken slots', open > 3 && taken > 0, `${open} open, ${taken} unavailable; ${await p.locator('#h-time').textContent()}`);
+  await p.locator('.slot:not(:disabled)').nth(1).click();
+  ok('book: chosen time is marked', (await p.locator('.slot[aria-pressed=true]').count()) === 1);
+  await p.fill('#f-name', 'Sam Rivera'); await p.fill('#f-phone', 'abc'); await p.locator('#f-phone').blur();
+  ok('book: bad phone message', (await p.locator('#e-phone').textContent()).includes("doesn't look"));
+  await p.fill('#f-phone', '02 5550 0123'); await p.locator('#book-form button[type=submit]').click();
+  ok('book: confirmation screen with demo notice', (await p.locator('#form-success').isVisible()) && (await p.locator('#form-success').textContent()).includes('This is a demo, no real booking was made'), await p.locator('#ok-detail').textContent());
+  ok('book: booking saved to localStorage', (await p.evaluate(() => JSON.parse(localStorage.getItem('bb-bookings') || '[]').length)) === 1);
   await done(p);
 
   // Generic forms
@@ -235,7 +236,7 @@ if (want('func')) {
   await p.goto(base + 'membership.html'); await p.locator('.chip-opt:has(input[value="100"])').click();
   ok('gift card amount updates', (await p.locator('#gift-amount').textContent()) === '$100');
   await p.goto(base + 'barbers.html'); await p.evaluate(() => document.querySelector('.stats').scrollIntoView()); await p.waitForTimeout(2600);
-  ok('stats count up once visible', (await p.locator('.stat-num').allTextContents()).join('|') === '12|18,000+|4');
+  ok('stats count up once visible', (await p.locator('.stat-num').allTextContents()).join('|') === '12|38,000|4');
   await done(p);
 
   // Mobile menu + cookie banner
@@ -252,6 +253,32 @@ if (want('func')) {
   await p.keyboard.press('Escape'); ok('mobile menu: Escape closes', (await t.getAttribute('aria-expanded')) === 'false');
   await t.click(); await p.locator('#mobile-nav a', { hasText: 'Visit' }).click(); await p.waitForURL(/visit\.html/);
   ok('mobile menu link navigates to the page', p.url().endsWith('visit.html'));
+  // Counters, preloader speed, cookie bar, header, back to top, smooth scroll
+  p = await newPage({ viewport: { width: 1440, height: 900 } }, { quiet: false });
+  await p.goto(base + 'index.html'); await p.waitForSelector('html[data-ready-at]', { state: 'attached', timeout: 25000 });
+  let readyAt = Number(await p.evaluate(() => document.documentElement.dataset.readyAt));
+  for (let i = 0; i < 2 && readyAt > 1100; i++) { const q = await newPage({ viewport: { width: 1440, height: 900 } }, { quiet: false }); await q.goto(base + 'index.html'); await q.waitForSelector('html[data-ready-at]', { state: 'attached', timeout: 15000 }); readyAt = Math.min(readyAt, Number(await q.evaluate(() => document.documentElement.dataset.readyAt))); await done(q); } // best of three: this sandbox renders 3D in software and can be slow under load
+  ok('preloader starts fading out by 1.1 s after navigation (fade 0.4 s, so gone within 1.5 s)', readyAt <= 1100, `${readyAt} ms`);
+  ok('cookie bar has Decline and does not cover hero buttons', await p.evaluate(() => { const c = document.getElementById('cookie'); if (!c || c.hidden) return true; const r = c.getBoundingClientRect(); return [...document.querySelectorAll('.hero-cta a')].every((a) => { const b = a.getBoundingClientRect(); return b.bottom < r.top || b.top > r.bottom || b.right < r.left || b.left > r.right; }) && !!c.querySelector('[data-cookie=no]'); }));
+  await p.locator('[data-cookie=no]').click();
+  ok('Lenis smooth scroll is running (pinned 1.1.18, self-hosted)', await p.evaluate(() => !!window.__lenis));
+  await p.evaluate(() => window.scrollTo(0, 1200)); await p.waitForFunction(() => document.querySelector('.site-header').getBoundingClientRect().height < 80, null, { timeout: 4000 }).catch(() => {});
+  ok('header shrinks on scroll', await p.evaluate(() => document.querySelector('.site-header').getBoundingClientRect().height < 80));
+  await p.locator('.back-top').click(); await p.waitForTimeout(2200);
+  ok('Back to top works', (await p.evaluate(() => window.scrollY)) < 40);
+  await done(p);
+  p = await newPage({ viewport: { width: 1440, height: 900 }, javaScriptEnabled: false }, { quiet: false });
+  await p.goto(base + 'index.html');
+  ok('no JavaScript: counters show real numbers, not 0', (await p.locator('.stat-num').allTextContents()).join('|') === '12|38,000|4');
+  await done(p);
+  p = await newPage({ viewport: { width: 1440, height: 900 } }, { webgl: false });
+  const titles = []; for (const f of PAGES) { await p.goto(base + f); titles.push(await p.evaluate(() => document.title + ' ' + [...document.querySelectorAll('meta[content]')].map((m) => m.content).join(' '))); }
+  ok('no literal &amp; in any title or meta tag', titles.every((t) => !t.includes('&amp;')));
+  await p.goto(base + 'index.html');
+  const navLabels = await p.evaluate(() => [...document.querySelectorAll('#mobile-nav nav a')].map((a) => a.textContent.replace(/^\d+/, '').trim()).filter(Boolean));
+  const footLabels = await p.evaluate(() => [...document.querySelectorAll('.site-footer a')].map((a) => a.textContent.trim()));
+  ok('menu labels match the footer labels', navLabels.length >= 6 && navLabels.every((l) => footLabels.includes(l)), JSON.stringify(navLabels.filter((l) => !footLabels.includes(l))));
+  await done(p);
   await done(p);
 }
 

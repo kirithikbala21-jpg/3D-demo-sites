@@ -1,0 +1,110 @@
+{
+ "_readme": "Add a real photo with: python3 tools/add-photo.py SOURCE.jpg SLOT --alt 'Describe it' --credit 'Photographer, Source'. Slots with no file on disk fall back to the illustration.",
+ "slots": {
+  "gallery1": {
+   "file": "img/photos/gallery-1.webp",
+   "alt": "",
+   "credit": "",
+   "w": 1600,
+   "h": 1067
+  },
+  "gallery2": {
+   "file": "img/photos/gallery-2.webp",
+   "alt": "",
+   "credit": "",
+   "w": 1600,
+   "h": 1067
+  },
+  "gallery3": {
+   "file": "img/photos/gallery-3.webp",
+   "alt": "",
+   "credit": "",
+   "w": 1600,
+   "h": 1067
+  },
+  "gallery4": {
+   "file": "img/photos/gallery-4.webp",
+   "alt": "",
+   "credit": "",
+   "w": 1600,
+   "h": 1067
+  },
+  "gallery5": {
+   "file": "img/photos/gallery-5.webp",
+   "alt": "",
+   "credit": "",
+   "w": 1600,
+   "h": 1067
+  },
+  "gallery6": {
+   "file": "img/photos/gallery-6.webp",
+   "alt": "",
+   "credit": "",
+   "w": 1600,
+   "h": 1067
+  },
+  "gallery7": {
+   "file": "img/photos/gallery-7.webp",
+   "alt": "",
+   "credit": "",
+   "w": 1600,
+   "h": 1067
+  },
+  "gallery8": {
+   "file": "img/photos/gallery-8.webp",
+   "alt": "",
+   "credit": "",
+   "w": 1600,
+   "h": 1067
+  },
+  "barberMarco": {
+   "file": "img/photos/barber-marco.webp",
+   "alt": "",
+   "credit": "",
+   "w": 1200,
+   "h": 1500
+  },
+  "barberJess": {
+   "file": "img/photos/barber-jess.webp",
+   "alt": "",
+   "credit": "",
+   "w": 1200,
+   "h": 1500
+  },
+  "barberDev": {
+   "file": "img/photos/barber-dev.webp",
+   "alt": "",
+   "credit": "",
+   "w": 1200,
+   "h": 1500
+  },
+  "barberOllie": {
+   "file": "img/photos/barber-ollie.webp",
+   "alt": "",
+   "credit": "",
+   "w": 1200,
+   "h": 1500
+  },
+  "signature1": {
+   "file": "img/photos/signature-1.webp",
+   "alt": "",
+   "credit": "",
+   "w": 1600,
+   "h": 1067
+  },
+  "signature2": {
+   "file": "img/photos/signature-2.webp",
+   "alt": "",
+   "credit": "",
+   "w": 1600,
+   "h": 1067
+  },
+  "signature3": {
+   "file": "img/photos/signature-3.webp",
+   "alt": "",
+   "credit": "",
+   "w": 1600,
+   "h": 1067
+  }
+ }
+}

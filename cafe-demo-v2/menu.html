@@ -4,28 +4,36 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Menu | Ember &amp; Oak Coffee (concept demo v2)</title>
-  <meta name="description" content="Coffee, breakfast, lunch, bakery, cold drinks and evening cocktails. Order ahead for pick-up (demo).">
+  <meta name="description" content="Coffee, tea, food, bakery, cold drinks and evening cocktails. Order ahead for pick-up (demo).">
   <meta name="robots" content="noindex">
   <meta name="theme-color" content="#0B0707">
   <link rel="canonical" href="https://kirithikbala21-jpg.github.io/3D-demo-sites/cafe-demo-v2/menu.html">
   <meta property="og:type" content="website">
   <meta property="og:title" content="Menu | Ember &amp; Oak Coffee (concept demo v2)">
-  <meta property="og:description" content="Coffee, breakfast, lunch, bakery, cold drinks and evening cocktails. Order ahead for pick-up (demo).">
+  <meta property="og:description" content="Coffee, tea, food, bakery, cold drinks and evening cocktails. Order ahead for pick-up (demo).">
   <meta property="og:url" content="https://kirithikbala21-jpg.github.io/3D-demo-sites/cafe-demo-v2/menu.html">
   <meta property="og:image" content="https://kirithikbala21-jpg.github.io/3D-demo-sites/cafe-demo-v2/img/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="A steaming coffee cup above the Ember &amp; Oak wordmark on a deep wine background">
+  <meta property="og:site_name" content="Ember &amp; Oak Coffee">
   <meta property="og:locale" content="en_AU">
   <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Menu | Ember &amp; Oak Coffee (concept demo v2)">
+  <meta name="twitter:description" content="Coffee, tea, food, bakery, cold drinks and evening cocktails. Order ahead for pick-up (demo).">
+  <meta name="twitter:image" content="https://kirithikbala21-jpg.github.io/3D-demo-sites/cafe-demo-v2/img/og.png">
   <link rel="icon" href="img/icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
   <link rel="manifest" href="site.webmanifest">
   <link rel="preload" href="fonts/montserrat-latin.woff2" as="font" type="font/woff2" crossorigin>
   
+  <link rel="stylesheet" href="vendor/lenis-1.1.18.css">
   <link rel="stylesheet" href="styles.css">
   <style>:root{--black:#0B0707;--wine:#8B0707;--wine-deep:#5B0912;--wine-night:#1E0509;--gold-light:#DDB46A;--gold-text:#85601F;--cream:#FBFAF3;--tint:#F1ECDD;--ink:#16100E}</style>
   
   <noscript><style>
     /* Without JavaScript: show the navigation and every menu category as plain content. */
-    .preloader, .nav-toggle, .icon-btn, .chat, .ticker-pause { display: none !important; }
+    .preloader, .nav-toggle, .icon-btn, .chat, .ticker-pause, [data-sound] { display: none !important; }
     .mobile-nav[hidden] { display: block !important; position: static !important; animation: none; padding-top: calc(var(--header-h) + 8px) !important; padding-bottom: 8px !important; }
     .tablist-wrap { display: none; }
     .menu-panel[hidden] { display: block !important; }
@@ -65,7 +73,7 @@
       <svg class="i-play" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 1l8 5-8 5z" fill="currentColor"/></svg>
     </button>
     <nav class="ticker-venues" aria-label="Our spaces">
-      <a href="menu.html" aria-current="page"><svg width="14" height="14" aria-hidden="true" focusable="false"><use href="#logo-mark"/></svg>Café</a><a href="story.html"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M4 12h16"/></svg>Roastery</a><a href="experiences.html"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 19c0-9 5-14 14-14 0 9-5 14-14 14z"/></svg>Oak room</a><a href="visit.html"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 11h12v4a5 5 0 0 1-5 5h-2a5 5 0 0 1-5-5z"/></svg>Visit</a>
+      <a href="menu.html" aria-current="page"><svg width="14" height="14" aria-hidden="true" focusable="false"><use href="#logo-mark"/></svg>Menu</a><a href="story.html"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M4 12h16"/></svg>Our story</a><a href="experiences.html"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 19c0-9 5-14 14-14 0 9-5 14-14 14z"/></svg>Experiences</a><a href="visit.html"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 11h12v4a5 5 0 0 1-5 5h-2a5 5 0 0 1-5-5z"/></svg>Visit</a>
     </nav>
     <span class="ticker-label ticker-label-r">Now pouring</span>
   </div>
@@ -97,7 +105,7 @@
         <ul>
           <li><a href="menu.html"><span class="n" aria-hidden="true">01</span>Menu</a></li><li><a href="shop.html"><span class="n" aria-hidden="true">02</span>Shop</a></li><li><a href="experiences.html"><span class="n" aria-hidden="true">03</span>Experiences</a></li><li><a href="story.html"><span class="n" aria-hidden="true">04</span>Our story</a></li><li><a href="journal.html"><span class="n" aria-hidden="true">05</span>Journal</a></li><li><a href="visit.html"><span class="n" aria-hidden="true">06</span>Visit</a></li>
         </ul>
-        <a class="btn btn-primary" href="reserve.html">Reserve a table</a>
+        <a class="btn btn-primary" href="reserve.html">Reserve</a>
         <ul class="overlay-sub" aria-label="More">
           <li><a href="sustainability.html">Sustainability</a></li>
           <li><a href="wholesale.html">Wholesale</a></li>
@@ -110,9 +118,9 @@
         <p>12 Example Street<br>Melbourne VIC 3000</p>
         <p><a href="tel:0355500123">03 5550 0123</a><br><a href="mailto:hello@example.com">hello@example.com</a></p>
         <p class="label">Hours</p>
-        <p>Mon &ndash; Wed 7am &ndash; 4pm<br>Thu &ndash; Sat 7am &ndash; 10pm<br>Sun 8am &ndash; 4pm</p>
+        <p>7 days, from 7am (Sundays 8am)<br>Closing 4pm Mon &ndash; Wed, 10pm Thu &ndash; Sat, 4pm Sun</p>
         <p class="label">Atmosphere</p>
-        <p><button type="button" class="sound-btn" data-sound aria-pressed="false">Ambient sound: <span data-sound-state>off</span></button></p>
+        <p><button type="button" class="sound-btn" data-sound aria-pressed="false">Ambient sound: <span data-sound-state>Off</span></button></p>
       </div>
     </div>
   </div>
@@ -156,6 +164,7 @@
         <label for="cart-when">Pick-up time</label>
         <select id="cart-when" name="when"></select>
       </div>
+      <p class="demo-note" id="cart-demo-note"><strong>Demo checkout.</strong> No payment is taken and no order is sent. Your order is only saved in this browser.</p>
       <button class="btn btn-primary btn-block" type="submit">Place order (demo)</button>
       <button class="cart-clear" type="button" id="cart-clear">Clear order</button>
       <!-- DEMO ONLY: send the order to your ordering system or payment provider here (see main.js / cart.js). -->
@@ -164,7 +173,7 @@
       <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M7.500 12.500l3 3 6-7"/></svg>
       <h3>Thanks, <span id="done-name">friend</span>!</h3>
       <p id="done-detail"></p>
-      <p class="note">Demo only: no order was sent and nothing was charged.</p>
+      <p class="note">Demo only: no order was sent and nothing was charged. A copy is saved in this browser only.</p>
       <button class="btn btn-secondary" type="button" id="done-close">Close</button>
     </div>
   </aside>
@@ -176,7 +185,7 @@
         <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="index.html">Home</a></li><li aria-current="page">Menu</li></ol></nav>
         <p class="eyebrow">Simple, seasonal, made to order</p>
         <h1 id="page-title" data-split>The menu</h1>
-        <p class="lead">Thirty-eight things to eat and drink, all made on site. Order ahead for pick-up, or just walk in.</p>
+        <p class="lead">Forty-one things to eat and drink, all made on site. Order ahead for pick-up, or just walk in.</p>
       </div>
     </section>
 
@@ -187,15 +196,15 @@
         <div class="tabs reveal">
           <div class="tablist-wrap">
             <div class="tablist" role="tablist" aria-label="Menu categories">
-            <button role="tab" id="tab-coffee" aria-controls="panel-coffee" aria-selected="true" tabindex="0" type="button">Coffee &amp; tea</button>
-            <button role="tab" id="tab-breakfast" aria-controls="panel-breakfast" aria-selected="false" tabindex="-1" type="button">Breakfast</button>
-            <button role="tab" id="tab-lunch" aria-controls="panel-lunch" aria-selected="false" tabindex="-1" type="button">Lunch</button>
-            <button role="tab" id="tab-bakery" aria-controls="panel-bakery" aria-selected="false" tabindex="-1" type="button">Bakery &amp; sweets</button>
+            <button role="tab" id="tab-coffee" aria-controls="panel-coffee" aria-selected="true" tabindex="0" type="button">Coffee</button>
+            <button role="tab" id="tab-tea" aria-controls="panel-tea" aria-selected="false" tabindex="-1" type="button">Tea</button>
+            <button role="tab" id="tab-food" aria-controls="panel-food" aria-selected="false" tabindex="-1" type="button">Food</button>
+            <button role="tab" id="tab-bakery" aria-controls="panel-bakery" aria-selected="false" tabindex="-1" type="button">Bakery</button>
             <button role="tab" id="tab-cold" aria-controls="panel-cold" aria-selected="false" tabindex="-1" type="button">Cold drinks</button>
             <button role="tab" id="tab-evening" aria-controls="panel-evening" aria-selected="false" tabindex="-1" type="button">Evening</button>
             </div>
           </div>
-          <div role="tabpanel" id="panel-coffee" aria-labelledby="tab-coffee" tabindex="0" class="menu-panel" data-label="Coffee &amp; tea">
+          <div role="tabpanel" id="panel-coffee" aria-labelledby="tab-coffee" tabindex="0" class="menu-panel" data-label="Coffee">
             <p class="panel-note">Served all day</p>
             <div class="menu-grid">
             <article class="menu-item" id="m-ember-flat-white">
@@ -233,15 +242,35 @@
               <p>Dark chocolate, cinnamon and cardamom with a double shot.</p>
               <p class="tags"><abbr title="Vegetarian" class="tag">V</abbr></p>
             </article>
+            </div>
+          </div>
+          <div role="tabpanel" id="panel-tea" aria-labelledby="tab-tea" tabindex="0" class="menu-panel" data-label="Tea" hidden>
+            <p class="panel-note">Loose-leaf and brewed to order</p>
+            <div class="menu-grid">
             <article class="menu-item" id="m-loose-leaf-tea-pot">
               <div class="menu-line"><h3>Loose-Leaf Tea Pot</h3><span class="leader" aria-hidden="true"></span><span class="price">$7.50</span><button type="button" class="add-btn" data-add data-id="m-loose-leaf-tea-pot" data-name="Loose-Leaf Tea Pot" data-price="7.5" aria-label="Add Loose-Leaf Tea Pot to your order"><span aria-hidden="true">+</span></button></div>
               <p>Smoked Earl Grey, jasmine pearl, or fresh mint and ginger.</p>
               <p class="tags"><abbr title="Vegan" class="tag">VG</abbr><abbr title="Gluten free" class="tag">GF</abbr><abbr title="Dairy free" class="tag">DF</abbr></p>
             </article>
+            <article class="menu-item" id="m-masala-chai">
+              <div class="menu-line"><h3>Masala Chai</h3><span class="leader" aria-hidden="true"></span><span class="price">$6.00</span><button type="button" class="add-btn" data-add data-id="m-masala-chai" data-name="Masala Chai" data-price="6.0" aria-label="Add Masala Chai to your order"><span aria-hidden="true">+</span></button></div>
+              <p>Black tea simmered with cardamom, ginger and cinnamon, finished with steamed milk.</p>
+              <p class="tags"><abbr title="Vegetarian" class="tag">V</abbr></p>
+            </article>
+            <article class="menu-item" id="m-hot-matcha-latte">
+              <div class="menu-line"><h3>Hot Matcha Latte</h3><span class="leader" aria-hidden="true"></span><span class="price">$6.80</span><button type="button" class="add-btn" data-add data-id="m-hot-matcha-latte" data-name="Hot Matcha Latte" data-price="6.8" aria-label="Add Hot Matcha Latte to your order"><span aria-hidden="true">+</span></button></div>
+              <p>Ceremonial-grade matcha whisked smooth and topped with silky milk.</p>
+              <p class="tags"><abbr title="Vegetarian" class="tag">V</abbr><abbr title="Gluten free" class="tag">GF</abbr></p>
+            </article>
+            <article class="menu-item" id="m-ginger-lemon-infusion">
+              <div class="menu-line"><h3>Ginger &amp; Lemon Infusion</h3><span class="leader" aria-hidden="true"></span><span class="price">$5.50</span><button type="button" class="add-btn" data-add data-id="m-ginger-lemon-infusion" data-name="Ginger &amp; Lemon Infusion" data-price="5.5" aria-label="Add Ginger &amp; Lemon Infusion to your order"><span aria-hidden="true">+</span></button></div>
+              <p>Fresh ginger, lemon and mint steeped hot. Gentle, bright and caffeine free.</p>
+              <p class="tags"><abbr title="Vegan" class="tag">VG</abbr><abbr title="Gluten free" class="tag">GF</abbr><abbr title="Dairy free" class="tag">DF</abbr></p>
+            </article>
             </div>
           </div>
-          <div role="tabpanel" id="panel-breakfast" aria-labelledby="tab-breakfast" tabindex="0" class="menu-panel" data-label="Breakfast" hidden>
-            <p class="panel-note">Served 7:00am &ndash; 11:30am</p>
+          <div role="tabpanel" id="panel-food" aria-labelledby="tab-food" tabindex="0" class="menu-panel" data-label="Food" hidden>
+            <p class="panel-note">Breakfast from 7:00am, lunch from 11:30am</p>
             <div class="menu-grid">
             <article class="menu-item" id="m-whipped-ricotta-toast">
               <div class="menu-line"><h3>Whipped Ricotta Toast</h3><span class="leader" aria-hidden="true"></span><span class="price">$13.00</span><button type="button" class="add-btn" data-add data-id="m-whipped-ricotta-toast" data-name="Whipped Ricotta Toast" data-price="13.0" aria-label="Add Whipped Ricotta Toast to your order"><span aria-hidden="true">+</span></button></div>
@@ -272,11 +301,6 @@
               <div class="menu-line"><h3>The Long Breakfast</h3><span class="leader" aria-hidden="true"></span><span class="price">$26.00</span><button type="button" class="add-btn" data-add data-id="m-the-long-breakfast" data-name="The Long Breakfast" data-price="26.0" aria-label="Add The Long Breakfast to your order"><span aria-hidden="true">+</span></button></div>
               <p>Two eggs your way, sourdough, bacon, field mushrooms, roast tomato and crispy hash.</p>
             </article>
-            </div>
-          </div>
-          <div role="tabpanel" id="panel-lunch" aria-labelledby="tab-lunch" tabindex="0" class="menu-panel" data-label="Lunch" hidden>
-            <p class="panel-note">Served 11:30am &ndash; 3:00pm</p>
-            <div class="menu-grid">
             <article class="menu-item" id="m-slow-braised-beef-brioche">
               <div class="menu-line"><h3>Slow-Braised Beef Brioche</h3><span class="leader" aria-hidden="true"></span><span class="price">$21.00</span><button type="button" class="add-btn" data-add data-id="m-slow-braised-beef-brioche" data-name="Slow-Braised Beef Brioche" data-price="21.0" aria-label="Add Slow-Braised Beef Brioche to your order"><span aria-hidden="true">+</span></button></div>
               <p>Eight-hour beef cheek, pickled onion, horseradish cream and a little jus to dip.</p>
@@ -308,7 +332,7 @@
             </article>
             </div>
           </div>
-          <div role="tabpanel" id="panel-bakery" aria-labelledby="tab-bakery" tabindex="0" class="menu-panel" data-label="Bakery &amp; sweets" hidden>
+          <div role="tabpanel" id="panel-bakery" aria-labelledby="tab-bakery" tabindex="0" class="menu-panel" data-label="Bakery" hidden>
             <p class="panel-note">Baked on site from 5:00am</p>
             <div class="menu-grid">
             <article class="menu-item" id="m-butter-croissant">
@@ -445,10 +469,11 @@
         <form id="news-form" novalidate>
           <label class="sr-only" for="n-email">Email address</label>
           <div class="news-row">
-            <input id="n-email" name="email" type="email" placeholder="you@example.com" autocomplete="email" aria-describedby="e-news">
+            <input id="n-email" name="email" type="email" placeholder="you@example.com" autocomplete="email" aria-describedby="e-news p-news">
             <button class="btn btn-primary" type="submit">Join</button>
           </div>
           <p class="error" id="e-news" aria-live="polite"></p>
+          <p class="form-note" id="p-news">We only use your email for the letter. Unsubscribe any time.</p>
           <!-- DEMO ONLY: connect Mailchimp, Beehiiv or similar here. -->
         </form>
       </div>
@@ -482,7 +507,7 @@
         </div>
         <div class="footer-col">
           <h2>Hours</h2>
-          <p>Mon &ndash; Wed 7am &ndash; 4pm<br>Thu &ndash; Sat 7am &ndash; 10pm<br>Sun 8am &ndash; 4pm</p>
+          <p>7 days, from 7am (Sundays 8am)<br>Closing 4pm Mon &ndash; Wed, 10pm Thu &ndash; Sat, 4pm Sun</p>
         </div>
       </div>
       <nav class="footer-legal" aria-label="Footer: more">
@@ -493,8 +518,9 @@
         <a href="legal.html#privacy">Privacy</a>
         <a href="legal.html#terms">Terms</a>
         <a href="legal.html#cookies">Cookies</a>
-        <button type="button" class="sound-btn" data-sound aria-pressed="false">Ambient sound: <span data-sound-state>off</span></button>
+        <button type="button" class="sound-btn" data-sound aria-pressed="false">Ambient sound: <span data-sound-state>Off</span></button>
       </nav>
+      
       <div class="footer-bottom">
         <p>Concept demo by KB Ventures. Not a real business.</p>
         <a class="back-top" href="#top">Back to top &uarr;</a>
@@ -523,7 +549,7 @@
 
   <!-- Cookie preferences -->
   <div class="cookie" id="cookie" role="region" aria-label="Cookie preferences" hidden>
-    <p><strong>Your privacy.</strong> This demo sets no tracking cookies. If you opt in, we would use simple analytics to improve the site. <a href="legal.html#cookies">Details</a></p>
+    <p><strong>Cookies.</strong> None are set unless you accept analytics. <a href="legal.html#cookies">Details</a></p>
     <div class="cookie-actions">
       <button class="btn btn-primary btn-sm" type="button" data-cookie="yes">Accept</button>
       <button class="btn btn-secondary btn-sm" type="button" data-cookie="no">Decline</button>
@@ -531,7 +557,8 @@
   </div>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <script type="application/json" id="site-data">{"name": "Ember & Oak", "phone": "03 5550 0123", "phoneHref": "0355500123", "email": "hello@example.com", "timezone": "Australia/Melbourne", "locale": "en-AU", "currency": "AUD", "hours": [{"day": 1, "name": "Monday", "open": 7, "close": 16}, {"day": 2, "name": "Tuesday", "open": 7, "close": 16}, {"day": 3, "name": "Wednesday", "open": 7, "close": 16}, {"day": 4, "name": "Thursday", "open": 7, "close": 22}, {"day": 5, "name": "Friday", "open": 7, "close": 22}, {"day": 6, "name": "Saturday", "open": 7, "close": 22}, {"day": 0, "name": "Sunday", "open": 8, "close": 16}]}</script>
+  <script type="application/json" id="site-data">{"name": "Ember & Oak", "phone": "03 5550 0123", "phoneHref": "0355500123", "email": "hello@example.com", "timezone": "Australia/Melbourne", "locale": "en-AU", "currency": "AUD", "hours": [{"day": 1, "name": "Monday", "open": 7, "close": 16}, {"day": 2, "name": "Tuesday", "open": 7, "close": 16}, {"day": 3, "name": "Wednesday", "open": 7, "close": 16}, {"day": 4, "name": "Thursday", "open": 7, "close": 22}, {"day": 5, "name": "Friday", "open": 7, "close": 22}, {"day": 6, "name": "Saturday", "open": 7, "close": 22}, {"day": 0, "name": "Sunday", "open": 8, "close": 16}], "hoursPhrase": "7 days, from 7am (Sundays 8am)"}</script>
+  <script defer src="vendor/lenis-1.1.18.min.js"></script>
   <script type="module" src="main.js"></script>
 </body>
 </html>

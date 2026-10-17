@@ -98,37 +98,37 @@ export default [
 },
 {
 "title": "Hot Towel Shave",
-"text": "The full ritual: hot towels, rich lather, a straight razor and a cooling balm. 45 min, popular. Beard and shave. $58.00",
+"text": "The full ritual: hot towels, rich lather, a straight razor and a cooling balm. 45 min, popular. Beard & shave. $58.00",
 "url": "services.html#m-hot-towel-shave",
 "type": "Services"
 },
 {
 "title": "Beard Trim & Shape",
-"text": "Tidy the length, define the lines and soften the edges. 30 min. Beard and shave. $32.00",
+"text": "Tidy the length, define the lines and soften the edges. 30 min. Beard & shave. $32.00",
 "url": "services.html#m-beard-trim-shape",
 "type": "Services"
 },
 {
 "title": "Beard Sculpt",
-"text": "A full reshape with razor lines, a trim, oil and a hot towel. 40 min. Beard and shave. $42.00",
+"text": "A full reshape with razor lines, a trim, oil and a hot towel. 40 min. Beard & shave. $42.00",
 "url": "services.html#m-beard-sculpt",
 "type": "Services"
 },
 {
 "title": "Head Shave",
-"text": "Hot towel, lather and a razor-smooth finish from crown to neck. 40 min. Beard and shave. $52.00",
+"text": "Hot towel, lather and a razor-smooth finish from crown to neck. 40 min. Beard & shave. $52.00",
 "url": "services.html#m-head-shave",
 "type": "Services"
 },
 {
 "title": "Moustache Tidy",
-"text": "A quick trim and shape, with a little wax if you like. 15 min. Beard and shave. $16.00",
+"text": "A quick trim and shape, with a little wax if you like. 15 min. Beard & shave. $16.00",
 "url": "services.html#m-moustache-tidy",
 "type": "Services"
 },
 {
 "title": "Neck & Edge Clean-Up",
-"text": "Razor the neckline and sharpen the edges between cuts. 15 min. Beard and shave. $22.00",
+"text": "Razor the neckline and sharpen the edges between cuts. 15 min. Beard & shave. $22.00",
 "url": "services.html#m-neck-edge-clean-up",
 "type": "Services"
 },

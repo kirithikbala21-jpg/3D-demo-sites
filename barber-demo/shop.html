@@ -3,25 +3,33 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Shop grooming products | Brass &amp; Blade Barbershop (concept demo v2)</title>
+  <title>Shop grooming products | Brass &amp; Blade Barbershop (concept demo)</title>
   <meta name="description" content="Pomade, beard oil, shave soap and tools from the shop. Pick up at your appointment or have it delivered (demo).">
   <meta name="robots" content="noindex">
-  <meta name="theme-color" content="#0A101C">
+  <meta name="theme-color" content="#0B0B0C">
   <link rel="canonical" href="https://kirithikbala21-jpg.github.io/3D-demo-sites/barber-demo/shop.html">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Shop grooming products | Brass &amp; Blade Barbershop (concept demo v2)">
+  <meta property="og:title" content="Shop grooming products | Brass &amp; Blade Barbershop (concept demo)">
   <meta property="og:description" content="Pomade, beard oil, shave soap and tools from the shop. Pick up at your appointment or have it delivered (demo).">
   <meta property="og:url" content="https://kirithikbala21-jpg.github.io/3D-demo-sites/barber-demo/shop.html">
   <meta property="og:image" content="https://kirithikbala21-jpg.github.io/3D-demo-sites/barber-demo/img/og.png">
   <meta property="og:locale" content="en_AU">
+  <meta property="og:site_name" content="Brass &amp; Blade Barbershop (concept demo)">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Brass &amp; Blade Barbershop: the spinning barber pole and wordmark on a black and gold hero">
   <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Shop grooming products | Brass &amp; Blade Barbershop (concept demo)">
+  <meta name="twitter:description" content="Pomade, beard oil, shave soap and tools from the shop. Pick up at your appointment or have it delivered (demo).">
+  <meta name="twitter:image" content="https://kirithikbala21-jpg.github.io/3D-demo-sites/barber-demo/img/og.png">
   <link rel="icon" href="img/icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
   <link rel="manifest" href="site.webmanifest">
   <link rel="preload" href="fonts/montserrat-latin.woff2" as="font" type="font/woff2" crossorigin>
-  
+  <link rel="preload" href="fonts/oswald-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="vendor/lenis-1.1.18.css">
   <link rel="stylesheet" href="styles.css">
-  <style>:root{--black:#0A101C;--wine:#B3202A;--wine-deep:#7E1219;--wine-night:#0F1A30;--gold-light:#D8B46C;--gold-text:#85601F;--cream:#F6F1E7;--tint:#ECE5D5;--ink:#131722}</style>
+  <style>:root{--black:#0B0B0C;--charcoal:#161617;--gold:#C9A24B;--wine:#7A5A12;--wine-deep:#5A410A;--wine-night:#161617;--gold-light:#E4C77A;--gold-text:#7A5A12;--cream:#F2EBDD;--tint:#E8DFCB;--ink:#141414}</style>
   
   <noscript><style>
     /* Without JavaScript: show the navigation and every menu category as plain content. */
@@ -93,7 +101,7 @@
     </div>
   </header>
 
-  <div class="mobile-nav" id="mobile-nav" role="dialog" aria-modal="true" aria-label="Site menu" hidden>
+  <div class="mobile-nav" id="mobile-nav" data-lenis-prevent role="dialog" aria-modal="true" aria-label="Site menu" hidden>
     <div class="overlay-inner">
       <nav aria-label="Main">
         <ul>
@@ -103,7 +111,7 @@
         <ul class="overlay-sub" aria-label="More">
           <li><a href="membership.html#gift-cards">Gift cards</a></li>
           <li><a href="careers.html">Careers</a></li>
-          <li><a href="legal.html">Legal</a></li>
+          <li><a href="legal.html#privacy">Privacy</a></li>
         </ul>
       </nav>
       <div class="overlay-info">
@@ -129,13 +137,13 @@
         </button>
       </form>
       <p class="search-hint" id="search-hint" aria-live="polite">Try &ldquo;skin fade&rdquo;, &ldquo;beard&rdquo; or &ldquo;walk-ins&rdquo;.</p>
-      <ul class="search-results" id="search-results"></ul>
+      <ul class="search-results" id="search-results" data-lenis-prevent></ul>
     </div>
   </div>
 
   <!-- Order / cart drawer (demo) -->
   <div class="scrim" id="scrim" hidden></div>
-  <aside class="cart" id="cart" role="dialog" aria-modal="true" aria-labelledby="cart-title" hidden>
+  <aside class="cart" id="cart" data-lenis-prevent role="dialog" aria-modal="true" aria-labelledby="cart-title" hidden>
     <div class="cart-head">
       <h2 id="cart-title">Your visit</h2>
       <button class="icon-btn" type="button" id="cart-close" aria-label="Close your visit">
@@ -144,7 +152,7 @@
     </div>
     <div class="cart-body">
       <p class="cart-empty" id="cart-empty">Your visit is empty. Add a service from <a href="services.html">services</a> or a product from the <a href="shop.html">shop</a>.</p>
-      <ul class="cart-list" id="cart-list"></ul>
+      <ul class="cart-list" id="cart-list" data-lenis-prevent></ul>
     </div>
     <form class="cart-foot" id="cart-form" novalidate hidden>
       <p class="cart-time" id="cart-time" hidden></p>
@@ -193,7 +201,7 @@
           <li class="reveal">
             <article class="product" id="p-clay">
               <div class="product-art" aria-hidden="true">
-                <svg viewBox="0 0 200 200" focusable="false"><ellipse cx="100" cy="164" rx="58" ry="9" fill="#000" opacity=".4"/><rect x="48" y="78" width="104" height="82" rx="8" fill="#2A2F3D"/><rect x="44" y="64" width="112" height="20" rx="6" fill="#D8B46C"/><rect x="44" y="64" width="112" height="6" rx="3" fill="#F0D28C" opacity=".8"/><rect x="60" y="96" width="80" height="48" fill="#F6F1E7"/><path d="M70 112h60M70 124h42" stroke="#B3202A" stroke-width="3" stroke-linecap="round"/><use href="#logo-mark" x="90" y="98" width="20" height="20" color="#131722" opacity="0"/></svg>
+                <svg viewBox="0 0 200 200" focusable="false"><ellipse cx="100" cy="164" rx="58" ry="9" fill="#000" opacity=".4"/><rect x="48" y="78" width="104" height="82" rx="8" fill="#2A2A2B"/><rect x="44" y="64" width="112" height="20" rx="6" fill="#E4C77A"/><rect x="44" y="64" width="112" height="6" rx="3" fill="#F0D28C" opacity=".8"/><rect x="60" y="96" width="80" height="48" fill="#F2EBDD"/><path d="M70 112h60M70 124h42" stroke="#C9A24B" stroke-width="3" stroke-linecap="round"/><use href="#logo-mark" x="90" y="98" width="20" height="20" color="#131722" opacity="0"/></svg>
                 
                 
                 
@@ -214,17 +222,17 @@
             <article class="product" id="p-oil">
               <div class="product-art" aria-hidden="true">
                 
-                <svg viewBox="0 0 200 200" focusable="false"><ellipse cx="100" cy="182" rx="40" ry="7" fill="#000" opacity=".4"/><rect x="90" y="22" width="20" height="26" fill="#D8B46C"/><rect x="86" y="44" width="28" height="12" rx="3" fill="#8E6A2B"/><path d="M80 56h40l12 22v92c0 8-4 12-12 12H80c-8 0-12-4-12-12V78z" fill="#3B2412"/><rect x="74" y="96" width="52" height="56" fill="#F6F1E7"/><path d="M82 112h36M82 124h36M82 136h22" stroke="#B3202A" stroke-width="3" stroke-linecap="round"/></svg>
+                <svg viewBox="0 0 200 200" focusable="false"><ellipse cx="100" cy="182" rx="40" ry="7" fill="#000" opacity=".4"/><rect x="90" y="22" width="20" height="26" fill="#E4C77A"/><rect x="86" y="44" width="28" height="12" rx="3" fill="#9A7A30"/><path d="M80 56h40l12 22v92c0 8-4 12-12 12H80c-8 0-12-4-12-12V78z" fill="#3B2412"/><rect x="74" y="96" width="52" height="56" fill="#F2EBDD"/><path d="M82 112h36M82 124h36M82 136h22" stroke="#C9A24B" stroke-width="3" stroke-linecap="round"/></svg>
                 
                 
                 
               </div>
               <div class="product-body">
-                <h2>Cedar &amp; Orange Beard Oil, 30ml</h2>
+                <h2>Cedar & Orange Beard Oil, 30ml</h2>
                 <p>Softens, conditions and smells like a very good workshop.</p>
                 <div class="product-foot">
                   <span class="price">$28</span>
-                  <button class="btn btn-secondary btn-sm" type="button" data-add data-id="p-oil" data-name="Cedar &amp;amp; Orange Beard Oil, 30ml" data-price="28">Add to visit<span class="sr-only">: Cedar &amp;amp; Orange Beard Oil, 30ml</span></button>
+                  <button class="btn btn-secondary btn-sm" type="button" data-add data-id="p-oil" data-name="Cedar &amp; Orange Beard Oil, 30ml" data-price="28">Add to visit<span class="sr-only">: Cedar &amp; Orange Beard Oil, 30ml</span></button>
                 </div>
               </div>
             </article>
@@ -233,7 +241,7 @@
           <li class="reveal">
             <article class="product" id="p-soap">
               <div class="product-art" aria-hidden="true">
-                <svg viewBox="0 0 200 200" focusable="false"><ellipse cx="100" cy="164" rx="58" ry="9" fill="#000" opacity=".4"/><rect x="48" y="78" width="104" height="82" rx="8" fill="#2A2F3D"/><rect x="44" y="64" width="112" height="20" rx="6" fill="#D8B46C"/><rect x="44" y="64" width="112" height="6" rx="3" fill="#F0D28C" opacity=".8"/><rect x="60" y="96" width="80" height="48" fill="#F6F1E7"/><path d="M70 112h60M70 124h42" stroke="#B3202A" stroke-width="3" stroke-linecap="round"/><use href="#logo-mark" x="90" y="98" width="20" height="20" color="#131722" opacity="0"/></svg>
+                <svg viewBox="0 0 200 200" focusable="false"><ellipse cx="100" cy="164" rx="58" ry="9" fill="#000" opacity=".4"/><rect x="48" y="78" width="104" height="82" rx="8" fill="#2A2A2B"/><rect x="44" y="64" width="112" height="20" rx="6" fill="#E4C77A"/><rect x="44" y="64" width="112" height="6" rx="3" fill="#F0D28C" opacity=".8"/><rect x="60" y="96" width="80" height="48" fill="#F2EBDD"/><path d="M70 112h60M70 124h42" stroke="#C9A24B" stroke-width="3" stroke-linecap="round"/><use href="#logo-mark" x="90" y="98" width="20" height="20" color="#131722" opacity="0"/></svg>
                 
                 
                 
@@ -255,7 +263,7 @@
               <div class="product-art" aria-hidden="true">
                 
                 
-                <svg viewBox="0 0 200 200" focusable="false"><ellipse cx="100" cy="162" rx="70" ry="8" fill="#000" opacity=".4"/><rect x="34" y="62" width="132" height="26" rx="10" fill="#D8B46C"/><rect x="34" y="62" width="132" height="7" rx="3.500" fill="#F0D28C" opacity=".8"/><g fill="#F6F1E7"><rect x="40" y="86" width="6" height="58" rx="2"/><rect x="52" y="86" width="6" height="58" rx="2"/><rect x="64" y="86" width="6" height="58" rx="2"/><rect x="76" y="86" width="6" height="58" rx="2"/><rect x="88" y="86" width="6" height="58" rx="2"/><rect x="100" y="86" width="6" height="58" rx="2"/><rect x="112" y="86" width="6" height="58" rx="2"/><rect x="124" y="86" width="6" height="58" rx="2"/><rect x="136" y="86" width="6" height="58" rx="2"/><rect x="148" y="86" width="6" height="58" rx="2"/></g></svg>
+                <svg viewBox="0 0 200 200" focusable="false"><ellipse cx="100" cy="162" rx="70" ry="8" fill="#000" opacity=".4"/><rect x="34" y="62" width="132" height="26" rx="10" fill="#E4C77A"/><rect x="34" y="62" width="132" height="7" rx="3.500" fill="#F0D28C" opacity=".8"/><g fill="#F2EBDD"><rect x="40" y="86" width="6" height="58" rx="2"/><rect x="52" y="86" width="6" height="58" rx="2"/><rect x="64" y="86" width="6" height="58" rx="2"/><rect x="76" y="86" width="6" height="58" rx="2"/><rect x="88" y="86" width="6" height="58" rx="2"/><rect x="100" y="86" width="6" height="58" rx="2"/><rect x="112" y="86" width="6" height="58" rx="2"/><rect x="124" y="86" width="6" height="58" rx="2"/><rect x="136" y="86" width="6" height="58" rx="2"/><rect x="148" y="86" width="6" height="58" rx="2"/></g></svg>
                 
                 <span class="badge">New</span>
               </div>
@@ -276,7 +284,7 @@
                 
                 
                 
-                <svg viewBox="0 0 200 200" focusable="false"><ellipse cx="100" cy="170" rx="46" ry="7" fill="#000" opacity=".4"/><rect x="92" y="70" width="16" height="96" rx="8" fill="#D8B46C"/><rect x="92" y="70" width="5" height="96" rx="2.500" fill="#F0D28C" opacity=".8"/><rect x="70" y="40" width="60" height="34" rx="8" fill="#DDE2EC"/><rect x="70" y="40" width="60" height="9" rx="4.500" fill="#fff" opacity=".7"/><path d="M78 56h44" stroke="#8A93A6" stroke-width="3" stroke-linecap="round"/></svg>
+                <svg viewBox="0 0 200 200" focusable="false"><ellipse cx="100" cy="170" rx="46" ry="7" fill="#000" opacity=".4"/><rect x="92" y="70" width="16" height="96" rx="8" fill="#E4C77A"/><rect x="92" y="70" width="5" height="96" rx="2.500" fill="#F0D28C" opacity=".8"/><rect x="70" y="40" width="60" height="34" rx="8" fill="#E9E4D8"/><rect x="70" y="40" width="60" height="9" rx="4.500" fill="#fff" opacity=".7"/><path d="M78 56h44" stroke="#8F877A" stroke-width="3" stroke-linecap="round"/></svg>
                 <span class="badge">Gift idea</span>
               </div>
               <div class="product-body">
@@ -294,7 +302,7 @@
             <article class="product" id="p-balm">
               <div class="product-art" aria-hidden="true">
                 
-                <svg viewBox="0 0 200 200" focusable="false"><ellipse cx="100" cy="182" rx="40" ry="7" fill="#000" opacity=".4"/><rect x="90" y="22" width="20" height="26" fill="#D8B46C"/><rect x="86" y="44" width="28" height="12" rx="3" fill="#8E6A2B"/><path d="M80 56h40l12 22v92c0 8-4 12-12 12H80c-8 0-12-4-12-12V78z" fill="#3B2412"/><rect x="74" y="96" width="52" height="56" fill="#F6F1E7"/><path d="M82 112h36M82 124h36M82 136h22" stroke="#B3202A" stroke-width="3" stroke-linecap="round"/></svg>
+                <svg viewBox="0 0 200 200" focusable="false"><ellipse cx="100" cy="182" rx="40" ry="7" fill="#000" opacity=".4"/><rect x="90" y="22" width="20" height="26" fill="#E4C77A"/><rect x="86" y="44" width="28" height="12" rx="3" fill="#9A7A30"/><path d="M80 56h40l12 22v92c0 8-4 12-12 12H80c-8 0-12-4-12-12V78z" fill="#3B2412"/><rect x="74" y="96" width="52" height="56" fill="#F2EBDD"/><path d="M82 112h36M82 124h36M82 136h22" stroke="#C9A24B" stroke-width="3" stroke-linecap="round"/></svg>
                 
                 
                 
@@ -332,6 +340,7 @@
             <button class="btn btn-primary" type="submit">Join</button>
           </div>
           <p class="error" id="e-news" aria-live="polite"></p>
+          <p class="note privacy-note">We only use your email for this letter. Unsubscribe any time. <a href="legal.html#privacy">Privacy</a></p>
           <!-- DEMO ONLY: connect Mailchimp, Beehiiv or similar here. -->
         </form>
       </div>
@@ -355,7 +364,7 @@
           <h2>Explore</h2>
           <ul>
             <li><a href="services.html">Services</a></li><li><a href="barbers.html">The crew</a></li><li><a href="shop.html">Shop</a></li><li><a href="membership.html">Membership</a></li><li><a href="journal.html">Journal</a></li><li><a href="visit.html">Visit</a></li>
-            <li><a href="book.html">Book</a></li>
+            <li><a href="book.html">Book a chair</a></li>
           </ul>
         </nav>
         <div class="footer-col">
@@ -378,6 +387,7 @@
       </nav>
       <div class="footer-bottom">
         <p>Concept demo by KB Ventures. Not a real business.</p>
+        
         <a class="back-top" href="#top">Back to top &uarr;</a>
       </div>
     </div>
@@ -397,14 +407,14 @@
     </button>
     <section class="chat-panel" id="chat-panel" role="dialog" aria-label="Chat with us (demo)" hidden>
       <header><strong>Ask Brass</strong><span>Demo assistant, scripted answers</span></header>
-      <div class="chat-log" id="chat-log" role="log" aria-live="polite"></div>
+      <div class="chat-log" id="chat-log" data-lenis-prevent role="log" aria-live="polite"></div>
       <div class="chat-quick" id="chat-quick"></div>
     </section>
   </div>
 
   <!-- Cookie preferences -->
   <div class="cookie" id="cookie" role="region" aria-label="Cookie preferences" hidden>
-    <p><strong>Your privacy.</strong> This demo sets no tracking cookies. If you opt in, we would use simple analytics to improve the site. <a href="legal.html#cookies">Details</a></p>
+    <p><strong>No tracking by default.</strong> Allow simple analytics? <a href="legal.html#cookies">Details</a></p>
     <div class="cookie-actions">
       <button class="btn btn-primary btn-sm" type="button" data-cookie="yes">Accept</button>
       <button class="btn btn-secondary btn-sm" type="button" data-cookie="no">Decline</button>
@@ -413,6 +423,7 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <script type="application/json" id="site-data">{"name": "Brass & Blade", "phone": "02 5550 0144", "phoneHref": "0255500144", "email": "hello@example.com", "timezone": "Australia/Sydney", "locale": "en-AU", "currency": "AUD", "hours": [{"day": 1, "name": "Monday", "open": 10, "close": 18}, {"day": 2, "name": "Tuesday", "open": 9, "close": 19}, {"day": 3, "name": "Wednesday", "open": 9, "close": 19}, {"day": 4, "name": "Thursday", "open": 9, "close": 20}, {"day": 5, "name": "Friday", "open": 9, "close": 19}, {"day": 6, "name": "Saturday", "open": 9, "close": 17}, {"day": 0, "name": "Sunday", "open": 10, "close": 16}]}</script>
+  <script defer src="vendor/lenis-1.1.18.min.js"></script><!-- Lenis 1.1.18 (MIT), self-hosted, pinned -->
   <script type="module" src="main.js"></script>
 </body>
 </html>

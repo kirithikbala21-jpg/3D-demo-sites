@@ -6,7 +6,7 @@
   "fullNameHtml": "Ember &amp; Oak Coffee",
   "wordmark": "Ember &amp; Oak",
   "city": "Melbourne",
-  "tagline": "Join us in seeking the slowest mornings and the best-roasted cup in Melbourne. Coffee roasted out back, poured right here.",
+  "tagline": "Slow mornings. Small-batch coffee. Roasted out the back, poured right here.",
   "description": "Ember & Oak Coffee is a fictional café used as a concept demo: small-batch coffee, all-day dining, private events and a cinematic 3D hero.",
   "demoFooter": "Concept demo by KB Ventures. Not a real business."
  },
@@ -133,11 +133,11 @@
    "file": "menu.html",
    "template": "menu",
    "title": "Menu",
-   "description": "Coffee, breakfast, lunch, bakery, cold drinks and evening cocktails. Order ahead for pick-up (demo).",
+   "description": "Coffee, tea, food, bakery, cold drinks and evening cocktails. Order ahead for pick-up (demo).",
    "pageHero": true,
    "h1": "The menu",
    "kicker": "Simple, seasonal, made to order",
-   "lead": "Thirty-eight things to eat and drink, all made on site. Order ahead for pick-up, or just walk in.",
+   "lead": "Forty-one things to eat and drink, all made on site. Order ahead for pick-up, or just walk in.",
    "crumb": "Menu"
   },
   {

@@ -1,7 +1,7 @@
 [
  {
   "id": "coffee",
-  "label": "Coffee &amp; tea",
+  "label": "Coffee",
   "note": "Served all day",
   "items": [
    {
@@ -73,7 +73,14 @@
      "V"
     ],
     "sig": false
-   },
+   }
+  ]
+ },
+ {
+  "id": "tea",
+  "label": "Tea",
+  "note": "Loose-leaf and brewed to order",
+  "items": [
    {
     "name": "Loose-Leaf Tea Pot",
     "price": 7.5,
@@ -84,13 +91,43 @@
      "DF"
     ],
     "sig": false
+   },
+   {
+    "name": "Masala Chai",
+    "price": 6.0,
+    "tags": [
+     "V"
+    ],
+    "sig": false,
+    "desc": "Black tea simmered with cardamom, ginger and cinnamon, finished with steamed milk."
+   },
+   {
+    "name": "Hot Matcha Latte",
+    "price": 6.8,
+    "tags": [
+     "V",
+     "GF"
+    ],
+    "sig": false,
+    "desc": "Ceremonial-grade matcha whisked smooth and topped with silky milk."
+   },
+   {
+    "name": "Ginger &amp; Lemon Infusion",
+    "price": 5.5,
+    "tags": [
+     "VG",
+     "GF",
+     "DF"
+    ],
+    "sig": false,
+    "desc": "Fresh ginger, lemon and mint steeped hot. Gentle, bright and caffeine free."
    }
   ]
  },
  {
-  "id": "breakfast",
-  "label": "Breakfast",
-  "note": "Served 7:00am &ndash; 11:30am",
+  "id": "food",
+  "label": "Food",
+  "note": "Breakfast from 7:00am, lunch from 11:30am",
   "items": [
    {
     "name": "Whipped Ricotta Toast",
@@ -144,14 +181,7 @@
     "desc": "Two eggs your way, sourdough, bacon, field mushrooms, roast tomato and crispy hash.",
     "tags": [],
     "sig": false
-   }
-  ]
- },
- {
-  "id": "lunch",
-  "label": "Lunch",
-  "note": "Served 11:30am &ndash; 3:00pm",
-  "items": [
+   },
    {
     "name": "Slow-Braised Beef Brioche",
     "price": 21.0,
@@ -209,7 +239,7 @@
  },
  {
   "id": "bakery",
-  "label": "Bakery &amp; sweets",
+  "label": "Bakery",
   "note": "Baked on site from 5:00am",
   "items": [
    {

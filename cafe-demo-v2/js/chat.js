@@ -16,7 +16,8 @@ function hoursText() {
   }
   const { day, hour } = cafeNow(); const t = hoursFor(day);
   const open = t && hour >= t.open && hour < t.close;
-  return `${lines.map((l) => `${l.days.length > 1 ? `${l.days[0]} to ${l.days[l.days.length - 1]}` : l.days[0]} ${fmtHour(l.open)} to ${fmtHour(l.close)}`).join('<br>')}<br><br>Right now we are ${open ? `<strong>open</strong> until ${fmtHour(t.close)}` : '<strong>closed</strong>'} (${dayName(day)}, Melbourne time).`;
+  const closing = lines.map((l) => `${l.days.length > 1 ? `${l.days[0]} to ${l.days[l.days.length - 1]}` : l.days[0]} ${fmtHour(l.close)}`).join(', ');
+  return `<strong>Open ${site.hoursPhrase}.</strong><br>Closing times: ${closing}.<br><br>Right now we are ${open ? `<strong>open</strong> until ${fmtHour(t.close)}` : '<strong>closed</strong>'} (${dayName(day)}, Melbourne time).`;
 }
 const topics = [
   { q: 'Opening hours', a: hoursText },

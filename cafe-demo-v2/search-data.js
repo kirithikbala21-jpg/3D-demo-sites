@@ -8,7 +8,7 @@ export default [
 },
 {
 "title": "Menu",
-"text": "Coffee, breakfast, lunch, bakery, cold drinks and evening cocktails. Order ahead for pick-up (demo).",
+"text": "Coffee, tea, food, bakery, cold drinks and evening cocktails. Order ahead for pick-up (demo).",
 "url": "menu.html",
 "type": "Page"
 },
@@ -80,157 +80,175 @@ export default [
 },
 {
 "title": "Ember Flat White",
-"text": "Double ristretto, silky milk and a pinch of toasted cacao. Vegetarian, signature, house favourite. Coffee and tea. $5.50",
+"text": "Double ristretto, silky milk and a pinch of toasted cacao. Vegetarian, signature, house favourite. Coffee. $5.50",
 "url": "menu.html#m-ember-flat-white",
 "type": "Menu"
 },
 {
 "title": "Oak Long Black",
-"text": "Two shots over hot water. Dark honey, cedar and a clean, quiet finish. Vegan, Gluten free, Dairy free. Coffee and tea. $5.00",
+"text": "Two shots over hot water. Dark honey, cedar and a clean, quiet finish. Vegan, Gluten free, Dairy free. Coffee. $5.00",
 "url": "menu.html#m-oak-long-black",
 "type": "Menu"
 },
 {
 "title": "Maple Oat Latte",
-"text": "Oat milk, a spoon of dark maple and our rounder, chocolate-forward blend. Vegan, Dairy free. Coffee and tea. $6.50",
+"text": "Oat milk, a spoon of dark maple and our rounder, chocolate-forward blend. Vegan, Dairy free. Coffee. $6.50",
 "url": "menu.html#m-maple-oat-latte",
 "type": "Menu"
 },
 {
 "title": "Cortado",
-"text": "Equal parts espresso and warm milk, with nothing to hide behind. Vegetarian. Coffee and tea. $5.20",
+"text": "Equal parts espresso and warm milk, with nothing to hide behind. Vegetarian. Coffee. $5.20",
 "url": "menu.html#m-cortado",
 "type": "Menu"
 },
 {
 "title": "Single-Origin Pour Over",
-"text": "Hand-poured to order from this week's reserve lot. Allow ten minutes; it's worth it. Vegan, Gluten free, Dairy free, signature, house favourite. Coffee and tea. $9.00",
+"text": "Hand-poured to order from this week's reserve lot. Allow ten minutes; it's worth it. Vegan, Gluten free, Dairy free, signature, house favourite. Coffee. $9.00",
 "url": "menu.html#m-single-origin-pour-over",
 "type": "Menu"
 },
 {
 "title": "Batch Brew Filter",
-"text": "This week’s house lot, brewed in bulk and refilled until you stop us. Vegan, Gluten free, Dairy free. Coffee and tea. $5.00",
+"text": "This week’s house lot, brewed in bulk and refilled until you stop us. Vegan, Gluten free, Dairy free. Coffee. $5.00",
 "url": "menu.html#m-batch-brew-filter",
 "type": "Menu"
 },
 {
 "title": "Spiced Cacao Mocha",
-"text": "Dark chocolate, cinnamon and cardamom with a double shot. Vegetarian. Coffee and tea. $6.80",
+"text": "Dark chocolate, cinnamon and cardamom with a double shot. Vegetarian. Coffee. $6.80",
 "url": "menu.html#m-spiced-cacao-mocha",
 "type": "Menu"
 },
 {
 "title": "Loose-Leaf Tea Pot",
-"text": "Smoked Earl Grey, jasmine pearl, or fresh mint and ginger. Vegan, Gluten free, Dairy free. Coffee and tea. $7.50",
+"text": "Smoked Earl Grey, jasmine pearl, or fresh mint and ginger. Vegan, Gluten free, Dairy free. Tea. $7.50",
 "url": "menu.html#m-loose-leaf-tea-pot",
 "type": "Menu"
 },
 {
+"title": "Masala Chai",
+"text": "Black tea simmered with cardamom, ginger and cinnamon, finished with steamed milk. Vegetarian. Tea. $6.00",
+"url": "menu.html#m-masala-chai",
+"type": "Menu"
+},
+{
+"title": "Hot Matcha Latte",
+"text": "Ceremonial-grade matcha whisked smooth and topped with silky milk. Vegetarian, Gluten free. Tea. $6.80",
+"url": "menu.html#m-hot-matcha-latte",
+"type": "Menu"
+},
+{
+"title": "Ginger & Lemon Infusion",
+"text": "Fresh ginger, lemon and mint steeped hot. Gentle, bright and caffeine free. Vegan, Gluten free, Dairy free. Tea. $5.50",
+"url": "menu.html#m-ginger-lemon-infusion",
+"type": "Menu"
+},
+{
 "title": "Whipped Ricotta Toast",
-"text": "Thick sourdough, lemony ricotta, roasted figs and thyme honey. Vegetarian. Breakfast. $13.00",
+"text": "Thick sourdough, lemony ricotta, roasted figs and thyme honey. Vegetarian. Food. $13.00",
 "url": "menu.html#m-whipped-ricotta-toast",
 "type": "Menu"
 },
 {
 "title": "Smashed Avo & Dukkah",
-"text": "Lime, chilli flakes, pickled red onion and hazelnut dukkah on rye. Vegan, Dairy free. Breakfast. $18.50",
+"text": "Lime, chilli flakes, pickled red onion and hazelnut dukkah on rye. Vegan, Dairy free. Food. $18.50",
 "url": "menu.html#m-smashed-avo-dukkah",
 "type": "Menu"
 },
 {
 "title": "Ember Chilli Eggs",
-"text": "Eggs baked in smoky tomato and chilli, whipped feta and grilled flatbread. Vegetarian, signature, house favourite. Breakfast. $19.00",
+"text": "Eggs baked in smoky tomato and chilli, whipped feta and grilled flatbread. Vegetarian, signature, house favourite. Food. $19.00",
 "url": "menu.html#m-ember-chilli-eggs",
 "type": "Menu"
 },
 {
 "title": "House Granola Bowl",
-"text": "Oat-and-seed granola, poached rhubarb, coconut yoghurt and bee pollen. Vegetarian. Breakfast. $15.50",
+"text": "Oat-and-seed granola, poached rhubarb, coconut yoghurt and bee pollen. Vegetarian. Food. $15.50",
 "url": "menu.html#m-house-granola-bowl",
 "type": "Menu"
 },
 {
 "title": "Brown Butter Banana Bread",
-"text": "Grilled and served with salted butter and cinnamon sugar. Vegetarian. Breakfast. $8.00",
+"text": "Grilled and served with salted butter and cinnamon sugar. Vegetarian. Food. $8.00",
 "url": "menu.html#m-brown-butter-banana-bread",
 "type": "Menu"
 },
 {
 "title": "The Long Breakfast",
-"text": "Two eggs your way, sourdough, bacon, field mushrooms, roast tomato and crispy hash. . Breakfast. $26.00",
+"text": "Two eggs your way, sourdough, bacon, field mushrooms, roast tomato and crispy hash. . Food. $26.00",
 "url": "menu.html#m-the-long-breakfast",
 "type": "Menu"
 },
 {
 "title": "Slow-Braised Beef Brioche",
-"text": "Eight-hour beef cheek, pickled onion, horseradish cream and a little jus to dip. , signature, house favourite. Lunch. $21.00",
+"text": "Eight-hour beef cheek, pickled onion, horseradish cream and a little jus to dip. , signature, house favourite. Food. $21.00",
 "url": "menu.html#m-slow-braised-beef-brioche",
 "type": "Menu"
 },
 {
 "title": "Roast Pumpkin & Feta Toastie",
-"text": "Sourdough, burnt-butter pumpkin, whipped feta, sage and caramelised onion. Vegetarian. Lunch. $14.50",
+"text": "Sourdough, burnt-butter pumpkin, whipped feta, sage and caramelised onion. Vegetarian. Food. $14.50",
 "url": "menu.html#m-roast-pumpkin-feta-toastie",
 "type": "Menu"
 },
 {
 "title": "Charred Cauliflower Salad",
-"text": "Tahini, pomegranate, herbs, preserved lemon and toasted seeds. Vegan, Gluten free, Dairy free. Lunch. $19.50",
+"text": "Tahini, pomegranate, herbs, preserved lemon and toasted seeds. Vegan, Gluten free, Dairy free. Food. $19.50",
 "url": "menu.html#m-charred-cauliflower-salad",
 "type": "Menu"
 },
 {
 "title": "House-Cured Salmon Bagel",
-"text": "Dill cream cheese, capers, shaved fennel and a squeeze of lemon. . Lunch. $20.00",
+"text": "Dill cream cheese, capers, shaved fennel and a squeeze of lemon. . Food. $20.00",
 "url": "menu.html#m-house-cured-salmon-bagel",
 "type": "Menu"
 },
 {
 "title": "Wild Mushroom Risotto",
-"text": "Arborio, thyme, aged parmesan and a drizzle of truffle oil. Vegetarian, Gluten free. Lunch. $24.00",
+"text": "Arborio, thyme, aged parmesan and a drizzle of truffle oil. Vegetarian, Gluten free. Food. $24.00",
 "url": "menu.html#m-wild-mushroom-risotto",
 "type": "Menu"
 },
 {
 "title": "Soup of the Day",
-"text": "Made each morning, served with buttered sourdough. Ask what’s simmering. Vegetarian. Lunch. $12.00",
+"text": "Made each morning, served with buttered sourdough. Ask what’s simmering. Vegetarian. Food. $12.00",
 "url": "menu.html#m-soup-of-the-day",
 "type": "Menu"
 },
 {
 "title": "Butter Croissant",
-"text": "72-hour laminated dough, baked at six. Gone by ten on weekends. Vegetarian. Bakery and sweets. $6.00",
+"text": "72-hour laminated dough, baked at six. Gone by ten on weekends. Vegetarian. Bakery. $6.00",
 "url": "menu.html#m-butter-croissant",
 "type": "Menu"
 },
 {
 "title": "Cardamom Morning Bun",
-"text": "Spiralled brioche, cardamom sugar and an orange-blossom glaze. Vegetarian, signature, house favourite. Bakery and sweets. $7.20",
+"text": "Spiralled brioche, cardamom sugar and an orange-blossom glaze. Vegetarian, signature, house favourite. Bakery. $7.20",
 "url": "menu.html#m-cardamom-morning-bun",
 "type": "Menu"
 },
 {
 "title": "Pain au Chocolat",
-"text": "Two batons of dark chocolate in flaky, golden pastry. Vegetarian. Bakery and sweets. $6.80",
+"text": "Two batons of dark chocolate in flaky, golden pastry. Vegetarian. Bakery. $6.80",
 "url": "menu.html#m-pain-au-chocolat",
 "type": "Menu"
 },
 {
 "title": "Almond & Orange Cake",
-"text": "Moist, flourless and perfumed with whole-orange syrup. Vegetarian, Gluten free. Bakery and sweets. $7.50",
+"text": "Moist, flourless and perfumed with whole-orange syrup. Vegetarian, Gluten free. Bakery. $7.50",
 "url": "menu.html#m-almond-orange-cake",
 "type": "Menu"
 },
 {
 "title": "Burnt Basque Cheesecake",
-"text": "Caramelised top, soft centre and seasonal compote. Vegetarian, Gluten free. Bakery and sweets. $11.00",
+"text": "Caramelised top, soft centre and seasonal compote. Vegetarian, Gluten free. Bakery. $11.00",
 "url": "menu.html#m-burnt-basque-cheesecake",
 "type": "Menu"
 },
 {
 "title": "Dark Chocolate Tart",
-"text": "Salted caramel, cocoa crumb and a spoon of crème fraîche. Vegetarian. Bakery and sweets. $11.50",
+"text": "Salted caramel, cocoa crumb and a spoon of crème fraîche. Vegetarian. Bakery. $11.50",
 "url": "menu.html#m-dark-chocolate-tart",
 "type": "Menu"
 },

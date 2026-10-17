@@ -3,25 +3,33 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Book a chair | Brass &amp; Blade Barbershop (concept demo v2)</title>
+  <title>Book a chair | Brass &amp; Blade Barbershop (concept demo)</title>
   <meta name="description" content="Book a haircut, shave or package with your favourite barber. Demo booking form with live time slots.">
   <meta name="robots" content="noindex">
-  <meta name="theme-color" content="#0A101C">
+  <meta name="theme-color" content="#0B0B0C">
   <link rel="canonical" href="https://kirithikbala21-jpg.github.io/3D-demo-sites/barber-demo/book.html">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Book a chair | Brass &amp; Blade Barbershop (concept demo v2)">
+  <meta property="og:title" content="Book a chair | Brass &amp; Blade Barbershop (concept demo)">
   <meta property="og:description" content="Book a haircut, shave or package with your favourite barber. Demo booking form with live time slots.">
   <meta property="og:url" content="https://kirithikbala21-jpg.github.io/3D-demo-sites/barber-demo/book.html">
   <meta property="og:image" content="https://kirithikbala21-jpg.github.io/3D-demo-sites/barber-demo/img/og.png">
   <meta property="og:locale" content="en_AU">
+  <meta property="og:site_name" content="Brass &amp; Blade Barbershop (concept demo)">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Brass &amp; Blade Barbershop: the spinning barber pole and wordmark on a black and gold hero">
   <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Book a chair | Brass &amp; Blade Barbershop (concept demo)">
+  <meta name="twitter:description" content="Book a haircut, shave or package with your favourite barber. Demo booking form with live time slots.">
+  <meta name="twitter:image" content="https://kirithikbala21-jpg.github.io/3D-demo-sites/barber-demo/img/og.png">
   <link rel="icon" href="img/icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
   <link rel="manifest" href="site.webmanifest">
   <link rel="preload" href="fonts/montserrat-latin.woff2" as="font" type="font/woff2" crossorigin>
-  
+  <link rel="preload" href="fonts/oswald-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="vendor/lenis-1.1.18.css">
   <link rel="stylesheet" href="styles.css">
-  <style>:root{--black:#0A101C;--wine:#B3202A;--wine-deep:#7E1219;--wine-night:#0F1A30;--gold-light:#D8B46C;--gold-text:#85601F;--cream:#F6F1E7;--tint:#ECE5D5;--ink:#131722}</style>
+  <style>:root{--black:#0B0B0C;--charcoal:#161617;--gold:#C9A24B;--wine:#7A5A12;--wine-deep:#5A410A;--wine-night:#161617;--gold-light:#E4C77A;--gold-text:#7A5A12;--cream:#F2EBDD;--tint:#E8DFCB;--ink:#141414}</style>
   
   <noscript><style>
     /* Without JavaScript: show the navigation and every menu category as plain content. */
@@ -93,7 +101,7 @@
     </div>
   </header>
 
-  <div class="mobile-nav" id="mobile-nav" role="dialog" aria-modal="true" aria-label="Site menu" hidden>
+  <div class="mobile-nav" id="mobile-nav" data-lenis-prevent role="dialog" aria-modal="true" aria-label="Site menu" hidden>
     <div class="overlay-inner">
       <nav aria-label="Main">
         <ul>
@@ -103,7 +111,7 @@
         <ul class="overlay-sub" aria-label="More">
           <li><a href="membership.html#gift-cards">Gift cards</a></li>
           <li><a href="careers.html">Careers</a></li>
-          <li><a href="legal.html">Legal</a></li>
+          <li><a href="legal.html#privacy">Privacy</a></li>
         </ul>
       </nav>
       <div class="overlay-info">
@@ -129,13 +137,13 @@
         </button>
       </form>
       <p class="search-hint" id="search-hint" aria-live="polite">Try &ldquo;skin fade&rdquo;, &ldquo;beard&rdquo; or &ldquo;walk-ins&rdquo;.</p>
-      <ul class="search-results" id="search-results"></ul>
+      <ul class="search-results" id="search-results" data-lenis-prevent></ul>
     </div>
   </div>
 
   <!-- Order / cart drawer (demo) -->
   <div class="scrim" id="scrim" hidden></div>
-  <aside class="cart" id="cart" role="dialog" aria-modal="true" aria-labelledby="cart-title" hidden>
+  <aside class="cart" id="cart" data-lenis-prevent role="dialog" aria-modal="true" aria-labelledby="cart-title" hidden>
     <div class="cart-head">
       <h2 id="cart-title">Your visit</h2>
       <button class="icon-btn" type="button" id="cart-close" aria-label="Close your visit">
@@ -144,7 +152,7 @@
     </div>
     <div class="cart-body">
       <p class="cart-empty" id="cart-empty">Your visit is empty. Add a service from <a href="services.html">services</a> or a product from the <a href="shop.html">shop</a>.</p>
-      <ul class="cart-list" id="cart-list"></ul>
+      <ul class="cart-list" id="cart-list" data-lenis-prevent></ul>
     </div>
     <form class="cart-foot" id="cart-form" novalidate hidden>
       <p class="cart-time" id="cart-time" hidden></p>
@@ -192,7 +200,7 @@
         <div class="reveal">
           <p class="eyebrow">Appointments</p>
           <h2 id="book-title" data-split>Book your <em>chair.</em></h2>
-          <p class="lead">Tell us what you need and when. We confirm by email, usually within the hour. (This demo form doesn&rsquo;t send anything.)</p>
+          <p class="lead">Tell us what you need and when. Pick a service, a barber and a time. You&rsquo;ll see your confirmation straight away. (This is a demo: nothing is sent.)</p>
           <ul class="reserve-points">
             <li>Free changes and cancellations up to 24 hours before</li>
             <li>Every cut includes a consultation and a hot towel finish</li>
@@ -201,56 +209,73 @@
         </div>
         <div class="form-card reveal">
           <form id="book-form" novalidate>
+            <p class="step-label"><span aria-hidden="true">1</span> Service</p>
             <div class="field">
-              <label for="f-service">Service</label>
+              <label for="f-service" class="sr-only">Service</label>
               <select id="f-service" name="service" aria-describedby="h-service">
-                <optgroup label="Haircuts"><option value="classic-cut" data-mins="45" data-price="48">Classic Cut ($48, 45 min)</option><option value="skin-fade" data-mins="45" data-price="52">Skin Fade ($52, 45 min)</option><option value="scissor-cut" data-mins="60" data-price="65">Scissor Cut ($65, 60 min)</option><option value="kids-cut-under-12" data-mins="30" data-price="34">Kids’ Cut (under 12) ($34, 30 min)</option><option value="senior-cut-65" data-mins="30" data-price="38">Senior Cut (65+) ($38, 30 min)</option><option value="buzz-cut" data-mins="20" data-price="32">Buzz Cut ($32, 20 min)</option></optgroup><optgroup label="Beard &amp;amp; shave"><option value="hot-towel-shave" data-mins="45" data-price="58">Hot Towel Shave ($58, 45 min)</option><option value="beard-trim-shape" data-mins="30" data-price="32">Beard Trim &amp; Shape ($32, 30 min)</option><option value="beard-sculpt" data-mins="40" data-price="42">Beard Sculpt ($42, 40 min)</option><option value="head-shave" data-mins="40" data-price="52">Head Shave ($52, 40 min)</option><option value="moustache-tidy" data-mins="15" data-price="16">Moustache Tidy ($16, 15 min)</option><option value="neck-edge-clean-up" data-mins="15" data-price="22">Neck &amp; Edge Clean-Up ($22, 15 min)</option></optgroup><optgroup label="Packages"><option value="the-full-works" data-mins="90" data-price="105">The Full Works ($105, 90 min)</option><option value="cut-beard" data-mins="70" data-price="78">Cut &amp; Beard ($78, 70 min)</option><option value="father-son" data-mins="75" data-price="75">Father &amp; Son ($75, 75 min)</option><option value="the-groom-s-package" data-mins="120" data-price="165">The Groom’s Package ($165, 120 min)</option><option value="fade-beard-trim" data-mins="65" data-price="72">Fade &amp; Beard Trim ($72, 65 min)</option><option value="the-quick-tidy" data-mins="40" data-price="55">The Quick Tidy ($55, 40 min)</option></optgroup><optgroup label="Extras"><option value="scalp-massage" data-mins="15" data-price="22">Scalp Massage ($22, 15 min)</option><option value="grey-blending" data-mins="30" data-price="38">Grey Blending ($38, 30 min)</option><option value="eyebrow-tidy" data-mins="10" data-price="14">Eyebrow Tidy ($14, 10 min)</option><option value="ear-nose-wax" data-mins="10" data-price="16">Ear &amp; Nose Wax ($16, 10 min)</option><option value="charcoal-face-mask" data-mins="15" data-price="24">Charcoal Face Mask ($24, 15 min)</option><option value="hair-wash-style" data-mins="15" data-price="18">Hair Wash &amp; Style ($18, 15 min)</option></optgroup>
+                <optgroup label="Haircuts"><option value="classic-cut" data-mins="45" data-price="48">Classic Cut ($48, 45 min)</option><option value="skin-fade" data-mins="45" data-price="52">Skin Fade ($52, 45 min)</option><option value="scissor-cut" data-mins="60" data-price="65">Scissor Cut ($65, 60 min)</option><option value="kids-cut-under-12" data-mins="30" data-price="34">Kids’ Cut (under 12) ($34, 30 min)</option><option value="senior-cut-65" data-mins="30" data-price="38">Senior Cut (65+) ($38, 30 min)</option><option value="buzz-cut" data-mins="20" data-price="32">Buzz Cut ($32, 20 min)</option></optgroup><optgroup label="Beard &amp; shave"><option value="hot-towel-shave" data-mins="45" data-price="58">Hot Towel Shave ($58, 45 min)</option><option value="beard-trim-shape" data-mins="30" data-price="32">Beard Trim &amp; Shape ($32, 30 min)</option><option value="beard-sculpt" data-mins="40" data-price="42">Beard Sculpt ($42, 40 min)</option><option value="head-shave" data-mins="40" data-price="52">Head Shave ($52, 40 min)</option><option value="moustache-tidy" data-mins="15" data-price="16">Moustache Tidy ($16, 15 min)</option><option value="neck-edge-clean-up" data-mins="15" data-price="22">Neck &amp; Edge Clean-Up ($22, 15 min)</option></optgroup><optgroup label="Packages"><option value="the-full-works" data-mins="90" data-price="105">The Full Works ($105, 90 min)</option><option value="cut-beard" data-mins="70" data-price="78">Cut &amp; Beard ($78, 70 min)</option><option value="father-son" data-mins="75" data-price="75">Father &amp; Son ($75, 75 min)</option><option value="the-groom-s-package" data-mins="120" data-price="165">The Groom’s Package ($165, 120 min)</option><option value="fade-beard-trim" data-mins="65" data-price="72">Fade &amp; Beard Trim ($72, 65 min)</option><option value="the-quick-tidy" data-mins="40" data-price="55">The Quick Tidy ($55, 40 min)</option></optgroup><optgroup label="Extras"><option value="scalp-massage" data-mins="15" data-price="22">Scalp Massage ($22, 15 min)</option><option value="grey-blending" data-mins="30" data-price="38">Grey Blending ($38, 30 min)</option><option value="eyebrow-tidy" data-mins="10" data-price="14">Eyebrow Tidy ($14, 10 min)</option><option value="ear-nose-wax" data-mins="10" data-price="16">Ear &amp; Nose Wax ($16, 10 min)</option><option value="charcoal-face-mask" data-mins="15" data-price="24">Charcoal Face Mask ($24, 15 min)</option><option value="hair-wash-style" data-mins="15" data-price="18">Hair Wash &amp; Style ($18, 15 min)</option></optgroup>
               </select>
               <p class="hint" id="h-service" aria-live="polite"></p>
             </div>
-            <div class="field">
-              <label for="f-barber">Barber</label>
-              <select id="f-barber" name="barber"><option value="any">Any available barber</option><option value="marco">Marco (owner)</option><option value="jess">Jess</option><option value="dev">Dev</option><option value="ollie">Ollie (apprentice)</option></select>
-            </div>
-            <div class="field-row">
-              <div class="field">
-                <label for="f-date">Date</label>
-                <input id="f-date" name="date" type="date" aria-describedby="e-date">
-                <p class="error" id="e-date" aria-live="polite"></p>
+
+            <fieldset class="barber-pick">
+              <legend class="step-label"><span aria-hidden="true">2</span> Barber</legend>
+              <label class="bp bp-any"><input type="radio" name="barber" value="any" checked><span class="bp-card"><span class="bp-ph" aria-hidden="true">Any</span><span class="bp-txt"><strong>Next available</strong><small>Shortest wait</small></span></span></label>
+              <label class="bp"><input type="radio" name="barber" value="marco"><span class="bp-card"><span class="bp-ph" aria-hidden="true">M</span><span class="bp-txt"><strong>Marco</strong><small>Owner · fades and razor work</small></span></span></label>
+              <label class="bp"><input type="radio" name="barber" value="jess"><span class="bp-card"><span class="bp-ph" aria-hidden="true">J</span><span class="bp-txt"><strong>Jess</strong><small>Scissor cuts and texture</small></span></span></label>
+              <label class="bp"><input type="radio" name="barber" value="dev"><span class="bp-card"><span class="bp-ph" aria-hidden="true">D</span><span class="bp-txt"><strong>Dev</strong><small>Beards and hot towel shaves</small></span></span></label>
+              <label class="bp"><input type="radio" name="barber" value="ollie"><span class="bp-card"><span class="bp-ph" aria-hidden="true">O</span><span class="bp-txt"><strong>Ollie</strong><small>Apprentice · kids and classic cuts</small></span></span></label>
+            </fieldset>
+
+            <p class="step-label"><span aria-hidden="true">3</span> Date</p>
+            <div class="cal" id="cal">
+              <div class="cal-head">
+                <button type="button" class="cal-nav" id="cal-prev" aria-label="Previous month">&lsaquo;</button>
+                <strong id="cal-title" aria-live="polite"></strong>
+                <button type="button" class="cal-nav" id="cal-next" aria-label="Next month">&rsaquo;</button>
               </div>
-              <div class="field">
-                <label for="f-time">Time</label>
-                <select id="f-time" name="time" aria-describedby="h-time"><option value="">Any time</option><option value="09:00">9:00am</option><option value="09:30">9:30am</option><option value="10:00">10:00am</option><option value="10:30">10:30am</option><option value="11:00">11:00am</option><option value="11:30">11:30am</option><option value="12:00">12:00pm</option><option value="12:30">12:30pm</option><option value="13:00">1:00pm</option><option value="13:30">1:30pm</option><option value="14:00">2:00pm</option><option value="14:30">2:30pm</option><option value="15:00">3:00pm</option><option value="15:30">3:30pm</option><option value="16:00">4:00pm</option><option value="16:30">4:30pm</option><option value="17:00">5:00pm</option><option value="17:30">5:30pm</option><option value="18:00">6:00pm</option><option value="18:30">6:30pm</option><option value="19:00">7:00pm</option><option value="19:30">7:30pm</option></select>
-              </div>
+              <div class="cal-dow" aria-hidden="true"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span></div>
+              <div class="cal-grid" id="cal-grid" role="group" aria-label="Days"></div>
             </div>
+            <input type="hidden" id="f-date" name="date">
+            <p class="error" id="e-date" aria-live="polite"></p>
+
+            <p class="step-label"><span aria-hidden="true">4</span> Time</p>
+            <div class="slots" id="slots" role="group" aria-label="Available times"></div>
+            <input type="hidden" id="f-time" name="time">
             <p class="hint" id="h-time" aria-live="polite">Choose a date to see which times are open.</p>
+            <p class="error" id="e-time" aria-live="polite"></p>
+
+            <p class="step-label"><span aria-hidden="true">5</span> Your details</p>
             <div class="field">
               <label for="f-name">Name</label>
               <input id="f-name" name="name" type="text" autocomplete="name" aria-describedby="e-name">
               <p class="error" id="e-name" aria-live="polite"></p>
             </div>
             <div class="field">
-              <label for="f-email">Email</label>
-              <input id="f-email" name="email" type="email" autocomplete="email" inputmode="email" aria-describedby="e-email">
-              <p class="error" id="e-email" aria-live="polite"></p>
+              <label for="f-phone">Phone</label>
+              <input id="f-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="e.g. 02 5550 0100" aria-describedby="e-phone">
+              <p class="error" id="e-phone" aria-live="polite"></p>
             </div>
             <div class="field">
               <label for="f-message">Notes <span class="optional">(optional)</span></label>
-              <textarea id="f-message" name="message" rows="3" maxlength="500" placeholder="Reference photo, allergies, anything we should know" aria-describedby="e-message"></textarea>
+              <textarea id="f-message" name="message" rows="2" maxlength="500" placeholder="Reference photo, allergies, anything we should know" aria-describedby="e-message"></textarea>
               <p class="error" id="e-message" aria-live="polite"></p>
             </div>
             <!--
-              DEMO ONLY: there is no backend. To make this form real, post the data in
-              js/forms.js (see "DEMO ONLY") to your booking system (Fresha, Square Appointments,
-              Timely) or a form service, and show the success panel only after a 200 response.
+              DEMO ONLY: there is no backend. The booking is saved to this browser (localStorage key "bb-bookings").
+              To make it real, post the data in js/forms.js (see "DEMO ONLY") to your booking system
+              (Fresha, Square Appointments, Timely) and show the confirmation after a 200 response.
             -->
-            <button class="btn btn-primary btn-block" type="submit">Request this time</button>
+            <button class="btn btn-primary btn-block" type="submit">Confirm booking</button>
+            <p class="note">Demo only: nothing is sent to a real shop.</p>
           </form>
           <div class="form-success" id="form-success" role="status" tabindex="-1" hidden>
             <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M7.500 12.500l3 3 6-7"/></svg>
-            <h3>Thanks, <span id="ok-name">friend</span>!</h3>
+            <h3>You&rsquo;re booked in, <span id="ok-name">friend</span>.</h3>
             <p id="ok-detail"></p>
-            <p class="note">Demo only: nothing was booked and no email was sent.</p>
+            <dl class="ok-summary" id="ok-summary"></dl>
+            <p class="demo-banner"><strong>This is a demo, no real booking was made.</strong> The details were saved only in this browser.</p>
             <button class="btn btn-secondary btn-on-light" type="button" id="form-reset">Book another visit</button>
           </div>
         </div>
@@ -275,7 +300,7 @@
           <h2>Explore</h2>
           <ul>
             <li><a href="services.html">Services</a></li><li><a href="barbers.html">The crew</a></li><li><a href="shop.html">Shop</a></li><li><a href="membership.html">Membership</a></li><li><a href="journal.html">Journal</a></li><li><a href="visit.html">Visit</a></li>
-            <li><a href="book.html">Book</a></li>
+            <li><a href="book.html">Book a chair</a></li>
           </ul>
         </nav>
         <div class="footer-col">
@@ -298,6 +323,7 @@
       </nav>
       <div class="footer-bottom">
         <p>Concept demo by KB Ventures. Not a real business.</p>
+        
         <a class="back-top" href="#top">Back to top &uarr;</a>
       </div>
     </div>
@@ -317,14 +343,14 @@
     </button>
     <section class="chat-panel" id="chat-panel" role="dialog" aria-label="Chat with us (demo)" hidden>
       <header><strong>Ask Brass</strong><span>Demo assistant, scripted answers</span></header>
-      <div class="chat-log" id="chat-log" role="log" aria-live="polite"></div>
+      <div class="chat-log" id="chat-log" data-lenis-prevent role="log" aria-live="polite"></div>
       <div class="chat-quick" id="chat-quick"></div>
     </section>
   </div>
 
   <!-- Cookie preferences -->
   <div class="cookie" id="cookie" role="region" aria-label="Cookie preferences" hidden>
-    <p><strong>Your privacy.</strong> This demo sets no tracking cookies. If you opt in, we would use simple analytics to improve the site. <a href="legal.html#cookies">Details</a></p>
+    <p><strong>No tracking by default.</strong> Allow simple analytics? <a href="legal.html#cookies">Details</a></p>
     <div class="cookie-actions">
       <button class="btn btn-primary btn-sm" type="button" data-cookie="yes">Accept</button>
       <button class="btn btn-secondary btn-sm" type="button" data-cookie="no">Decline</button>
@@ -333,6 +359,7 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <script type="application/json" id="site-data">{"name": "Brass & Blade", "phone": "02 5550 0144", "phoneHref": "0255500144", "email": "hello@example.com", "timezone": "Australia/Sydney", "locale": "en-AU", "currency": "AUD", "hours": [{"day": 1, "name": "Monday", "open": 10, "close": 18}, {"day": 2, "name": "Tuesday", "open": 9, "close": 19}, {"day": 3, "name": "Wednesday", "open": 9, "close": 19}, {"day": 4, "name": "Thursday", "open": 9, "close": 20}, {"day": 5, "name": "Friday", "open": 9, "close": 19}, {"day": 6, "name": "Saturday", "open": 9, "close": 17}, {"day": 0, "name": "Sunday", "open": 10, "close": 16}]}</script>
+  <script defer src="vendor/lenis-1.1.18.min.js"></script><!-- Lenis 1.1.18 (MIT), self-hosted, pinned -->
   <script type="module" src="main.js"></script>
 </body>
 </html>

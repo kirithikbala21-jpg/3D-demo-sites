@@ -7,7 +7,8 @@
           <p class="lead">Illustrated placeholders. A real site would show your own photography here.</p>
         </div>
         <ul class="gallery reveal">
-          <li class="tile t1 wide">
+          <li class="tile t1 wide{{#if photo.gallery-latte-art.has}} has-photo{{/if}}">
+            {{{photo.gallery-latte-art.html}}}
             <svg viewBox="0 0 200 250" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
               <ellipse cx="100" cy="125" rx="78" ry="78" fill="#3B2316"/>
               <ellipse cx="100" cy="125" rx="68" ry="68" fill="#5A3520"/>
@@ -20,7 +21,8 @@
             </svg>
             <span class="tile-cap">Rosetta pour</span>
           </li>
-          <li class="tile t2">
+          <li class="tile t2{{#if photo.gallery-roastery.has}} has-photo{{/if}}">
+            {{{photo.gallery-roastery.html}}}
             <svg viewBox="0 0 200 250" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
               <defs>
                 <pattern id="beans" width="46" height="46" patternUnits="userSpaceOnUse" patternTransform="rotate(18)">
@@ -34,7 +36,8 @@
             </svg>
             <span class="tile-cap">Weekly roast</span>
           </li>
-          <li class="tile t3">
+          <li class="tile t3{{#if photo.gallery-oak-leaf.has}} has-photo{{/if}}">
+            {{{photo.gallery-oak-leaf.html}}}
             <svg viewBox="0 0 200 250" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
               <defs>
                 <pattern id="leaves" width="56" height="56" patternUnits="userSpaceOnUse">
@@ -47,7 +50,8 @@
             </svg>
             <span class="tile-cap">Oak &amp; leaf</span>
           </li>
-          <li class="tile t4">
+          <li class="tile t4{{#if photo.gallery-first-cup.has}} has-photo{{/if}}">
+            {{{photo.gallery-first-cup.html}}}
             <svg viewBox="0 0 200 250" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
               <g fill="none" stroke="#FAF3E7" stroke-width="6" stroke-linecap="round" opacity=".85">
                 <path d="M60 220c-22-30 22-50 0-80s22-50 0-80"/>
@@ -57,7 +61,8 @@
             </svg>
             <span class="tile-cap">First cup</span>
           </li>
-          <li class="tile t5">
+          <li class="tile t5{{#if photo.gallery-floor.has}} has-photo{{/if}}">
+            {{{photo.gallery-floor.html}}}
             <svg viewBox="0 0 200 250" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
               <defs>
                 <pattern id="floor" width="50" height="50" patternUnits="userSpaceOnUse">
@@ -71,7 +76,8 @@
             </svg>
             <span class="tile-cap">Corner floor</span>
           </li>
-          <li class="tile t6">
+          <li class="tile t6{{#if photo.gallery-table.has}} has-photo{{/if}}">
+            {{{photo.gallery-table.html}}}
             <svg viewBox="0 0 200 250" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
               <g fill="none" stroke="#6B3F25" stroke-width="3" opacity=".8">
                 <circle cx="70" cy="90" r="42"/><circle cx="70" cy="90" r="37" stroke-width="1.500"/>
@@ -81,7 +87,8 @@
             </svg>
             <span class="tile-cap">Table rings</span>
           </li>
-          <li class="tile t7">
+          <li class="tile t7{{#if photo.gallery-evening.has}} has-photo{{/if}}">
+            {{{photo.gallery-evening.html}}}
             <svg viewBox="0 0 200 250" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
               <defs>
                 <pattern id="stripes" width="24" height="24" patternUnits="userSpaceOnUse" patternTransform="rotate(30)">
@@ -94,7 +101,8 @@
             </svg>
             <span class="tile-cap">Evening glow</span>
           </li>
-          <li class="tile t8 wide">
+          <li class="tile t8 wide{{#if photo.gallery-pastries.has}} has-photo{{/if}}">
+            {{{photo.gallery-pastries.html}}}
             <svg viewBox="0 0 200 250" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
               <defs>
                 <pattern id="dots" width="22" height="22" patternUnits="userSpaceOnUse">

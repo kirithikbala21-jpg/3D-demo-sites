@@ -22,6 +22,13 @@ const dlg = modal(drawer, {
 });
 
 const save = () => store(KEY, JSON.stringify(items));
+/** DEMO ONLY: a confirmed order is kept in this browser (localStorage 'eo-orders'); nothing is sent anywhere. */
+function saveOrder(order) {
+  let all = [];
+  try { all = JSON.parse(store('eo-orders') || '[]'); if (!Array.isArray(all)) all = []; } catch (_) { all = []; }
+  all.push({ id: 'EO-' + Date.now().toString(36).toUpperCase(), placed: new Date().toISOString(), ...order });
+  store('eo-orders', JSON.stringify(all.slice(-20)));
+}
 const count = () => items.reduce((n, i) => n + i.qty, 0);
 const total = () => items.reduce((n, i) => n + i.qty * i.price, 0);
 
@@ -100,7 +107,9 @@ form.addEventListener('submit', (e) => {
     name.setAttribute('aria-invalid', 'true'); name.focus(); return;
   }
   err.textContent = ''; name.setAttribute('aria-invalid', 'false');
-  const when = $('#cart-when').selectedOptions[0].textContent.toLowerCase();
+  const whenOpt = $('#cart-when').selectedOptions[0];
+  const when = whenOpt.textContent.toLowerCase();
+  saveOrder({ name: name.value.trim(), pickup: whenOpt.textContent, items: items.map((i) => ({ name: i.name, qty: i.qty, price: i.price })), total: Number(total().toFixed(2)) });
   $('#done-name').textContent = name.value.trim().split(' ')[0];
   $('#done-detail').textContent = `Your order of ${count()} ${count() === 1 ? 'item' : 'items'} (${money(total())}) would be ready ${when}.`;
   items = []; save();

@@ -9,7 +9,8 @@
       </div>
       <div class="features">
         <article class="feature reveal">
-          <div class="feature-art" aria-hidden="true">
+          <div class="feature-art{{#if photo.feature-flat-white.has}} has-photo{{/if}}"{{{photo.feature-flat-white.attr}}}>
+            {{{photo.feature-flat-white.html}}}
             <svg viewBox="0 0 200 160" focusable="false">
               <ellipse cx="100" cy="132" rx="76" ry="14" fill="#000" opacity=".4"/>
               <path d="M22 122c0-10 34-18 78-18s78 8 78 18-34 18-78 18-78-8-78-18z" fill="#F3E8D8"/>
@@ -28,7 +29,8 @@
           </div>
         </article>
         <article class="feature reveal">
-          <div class="feature-art" aria-hidden="true">
+          <div class="feature-art{{#if photo.feature-pour-over.has}} has-photo{{/if}}"{{{photo.feature-pour-over.attr}}}>
+            {{{photo.feature-pour-over.html}}}
             <svg viewBox="0 0 200 160" focusable="false">
               <ellipse cx="100" cy="144" rx="62" ry="9" fill="#000" opacity=".4"/>
               <path d="M62 30h76l-20 40H82z" fill="#F3E8D8"/>
@@ -48,7 +50,8 @@
           </div>
         </article>
         <article class="feature reveal">
-          <div class="feature-art" aria-hidden="true">
+          <div class="feature-art{{#if photo.feature-bun.has}} has-photo{{/if}}"{{{photo.feature-bun.attr}}}>
+            {{{photo.feature-bun.html}}}
             <svg viewBox="0 0 200 160" focusable="false">
               <ellipse cx="100" cy="134" rx="72" ry="12" fill="#000" opacity=".4"/>
               <circle cx="100" cy="82" r="54" fill="#C98C48"/>

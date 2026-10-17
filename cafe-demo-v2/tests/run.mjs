@@ -1,4 +1,4 @@
-// Automated checks for the Ember & Oak demo. Run:  cd tests && npm i && npx playwright-core install chromium && node run.mjs [--suite=overflow,axe,func,fallback,links,perf]
+// Automated checks for the Ember & Oak demo. Run:  cd tests && npm i && npx playwright-core install chromium && node run.mjs [--suite=overflow,axe,func,fallback,links,perf,final]
 // In a sandbox without downloads, set CHROME_PATH to an installed Chromium.
 import http from 'node:http';
 import fs from 'node:fs';
@@ -13,7 +13,7 @@ const cfg = JSON.parse(fs.readFileSync(path.join(SITE, 'site.config.json'), 'utf
 const PAGES = cfg.pages.map((p) => p.file);
 const arg = (process.argv.find((a) => a.startsWith('--suite=')) || '--suite=all').slice(8).split(',');
 const want = (n) => arg.includes('all') || arg.includes(n);
-const MIME = { '.html': 'text/html', '.css': 'text/css', '.js': 'text/javascript', '.json': 'application/json', '.woff2': 'font/woff2', '.svg': 'image/svg+xml', '.pdf': 'application/pdf', '.xml': 'application/xml', '.webmanifest': 'application/manifest+json', '.png': 'image/png' };
+const MIME = { '.html': 'text/html', '.css': 'text/css', '.js': 'text/javascript', '.json': 'application/json', '.woff2': 'font/woff2', '.svg': 'image/svg+xml', '.pdf': 'application/pdf', '.xml': 'application/xml', '.webmanifest': 'application/manifest+json', '.png': 'image/png', '.webp': 'image/webp' };
 
 const server = await new Promise((res) => {
   const s = http.createServer((q, r) => {
@@ -141,8 +141,14 @@ if (want('func')) {
   ok('full-screen menu opens on desktop', await p.locator('#mobile-nav').isVisible());
   await p.keyboard.press('Escape');
   ok('Escape closes the menu', !(await p.locator('#mobile-nav').isVisible()));
-  const pause = p.locator('.ticker-pause'); await pause.click();
-  ok('ticker can be paused (WCAG 2.2.2)', (await pause.getAttribute('aria-pressed')) === 'true' && (await p.locator('.ticker.is-paused').count()) === 1);
+  const pause = p.locator('.ticker-pause');
+  ok('ticker: moving copy is aria-hidden, a static copy is available to screen readers', (await p.locator('.ticker-viewport[aria-hidden="true"]').count()) === 1 && (await p.locator('.ticker p.sr-only').count()) === 1);
+  await pause.focus(); await p.keyboard.press('Enter');
+  ok('ticker can be paused with the keyboard (WCAG 2.2.2)', (await pause.getAttribute('aria-pressed')) === 'true' && (await p.locator('.ticker.is-paused').count()) === 1 && (await p.evaluate(() => getComputedStyle(document.querySelector('.ticker-track')).animationPlayState)) === 'paused');
+  await p.keyboard.press('Space');
+  ok('ticker can be resumed with the keyboard', (await pause.getAttribute('aria-pressed')) === 'false' && (await p.locator('.ticker.is-paused').count()) === 0);
+  await pause.click();
+  ok('ticker pause works with the mouse too', (await pause.getAttribute('aria-pressed')) === 'true');
   // search
   await p.locator('#search-open').click(); await p.keyboard.type('gluten');
   await p.waitForTimeout(500);
@@ -155,9 +161,14 @@ if (want('func')) {
   ok('chat answers from the shared hours data', (await p.locator('#chat-log .bot').last().textContent()).includes('7am') || (await p.locator('#chat-log .bot').last().textContent()).includes('7:00am'));
   await p.keyboard.press('Escape');
   // sound toggle
-  await p.locator('.footer-legal [data-sound]').click();
-  ok('ambient sound toggle flips state', (await p.locator('.footer-legal [data-sound]').getAttribute('aria-pressed')) === 'true'); await p.locator('.footer-legal [data-sound]').click();
+  const snd = p.locator('.footer-legal [data-sound]');
+  ok('ambient sound: visible label "Ambient sound: Off" before use', (await snd.innerText()).replace(/\s+/g, ' ').trim() === 'Ambient sound: Off' && (await snd.getAttribute('aria-pressed')) === 'false');
+  await snd.click();
+  ok('ambient sound toggle flips to "Ambient sound: On" (aria-pressed)', (await snd.getAttribute('aria-pressed')) === 'true' && (await snd.innerText()).replace(/\s+/g, ' ').trim() === 'Ambient sound: On');
+  await snd.click();
+  ok('ambient sound toggles back off', (await snd.getAttribute('aria-pressed')) === 'false' && /Off$/.test((await snd.innerText()).trim()));
   // newsletter
+  ok('newsletter: one-line privacy note under the form', /email/i.test(await p.locator('#p-news').textContent()) && (await p.locator('#p-news').evaluate((e) => Math.round(e.getBoundingClientRect().height / parseFloat(getComputedStyle(e).lineHeight)))) === 1);
   await p.locator('#n-email').fill('nope'); await p.locator('#news-form button').click();
   ok('newsletter rejects a bad email', (await p.locator('#e-news').textContent()).includes("doesn't look"));
   await p.locator('#n-email').fill('a@b.co'); await p.locator('#news-form button').click();
@@ -168,11 +179,17 @@ if (want('func')) {
   // Menu page: tabs, ordering, cart
   p = await newPage({ viewport: { width: 1440, height: 900 } }, { webgl: false });
   await p.goto(base + 'menu.html'); await p.waitForTimeout(800);
-  ok('menu: 38 items', (await p.locator('.menu-item').count()) === 38);
+  ok('menu: 41 items', (await p.locator('.menu-item').count()) === 41);
+  const tabNames = await p.locator('[role=tab]').allTextContents();
+  ok('menu: Coffee, Tea, Food and Bakery categories exist', ['Coffee', 'Tea', 'Food', 'Bakery'].every((n) => tabNames.includes(n)), tabNames.join(','));
+  ok('menu: every item has a price, 3 or more carry V/VG/GF tags', (await p.locator('.menu-item .price').count()) === 41 && (await p.locator('.menu-item abbr.tag').count()) > 30);
+  ok('menu: every item has an Add to order button', (await p.locator('.add-btn[aria-label^="Add "][aria-label$="to your order"]').count()) === 41);
   await p.locator('#tab-coffee').focus(); await p.keyboard.press('ArrowRight');
-  ok('menu tabs: ArrowRight', (await p.locator('#tab-breakfast').getAttribute('aria-selected')) === 'true' && (await p.locator('#panel-breakfast').isVisible()));
+  ok('menu tabs: ArrowRight', (await p.locator('#tab-tea').getAttribute('aria-selected')) === 'true' && (await p.locator('#panel-tea').isVisible()));
   await p.keyboard.press('End'); ok('menu tabs: End', (await p.locator('#tab-evening').getAttribute('aria-selected')) === 'true');
   await p.keyboard.press('ArrowRight'); ok('menu tabs: wrap to first', (await p.locator('#tab-coffee').getAttribute('aria-selected')) === 'true');
+  await p.locator('#tab-food').click(); ok('menu: Food tab shows breakfast and lunch dishes', (await p.locator('#panel-food .menu-item').count()) === 12 && (await p.locator('#panel-food').isVisible()));
+  await p.locator('#tab-coffee').click();
   await p.locator('#panel-coffee .add-btn').first().click(); await p.locator('#panel-coffee .add-btn').first().click(); await p.locator('#panel-coffee .add-btn').nth(1).click();
   ok('cart badge counts items', (await p.locator('#cart-count').textContent()) === '3');
   await p.locator('#cart-open').click();
@@ -181,8 +198,12 @@ if (want('func')) {
   ok('cart quantity buttons work', (await p.locator('#cart-count').textContent()) === '4');
   await p.locator('#cart-form button[type=submit]').click();
   ok('cart asks for a name', (await p.locator('#e-cart-name').textContent()).includes('name'));
+  ok('cart: clear demo notice at checkout and a pick-up time picker', /no payment is taken/i.test(await p.locator('#cart-demo-note').textContent()) && (await p.locator('#cart-when option').count()) >= 1 && (await p.locator('label[for="cart-when"]').textContent()).includes('Pick-up time'));
   await p.fill('#cart-name', 'Sam Rivera'); await p.locator('#cart-form button[type=submit]').click();
   ok('order confirmation appears and empties the cart', await p.locator('#cart-done').isVisible() && !(await p.locator('#cart-count').isVisible()));
+  ok('order confirmation repeats the demo notice', /no order was sent/i.test(await p.locator('#cart-done .note').textContent()));
+  const orders = await p.evaluate(() => JSON.parse(localStorage.getItem('eo-orders') || '[]'));
+  ok('confirmed order is saved to localStorage (name, items, total, pick-up)', orders.length === 1 && orders[0].name === 'Sam Rivera' && orders[0].items.length === 2 && orders[0].total > 10 && !!orders[0].pickup, JSON.stringify(orders[0] || {}).slice(0, 120));
   await p.keyboard.press('Escape');
   ok('Escape closes the cart', !(await p.locator('#cart').isVisible()));
   await p.goto(base + 'menu.html#m-cardamom-morning-bun'); await p.waitForTimeout(900);
@@ -218,7 +239,9 @@ if (want('func')) {
   await p.fill('#f-guests', '40'); await p.locator('#f-guests').blur();
   ok('reserve: guests over 12 rejected', (await p.locator('#e-guests').textContent()).includes('1 to 12'));
   await p.fill('#f-guests', '4'); await p.locator('#reserve-form button[type=submit]').click();
-  ok('reserve: success panel', await p.locator('#form-success').isVisible(), await p.locator('#ok-detail').textContent());
+  ok('reserve: success panel with demo note', (await p.locator('#form-success').isVisible()) && /demo only/i.test(await p.locator('#form-success .note').textContent()), await p.locator('#ok-detail').textContent());
+  const res = await p.evaluate(() => JSON.parse(localStorage.getItem('eo-reservations') || '[]'));
+  ok('reserve: confirmed request is saved to localStorage', res.length === 1 && res[0].guests === 4 && res[0].name === 'Sam Rivera' && res[0].date === '' + fs2 + '', JSON.stringify(res[0] || {}).slice(0, 120));
   await done(p);
 
   // Generic forms
@@ -235,7 +258,7 @@ if (want('func')) {
   await p.goto(base + 'experiences.html'); await p.locator('.chip-opt:has(input[value="100"])').click();
   ok('gift card amount updates', (await p.locator('#gift-amount').textContent()) === '$100');
   await p.goto(base + 'story.html'); await p.evaluate(() => document.querySelector('.stats').scrollIntoView()); await p.waitForTimeout(2600);
-  ok('stats count up once visible', (await p.locator('.stat-num').allTextContents()).join('|') === '9|1,800+|14');
+  ok('stats count up to 10 | 250,000 | 12 once visible', (await p.locator('.stat-num').allTextContents()).join('|') === '10|250,000|12', (await p.locator('.stat-num').allTextContents()).join('|'));
   await done(p);
 
   // Mobile menu + cookie banner
@@ -252,6 +275,124 @@ if (want('func')) {
   await p.keyboard.press('Escape'); ok('mobile menu: Escape closes', (await t.getAttribute('aria-expanded')) === 'false');
   await t.click(); await p.locator('#mobile-nav a', { hasText: 'Visit' }).click(); await p.waitForURL(/visit\.html/);
   ok('mobile menu link navigates to the page', p.url().endsWith('visit.html'));
+  await done(p);
+
+  // Cookie bar geometry: compact, never covering the hero buttons, the Call / Reserve bar or the chat button
+  for (const [w, h, mobile] of [[390, 844, true], [1440, 900, false]]) {
+    p = await newPage({ viewport: { width: w, height: h }, hasTouch: mobile }, { webgl: false, quiet: false });
+    await p.addInitScript(() => { try { sessionStorage.setItem('eo-seen', '1'); } catch (e) { /* ignore */ } });
+    await p.goto(base + 'index.html'); await p.waitForTimeout(2800);
+    const g = await p.evaluate(() => {
+      const box = (sel) => { const e = document.querySelector(sel); if (!e || e.offsetParent === null && getComputedStyle(e).position !== 'fixed') return null; const r = e.getBoundingClientRect(); return { l: r.left, t: r.top, r: r.right, b: r.bottom, w: r.width, h: r.height }; };
+      const hit = (a, b) => a && b && a.l < b.r && a.r > b.l && a.t < b.b && a.b > b.t;
+      const c = box('#cookie');
+      const ctas = [...document.querySelectorAll('.hero-cta a')].map((e) => { const r = e.getBoundingClientRect(); return { l: r.left, t: r.top, r: r.right, b: r.bottom }; });
+      return { c, vw: innerWidth, vh: innerHeight, overCta: ctas.some((x) => hit(c, x)), overBar: hit(c, box('.mobile-cta')), overChat: hit(c, box('.chat-toggle')) };
+    });
+    ok(`cookie bar @${w}: visible, compact (${g.c ? Math.round(g.c.w) + 'x' + Math.round(g.c.h) : 'none'})`, g.c && (mobile ? g.c.h <= 130 && g.c.w >= w - 30 : g.c.w <= 362 && g.c.l < 40 && g.c.b > g.vh - 40));
+    ok(`cookie bar @${w}: covers no hero button, no Call/Reserve bar, no chat button`, !g.overCta && !g.overBar && !g.overChat, JSON.stringify({ cta: g.overCta, bar: g.overBar, chat: g.overChat }));
+    const [da, dd] = await Promise.all([p.locator('#cookie [data-cookie="yes"]').boundingBox(), p.locator('#cookie [data-cookie="no"]').boundingBox()]);
+    ok(`cookie bar @${w}: Accept and Decline are side-by-side 44px buttons`, da && dd && da.height >= 43.5 && dd.height >= 43.5 && Math.abs(da.y - dd.y) < 2);
+    await done(p);
+  }
+
+  // Header shrinks on scroll, back-to-top, anchors and tab deep links (with smooth scrolling on)
+  p = await newPage({ viewport: { width: 1440, height: 900 } }, { webgl: false });
+  await p.goto(base + 'index.html'); await p.waitForTimeout(1000);
+  ok('smooth scrolling (Lenis) is active when motion is allowed', await p.evaluate(() => document.documentElement.classList.contains('lenis')));
+  const h0 = await p.locator('.site-header').evaluate((e) => e.getBoundingClientRect().height);
+  await p.evaluate(() => window.scrollTo(0, 1400)); await p.waitForTimeout(1500);
+  const h1 = await p.locator('.site-header').evaluate((e) => e.getBoundingClientRect().height);
+  ok('sticky header shrinks on scroll and stays at the top', h1 < h0 && (await p.locator('.site-header').evaluate((e) => e.getBoundingClientRect().top)) === 0, `${h0} -> ${h1}`);
+  await p.locator('.back-top').scrollIntoViewIfNeeded(); await p.waitForTimeout(400);
+  await p.evaluate(() => window.scrollTo(0, 99999)); await p.waitForTimeout(600);
+  await p.locator('.back-top').click(); await p.waitForTimeout(2200);
+  ok('"Back to top" scrolls to the top', (await p.evaluate(() => window.scrollY)) < 5, String(await p.evaluate(() => window.scrollY)));
+  await p.locator('.scroll-cue').click(); await p.waitForTimeout(2200);
+  const fy = await p.evaluate(() => [Math.round(document.querySelector('#facts').getBoundingClientRect().top), location.hash]);
+  ok('in-page anchor (#facts) scrolls to its target and updates the URL', fy[0] >= 0 && fy[0] < 140 && fy[1] === '#facts', JSON.stringify(fy));
+  await p.keyboard.press('Tab'); await p.evaluate(() => window.scrollTo(0, 0)); await p.waitForTimeout(600);
+  await p.evaluate(() => document.querySelector('.skip-link').focus()); await p.keyboard.press('Enter'); await p.waitForTimeout(800);
+  ok('skip link moves focus to main', await p.evaluate(() => document.activeElement.id === 'main'));
+  await p.locator('.nav-toggle').click(); await p.waitForTimeout(200);
+  ok('smooth scrolling pauses while the menu overlay is open', await p.evaluate(() => document.documentElement.classList.contains('lenis-stopped')));
+  await p.keyboard.press('Escape'); await p.waitForTimeout(200);
+  ok('smooth scrolling resumes after the menu closes', await p.evaluate(() => !document.documentElement.classList.contains('lenis-stopped')));
+  await p.goto(base + 'menu.html'); await p.waitForTimeout(600);
+  await p.locator('#cart-open').click(); await p.waitForTimeout(200);
+  ok('smooth scrolling pauses while the order drawer is open', await p.evaluate(() => document.documentElement.classList.contains('lenis-stopped')));
+  await p.keyboard.press('Escape');
+  await p.evaluate(() => { location.hash = '#m-cardamom-morning-bun'; }); await p.waitForTimeout(1500);
+  ok('tab deep link (#m-...) opens the Bakery tab and scrolls to the item', (await p.locator('#tab-bakery').getAttribute('aria-selected')) === 'true' && await p.evaluate(() => { const r = document.getElementById('m-cardamom-morning-bun').getBoundingClientRect(); return r.top > 0 && r.bottom < innerHeight; }));
+  await done(p);
+
+  // Reduced motion: no Lenis, counters show their final value at once
+  p = await newPage({ viewport: { width: 1440, height: 900 }, reducedMotion: 'reduce' }, { webgl: false });
+  await p.goto(base + 'story.html'); await p.waitForTimeout(500);
+  ok('reduced motion: smooth scrolling is off', await p.evaluate(() => !document.documentElement.classList.contains('lenis')));
+  ok('reduced motion: counters show 10 | 250,000 | 12 immediately', (await p.locator('.stat-num').allTextContents()).join('|') === '10|250,000|12');
+  ok('reduced motion: reveal content is visible without scrolling', await p.evaluate(() => [...document.querySelectorAll('.reveal')].every((e) => getComputedStyle(e).opacity === '1')));
+  await done(p);
+}
+
+/* ---------------------------------------------------------------- content consistency (hours, hero line, counters, titles, nav labels, photos) */
+if (want('func') || want('content')) {
+  const PHRASE = '7 days, from 7am (Sundays 8am)';
+  const html = (f) => fs.readFileSync(path.join(SITE, f), 'utf8');
+  const strip = (h) => h.replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>/g, '').replace(/<[^>]+>/g, ' ').replace(/&amp;/g, '&').replace(/&ndash;/g, '-').replace(/\s+/g, ' ');
+  ok('hours: every page footer says "' + PHRASE + '"', PAGES.every((f) => strip(html(f).split('<footer')[1] || '').includes(PHRASE)));
+  ok('hours: home hero chip, facts and visit page say the same line', [html('index.html'), html('visit.html')].every((h) => (h.match(/class="chip-hours">([^<]*)</g) || []).length >= 1 && h.includes('class="chip-hours">' + PHRASE + '<')) && html('index.html').includes('<span>' + PHRASE + '</span>'));
+  ok('hours: no leftover old wording', PAGES.every((f) => !/Open 7 days from 7am|breakfast to late/.test(html(f))));
+  const ld = JSON.parse(html('index.html').match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)[1]);
+  const byDay = Object.fromEntries(ld.openingHoursSpecification.map((o) => [o.dayOfWeek, o.opens + '-' + o.closes]));
+  ok('hours: JSON-LD matches the table (Mon-Wed 07-16, Thu-Sat 07-22, Sun 08-16) and the description says the phrase', byDay.Monday === '07:00-16:00' && byDay.Thursday === '07:00-22:00' && byDay.Saturday === '07:00-22:00' && byDay.Sunday === '08:00-16:00' && ld.description.includes(PHRASE), JSON.stringify(byDay));
+  const rows = [...html('visit.html').matchAll(/data-day="(\d)" data-open="(\d+)" data-close="(\d+)"/g)].map((m) => m.slice(1).join(':')).sort().join(' ');
+  ok('hours: visit table rows match site.config.json', rows === cfg.hours.map((h) => `${h.day}:${h.open}:${h.close}`).sort().join(' '), rows);
+  const TAG = 'Slow mornings. Small-batch coffee. Roasted out the back, poured right here.';
+  ok('hero line is the new tagline everywhere, the old one is gone', html('index.html').includes('<p class="hero-tag">' + TAG + '</p>') && PAGES.every((f) => !/Join us in seeking/.test(html(f))) && !/Join us in seeking/.test(fs.readFileSync(path.join(SITE, 'search-data.js'), 'utf8')) && !/Join us in seeking/.test(JSON.stringify(cfg)));
+  for (const f of ['index.html', 'story.html']) {
+    const nums = [...html(f).matchAll(/class="stat-num"[^>]*>([^<]*)</g)].map((m) => m[1]).join('|');
+    ok(`counters: ${f} has the real values as plain HTML text (${nums})`, nums === '10|250,000|12');
+  }
+  const lbl = (h, re) => [...h.matchAll(re)].map((m) => m[1].replace(/<[^>]+>/g, '').trim());
+  let navBad = [];
+  for (const f of PAGES) {
+    const h = html(f);
+    const overlay = lbl(h.split('id="mobile-nav"')[1].split('overlay-sub')[0], /<li><a href="[^"]+">(?:<span class="n"[^>]*>[^<]*<\/span>)?([^<]+)<\/a><\/li>/g);
+    const foot = lbl(h.split('aria-label="Footer: explore"')[1].split('</nav>')[0], /<li><a href="[^"]+">([^<]+)<\/a><\/li>/g).filter((x) => x !== 'Reserve');
+    const venues = lbl(h.split('aria-label="Our spaces"')[1].split('</nav>')[0], /<a href="[^"]+"[^>]*>(?:<svg[\s\S]*?<\/svg>)([^<]+)<\/a>/g);
+    if (overlay.join() !== foot.join() || overlay.join() !== cfg.nav.map((n) => n.label).join() || !venues.every((v) => overlay.includes(v))) navBad.push(`${f}: ${overlay} | ${foot} | ${venues}`);
+  }
+  ok('nav labels: overlay menu, footer and top tabs use the same labels on every page', !navBad.length, navBad[0]);
+  ok('no visible "index.html" text on any page', PAGES.every((f) => !/>[^<]*index\.html[^<]*</.test(html(f).replace(/<script[\s\S]*?<\/script>/g, ''))));
+  const phot = JSON.parse(fs.readFileSync(path.join(SITE, 'data/photos.json'), 'utf8')).slots;
+  const shown = Object.values(phot).filter((x) => fs.existsSync(path.join(SITE, x.file)));
+  ok('photos: every shipped photo has alt text, a credit and is under 250 KB; the footer credits exactly those', shown.every((x) => x.alt && x.credit && fs.statSync(path.join(SITE, x.file)).size <= 250 * 1024) && (shown.length ? html('index.html').includes('Photo credits:') : !html('index.html').includes('Photo credits')), `${shown.length} photos`);
+  ok('photos: no stray image files without a slot', fs.readdirSync(path.join(SITE, 'img/photos')).filter((f) => /\.(webp|jpe?g|png)$/i.test(f)).every((f) => Object.values(phot).some((x) => x.file === 'img/photos/' + f)));
+  ok('SEO: every page has a title, description, og + twitter tags, noindex, one h1, skip link', PAGES.every((f) => { const h = html(f); return /<title>[^<]+<\/title>/.test(h) && /name="description" content="[^"]{20,}/.test(h) && /property="og:title"/.test(h) && /property="og:description"/.test(h) && /property="og:image"/.test(h) && /name="twitter:card"/.test(h) && /name="twitter:title"/.test(h) && /name="robots" content="noindex"/.test(h) && /class="skip-link"/.test(h) && /rel="preload" href="fonts\/montserrat-latin\.woff2"/.test(h); }));
+  ok('og.png is a 1200x630 PNG', (() => { const b = fs.readFileSync(path.join(SITE, 'img/og.png')); return b.readUInt32BE(16) === 1200 && b.readUInt32BE(20) === 630; })());
+  ok('scripts are deferred or modules', PAGES.every((f) => { const tags = html(f).match(/<script[^>]*\ssrc="[^"]+"[^>]*>/g) || []; return tags.every((t) => /\sdefer|type="module"/.test(t)); }));
+
+  // Loaded pages: titles / meta / search results never show a literal "&amp;"; every img has dimensions; hours + counters in the DOM
+  const p = await newPage({ viewport: { width: 1280, height: 900 } }, { webgl: false });
+  const amp = [], noDims = [];
+  for (const f of PAGES) {
+    await p.goto(base + f); await p.waitForTimeout(300);
+    const r = await p.evaluate(() => ({
+      t: document.title, metas: [...document.querySelectorAll('meta[content]')].map((m) => m.content), ld: [...document.querySelectorAll('script[type="application/ld+json"]')].map((s) => s.textContent).join(' '),
+      vis: document.body.innerText, labels: [...document.querySelectorAll('[aria-label],[title],[alt]')].map((e) => (e.getAttribute('aria-label') || '') + (e.getAttribute('title') || '') + (e.getAttribute('alt') || '')).join(' '),
+      imgs: [...document.querySelectorAll('img')].filter((i) => !i.getAttribute('width') || !i.getAttribute('height')).length,
+    }));
+    if (/&amp;|&#38;/.test(r.t + r.metas.join(' ') + r.ld + r.vis + r.labels)) amp.push(f);
+    if (r.imgs) noDims.push(f);
+  }
+  ok('no literal "&amp;" in titles, meta tags, JSON-LD, visible text or labels on any page', !amp.length, amp.join(','));
+  ok('every <img> has width and height', !noDims.length, noDims.join(','));
+  await p.goto(base + 'index.html'); await p.locator('#search-open').click();
+  let badSearch = [];
+  for (const q of ['avo', 'shop', 'terms', 'oak', 'tea', 'cat', 'job', 'cup']) { await p.fill('#search-input', ''); await p.fill('#search-input', q); await p.waitForTimeout(150); const t = await p.locator('#search-results').innerText(); if (/&amp;|&rsquo;|&#/.test(t)) badSearch.push(q); }
+  ok('search results show no HTML entities', !badSearch.length, badSearch.join(','));
+  ok('search index contains no HTML entities', !/&(amp|rsquo|ndash|#\d+);/.test(fs.readFileSync(path.join(SITE, 'search-data.js'), 'utf8')));
   await done(p);
 }
 
@@ -309,11 +450,29 @@ if (want('fallback')) {
   ok('3D is animating', Buffer.compare(x, y) !== 0);
   await done(p);
 
-  p = await newPage({ viewport: { width: 1440, height: 900 } }, { quiet: false });
-  await p.goto(base + 'index.html'); await p.waitForTimeout(600);
+  p = await newPage({ viewport: { width: 1440, height: 900 } }, { quiet: false, extraInit: () => {
+    let seen = false; window.__preRemoved = null;
+    new MutationObserver(() => { const e = document.getElementById('preloader'); if (e) seen = true; else if (seen && window.__preRemoved === null) window.__preRemoved = performance.now(); }).observe(document, { childList: true, subtree: true });
+  } });
+  await p.goto(base + 'index.html', { waitUntil: 'commit' });
+  await p.waitForSelector('#preloader', { state: 'attached', timeout: 5000 });
   ok('first visit shows the branded preloader', (await p.locator('#preloader').count()) === 1);
-  await p.waitForTimeout(6500); // the intro lasts up to about 4 seconds on a slow machine
+  await p.waitForFunction(() => window.__preRemoved !== null, null, { timeout: 8000 }).catch(() => {});
+  const preT = await p.evaluate(() => window.__preRemoved);
+  ok('first visit: preloader is gone within 1.5s (plus 0.5s margin for slow test machines)', preT !== null && preT < 2000, `removed at ${preT === null ? 'never' : Math.round(preT) + ' ms'} after navigation start`);
   ok('preloader finishes and the page becomes ready', (await p.locator('#preloader').count()) === 0 && (await p.evaluate(() => document.documentElement.classList.contains('is-ready'))));
+  ok('3D hero shows the SVG poster until the scene is ready', await p.evaluate(() => !!document.querySelector('.cup-fallback')));
+  await done(p);
+
+  // counters: real numbers in the HTML without JavaScript, and when the script breaks
+  p = await newPage({ viewport: { width: 1440, height: 900 }, javaScriptEnabled: false }, { quiet: false });
+  await p.goto(base + 'story.html');
+  ok('no JavaScript: counters show 10 | 250,000 | 12', (await p.locator('.stat-num').allTextContents()).join('|') === '10|250,000|12');
+  await done(p);
+  p = await newPage({ viewport: { width: 1440, height: 900 } }, { quiet: false });
+  await p.context().route('**/main.js', (r) => r.fulfill({ status: 200, contentType: 'text/javascript', body: 'throw new Error("boom")' }));
+  await p.goto(base + 'story.html'); await p.waitForTimeout(5200);
+  ok('main script fails: counters keep their final text and reveal content is visible', (await p.locator('.stat-num').allTextContents()).join('|') === '10|250,000|12' && (await p.evaluate(() => [...document.querySelectorAll('.reveal')].every((e) => getComputedStyle(e).opacity === '1'))));
   await done(p);
 }
 
@@ -329,6 +488,47 @@ if (want('perf')) {
   const ld = await p.evaluate(() => [...document.querySelectorAll('script[type="application/ld+json"]')].map((s) => JSON.parse(s.textContent)['@type']));
   ok('home has CafeOrCoffeeShop structured data', ld.includes('CafeOrCoffeeShop'), JSON.stringify(ld));
   await done(p);
+}
+
+/* ---------------------------------------------------------------- final sweep: every page at 1440x900 and 390x844 */
+if (want('final')) {
+  for (const [w, h] of [[1440, 900], [390, 844]]) {
+    const p = await newPage({ viewport: { width: w, height: h }, hasTouch: w < 500 });
+    const bad = { scroll: [], img: [], logs: [], overlap: [] };
+    for (const f of PAGES) {
+      p.logs.length = 0;
+      await p.goto(base + f); await p.waitForTimeout(f === 'index.html' ? 3500 : 700); await p.addStyleTag({ content: force }); await p.waitForTimeout(150);
+      const r = await p.evaluate(() => {
+        const W = document.documentElement.clientWidth;
+        const imgs = [...document.querySelectorAll('img')].filter((i) => i.complete && !i.naturalWidth).map((i) => i.src);
+        // detect overlapping text: visible in-flow text blocks whose boxes intersect without one containing the other
+        const fixedish = (e) => { for (let a = e; a && a !== document.body; a = a.parentElement) { const c = getComputedStyle(a); if (/(fixed|sticky|absolute)/.test(c.position) || a.hidden || a.getAttribute('aria-hidden') === 'true' || a.classList.contains('sr-only') || a.classList.contains('hero') && false) return true; } return false; };
+        const els = [...document.querySelectorAll('h1,h2,h3,h4,p,li,a,button,label,th,td,summary,figcaption,address,dt,dd')].filter((e) => {
+          const dt = e.closest('details'); if (dt && !dt.open && !e.closest('summary')) return false;
+          if (e.offsetParent === null || fixedish(e) || e.closest('.hero-stage,.ticker,.mobile-nav,.cart,.search,.chat,[hidden]')) return false;
+          const r = e.getBoundingClientRect(); return r.width > 2 && r.height > 2 && [...e.childNodes].some((n) => n.nodeType === 3 && n.textContent.trim());
+        });
+        const boxes = els.map((e) => [e, e.getBoundingClientRect()]);
+        const clash = [];
+        for (let i = 0; i < boxes.length; i++) for (let j = i + 1; j < boxes.length; j++) {
+          const [a, ra] = boxes[i], [b, rb] = boxes[j];
+          if (a.contains(b) || b.contains(a)) continue;
+          const ox = Math.min(ra.right, rb.right) - Math.max(ra.left, rb.left), oy = Math.min(ra.bottom, rb.bottom) - Math.max(ra.top, rb.top);
+          if (ox > 3 && oy > 3 && ox * oy > 40) clash.push(`${a.tagName}.${(a.className || '').toString().split(' ')[0]}"${a.textContent.trim().slice(0, 18)}" x ${b.tagName}"${b.textContent.trim().slice(0, 18)}"`);
+        }
+        return { sw: document.documentElement.scrollWidth, W, imgs, clash: clash.slice(0, 3) };
+      });
+      if (r.sw > r.W) bad.scroll.push(f);
+      if (r.imgs.length) bad.img.push(f + ' ' + r.imgs.join());
+      if (r.clash.length) bad.overlap.push(f + ': ' + r.clash.join(' | '));
+      if (p.logs.length) bad.logs.push(f + ': ' + p.logs.slice(0, 2).join(' / '));
+    }
+    ok(`final @${w}x${h}: no horizontal scroll on any page`, !bad.scroll.length, bad.scroll.join(','));
+    ok(`final @${w}x${h}: no broken images`, !bad.img.length, bad.img.join(','));
+    ok(`final @${w}x${h}: no overlapping text detected`, !bad.overlap.length, bad.overlap.slice(0, 3).join(' || '));
+    ok(`final @${w}x${h}: no console errors or warnings (404s included)`, !bad.logs.length, bad.logs.join(' || '));
+    await done(p);
+  }
 }
 
 await browser.close(); server.close();

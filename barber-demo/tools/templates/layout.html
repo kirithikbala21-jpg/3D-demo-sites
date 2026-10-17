@@ -14,14 +14,22 @@
   <meta property="og:url" content="{{page.canonical}}">
   <meta property="og:image" content="{{site.baseUrl}}img/og.png">
   <meta property="og:locale" content="en_AU">
+  <meta property="og:site_name" content="{{brand.fullName}} (concept demo)">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Brass &amp; Blade Barbershop: the spinning barber pole and wordmark on a black and gold hero">
   <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{page.fullTitle}}">
+  <meta name="twitter:description" content="{{page.description}}">
+  <meta name="twitter:image" content="{{site.baseUrl}}img/og.png">
   <link rel="icon" href="img/icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
   <link rel="manifest" href="site.webmanifest">
   <link rel="preload" href="fonts/montserrat-latin.woff2" as="font" type="font/woff2" crossorigin>
-  {{#if page.isHome}}<link rel="preload" href="fonts/oswald-latin.woff2" as="font" type="font/woff2" crossorigin>{{/if}}
+  <link rel="preload" href="fonts/oswald-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="vendor/lenis-1.1.18.css">
   <link rel="stylesheet" href="styles.css">
-  <style>:root{--black:{{theme.black}};--wine:{{theme.wine}};--wine-deep:{{theme.wineDeep}};--wine-night:{{theme.wineNight}};--gold-light:{{theme.goldLight}};--gold-text:{{theme.goldText}};--cream:{{theme.cream}};--tint:{{theme.tint}};--ink:{{theme.ink}}}</style>
+  <style>:root{--black:{{theme.black}};--charcoal:#161617;--gold:#C9A24B;--wine:{{theme.wine}};--wine-deep:{{theme.wineDeep}};--wine-night:{{theme.wineNight}};--gold-light:{{theme.goldLight}};--gold-text:{{theme.goldText}};--cream:{{theme.cream}};--tint:{{theme.tint}};--ink:{{theme.ink}}}</style>
   {{{jsonld}}}
   <noscript><style>
     /* Without JavaScript: show the navigation and every menu category as plain content. */
@@ -98,7 +106,7 @@
     </div>
   </header>
 
-  <div class="mobile-nav" id="mobile-nav" role="dialog" aria-modal="true" aria-label="Site menu" hidden>
+  <div class="mobile-nav" id="mobile-nav" data-lenis-prevent role="dialog" aria-modal="true" aria-label="Site menu" hidden>
     <div class="overlay-inner">
       <nav aria-label="Main">
         <ul>
@@ -108,7 +116,7 @@
         <ul class="overlay-sub" aria-label="More">
           <li><a href="membership.html#gift-cards">Gift cards</a></li>
           <li><a href="careers.html">Careers</a></li>
-          <li><a href="legal.html">Legal</a></li>
+          <li><a href="legal.html#privacy">Privacy</a></li>
         </ul>
       </nav>
       <div class="overlay-info">
@@ -134,13 +142,13 @@
         </button>
       </form>
       <p class="search-hint" id="search-hint" aria-live="polite">Try &ldquo;skin fade&rdquo;, &ldquo;beard&rdquo; or &ldquo;walk-ins&rdquo;.</p>
-      <ul class="search-results" id="search-results"></ul>
+      <ul class="search-results" id="search-results" data-lenis-prevent></ul>
     </div>
   </div>
 
   <!-- Order / cart drawer (demo) -->
   <div class="scrim" id="scrim" hidden></div>
-  <aside class="cart" id="cart" role="dialog" aria-modal="true" aria-labelledby="cart-title" hidden>
+  <aside class="cart" id="cart" data-lenis-prevent role="dialog" aria-modal="true" aria-labelledby="cart-title" hidden>
     <div class="cart-head">
       <h2 id="cart-title">Your visit</h2>
       <button class="icon-btn" type="button" id="cart-close" aria-label="Close your visit">
@@ -149,7 +157,7 @@
     </div>
     <div class="cart-body">
       <p class="cart-empty" id="cart-empty">Your visit is empty. Add a service from <a href="services.html">services</a> or a product from the <a href="shop.html">shop</a>.</p>
-      <ul class="cart-list" id="cart-list"></ul>
+      <ul class="cart-list" id="cart-list" data-lenis-prevent></ul>
     </div>
     <form class="cart-foot" id="cart-form" novalidate hidden>
       <p class="cart-time" id="cart-time" hidden></p>
@@ -209,7 +217,7 @@
           <h2>Explore</h2>
           <ul>
             {{#each nav}}<li><a href="{{this.href}}">{{this.label}}</a></li>{{/each}}
-            <li><a href="book.html">Book</a></li>
+            <li><a href="book.html">Book a chair</a></li>
           </ul>
         </nav>
         <div class="footer-col">
@@ -232,6 +240,7 @@
       </nav>
       <div class="footer-bottom">
         <p>{{brand.demoFooter}}</p>
+        {{#if photoCredits}}<p class="photo-credits">Photo credits: {{photoCredits}}</p>{{/if}}
         <a class="back-top" href="#top">Back to top &uarr;</a>
       </div>
     </div>
@@ -251,14 +260,14 @@
     </button>
     <section class="chat-panel" id="chat-panel" role="dialog" aria-label="Chat with us (demo)" hidden>
       <header><strong>Ask Brass</strong><span>Demo assistant, scripted answers</span></header>
-      <div class="chat-log" id="chat-log" role="log" aria-live="polite"></div>
+      <div class="chat-log" id="chat-log" data-lenis-prevent role="log" aria-live="polite"></div>
       <div class="chat-quick" id="chat-quick"></div>
     </section>
   </div>
 
   <!-- Cookie preferences -->
   <div class="cookie" id="cookie" role="region" aria-label="Cookie preferences" hidden>
-    <p><strong>Your privacy.</strong> This demo sets no tracking cookies. If you opt in, we would use simple analytics to improve the site. <a href="legal.html#cookies">Details</a></p>
+    <p><strong>No tracking by default.</strong> Allow simple analytics? <a href="legal.html#cookies">Details</a></p>
     <div class="cookie-actions">
       <button class="btn btn-primary btn-sm" type="button" data-cookie="yes">Accept</button>
       <button class="btn btn-secondary btn-sm" type="button" data-cookie="no">Decline</button>
@@ -267,6 +276,7 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <script type="application/json" id="site-data">{{{siteData}}}</script>
+  <script defer src="vendor/lenis-1.1.18.min.js"></script><!-- Lenis 1.1.18 (MIT), self-hosted, pinned -->
   <script type="module" src="main.js"></script>
 </body>
 </html>

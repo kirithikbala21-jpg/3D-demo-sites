@@ -266,6 +266,21 @@ def time_options():
     return "".join(out)
 
 
+def photo_slots():
+    """Real photos live in img/photos/ and are listed in data/photos.json (see tools/add-photo.py). A slot renders only when its file exists."""
+    slots = DATA.get("photos", {}).get("slots", {})
+    html_by_slot, credits = {}, []
+    for key, sl in slots.items():
+        if (ROOT / sl["file"]).exists():
+            html_by_slot[key] = (f'<span class="photo"><img src="{sl["file"]}" alt="{html.escape(sl["alt"], quote=True)}" '
+                                 f'width="{sl["w"]}" height="{sl["h"]}" loading="lazy" decoding="async"></span>')
+            if sl.get("credit"):
+                credits.append(sl["credit"])
+        else:
+            html_by_slot[key] = ""
+    return html_by_slot, "; ".join(dict.fromkeys(credits))
+
+
 def build():
     for p in DATA["products"]:
         p["isJar"] = p["art"] == "jar"
@@ -290,6 +305,7 @@ def build():
         "newsText": ". ".join(cfg["news"]) + ".",
         "year": 2026,
         "timeOptions": time_options(),
+        "photos": photo_slots()[0], "photoCredits": photo_slots()[1],
         "mapsUrl": "https://www.google.com/maps/search/?api=1&query=" + urllib.parse.quote(cfg["contact"]["mapsQuery"]),
         "osmEmbed": "https://www.openstreetmap.org/export/embed.html?bbox=%s%%2C%s%%2C%s%%2C%s&layer=mapnik&marker=%s%%2C%s" % (
             cfg["contact"]["lon"] - 0.01, cfg["contact"]["lat"] - 0.006, cfg["contact"]["lon"] + 0.01, cfg["contact"]["lat"] + 0.006, cfg["contact"]["lat"], cfg["contact"]["lon"]),
@@ -298,7 +314,7 @@ def build():
     for page in cfg["pages"]:
         ctx = {**base, "page": {**page, "isHome": page["file"] == "index.html",
                                 "canonical": cfg["site"]["baseUrl"] + ("" if page["file"] == "index.html" else page["file"]),
-                                "fullTitle": ("" if page["file"] == "index.html" else page["title"] + " | ") + cfg["brand"]["fullName"] + " (concept demo v2)"},
+                                "fullTitle": ("" if page["file"] == "index.html" else page["title"] + " | ") + cfg["brand"]["fullName"] + " (concept demo)"},
                "currentFile": page["file"]}
         ctx["venues"] = [{"label": l, "href": h, "icon": i, "current": h == page["file"]} for l, h, i in VENUES]
         ctx["jsonld"] = jsonld(page) if page.get("jsonld") else ""

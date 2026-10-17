@@ -1,0 +1,104 @@
+{
+ "_about": "Photo slots. Add a real photo with: python3 tools/add-photo.py SOURCE.jpg SLOT --alt \"...\" --credit \"Photographer, Source\". A slot shows its photo only when the file exists; otherwise the illustration stays. See README, Photos.",
+ "slots": {
+  "gallery-latte-art": {
+   "label": "Latte art",
+   "file": "img/photos/gallery-latte-art.webp",
+   "alt": "",
+   "suggestedAlt": "A rosetta poured into a flat white",
+   "credit": "",
+   "w": 1600,
+   "h": 1000
+  },
+  "gallery-roastery": {
+   "label": "Roastery",
+   "file": "img/photos/gallery-roastery.webp",
+   "alt": "",
+   "suggestedAlt": "Freshly roasted beans cooling in the roastery",
+   "credit": "",
+   "w": 1200,
+   "h": 1500
+  },
+  "gallery-oak-leaf": {
+   "label": "Interior detail",
+   "file": "img/photos/gallery-oak-leaf.webp",
+   "alt": "",
+   "suggestedAlt": "Oak table and a leaf-pattern detail in the café",
+   "credit": "",
+   "w": 1200,
+   "h": 1500
+  },
+  "gallery-first-cup": {
+   "label": "First cup",
+   "file": "img/photos/gallery-first-cup.webp",
+   "alt": "",
+   "suggestedAlt": "Steam rising from the first cup of the day",
+   "credit": "",
+   "w": 1200,
+   "h": 1500
+  },
+  "gallery-floor": {
+   "label": "Interior",
+   "file": "img/photos/gallery-floor.webp",
+   "alt": "",
+   "suggestedAlt": "The tiled corner floor of the café",
+   "credit": "",
+   "w": 1200,
+   "h": 1500
+  },
+  "gallery-table": {
+   "label": "Interior",
+   "file": "img/photos/gallery-table.webp",
+   "alt": "",
+   "suggestedAlt": "Worn oak tabletop with cup rings",
+   "credit": "",
+   "w": 1200,
+   "h": 1500
+  },
+  "gallery-evening": {
+   "label": "Evening",
+   "file": "img/photos/gallery-evening.webp",
+   "alt": "",
+   "suggestedAlt": "The café glowing at dusk",
+   "credit": "",
+   "w": 1200,
+   "h": 1500
+  },
+  "gallery-pastries": {
+   "label": "Pastries",
+   "file": "img/photos/gallery-pastries.webp",
+   "alt": "",
+   "suggestedAlt": "Morning buns fresh from the oven",
+   "credit": "",
+   "w": 1600,
+   "h": 1000
+  },
+  "feature-flat-white": {
+   "label": "Flat white",
+   "file": "img/photos/feature-flat-white.webp",
+   "alt": "",
+   "suggestedAlt": "A flat white on an oak table",
+   "credit": "",
+   "w": 1200,
+   "h": 1100
+  },
+  "feature-pour-over": {
+   "label": "Pour-over",
+   "file": "img/photos/feature-pour-over.webp",
+   "alt": "",
+   "suggestedAlt": "Pour-over coffee being brewed by hand",
+   "credit": "",
+   "w": 1200,
+   "h": 1100
+  },
+  "feature-bun": {
+   "label": "Pastries",
+   "file": "img/photos/feature-bun.webp",
+   "alt": "",
+   "suggestedAlt": "A cardamom morning bun on a plate",
+   "credit": "",
+   "w": 1200,
+   "h": 1100
+  }
+ }
+}

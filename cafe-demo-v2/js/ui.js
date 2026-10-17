@@ -1,5 +1,6 @@
 // Page behaviour: header, full-screen menu, tabs, reveal / split-text / count-up animations, magnetic buttons, hours status, map, cookies.
 import { $, $$, site, reduceMotion, finePointer, cafeNow, hoursFor, fmtHour, store, toast } from './util.js';
+import { scrollToEl } from './motion.js';
 
 /* ---------- Header solid on scroll, progress bar, hero parallax ---------- */
 (() => {
@@ -81,7 +82,7 @@ import { $, $$, site, reduceMotion, finePointer, cafeNow, hoursFor, fmtHour, sto
     const panel = el && el.closest('[role="tabpanel"]');
     if (!panel) return;
     select($(`[aria-controls="${panel.id}"]`), false);
-    requestAnimationFrame(() => { el.scrollIntoView({ block: 'center', behavior: reduceMotion ? 'auto' : 'smooth' }); el.animate([{ background: 'rgba(221,180,106,.35)' }, { background: 'transparent' }], { duration: 2200 }); });
+    requestAnimationFrame(() => { scrollToEl(el, { block: 'center' }); el.animate([{ background: 'rgba(221,180,106,.35)' }, { background: 'transparent' }], { duration: 2200 }); });
   }
   goto();
   window.addEventListener('hashchange', goto);
@@ -121,7 +122,9 @@ import { $, $$, site, reduceMotion, finePointer, cafeNow, hoursFor, fmtHour, sto
   });
   const fmt = (n) => n.toLocaleString(site.locale);
   const finish = (el) => { el.textContent = fmt(+el.dataset.count) + (el.dataset.suffix || ''); };
+  // The final numbers are real text in the HTML. Only when this script runs (and motion is allowed) do they restart from 0 and count up.
   if (reduceMotion || !('IntersectionObserver' in window)) { reveals.forEach((el) => el.classList.add('is-visible')); counters.forEach(finish); return; }
+  counters.forEach((el) => { el.textContent = fmt(0); });
   const rio = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('is-visible'); rio.unobserve(e.target); } }), { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
   reveals.forEach((el) => rio.observe(el));
   const cio = new IntersectionObserver((es) => es.forEach((e) => {
@@ -130,7 +133,7 @@ import { $, $$, site, reduceMotion, finePointer, cafeNow, hoursFor, fmtHour, sto
     const el = e.target, end = +el.dataset.count, t0 = performance.now();
     const step = (now) => {
       const p = Math.min(1, (now - t0) / 1600), eased = 1 - Math.pow(1 - p, 3);
-      el.textContent = fmt(Math.round(end * eased)) + (p === 1 ? el.dataset.suffix || '' : '');
+      el.textContent = p === 1 ? fmt(end) + (el.dataset.suffix || '') : fmt(Math.round(end * eased));
       if (p < 1) requestAnimationFrame(step);
     };
     requestAnimationFrame(step);
@@ -171,9 +174,9 @@ import { $, $$, site, reduceMotion, finePointer, cafeNow, hoursFor, fmtHour, sto
   if (row) { row.classList.add('is-today'); $('th', row).insertAdjacentHTML('beforeend', ' <span class="today-badge">Today</span>'); }
   const t = hoursFor(day);
   let text, isOpen = false;
-  if (t && hour >= t.open && hour < t.close) { text = `Open now · until ${fmtHour(t.close)}`; isOpen = true; }
-  else if (t && hour < t.open) text = `Closed · opens ${fmtHour(t.open)} today`;
-  else { const nx = hoursFor((day + 1) % 7); text = `Closed · opens ${fmtHour(nx.open)} tomorrow`; }
+  if (t && hour >= t.open && hour < t.close) { text = `Open now until ${fmtHour(t.close)}`; isOpen = true; }
+  else if (t && hour < t.open) text = `Closed now, opens ${fmtHour(t.open)} today`;
+  else { const nx = hoursFor((day + 1) % 7); text = `Closed now, opens ${fmtHour(nx.open)} tomorrow`; }
   ['#open-status', '#open-status-2'].forEach((sel) => {
     const el = $(sel); if (!el) return;
     el.textContent = text;

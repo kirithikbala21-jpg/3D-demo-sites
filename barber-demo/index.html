@@ -3,25 +3,33 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Brass &amp; Blade Barbershop (concept demo v2)</title>
+  <title>Brass &amp; Blade Barbershop (concept demo)</title>
   <meta name="description" content="Classic cuts, skin fades and hot towel shaves in Surry Hills, Sydney. A concept demo for a fictional barbershop with a 3D barber pole.">
   <meta name="robots" content="noindex">
-  <meta name="theme-color" content="#0A101C">
+  <meta name="theme-color" content="#0B0B0C">
   <link rel="canonical" href="https://kirithikbala21-jpg.github.io/3D-demo-sites/barber-demo/">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Brass &amp; Blade Barbershop (concept demo v2)">
+  <meta property="og:title" content="Brass &amp; Blade Barbershop (concept demo)">
   <meta property="og:description" content="Classic cuts, skin fades and hot towel shaves in Surry Hills, Sydney. A concept demo for a fictional barbershop with a 3D barber pole.">
   <meta property="og:url" content="https://kirithikbala21-jpg.github.io/3D-demo-sites/barber-demo/">
   <meta property="og:image" content="https://kirithikbala21-jpg.github.io/3D-demo-sites/barber-demo/img/og.png">
   <meta property="og:locale" content="en_AU">
+  <meta property="og:site_name" content="Brass &amp; Blade Barbershop (concept demo)">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Brass &amp; Blade Barbershop: the spinning barber pole and wordmark on a black and gold hero">
   <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Brass &amp; Blade Barbershop (concept demo)">
+  <meta name="twitter:description" content="Classic cuts, skin fades and hot towel shaves in Surry Hills, Sydney. A concept demo for a fictional barbershop with a 3D barber pole.">
+  <meta name="twitter:image" content="https://kirithikbala21-jpg.github.io/3D-demo-sites/barber-demo/img/og.png">
   <link rel="icon" href="img/icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
   <link rel="manifest" href="site.webmanifest">
   <link rel="preload" href="fonts/montserrat-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="fonts/oswald-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="vendor/lenis-1.1.18.css">
   <link rel="stylesheet" href="styles.css">
-  <style>:root{--black:#0A101C;--wine:#B3202A;--wine-deep:#7E1219;--wine-night:#0F1A30;--gold-light:#D8B46C;--gold-text:#85601F;--cream:#F6F1E7;--tint:#ECE5D5;--ink:#131722}</style>
+  <style>:root{--black:#0B0B0C;--charcoal:#161617;--gold:#C9A24B;--wine:#7A5A12;--wine-deep:#5A410A;--wine-night:#161617;--gold-light:#E4C77A;--gold-text:#7A5A12;--cream:#F2EBDD;--tint:#E8DFCB;--ink:#141414}</style>
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BarberShop", "name": "Brass & Blade Barbershop", "description": "Brass & Blade is a fictional barbershop used as a concept demo: classic cuts, skin fades, hot towel shaves, memberships and a spinning 3D barber pole.", "url": "https://kirithikbala21-jpg.github.io/3D-demo-sites/barber-demo/", "telephone": "02 5550 0144", "email": "hello@example.com", "priceRange": "$$", "makesOffer": [{"@type": "Offer", "name": "Haircuts, shaves and beard grooming", "url": "https://kirithikbala21-jpg.github.io/3D-demo-sites/barber-demo/services.html"}], "address": {"@type": "PostalAddress", "streetAddress": "48 Example Lane", "addressLocality": "Sydney", "addressRegion": "NSW", "postalCode": "2010", "addressCountry": "AU"}, "openingHoursSpecification": [{"@type": "OpeningHoursSpecification", "dayOfWeek": "Monday", "opens": "10:00", "closes": "18:00"}, {"@type": "OpeningHoursSpecification", "dayOfWeek": "Tuesday", "opens": "09:00", "closes": "19:00"}, {"@type": "OpeningHoursSpecification", "dayOfWeek": "Wednesday", "opens": "09:00", "closes": "19:00"}, {"@type": "OpeningHoursSpecification", "dayOfWeek": "Thursday", "opens": "09:00", "closes": "20:00"}, {"@type": "OpeningHoursSpecification", "dayOfWeek": "Friday", "opens": "09:00", "closes": "19:00"}, {"@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "09:00", "closes": "17:00"}, {"@type": "OpeningHoursSpecification", "dayOfWeek": "Sunday", "opens": "10:00", "closes": "16:00"}]}</script>
   
   <noscript><style>
@@ -99,7 +107,7 @@
     </div>
   </header>
 
-  <div class="mobile-nav" id="mobile-nav" role="dialog" aria-modal="true" aria-label="Site menu" hidden>
+  <div class="mobile-nav" id="mobile-nav" data-lenis-prevent role="dialog" aria-modal="true" aria-label="Site menu" hidden>
     <div class="overlay-inner">
       <nav aria-label="Main">
         <ul>
@@ -109,7 +117,7 @@
         <ul class="overlay-sub" aria-label="More">
           <li><a href="membership.html#gift-cards">Gift cards</a></li>
           <li><a href="careers.html">Careers</a></li>
-          <li><a href="legal.html">Legal</a></li>
+          <li><a href="legal.html#privacy">Privacy</a></li>
         </ul>
       </nav>
       <div class="overlay-info">
@@ -135,13 +143,13 @@
         </button>
       </form>
       <p class="search-hint" id="search-hint" aria-live="polite">Try &ldquo;skin fade&rdquo;, &ldquo;beard&rdquo; or &ldquo;walk-ins&rdquo;.</p>
-      <ul class="search-results" id="search-results"></ul>
+      <ul class="search-results" id="search-results" data-lenis-prevent></ul>
     </div>
   </div>
 
   <!-- Order / cart drawer (demo) -->
   <div class="scrim" id="scrim" hidden></div>
-  <aside class="cart" id="cart" role="dialog" aria-modal="true" aria-labelledby="cart-title" hidden>
+  <aside class="cart" id="cart" data-lenis-prevent role="dialog" aria-modal="true" aria-labelledby="cart-title" hidden>
     <div class="cart-head">
       <h2 id="cart-title">Your visit</h2>
       <button class="icon-btn" type="button" id="cart-close" aria-label="Close your visit">
@@ -150,7 +158,7 @@
     </div>
     <div class="cart-body">
       <p class="cart-empty" id="cart-empty">Your visit is empty. Add a service from <a href="services.html">services</a> or a product from the <a href="shop.html">shop</a>.</p>
-      <ul class="cart-list" id="cart-list"></ul>
+      <ul class="cart-list" id="cart-list" data-lenis-prevent></ul>
     </div>
     <form class="cart-foot" id="cart-form" novalidate hidden>
       <p class="cart-time" id="cart-time" hidden></p>
@@ -199,15 +207,15 @@
 
         <div class="hero-stage" id="stage">
           <!-- Fallback / poster illustration: visible until the 3D canvas is ready, and kept if 3D fails -->
-          <svg class="stage-fallback" viewBox="0 0 300 420" role="img" aria-label="Illustration of a spinning red, white and blue barber pole">
+          <svg class="stage-fallback" viewBox="0 0 300 420" role="img" aria-label="Illustration of a spinning black and white barber pole with brass caps">
             <defs>
-              <radialGradient id="fb-red" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#E23B47" stop-opacity=".55"/><stop offset="1" stop-color="#E23B47" stop-opacity="0"/></radialGradient>
-              <radialGradient id="fb-blue" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#3C6DE0" stop-opacity=".55"/><stop offset="1" stop-color="#3C6DE0" stop-opacity="0"/></radialGradient>
+              <radialGradient id="fb-red" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#C9A24B" stop-opacity=".5"/><stop offset="1" stop-color="#C9A24B" stop-opacity="0"/></radialGradient>
+              <radialGradient id="fb-blue" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#E4C77A" stop-opacity=".4"/><stop offset="1" stop-color="#E4C77A" stop-opacity="0"/></radialGradient>
               <linearGradient id="fb-brass" x1="0" x2="1"><stop offset="0" stop-color="#8E6A2B"/><stop offset=".45" stop-color="#F0D28C"/><stop offset="1" stop-color="#8E6A2B"/></linearGradient>
               <linearGradient id="fb-glass" x1="0" x2="1"><stop offset="0" stop-color="#000" stop-opacity=".35"/><stop offset=".3" stop-color="#fff" stop-opacity=".12"/><stop offset=".5" stop-color="#fff" stop-opacity=".02"/><stop offset="1" stop-color="#000" stop-opacity=".4"/></linearGradient>
               <pattern id="fb-stripes" width="90" height="90" patternUnits="userSpaceOnUse">
-                <rect width="90" height="90" fill="#F6F1E7"/>
-                <g><path d="M0 -15L90 -60L90 -30L0 15Z" fill="#B3202A"/><path d="M0 75L90 30L90 60L0 105Z" fill="#B3202A"/><path d="M0 15L90 -30L90 0L0 45Z" fill="#1F3F8C"/><path d="M0 105L90 60L90 90L0 135Z" fill="#1F3F8C"/><path d="M0 45L90 0L90 30L0 75Z" fill="#B3202A" opacity="0"/></g>
+                <rect width="90" height="90" fill="#F2EBDD"/>
+                <g><path d="M0 -15L90 -60L90 -30L0 15Z" fill="#1B1B1C"/><path d="M0 75L90 30L90 60L0 105Z" fill="#1B1B1C"/><path d="M0 15L90 -30L90 -22L0 23Z" fill="#B3202A"/><path d="M0 105L90 60L90 68L0 113Z" fill="#B3202A"/></g>
               </pattern>
               <clipPath id="fb-clip"><rect x="105" y="78" width="90" height="264" rx="6"/></clipPath>
             </defs>
@@ -256,12 +264,12 @@
           <div class="feature-art" aria-hidden="true">
             <svg viewBox="0 0 200 160" focusable="false">
               <ellipse cx="100" cy="146" rx="46" ry="7" fill="#000" opacity=".4"/>
-              <rect x="70" y="18" width="60" height="108" rx="24" fill="#F6F1E7"/>
+              <rect x="70" y="18" width="60" height="108" rx="24" fill="#F2EBDD"/>
               <rect x="70" y="18" width="14" height="108" rx="7" fill="#fff" opacity=".6"/>
-              <rect x="90" y="40" width="20" height="26" rx="7" fill="#B3202A"/>
-              <rect x="76" y="118" width="48" height="16" rx="3" fill="#C9CFDA"/>
-              <path d="M80 134v8m8-8v8m8-8v8m8-8v8m8-8v8" stroke="#8A93A6" stroke-width="3" stroke-linecap="round"/>
-              <rect x="86" y="84" width="28" height="6" rx="3" fill="#D8B46C"/><rect x="86" y="96" width="28" height="6" rx="3" fill="#D8B46C"/>
+              <rect x="90" y="40" width="20" height="26" rx="7" fill="#C9A24B"/>
+              <rect x="76" y="118" width="48" height="16" rx="3" fill="#D9D2C2"/>
+              <path d="M80 134v8m8-8v8m8-8v8m8-8v8m8-8v8" stroke="#8F877A" stroke-width="3" stroke-linecap="round"/>
+              <rect x="86" y="84" width="28" height="6" rx="3" fill="#E4C77A"/><rect x="86" y="96" width="28" height="6" rx="3" fill="#E4C77A"/>
             </svg>
           </div>
           <div class="feature-text">
@@ -279,9 +287,9 @@
               <g transform="rotate(-24 100 80)">
                 <rect x="24" y="68" width="76" height="22" rx="10" fill="#5A2A18"/>
                 <rect x="24" y="68" width="76" height="8" rx="4" fill="#8A4A2C" opacity=".7"/>
-                <path d="M96 66h74c10 0 14 8 10 16l-4 8H96z" fill="#DDE2EC"/>
-                <path d="M96 90h80" stroke="#8A93A6" stroke-width="3"/>
-                <circle cx="100" cy="79" r="8" fill="#D8B46C"/><circle cx="100" cy="79" r="3" fill="#8E6A2B"/>
+                <path d="M96 66h74c10 0 14 8 10 16l-4 8H96z" fill="#E9E4D8"/>
+                <path d="M96 90h80" stroke="#8F877A" stroke-width="3"/>
+                <circle cx="100" cy="79" r="8" fill="#E4C77A"/><circle cx="100" cy="79" r="3" fill="#9A7A30"/>
               </g>
             </svg>
           </div>
@@ -296,12 +304,12 @@
         <article class="feature reveal">
           <div class="feature-art" aria-hidden="true">
             <svg viewBox="0 0 200 160" focusable="false">
-              <defs><pattern id="art-stripes" width="40" height="40" patternUnits="userSpaceOnUse"><rect width="40" height="40" fill="#F6F1E7"/><path d="M0 -6L40 -26L40 -8L0 12Z" fill="#B3202A"/><path d="M0 34L40 14L40 32L0 52Z" fill="#B3202A"/><path d="M0 14L40 -6L40 12L0 32Z" fill="#1F3F8C"/><path d="M0 54L40 34L40 52L0 72Z" fill="#1F3F8C"/></pattern></defs>
+              <defs><pattern id="art-stripes" width="40" height="40" patternUnits="userSpaceOnUse"><rect width="40" height="40" fill="#F2EBDD"/><path d="M0 -6L40 -26L40 -8L0 12Z" fill="#C9A24B"/><path d="M0 34L40 14L40 32L0 52Z" fill="#C9A24B"/><path d="M0 14L40 -6L40 12L0 32Z" fill="#1B1B1C"/><path d="M0 54L40 34L40 52L0 72Z" fill="#1B1B1C"/></pattern></defs>
               <ellipse cx="100" cy="150" rx="40" ry="6" fill="#000" opacity=".4"/>
               <rect x="78" y="34" width="44" height="100" rx="6" fill="url(#art-stripes)"/>
               <rect x="78" y="34" width="44" height="100" rx="6" fill="#fff" opacity=".08"/>
-              <path d="M70 34h60v-8c0-5-5-9-12-10l-8-12c-3-4-9-4-12 0l-8 12c-7 1-12 5-12 10z" fill="#D8B46C"/>
-              <path d="M70 134h60v8c0 5-5 9-12 10l-8 6c-3 2-9 2-12 0l-8-6c-7-1-12-5-12-10z" fill="#D8B46C"/>
+              <path d="M70 34h60v-8c0-5-5-9-12-10l-8-12c-3-4-9-4-12 0l-8 12c-7 1-12 5-12 10z" fill="#E4C77A"/>
+              <path d="M70 134h60v8c0 5-5 9-12 10l-8 6c-3 2-9 2-12 0l-8-6c-7-1-12-5-12-10z" fill="#E4C77A"/>
             </svg>
           </div>
           <div class="feature-text">
@@ -362,9 +370,9 @@
       </div>
       <div class="container">
         <ul class="stats reveal" aria-label="Brass &amp; Blade in numbers">
-          <li><span class="stat-num" data-count="12" data-suffix="">0</span><span class="stat-label">years in the same shop</span></li>
-          <li><span class="stat-num" data-count="18000" data-suffix="+">0</span><span class="stat-label">haircuts and shaves a year</span></li>
-          <li><span class="stat-num" data-count="4" data-suffix="">0</span><span class="stat-label">chairs, always busy</span></li>
+          <li><span class="stat-num" data-count="12" data-suffix="">12</span><span class="stat-label">years in the same shop</span></li>
+          <li><span class="stat-num" data-count="38000" data-suffix="">38,000</span><span class="stat-label">cuts and shaves a year</span></li>
+          <li><span class="stat-num" data-count="4" data-suffix="">4</span><span class="stat-label">chairs, always busy</span></li>
         </ul>
       </div>
     </section>
@@ -403,14 +411,14 @@
         <div class="section-head reveal">
           <p class="eyebrow">Gallery</p>
           <h2 id="gallery-title" data-split>Details from <em>the shop.</em></h2>
-          <p class="lead">Illustrated placeholders. A real site would show your own photography here.</p>
+          <p class="lead">Chairs, tools and details from the shop floor.</p>
         </div>
         <ul class="gallery reveal">
           <li class="tile t1 wide">
             <svg viewBox="0 0 200 250" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
-              <defs><pattern id="g-stripes" width="60" height="60" patternUnits="userSpaceOnUse"><rect width="60" height="60" fill="#F6F1E7"/><path d="M0 -10L60 -40L60 -14L0 16Z" fill="#B3202A"/><path d="M0 50L60 20L60 46L0 76Z" fill="#B3202A"/><path d="M0 16L60 -14L60 12L0 42Z" fill="#1F3F8C"/><path d="M0 76L60 46L60 72L0 102Z" fill="#1F3F8C"/></pattern></defs>
+              <defs><pattern id="g-stripes" width="60" height="60" patternUnits="userSpaceOnUse"><rect width="60" height="60" fill="#F2EBDD"/><path d="M0 -10L60 -40L60 -14L0 16Z" fill="#C9A24B"/><path d="M0 50L60 20L60 46L0 76Z" fill="#C9A24B"/><path d="M0 16L60 -14L60 12L0 42Z" fill="#1B1B1C"/><path d="M0 76L60 46L60 72L0 102Z" fill="#1B1B1C"/></pattern></defs>
               <rect width="200" height="250" fill="url(#g-stripes)"/>
-              <circle cx="100" cy="125" r="46" fill="#D8B46C"/><circle cx="100" cy="125" r="38" fill="none" stroke="#8E6A2B" stroke-width="3"/>
+              <circle cx="100" cy="125" r="46" fill="#E4C77A"/><circle cx="100" cy="125" r="38" fill="none" stroke="#9A7A30" stroke-width="3"/>
               <path d="M82 138l18-26 18 26M90 126h20" fill="none" stroke="#5A3F12" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
             <span class="tile-cap">The pole</span>
@@ -418,22 +426,22 @@
           <li class="tile t2">
             <svg viewBox="0 0 200 250" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
               <g transform="translate(100 125) rotate(-18)">
-                <path d="M-8 -90C14 -70 14 -20 -2 8L-12 2C-4 -26 -10 -60 -22 -84Z" fill="#DDE2EC"/>
-                <path d="M8 -90C-14 -70 -14 -20 2 8L12 2C4 -26 10 -60 22 -84Z" fill="#B7BFCE"/>
-                <circle cx="-24" cy="48" r="20" fill="none" stroke="#D8B46C" stroke-width="9"/>
-                <circle cx="24" cy="48" r="20" fill="none" stroke="#D8B46C" stroke-width="9"/>
-                <path d="M-12 8L-18 30M12 8L18 30" stroke="#D8B46C" stroke-width="8" stroke-linecap="round"/>
-                <circle cx="0" cy="2" r="5" fill="#8E6A2B"/>
+                <path d="M-8 -90C14 -70 14 -20 -2 8L-12 2C-4 -26 -10 -60 -22 -84Z" fill="#E9E4D8"/>
+                <path d="M8 -90C-14 -70 -14 -20 2 8L12 2C4 -26 10 -60 22 -84Z" fill="#CFC8B8"/>
+                <circle cx="-24" cy="48" r="20" fill="none" stroke="#E4C77A" stroke-width="9"/>
+                <circle cx="24" cy="48" r="20" fill="none" stroke="#E4C77A" stroke-width="9"/>
+                <path d="M-12 8L-18 30M12 8L18 30" stroke="#E4C77A" stroke-width="8" stroke-linecap="round"/>
+                <circle cx="0" cy="2" r="5" fill="#9A7A30"/>
               </g>
             </svg>
             <span class="tile-cap">Sharp shears</span>
           </li>
           <li class="tile t3">
             <svg viewBox="0 0 200 250" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
-              <defs><pattern id="g-comb" width="12" height="60" patternUnits="userSpaceOnUse"><rect x="0" y="0" width="7" height="60" rx="2" fill="#F6F1E7"/></pattern></defs>
-              <rect x="30" y="70" width="140" height="28" rx="12" fill="#D8B46C"/>
+              <defs><pattern id="g-comb" width="12" height="60" patternUnits="userSpaceOnUse"><rect x="0" y="0" width="7" height="60" rx="2" fill="#F2EBDD"/></pattern></defs>
+              <rect x="30" y="70" width="140" height="28" rx="12" fill="#E4C77A"/>
               <rect x="34" y="96" width="132" height="84" fill="url(#g-comb)"/>
-              <rect x="30" y="84" width="140" height="8" rx="4" fill="#8E6A2B" opacity=".6"/>
+              <rect x="30" y="84" width="140" height="8" rx="4" fill="#9A7A30" opacity=".6"/>
             </svg>
             <span class="tile-cap">Fine teeth</span>
           </li>
@@ -441,24 +449,24 @@
             <svg viewBox="0 0 200 250" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
               <g transform="translate(100 130) rotate(-32)">
                 <rect x="-92" y="-12" width="86" height="26" rx="12" fill="#5A2A18"/>
-                <path d="M-8 -14h92c12 0 16 10 11 19l-5 9H-8z" fill="#DDE2EC"/>
-                <path d="M-8 14h96" stroke="#8A93A6" stroke-width="3"/>
-                <circle cx="-8" cy="0" r="9" fill="#D8B46C"/><circle cx="-8" cy="0" r="3.500" fill="#8E6A2B"/>
+                <path d="M-8 -14h92c12 0 16 10 11 19l-5 9H-8z" fill="#E9E4D8"/>
+                <path d="M-8 14h96" stroke="#8F877A" stroke-width="3"/>
+                <circle cx="-8" cy="0" r="9" fill="#E4C77A"/><circle cx="-8" cy="0" r="3.500" fill="#9A7A30"/>
               </g>
             </svg>
             <span class="tile-cap">Straight razor</span>
           </li>
           <li class="tile t5">
             <svg viewBox="0 0 200 250" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
-              <defs><pattern id="g-floor" width="50" height="50" patternUnits="userSpaceOnUse"><rect width="25" height="25" fill="#16264A"/><rect x="25" y="25" width="25" height="25" fill="#16264A"/><rect x="25" width="25" height="25" fill="#F6F1E7"/><rect y="25" width="25" height="25" fill="#F6F1E7"/></pattern></defs>
+              <defs><pattern id="g-floor" width="50" height="50" patternUnits="userSpaceOnUse"><rect width="25" height="25" fill="#161617"/><rect x="25" y="25" width="25" height="25" fill="#161617"/><rect x="25" width="25" height="25" fill="#F2EBDD"/><rect y="25" width="25" height="25" fill="#F2EBDD"/></pattern></defs>
               <rect width="200" height="250" fill="url(#g-floor)"/>
             </svg>
             <span class="tile-cap">Tile floor</span>
           </li>
           <li class="tile t6">
             <svg viewBox="0 0 200 250" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
-              <ellipse cx="100" cy="170" rx="62" ry="22" fill="#D8B46C"/>
-              <path d="M44 150c0-16 26-24 56-24s56 8 56 24v12c0 14-26 22-56 22s-56-8-56-22z" fill="#F6F1E7"/>
+              <ellipse cx="100" cy="170" rx="62" ry="22" fill="#E4C77A"/>
+              <path d="M44 150c0-16 26-24 56-24s56 8 56 24v12c0 14-26 22-56 22s-56-8-56-22z" fill="#F2EBDD"/>
               <ellipse cx="100" cy="148" rx="46" ry="14" fill="#fff"/>
               <path d="M88 60h24l-4 54H92z" fill="#5A2A18"/>
               <path d="M82 114c0-14 8-24 18-24s18 10 18 24z" fill="#E8DCC6"/>
@@ -468,18 +476,18 @@
           </li>
           <li class="tile t7">
             <svg viewBox="0 0 200 250" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
-              <rect x="28" y="92" width="144" height="66" rx="12" fill="none" stroke="#FF6B75" stroke-width="5"/>
-              <rect x="28" y="92" width="144" height="66" rx="12" fill="#B3202A" opacity=".25"/>
-              <text x="100" y="138" text-anchor="middle" font-family="Oswald, Impact, sans-serif" font-size="42" font-weight="700" letter-spacing="6" fill="#FFD8DB">OPEN</text>
-              <path d="M100 30v50" stroke="#D8B46C" stroke-width="3"/>
+              <rect x="28" y="92" width="144" height="66" rx="12" fill="none" stroke="#E4C77A" stroke-width="5"/>
+              <rect x="28" y="92" width="144" height="66" rx="12" fill="#C9A24B" opacity=".25"/>
+              <text x="100" y="138" text-anchor="middle" font-family="Oswald, Impact, sans-serif" font-size="42" font-weight="700" letter-spacing="6" fill="#F2EBDD">OPEN</text>
+              <path d="M100 30v50" stroke="#E4C77A" stroke-width="3"/>
             </svg>
             <span class="tile-cap">Open</span>
           </li>
           <li class="tile t8 wide">
             <svg viewBox="0 0 200 250" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
-              <defs><pattern id="g-brass" width="30" height="30" patternUnits="userSpaceOnUse"><path d="M15 2l13 13-13 13L2 15z" fill="none" stroke="#8E6A2B" stroke-width="2"/><circle cx="15" cy="15" r="2.500" fill="#8E6A2B"/></pattern></defs>
+              <defs><pattern id="g-brass" width="30" height="30" patternUnits="userSpaceOnUse"><path d="M15 2l13 13-13 13L2 15z" fill="none" stroke="#9A7A30" stroke-width="2"/><circle cx="15" cy="15" r="2.500" fill="#9A7A30"/></pattern></defs>
               <rect width="200" height="250" fill="url(#g-brass)"/>
-              <rect x="50" y="90" width="100" height="70" rx="6" fill="#D8B46C" opacity=".85"/>
+              <rect x="50" y="90" width="100" height="70" rx="6" fill="#E4C77A" opacity=".85"/>
               <path d="M60 125h80" stroke="#5A3F12" stroke-width="3" stroke-linecap="round"/>
             </svg>
             <span class="tile-cap">Brass details</span>
@@ -501,6 +509,7 @@
             <button class="btn btn-primary" type="submit">Join</button>
           </div>
           <p class="error" id="e-news" aria-live="polite"></p>
+          <p class="note privacy-note">We only use your email for this letter. Unsubscribe any time. <a href="legal.html#privacy">Privacy</a></p>
           <!-- DEMO ONLY: connect Mailchimp, Beehiiv or similar here. -->
         </form>
       </div>
@@ -524,7 +533,7 @@
           <h2>Explore</h2>
           <ul>
             <li><a href="services.html">Services</a></li><li><a href="barbers.html">The crew</a></li><li><a href="shop.html">Shop</a></li><li><a href="membership.html">Membership</a></li><li><a href="journal.html">Journal</a></li><li><a href="visit.html">Visit</a></li>
-            <li><a href="book.html">Book</a></li>
+            <li><a href="book.html">Book a chair</a></li>
           </ul>
         </nav>
         <div class="footer-col">
@@ -547,6 +556,7 @@
       </nav>
       <div class="footer-bottom">
         <p>Concept demo by KB Ventures. Not a real business.</p>
+        
         <a class="back-top" href="#top">Back to top &uarr;</a>
       </div>
     </div>
@@ -566,14 +576,14 @@
     </button>
     <section class="chat-panel" id="chat-panel" role="dialog" aria-label="Chat with us (demo)" hidden>
       <header><strong>Ask Brass</strong><span>Demo assistant, scripted answers</span></header>
-      <div class="chat-log" id="chat-log" role="log" aria-live="polite"></div>
+      <div class="chat-log" id="chat-log" data-lenis-prevent role="log" aria-live="polite"></div>
       <div class="chat-quick" id="chat-quick"></div>
     </section>
   </div>
 
   <!-- Cookie preferences -->
   <div class="cookie" id="cookie" role="region" aria-label="Cookie preferences" hidden>
-    <p><strong>Your privacy.</strong> This demo sets no tracking cookies. If you opt in, we would use simple analytics to improve the site. <a href="legal.html#cookies">Details</a></p>
+    <p><strong>No tracking by default.</strong> Allow simple analytics? <a href="legal.html#cookies">Details</a></p>
     <div class="cookie-actions">
       <button class="btn btn-primary btn-sm" type="button" data-cookie="yes">Accept</button>
       <button class="btn btn-secondary btn-sm" type="button" data-cookie="no">Decline</button>
@@ -582,6 +592,7 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <script type="application/json" id="site-data">{"name": "Brass & Blade", "phone": "02 5550 0144", "phoneHref": "0255500144", "email": "hello@example.com", "timezone": "Australia/Sydney", "locale": "en-AU", "currency": "AUD", "hours": [{"day": 1, "name": "Monday", "open": 10, "close": 18}, {"day": 2, "name": "Tuesday", "open": 9, "close": 19}, {"day": 3, "name": "Wednesday", "open": 9, "close": 19}, {"day": 4, "name": "Thursday", "open": 9, "close": 20}, {"day": 5, "name": "Friday", "open": 9, "close": 19}, {"day": 6, "name": "Saturday", "open": 9, "close": 17}, {"day": 0, "name": "Sunday", "open": 10, "close": 16}]}</script>
+  <script defer src="vendor/lenis-1.1.18.min.js"></script><!-- Lenis 1.1.18 (MIT), self-hosted, pinned -->
   <script type="module" src="main.js"></script>
 </body>
 </html>

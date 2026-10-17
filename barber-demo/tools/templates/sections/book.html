@@ -4,7 +4,7 @@
         <div class="reveal">
           <p class="eyebrow">Appointments</p>
           <h2 id="book-title" data-split>Book your <em>chair.</em></h2>
-          <p class="lead">Tell us what you need and when. We confirm by email, usually within the hour. (This demo form doesn&rsquo;t send anything.)</p>
+          <p class="lead">Tell us what you need and when. Pick a service, a barber and a time. You&rsquo;ll see your confirmation straight away. (This is a demo: nothing is sent.)</p>
           <ul class="reserve-points">
             <li>Free changes and cancellations up to 24 hours before</li>
             <li>Every cut includes a consultation and a hot towel finish</li>
@@ -13,56 +13,73 @@
         </div>
         <div class="form-card reveal">
           <form id="book-form" novalidate>
+            <p class="step-label"><span aria-hidden="true">1</span> Service</p>
             <div class="field">
-              <label for="f-service">Service</label>
+              <label for="f-service" class="sr-only">Service</label>
               <select id="f-service" name="service" aria-describedby="h-service">
                 {{#each menu}}<optgroup label="{{this.label}}">{{#each this.items}}<option value="{{this.slug}}" data-mins="{{this.mins}}" data-price="{{this.price}}">{{this.plainName}} (${{this.price}}, {{this.mins}} min)</option>{{/each}}</optgroup>{{/each}}
               </select>
               <p class="hint" id="h-service" aria-live="polite"></p>
             </div>
-            <div class="field">
-              <label for="f-barber">Barber</label>
-              <select id="f-barber" name="barber"><option value="any">Any available barber</option><option value="marco">Marco (owner)</option><option value="jess">Jess</option><option value="dev">Dev</option><option value="ollie">Ollie (apprentice)</option></select>
-            </div>
-            <div class="field-row">
-              <div class="field">
-                <label for="f-date">Date</label>
-                <input id="f-date" name="date" type="date" aria-describedby="e-date">
-                <p class="error" id="e-date" aria-live="polite"></p>
+
+            <fieldset class="barber-pick">
+              <legend class="step-label"><span aria-hidden="true">2</span> Barber</legend>
+              <label class="bp bp-any"><input type="radio" name="barber" value="any" checked><span class="bp-card"><span class="bp-ph" aria-hidden="true">Any</span><span class="bp-txt"><strong>Next available</strong><small>Shortest wait</small></span></span></label>
+              <label class="bp"><input type="radio" name="barber" value="marco"><span class="bp-card"><span class="bp-ph" aria-hidden="true">{{#if photos.barberMarco}}{{{photos.barberMarco}}}{{else}}M{{/if}}</span><span class="bp-txt"><strong>Marco</strong><small>Owner · fades and razor work</small></span></span></label>
+              <label class="bp"><input type="radio" name="barber" value="jess"><span class="bp-card"><span class="bp-ph" aria-hidden="true">{{#if photos.barberJess}}{{{photos.barberJess}}}{{else}}J{{/if}}</span><span class="bp-txt"><strong>Jess</strong><small>Scissor cuts and texture</small></span></span></label>
+              <label class="bp"><input type="radio" name="barber" value="dev"><span class="bp-card"><span class="bp-ph" aria-hidden="true">{{#if photos.barberDev}}{{{photos.barberDev}}}{{else}}D{{/if}}</span><span class="bp-txt"><strong>Dev</strong><small>Beards and hot towel shaves</small></span></span></label>
+              <label class="bp"><input type="radio" name="barber" value="ollie"><span class="bp-card"><span class="bp-ph" aria-hidden="true">{{#if photos.barberOllie}}{{{photos.barberOllie}}}{{else}}O{{/if}}</span><span class="bp-txt"><strong>Ollie</strong><small>Apprentice · kids and classic cuts</small></span></span></label>
+            </fieldset>
+
+            <p class="step-label"><span aria-hidden="true">3</span> Date</p>
+            <div class="cal" id="cal">
+              <div class="cal-head">
+                <button type="button" class="cal-nav" id="cal-prev" aria-label="Previous month">&lsaquo;</button>
+                <strong id="cal-title" aria-live="polite"></strong>
+                <button type="button" class="cal-nav" id="cal-next" aria-label="Next month">&rsaquo;</button>
               </div>
-              <div class="field">
-                <label for="f-time">Time</label>
-                <select id="f-time" name="time" aria-describedby="h-time">{{{timeOptions}}}</select>
-              </div>
+              <div class="cal-dow" aria-hidden="true"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span></div>
+              <div class="cal-grid" id="cal-grid" role="group" aria-label="Days"></div>
             </div>
+            <input type="hidden" id="f-date" name="date">
+            <p class="error" id="e-date" aria-live="polite"></p>
+
+            <p class="step-label"><span aria-hidden="true">4</span> Time</p>
+            <div class="slots" id="slots" role="group" aria-label="Available times"></div>
+            <input type="hidden" id="f-time" name="time">
             <p class="hint" id="h-time" aria-live="polite">Choose a date to see which times are open.</p>
+            <p class="error" id="e-time" aria-live="polite"></p>
+
+            <p class="step-label"><span aria-hidden="true">5</span> Your details</p>
             <div class="field">
               <label for="f-name">Name</label>
               <input id="f-name" name="name" type="text" autocomplete="name" aria-describedby="e-name">
               <p class="error" id="e-name" aria-live="polite"></p>
             </div>
             <div class="field">
-              <label for="f-email">Email</label>
-              <input id="f-email" name="email" type="email" autocomplete="email" inputmode="email" aria-describedby="e-email">
-              <p class="error" id="e-email" aria-live="polite"></p>
+              <label for="f-phone">Phone</label>
+              <input id="f-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="e.g. 02 5550 0100" aria-describedby="e-phone">
+              <p class="error" id="e-phone" aria-live="polite"></p>
             </div>
             <div class="field">
               <label for="f-message">Notes <span class="optional">(optional)</span></label>
-              <textarea id="f-message" name="message" rows="3" maxlength="500" placeholder="Reference photo, allergies, anything we should know" aria-describedby="e-message"></textarea>
+              <textarea id="f-message" name="message" rows="2" maxlength="500" placeholder="Reference photo, allergies, anything we should know" aria-describedby="e-message"></textarea>
               <p class="error" id="e-message" aria-live="polite"></p>
             </div>
             <!--
-              DEMO ONLY: there is no backend. To make this form real, post the data in
-              js/forms.js (see "DEMO ONLY") to your booking system (Fresha, Square Appointments,
-              Timely) or a form service, and show the success panel only after a 200 response.
+              DEMO ONLY: there is no backend. The booking is saved to this browser (localStorage key "bb-bookings").
+              To make it real, post the data in js/forms.js (see "DEMO ONLY") to your booking system
+              (Fresha, Square Appointments, Timely) and show the confirmation after a 200 response.
             -->
-            <button class="btn btn-primary btn-block" type="submit">Request this time</button>
+            <button class="btn btn-primary btn-block" type="submit">Confirm booking</button>
+            <p class="note">Demo only: nothing is sent to a real shop.</p>
           </form>
           <div class="form-success" id="form-success" role="status" tabindex="-1" hidden>
             <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M7.500 12.500l3 3 6-7"/></svg>
-            <h3>Thanks, <span id="ok-name">friend</span>!</h3>
+            <h3>You&rsquo;re booked in, <span id="ok-name">friend</span>.</h3>
             <p id="ok-detail"></p>
-            <p class="note">Demo only: nothing was booked and no email was sent.</p>
+            <dl class="ok-summary" id="ok-summary"></dl>
+            <p class="demo-banner"><strong>This is a demo, no real booking was made.</strong> The details were saved only in this browser.</p>
             <button class="btn btn-secondary btn-on-light" type="button" id="form-reset">Book another visit</button>
           </div>
         </div>

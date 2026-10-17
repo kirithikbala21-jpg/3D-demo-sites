@@ -6,7 +6,7 @@ let ctx = null, master = null, running = false, clinkTimer = 0;
 function build() {
   const AC = window.AudioContext || window.webkitAudioContext;
   if (!AC) return false;
-  ctx = new AC();
+  try { ctx = new AC(); } catch (_) { return false; }
   master = ctx.createGain(); master.gain.value = 0;
   const len = ctx.sampleRate * 4;
   const buf = ctx.createBuffer(1, len, ctx.sampleRate);
@@ -29,14 +29,22 @@ function clink() {
   o.connect(g).connect(master); o.start(); o.stop(ctx.currentTime + 0.4);
   clinkTimer = setTimeout(clink, 2500 + Math.random() * 6000);
 }
+function show() {
+  $$('[data-sound]').forEach((b) => { b.setAttribute('aria-pressed', String(running)); b.querySelector('[data-sound-state]').textContent = running ? 'On' : 'Off'; });
+}
+function unavailable() {
+  $$('[data-sound]').forEach((b) => { b.disabled = true; b.setAttribute('aria-pressed', 'false'); b.querySelector('[data-sound-state]').textContent = 'Unavailable'; });
+}
 async function toggle() {
-  if (!ctx && !build()) return;
-  if (ctx.state === 'suspended') await ctx.resume();
+  try {
+    if (!ctx && !build()) { unavailable(); return; }
+    if (ctx.state === 'suspended') await ctx.resume();
+  } catch (_) { unavailable(); return; }
   running = !running;
   master.gain.cancelScheduledValues(ctx.currentTime);
   master.gain.linearRampToValueAtTime(running ? 0.07 : 0, ctx.currentTime + 0.8);
   clearTimeout(clinkTimer);
   if (running) clinkTimer = setTimeout(clink, 1500);
-  $$('[data-sound]').forEach((b) => { b.setAttribute('aria-pressed', String(running)); b.querySelector('[data-sound-state]').textContent = running ? 'on' : 'off'; });
+  show();
 }
 $$('[data-sound]').forEach((b) => b.addEventListener('click', toggle));

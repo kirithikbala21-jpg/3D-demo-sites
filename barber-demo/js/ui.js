@@ -117,11 +117,12 @@ import { $, $$, site, reduceMotion, finePointer, cafeNow, hoursFor, fmtHour, sto
   const reveals = $$('.reveal'), counters = $$('[data-count]');
   reveals.forEach((el) => {
     const sibs = [...el.parentElement.children].filter((c) => c.classList.contains('reveal'));
-    el.style.setProperty('--d', Math.min(sibs.indexOf(el), 4) * 0.09 + 's');
+    el.style.setProperty('--d', Math.min(sibs.indexOf(el), 4) * 0.06 + 's');
   });
   const fmt = (n) => n.toLocaleString(site.locale);
   const finish = (el) => { el.textContent = fmt(+el.dataset.count) + (el.dataset.suffix || ''); };
   if (reduceMotion || !('IntersectionObserver' in window)) { reveals.forEach((el) => el.classList.add('is-visible')); counters.forEach(finish); return; }
+  counters.forEach((el) => { el.textContent = '0'; }); // the HTML already holds the real value, so it stays if this script never gets this far
   const rio = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('is-visible'); rio.unobserve(e.target); } }), { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
   reveals.forEach((el) => rio.observe(el));
   const cio = new IntersectionObserver((es) => es.forEach((e) => {
@@ -225,4 +226,19 @@ import { $, $$, site, reduceMotion, finePointer, cafeNow, hoursFor, fmtHour, sto
     // DEMO ONLY: add your analytics snippet here (for example Plausible or Google Analytics).
     // It runs only after the visitor has accepted.
   }
+})();
+
+/* ---------- Photos: a slow, subtle zoom as they scroll through the screen ---------- */
+(() => {
+  const imgs = $$('.photo img');
+  if (!imgs.length || reduceMotion) return;
+  const live = new Set();
+  const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) live.add(e.target); else live.delete(e.target); }), { rootMargin: '10% 0px' });
+  imgs.forEach((i) => io.observe(i));
+  const tick = () => {
+    const vh = window.innerHeight;
+    live.forEach((img) => { const r = img.getBoundingClientRect(); const p = Math.min(1, Math.max(0, 1 - (r.top + r.height / 2) / (vh + r.height / 2))); img.style.setProperty('--z', (1.03 + p * 0.09).toFixed(3)); });
+    requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
 })();

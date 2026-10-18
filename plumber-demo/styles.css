@@ -532,3 +532,8 @@ html:not(.js) body::before { content: ""; position: absolute; left: 7px; top: 14
 /* Empty photo slots stay as tidy neutral panels; their labels only show with ?slots=1 */
 html:not(.show-slots) .slot-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); padding: 0; }
 html:not(.show-slots) .slot-empty { outline: 0; }
+
+.ba-single .ba-frame { aspect-ratio: 4 / 3; }
+.ba-single .photo { position: absolute; inset: 0; display: block; }
+.ba-single .photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.ba-single .ba-tag-after { left: 12px; right: auto; }

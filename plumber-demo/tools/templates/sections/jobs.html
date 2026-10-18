@@ -3,7 +3,7 @@
         <div class="sec-head reveal">
           <p class="eyebrow">Recent jobs</p>
           <h2 id="jobs-title" data-pipe>See the difference</h2>
-          <p class="sec-lead">Drag the handle to compare before and after.</p>
+          <p class="sec-lead">Recent work across the south-east. Where we have both photos, drag the handle to compare.</p>
         </div>
         <div class="jobs reveal" id="jobs-widget">
           <div class="tabs" role="tablist" aria-label="Choose a job">
@@ -12,6 +12,7 @@
           </div>
           {{#each jobs}}
           <div class="job-panel" role="tabpanel" id="job-{{id}}" aria-labelledby="tab-{{id}}" data-job="{{id}}"{{{hid}}}>
+            {{#if slider}}
             <div class="ba" data-ba style="--pos:50%">
               <div class="ba-frame frame">
                 <div class="ba-layer ba-after">{{{afterHtml}}}</div>
@@ -22,6 +23,11 @@
                 <input class="ba-range" type="range" min="0" max="100" step="1" value="50" aria-label="Before and after: {{title}}. Use the arrow keys or drag." aria-valuetext="Showing 50% before">
               </div>
             </div>
+            {{else}}
+            <div class="ba ba-single">
+              <div class="ba-frame frame job-single">{{{singleHtml}}}<span class="ba-tag ba-tag-after" aria-hidden="true">Recent job</span></div>
+            </div>
+            {{/if}}
             <div class="job-meta">
               <h3>{{title}}, {{suburb}}</h3>
               <p>{{detail}}</p>

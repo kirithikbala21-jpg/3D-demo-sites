@@ -522,9 +522,23 @@ if (want('func')) {
     await done(p);
   }
 
-  /* ---- before / after slider ---- */
+  /* ---- recent jobs without before photos: one "Recent job" photo, never an empty grid ---- */
   {
     const p = await newPage(DESKTOP);
+    await open(p);
+    const sj = await p.evaluate(() => [...document.querySelectorAll('.job-panel')].map((e) => ({ slider: !!e.querySelector('.ba-range'), img: !!e.querySelector('img'), empty: e.querySelectorAll('.slot-empty').length, tag: (e.querySelector('.ba-tag') || {}).textContent })));
+    ok('recent jobs with no before photo show a single "Recent job" photo, no slider and no empty grid', sj.length === 3 && sj.every((j) => !j.slider && j.img && !j.empty && j.tag === 'Recent job'), JSON.stringify(sj));
+    await done(p);
+  }
+  /* ---- before / after slider (tested on a temp copy that has real before and after photos for job 1) ---- */
+  {
+    const tmpS = fs.mkdtempSync(path.join(os.tmpdir(), 'wp-ba-'));
+    for (const f of fs.readdirSync(SITE)) { if (['tests', '.git'].includes(f)) continue; fs.cpSync(path.join(SITE, f), path.join(tmpS, f), { recursive: true }); }
+    fs.mkdirSync(path.join(tmpS, 'img/photos'), { recursive: true });
+    for (const s of ['before-after-1-before', 'before-after-1-after']) fs.copyFileSync(path.join(SITE, 'img/photos/hero-plumber-at-work-sink.webp'), path.join(tmpS, D.photos.slots[s].file));
+    execFileSync('python3', [path.join(tmpS, 'tools/build.py')], { env: { ...process.env, SITE_ROOT: tmpS } });
+    const tsS = await serve(tmpS);
+    const p = await newPage(DESKTOP, { host: `http://localhost:${tsS.address().port}/` });
     await open(p);
     await p.locator('#jobs').scrollIntoViewIfNeeded();
     const t0 = await p.evaluate(() => ({ tabs: [...document.querySelectorAll('[role=tab]')].map((t) => t.textContent.trim()), vis: [...document.querySelectorAll('[role=tabpanel]')].map((e) => !e.hidden), roles: document.querySelector('[role=tablist]').getAttribute('aria-label') }));
@@ -549,7 +563,7 @@ if (want('func')) {
     const clip = await p.evaluate(() => getComputedStyle(document.querySelector('#job-tap .ba-before')).clipPath);
     ok('the before image is clipped at the divider', /inset/.test(clip), clip);
     await done(p);
-    const m = await newPage(MOBILE);
+    const m = await newPage(MOBILE, { host: `http://localhost:${tsS.address().port}/` });
     await open(m); await m.locator('#jobs').scrollIntoViewIfNeeded();
     const b2 = await m.locator('#job-tap .ba-frame').boundingBox();
     await m.touchscreen.tap(b2.x + b2.width * 0.8, b2.y + b2.height * 0.5);
@@ -644,7 +658,7 @@ if (want('func')) {
     await open(p);
     const slots = Object.keys(D.photos.slots);
     const found = await p.evaluate(() => [...document.querySelectorAll('.slot-empty')].map((e) => ({ slot: e.dataset.slot, text: e.textContent })));
-    const missing = slots.filter((s) => s !== 'emergency-night-van' && !found.some((f) => f.slot === s && f.text.includes('PHOTO SLOT: ' + s)) && !(fs.existsSync(path.join(SITE, D.photos.slots[s].file))));
+    const missing = slots.filter((s) => !/^before-after-/.test(s) &&  !found.some((f) => f.slot === s && f.text.includes('PHOTO SLOT: ' + s)) && !(fs.existsSync(path.join(SITE, D.photos.slots[s].file))));
     const exact = ['hero-plumber-van', 'plumber-at-work-1', 'plumber-at-work-2', 'tools-closeup', 'hot-water-unit', 'bathroom-clean', 'blocked-drain-work', 'team-1', 'team-2', 'team-3', 'team-4', 'before-after-1-before', 'before-after-1-after', 'before-after-2-before', 'before-after-2-after', 'before-after-3-before', 'before-after-3-after', 'emergency-night-van'];
     ok(`photo slots: all ${exact.length} named slots exist, and each renders a labelled placeholder ("PHOTO SLOT: name - ...") while it has no file`, slots.length >= exact.length && exact.every((s) => slots.includes(s)) && !missing.length, missing.join(','));
     const md = rd('PHOTO-SLOTS.md');
@@ -661,7 +675,7 @@ if (want('func')) {
     await mk.setContent('<body style="margin:0;background:linear-gradient(135deg,#0b2545,#ff6a13)"></body>');
     fs.mkdirSync(path.join(tmp, 'img/photos'), { recursive: true });
     const pngBuf = await mk.screenshot({ type: 'png' }); await mk.close();
-    for (const s of ['hero-sink', 'team-2', 'before-after-1-before']) { fs.writeFileSync(path.join(tmp, D.photos.slots[s].file), pngBuf); }
+    for (const s of ['hero-sink', 'team-2', 'before-after-1-before', 'before-after-1-after']) { fs.writeFileSync(path.join(tmp, D.photos.slots[s].file), pngBuf); }
     const pj = JSON.parse(fs.readFileSync(path.join(tmp, 'data/photos.json'), 'utf8'));
     pj.slots['hero-sink'].credit = 'Jane Doe / Unsplash'; pj.slots['hero-sink'].w = 1600; pj.slots['hero-sink'].h = 1067;
     fs.writeFileSync(path.join(tmp, 'data/photos.json'), JSON.stringify(pj));
@@ -670,7 +684,7 @@ if (want('func')) {
     const tp = await newPage(DESKTOP, { host: tb });
     await open(tp);
     const rp = await tp.evaluate(() => { const i = document.querySelector('.frame-hero img'); return { ok: !!i && i.complete && i.naturalWidth === 1600, alt: i && i.alt, w: i && i.getAttribute('width'), h: i && i.getAttribute('height'), fp: i && i.getAttribute('fetchpriority'), fit: i && getComputedStyle(i).objectFit, pos: i && i.style.objectPosition, heroPlaceholder: !!document.querySelector('[data-slot="hero-sink"]'), teamImg: !!document.querySelector('.frame-team img'), team1Ph: !!document.querySelector('[data-slot="team-1"]'), team2Ph: !!document.querySelector('[data-slot="team-2"]'), ba: !!document.querySelector('.ba-before img'), baAfterPh: !!document.querySelector('[data-slot="before-after-1-after"]'), credit: document.querySelector('.footer-credit')?.textContent || '', teamLazy: document.querySelector('.frame-team img')?.getAttribute('loading') }; });
-    ok('a real photo renders as an <img> (alt, width+height, object-fit cover, focal point, eager+high priority hero) while other slots stay placeholders; credit shows in the footer', rp.ok && rp.alt.length > 10 && rp.w === '1600' && rp.h === '1067' && rp.fp === 'high' && rp.fit === 'cover' && rp.pos === '50% 50%' && !rp.heroPlaceholder && rp.teamImg && !rp.team1Ph && !rp.team2Ph && rp.ba && rp.baAfterPh && /Jane Doe/.test(rp.credit) && rp.teamLazy === 'lazy', JSON.stringify(rp));
+    ok('a real photo renders as an <img> (alt, width+height, object-fit cover, focal point, eager+high priority hero) while other slots stay placeholders; credit shows in the footer', rp.ok && rp.alt.length > 10 && rp.w === '1600' && rp.h === '1067' && rp.fp === 'high' && rp.fit === 'cover' && rp.pos === '50% 50%' && !rp.heroPlaceholder && rp.teamImg && !rp.team1Ph && !rp.team2Ph && rp.ba && /Jane Doe/.test(rp.credit) && rp.teamLazy === 'lazy', JSON.stringify(rp));
     const lazy = await tp.evaluate(() => [...document.querySelectorAll('img[src]')].filter((i) => !i.closest('.hero') && i.loading !== 'lazy').length);
     ok('every below-the-fold image is lazy-loaded', lazy === 0);
     await tp.setViewportSize({ width: 390, height: 844 }); await tp.reload(); await settle(tp);
@@ -703,7 +717,7 @@ if (want('func')) {
 if (want('fallback')) {
   const p = await newPage({ ...DESKTOP, javaScriptEnabled: false });
   await open(p);
-  const r = await p.evaluate(() => { const vis = (s) => [...document.querySelectorAll(s)].every((e) => getComputedStyle(e).display !== 'none' && getComputedStyle(e).visibility !== 'hidden' && getComputedStyle(e).opacity !== '0'); return { h1: document.querySelector('h1').textContent.trim(), cards: document.querySelectorAll('.svc-card').length, cardsVis: vis('.svc-card'), reveal: vis('.reveal:not(.area-form-js)'), jobs: [...document.querySelectorAll('.job-panel')].map((e) => getComputedStyle(e).display), tabs: getComputedStyle(document.querySelector('.tabs')).display, range: getComputedStyle(document.querySelector('.ba-range')).display, pill: document.querySelector('#avail').textContent.trim(), area: getComputedStyle(document.querySelector('.checker')).display, noscriptArea: document.querySelector('#areas noscript').textContent, form: document.querySelector('#quote-form noscript').textContent, faq: document.querySelectorAll('details.faq').length, fill: getComputedStyle(document.querySelector('.gauge-fill')).transform, pipe: getComputedStyle(document.body, '::before').width, pipeBg: getComputedStyle(document.body, '::before').backgroundColor, svgPipe: !!document.querySelector('.pipe'), status: document.querySelector('.site-footer [data-open-status]').textContent.trim(), nav: getComputedStyle(document.querySelector('.header-nav')).display, toggle: getComputedStyle(document.querySelector('.nav-toggle')).display, cookie: getComputedStyle(document.querySelector('#cookie')).display, ann: document.querySelector('#announce').getBoundingClientRect().height }; });
+  const r = await p.evaluate(() => { const vis = (s) => [...document.querySelectorAll(s)].every((e) => getComputedStyle(e).display !== 'none' && getComputedStyle(e).visibility !== 'hidden' && getComputedStyle(e).opacity !== '0'); return { h1: document.querySelector('h1').textContent.trim(), cards: document.querySelectorAll('.svc-card').length, cardsVis: vis('.svc-card'), reveal: vis('.reveal:not(.area-form-js)'), jobs: [...document.querySelectorAll('.job-panel')].map((e) => getComputedStyle(e).display), tabs: getComputedStyle(document.querySelector('.tabs')).display, range: document.querySelector('.ba-range') ? getComputedStyle(document.querySelector('.ba-range')).display : 'none', pill: document.querySelector('#avail').textContent.trim(), area: getComputedStyle(document.querySelector('.checker')).display, noscriptArea: document.querySelector('#areas noscript').textContent, form: document.querySelector('#quote-form noscript').textContent, faq: document.querySelectorAll('details.faq').length, fill: getComputedStyle(document.querySelector('.gauge-fill')).transform, pipe: getComputedStyle(document.body, '::before').width, pipeBg: getComputedStyle(document.body, '::before').backgroundColor, svgPipe: !!document.querySelector('.pipe'), status: document.querySelector('.site-footer [data-open-status]').textContent.trim(), nav: getComputedStyle(document.querySelector('.header-nav')).display, toggle: getComputedStyle(document.querySelector('.nav-toggle')).display, cookie: getComputedStyle(document.querySelector('#cookie')).display, ann: document.querySelector('#announce').getBoundingClientRect().height }; });
   ok('no JS: headline, six service cards, pricing and reviews are all readable (nothing hidden by animation)', r.h1.startsWith('Plumbers who turn up') && r.cards === 6 && r.cardsVis && r.reveal);
   ok('no JS: all three recent jobs show (tabs hidden), slider handle hidden', r.jobs.every((d) => d === 'block') && r.tabs === 'none' && r.range === 'none', JSON.stringify([r.jobs, r.tabs, r.range]));
   ok('no JS: availability falls back to plain "Emergency line open 24/7"; footer status text is plain', r.pill === 'Emergency line open 24/7' && /24\/7/.test(r.status), r.pill);

@@ -242,9 +242,21 @@ def build():
     for t in DATA["team"]:
         t["photoHtml"] = photos[t["photo"]]
         t["first"] = t["name"].split()[0]
+    real = lambda k: "slot-empty" not in photos[k]
+    jobs_ok = []
     for j in DATA["jobs"]:
         j["beforeHtml"] = photos[j["before"]]
         j["afterHtml"] = photos[j["after"]]
+        # a slider only when both real photos exist; otherwise one "Recent job" photo; never an empty grid
+        j["slider"] = real(j["before"]) and real(j["after"])
+        if not j["slider"]:
+            pick = j["after"] if real(j["after"]) else j.get("single")
+            if not pick or not real(pick):
+                continue
+            j["singleHtml"] = photos[pick]
+        jobs_ok.append(j)
+    DATA["jobs"] = jobs_ok
+    for j in DATA["jobs"]:
         j["priceText"] = money(j["price"])
         j["sel"] = "true" if j["id"] == DATA["jobs"][0]["id"] else "false"
         j["tab0"] = "0" if j["id"] == DATA["jobs"][0]["id"] else "-1"

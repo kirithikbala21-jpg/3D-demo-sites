@@ -7,7 +7,8 @@
   "detail": "New cartridge and washers. Done in an hour, no mess.",
   "price": 165,
   "before": "before-after-1-before",
-  "after": "before-after-1-after"
+  "after": "before-after-1-after",
+  "single": "plumber-at-work-1"
  },
  {
   "id": "hws",
@@ -17,7 +18,8 @@
   "detail": "Old electric unit out, new 250 litre unit in, same day.",
   "price": 1690,
   "before": "before-after-2-before",
-  "after": "before-after-2-after"
+  "after": "before-after-2-after",
+  "single": "hot-water-unit"
  },
  {
   "id": "bath",
@@ -27,6 +29,7 @@
   "detail": "All pipework, shower, vanity and toilet for a full bathroom refit.",
   "price": 6400,
   "before": "before-after-3-before",
-  "after": "before-after-3-after"
+  "after": "before-after-3-after",
+  "single": "before-after-3-after"
  }
 ]

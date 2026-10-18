@@ -4,7 +4,7 @@
   "name": "Emergency plumbing",
   "promise": "A plumber at your door, any hour.",
   "from": 199,
-  "photo": "plumber-at-work-1",
+  "photo": "tools-closeup",
   "urgency": "emergency",
   "label": "Call-out from"
  },
@@ -31,7 +31,7 @@
   "name": "Gas fitting",
   "promise": "Safe installs, repairs and leak checks.",
   "from": 169,
-  "photo": "tools-closeup",
+  "photo": "gas-pipework",
   "urgency": "today",
   "label": "From"
  },
@@ -49,7 +49,7 @@
   "name": "Leaks and taps",
   "promise": "Drips, leaks and toilets sorted.",
   "from": 129,
-  "photo": "plumber-at-work-2",
+  "photo": "plumber-at-work-1",
   "urgency": "today",
   "label": "From"
  }

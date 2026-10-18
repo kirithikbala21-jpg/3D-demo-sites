@@ -3,12 +3,13 @@
  "slots": {
   "hero-plumber-van": {
    "file": "img/photos/hero-plumber-van.webp",
-   "alt": "Branded Waverley Plumbing & Gas van parked outside a Melbourne home, with a plumber in a navy uniform smiling beside it",
-   "credit": "",
-   "label": "Hero",
+   "alt": "A white work van parked on a dirt track in a sunlit wood",
+   "credit": "Photo: Unsplash",
+   "label": "Van",
    "pos": "50% 55%",
-   "needs": "hero-plumber-van - white branded van, front three-quarter, daylight, landscape 3:2, min 1600px",
-   "eager": true
+   "needs": "hero-plumber-van - white branded van, front three-quarter, daylight, landscape 16:9, min 1200px (shown in Find us)",
+   "w": 900,
+   "h": 507
   },
   "plumber-at-work-1": {
    "file": "img/photos/plumber-at-work-1.webp",
@@ -20,35 +21,43 @@
   },
   "plumber-at-work-2": {
    "file": "img/photos/plumber-at-work-2.webp",
-   "alt": "Plumber tightening a tap fitting in a bright kitchen",
-   "credit": "",
+   "alt": "A plumber in an orange jumper holding a pipe cutter in front of a pegboard of wrenches",
+   "credit": "Photo: Unsplash",
    "label": "Leaks and taps card",
    "pos": "50% 45%",
-   "needs": "plumber-at-work-2 - plumber fixing a tap or toilet, bright room, landscape 3:2, min 1200px"
+   "needs": "plumber-at-work-2 - plumber fixing a tap or toilet, bright room, landscape 3:2, min 1200px",
+   "w": 900,
+   "h": 600
   },
   "tools-closeup": {
    "file": "img/photos/tools-closeup.webp",
-   "alt": "Close-up of a plumber's hands holding a wrench on a copper gas fitting",
-   "credit": "",
+   "alt": "Rows of pliers and wrenches with red handles stacked on a rack",
+   "credit": "Photo: Unsplash",
    "label": "Gas fitting card",
    "pos": "50% 50%",
-   "needs": "tools-closeup - hands, wrench and copper fittings, shallow depth, landscape 3:2, min 1200px"
+   "needs": "tools-closeup - hands, wrench and copper fittings, shallow depth, landscape 3:2, min 1200px",
+   "w": 900,
+   "h": 600
   },
   "hot-water-unit": {
    "file": "img/photos/hot-water-unit.webp",
-   "alt": "New hot water unit installed on a clean wall with copper pipes",
-   "credit": "",
+   "alt": "A hand using slip-joint pliers to tighten a fitting on the pipes above a white hot water tank",
+   "credit": "Photo: Unsplash",
    "label": "Hot water card",
    "pos": "50% 40%",
-   "needs": "hot-water-unit - a newly installed hot water system, tidy pipework, landscape 3:2, min 1200px"
+   "needs": "hot-water-unit - a newly installed hot water system, tidy pipework, landscape 3:2, min 1200px",
+   "w": 900,
+   "h": 810
   },
   "bathroom-clean": {
    "file": "img/photos/bathroom-clean.webp",
-   "alt": "Bright renovated bathroom with a new shower screen and vanity",
-   "credit": "",
+   "alt": "A modern bathroom with a floating timber vanity, black fittings, a round mirror and stone-look tiles",
+   "credit": "Photo: Unsplash",
    "label": "Renovation card",
    "pos": "50% 50%",
-   "needs": "bathroom-clean - finished modern bathroom in natural light, landscape 3:2, min 1200px"
+   "needs": "bathroom-clean - finished modern bathroom in natural light, landscape 3:2, min 1200px",
+   "w": 900,
+   "h": 1353
   },
   "blocked-drain-work": {
    "file": "img/photos/blocked-drain-work.webp",
@@ -60,11 +69,13 @@
   },
   "team-1": {
    "file": "img/photos/team-1.webp",
-   "alt": "Mark, founder and master plumber, in a navy work shirt",
-   "credit": "",
+   "alt": "A smiling bearded plumber in a red hard hat and navy jacket standing in a workshop",
+   "credit": "Photo: Unsplash",
    "label": "Team 1",
    "pos": "50% 25%",
-   "needs": "team-1 - friendly plumber, navy uniform, head and shoulders, portrait 4:5, face in upper third, min 900px wide"
+   "needs": "team-1 - friendly plumber, navy uniform, head and shoulders, portrait 4:5, face in upper third, min 900px wide",
+   "w": 900,
+   "h": 1350
   },
   "team-2": {
    "file": "img/photos/team-2.webp",
@@ -132,11 +143,13 @@
   },
   "before-after-3-after": {
    "file": "img/photos/before-after-3-after.webp",
-   "alt": "The finished bathroom with new fittings",
-   "credit": "",
+   "alt": "A bright bathroom with a freestanding bath, a timber-panelled shower and large windows",
+   "credit": "Photo: Unsplash",
    "label": "Job 3 after",
    "pos": "50% 50%",
-   "needs": "before-after-3-after - the finished bathroom, same framing, landscape 3:2, min 1200px"
+   "needs": "before-after-3-after - the finished bathroom, same framing, landscape 3:2, min 1200px",
+   "w": 900,
+   "h": 765
   },
   "emergency-night-van": {
    "file": "img/photos/emergency-night-van.webp",
@@ -145,6 +158,57 @@
    "label": "Emergency strip",
    "pos": "50% 50%",
    "needs": "emergency-night-van - the branded van at dusk or night with lights on, wide landscape 16:9, min 1600px (a navy overlay is added in CSS)"
+  },
+  "hero-sink": {
+   "file": "img/photos/hero-plumber-at-work-sink.webp",
+   "alt": "A plumber's hand with a wristwatch tightening a pipe fitting under a sink, lit in blue",
+   "credit": "Photo: Unsplash",
+   "label": "Hero",
+   "pos": "50% 50%",
+   "needs": "hero-sink - plumber working under a sink, close, warm light, landscape 4:3, min 1200px",
+   "eager": true,
+   "w": 900,
+   "h": 675
+  },
+  "ute-work-truck": {
+   "file": "img/photos/ute-work-truck.webp",
+   "alt": "The tray of a white ute loaded with cables, a traffic cone and signs",
+   "credit": "Photo: Unsplash",
+   "label": "Ute",
+   "pos": "50% 55%",
+   "needs": "ute-work-truck - second work vehicle (ute with gear), landscape 3:2, min 1200px (shown in Find us)",
+   "w": 900,
+   "h": 600
+  },
+  "gas-pipework": {
+   "file": "img/photos/pipework-gas-boiler.webp",
+   "alt": "Boiler room pipework with white insulated pipes, red valve wheels and pressure gauges",
+   "credit": "Photo: Unsplash",
+   "label": "Gas pipework",
+   "pos": "50% 35%",
+   "needs": "gas-pipework - gas and hot water pipework, valves and gauges, portrait or square, min 900px",
+   "w": 900,
+   "h": 1354
+  },
+  "emergency-tools-wall": {
+   "file": "img/photos/tools-wall-wide.webp",
+   "alt": "A workshop wall of tools on a pegboard: saws, wrenches, a drill, pliers and hammers",
+   "credit": "Photo: Unsplash",
+   "label": "Tool wall",
+   "pos": "50% 45%",
+   "needs": "emergency-tools-wall - wide tool wall or night van for the emergency strip, landscape 3:2, min 1600px",
+   "w": 900,
+   "h": 600
+  },
+  "how-tall-tools": {
+   "file": "img/photos/tools-wall-tall.webp",
+   "alt": "A white pegboard wall hung with blue-handled wrenches, pipe tools and clamps",
+   "credit": "Photo: Unsplash",
+   "label": "Tool wall tall",
+   "pos": "50% 40%",
+   "needs": "how-tall-tools - tall tool wall or plumber portrait, portrait 2:3, min 900px",
+   "w": 900,
+   "h": 1350
   }
  }
 }

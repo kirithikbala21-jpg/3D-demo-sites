@@ -64,3 +64,6 @@ Business, people, prices, reviews and the "4.9 (212)" summary are invented and l
 
 ## Design notes
 Light page, navy `#0b2545`, one orange `#ff6a13`. Type: Barlow Condensed 700 headings (56 / 40 / 28 / 20px desktop, about 36 / 30 / 24 / 19px phone), Inter body (17px phone). 8px spacing scale, 12px radius. Phone first: sticky bottom call/quote bar below 1040px, cookie bar above it (max 70px), no section taller than about 1,300px at 390px.
+
+## Photos placed so far
+Hero (sink), emergency strip (tool wall), How it works (pipe cutter + tall tool wall), service cards (tools, hot water unit, gas pipework, bathroom), team 1, Find us (van + ute), before-after-3 after. Credits read "Photo: Unsplash" until names are added (CREDITS-TODO.md). Still empty: team 2 to 4, all before photos, before/after 1 and 2 after, plumber-at-work-1, blocked-drain-work, emergency-night-van. Unused spare: bathroom-clean-1 and bathroom-reno-dark (in img/source).

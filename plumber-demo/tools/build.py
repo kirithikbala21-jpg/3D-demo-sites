@@ -219,6 +219,8 @@ def photo_slots():
             short, _, rest = sl.get("needs", key).partition(" - ")
             html_by_slot[key] = (f'<span class="photo slot-empty" data-slot="{key}"><span class="slot-label"><strong>PHOTO SLOT: {html.escape(short)}</strong>'
                                  f'<span class="slot-needs"> - {html.escape(rest)}</span></span></span>')
+    # emergency strip: night van wins if supplied, otherwise the tool wall, otherwise the night-van placeholder
+    html_by_slot["emergency-bg"] = html_by_slot["emergency-night-van"] if "slot-empty" not in html_by_slot["emergency-night-van"] else (html_by_slot["emergency-tools-wall"] if "slot-empty" not in html_by_slot["emergency-tools-wall"] else html_by_slot["emergency-night-van"])
     text = "; ".join(dict.fromkeys(credits))
     return html_by_slot, text
 

@@ -585,12 +585,12 @@ if (want('func')) {
     await open(p);
     const r = await p.evaluate(() => { const row = document.querySelector('.reviews-row'), t = document.querySelector('.team-row'); const cs = getComputedStyle(row), ts = getComputedStyle(t); const c0 = row.children[0].getBoundingClientRect(); return { rn: row.children.length, snap: cs.scrollSnapType, ox: cs.overflowX, scroll: row.scrollWidth > row.clientWidth, peek: c0.right < innerWidth - 20 && row.children[1].getBoundingClientRect().left < innerWidth - 8, tn: t.children.length, tsnap: ts.scrollSnapType, tscroll: t.scrollWidth > t.clientWidth, rating: document.querySelector('.rating-num').textContent.trim(), stars: document.querySelectorAll('.review .stars').length, tag: document.querySelector('.sample-tag').textContent.trim(), tabindex: row.getAttribute('tabindex'), team: [...document.querySelectorAll('.member')].map((m) => m.textContent.replace(/\s+/g, ' ').trim()) }; });
     ok('reviews: six reviews in a snap-scrolling swipe row with the next card peeking; 4.9 summary labelled "Sample reviews. Fictional."', r.rn === 6 && /x/.test(r.snap) && r.scroll && r.peek && r.rating === cfg.reviewsSummary.rating && r.stars === 6 && r.tag === 'Sample reviews. Fictional.', JSON.stringify(r));
-    ok('team: four plumbers in a swipe row, each with role, years and the licence placeholder', r.tn === 4 && /x/.test(r.tsnap) && r.tscroll && r.team.every((t) => /years experience/.test(t) && /Lic\. 000000/.test(t)), JSON.stringify(r.team));
+    ok('team: five plumbers in a swipe row, each with role, years and the licence placeholder', r.tn === 5 && /x/.test(r.tsnap) && r.tscroll && r.team.every((t) => /years experience/.test(t) && /Lic\. 000000/.test(t)), JSON.stringify(r.team));
     await done(p);
     const d = await newPage(DESKTOP);
     await open(d);
     const g = await d.evaluate(() => ({ rv: getComputedStyle(document.querySelector('.reviews-row')).display, cols: getComputedStyle(document.querySelector('.reviews-row')).gridTemplateColumns.split(' ').length, tcols: getComputedStyle(document.querySelector('.team-row')).gridTemplateColumns.split(' ').length, sw: getComputedStyle(document.querySelector('.reviews-row')).overflowX }));
-    ok('desktop: reviews are a 3-column grid and the team a 4-column grid (no swipe)', g.rv === 'grid' && g.cols === 3 && g.tcols === 4 && g.sw === 'visible', JSON.stringify(g));
+    ok('desktop: reviews are a 3-column grid and the team a 5-column grid (no swipe)', g.rv === 'grid' && g.cols === 3 && g.tcols === 5 && g.sw === 'visible', JSON.stringify(g));
     await done(d);
     const lines = D.reviews.map((x) => x.text); ok('six reviews, each with first name + suburb', D.reviews.length === 6 && D.reviews.every((x) => x.name && x.suburb && x.text.length > 40) && lines.some((t) => t.startsWith('Came out at 9pm on a Sunday')));
   }

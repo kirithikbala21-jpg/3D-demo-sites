@@ -344,7 +344,7 @@ html:not(.js) .ba-line { display: none; }
   .swipe > li { flex: none; }
   .swipe-hint { display: none; }
   .reviews-row { grid-template-columns: repeat(3, 1fr); gap: var(--s3); }
-  .team-row { grid-template-columns: repeat(4, 1fr); gap: var(--s3); }
+  .team-row { grid-template-columns: repeat(5, 1fr); gap: var(--s2); }
 }
 
 /* ---------- reviews ---------- */
@@ -528,3 +528,7 @@ html:not(.js) body::before { content: ""; position: absolute; left: 7px; top: 14
 .how-photos .slot-label, .fleet .slot-label { font-size: .8125rem; }
 @media (min-width: 768px) { .how-photos { height: 300px; } }
 @media (min-width: 1040px) { .how-photos { height: 360px; grid-template-columns: 1.6fr 1fr; } }
+
+/* Empty photo slots stay as tidy neutral panels; their labels only show with ?slots=1 */
+html:not(.show-slots) .slot-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); padding: 0; }
+html:not(.show-slots) .slot-empty { outline: 0; }

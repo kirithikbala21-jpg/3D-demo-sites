@@ -49,6 +49,7 @@
   </style></noscript>
   <script>
     document.documentElement.classList.add('js');
+    if (/[?&]slots=1\b/.test(location.search)) document.documentElement.classList.add('show-slots'); /* owner aid: ?slots=1 shows the photo-slot labels */
     /* Applied before first paint: no flash of the announcement bar once it has been dismissed. */
     try { if (localStorage.getItem('wp-announce') === 'off') document.documentElement.classList.add('no-announce'); } catch (e) { /* ignore */ }
   </script>
@@ -156,7 +157,7 @@
           </a></li>
           
           <li class="reveal"><a class="svc-card" href="#quote" data-service="blocked-drains" data-urgency="today">
-            <span class="frame frame-svc"><span class="photo slot-empty" data-slot="blocked-drain-work"><span class="slot-label"><strong>PHOTO SLOT: blocked-drain-work</strong><span class="slot-needs"> - plumber with a drain camera or drain machine at an outdoor drain, landscape 3:2, min 1200px</span></span></span></span>
+            <span class="frame frame-svc"><span class="photo"><img src="img/photos/blocked-drain-work.webp" alt="A night crew in hi-vis lifting a manhole cover beside a drain jetting truck with a hose reel" width="1600" height="1087" loading="lazy" decoding="async" style="object-position:50% 60%"></span></span>
             <span class="svc-body">
               <h3 class="h-card">Blocked drains</h3>
               <span class="svc-promise">Cleared fast, with a camera check if needed.</span>
@@ -192,7 +193,7 @@
           </a></li>
           
           <li class="reveal"><a class="svc-card" href="#quote" data-service="leaks-taps" data-urgency="today">
-            <span class="frame frame-svc"><span class="photo slot-empty" data-slot="plumber-at-work-1"><span class="slot-label"><strong>PHOTO SLOT: plumber-at-work-1</strong><span class="slot-needs"> - plumber under a kitchen sink or at a burst pipe, warm daylight, landscape 3:2, min 1200px</span></span></span></span>
+            <span class="frame frame-svc"><span class="photo"><img src="img/photos/plumber-at-work-1.webp" alt="Hands tightening brass pipe fittings on insulated pipework" width="1600" height="1067" loading="lazy" decoding="async" style="object-position:50% 40%"></span></span>
             <span class="svc-body">
               <h3 class="h-card">Leaks and taps</h3>
               <span class="svc-promise">Drips, leaks and toilets sorted.</span>
@@ -205,7 +206,7 @@
     </section>
 
     <section class="emergency" id="emergency" aria-labelledby="emergency-title">
-      <div class="em-bg" aria-hidden="false"><span class="photo"><img src="img/photos/tools-wall-wide.webp" alt="A workshop wall of tools on a pegboard: saws, wrenches, a drill, pliers and hammers" width="900" height="600" loading="lazy" decoding="async" style="object-position:50% 45%"></span></div>
+      <div class="em-bg" aria-hidden="false"><span class="photo"><img src="img/photos/emergency-night-van.webp" alt="A drain crew working at night beside a white jetting truck under floodlights" width="1600" height="1087" loading="lazy" decoding="async" style="object-position:50% 55%"></span></div>
       <div class="container em-inner">
         <p class="eyebrow eyebrow-dark">Emergency line, 24/7</p>
         <h2 id="emergency-title" data-pipe>Burst pipe? Gas smell? Call now.</h2>
@@ -423,7 +424,7 @@
         <div class="sec-head reveal">
           <p class="eyebrow">Meet the team</p>
           <h2 id="team-title" data-pipe>The people who turn up</h2>
-          <p class="sec-lead">Four of our 6 plumbers. All licensed, all local.</p>
+          <p class="sec-lead">Five of our 6 plumbers. All licensed, all local.</p>
         </div>
         <p class="swipe-hint">Swipe for more</p>
         <ul class="swipe team-row" data-lenis-prevent tabindex="0" aria-label="Our plumbers">
@@ -436,24 +437,31 @@
           </li>
           
           <li class="member">
-            <div class="frame frame-team"><span class="photo slot-empty" data-slot="team-2"><span class="slot-label"><strong>PHOTO SLOT: team-2</strong><span class="slot-needs"> - gas fitter, navy uniform, head and shoulders, portrait 4:5, face in upper third, min 900px wide</span></span></span></div>
+            <div class="frame frame-team"><span class="photo"><img src="img/photos/team-2.webp" alt="A plumber in a blue work jumpsuit standing with arms crossed in a workshop" width="900" height="1350" loading="lazy" decoding="async" style="object-position:50% 18%"></span></div>
             <h3 class="h-card">Aisha Rahman</h3>
             <p class="member-role">Gas fitter</p>
             <p class="member-meta">11 years experience<br>Lic. 000000</p>
           </li>
           
           <li class="member">
-            <div class="frame frame-team"><span class="photo slot-empty" data-slot="team-3"><span class="slot-label"><strong>PHOTO SLOT: team-3</strong><span class="slot-needs"> - drainage plumber, navy uniform, head and shoulders, portrait 4:5, face in upper third, min 900px wide</span></span></span></div>
+            <div class="frame frame-team"><span class="photo"><img src="img/photos/team-3.webp" alt="A plumber in a white hard hat and dungarees standing with arms crossed" width="900" height="1350" loading="lazy" decoding="async" style="object-position:50% 16%"></span></div>
             <h3 class="h-card">Luke Nguyen</h3>
             <p class="member-role">Drainage specialist</p>
             <p class="member-meta">9 years experience<br>Lic. 000000</p>
           </li>
           
           <li class="member">
-            <div class="frame frame-team"><span class="photo slot-empty" data-slot="team-4"><span class="slot-label"><strong>PHOTO SLOT: team-4</strong><span class="slot-needs"> - plumber, navy uniform, head and shoulders, portrait 4:5, face in upper third, min 900px wide</span></span></span></div>
+            <div class="frame frame-team"><span class="photo"><img src="img/photos/team-4.webp" alt="A plumber in a yellow hard hat and hi-vis vest holding a clipboard" width="900" height="1350" loading="lazy" decoding="async" style="object-position:50% 16%"></span></div>
             <h3 class="h-card">Tom Kerrigan</h3>
             <p class="member-role">Hot water and renovations</p>
             <p class="member-meta">14 years experience<br>Lic. 000000</p>
+          </li>
+          
+          <li class="member">
+            <div class="frame frame-team"><span class="photo"><img src="img/photos/team-5.webp" alt="A smiling plumber in a hi-vis vest" width="900" height="1350" loading="lazy" decoding="async" style="object-position:50% 18%"></span></div>
+            <h3 class="h-card">Grace Mensah</h3>
+            <p class="member-role">Plumber and drainage</p>
+            <p class="member-meta">6 years experience<br>Lic. 000000</p>
           </li>
           
         </ul>

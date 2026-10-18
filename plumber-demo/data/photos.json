@@ -13,11 +13,13 @@
   },
   "plumber-at-work-1": {
    "file": "img/photos/plumber-at-work-1.webp",
-   "alt": "Plumber in a navy uniform checking a pipe under a sink in daylight",
-   "credit": "",
+   "alt": "Hands tightening brass pipe fittings on insulated pipework",
+   "credit": "Photo: Unsplash",
    "label": "Emergency card",
-   "pos": "50% 45%",
-   "needs": "plumber-at-work-1 - plumber under a kitchen sink or at a burst pipe, warm daylight, landscape 3:2, min 1200px"
+   "pos": "50% 40%",
+   "needs": "plumber-at-work-1 - plumber under a kitchen sink or at a burst pipe, warm daylight, landscape 3:2, min 1200px",
+   "w": 1600,
+   "h": 1067
   },
   "plumber-at-work-2": {
    "file": "img/photos/plumber-at-work-2.webp",
@@ -61,11 +63,13 @@
   },
   "blocked-drain-work": {
    "file": "img/photos/blocked-drain-work.webp",
-   "alt": "Plumber feeding a drain camera cable into an outdoor drain",
-   "credit": "",
+   "alt": "A night crew in hi-vis lifting a manhole cover beside a drain jetting truck with a hose reel",
+   "credit": "Photo: Unsplash",
    "label": "Blocked drains card",
-   "pos": "50% 50%",
-   "needs": "blocked-drain-work - plumber with a drain camera or drain machine at an outdoor drain, landscape 3:2, min 1200px"
+   "pos": "50% 60%",
+   "needs": "blocked-drain-work - plumber with a drain camera or drain machine at an outdoor drain, landscape 3:2, min 1200px",
+   "w": 1600,
+   "h": 1087
   },
   "team-1": {
    "file": "img/photos/team-1.webp",
@@ -79,27 +83,33 @@
   },
   "team-2": {
    "file": "img/photos/team-2.webp",
-   "alt": "Aisha, gas fitter, in a navy work shirt",
-   "credit": "",
+   "alt": "A plumber in a blue work jumpsuit standing with arms crossed in a workshop",
+   "credit": "Photo: Unsplash",
    "label": "Team 2",
-   "pos": "50% 25%",
-   "needs": "team-2 - gas fitter, navy uniform, head and shoulders, portrait 4:5, face in upper third, min 900px wide"
+   "pos": "50% 18%",
+   "needs": "team-2 - gas fitter, navy uniform, head and shoulders, portrait 4:5, face in upper third, min 900px wide",
+   "w": 900,
+   "h": 1350
   },
   "team-3": {
    "file": "img/photos/team-3.webp",
-   "alt": "Luke, drainage specialist, in a navy work shirt",
-   "credit": "",
+   "alt": "A plumber in a white hard hat and dungarees standing with arms crossed",
+   "credit": "Photo: Unsplash",
    "label": "Team 3",
-   "pos": "50% 25%",
-   "needs": "team-3 - drainage plumber, navy uniform, head and shoulders, portrait 4:5, face in upper third, min 900px wide"
+   "pos": "50% 16%",
+   "needs": "team-3 - drainage plumber, navy uniform, head and shoulders, portrait 4:5, face in upper third, min 900px wide",
+   "w": 900,
+   "h": 1350
   },
   "team-4": {
    "file": "img/photos/team-4.webp",
-   "alt": "Tom, hot water and renovation plumber, in a navy work shirt",
-   "credit": "",
+   "alt": "A plumber in a yellow hard hat and hi-vis vest holding a clipboard",
+   "credit": "Photo: Unsplash",
    "label": "Team 4",
-   "pos": "50% 25%",
-   "needs": "team-4 - plumber, navy uniform, head and shoulders, portrait 4:5, face in upper third, min 900px wide"
+   "pos": "50% 16%",
+   "needs": "team-4 - plumber, navy uniform, head and shoulders, portrait 4:5, face in upper third, min 900px wide",
+   "w": 900,
+   "h": 1350
   },
   "before-after-1-before": {
    "file": "img/photos/before-after-1-before.webp",
@@ -153,11 +163,13 @@
   },
   "emergency-night-van": {
    "file": "img/photos/emergency-night-van.webp",
-   "alt": "Waverley Plumbing & Gas van with headlights on at dusk in a suburban street",
-   "credit": "",
+   "alt": "A drain crew working at night beside a white jetting truck under floodlights",
+   "credit": "Photo: Unsplash",
    "label": "Emergency strip",
-   "pos": "50% 50%",
-   "needs": "emergency-night-van - the branded van at dusk or night with lights on, wide landscape 16:9, min 1600px (a navy overlay is added in CSS)"
+   "pos": "50% 55%",
+   "needs": "emergency-night-van - the branded van at dusk or night with lights on, wide landscape 16:9, min 1600px (a navy overlay is added in CSS)",
+   "w": 1600,
+   "h": 1087
   },
   "hero-sink": {
    "file": "img/photos/hero-plumber-at-work-sink.webp",
@@ -207,6 +219,16 @@
    "label": "Tool wall tall",
    "pos": "50% 40%",
    "needs": "how-tall-tools - tall tool wall or plumber portrait, portrait 2:3, min 900px",
+   "w": 900,
+   "h": 1350
+  },
+  "team-5": {
+   "file": "img/photos/team-5.webp",
+   "alt": "A smiling plumber in a hi-vis vest",
+   "credit": "Photo: Unsplash",
+   "label": "Team 5",
+   "pos": "50% 18%",
+   "needs": "team-5 - friendly plumber, hi-vis vest, head and shoulders, portrait 4:5, face in upper third, min 900px wide",
    "w": 900,
    "h": 1350
   }

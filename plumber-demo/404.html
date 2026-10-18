@@ -47,6 +47,7 @@
   </style></noscript>
   <script>
     document.documentElement.classList.add('js');
+    if (/[?&]slots=1\b/.test(location.search)) document.documentElement.classList.add('show-slots'); /* owner aid: ?slots=1 shows the photo-slot labels */
     /* Applied before first paint: no flash of the announcement bar once it has been dismissed. */
     try { if (localStorage.getItem('wp-announce') === 'off') document.documentElement.classList.add('no-announce'); } catch (e) { /* ignore */ }
   </script>

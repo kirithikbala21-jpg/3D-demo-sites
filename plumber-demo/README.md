@@ -67,3 +67,6 @@ Light page, navy `#0b2545`, one orange `#ff6a13`. Type: Barlow Condensed 700 hea
 
 ## Photos placed so far
 Hero (sink), emergency strip (tool wall), How it works (pipe cutter + tall tool wall), service cards (tools, hot water unit, gas pipework, bathroom), team 1, Find us (van + ute), before-after-3 after. Credits read "Photo: Unsplash" until names are added (CREDITS-TODO.md). Still empty: team 2 to 4, all before photos, before/after 1 and 2 after, plumber-at-work-1, blocked-drain-work, emergency-night-van. Unused spare: bathroom-clean-1 and bathroom-reno-dark (in img/source).
+
+## Update: more photos
+Added: blocked drains and emergency strip (night crew), leaks and taps (pipe fittings), team 2 to 5 (team 5 is a fifth card). Empty photo slots now show a quiet neutral panel; add `?slots=1` to the URL to see their labels. Still empty: before photos, before/after 1 and 2 after.

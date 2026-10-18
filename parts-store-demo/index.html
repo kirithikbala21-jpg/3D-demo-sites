@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Torque &amp; Co. | Unofficial concept redesign</title>
+<meta name="description" content="An unofficial concept redesign of an auto parts retailer home page with a fictional brand: find parts that fit your car, shop by job and an oil finder.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#EE3123">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Torque &amp; Co. | Unofficial concept redesign">
+<meta property="og:description" content="Find parts that fit your car, shop by job and get the right oil. A concept home page with a fictional brand.">
+<meta property="og:image" content="https://kirithikbala21-jpg.github.io/3D-demo-sites/parts-store-demo/img/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="img/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="img/icon-192.png">
+<link rel="manifest" href="site.webmanifest">
+<link rel="preload" href="fonts/lato-latin-900-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="logo" viewBox="0 0 40 40"><path fill="#EE3123" d="M20 2l3 4.5 5.2-1.6.9 5.4 5.4.9-1.6 5.2L38 20l-4.5 3 1.6 5.2-5.4.9-.9 5.4-5.2-1.6L20 38l-3-4.5-5.2 1.6-.9-5.4-5.4-.9 1.6-5.2L2 20l4.5-3-1.6-5.2 5.4-.9.9-5.4 5.2 1.6z"/><circle cx="20" cy="20" r="12" fill="#fff"/><path fill="#1a1a1a" d="M12.500 14h15v4h-5.500v10h-4V18h-5.500z"/></symbol>
+  <symbol id="i-oil" viewBox="0 0 48 48"><path d="M20 4h8v6l5 6v26a2 2 0 0 1-2 2H17a2 2 0 0 1-2-2V16l5-6z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/><path d="M19 28c3 4 7 4 10 0-1-3-4-6-5-8-1 2-4 5-5 8z" fill="currentColor"/></symbol>
+  <symbol id="i-gear" viewBox="0 0 48 48"><circle cx="24" cy="24" r="7" fill="none" stroke="currentColor" stroke-width="3"/><path d="M24 4v7M24 37v7M4 24h7M37 24h7M10 10l5 5M33 33l5 5M38 10l-5 5M15 33l-5 5" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></symbol>
+  <symbol id="i-4wd" viewBox="0 0 48 48"><path d="M4 36l10-18h16l8 8h6v10H4z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/><circle cx="14" cy="38" r="5" fill="#fff" stroke="currentColor" stroke-width="3"/><circle cx="36" cy="38" r="5" fill="#fff" stroke="currentColor" stroke-width="3"/></symbol>
+  <symbol id="i-paint" viewBox="0 0 48 48"><rect x="6" y="6" width="30" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="3"/><path d="M36 12h6v14H24v6" fill="none" stroke="currentColor" stroke-width="3"/><rect x="20" y="32" width="8" height="12" rx="1" fill="currentColor"/></symbol>
+  <symbol id="i-care" viewBox="0 0 48 48"><path d="M24 6c8 10 12 16 12 22a12 12 0 0 1-24 0c0-6 4-12 12-22z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/></symbol>
+  <symbol id="i-tech" viewBox="0 0 48 48"><rect x="6" y="10" width="36" height="24" rx="3" fill="none" stroke="currentColor" stroke-width="3"/><path d="M16 42h16M24 34v8" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></symbol>
+  <symbol id="i-light" viewBox="0 0 48 48"><path d="M20 38h8M18 32h12M24 6a12 12 0 0 0-7 22h14a12 12 0 0 0-7-22z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/></symbol>
+  <symbol id="i-tool" viewBox="0 0 48 48"><path d="M30 6a10 10 0 0 0-9 14L6 35l7 7 15-15a10 10 0 0 0 14-9l-6 6-5-1-1-5z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/></symbol>
+  <symbol id="i-bat" viewBox="0 0 48 48"><rect x="4" y="14" width="40" height="26" rx="3" fill="none" stroke="currentColor" stroke-width="3"/><path d="M12 14v-5h8v5M28 14v-5h8v5M12 27h8M32 23v8M28 27h8" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></symbol>
+  <symbol id="i-tow" viewBox="0 0 48 48"><circle cx="30" cy="16" r="8" fill="none" stroke="currentColor" stroke-width="3"/><path d="M30 24v8M12 38h28M18 32h16l4 6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-wipe" viewBox="0 0 48 48"><path d="M4 38A24 24 0 0 1 44 38M24 38L10 18" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></symbol>
+  <symbol id="i-seat" viewBox="0 0 48 48"><path d="M16 6h10l4 18h8l4 14H20l-4-12z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/><path d="M12 42h30" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.500a2.500 2.500 0 1 1 0-5 2.500 2.500 0 0 1 0 5z" fill="currentColor"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10" cy="10" r="6.500" fill="none" stroke="currentColor" stroke-width="2.400"/><path d="M15 15l6 6" stroke="currentColor" stroke-width="2.400" stroke-linecap="round"/></symbol>
+  <symbol id="i-car" viewBox="0 0 24 24"><path d="M3 15l2-6h14l2 6v4h-3v-2H6v2H3zM7 14h2M15 14h2" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/></symbol>
+  <symbol id="i-cart" viewBox="0 0 24 24"><path d="M2 3h3l3 12h11l2-8H7" fill="none" stroke="currentColor" stroke-width="2.200" stroke-linejoin="round" stroke-linecap="round"/><circle cx="9" cy="20" r="1.700" fill="currentColor"/><circle cx="18" cy="20" r="1.700" fill="currentColor"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M4 12.500l5 5L20 6.500" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</svg>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<!-- 1. Top bar -->
+<div class="topbar">
+  <div class="wrap topbar-in">
+    <p><strong>Click &amp; Collect in 30 minutes.</strong> Free delivery over $99.</p>
+    <div class="topbar-links">
+      <button type="button" class="link-btn" id="store-open"><svg width="16" height="16" aria-hidden="true"><use href="#i-pin"/></svg> <span id="store-label">Set my store</span></button>
+      <a href="#reminders">Login / Register</a>
+    </div>
+  </div>
+  <div class="store-pop" id="store-pop" hidden>
+    <form id="store-form" novalidate>
+      <label for="store-pc">Your postcode</label>
+      <div class="row"><input id="store-pc" inputmode="numeric" maxlength="4" autocomplete="postal-code" placeholder="e.g. 3168"><button class="btn" type="submit">Find store</button></div>
+      <p class="err" id="store-err" role="alert"></p>
+    </form>
+  </div>
+</div>
+
+<!-- 2. Header -->
+<header class="header">
+  <div class="wrap header-in">
+    <a class="brand" href="#top" aria-label="Torque &amp; Co. home"><svg width="40" height="40" aria-hidden="true"><use href="#logo"/></svg><span class="brand-t"><strong>Torque <i>&amp;</i> Co.</strong><small>Right part. Right now.</small></span></a>
+    <form class="search" role="search" id="search-form"><label class="sr" for="q">Search parts, brands or part numbers</label><input id="q" type="search" placeholder="Search parts, brands or part numbers" autocomplete="off"><button class="btn btn-search" type="submit" aria-label="Search"><svg width="22" height="22" aria-hidden="true"><use href="#i-search"/></svg></button></form>
+    <a class="hbtn" href="#hero" id="garage-btn"><svg width="24" height="24" aria-hidden="true"><use href="#i-car"/></svg><span>My garage</span></a>
+    <a class="hbtn" href="#cart" id="cart-btn" aria-label="Cart"><svg width="24" height="24" aria-hidden="true"><use href="#i-cart"/></svg><span>Cart</span><b class="count" id="cart-count" aria-live="polite">0</b></a>
+  </div>
+  <nav class="cats" aria-label="Categories"><ul class="wrap" id="cat-strip"></ul></nav>
+</header>
+
+<div class="fits-bar" id="fits-bar" hidden role="status"><div class="wrap"><svg width="20" height="20" aria-hidden="true"><use href="#i-check"/></svg><span>Fits your <strong id="fits-car"></strong></span><button type="button" class="link-btn" id="fits-clear">Change</button></div></div>
+
+<main id="main">
+<span id="top"></span>
+
+<!-- 3. Hero finder -->
+<section class="hero" id="hero" aria-labelledby="hero-h">
+  <div class="wrap hero-in">
+    <h1 id="hero-h">Find parts that <em>fit your car.</em></h1>
+    <p class="lead">Tell us what you drive once. We show only what fits.</p>
+    <div class="finder">
+      <div class="tabs" role="tablist" aria-label="Find your car">
+        <button role="tab" id="t-rego" aria-selected="true" aria-controls="p-rego">Rego</button>
+        <button role="tab" id="t-mmy" aria-selected="false" aria-controls="p-mmy" tabindex="-1">Make / Model / Year</button>
+        <button role="tab" id="t-part" aria-selected="false" aria-controls="p-part" tabindex="-1">Part type</button>
+      </div>
+      <form class="panel" id="p-rego" role="tabpanel" aria-labelledby="t-rego" novalidate>
+        <div class="f3"><div><label for="r-state">State</label><select id="r-state"><option>VIC</option><option>NSW</option><option>QLD</option><option>SA</option><option>WA</option><option>TAS</option><option>NT</option><option>ACT</option></select></div>
+        <div><label for="r-plate">Number plate</label><input id="r-plate" maxlength="8" autocapitalize="characters" autocomplete="off" placeholder="e.g. ABC123"></div>
+        <button class="btn btn-lg" type="submit">Find my car</button></div>
+        <p class="err" id="r-err" role="alert"></p>
+      </form>
+      <form class="panel" id="p-mmy" role="tabpanel" aria-labelledby="t-mmy" hidden novalidate>
+        <div class="f3"><div><label for="m-make">Make</label><select id="m-make"></select></div><div><label for="m-model">Model</label><select id="m-model" disabled></select></div><div><label for="m-year">Year</label><select id="m-year" disabled></select></div></div>
+        <button class="btn btn-lg" type="submit">Show parts that fit</button><p class="err" id="m-err" role="alert"></p>
+      </form>
+      <form class="panel" id="p-part" role="tabpanel" aria-labelledby="t-part" hidden novalidate>
+        <div class="f3"><div><label for="pt-type">Part type</label><select id="pt-type"><option value="">Choose a part</option><option>Engine oil</option><option>Oil filter</option><option>Brake pads</option><option>Battery</option><option>Wiper blades</option><option>Spark plugs</option></select></div></div>
+        <button class="btn btn-lg" type="submit">Find this part</button><p class="err" id="pt-err" role="alert"></p>
+      </form>
+      <p class="mock-note">Demo lookup: any plate returns the same car.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 4. Deal -->
+<section class="deal" aria-labelledby="deal-h">
+  <div class="wrap deal-in">
+    <div><p class="deal-k">Weekend deal</p><h2 id="deal-h">Half price<br>synthetic oil</h2><p>5W-30 full synthetic, 5L. Save $37 while stock lasts.</p>
+      <div class="cd" role="timer" aria-label="Time left on this deal"><div><b id="cd-h">00</b><span>hrs</span></div><div><b id="cd-m">00</b><span>min</span></div><div><b id="cd-s">00</b><span>sec</span></div></div>
+      <div class="deal-btns"><button class="btn btn-lg btn-white" type="button" data-add="p1">Add to cart $37</button><a class="btn btn-lg btn-ghost" href="#featured">See all deals</a></div></div>
+    <svg class="deal-art" viewBox="0 0 160 160" aria-hidden="true"><circle cx="80" cy="80" r="76" fill="#fff" opacity=".12"/><rect x="52" y="30" width="56" height="104" rx="8" fill="#fff"/><rect x="66" y="16" width="28" height="18" rx="3" fill="#1a1a1a"/><rect x="52" y="62" width="56" height="42" fill="#EE3123"/><text x="80" y="90" text-anchor="middle" font-family="Lato,sans-serif" font-weight="900" font-size="22" fill="#fff">5W-30</text></svg>
+  </div>
+</section>
+
+<!-- 5. Shop by job -->
+<section class="sec" id="jobs" aria-labelledby="jobs-h">
+  <div class="wrap"><h2 id="jobs-h" class="h-sec">Shop by job</h2><p class="sub">Pick the job. We list every part you need.</p>
+    <ul class="jobs" id="job-cards"></ul></div>
+</section>
+
+<!-- 6. Oil finder -->
+<section class="sec grey" id="oil" aria-labelledby="oil-h">
+  <div class="wrap"><h2 id="oil-h" class="h-sec">Oil finder</h2><p class="sub">The right oil and how much of it.</p>
+    <div class="oilbox"><form id="oil-form" novalidate>
+      <div class="f3"><div><label for="o-car">Vehicle</label><select id="o-car"></select></div><div><label for="o-fuel">Fuel type</label><select id="o-fuel"><option>Petrol</option><option>Diesel</option><option>Hybrid</option></select></div><button class="btn btn-lg" type="submit">Find my oil</button></div></form>
+      <div id="oil-out" aria-live="polite"></div></div></div>
+</section>
+
+<!-- 7. Featured -->
+<section class="sec" id="featured" aria-labelledby="feat-h">
+  <div class="wrap"><h2 id="feat-h" class="h-sec">Featured products</h2><p class="sub">Swipe for more. Tick Compare to line them up.</p></div>
+  <ul class="swipe wrap" id="products" tabindex="0" aria-label="Featured products, scroll sideways"></ul>
+  <div class="wrap"><p class="cmp" id="cmp" hidden role="status"></p></div>
+</section>
+
+<!-- 8. Categories -->
+<section class="sec grey" id="cats" aria-labelledby="cat-h">
+  <div class="wrap"><h2 id="cat-h" class="h-sec">Shop by category</h2><ul class="tiles" id="cat-tiles"></ul></div>
+</section>
+
+<!-- 9. Oil change steps -->
+<section class="sec" id="steps" aria-labelledby="steps-h">
+  <div class="wrap"><h2 id="steps-h" class="h-sec">Steps to change your oil</h2><p class="sub">About 45 minutes. A ramp or jack stands makes it easy.</p>
+    <ol class="steps">
+      <li><svg viewBox="0 0 80 60" aria-hidden="true"><path d="M8 44h64M16 44l8-18h32l8 18" fill="none" stroke="#1a1a1a" stroke-width="3"/><path d="M6 52h22M52 52h22" stroke="#EE3123" stroke-width="5"/></svg><b>1</b><h3>Lift</h3><p>Raise the car safely and let it sit level.</p></li>
+      <li><svg viewBox="0 0 80 60" aria-hidden="true"><rect x="12" y="10" width="56" height="16" fill="none" stroke="#1a1a1a" stroke-width="3"/><path d="M40 26v14" stroke="#EE3123" stroke-width="4"/><path d="M26 54a14 8 0 0 1 28 0z" fill="#1a1a1a"/></svg><b>2</b><h3>Drain</h3><p>Pull the sump plug and drain the old oil.</p></li>
+      <li><svg viewBox="0 0 80 60" aria-hidden="true"><rect x="28" y="10" width="24" height="40" rx="4" fill="none" stroke="#1a1a1a" stroke-width="3"/><path d="M28 24h24M28 36h24" stroke="#EE3123" stroke-width="3"/></svg><b>3</b><h3>Replace</h3><p>Fit a new filter and a new sump washer.</p></li>
+      <li><svg viewBox="0 0 80 60" aria-hidden="true"><path d="M40 6l8 12H32z" fill="#EE3123"/><rect x="24" y="22" width="32" height="30" rx="3" fill="none" stroke="#1a1a1a" stroke-width="3"/></svg><b>4</b><h3>Refill</h3><p>Pour in the new oil and check the dipstick.</p></li>
+    </ol>
+    <p class="center"><button class="btn btn-lg" type="button" data-job="oil">Add everything for this job</button></p></div>
+</section>
+
+<!-- 10. 4WD -->
+<section class="fwd" aria-labelledby="fwd-h">
+  <div class="wrap fwd-in"><div><p class="deal-k">4WD &amp; adventure</p><h2 id="fwd-h">Built for<br>the long way home</h2><p>Recovery gear, bull bars, lighting and storage. Fitted and fair priced.</p><a class="btn btn-lg" href="#cats">Shop 4WD</a></div>
+  <svg viewBox="0 0 200 110" aria-hidden="true" class="fwd-art"><path d="M10 80l22-34h80l30 24h38v22H10z" fill="none" stroke="#fff" stroke-width="4" stroke-linejoin="round"/><circle cx="46" cy="90" r="14" fill="#1a1a1a" stroke="#EE3123" stroke-width="5"/><circle cx="156" cy="90" r="14" fill="#1a1a1a" stroke="#EE3123" stroke-width="5"/><path d="M52 46L66 30h34l12 16" fill="none" stroke="#EE3123" stroke-width="4"/></svg></div>
+</section>
+
+<!-- 11. Ask a mechanic -->
+<section class="sec" id="ask" aria-labelledby="ask-h">
+  <div class="wrap ask"><div><h2 id="ask-h" class="h-sec">Ask a mechanic</h2><p class="sub">Real mechanics answer in one business day.</p>
+    <form id="ask-form" class="card form" novalidate>
+      <label for="a-car">Your vehicle</label><input id="a-car" autocomplete="off" placeholder="e.g. 2019 Toyota HiLux SR5">
+      <label for="a-q">Your question</label><textarea id="a-q" rows="3"></textarea>
+      <p class="err" id="a-err" role="alert"></p><button class="btn btn-lg" type="submit">Ask a mechanic</button>
+      <p class="ok" id="a-ok" role="status" hidden></p></form></div>
+    <ul class="qa"><li class="card"><h3>Can I mix oil brands?</h3><p>Yes, if the grade and spec match. Top up with the same grade when you can.</p></li><li class="card"><h3>How often should I change brake pads?</h3><p>Most last 40,000 to 70,000 km. Squealing or a longer stop means check them now.</p></li><li class="card"><h3>Why does my battery go flat?</h3><p>Short trips and age are common. A load test at the counter takes two minutes.</p></li></ul></div>
+</section>
+
+<!-- 12. Rewards -->
+<section class="sec grey" id="rewards" aria-labelledby="rw-h">
+  <div class="wrap rew"><div class="pts card"><p class="deal-k">Torque Rewards</p><h2 id="rw-h">Earn 1 point per $1</h2><div class="bar" aria-hidden="true"><span style="width:62%"></span></div><p class="small">620 of 1,000 points. $20 off at 1,000.</p></div>
+  <form id="rw-form" class="card form" novalidate><label for="rw-email">Email</label><input id="rw-email" type="email" autocomplete="email"><p class="err" id="rw-err" role="alert"></p><button class="btn btn-lg" type="submit">Join free</button><p class="ok" id="rw-ok" role="status" hidden></p></form></div>
+</section>
+
+<!-- 13. Reminders -->
+<section class="sec" id="reminders" aria-labelledby="rem-h">
+  <div class="wrap"><h2 id="rem-h" class="h-sec">Never miss your rego or service</h2>
+    <form id="rem-form" class="card form rem" novalidate>
+      <div><label for="rem-email">Email</label><input id="rem-email" type="email" autocomplete="email"></div>
+      <div><label for="rem-rego">Rego due</label><input id="rem-rego" type="date"></div>
+      <div><label for="rem-svc">Next service</label><input id="rem-svc" type="date"></div>
+      <button class="btn btn-lg" type="submit">Remind me</button><p class="err" id="rem-err" role="alert"></p><p class="ok" id="rem-ok" role="status" hidden></p></form></div>
+</section>
+
+<!-- 14. Trust strip -->
+<section class="trust" aria-label="Ways to shop"><ul class="wrap" id="trust"></ul></section>
+</main>
+
+<!-- 15. Footer -->
+<footer class="foot">
+  <div class="wrap foot-in">
+    <div><strong>Shop</strong><ul><li><a href="#cats">Categories</a></li><li><a href="#jobs">Shop by job</a></li><li><a href="#oil">Oil finder</a></li><li><a href="#featured">Deals</a></li></ul></div>
+    <div><strong>Help</strong><ul><li><a href="#ask">Ask a mechanic</a></li><li><a href="#reminders">Reminders</a></li><li><a href="#rewards">Rewards</a></li><li><a href="#top">Back to top</a></li></ul></div>
+    <div><strong>Pay</strong><p class="pay"><span>Visa</span><span>Mastercard</span><span>Gift card</span><span>Pay later</span></p><strong>Get the app</strong><p class="pay"><span>App Store</span><span>Google Play</span></p></div>
+  </div>
+  <div class="wrap foot-bot"><p>Unofficial concept redesign. Not affiliated with any real retailer. Names, prices and products are fictional.</p>
+  <p>Demo website by KB Ventures. <button type="button" class="link-btn" id="improve-open">Concept redesign: what I improved</button></p></div>
+</footer>
+
+<!-- Phone bar -->
+<nav class="mbar" aria-label="Quick links">
+  <a href="#q" id="mb-search"><svg width="24" height="24" aria-hidden="true"><use href="#i-search"/></svg>Search</a>
+  <button type="button" id="mb-store"><svg width="24" height="24" aria-hidden="true"><use href="#i-pin"/></svg>My store</button>
+  <a href="#hero"><svg width="24" height="24" aria-hidden="true"><use href="#i-car"/></svg>My garage</a>
+  <a href="#cart" id="mb-cart"><svg width="24" height="24" aria-hidden="true"><use href="#i-cart"/></svg>Cart <b class="count" id="cart-count2">0</b></a>
+</nav>
+
+<!-- Drawer: job + cart + improvements share one dialog shell -->
+<div class="scrim" id="scrim" hidden></div>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="dr-title" hidden>
+  <div class="dr-head"><h2 id="dr-title"></h2><button type="button" class="x" id="dr-close" aria-label="Close">&times;</button></div>
+  <div class="dr-body" id="dr-body"></div>
+  <div class="dr-foot" id="dr-foot"></div>
+</aside>
+
+<div class="cookie" id="cookie" hidden role="region" aria-label="Cookie notice"><p>We use basic cookies.</p><button class="btn btn-sm" data-cookie="y" type="button">Accept</button><button class="btn btn-sm btn-ghost-d" data-cookie="n" type="button">Decline</button></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="app.js" defer></script>
+</body>
+</html>

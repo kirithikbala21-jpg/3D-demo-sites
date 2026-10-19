@@ -1,0 +1,5 @@
+[
+ {"id": "colour", "label": "Colour", "title": "Soft balayage", "text": "A natural lift with warm, blended ends.", "before": "colour-before-1", "after": "colour-after-1", "fallback": ["gallery-1", "gallery-2", "treatment-1"]},
+ {"id": "cut", "label": "Cut", "title": "Textured lob", "text": "A shoulder-length cut with soft layers.", "before": "cut-before-1", "after": "cut-after-1", "fallback": ["gallery-3", "gallery-4", "treatment-1"]},
+ {"id": "treatment", "label": "Treatment", "title": "Smoothing treatment", "text": "Smoother, shinier hair after a keratin treatment.", "before": null, "after": "treatment-1", "fallback": ["gallery-5", "gallery-6"]}
+]

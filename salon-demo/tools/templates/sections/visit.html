@@ -1,0 +1,31 @@
+    <section class="section" id="visit" aria-labelledby="visit-title">
+      <div class="container visit-grid">
+        <div class="reveal sec-head visit-head">
+          <p class="eyebrow">Visit us</p>
+          <h2 id="visit-title">Find the salon</h2>
+          <p class="open-status big" data-open-status>{{{hoursInline}}}</p>
+        </div>
+        <div class="visit-map reveal">
+          <svg class="map-svg" viewBox="0 0 640 400" role="img" aria-label="Stylised map placeholder showing the salon location. Not a real map." focusable="false" preserveAspectRatio="xMidYMid slice">
+            <rect width="640" height="400" fill="#EFE4D8"/>
+            <path d="M0 120h640M0 270h640M170 0v400M430 0v400" stroke="#FAF6F0" stroke-width="22" fill="none"/>
+            <path d="M0 200L640 160M300 0l60 400" stroke="#FAF6F0" stroke-width="12" fill="none"/>
+            <rect x="40" y="30" width="100" height="60" rx="8" fill="#DCE1D6"/>
+            <rect x="470" y="300" width="120" height="70" rx="8" fill="#DCE1D6"/>
+            <rect x="210" y="300" width="90" height="60" rx="8" fill="#E3D2C4"/>
+            <rect x="480" y="30" width="100" height="70" rx="8" fill="#E3D2C4"/>
+            <g transform="translate(300 160)"><path d="M0 0c0 0-26-24-26-46a26 26 0 0 1 52 0c0 22-26 46-26 46z" fill="#2B211C"/><circle cx="0" cy="-46" r="10" fill="#FAF6F0"/></g>
+          </svg>
+          <a class="btn btn-ghost map-link" href="{{mapsUrl}}" target="_blank" rel="noopener">Open in Google Maps<span class="sr-only"> (opens in a new tab)</span></a>
+        </div>
+        <div class="visit-info reveal">
+          <h3 class="visit-h">Address</h3>
+          <address><span class="addr">{{contact.street}}</span><span class="addr">{{contact.locality}}</span><span class="addr small">Placeholder address for this demo.</span></address>
+          <h3 class="visit-h">Hours</h3>
+          {{{hoursTable}}}
+          <h3 class="visit-h">Get in touch</h3>
+          <p class="contact-links"><a href="tel:{{contact.phoneHref}}">{{contact.phone}}</a><a href="mailto:{{contact.email}}">{{contact.email}}</a></p>
+        </div>
+        <div class="visit-photo zoom reveal" data-parallax="8">{{{photos.interior-2}}}</div>
+      </div>
+    </section>

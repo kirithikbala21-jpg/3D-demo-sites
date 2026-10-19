@@ -1,0 +1,18 @@
+    <section class="section" id="reviews" aria-labelledby="reviews-title">
+      <div class="container">
+        <div class="reveal sec-head">
+          <p class="eyebrow">Sample content for this demo</p>
+          <h2 id="reviews-title">What clients might say</h2>
+          <p class="lead small-lead">These are invented sample reviews written for this concept demo. They are not from real customers.</p>
+        </div>
+        <ul class="reviews swipe" role="list" tabindex="0" aria-label="Sample reviews, swipe sideways">
+          {{#each reviews}}
+          <li class="review reveal">
+            <blockquote><p>{{this.text}}</p></blockquote>
+            <p class="review-by"><strong>{{this.name}}</strong> <span>{{this.service}}</span></p>
+            <p class="review-tag">Sample review</p>
+          </li>
+          {{/each}}
+        </ul>
+      </div>
+    </section>

@@ -1,0 +1,6 @@
+[
+ {"slug": "amara", "name": "Amara Voss", "first": "Amara", "role": "Senior colourist", "speciality": "Balayage, blondes and colour correction", "bio": "Twelve years of colour. Amara plans every lift in stages so your hair stays strong.", "photo": "stylist-1"},
+ {"slug": "jonah", "name": "Jonah Reyes", "first": "Jonah", "role": "Cutting specialist", "speciality": "Men's cuts, fades and texture", "bio": "Sharp, low-fuss cuts that grow out well. Jonah also looks after the kids' chair.", "photo": "stylist-2"},
+ {"slug": "mei", "name": "Mei Tanaka", "first": "Mei", "role": "Treatment specialist", "speciality": "Keratin, bond repair and scalp care", "bio": "Mei tailors each treatment to your hair type, and explains the aftercare in plain words.", "photo": "stylist-3"},
+ {"slug": "priya", "name": "Priya Nair", "first": "Priya", "role": "Stylist and beauty therapist", "speciality": "Event styling, brows and relaxation", "bio": "Priya styles for weddings and events, and runs our brow and massage bookings.", "photo": "stylist-4"}
+]

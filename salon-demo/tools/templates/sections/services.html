@@ -1,0 +1,33 @@
+    <section class="section" id="services" aria-labelledby="services-title">
+      <div class="container">
+        <div class="reveal sec-head">
+          <p class="eyebrow">Services and prices</p>
+          <h2 id="services-title">Clear prices, nothing hidden</h2>
+          <p class="lead">Every price is a starting point in Australian dollars. Pick a service to book it in one tap.</p>
+        </div>
+        <div class="tabs-wrap reveal" data-tabs="services">
+          <div class="tabs" role="tablist" aria-label="Service categories">
+            {{#each svcCats}}<button type="button" role="tab" class="tab" id="services-{{this.id}}" aria-selected="{{this.first}}" aria-controls="panel-{{this.id}}" tabindex="{{this.tab0}}">{{this.name}}</button>{{/each}}
+          </div>
+          {{#each svcCats}}
+          <div class="tabpanel" role="tabpanel" id="panel-{{this.id}}" aria-labelledby="services-{{this.id}}"{{{this.hid}}} tabindex="0">
+            <h3 class="panel-h nojs-h sr-only">{{this.name}}</h3>
+            <p class="panel-intro">{{this.intro}}</p>
+            <ul class="svc-list" role="list">
+              {{#each items}}
+              <li class="svc" data-slug="{{this.slug}}">
+                <div class="svc-main">
+                  <h4 class="svc-name">{{this.name}}</h4>
+                  <p class="svc-desc">{{this.desc}}</p>
+                </div>
+                <p class="svc-meta"><span class="svc-price" data-price="{{this.from}}">{{this.priceText}}</span><span class="svc-min">{{this.minText}}</span></p>
+                <a class="btn btn-ghost btn-sm svc-book" href="?service={{this.slug}}#book" data-service="{{this.slug}}" aria-label="Book {{this.name}}">Book</a>
+              </li>
+              {{/each}}
+            </ul>
+          </div>
+          {{/each}}
+        </div>
+        <p class="svc-note">Final price confirmed at consultation.</p>
+      </div>
+    </section>

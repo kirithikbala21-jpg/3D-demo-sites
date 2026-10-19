@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  {{#if page.isNotFound}}<script>document.write('<base href="' + (location.pathname.match(/^.*\/{{site.folder}}\//) || ['/'])[0] + '">');</script>{{/if}}
+  <title>{{page.fullTitle}}</title>
+  <meta name="description" content="{{page.description}}">
+  {{#if site.noindex}}<meta name="robots" content="noindex">{{/if}}
+  <meta name="theme-color" content="{{theme.bg}}">
+  <link rel="canonical" href="{{page.canonical}}">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="{{page.fullTitle}}">
+  <meta property="og:description" content="{{page.description}}">
+  <meta property="og:url" content="{{page.canonical}}">
+  <meta property="og:image" content="{{site.baseUrl}}img/og.png">
+  <meta property="og:locale" content="en_AU">
+  <meta property="og:site_name" content="{{brand.name}} (unofficial concept demo)">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="{{brand.name}}: Hair that feels like you. Unofficial concept demo of a hair and beauty salon in Glen Waverley.">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{page.fullTitle}}">
+  <meta name="twitter:description" content="{{page.description}}">
+  <meta name="twitter:image" content="{{site.baseUrl}}img/og.png">
+  <link rel="icon" href="img/icon.svg" type="image/svg+xml">
+  <link rel="icon" href="favicon.ico" sizes="48x48">
+  <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="preload" href="fonts/cormorant-garamond-500.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+  {{{heroPreload}}}
+  <style id="theme-tokens">{{{themeCss}}}</style>
+  <link rel="stylesheet" href="vendor/lenis-1.1.18.css">
+  <link rel="stylesheet" href="styles.css">
+  {{{jsonld}}}
+  <noscript><style>
+    /* Without JavaScript: every service tab and every before/after job shows as ordinary stacked content. */
+    .tabs, .bk-js, .ba-range, .ba-knob { display: none !important; }
+    [role="tabpanel"][hidden] { display: block !important; }
+    [role="tabpanel"] + [role="tabpanel"] { margin-top: 40px; }
+    .nojs-h { position: static !important; width: auto !important; height: auto !important; clip: auto !important; overflow: visible !important; }
+    .reveal { opacity: 1 !important; transform: none !important; }
+  </style></noscript>
+  <script>
+    document.documentElement.classList.add('js');
+    if (/[?&]slots=1\b/.test(location.search)) document.documentElement.classList.add('show-slots'); /* owner aid: ?slots=1 shows the photo-slot labels */
+  </script>
+</head>
+<body class="page-{{page.template}}" id="top">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <symbol id="crescent" viewBox="0 0 64 64"><path d="M42 8a24 24 0 1 0 14 34 20 20 0 0 1-14-34z" fill="currentColor"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24"><path d="M5 3.500h4l2 5-2.500 1.500a11 11 0 0 0 5 5l1.500-2.500 5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 5.500a2 2 0 0 1 2-2z" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linejoin="round"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.200 7-11.500A7 7 0 0 0 5 9.500C5 14.800 12 21 12 21z" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linejoin="round"/><circle cx="12" cy="9.500" r="2.500" fill="none" stroke="currentColor" stroke-width="1.800"/></symbol>
+    <symbol id="i-mail" viewBox="0 0 24 24"><path d="M3 5.500h18v13H3z M3.500 6.500L12 13l8.500-6.500" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linejoin="round"/></symbol>
+    <symbol id="i-chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-left" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-right" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="M5 5l14 14M19 5L5 19" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round"/></symbol>
+    <symbol id="i-up" viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  </svg>
+
+  <header class="site-header">
+    <div class="header-inner container">
+      <a class="brand" href="{{page.homeHref}}" aria-label="{{brand.name}}, home">
+        <svg class="brand-mark" width="26" height="26" aria-hidden="true" focusable="false"><use href="#crescent"/></svg>
+        <span class="brand-text">Maison <em>Lune</em></span>
+      </a>
+      <nav class="header-nav" aria-label="Main">
+        {{#each nav}}<a href="{{page.navBase}}{{this.href}}">{{this.label}}</a>{{/each}}
+      </nav>
+      <a class="btn btn-primary header-book" href="{{page.navBase}}#book" data-book-link>Book now</a>
+    </div>
+  </header>
+
+  <main id="main">
+{{{content}}}
+  </main>
+
+  <footer class="site-footer" id="footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <a class="brand brand-on-dark" href="{{page.homeHref}}" aria-label="{{brand.name}}, home">
+          <svg class="brand-mark" width="26" height="26" aria-hidden="true" focusable="false"><use href="#crescent"/></svg>
+          <span class="brand-text">Maison <em>Lune</em></span>
+        </a>
+        <p>{{brand.tagline}}. A fictional salon for a concept demo.</p>
+        <p class="legal-ids">ABN {{contact.abn}}</p>
+      </div>
+      <div class="footer-col">
+        <h2 class="footer-h">Contact</h2>
+        <address>
+          <a href="tel:{{contact.phoneHref}}">{{contact.phone}}</a>
+          <a href="mailto:{{contact.email}}">{{contact.email}}</a>
+          <span class="addr">{{contact.street}}</span><span class="addr">{{contact.locality}}</span>
+        </address>
+      </div>
+      <div class="footer-col">
+        <h2 class="footer-h">Hours</h2>
+        <p>{{{hoursSummary}}}</p>
+        <p class="open-status" data-open-status>Times are Melbourne time.</p>
+      </div>
+      <div class="footer-col">
+        <h2 class="footer-h">Follow</h2>
+        <ul class="social" role="list">
+          {{#each social}}<li><a href="{{this.href}}" target="_blank" rel="noopener" aria-label="{{this.label}} (placeholder link)"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="{{this.path}}" fill="none" stroke="currentColor" stroke-width="1.700" stroke-linecap="round" stroke-linejoin="round"/></svg></a></li>{{/each}}
+        </ul>
+      </div>
+    </div>
+    <div class="container footer-end">
+      <p class="footer-demo"><strong>{{brand.demoNotice}}</strong></p>
+      <p class="footer-demo">{{brand.demoFooter}}</p>
+      <p class="footer-links"><a href="{{page.homeHref}}">Home</a> <a href="#top">Back to top <svg width="16" height="16" aria-hidden="true" focusable="false"><use href="#i-up"/></svg></a></p>
+      <p class="small">Prices are in AUD and include GST. Final price confirmed at consultation. Bookings made on this site are not real. Photos are placeholders until the salon supplies its own.</p>
+      {{#if photoCredits}}<p class="footer-credit">Photos: {{photoCredits}}</p>{{/if}}
+    </div>
+  </footer>
+
+  <nav class="mobile-bar" id="mobile-bar" aria-label="Call or book">
+    <a class="btn btn-ghost" href="tel:{{contact.phoneHref}}"><svg width="20" height="20" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg>Call</a>
+    <a class="btn btn-primary" href="{{page.navBase}}#book" data-book-link>Book</a>
+  </nav>
+
+  <div class="cookie" id="cookie" role="region" aria-label="Cookie notice" hidden>
+    <p>We use basic cookies.</p>
+    <div class="cookie-actions">
+      <button type="button" class="cookie-btn cookie-yes" data-cookie="yes">Accept</button>
+      <button type="button" class="cookie-btn cookie-no" data-cookie="no">Decline</button>
+    </div>
+  </div>
+
+  <script type="application/json" id="site-data">{{{siteData}}}</script>
+  <script defer src="vendor/lenis-1.1.18.min.js"></script>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

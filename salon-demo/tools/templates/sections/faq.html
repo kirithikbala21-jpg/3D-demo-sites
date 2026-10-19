@@ -1,0 +1,16 @@
+    <section class="section section-sand" id="faq" aria-labelledby="faq-title">
+      <div class="container narrow-ish">
+        <div class="reveal sec-head">
+          <p class="eyebrow">Good to know</p>
+          <h2 id="faq-title">Questions, answered</h2>
+        </div>
+        <div class="faq reveal">
+          {{#each faq}}
+          <details class="faq-item">
+            <summary>{{this.q}}<svg class="chev" width="22" height="22" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg></summary>
+            <div class="faq-a"><p>{{{this.a}}}</p></div>
+          </details>
+          {{/each}}
+        </div>
+      </div>
+    </section>

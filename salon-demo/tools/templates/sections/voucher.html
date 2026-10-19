@@ -1,0 +1,24 @@
+    <section class="section section-dark" id="voucher" aria-labelledby="voucher-title">
+      <div class="container voucher-grid">
+        <div class="reveal sec-head">
+          <p class="eyebrow">Gift vouchers</p>
+          <h2 id="voucher-title">Give an hour of calm</h2>
+          <p class="lead">Choose an amount and tell us who it is for. Vouchers can be used on any service or product.</p>
+        </div>
+        <div class="voucher reveal" id="voucher-app" data-voucher>
+          <form class="voucher-form" novalidate>
+            <fieldset class="voucher-amounts">
+              <legend>Amount</legend>
+              <div class="amount-row">
+                {{#each vouchers}}<label class="amount"><input type="radio" name="amount" value="{{this.amount}}"{{#if this.checked}} checked{{/if}}><span>{{this.text}}</span></label>{{/each}}
+              </div>
+            </fieldset>
+            <div class="field"><label for="v-name">Recipient's name</label><input id="v-name" name="rname" type="text" autocomplete="off" required aria-describedby="v-name-err"><p class="err" id="v-name-err" hidden></p></div>
+            <div class="field"><label for="v-email">Recipient's email</label><input id="v-email" name="remail" type="email" autocomplete="off" inputmode="email" required aria-describedby="v-email-err"><p class="err" id="v-email-err" hidden></p></div>
+            <button type="submit" class="btn btn-clay btn-lg">Create demo voucher</button>
+            <p class="small">Demo only: no voucher is issued, no email is sent and nothing is charged.</p>
+          </form>
+          <div class="voucher-done" role="status" tabindex="-1" hidden></div>
+        </div>
+      </div>
+    </section>

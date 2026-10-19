@@ -1,0 +1,36 @@
+name: salon-demo checks
+
+on:
+  push:
+    paths: ['salon-demo/**', '.github/workflows/salon-demo-checks.yml']
+  pull_request:
+    paths: ['salon-demo/**']
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Generated pages match the templates
+        run: |
+          python3 salon-demo/tools/build.py
+          git diff --exit-code -- salon-demo
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install test dependencies
+        working-directory: salon-demo/tests
+        run: |
+          npm install
+          npx playwright-core install --with-deps chromium
+
+      - name: Overflow, accessibility, links, behaviour, fallbacks and weight
+        working-directory: salon-demo/tests
+        run: node run.mjs

@@ -1,0 +1,23 @@
+    <section class="section" id="stylists" aria-labelledby="stylists-title">
+      <div class="container">
+        <div class="reveal sec-head">
+          <p class="eyebrow">The team</p>
+          <h2 id="stylists-title">Meet your stylists</h2>
+          <p class="lead">Four specialists, each with a speciality. Choose one, or let us match you.</p>
+        </div>
+      </div>
+      <div class="container swipe-container">
+        <ul class="swipe stylist-grid" role="list">
+          {{#each stylistCards}}
+          <li class="stylist reveal">
+            <div class="stylist-photo zoom" data-parallax="8">{{{this.photoHtml}}}</div>
+            <h3 class="stylist-name">{{this.name}}</h3>
+            <p class="stylist-role">{{this.role}}</p>
+            <p class="stylist-spec">{{this.speciality}}</p>
+            <p class="stylist-bio">{{this.bio}}</p>
+            <a class="btn btn-ghost stylist-book" href="?stylist={{this.slug}}#book" data-stylist="{{this.slug}}">Book with {{this.first}}</a>
+          </li>
+          {{/each}}
+        </ul>
+      </div>
+    </section>

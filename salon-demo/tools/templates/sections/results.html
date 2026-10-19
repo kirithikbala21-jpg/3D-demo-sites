@@ -1,0 +1,43 @@
+    <section class="section section-sand" id="results" aria-labelledby="results-title">
+      <div class="container">
+        <div class="reveal sec-head">
+          <p class="eyebrow">Before and after</p>
+          <h2 id="results-title">See what we can do</h2>
+          <p class="lead">Drag the handle, or use the arrow keys, to compare.</p>
+        </div>
+        <div class="tabs-wrap reveal" data-tabs="results">
+          <div class="tabs" role="tablist" aria-label="Before and after jobs">
+            {{#each jobList}}<button type="button" role="tab" class="tab" id="job-tab-{{this.id}}" aria-selected="{{this.sel}}" aria-controls="job-{{this.id}}" tabindex="{{this.tab0}}">{{this.label}}</button>{{/each}}
+          </div>
+          {{#each jobList}}
+          <div class="tabpanel job" role="tabpanel" id="job-{{this.id}}" aria-labelledby="job-tab-{{this.id}}"{{{this.hid}}} tabindex="0">
+            <div class="job-copy">
+              <h3 class="panel-h job-title">{{this.title}}</h3>
+              <p>{{this.text}}</p>
+              {{#if this.slider}}<p class="small ba-hint">Before on the left, after on the right.</p>{{else}}{{#if this.empty}}{{else}}<p class="recent-tag">Recent work</p>{{/if}}{{/if}}
+            </div>
+            <div class="job-media">
+            {{#if this.slider}}
+            <div class="ba" data-ba>
+              <div class="ba-stage">
+                <div class="ba-after zoom">{{{this.afterHtml}}}</div>
+                <div class="ba-before">{{{this.beforeHtml}}}</div>
+                <span class="ba-tag ba-tag-before" aria-hidden="true">Before</span>
+                <span class="ba-tag ba-tag-after" aria-hidden="true">After</span>
+                <span class="ba-line" aria-hidden="true"></span>
+                <span class="ba-knob" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" focusable="false"><path d="M9 6l-6 6 6 6M15 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                <input class="ba-range" type="range" min="0" max="100" value="50" step="1" aria-label="{{this.title}}: compare before and after" aria-valuetext="Before on the left, after on the right, handle at 50%">
+              </div>
+            </div>
+            {{else}}
+            <figure class="recent zoom" data-parallax="8">
+              {{{this.singleHtml}}}
+              {{#if this.empty}}{{else}}<span class="ba-tag" aria-hidden="true">Recent work</span>{{/if}}
+            </figure>
+            {{/if}}
+            </div>
+          </div>
+          {{/each}}
+        </div>
+      </div>
+    </section>

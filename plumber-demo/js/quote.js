@@ -10,8 +10,7 @@ import { $, $$, SITE, store } from './util.js';
   /* ---------- Service cards jump here and preselect the problem and urgency ---------- */
   $$('a[data-service]').forEach((a) => a.addEventListener('click', () => {
     f.service.value = a.dataset.service;
-    const u = $(`input[name="urgency"][value="${a.dataset.urgency === 'planning' ? 'planning' : a.dataset.urgency}"]`, form);
-    if (u) u.checked = true;
+    const u = form.elements.urgency; if (u && [...u.options].some((o) => o.value === a.dataset.urgency)) u.value = a.dataset.urgency;
     f.service.removeAttribute('aria-invalid'); $('#e-service').hidden = true;
     if (done && !done.hidden) reset();
   }));
@@ -78,7 +77,7 @@ import { $, $$, SITE, store } from './util.js';
     const file = f.photo.files && f.photo.files[0];
     const rec = {
       name: f.name.value.trim(), phone: normPhone(f.phone.value), suburb: f.suburb.value.trim(), service: f.service.value, serviceName: serviceName(f.service.value),
-      urgency: form.elements.urgency.value, message: f.msg.value.trim(), photoName: file ? file.name : '', savedAt: new Date().toISOString(),
+      urgency: form.elements.urgency.value, when: form.elements.when.value, message: f.msg.value.trim(), photoName: file ? file.name : '', savedAt: new Date().toISOString(),
     };
     const endpoint = form.dataset.endpoint;
     if (endpoint) { // Real mode: POST to your form service (see README). Photos need a service that accepts files.

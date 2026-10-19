@@ -70,3 +70,11 @@ Hero (sink), emergency strip (tool wall), How it works (pipe cutter + tall tool 
 
 ## Update: more photos
 Added: blocked drains and emergency strip (night crew), leaks and taps (pipe fittings), team 2 to 5 (team 5 is a fifth card). Empty photo slots now show a quiet neutral panel; add `?slots=1` to the URL to see their labels. Still empty: before photos, before/after 1 and 2 after.
+
+## Customer-needs upgrade
+- **What's happening? picker** (`tools/templates/sections/happening.html`, `data/happening.json`): tips and wording per problem.
+- **Suburbs** (`data/suburbs.json`): the covered list is Glen Waverley, Mount Waverley, Wheelers Hill, Mulgrave, Clayton, Oakleigh, Burwood, Ashwood.
+- **Trust strip** (`data/badges.json`): licence and insurance lines are marked "[demo]" until real numbers are added.
+- **After-hours bar**: shows "On call tonight" when the visitor's own clock is outside 7am to 6pm (`js/happening.js`).
+- **Quote form**: urgency dropdown, preferred time buttons (Today, Tomorrow, This week) and the photo preview; front end only.
+- **Desktop**: the sticky bar becomes a floating "Call 03 5550 0142" button.

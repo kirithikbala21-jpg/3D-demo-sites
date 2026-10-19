@@ -537,3 +537,43 @@ html:not(.show-slots) .slot-empty { outline: 0; }
 .ba-single .photo { position: absolute; inset: 0; display: block; }
 .ba-single .photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .ba-single .ba-tag-after { left: 12px; right: auto; }
+
+/* ---------- What's happening? picker, after-hours bar, badge notes, desktop call pill ---------- */
+.happening { background: var(--navy); color: #fff; padding-block: var(--s3); }
+.h-happening { font-size: var(--fs-h3, 1.75rem); color: #fff; margin: 0 0 var(--s2); }
+.happen-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.happen-btn { display: flex; align-items: center; justify-content: center; text-align: center; width: 100%; min-height: 64px; padding: 8px 12px; background: #fff; color: var(--navy); border: 2px solid #fff; border-radius: var(--radius); font: 700 1.0625rem/1.2 var(--font-body, inherit); cursor: pointer; text-decoration: none; transition: background-color .2s, transform .2s; }
+.happen-btn:hover { background: #e6eefb; }
+.happen-btn[aria-expanded="true"] { background: var(--orange); border-color: var(--orange); color: var(--navy); }
+.happen-else { background: transparent; color: #fff; }
+.happen-else:hover { background: #ffffff22; }
+@media (min-width: 900px) { .happen-grid { grid-template-columns: repeat(4, 1fr); } }
+.happen-panel { margin-top: var(--s2); background: #fff; color: var(--text, #1a2433); border-radius: var(--radius); padding: var(--s2); }
+.happen-panel[hidden], .hp[hidden] { display: none; }
+.hp-title { font: 700 1.25rem/1.2 var(--font-head, inherit); text-transform: uppercase; color: var(--navy); margin: 0 0 var(--s1); }
+.hp-wait { font-weight: 700; margin: var(--s2) 0 4px; }
+.hp-tips { margin: 0; padding-left: 20px; } .hp-tips li { margin-bottom: 6px; }
+.oncall { background: var(--orange); color: var(--navy); }
+.oncall[hidden] { display: none; }
+.oncall-in { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 16px; padding-block: 8px; }
+.oncall p { margin: 0; font-weight: 700; }
+.oncall .btn { background: var(--navy); color: #fff; border-color: var(--navy); }
+.badge-note { display: block; font-weight: 400; font-size: .8125rem; color: #3b4658; }
+.area-call { margin-left: 8px; margin-top: 6px; }
+.when-grid { grid-template-columns: repeat(3, 1fr); }
+@media (min-width: 1040px) {
+  .sticky-bar { display: block; left: auto; right: 20px; bottom: 20px; width: auto; padding: 0; background: none; border: 0; box-shadow: none; }
+  .sticky-bar .btn-outline { display: none; }
+  .sticky-bar .btn-call { min-height: 56px; padding: 0 22px; box-shadow: 0 8px 24px rgb(11 37 69 / .35); }
+  .cookie { left: auto; right: 290px; bottom: 20px; width: 380px; border-radius: 10px; }
+}
+.hp-tips { list-style: disc; }
+.oncall-in { flex-wrap: nowrap; }
+.oncall p { font-size: .9375rem; line-height: 1.3; }
+.oncall .btn { flex: none; min-height: 44px; padding: 0 14px; }
+@media (max-width: 430px) { .oncall .btn { font-size: .875rem; padding: 0 10px; } }
+
+.happening { padding-block: var(--s2); }
+.happen-btn { min-height: 56px; }
+.h-happening { margin-bottom: 12px; }
+@media (max-width: 479px) { .hero-cta { grid-template-columns: 1fr 1fr; gap: 8px; } .hero-cta .btn { padding-inline: 8px; } .hero-cta .btn-num { display: none; } }

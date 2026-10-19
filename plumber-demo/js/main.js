@@ -2,6 +2,7 @@
 import './ui.js';
 import './status.js';
 import './areas.js';
+import './happening.js';
 import './quote.js';
 import './jobs.js';
 import './pipe.js';

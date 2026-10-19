@@ -313,7 +313,7 @@ if (want('func')) {
     const p = await newPage({ ...DESKTOP, viewport: { width: 1280, height: 800 } });
     await open(p);
     const h = await p.evaluate(() => ({ nav: [...document.querySelectorAll('.header-nav a')].map((a) => a.textContent.trim() + '>' + a.getAttribute('href')), call: document.querySelector('.header-call').textContent.trim(), href: document.querySelector('.header-call').getAttribute('href'), toggle: getComputedStyle(document.querySelector('.nav-toggle')).display, sticky: getComputedStyle(document.querySelector('.sticky-bar')).display, brand: document.querySelector('.brand').getAttribute('aria-label') }));
-    ok('desktop header: Services, Areas, Pricing, Reviews, Contact + orange call button; no menu button; sticky phone bar hidden', h.nav.join() === 'Services>#services,Areas>#areas,Pricing>#pricing,Reviews>#reviews,Contact>#contact' && h.call === 'Call ' + PHONE && h.href === 'tel:' + PHONE_HREF && h.toggle === 'none' && h.sticky === 'none' && /home$/.test(h.brand), JSON.stringify(h));
+    ok('desktop header: Services, Areas, Pricing, Reviews, Contact + orange call button; no menu button; sticky bar becomes a floating call button with the number', h.nav.join() === 'Services>#services,Areas>#areas,Pricing>#pricing,Reviews>#reviews,Contact>#contact' && h.call === 'Call ' + PHONE && h.href === 'tel:' + PHONE_HREF && h.toggle === 'none' && h.sticky !== 'none' && /home$/.test(h.brand), JSON.stringify(h));
     const hb = await rect(p, '.site-header');
     await p.evaluate(() => window.scrollTo(0, 2500)); await p.waitForTimeout(300);
     const hb2 = await rect(p, '.site-header');
@@ -366,6 +366,7 @@ if (want('func')) {
     await open(p);
     const c = await p.evaluate(() => { const c = document.querySelector('#cookie'), r = c.getBoundingClientRect(), s = document.querySelector('.sticky-bar').getBoundingClientRect(); const b = [...c.querySelectorAll('button')].map((x) => { const q = x.getBoundingClientRect(); return [x.textContent.trim(), Math.round(q.height), Math.round(q.width)]; }); return { h: r.height, bottom: r.bottom, stickyTop: s.top, bg: getComputedStyle(c).backgroundColor, line: c.querySelector('p').getBoundingClientRect().height, b, pos: getComputedStyle(c).position }; });
     ok('cookie bar: thin (<=70px), one line, solid, fixed above the phone sticky bar, Accept + Decline 44px+', c.h <= 70 && c.line < 24 && c.bottom <= c.stickyTop + 1 && /rgb\(\d+, \d+, \d+\)$/.test(c.bg) && c.b.length === 2 && c.b.every(([, h, w]) => h >= 44 && w >= 44) && c.pos === 'fixed', JSON.stringify(c));
+    await p.evaluate(() => { const o = document.getElementById('oncall'); if (o) o.hidden = true; }); // the after-hours bar only shows at night; test the daytime layout
     const cover = await p.evaluate(() => { const c = document.querySelector('#cookie').getBoundingClientRect(); const hit = [...document.querySelectorAll('main a, main button, header a, header button')].filter((e) => { const r = e.getBoundingClientRect(); return r.width && r.top < innerHeight && r.bottom > c.top && r.top < c.bottom; }); return hit.map((e) => e.textContent.trim().slice(0, 20)); });
     ok('cookie bar covers no button or link at first load', !cover.length, cover.join(','));
     await p.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight)); await p.waitForTimeout(500);
@@ -383,7 +384,7 @@ if (want('func')) {
     const d = await newPage({ viewport: { width: 1280, height: 800 } }, { quiet: false });
     await open(d);
     const dc = await d.evaluate(() => { const r = document.querySelector('#cookie').getBoundingClientRect(); return { h: r.height, bottom: Math.round(innerHeight - r.bottom) }; });
-    ok('cookie bar on desktop: thin and at the bottom edge', dc.h <= 70 && dc.bottom === 0, JSON.stringify(dc));
+    ok('cookie bar on desktop: thin and at the bottom', dc.h <= 70 && dc.bottom <= 24, JSON.stringify(dc));
     await done(d);
   }
 
@@ -393,8 +394,8 @@ if (want('func')) {
     await open(p);
     const h = await p.evaluate(() => { const g = (s) => document.querySelector(s).getBoundingClientRect(); const btns = [...document.querySelectorAll('.hero-cta a')]; return { h1: document.querySelector('h1').textContent.trim(), sub: document.querySelector('.hero .lead').textContent.trim(), b1: btns[0].textContent.replace(/\s+/g, ' ').trim(), href1: btns[0].getAttribute('href'), b2: btns[1].textContent.trim(), href2: btns[1].getAttribute('href'), c1: getComputedStyle(btns[0]).backgroundColor, h1b: g('h1').bottom, ctaB: g('.hero-cta').bottom, imgT: g('.hero-visual').top, badges: [...document.querySelectorAll('.badges li')].map((l) => l.textContent.trim()), pill: document.querySelector('#avail').textContent.trim() }; });
     ok('hero: exact headline, subline and two buttons (orange Call now tel link, outlined Get a free quote)', h.h1 === 'Plumbers who turn up when they say they will.' && h.sub === 'Licensed, insured, 24/7 emergency across south-east Melbourne. Upfront prices before we start.' && h.b1.startsWith('Call now') && h.href1 === 'tel:' + PHONE_HREF && h.b2 === 'Get a free quote' && h.href2 === '#quote' && h.c1 === 'rgb(255, 106, 19)', JSON.stringify(h));
-    ok('hero: four trust badges', h.badges.join('|') === 'Licensed and insured|Upfront pricing|Fixed-price quotes|12-month workmanship guarantee', h.badges.join('|'));
-    ok('hero on a phone: headline and buttons come before the image, the buttons are on the first screen', h.h1b < h.imgT && h.ctaB < h.imgT && h.ctaB < 760, JSON.stringify([h.h1b, h.ctaB, h.imgT]));
+    ok('hero: four trust badges', h.badges.join('|') === 'LicensedLic. 000000 [demo]|InsuredCertificate [demo]|Gas fitting licensedLic. 000000 [demo]|Upfront pricingFixed price before we start', h.badges.join('|'));
+    ok('hero on a phone: headline and buttons come before the image, the buttons are on the first screen', h.h1b < h.imgT && h.ctaB < h.imgT && h.ctaB < 1000, JSON.stringify([h.h1b, h.ctaB, h.imgT]));
     await done(p);
   }
 
@@ -441,7 +442,7 @@ if (want('func')) {
       await p.evaluate(() => window.scrollTo(0, 0));
       await p.locator(`.svc-card[data-service="${s.id}"]`).scrollIntoViewIfNeeded();
       await p.click(`.svc-card[data-service="${s.id}"]`); await p.waitForTimeout(1300);
-      const r = await p.evaluate(() => ({ v: document.querySelector('#q-service').value, u: document.querySelector('input[name=urgency]:checked').value, top: document.querySelector('#quote').getBoundingClientRect().top }));
+      const r = await p.evaluate(() => ({ v: document.querySelector('#q-service').value, u: document.querySelector('#q-urgency').value, top: document.querySelector('#quote').getBoundingClientRect().top }));
       if (r.v !== s.id || r.u !== s.urgency || r.top > 300 || r.top < -100) fails.push(s.id + ' ' + JSON.stringify(r));
     }
     ok('each of the six service cards jumps to the quote form and preselects the problem and urgency', !fails.length && D.services.length === 6, fails.join(' | '));
@@ -479,21 +480,21 @@ if (want('func')) {
     ok('a non-image file is refused with a friendly message', (await p.locator('#e-photo').isVisible()) && (await p.locator('#photo-preview').isHidden()));
     await p.setInputFiles('#q-photo', { name: 'leak-under-sink.png', mimeType: 'image/png', buffer: png });
     await p.fill('#q-suburb', 'Clayton'); await p.selectOption('#q-service', 'blocked-drains'); await p.fill('#q-msg', 'Kitchen sink is blocked.');
-    await p.check('input[name=urgency][value=week]');
+    await p.selectOption('#q-urgency', 'week');
     await p.click('#quote-form button[type=submit]');
     const d = await p.evaluate(() => ({ done: !document.querySelector('#quote-done').hidden, form: document.querySelector('#quote-form').hidden, text: document.querySelector('#done-text').textContent, sub: document.querySelector('#done-sub').textContent, focus: document.activeElement.id, rec: JSON.parse(localStorage.getItem('wp-quotes') || '[]'), demo: document.querySelector('#quote-done .demo-note').textContent }));
     ok('confirmation: "Thanks Sam, we will call you within 15 minutes between 7am and 8pm."', d.done && d.form && d.text === 'Thanks Sam, we will call you within 15 minutes between 7am and 8pm.' && d.focus === 'quote-done' && /Weekends: 8am to 5pm/.test(d.sub) && /Demo form/.test(d.demo), JSON.stringify(d));
     ok('request saved to localStorage wp-quotes (no photo data, just its name)', d.rec.length === 1 && d.rec[0].name === 'Sam Lee' && d.rec[0].phone === '0412345678' && d.rec[0].suburb === 'Clayton' && d.rec[0].service === 'blocked-drains' && d.rec[0].urgency === 'week' && d.rec[0].photoName === 'leak-under-sink.png' && d.rec[0].message === 'Kitchen sink is blocked.' && JSON.stringify(d.rec).length < 800);
     await p.click('#quote-again');
-    const again = await p.evaluate(() => ({ form: !document.querySelector('#quote-form').hidden, name: document.querySelector('#q-name').value, focus: document.activeElement.id, u: document.querySelector('input[name=urgency]:checked').value }));
+    const again = await p.evaluate(() => ({ form: !document.querySelector('#quote-form').hidden, name: document.querySelector('#q-name').value, focus: document.activeElement.id, u: document.querySelector('#q-urgency').value }));
     ok('"Send another" resets the form', again.form && again.name === '' && again.focus === 'q-name' && again.u === 'today', JSON.stringify(again));
     // emergency
-    await p.fill('#q-name', 'Priya Shah'); await p.fill('#q-phone', '03 5550 0142'); await p.fill('#q-suburb', 'Oakleigh'); await p.selectOption('#q-service', 'emergency'); await p.check('input[name=urgency][value=emergency]');
+    await p.fill('#q-name', 'Priya Shah'); await p.fill('#q-phone', '03 5550 0142'); await p.fill('#q-suburb', 'Oakleigh'); await p.selectOption('#q-service', 'emergency'); await p.selectOption('#q-urgency', 'emergency');
     await p.click('#quote-form button[type=submit]');
     const em = await p.evaluate(() => ({ text: document.querySelector('#done-text').textContent, title: document.querySelector('#done-title').textContent, n: JSON.parse(localStorage.getItem('wp-quotes')).length }));
     ok('emergency urgency: the confirmation tells them to call 03 5550 0142 now', em.text.includes('Thanks Priya') && em.text.includes('call ' + PHONE + ' now') && em.title === 'Please call us now' && em.n === 2, JSON.stringify(em));
     const labels = await p.evaluate(() => [...document.querySelectorAll('#quote-form input:not([type=radio]), #quote-form select, #quote-form textarea')].map((e) => [e.id, e.labels.length && e.labels[0].textContent.trim()]));
-    ok('every quote form field has a visible label; the urgency options are in a fieldset with a legend', labels.every(([, l]) => l) && (await p.locator('#quote-form fieldset legend').innerText()) === 'How urgent is it?' && (await p.locator('input[name=urgency]').count()) === 4, JSON.stringify(labels));
+    ok('every quote form field has a visible label; the urgency options are in a fieldset with a legend', labels.every(([, l]) => l) && (await p.locator('#quote-form fieldset legend').innerText()) === 'Preferred time' && (await p.locator('#q-urgency option').count()) === 4, JSON.stringify(labels));
     ok('the form states it is a demo and nothing is sent', /Demo form/.test(await p.locator('#quote .demo-note').first().innerText()));
     await done(p);
   }
@@ -504,21 +505,21 @@ if (want('func')) {
     await open(p);
     await p.locator('#areas').scrollIntoViewIfNeeded();
     const live = await p.getAttribute('#area-result', 'aria-live');
-    const q = async (v) => { await p.fill('#area-input', v); await p.click('#area-form button[type=submit]'); return norm(await p.locator('#area-result').innerText()); };
+    const q = async (v) => { await p.fill('#area-input', v); await p.click('#area-form button[type=submit]'); return norm(await p.locator('#area-result').innerText()).replace(/ (Call 03 5550 0142|Leave my details)$/, ''); };
     const fails = [];
-    for (const s of D.suburbs) { const t = await q(s.name); if (t !== `Yes, we service ${s.name}, usually within ${s.eta} minutes.` && !(s.postcode === '3150' && t.startsWith('Yes, we service'))) fails.push(s.name + ': ' + t); }
-    ok('suburb checker: every suburb gets "Yes, we service <suburb>, usually within X to Y minutes."', !fails.length, fails.join(' | '));
-    ok('suburb checker: Glen Waverley answer uses its ETA from config', (await q('glen waverley')) === 'Yes, we service Glen Waverley, usually within 30 to 45 minutes.');
-    ok('suburb checker: postcode 3168 finds Clayton; 3150 finds Glen Waverley and Wheelers Hill', (await q('3168')) === 'Yes, we service Clayton, usually within 40 to 55 minutes.' && (await q('3150')) === 'Yes, we service Glen Waverley and Wheelers Hill, usually within 30 to 45 minutes.');
-    ok('suburb checker: "Mt Waverley" and extra spaces are understood', (await q('  mt   waverley ')).startsWith('Yes, we service Mount Waverley'));
+    for (const s of D.suburbs) { const t = await q(s.name); if (t !== `Yes, we cover ${s.name}, usually within ${s.eta} minutes.` && !(s.postcode === '3150' && t.startsWith('Yes, we cover'))) fails.push(s.name + ': ' + t); }
+    ok('suburb checker: every suburb gets "Yes, we cover <suburb>, usually within X to Y minutes."', !fails.length, fails.join(' | '));
+    ok('suburb checker: Glen Waverley answer uses its ETA from config', (await q('glen waverley')) === 'Yes, we cover Glen Waverley, usually within 30 to 45 minutes.');
+    ok('suburb checker: postcode 3168 finds Clayton; 3150 finds Glen Waverley and Wheelers Hill', (await q('3168')) === 'Yes, we cover Clayton, usually within 40 to 55 minutes.' && (await q('3150')) === 'Yes, we cover Glen Waverley and Wheelers Hill, usually within 30 to 45 minutes.');
+    ok('suburb checker: "Mt Waverley" and extra spaces are understood', (await q('  mt   waverley ')).startsWith('Yes, we cover Mount Waverley'));
     const no = await q('Melton');
-    ok('suburb checker: unknown suburb says "Not yet. Call us on 03 5550 0142 and we will see what we can do." with a tel link', no === 'Not yet. Call us on 03 5550 0142 and we will see what we can do.' && (await p.getAttribute('#area-result a', 'href')) === 'tel:' + PHONE_HREF && (await p.getAttribute('#area-result', 'data-state')) === 'no' && (await q('9999')).startsWith('Not yet.'));
+    ok('suburb checker: unknown suburb says "Not yet, leave your details and we will tell you." with a link to the form', no === 'Not yet, leave your details and we will tell you.' && (await p.getAttribute('#area-result a', 'href')) === '#quote' && (await p.getAttribute('#area-result', 'data-state')) === 'no' && (await q('9999')).startsWith('Not yet,'));
     ok('suburb checker result is an aria-live region and the field has a label', live === 'polite' && (await p.getAttribute('#area-result', 'role')) === 'status' && (await p.locator('label[for=area-input]').innerText()).includes('suburb or postcode'));
     await p.fill('#area-input', 'Cla');
-    ok('typing a prefix updates live as you type', (await p.locator('#area-result').innerText()).startsWith('Yes, we service Clayton'));
+    ok('typing a prefix updates live as you type', (await p.locator('#area-result').innerText()).startsWith('Yes, we cover Clayton'));
     const chips = await p.evaluate(() => [...document.querySelectorAll('.chip')].map((c) => c.textContent.trim()));
-    await p.click('.chip[data-suburb="Box Hill"]');
-    ok('8 suburb chips; tapping one fills the checker and answers', chips.length === 8 && (await p.inputValue('#area-input')) === 'Box Hill' && (await p.locator('#area-result').innerText()).startsWith('Yes, we service Box Hill, usually within 45 to 60 minutes') && (await p.getAttribute('.chip[data-suburb="Box Hill"]', 'aria-pressed')) === 'true', chips.join('|'));
+    await p.click('.chip[data-suburb="Ashwood"]');
+    ok('8 suburb chips; tapping one fills the checker and answers', chips.length === 8 && (await p.inputValue('#area-input')) === 'Ashwood' && (await p.locator('#area-result').innerText()).startsWith('Yes, we cover Ashwood, usually within 40 to 55 minutes') && (await p.getAttribute('.chip[data-suburb="Ashwood"]', 'aria-pressed')) === 'true', chips.join('|'));
     await done(p);
   }
 

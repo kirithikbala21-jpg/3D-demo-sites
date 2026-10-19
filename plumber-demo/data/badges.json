@@ -1,18 +1,22 @@
 [
  {
-  "label": "Licensed and insured",
+  "label": "Licensed",
+  "note": "Lic. 000000 [demo]",
   "icon": "shield"
  },
  {
-  "label": "Upfront pricing",
-  "icon": "tag"
+  "label": "Insured",
+  "note": "Certificate [demo]",
+  "icon": "check"
  },
  {
-  "label": "Fixed-price quotes",
+  "label": "Gas fitting licensed",
+  "note": "Lic. 000000 [demo]",
   "icon": "doc"
  },
  {
-  "label": "12-month workmanship guarantee",
-  "icon": "check"
+  "label": "Upfront pricing",
+  "note": "Fixed price before we start",
+  "icon": "tag"
  }
 ]

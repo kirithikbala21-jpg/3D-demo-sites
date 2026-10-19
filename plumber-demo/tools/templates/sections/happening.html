@@ -1,0 +1,20 @@
+    <section class="happening" id="happening" aria-labelledby="happening-title">
+      <div class="container">
+        <h2 id="happening-title" class="h-happening">What&rsquo;s happening?</h2>
+        <ul class="happen-grid">
+          {{#each happening}}<li><button class="happen-btn" type="button" data-happen="{{id}}" aria-expanded="false" aria-controls="happen-panel">{{label}}</button></li>
+          {{/each}}
+          <li><a class="happen-btn happen-else" href="#quote" data-happen-else>Something else</a></li>
+        </ul>
+        <div class="happen-panel" id="happen-panel" role="region" aria-live="polite" aria-label="Emergency help" hidden>
+          {{#each happening}}
+          <div class="hp" data-panel="{{id}}" hidden>
+            <p class="hp-title">{{title}}: call us now</p>
+            <a class="btn btn-call btn-lg btn-block" href="tel:{{contact.phoneHref}}"><svg width="24" height="24" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg>Call {{contact.phone}}</a>
+            <p class="hp-wait">While you wait</p>
+            <ul class="hp-tips">{{#each tips}}<li>{{value}}</li>{{/each}}</ul>
+          </div>
+          {{/each}}
+        </div>
+      </div>
+    </section>

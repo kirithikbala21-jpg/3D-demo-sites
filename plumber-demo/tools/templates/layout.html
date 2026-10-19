@@ -82,6 +82,7 @@
     <p><span class="a-long">{{announcement.lead}}</span>{{announcement.text}} <a href="{{announcement.href}}">{{announcement.link}}</a></p>
     <button class="announce-close" type="button" id="announce-close" aria-label="Dismiss announcement"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" focusable="false"><path d="M2 2l10 10M12 2L2 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
   </div>
+  <div class="oncall" id="oncall" role="status" hidden><div class="container oncall-in"><p><strong>On call tonight.</strong> A plumber is on the emergency line.</p><a class="btn btn-call btn-sm" href="tel:{{contact.phoneHref}}">Call {{contact.phone}}</a></div></div>
 
   <header class="site-header">
     <div class="header-inner container">

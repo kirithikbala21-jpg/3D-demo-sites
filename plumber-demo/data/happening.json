@@ -1,0 +1,32 @@
+[
+ {
+  "id": "burst",
+  "label": "Burst pipe or leak",
+  "title": "Burst pipe or leak",
+  "tips": [
+   "Turn off the water at the mains (usually near the water meter or front tap).",
+   "Switch off the power at the switchboard if water is near outlets or lights.",
+   "Open the taps to drain the pipes, and move valuables out of the way."
+  ]
+ },
+ {
+  "id": "hotwater",
+  "label": "No hot water",
+  "title": "No hot water",
+  "tips": [
+   "Check the switchboard (electric) or pilot light (gas) is still on.",
+   "If you smell gas, leave the house and call us from outside. Do not use switches.",
+   "Do not open the relief valve or touch a leaking unit while it is hot."
+  ]
+ },
+ {
+  "id": "drain",
+  "label": "Blocked drain",
+  "title": "Blocked drain",
+  "tips": [
+   "Stop using sinks, showers and the toilet so the water does not rise.",
+   "Skip chemical drain cleaners. They can damage pipes and hurt our crew.",
+   "If it is overflowing, keep kids and pets away from the water."
+  ]
+ }
+]

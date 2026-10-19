@@ -23,11 +23,12 @@ import { $, $$, SITE } from './util.js';
       out.dataset.state = 'yes';
       const etas = [...new Set(hits.map((s) => s.eta))];
       out.textContent = etas.length === 1
-        ? `Yes, we service ${names(hits)}, usually within ${etas[0]} minutes.`
-        : 'Yes, we service ' + hits.map((s) => `${s.name} (usually within ${s.eta} minutes)`).join(' and ') + '.';
+        ? `Yes, we cover ${names(hits)}, usually within ${etas[0]} minutes.`
+        : 'Yes, we cover ' + hits.map((s) => `${s.name} (usually within ${s.eta} minutes)`).join(' and ') + '.';
+      out.insertAdjacentHTML('beforeend', ` <a class="btn btn-call btn-sm area-call" href="tel:${SITE.phoneHref}">Call ${SITE.phone}</a>`);
     } else if (final || q.length >= 4) {
       out.dataset.state = 'no';
-      out.innerHTML = `Not yet. Call us on ${phoneLink} and we will see what we can do.`;
+      out.innerHTML = `Not yet, leave your details and we will tell you. <a class="btn btn-outline btn-sm area-call" href="#quote">Leave my details</a>`;
     } else {
       out.dataset.state = 'idle'; out.textContent = 'Keep typing, or tap your suburb below.';
     }

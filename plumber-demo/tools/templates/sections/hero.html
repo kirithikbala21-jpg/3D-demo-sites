@@ -15,7 +15,7 @@
           <p class="hero-chip"><strong>{{brand.plumbers}}</strong> licensed plumbers<br>One family business</p>
         </div>
         <ul class="badges" aria-label="Why customers choose us">
-          {{#each badges}}<li><svg width="26" height="26" aria-hidden="true" focusable="false"><use href="#i-{{icon}}"/></svg><span>{{label}}</span></li>{{/each}}
+          {{#each badges}}<li><svg width="26" height="26" aria-hidden="true" focusable="false"><use href="#i-{{icon}}"/></svg><span>{{label}}<small class="badge-note">{{note}}</small></span></li>{{/each}}
         </ul>
       </div>
     </section>

@@ -12,6 +12,7 @@
           {{#each svcCats}}
           <div class="tabpanel" role="tabpanel" id="panel-{{this.id}}" aria-labelledby="services-{{this.id}}"{{{this.hid}}} tabindex="0">
             <h3 class="panel-h nojs-h sr-only">{{this.name}}</h3>
+            {{#if this.photoHtml}}<div class="cat-photo zoom">{{{this.photoHtml}}}</div>{{/if}}
             <p class="panel-intro">{{this.intro}}</p>
             <ul class="svc-list" role="list">
               {{#each items}}

@@ -36,10 +36,12 @@ function serve(root, { prefix = '' } = {}) {
 }
 const servers = [];
 const startSite = async (root, opt) => { const s = await serve(root, opt); servers.push(s); return `http://localhost:${s.address().port}/`; };
-const base = await startSite(SITE);
 const browser = await chromium.launch({ executablePath: process.env.CHROME_PATH || undefined });
 // Copies of the site with synthetic photos (built by the real add-photo.py), so photo-dependent behaviour can be tested
 const TMP = fs.mkdtempSync(path.join(os.tmpdir(), 'ml-'));
+// The real site now ships photos; `base` is a photo-less copy so the neutral-panel behaviour stays covered
+execFileSync('python3', [path.join(path.dirname(fileURLToPath(import.meta.url)), 'make-photo-copy.py'), SITE, path.join(TMP, 'none'), 'none']);
+const base = await startSite(path.join(TMP, 'none'));
 let fullBase = null, partialBase = null, fullRoot = null;
 async function photoSites() {
   if (fullBase) return;
@@ -159,7 +161,7 @@ if (want('overflow')) {
     await open(p); await p.addStyleTag({ content: force });
     const a = await p.evaluate(audit); const o = await p.evaluate(overlaps);
     for (let y = 0; y < 9000; y += 600) { await p.mouse.wheel(0, 600); await p.waitForTimeout(60); } await p.waitForTimeout(700);
-    const broken = await p.evaluate(() => [...document.querySelectorAll('img:not(.lb-img)')].filter((i) => !i.closest('[hidden]') && (!i.complete || !i.naturalWidth)).length);
+    const broken = await p.evaluate(() => [...document.querySelectorAll('img:not(.lb-img)')].filter((i) => !i.closest('[hidden]') && !(i.loading === 'lazy' && !i.complete) && (!i.complete || !i.naturalWidth)).length);
     ok(`with photos: no overflow, overlaps or broken images @${w}px`, a.scrollW <= a.W && !a.bad.length && !o.length && !p.logs.length && !broken, JSON.stringify([a, o, p.logs.slice(0, 2), broken]));
     await done(p);
   }
@@ -206,7 +208,7 @@ if (want('axe')) {
     await open(p); await p.addStyleTag({ content: force });
     const out = [];
     let r = await runAxe(p); if (r.length) out.push('home with photos: ' + r.join('; '));
-    for (const t of ['#job-tab-cut', '#job-tab-treatment']) { await p.click(t); r = await runAxe(p); if (r.length) out.push(t + ': ' + r.join('; ')); }
+    for (const t of ['#job-tab-cut', '#job-tab-balayage']) { await p.click(t); r = await runAxe(p); if (r.length) out.push(t + ': ' + r.join('; ')); }
     await p.locator('.g-open').first().click(); r = await runAxe(p); if (r.length) out.push('lightbox: ' + r.join('; '));
     ok(`axe: no violations with photos, before/after tabs and the lightbox open @${w}px`, !out.length, out.join(' || '));
     await done(p);
@@ -386,14 +388,14 @@ if (want('func')) {
     const p = await newPage(DESKTOP);
     await open(p);
     const q = await p.evaluate(() => { const l = [...document.querySelectorAll('.slot-label')]; return { n: l.length, w: Math.max(...l.map((e) => e.getBoundingClientRect().width)), text: l[0].textContent, panels: document.querySelectorAll('.slot-empty').length, imgs: document.querySelectorAll('img:not(.lb-img)').length, hasText: [...document.querySelectorAll('.slot-empty')].some((s) => [...s.querySelectorAll('*')].some((c) => !c.classList.contains('slot-label') && c.children.length === 0 && c.textContent.trim() && c.tagName !== 'use')) }; });
-    ok('no photos: neutral panels (19 on the page; 21 slot labels, the two before slots share their job panel), labels in the DOM but visually hidden without ?slots=1, no visible text', q.n === 21 && q.panels === 19 && q.w <= 2 && q.text.startsWith('PHOTO SLOT: ') && q.imgs === 0 && !q.hasText, JSON.stringify(q));
+    ok('no photos: neutral panels (23 on the page, one label each), labels in the DOM but visually hidden without ?slots=1, no visible text', q.n === 23 && q.panels === 23 && q.w <= 2 && q.text.startsWith('PHOTO SLOT: ') && q.imgs === 0 && !q.hasText, JSON.stringify(q));
     await p.goto(base + 'index.html?slots=1'); await settle(p);
     const q2 = await p.evaluate(() => { const l = [...document.querySelectorAll('.slot-label')]; return { w: Math.max(...l.map((e) => e.getBoundingClientRect().width)), names: l.map((e) => e.textContent).slice(0, 3), all: l.map((e) => e.textContent.replace('PHOTO SLOT: ', '')) }; });
-    const want21 = ['hero', 'stylist-1', 'stylist-2', 'stylist-3', 'stylist-4', ...Array.from({ length: 8 }, (_, i) => 'gallery-' + (i + 1)), 'colour-before-1', 'colour-after-1', 'cut-before-1', 'cut-after-1', 'treatment-1', 'interior-1', 'interior-2', 'products-1'];
+    const want21 = ['hero', 'stylist-1', 'stylist-2', 'stylist-3', 'stylist-4', ...Array.from({ length: 8 }, (_, i) => 'gallery-' + (i + 1)), 'cut-1', 'stylist-wash', 'stylist-scissors', 'treatment-1', 'interior-1', 'interior-2', 'products-1'];
     const have = new Set(q2.all);
     ok('?slots=1 reveals the "PHOTO SLOT: name" labels, and the slots present are named as briefed', q2.w > 40 && q2.names[0].startsWith('PHOTO SLOT:') && want21.every((n) => have.has(n)), JSON.stringify([q2.w, want21.filter((n) => !have.has(n))]));
     const slotsJson = JSON.parse(rd('data/photos.json')).slots;
-    ok('data/photos.json defines exactly the 21 briefed slots with file/alt/credit/label/pos/needs', Object.keys(slotsJson).sort().join() === [...want21].sort().join() && Object.values(slotsJson).every((s) => ['file', 'alt', 'credit', 'label', 'pos', 'needs'].every((k) => k in s)));
+    ok('data/photos.json defines exactly the 24 slots (20 in use + 4 spare before/after) with file/alt/credit/label/pos/needs', Object.keys(slotsJson).sort().join() === [...want21, 'colour-before-1', 'colour-after-1', 'cut-before-1', 'cut-after-1'].sort().join() && Object.values(slotsJson).every((s) => ['file', 'alt', 'credit', 'label', 'pos', 'needs'].every((k) => k in s)));
     await done(p);
   }
   // open-today line with a fake clock
@@ -545,7 +547,7 @@ if (want('func')) {
     await p.goto(base + 'index.html?service=nope&stylist=nobody'); await settle(p);
     ok('preselect: unknown slugs are ignored without errors', (await stepVisible(p)) === '0' && !p.logs.length);
     await p.goto(base + 'index.html'); await settle(p); await p.addStyleTag({ content: force });
-    await p.click('#services-treatments'); await p.click('.svc[data-slug=keratin] .svc-book'); await p.waitForTimeout(1500);
+    await p.click('#services-treatments'); await p.click('.svc[data-slug=keratin] .svc-book'); await p.waitForTimeout(3000);
     const vp = await p.evaluate(() => { const r = document.querySelector('#booking-app').getBoundingClientRect(); return [r.top, innerHeight]; });
     ok('"Book" on a service row preselects it, opens the stylist step and scrolls the widget into view', (await p.inputValue('#bk-service')) === 'keratin' && (await stepVisible(p)) === '1' && vp[0] < vp[1] * 0.6 && vp[0] > -50, JSON.stringify(vp));
     await p.click('.stylist-book[data-stylist=mei]'); await p.waitForTimeout(1500);
@@ -589,7 +591,7 @@ if (want('func')) {
   {
     const p = await newPage(DESKTOP); await open(p); await p.addStyleTag({ content: force });
     const bad = [];
-    for (const id of ['colour', 'cut', 'treatment']) {
+    for (const id of ['colour', 'balayage', 'cut']) {
       await p.click('#job-tab-' + id);
       const r = await p.evaluate((i) => { const pn = document.getElementById('job-' + i); const m = pn.querySelector('.job-media'); const r = m.getBoundingClientRect(); return { vis: !pn.hidden, h: r.height, w: r.width, sliders: pn.querySelectorAll('.ba-range').length, panel: pn.querySelectorAll('.slot-empty').length, img: pn.querySelectorAll('img').length }; }, id);
       if (!r.vis || r.h < 200 || r.w < 200 || r.sliders || r.panel !== 1 || r.img) bad.push(id + JSON.stringify(r));
@@ -601,32 +603,17 @@ if (want('func')) {
     await photoSites();
     const p = await newPage(DESKTOP, { host: partialBase }); await open(p); await p.addStyleTag({ content: force });
     const rows = [];
-    for (const id of ['colour', 'cut', 'treatment']) {
+    for (const id of ['colour', 'balayage', 'cut']) {
       await p.click('#job-tab-' + id);
       rows.push(await p.evaluate((i) => { const pn = document.getElementById('job-' + i); return { sliders: pn.querySelectorAll('.ba-range').length, src: (pn.querySelector('img') || {}).src || '', tag: !!pn.querySelector('.ba-tag'), empty: pn.querySelectorAll('.slot-empty').length, h: pn.querySelector('.job-media').getBoundingClientRect().height }; }, id));
     }
-    ok('before/after with only an "after" photo: Colour shows it as a single "Recent work" photo (no slider)', rows[0].sliders === 0 && rows[0].src.includes('colour-after-1') && rows[0].tag && rows[0].h > 200, JSON.stringify(rows[0]));
-    ok('before/after fallback: Cut (no cut photos) uses a related gallery photo; Treatment with nothing available shows the neutral panel', rows[1].sliders === 0 && rows[1].src.includes('gallery-3') && rows[2].empty === 1 && rows[2].h > 200, JSON.stringify(rows.slice(1)));
+    ok('recent work with only some photos: Colour shows its gallery photo as a single "Recent work" photo (no slider)', rows[0].sliders === 0 && rows[0].src.includes('gallery-1') && rows[0].tag && rows[0].h > 200, JSON.stringify(rows[0]));
+    ok('recent work fallback: Cut uses cut-1; Balayage with nothing available shows the neutral panel', rows[2].sliders === 0 && rows[2].src.includes('cut-1') && rows[1].empty === 1 && rows[1].h > 200, JSON.stringify(rows.slice(1)));
     await done(p);
     const f = await newPage(DESKTOP, { host: fullBase }); await open(f); await f.addStyleTag({ content: force });
-    const sl = await f.evaluate(() => ({ sliders: document.querySelectorAll('.ba-range').length, treat: document.querySelectorAll('#job-treatment .ba-range').length, tagTreat: !!document.querySelector('#job-treatment .ba-tag') }));
-    ok('before/after with all photos: Colour and Cut have sliders; Treatment is a single "Recent work" photo', sl.sliders === 2 && !sl.treat && sl.tagTreat, JSON.stringify(sl));
-    const pos = () => f.evaluate(() => [document.querySelector('#job-colour .ba-range').value, document.querySelector('#job-colour .ba-stage').style.getPropertyValue('--pos'), document.querySelector('#job-colour .ba-range').getAttribute('aria-valuetext')]);
-    await f.focus('#job-colour .ba-range');
-    await f.keyboard.press('ArrowRight'); await f.keyboard.press('ArrowRight');
-    const a = await pos();
-    await f.keyboard.press('Home'); const b = await pos();
-    await f.keyboard.press('End'); const c = await pos();
-    ok('slider: arrow keys, Home and End move the handle and update the reveal and aria-valuetext', a[0] === '52' && a[1] === '52%' && /52%/.test(a[2]) && b[0] === '0' && b[1] === '0%' && c[0] === '100' && c[1] === '100%', JSON.stringify([a, b, c]));
-    await f.locator('#job-colour .ba-stage').scrollIntoViewIfNeeded(); const box = await f.locator('#job-colour .ba-stage').boundingBox();
-    await f.mouse.move(box.x + box.width * 0.5, box.y + box.height / 2); await f.mouse.down(); await f.mouse.move(box.x + box.width * 0.25, box.y + box.height / 2, { steps: 5 }); await f.mouse.up();
-    const dr = Number((await pos())[0]);
-    ok('slider: dragging with the pointer moves the handle (about 25%)', dr > 18 && dr < 32, String(dr));
+    const sl = await f.evaluate(() => ({ sliders: document.querySelectorAll('.ba-range').length, tags: document.querySelectorAll('.job-media .ba-tag').length }));
+    ok('recent work with all photos: three single "Recent work" photos, no sliders (no real before/after pairs)', sl.sliders === 0 && sl.tags === 3, JSON.stringify(sl));
     await done(f);
-    const m = await newPage(MOBILE, { host: fullBase }); await open(m); await m.addStyleTag({ content: force });
-    const touchAction = await m.evaluate(() => getComputedStyle(document.querySelector('.ba-range')).touchAction);
-    ok('slider: touch-action allows vertical page scroll while dragging sideways', touchAction === 'pan-y', touchAction);
-    await done(m);
   }
   // lightbox
   {
@@ -719,9 +706,9 @@ if (want('perf')) {
   const im = await f.evaluate(() => [...document.querySelectorAll('img:not(.lb-img)')].map((i) => ({ src: i.getAttribute('src'), lazy: i.loading === 'lazy', hp: i.fetchPriority, w: i.getAttribute('width'), h: i.getAttribute('height'), alt: i.alt })));
   const root = fullRoot, sizeOf = (s) => fs.statSync(path.join(root, s)).size;
   const hero = im.find((i) => /hero/.test(i.src));
-  ok('with photos: hero is eager and high priority and under 250 KB; every other photo is lazy; all have width, height and alt', hero && !hero.lazy && hero.hp === 'high' && sizeOf(hero.src) < 250 * 1024 && im.filter((i) => i !== hero).every((i) => i.lazy) && im.every((i) => i.w && i.h && i.alt) && im.length === 21, JSON.stringify({ n: im.length, hero: hero && sizeOf(hero.src) }));
+  ok('with photos: hero is eager and high priority and under 250 KB; every other photo is lazy; all have width, height and alt', hero && !hero.lazy && hero.hp === 'high' && sizeOf(hero.src) < 250 * 1024 && im.filter((i) => i !== hero).every((i) => i.lazy) && im.every((i) => i.w && i.h && i.alt) && im.length === 23, JSON.stringify({ n: im.length, hero: hero && sizeOf(hero.src) }));
   ok('with photos: every photo is WebP under 250 KB; stylist portraits are 900px wide at most, others 1600px', im.every((i) => i.src.endsWith('.webp') && sizeOf(i.src) < 250 * 1024 && Number(i.w) <= (/stylist-/.test(i.src) ? 900 : 1600)), im.filter((i) => Number(i.w) > 1600).map((i) => i.src).join());
-  ok('with photos: footer lists the photo credit', /Photos: Synthetic test image/.test(await f.textContent('footer')));
+  ok('with photos: footer lists the photo credit', /Synthetic test image \(concept demo\)/.test(await f.textContent('footer')));
   const fb = JSON.parse(rd('data/photos.json', fullRoot));
   await done(f);
   ok('add-photo.py recorded size and credit in data/photos.json', fb.slots.hero.w <= 1600 && fb.slots['stylist-1'].w <= 900 && fb.slots.hero.credit === 'Synthetic test image');

@@ -260,7 +260,7 @@ def build():
                 s["minText"] = f'{s["min"]} min'
                 items.append(s)
                 flat.append(s)
-        cats.append({**c, "items": items, "first": "true" if not cats else "false", "tab0": "0" if not cats else "-1", "hid": "" if not cats else " hidden"})
+        cats.append({**c, "photoHtml": photos[c["photo"]] if c.get("photo") else "", "items": items, "first": "true" if not cats else "false", "tab0": "0" if not cats else "-1", "hid": "" if not cats else " hidden"})
     slugs = {s["slug"] for s in flat}
     assert len(slugs) == len(flat), "duplicate service slug"
     # stylists
@@ -284,7 +284,7 @@ def build():
             if pick:
                 j["singleHtml"], j["singleSlot"] = photos[pick], pick
             else:
-                first = a or b
+                first = a or b or (j.get("fallback") or [None])[0]
                 other = b if first == a else a
                 extra = f'<span class="slot-label slot-label-2">PHOTO SLOT: {esc(other)}</span>' if other else ""
                 j["singleHtml"], j["singleSlot"] = photos[first][:-len("</span>")] + extra + "</span>", first

@@ -42,6 +42,9 @@ export function statusAt(now = new Date()) {
 /** Scroll the page to an element, below the sticky header. Uses Lenis when it is running. */
 export function scrollToEl(el) {
   const header = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--header-h')) || 64;
-  if (window.__lenis) window.__lenis.scrollTo(el, { offset: -(header + 12), duration: 0.9 });
-  else el.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+  if (window.__lenis) {
+    window.__lenis.scrollTo(el, { offset: -(header + 12), duration: 0.9 });
+    // lazy photos above the target can change the page height mid-scroll, so check the landing spot and correct it once
+    setTimeout(() => { if (Math.abs(el.getBoundingClientRect().top - (header + 12)) > 40) window.__lenis.scrollTo(el, { offset: -(header + 12), duration: 0.5 }); }, 1200);
+  } else el.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
 }

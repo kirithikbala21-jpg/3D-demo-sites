@@ -29,7 +29,7 @@
   <link rel="manifest" href="site.webmanifest">
   <link rel="preload" href="fonts/cormorant-garamond-500.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
-  
+  <link rel="preload" as="image" href="img/photos/hero.webp" fetchpriority="high">
   <style id="theme-tokens">:root{--ivory:#FAF6F0;--cocoa:#2B211C;--clay:#C9A38C;--sage:#8A9A86;--clay-text:#8A5A43;--sage-text:#5D6E59}</style>
   <link rel="stylesheet" href="vendor/lenis-1.1.18.css">
   <link rel="stylesheet" href="styles.css">
@@ -78,8 +78,8 @@
   </header>
 
   <main id="main">
-    <section class="hero" id="hero" aria-labelledby="hero-title" data-parallax="26">
-      <div class="hero-media"><span class="photo slot-empty" data-slot="hero" style="--ar:16/9" aria-hidden="true"><span class="px"><svg class="wm" viewBox="0 0 64 64" focusable="false"><use href="#crescent"/></svg></span><span class="slot-label">PHOTO SLOT: hero</span></span></div>
+    <section class="hero hero-real" id="hero" aria-labelledby="hero-title" data-parallax="26">
+      <div class="hero-media"><span class="photo has-img"><span class="px"><img src="img/photos/hero.webp" alt="Back view of long, layered hair with blonde highlights in a bright salon" width="1600" height="2400" fetchpriority="high" decoding="async" style="object-position:50% 35%"></span></span></div>
       <div class="hero-scrim" aria-hidden="true"></div>
       <div class="container hero-inner">
         <p class="eyebrow hero-eyebrow">Hair and beauty, Glen Waverley</p>
@@ -104,6 +104,7 @@
           
           <div class="tabpanel" role="tabpanel" id="panel-cut" aria-labelledby="services-cut" tabindex="0">
             <h3 class="panel-h nojs-h sr-only">Cut and style</h3>
+            <div class="cat-photo zoom"><span class="photo has-img"><span class="px"><img src="img/photos/cut-1.webp" alt="A stylist&#x27;s hands cutting the ends of long, wet dark hair with scissors" width="1100" height="1375" loading="lazy" decoding="async" style="object-position:50% 35%"></span></span></div>
             <p class="panel-intro">Every cut starts with a short consultation and ends with a finish you can recreate at home.</p>
             <ul class="svc-list" role="list">
               
@@ -166,6 +167,7 @@
           
           <div class="tabpanel" role="tabpanel" id="panel-colour" aria-labelledby="services-colour" hidden tabindex="0">
             <h3 class="panel-h nojs-h sr-only">Colour</h3>
+            <div class="cat-photo zoom"><span class="photo has-img"><span class="px"><img src="img/photos/stylist-wash.webp" alt="A stylist with a fringe washing a client&#x27;s hair at a basin, with black capes hanging behind" width="900" height="1348" loading="lazy" decoding="async" style="object-position:50% 40%"></span></span></div>
             <p class="panel-intro">Colour is our speciality. We mix to your tone and skin, and we never rush a lift.</p>
             <ul class="svc-list" role="list">
               
@@ -228,6 +230,7 @@
           
           <div class="tabpanel" role="tabpanel" id="panel-treatments" aria-labelledby="services-treatments" hidden tabindex="0">
             <h3 class="panel-h nojs-h sr-only">Treatments</h3>
+            <div class="cat-photo zoom"><span class="photo has-img"><span class="px"><img src="img/photos/treatment-1.webp" alt="A client leaning back at a basin while product is brushed through her hair" width="1600" height="1066" loading="lazy" decoding="async" style="object-position:60% 30%"></span></span></div>
             <p class="panel-intro">Repair, smooth and reset, with products chosen for your hair type.</p>
             <ul class="svc-list" role="list">
               
@@ -272,6 +275,7 @@
           
           <div class="tabpanel" role="tabpanel" id="panel-beauty" aria-labelledby="services-beauty" hidden tabindex="0">
             <h3 class="panel-h nojs-h sr-only">Beauty and wellness</h3>
+            
             <p class="panel-intro">Quiet, unhurried extras you can book on their own or with your hair.</p>
             <ul class="svc-list" role="list">
               
@@ -366,7 +370,7 @@
         <ul class="swipe stylist-grid" role="list">
           
           <li class="stylist reveal">
-            <div class="stylist-photo zoom" data-parallax="8"><span class="photo slot-empty" data-slot="stylist-1" style="--ar:4/5" aria-hidden="true"><span class="px"><svg class="wm" viewBox="0 0 64 64" focusable="false"><use href="#crescent"/></svg></span><span class="slot-label">PHOTO SLOT: stylist-1</span></span></div>
+            <div class="stylist-photo zoom" data-parallax="8"><span class="photo has-img"><span class="px"><img src="img/photos/stylist-1.webp" alt="A smiling stylist with long brown hair blow-drying a client&#x27;s short bob in a bright salon" width="900" height="1125" loading="lazy" decoding="async" style="object-position:50% 22%"></span></span></div>
             <h3 class="stylist-name">Amara Voss</h3>
             <p class="stylist-role">Senior colourist</p>
             <p class="stylist-spec">Balayage, blondes and colour correction</p>
@@ -375,7 +379,7 @@
           </li>
           
           <li class="stylist reveal">
-            <div class="stylist-photo zoom" data-parallax="8"><span class="photo slot-empty" data-slot="stylist-2" style="--ar:4/5" aria-hidden="true"><span class="px"><svg class="wm" viewBox="0 0 64 64" focusable="false"><use href="#crescent"/></svg></span><span class="slot-label">PHOTO SLOT: stylist-2</span></span></div>
+            <div class="stylist-photo zoom" data-parallax="8"><span class="photo has-img"><span class="px"><img src="img/photos/stylist-2.webp" alt="Portrait of a smiling stylist with dark hair in a bun, wearing a white t-shirt" width="900" height="1125" loading="lazy" decoding="async" style="object-position:50% 25%"></span></span></div>
             <h3 class="stylist-name">Jonah Reyes</h3>
             <p class="stylist-role">Cutting specialist</p>
             <p class="stylist-spec">Men&#x27;s cuts, fades and texture</p>
@@ -384,7 +388,7 @@
           </li>
           
           <li class="stylist reveal">
-            <div class="stylist-photo zoom" data-parallax="8"><span class="photo slot-empty" data-slot="stylist-3" style="--ar:4/5" aria-hidden="true"><span class="px"><svg class="wm" viewBox="0 0 64 64" focusable="false"><use href="#crescent"/></svg></span><span class="slot-label">PHOTO SLOT: stylist-3</span></span></div>
+            <div class="stylist-photo zoom" data-parallax="8"><span class="photo has-img"><span class="px"><img src="img/photos/stylist-3.webp" alt="Portrait of a stylist with dark hair in two buns, blue eyes and a nose ring" width="900" height="1125" loading="lazy" decoding="async" style="object-position:50% 28%"></span></span></div>
             <h3 class="stylist-name">Mei Tanaka</h3>
             <p class="stylist-role">Treatment specialist</p>
             <p class="stylist-spec">Keratin, bond repair and scalp care</p>
@@ -393,7 +397,7 @@
           </li>
           
           <li class="stylist reveal">
-            <div class="stylist-photo zoom" data-parallax="8"><span class="photo slot-empty" data-slot="stylist-4" style="--ar:4/5" aria-hidden="true"><span class="px"><svg class="wm" viewBox="0 0 64 64" focusable="false"><use href="#crescent"/></svg></span><span class="slot-label">PHOTO SLOT: stylist-4</span></span></div>
+            <div class="stylist-photo zoom" data-parallax="8"><span class="photo has-img"><span class="px"><img src="img/photos/stylist-4.webp" alt="Portrait of a bearded stylist in a black shirt against a dark backdrop" width="900" height="1125" loading="lazy" decoding="async" style="object-position:50% 22%"></span></span></div>
             <h3 class="stylist-name">Priya Nair</h3>
             <p class="stylist-role">Stylist and beauty therapist</p>
             <p class="stylist-spec">Event styling, brows and relaxation</p>
@@ -410,24 +414,40 @@
         <div class="reveal sec-head">
           <p class="eyebrow">Before and after</p>
           <h2 id="results-title">See what we can do</h2>
-          <p class="lead">Drag the handle, or use the arrow keys, to compare.</p>
+          <p class="lead">Recent work from the chair. Where we have a before photo you can drag to compare.</p>
         </div>
         <div class="tabs-wrap reveal" data-tabs="results">
           <div class="tabs" role="tablist" aria-label="Before and after jobs">
-            <button type="button" role="tab" class="tab" id="job-tab-colour" aria-selected="true" aria-controls="job-colour" tabindex="0">Colour</button><button type="button" role="tab" class="tab" id="job-tab-cut" aria-selected="false" aria-controls="job-cut" tabindex="-1">Cut</button><button type="button" role="tab" class="tab" id="job-tab-treatment" aria-selected="false" aria-controls="job-treatment" tabindex="-1">Treatment</button>
+            <button type="button" role="tab" class="tab" id="job-tab-colour" aria-selected="true" aria-controls="job-colour" tabindex="0">Colour</button><button type="button" role="tab" class="tab" id="job-tab-balayage" aria-selected="false" aria-controls="job-balayage" tabindex="-1">Balayage</button><button type="button" role="tab" class="tab" id="job-tab-cut" aria-selected="false" aria-controls="job-cut" tabindex="-1">Cut</button>
           </div>
           
           <div class="tabpanel job" role="tabpanel" id="job-colour" aria-labelledby="job-tab-colour" tabindex="0">
             <div class="job-copy">
-              <h3 class="panel-h job-title">Soft balayage</h3>
-              <p>A natural lift with warm, blended ends.</p>
-              
+              <h3 class="panel-h job-title">Ash blonde colour</h3>
+              <p>Cool, blended tones with a soft dark root.</p>
+              <p class="recent-tag">Recent work</p>
             </div>
             <div class="job-media">
             
             <figure class="recent zoom" data-parallax="8">
-              <span class="photo slot-empty" data-slot="colour-after-1" style="--ar:4/5" aria-hidden="true"><span class="px"><svg class="wm" viewBox="0 0 64 64" focusable="false"><use href="#crescent"/></svg></span><span class="slot-label">PHOTO SLOT: colour-after-1</span><span class="slot-label slot-label-2">PHOTO SLOT: colour-before-1</span></span>
-              
+              <span class="photo has-img"><span class="px"><img src="img/photos/gallery-1.webp" alt="Back of wavy ash-blonde hair with a dark root" width="1100" height="1650" loading="lazy" decoding="async" style="object-position:50% 40%"></span></span>
+              <span class="ba-tag" aria-hidden="true">Recent work</span>
+            </figure>
+            
+            </div>
+          </div>
+          
+          <div class="tabpanel job" role="tabpanel" id="job-balayage" aria-labelledby="job-tab-balayage" hidden tabindex="0">
+            <div class="job-copy">
+              <h3 class="panel-h job-title">Warm caramel balayage</h3>
+              <p>A natural lift with warm, blended ends.</p>
+              <p class="recent-tag">Recent work</p>
+            </div>
+            <div class="job-media">
+            
+            <figure class="recent zoom" data-parallax="8">
+              <span class="photo has-img"><span class="px"><img src="img/photos/gallery-3.webp" alt="A client in profile with caramel balayage waves" width="1100" height="1661" loading="lazy" decoding="async" style="object-position:50% 40%"></span></span>
+              <span class="ba-tag" aria-hidden="true">Recent work</span>
             </figure>
             
             </div>
@@ -435,31 +455,15 @@
           
           <div class="tabpanel job" role="tabpanel" id="job-cut" aria-labelledby="job-tab-cut" hidden tabindex="0">
             <div class="job-copy">
-              <h3 class="panel-h job-title">Textured lob</h3>
-              <p>A shoulder-length cut with soft layers.</p>
-              
+              <h3 class="panel-h job-title">Cut and finish</h3>
+              <p>Careful, even lengths and soft layers.</p>
+              <p class="recent-tag">Recent work</p>
             </div>
             <div class="job-media">
             
             <figure class="recent zoom" data-parallax="8">
-              <span class="photo slot-empty" data-slot="cut-after-1" style="--ar:4/5" aria-hidden="true"><span class="px"><svg class="wm" viewBox="0 0 64 64" focusable="false"><use href="#crescent"/></svg></span><span class="slot-label">PHOTO SLOT: cut-after-1</span><span class="slot-label slot-label-2">PHOTO SLOT: cut-before-1</span></span>
-              
-            </figure>
-            
-            </div>
-          </div>
-          
-          <div class="tabpanel job" role="tabpanel" id="job-treatment" aria-labelledby="job-tab-treatment" hidden tabindex="0">
-            <div class="job-copy">
-              <h3 class="panel-h job-title">Smoothing treatment</h3>
-              <p>Smoother, shinier hair after a keratin treatment.</p>
-              
-            </div>
-            <div class="job-media">
-            
-            <figure class="recent zoom" data-parallax="8">
-              <span class="photo slot-empty" data-slot="treatment-1" style="--ar:4/5" aria-hidden="true"><span class="px"><svg class="wm" viewBox="0 0 64 64" focusable="false"><use href="#crescent"/></svg></span><span class="slot-label">PHOTO SLOT: treatment-1</span></span>
-              
+              <span class="photo has-img"><span class="px"><img src="img/photos/cut-1.webp" alt="A stylist&#x27;s hands cutting the ends of long, wet dark hair with scissors" width="1100" height="1375" loading="lazy" decoding="async" style="object-position:50% 35%"></span></span>
+              <span class="ba-tag" aria-hidden="true">Recent work</span>
             </figure>
             
             </div>
@@ -477,14 +481,14 @@
           <p class="lead">Tap a photo to see it larger.</p>
         </div>
         <ul class="masonry" role="list" id="gallery-list">
-          <li class="g-item zoom reveal" data-parallax="10"><span class="photo slot-empty" data-slot="gallery-1" style="--ar:4/5" aria-hidden="true"><span class="px"><svg class="wm" viewBox="0 0 64 64" focusable="false"><use href="#crescent"/></svg></span><span class="slot-label">PHOTO SLOT: gallery-1</span></span></li>
-          <li class="g-item zoom reveal" data-parallax="10"><span class="photo slot-empty" data-slot="gallery-2" style="--ar:1/1" aria-hidden="true"><span class="px"><svg class="wm" viewBox="0 0 64 64" focusable="false"><use href="#crescent"/></svg></span><span class="slot-label">PHOTO SLOT: gallery-2</span></span></li>
-          <li class="g-item zoom reveal" data-parallax="10"><span class="photo slot-empty" data-slot="gallery-3" style="--ar:3/4" aria-hidden="true"><span class="px"><svg class="wm" viewBox="0 0 64 64" focusable="false"><use href="#crescent"/></svg></span><span class="slot-label">PHOTO SLOT: gallery-3</span></span></li>
-          <li class="g-item zoom reveal" data-parallax="10"><span class="photo slot-empty" data-slot="gallery-4" style="--ar:4/3" aria-hidden="true"><span class="px"><svg class="wm" viewBox="0 0 64 64" focusable="false"><use href="#crescent"/></svg></span><span class="slot-label">PHOTO SLOT: gallery-4</span></span></li>
-          <li class="g-item zoom reveal" data-parallax="10"><span class="photo slot-empty" data-slot="gallery-5" style="--ar:2/3" aria-hidden="true"><span class="px"><svg class="wm" viewBox="0 0 64 64" focusable="false"><use href="#crescent"/></svg></span><span class="slot-label">PHOTO SLOT: gallery-5</span></span></li>
-          <li class="g-item zoom reveal" data-parallax="10"><span class="photo slot-empty" data-slot="gallery-6" style="--ar:4/5" aria-hidden="true"><span class="px"><svg class="wm" viewBox="0 0 64 64" focusable="false"><use href="#crescent"/></svg></span><span class="slot-label">PHOTO SLOT: gallery-6</span></span></li>
-          <li class="g-item zoom reveal" data-parallax="10"><span class="photo slot-empty" data-slot="gallery-7" style="--ar:1/1" aria-hidden="true"><span class="px"><svg class="wm" viewBox="0 0 64 64" focusable="false"><use href="#crescent"/></svg></span><span class="slot-label">PHOTO SLOT: gallery-7</span></span></li>
-          <li class="g-item zoom reveal" data-parallax="10"><span class="photo slot-empty" data-slot="gallery-8" style="--ar:3/4" aria-hidden="true"><span class="px"><svg class="wm" viewBox="0 0 64 64" focusable="false"><use href="#crescent"/></svg></span><span class="slot-label">PHOTO SLOT: gallery-8</span></span></li>
+          <li class="g-item zoom reveal" data-parallax="10"><button type="button" class="g-open" data-index="0" data-src="img/photos/gallery-1.webp" data-w="1100" data-h="1650" data-alt="Back of wavy ash-blonde hair with a dark root" aria-label="View larger: Back of wavy ash-blonde hair with a dark root"><span class="photo has-img"><span class="px"><img src="img/photos/gallery-1.webp" alt="Back of wavy ash-blonde hair with a dark root" width="1100" height="1650" loading="lazy" decoding="async" style="object-position:50% 40%"></span></span></button></li>
+          <li class="g-item zoom reveal" data-parallax="10"><button type="button" class="g-open" data-index="1" data-src="img/photos/gallery-2.webp" data-w="1100" data-h="1375" data-alt="Soft silver-brown waves with blended highlights" aria-label="View larger: Soft silver-brown waves with blended highlights"><span class="photo has-img"><span class="px"><img src="img/photos/gallery-2.webp" alt="Soft silver-brown waves with blended highlights" width="1100" height="1375" loading="lazy" decoding="async" style="object-position:50% 40%"></span></span></button></li>
+          <li class="g-item zoom reveal" data-parallax="10"><button type="button" class="g-open" data-index="2" data-src="img/photos/gallery-3.webp" data-w="1100" data-h="1661" data-alt="A client in profile with caramel balayage waves" aria-label="View larger: A client in profile with caramel balayage waves"><span class="photo has-img"><span class="px"><img src="img/photos/gallery-3.webp" alt="A client in profile with caramel balayage waves" width="1100" height="1661" loading="lazy" decoding="async" style="object-position:50% 40%"></span></span></button></li>
+          <li class="g-item zoom reveal" data-parallax="10"><button type="button" class="g-open" data-index="3" data-src="img/photos/gallery-4.webp" data-w="1100" data-h="1650" data-alt="A glossy auburn bob with blonde ends" aria-label="View larger: A glossy auburn bob with blonde ends"><span class="photo has-img"><span class="px"><img src="img/photos/gallery-4.webp" alt="A glossy auburn bob with blonde ends" width="1100" height="1650" loading="lazy" decoding="async" style="object-position:50% 40%"></span></span></button></li>
+          <li class="g-item zoom reveal" data-parallax="10"><button type="button" class="g-open" data-index="4" data-src="img/photos/gallery-5.webp" data-w="1600" data-h="1049" data-alt="Golden curls with natural highlights" aria-label="View larger: Golden curls with natural highlights"><span class="photo has-img"><span class="px"><img src="img/photos/gallery-5.webp" alt="Golden curls with natural highlights" width="1600" height="1049" loading="lazy" decoding="async" style="object-position:50% 40%"></span></span></button></li>
+          <li class="g-item zoom reveal" data-parallax="10"><button type="button" class="g-open" data-index="5" data-src="img/photos/gallery-6.webp" data-w="1100" data-h="1650" data-alt="Mushroom-brown waves with a soft shine" aria-label="View larger: Mushroom-brown waves with a soft shine"><span class="photo has-img"><span class="px"><img src="img/photos/gallery-6.webp" alt="Mushroom-brown waves with a soft shine" width="1100" height="1650" loading="lazy" decoding="async" style="object-position:50% 40%"></span></span></button></li>
+          <li class="g-item zoom reveal" data-parallax="10"><button type="button" class="g-open" data-index="6" data-src="img/photos/gallery-7.webp" data-w="1100" data-h="1467" data-alt="A shoulder-length cut with sandy highlights" aria-label="View larger: A shoulder-length cut with sandy highlights"><span class="photo has-img"><span class="px"><img src="img/photos/gallery-7.webp" alt="A shoulder-length cut with sandy highlights" width="1100" height="1467" loading="lazy" decoding="async" style="object-position:50% 40%"></span></span></button></li>
+          <li class="g-item zoom reveal" data-parallax="10"><button type="button" class="g-open" data-index="7" data-src="img/photos/gallery-8.webp" data-w="1100" data-h="1650" data-alt="Long dark hair with soft caramel ends" aria-label="View larger: Long dark hair with soft caramel ends"><span class="photo has-img"><span class="px"><img src="img/photos/gallery-8.webp" alt="Long dark hair with soft caramel ends" width="1100" height="1650" loading="lazy" decoding="async" style="object-position:50% 40%"></span></span></button></li>
           
         </ul>
       </div>
@@ -509,9 +513,10 @@
             
           </ul>
         </div>
+        <div class="why-banner zoom reveal" data-parallax="8"><span class="photo has-img"><span class="px"><img src="img/photos/stylist-scissors.webp" alt="Three stylists laughing and holding scissors and round brushes against a white wall" width="900" height="601" loading="lazy" decoding="async" style="object-position:50% 40%"></span></span></div>
         <div class="why-photos reveal">
-          <div class="why-p1 zoom" data-parallax="8"><span class="photo slot-empty" data-slot="interior-1" style="--ar:4/5" aria-hidden="true"><span class="px"><svg class="wm" viewBox="0 0 64 64" focusable="false"><use href="#crescent"/></svg></span><span class="slot-label">PHOTO SLOT: interior-1</span></span></div>
-          <div class="why-p2 zoom" data-parallax="8"><span class="photo slot-empty" data-slot="products-1" style="--ar:1/1" aria-hidden="true"><span class="px"><svg class="wm" viewBox="0 0 64 64" focusable="false"><use href="#crescent"/></svg></span><span class="slot-label">PHOTO SLOT: products-1</span></span></div>
+          <div class="why-p1 zoom" data-parallax="8"><span class="photo has-img"><span class="px"><img src="img/photos/interior-1.webp" alt="A black and white view of a calm salon with arched mirrors, chairs and track lighting" width="1100" height="1956" loading="lazy" decoding="async" style="object-position:50% 40%"></span></span></div>
+          <div class="why-p2 zoom" data-parallax="8"><span class="photo has-img"><span class="px"><img src="img/photos/products-1.webp" alt="Hair and skin care bottles on a white counter in front of a salon mirror" width="1600" height="1066" loading="lazy" decoding="async" style="object-position:50% 60%"></span></span></div>
         </div>
       </div>
     </section>
@@ -662,7 +667,7 @@
           <h3 class="visit-h">Get in touch</h3>
           <p class="contact-links"><a href="tel:0355500188">03 5550 0188</a><a href="mailto:hello@maisonlune.example">hello@maisonlune.example</a></p>
         </div>
-        <div class="visit-photo zoom reveal" data-parallax="8"><span class="photo slot-empty" data-slot="interior-2" style="--ar:16/9" aria-hidden="true"><span class="px"><svg class="wm" viewBox="0 0 64 64" focusable="false"><use href="#crescent"/></svg></span><span class="slot-label">PHOTO SLOT: interior-2</span></span></div>
+        <div class="visit-photo zoom reveal" data-parallax="8"><span class="photo has-img"><span class="px"><img src="img/photos/interior-2.webp" alt="A bright salon with a row of black styling chairs, shelves of products and tall windows" width="1600" height="1066" loading="lazy" decoding="async" style="object-position:50% 50%"></span></span></div>
       </div>
     </section>
 
@@ -704,7 +709,7 @@
       <p class="footer-demo">Demo website by KB Ventures</p>
       <p class="footer-links"><a href="#top">Home</a> <a href="#top">Back to top <svg width="16" height="16" aria-hidden="true" focusable="false"><use href="#i-up"/></svg></a></p>
       <p class="small">Prices are in AUD and include GST. Final price confirmed at consultation. Bookings made on this site are not real. Photos are placeholders until the salon supplies its own.</p>
-      
+      <p class="footer-credit">Photos from Unsplash (concept demo)</p>
     </div>
   </footer>
 

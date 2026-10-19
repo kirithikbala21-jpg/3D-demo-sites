@@ -47,9 +47,11 @@ Plain HTML, CSS and JavaScript, no framework, no bundler. HTML pages are **gener
 Five steps (service, stylist, day, time, details) then a confirmation panel; it says "Demo: nothing is sent". Availability is deterministic (a hash of day + stylist + hour block), duration-aware (a 3-hour service needs 6 free 30-minute slots and must finish by closing), and past times today are disabled using the visitor's clock. Confirmed demo bookings are saved to `localStorage` key `ml-bookings` (and vouchers to `ml-vouchers`) in that browser only. URL presets: `?service=balayage&stylist=amara`. To make it real, replace the submit handler in `js/booking.js` with a call to a booking service and read availability from it.
 
 ## Photos
-21 slots, all empty (no photos were downloaded or faked). Empty slots show a neutral branded panel with no text; add `?slots=1` to the URL to see each slot's name. Add one with `python3 tools/add-photo.py photo.jpg SLOT --alt "..." --credit "..."` then `python3 tools/build.py`. Stylist portraits are capped at 900px wide, everything else 1600px, WebP under 250 KB. Full list with where each appears, ratio, minimum size and what to show: `PHOTO-SLOTS.md`. Credits to fill in: `CREDITS-TODO.md`.
+20 of 24 slots are filled with Unsplash photos (originals and crops in `img/source/`, WebP in `img/photos/`; credit line "Photos from Unsplash", shown in the footer as a concept demo). Empty slots show a neutral branded panel with no text; add `?slots=1` to the URL to see each slot's name. Add or replace one with `python3 tools/add-photo.py photo.jpg SLOT --alt "..." --credit "..."` then `python3 tools/build.py`. Stylist portraits are capped at 900px wide, everything else 1600px, WebP under 250 KB. Full list: `PHOTO-SLOTS.md`. Credits to fill in: `CREDITS-TODO.md`.
 
-Slot names: `hero`, `stylist-1` to `stylist-4`, `gallery-1` to `gallery-8`, `colour-before-1`, `colour-after-1`, `cut-before-1`, `cut-after-1`, `treatment-1`, `interior-1`, `interior-2`, `products-1`.
+Recent work (Colour, Balayage, Cut tabs in `data/jobs.json`) shows one "Recent work" photo per tab because there are no real before/after pairs; the drag slider appears automatically once both `*-before-1` and `*-after-1` slots are filled and wired in `jobs.json`.
+
+Slot names: `hero`, `stylist-1` to `stylist-4`, `stylist-wash`, `stylist-scissors`, `gallery-1` to `gallery-8`, `cut-1`, `treatment-1`, `interior-1`, `interior-2`, `products-1`, plus the spare `colour-before-1`, `colour-after-1`, `cut-before-1`, `cut-after-1`.
 
 ## Tests
 ```

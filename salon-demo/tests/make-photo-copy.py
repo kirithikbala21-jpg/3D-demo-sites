@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Test helper: copy the site to DEST and fill photo slots with SYNTHETIC test images (plain colour gradients, never committed)
-by running the real tools/add-photo.py, then rebuild the copy. Usage: make-photo-copy.py SRC DEST full|partial"""
+by running the real tools/add-photo.py, then rebuild the copy. Usage: make-photo-copy.py SRC DEST full|partial|none"""
 import pathlib, random, shutil, subprocess, sys
 from PIL import Image, ImageDraw
 
@@ -9,8 +9,9 @@ if dest.exists():
     shutil.rmtree(dest)
 shutil.copytree(src, dest, ignore=shutil.ignore_patterns("tests", "node_modules", "photos", "source", ".git"))
 slots = {
-    "full": ["hero"] + [f"stylist-{i}" for i in range(1, 5)] + [f"gallery-{i}" for i in range(1, 9)] + ["colour-before-1", "colour-after-1", "cut-before-1", "cut-after-1", "treatment-1", "interior-1", "interior-2", "products-1"],
-    "partial": ["colour-after-1", "gallery-3", "stylist-1"],
+    "full": ["hero"] + [f"stylist-{i}" for i in range(1, 5)] + [f"gallery-{i}" for i in range(1, 9)] + ["cut-1", "stylist-wash", "stylist-scissors", "treatment-1", "interior-1", "interior-2", "products-1"],
+    "none": [],
+    "partial": ["gallery-1", "stylist-1", "cut-1"],
 }[mode]
 tmp = dest / "_tmp"; tmp.mkdir()
 random.seed(3)

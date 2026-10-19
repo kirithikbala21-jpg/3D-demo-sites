@@ -1,3 +1,5 @@
+> Status: 20 slots are filled (hero, stylist-1..4, stylist-wash, stylist-scissors, gallery-1..8, cut-1, treatment-1, interior-1, interior-2, products-1). New in use: `cut-1` (Cut tab), `stylist-wash` (Colour services tab), `stylist-scissors` (Why choose us banner). The four `colour/cut-before/after-1` slots are spare (no real pairs yet).
+
 # Photo slots
 
 There are **21 photo slots**. None has a photo yet (the demo was built without downloads and without faking any), so each renders a neutral branded panel: an ivory/clay tone with a faint crescent-moon watermark and **no text**. Add `?slots=1` to the page URL to show a "PHOTO SLOT: name" label on each panel (labels stay in the DOM, visually hidden, otherwise). Layout, cropping and alt text are set, so a photo drops straight in.

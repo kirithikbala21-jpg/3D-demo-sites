@@ -229,7 +229,7 @@ ul { margin: 0; padding: 0; list-style: none; }
 .recent { margin: 0; }
 .ba-after, .ba-before { position: absolute; inset: 0; border-radius: 0; }
 .ba-before { clip-path: inset(0 calc(100% - var(--pos, 50%)) 0 0); }
-.ba-tag { position: absolute; top: 12px; z-index: 3; padding: 4px 12px; border-radius: 999px; background: var(--ivory); color: var(--cocoa); font: 600 13px/1.4 var(--sans); letter-spacing: .06em; text-transform: uppercase; }
+.ba-tag { position: absolute; top: 12px; z-index: 3; padding: 4px 12px; border-radius: 999px; background: var(--cocoa); color: var(--ivory); font: 600 13px/1.4 var(--sans); letter-spacing: .06em; text-transform: uppercase; }
 .ba-tag-before, .recent .ba-tag { left: 12px; }
 .ba-tag-after { right: 12px; }
 .ba-line { position: absolute; z-index: 3; top: 0; bottom: 0; left: var(--pos, 50%); width: 2px; margin-left: -1px; background: var(--ivory); box-shadow: 0 0 0 1px rgba(43, 33, 28, .25); pointer-events: none; }
@@ -424,7 +424,7 @@ address { font-style: normal; }
 /* ---------- Real photos: soft gradient hero, tab photos, banner ---------- */
 .hero-real { background: var(--ivory); }
 .hero-real .hero-media .photo { background: transparent; }
-.hero-real .hero-scrim { background: linear-gradient(0deg, rgba(43, 33, 28, .72) 0%, rgba(43, 33, 28, .38) 38%, rgba(43, 33, 28, 0) 64%), linear-gradient(90deg, rgba(43, 33, 28, .5) 0%, rgba(43, 33, 28, 0) 55%); }
+.hero-real .hero-scrim { background: linear-gradient(0deg, rgba(43, 33, 28, .82) 0%, rgba(43, 33, 28, .72) 45%, rgba(43, 33, 28, .68) 72%, rgba(43, 33, 28, 0) 96%), linear-gradient(90deg, rgba(43, 33, 28, .5) 0%, rgba(43, 33, 28, 0) 62%); }
 .cat-photo { position: relative; overflow: hidden; border-radius: var(--radius); aspect-ratio: 16 / 9; margin-bottom: var(--s3); max-height: 240px; }
 .cat-photo .photo { position: absolute; inset: 0; }
 .cat-photo img { object-position: 50% 30%; }
@@ -434,3 +434,5 @@ address { font-style: normal; }
 @media (min-width: 900px) { .cat-photo { aspect-ratio: 21 / 7; max-height: 280px; } }
 .why-banner { order: 3; } .why-text { order: 1; } .why-photos { order: 2; }
 .hero-eyebrow { white-space: normal; max-width: 100%; letter-spacing: .12em; font-size: .8125rem; }
+
+.hero-real .hero-eyebrow { color: #FFFAF3; }

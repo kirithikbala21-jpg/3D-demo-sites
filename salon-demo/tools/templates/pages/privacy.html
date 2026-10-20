@@ -1,0 +1,31 @@
+    <section class="section page-top" aria-labelledby="page-title">
+      <div class="container narrow legal">
+        <p class="eyebrow">Privacy</p>
+        <h1 id="page-title">{{page.h1}}</h1>
+        <p class="lead">This website is an unofficial concept demo for a fictional salon. It is built to collect as little as possible.</p>
+
+        <h2>What is stored on your device</h2>
+        <ul>
+          <li><strong>Your cookie choice</strong> (accept or decline), so the notice does not come back. Key: <code>ml-cookie</code>.</li>
+          <li><strong>Demo bookings and demo vouchers</strong>, only if you make one. They stay in your own browser (keys <code>ml-bookings</code> and <code>ml-vouchers</code>) and are not sent to anyone. {{#if formsLive}}Once the salon switches on its enquiry form, your booking details are sent to the salon so it can confirm the appointment.{{else}}Nothing is sent to a salon in this demo.{{/if}}</li>
+        </ul>
+        <p>You can clear all of this at any time in your browser settings (clear site data).</p>
+
+        <h2>What we do not do</h2>
+        <ul>
+          <li>No analytics, advertising or tracking scripts are loaded. If the salon adds analytics later, they will run only after you press Accept.</li>
+          <li>No third-party fonts, widgets, chat or maps are loaded. The map is a drawing, and the "Open in Google Maps" link only opens Google if you click it.</li>
+          <li>We do not sell or share personal information.</li>
+        </ul>
+
+        <h2>If you send us an enquiry</h2>
+        <p>Details you give for a booking or voucher (name, phone number or email) are used only to reply to you and to run the appointment or gift. Under the Australian Privacy Principles you can ask to see or correct the information we hold about you.</p>
+
+        <h2>Photos</h2>
+        <p>{{#if photoCredits}}{{photoCredits}}. Photos are stock images used for this concept demo.{{else}}Photos on this site are placeholders.{{/if}}</p>
+
+        <h2>Contact</h2>
+        <p>Questions about privacy: <a href="mailto:{{contact.email}}">{{contact.email}}</a> or <a href="tel:{{contact.phoneHref}}">{{contact.phone}}</a>.</p>
+        <p class="notfound-actions"><a class="btn btn-primary btn-lg" href="index.html">Back to the home page</a></p>
+      </div>
+    </section>

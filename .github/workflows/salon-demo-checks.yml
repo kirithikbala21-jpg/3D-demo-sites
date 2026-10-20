@@ -2,24 +2,43 @@ name: salon-demo checks
 
 on:
   push:
+    branches: [main]
     paths: ['salon-demo/**', '.github/workflows/salon-demo-checks.yml']
   pull_request:
     paths: ['salon-demo/**']
+  schedule:
+    - cron: '30 13 31 12 *'   # 1 January, just after midnight in Melbourne: rebuilds so the year in the page text is right even without JavaScript
+  workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   checks:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'pull_request' && github.head_ref || github.ref_name }}
 
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
 
-      - name: Generated pages match the templates
+      # The owner edits salon-demo/site.config.json on github.com; this step rebuilds the pages and commits them, so the
+      # site updates itself about a minute after "Commit changes". A typo in the file makes this step fail with a plain-English message.
+      - name: Rebuild the pages from site.config.json
+        run: python3 salon-demo/tools/build.py
+
+      - name: Commit the rebuilt pages (push to main) or fail if they are out of date (pull request)
         run: |
-          python3 salon-demo/tools/build.py
-          git diff --exit-code -- salon-demo
+          if [ -z "$(git status --porcelain -- salon-demo)" ]; then echo "Pages already up to date"; exit 0; fi
+          if [ "${{ github.event_name }}" = "pull_request" ]; then git diff --stat -- salon-demo; echo "Generated pages are out of date: run python3 salon-demo/tools/build.py"; exit 1; fi
+          git config user.name "salon-demo auto-build"
+          git config user.email "actions@users.noreply.github.com"
+          git add salon-demo
+          git commit -m "salon-demo: rebuild pages from site.config.json"
+          git push
 
       - uses: actions/setup-node@v4
         with:

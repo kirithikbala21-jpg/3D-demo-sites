@@ -1,12 +1,14 @@
 // Booking widget. FRONT END ONLY: nothing is sent anywhere. Steps: service, stylist, day, time, details, confirmation.
 // Availability is a deterministic demo (a hash of day + stylist + slot), so it looks the same on every visit.
 // Bookings are saved in this browser only (localStorage key "ml-bookings").
-import { $, $$, SITE, store, DAY_NAMES, MONTHS, fmtTime, hoursFor, isOpenDay, dateKey, parseKey, scrollToEl, reduceMotion } from './util.js';
+import { $, $$, SITE, store, DAY_NAMES, MONTHS, fmtTime, nowMel, resolveDay, dayLabel, addDays, scrollToEl, CLOCK_CFG } from './util.js';
+import { hasFutureSlot } from './clock.js';
+import { addHoneypot, tripped, guard, send, isLive, phoneFallback } from './forms.js';
 
 const root = $('#booking-app');
 if (root) {
   const B = SITE.booking || {};
-  const SLOT = B.slotMinutes || 30, AHEAD = B.daysAhead || 7, TAKEN = B.takenPercent || 38;
+  const SLOT = B.slotMinutes || 30, AHEAD = Math.max(B.daysAhead || 90, 90), LEAD = B.leadMinutes || 0, TAKEN = B.takenPercent || 38;
   const STEP_NAMES = ['Service', 'Stylist', 'Day', 'Time', 'Details'];
   const svcBySlug = Object.fromEntries(SITE.services.map((s) => [s.slug, s]));
   const styBySlug = Object.fromEntries(SITE.stylists.map((s) => [s.slug, s]));
@@ -22,27 +24,21 @@ if (root) {
     const pool = state.stylist === 'any' ? SITE.stylists.map((s) => s.slug) : [state.stylist];
     return pool.filter((slug) => { for (let j = 0; j < n; j++) if (isTaken(slug, key, mins + j * SLOT)) return false; return true; });
   };
-  const nowInfo = () => { const n = new Date(); return { key: dateKey(n), mins: n.getHours() * 60 + n.getMinutes(), date: n }; };
+  const nowInfo = () => nowMel(); // the business's clock (Melbourne), re-read every time it matters
   /** Start times offered on a day for the chosen service (those that finish before closing), each with a state. */
   function slotsOn(key) {
-    const d = parseKey(key), h = hoursFor(d.getDay()), n = need(), now = nowInfo();
-    if (!isOpenDay(d.getDay())) return [];
+    const r = resolveDay(key), n = need(), now = nowInfo();
+    if (r.closed) return [];
     const out = [];
-    for (let m = h.open * 60; m + n * SLOT <= h.close * 60; m += SLOT) {
+    for (let m = r.open; m + n * SLOT <= r.close; m += SLOT) {
       let reason = null;
-      if (key === now.key && m <= now.mins) reason = 'passed';
+      if (key === now.key && m <= now.mins + LEAD) reason = 'passed';
       else if (!freeStylists(key, m, n).length) reason = 'taken';
       out.push({ mins: m, reason });
     }
     return out;
   }
-  const dayHasFuture = (key) => {
-    const d = parseKey(key), h = hoursFor(d.getDay()), now = nowInfo();
-    if (!isOpenDay(d.getDay())) return false;
-    const n = need();
-    for (let m = h.open * 60; m + n * SLOT <= h.close * 60; m += SLOT) if (!(key === now.key && m <= now.mins)) return true;
-    return false;
-  };
+  const dayHasFuture = (key) => hasFutureSlot(key, { key: nowInfo().key, mins: nowInfo().mins + LEAD }, CLOCK_CFG, state.service ? need() * SLOT : SLOT, SLOT);
 
   /* ---------- phone and name checks ---------- */
   function auPhone(v) {
@@ -88,7 +84,7 @@ if (root) {
         <form id="bk-form" novalidate>
           <div class="field"><label for="bk-name">Full name</label><input id="bk-name" name="name" type="text" autocomplete="name" required aria-describedby="bk-name-err"><p class="err" id="bk-name-err" hidden></p></div>
           <div class="field"><label for="bk-phone">Mobile or phone number</label><input id="bk-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="0412 345 678" required aria-describedby="bk-phone-err"><p class="err" id="bk-phone-err" hidden></p></div>
-          <p class="small">Demo only: your details stay in this browser and are not sent anywhere.</p>
+          <p class="small" id="bk-note">${isLive() ? 'Your details are sent to the salon so it can confirm your appointment.' : 'Demo only: your details stay in this browser and are not sent anywhere.'}</p><div id="bk-fail" aria-live="assertive"></div>
           <div class="bk-nav"><button type="button" class="btn btn-ghost btn-lg" data-back>Back</button><button type="submit" class="btn btn-primary btn-lg">Confirm booking</button></div>
         </form>
       </section>
@@ -98,15 +94,18 @@ if (root) {
   const live = $('#bk-live');
 
   /* ---------- rendering ---------- */
-  const dayLabel = (d) => `${DAY_NAMES[d.getDay()]} ${d.getDate()} ${MONTHS[d.getMonth()]}`;
+  const dparts = (key) => { const [y, m, d] = key.split('-').map(Number); return { y, m, d, dow: new Date(Date.UTC(y, m - 1, d, 12)).getUTCDay() }; };
   function renderDays() {
-    const today = new Date(); today.setHours(0, 0, 0, 0);
+    const today = nowInfo().key;
     const html = [];
     for (let i = 0; i < AHEAD; i++) {
-      const d = new Date(today.getFullYear(), today.getMonth(), today.getDate() + i);
-      const key = dateKey(d), open = state.service ? dayHasFuture(key) : isOpenDay(d.getDay());
-      const closedWord = isOpenDay(d.getDay()) ? 'Full' : 'Closed';
-      html.push(`<label class="pick"><input type="radio" name="day" value="${key}"${open ? '' : ' disabled'}${state.date === key ? ' checked' : ''}${open ? '' : ' data-reason="closed"'}><span><span class="wd">${i === 0 ? 'Today' : DAY_NAMES[d.getDay()].slice(0, 3)}</span><span class="dn">${d.getDate()}</span><span class="mo">${MONTHS[d.getMonth()].slice(0, 3)}</span>${open ? '' : `<span class="cl">${closedWord}</span>`}<span class="sr-only">, ${dayLabel(d)}${open ? '' : ', unavailable'}</span></span></label>`);
+      const key = addDays(today, i);
+      const open = dayHasFuture(key);
+      if (i === 0 && !open) continue; // today disappears once nothing is left to book (after closing, or closed all day)
+      const r = resolveDay(key), p = dparts(key);
+      const closedWord = r.closed ? (r.why === 'holiday' ? 'Holiday' : 'Closed') : 'Full';
+      const wd = i === 0 ? 'Today' : i === 1 ? 'Tomorrow' : DAY_NAMES[p.dow].slice(0, 3);
+      html.push(`<label class="pick"><input type="radio" name="day" value="${key}"${open ? '' : ' disabled'}${state.date === key ? ' checked' : ''}${open ? '' : ' data-reason="closed"'}><span><span class="wd">${wd}</span><span class="dn">${p.d}</span><span class="mo">${MONTHS[p.m - 1].slice(0, 3)}</span>${open ? '' : `<span class="cl">${closedWord}</span>`}<span class="sr-only">, ${dayLabel(key)}${r.name ? ', ' + r.name : ''}${open ? '' : ', unavailable'}</span></span></label>`);
     }
     $('#bk-days').innerHTML = html.join('');
     if (state.date && !$(`input[name=day][value="${state.date}"]:not(:disabled)`, root)) { state.date = null; state.time = null; }
@@ -116,7 +115,7 @@ if (root) {
     if (!state.date) return;
     const slots = slotsOn(state.date);
     const grid = $('#bk-times');
-    $('#bk-h3').textContent = `Choose a time on ${dayLabel(parseKey(state.date))}`;
+    $('#bk-h3').textContent = `Choose a time on ${dayLabel(state.date)}`;
     if (state.time !== null && !slots.some((s) => s.mins === state.time && !s.reason)) state.time = null;
     grid.innerHTML = slots.map((s) => `<label class="pick"><input type="radio" name="time" value="${s.mins}"${s.reason ? ` disabled data-reason="${s.reason}"` : ''}${state.time === s.mins ? ' checked' : ''}><span>${fmtTime(s.mins)}${s.reason ? `<span class="sr-only">, ${s.reason}</span>` : ''}</span></label>`).join('');
     const free = slots.filter((s) => !s.reason).length;
@@ -128,7 +127,7 @@ if (root) {
     const out = [];
     if (state.service) { const s = svcBySlug[state.service]; out.push(`${s.name}, from ${money(s.from)}`); }
     if (state.step >= 2 && state.service) out.push(state.stylist === 'any' ? 'No preference' : styBySlug[state.stylist].name);
-    if (state.date && state.step >= 3) out.push(dayLabel(parseKey(state.date)));
+    if (state.date && state.step >= 3) out.push(dayLabel(state.date));
     if (state.time !== null && state.step >= 4) out.push(fmtTime(state.time));
     $('#bk-summary').innerHTML = out.map((t) => `<span class="bk-chip">${t}</span>`).join('');
   }
@@ -171,38 +170,54 @@ if (root) {
   });
   const fail = (input, errEl, msg) => { errEl.textContent = msg; errEl.hidden = false; input.setAttribute('aria-invalid', 'true'); };
   const clear = (input, errEl) => { errEl.hidden = true; input.removeAttribute('aria-invalid'); };
-  $('#bk-form').addEventListener('submit', (e) => {
+  const form = $('#bk-form'); addHoneypot(form);
+  const submitBtn = $('button[type=submit]', form), busy = guard(submitBtn);
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const name = $('#bk-name'), phone = $('#bk-phone'), ne = $('#bk-name-err'), pe = $('#bk-phone-err');
-    clear(name, ne); clear(phone, pe);
-    let first = null;
-    if (!/^[A-Za-z][A-Za-z '’.-]{1,59}$/.test(name.value.trim())) { fail(name, ne, 'Please enter your name (letters only, at least 2).'); first = first || name; }
-    const ph = auPhone(phone.value);
-    if (!ph) { fail(phone, pe, 'Please enter an Australian phone number, like 0412 345 678 or 03 5550 0188.'); first = first || phone; }
-    if (first) { first.focus(); return; }
-    // pick the stylist who is free (first available when "No preference")
-    const free = freeStylists(state.date, state.time, need());
-    const assigned = free[0] || (state.stylist === 'any' ? SITE.stylists[0].slug : state.stylist);
-    const ref = 'ML-' + hash(name.value + ph + Date.now() + Math.random()).toString(36).toUpperCase().slice(0, 6).padStart(6, '0');
-    const s = svcBySlug[state.service];
-    const booking = { ref, service: s.slug, serviceName: s.name, from: s.from, minutes: s.min, stylist: assigned, stylistName: styBySlug[assigned].name, date: state.date, time: fmtTime(state.time), name: name.value.trim(), phone: ph, created: new Date().toISOString(), demo: true };
-    try { const all = JSON.parse(store.get('ml-bookings') || '[]'); all.push(booking); store.set('ml-bookings', JSON.stringify(all.slice(-25))); } catch (err) { store.set('ml-bookings', JSON.stringify([booking])); }
-    state.done = booking;
-    const first1 = booking.name.split(/\s+/)[0];
-    const end = fmtTime(state.time + Math.ceil(s.min / SLOT) * SLOT);
-    const done = $('.bk-done', root);
-    done.innerHTML = `<h3 class="bk-h" id="bk-hd" tabindex="-1">You are all set, ${first1.replace(/[<>&]/g, '')}.</h3>
+    if (!busy.start()) return; // a second click while the first is still being handled
+    try {
+      const name = $('#bk-name'), phone = $('#bk-phone'), ne = $('#bk-name-err'), pe = $('#bk-phone-err'), failBox = $('#bk-fail');
+      clear(name, ne); clear(phone, pe); failBox.innerHTML = '';
+      let first = null;
+      if (!/^[\p{L}][\p{L} '’.-]{1,59}$/u.test(name.value.trim())) { fail(name, ne, 'Please enter your name (letters only, at least 2).'); first = first || name; }
+      const ph = auPhone(phone.value);
+      if (!ph) { fail(phone, pe, `Please enter an Australian phone number, like 0412 345 678 or ${SITE.phone}.`); first = first || phone; }
+      if (first) { first.focus(); return; }
+      // the clock keeps moving while the form is open: make sure the chosen time has not passed or been taken in the meantime
+      const nowM = nowInfo(), s = svcBySlug[state.service];
+      if (!resolveDay(state.date).closed && state.date === nowM.key && state.time <= nowM.mins + LEAD) {
+        state.time = null; go(3); failBox.innerHTML = ''; $('#bk-times-note').textContent = 'That time has just passed. Please choose another.'; return;
+      }
+      // pick the stylist who is free (first available when "No preference")
+      const free = freeStylists(state.date, state.time, need());
+      const assigned = free[0] || (state.stylist === 'any' ? SITE.stylists[0].slug : state.stylist);
+      const ref = 'ML-' + hash(name.value + ph + Date.now() + Math.random()).toString(36).toUpperCase().slice(0, 6).padStart(6, '0');
+      const end = fmtTime(state.time + Math.ceil(s.min / SLOT) * SLOT);
+      const booking = { ref, service: s.slug, serviceName: s.name, from: s.from, minutes: s.min, stylist: assigned, stylistName: styBySlug[assigned].name, date: state.date, time: fmtTime(state.time), name: name.value.trim(), phone: ph, created: new Date().toISOString() };
+      if (tripped(form)) { /* spam trap filled in: look successful, send nothing */ } else {
+        const res = await send({ type: 'booking', _subject: `Booking request ${ref}`, ...booking, when: `${dayLabel(state.date)}, ${booking.time} to ${end}` });
+        if (!res.ok) { failBox.innerHTML = phoneFallback(); return; }
+        try { const all = JSON.parse(store.get('ml-bookings') || '[]'); all.push(booking); store.set('ml-bookings', JSON.stringify(all.slice(-25))); } catch (err) { store.set('ml-bookings', JSON.stringify([booking])); }
+      }
+      state.done = booking;
+      const first1 = booking.name.split(/\s+/)[0];
+      const done = $('.bk-done', root);
+      const closing = isLive()
+        ? `<p class="bk-demo"><strong>Thanks, your request is with us.</strong> We will confirm by phone or text. If you have not heard from us within a day, please call <a href="tel:${SITE.phoneHref}">${SITE.phone}</a>. Final price confirmed at consultation.</p>`
+        : `<p class="bk-demo"><strong>This is a demo, no real booking was made.</strong> Nothing was sent to a salon. Final price confirmed at consultation.</p>`;
+      done.innerHTML = `<h3 class="bk-h" id="bk-hd" tabindex="-1">You are all set, ${first1.replace(/[<>&]/g, '')}.</h3>
       <p class="bk-ref" aria-label="Booking reference ${ref}">${ref}</p>
       <dl class="bk-sum">
         <div><dt>Service</dt><dd>${s.name}, from ${money(s.from)} (${s.min} min)</dd></div>
         <div><dt>Stylist</dt><dd>${booking.stylistName}${state.stylist === 'any' ? ' (first available)' : ''}</dd></div>
-        <div><dt>When</dt><dd>${dayLabel(parseKey(state.date))}, ${booking.time} to ${end}</dd></div>
+        <div><dt>When</dt><dd>${dayLabel(state.date)}, ${booking.time} to ${end}</dd></div>
         <div><dt>Name</dt><dd>${booking.name.replace(/[<>&]/g, '')}</dd></div>
         <div><dt>Phone</dt><dd>${prettyPhone(ph)}</dd></div>
       </dl>
-      <p class="bk-demo"><strong>This is a demo, no real booking was made.</strong> Nothing was sent to a salon. Final price confirmed at consultation.</p>
+      ${closing}
       <button type="button" class="btn btn-ghost btn-lg" data-restart>Make another booking</button>`;
-    go('done');
+      go('done');
+    } finally { busy.stop(); }
   });
   root.addEventListener('click', (e) => { if (e.target.closest('[data-restart]')) reset(); });
   function reset() {

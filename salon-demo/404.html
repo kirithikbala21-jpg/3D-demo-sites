@@ -2,7 +2,8 @@
 <html lang="en-AU">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light">
   <script>document.write('<base href="' + (location.pathname.match(/^.*\/salon-demo\//) || ['/'])[0] + '">');</script>
   <title>Maison Lune | Page not found (unofficial concept demo)</title>
   <meta name="description" content="This page could not be found. Head back to the Maison Lune home page or call 03 5550 0188.">
@@ -29,10 +30,11 @@
   <link rel="manifest" href="site.webmanifest">
   <link rel="preload" href="fonts/cormorant-garamond-500.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" as="image" href="img/photos/hero.webp" fetchpriority="high">
+  <link rel="preload" as="image" href="img/photos/hero.webp" imagesrcset="img/photos/hero-800.webp 800w, img/photos/hero.webp 1600w" imagesizes="100vw" fetchpriority="high">
   <style id="theme-tokens">:root{--ivory:#FAF6F0;--cocoa:#2B211C;--clay:#C9A38C;--sage:#8A9A86;--clay-text:#8A5A43;--sage-text:#5D6E59}</style>
-  <link rel="stylesheet" href="vendor/lenis-1.1.18.css">
-  <link rel="stylesheet" href="styles.css">
+  <style id="lenis-css">html.lenis,html.lenis body{height:auto}.lenis.lenis-smooth{scroll-behavior:auto!important}.lenis.lenis-smooth [data-lenis-prevent]{overscroll-behavior:contain}.lenis.lenis-stopped{overflow:clip}.lenis.lenis-smooth iframe{pointer-events:none}</style>
+  <link rel="stylesheet" href="styles.css?v=a4163d60">
+  <script type="importmap">{"imports": {"./js/booking.js": "./js/booking.js?v=c7b9e4e1", "./js/clock.js": "./js/clock.js?v=0d812e35", "./js/forms.js": "./js/forms.js?v=b8278f0d", "./js/gallery.js": "./js/gallery.js?v=f3bc879b", "./js/main.js": "./js/main.js?v=c6c17f58", "./js/motion.js": "./js/motion.js?v=8517df35", "./js/notice.js": "./js/notice.js?v=06465137", "./js/results.js": "./js/results.js?v=334a4816", "./js/services.js": "./js/services.js?v=bf1e4a39", "./js/smooth.js": "./js/smooth.js?v=194c45b9", "./js/status.js": "./js/status.js?v=9799aedb", "./js/tabs.js": "./js/tabs.js?v=ad88c9d1", "./js/ui.js": "./js/ui.js?v=a5a3dfab", "./js/util.js": "./js/util.js?v=f65ee065", "./js/voucher.js": "./js/voucher.js?v=3a0dcfa8"}}</script>
   
   <noscript><style>
     /* Without JavaScript: every service tab and every before/after job shows as ordinary stacked content. */
@@ -49,6 +51,8 @@
 </head>
 <body class="page-notfound" id="top">
   <a class="skip-link" href="#main">Skip to content</a>
+  <noscript><p class="nojs-banner">JavaScript is switched off, so online booking and live opening times are unavailable. Please call <a href="tel:+61355500188">03 5550 0188</a> or visit us at 21 Example Street, Glen Waverley VIC 3150. Hours: Mon closed, Tue to Fri 9am to 7pm, Sat 8am to 5pm, Sun 10am to 4pm.</p></noscript>
+  <div class="notice-bar" id="notice-bar" role="region" aria-label="Notices" hidden></div>
 
   <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
     <symbol id="crescent" viewBox="0 0 64 64"><path d="M42 8a24 24 0 1 0 14 34 20 20 0 0 1-14-34z" fill="currentColor"/></symbol>
@@ -81,7 +85,7 @@
         <p class="eyebrow">Error 404</p>
         <h1 id="page-title">This page has slipped away</h1>
         <p class="lead">We could not find that page. Check the address, or head back to the start.</p>
-        <p class="notfound-actions"><a class="btn btn-primary btn-lg" href="index.html">Back to the home page</a> <a class="btn btn-ghost btn-lg" href="tel:0355500188">Call 03 5550 0188</a></p>
+        <p class="notfound-actions"><a class="btn btn-primary btn-lg" href="index.html">Back to the home page</a> <a class="btn btn-ghost btn-lg" href="tel:+61355500188">Call 03 5550 0188</a></p>
       </div>
     </section>
 
@@ -100,7 +104,7 @@
       <div class="footer-col">
         <h2 class="footer-h">Contact</h2>
         <address>
-          <a href="tel:0355500188">03 5550 0188</a>
+          <a href="tel:+61355500188">03 5550 0188</a>
           <a href="mailto:hello@maisonlune.example">hello@maisonlune.example</a>
           <span class="addr">21 Example Street</span><span class="addr">Glen Waverley VIC 3150</span>
         </address>
@@ -120,27 +124,28 @@
     <div class="container footer-end">
       <p class="footer-demo"><strong>Unofficial concept demo. Names, prices and reviews are fictional.</strong></p>
       <p class="footer-demo">Demo website by KB Ventures</p>
-      <p class="footer-links"><a href="index.html">Home</a> <a href="#top">Back to top <svg width="16" height="16" aria-hidden="true" focusable="false"><use href="#i-up"/></svg></a></p>
+      <p class="footer-links"><a href="index.html">Home</a> <a href="privacy.html">Privacy</a> <a href="#top">Back to top <svg width="16" height="16" aria-hidden="true" focusable="false"><use href="#i-up"/></svg></a></p>
       <p class="small">Prices are in AUD and include GST. Final price confirmed at consultation. Bookings made on this site are not real. Photos are stock images used for this concept demo.</p>
+      <p class="small footer-copy">&copy; <span data-year>2026</span> Maison Lune. All rights reserved.</p>
       <p class="footer-credit">Photos from Unsplash (concept demo)</p>
     </div>
   </footer>
 
   <nav class="mobile-bar" id="mobile-bar" aria-label="Call or book">
-    <a class="btn btn-ghost" href="tel:0355500188"><svg width="20" height="20" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg>Call</a>
+    <a class="btn btn-ghost" href="tel:+61355500188"><svg width="20" height="20" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg>Call</a>
     <a class="btn btn-primary" href="index.html#book" data-book-link>Book</a>
   </nav>
 
   <div class="cookie" id="cookie" role="region" aria-label="Cookie notice" hidden>
-    <p>We use basic cookies.</p>
+    <p>We use basic cookies. <a href="privacy.html">Privacy</a></p>
     <div class="cookie-actions">
       <button type="button" class="cookie-btn cookie-yes" data-cookie="yes">Accept</button>
       <button type="button" class="cookie-btn cookie-no" data-cookie="no">Decline</button>
     </div>
   </div>
 
-  <script type="application/json" id="site-data">{"name": "Maison Lune", "phone": "03 5550 0188", "phoneHref": "0355500188", "timezone": "Australia/Melbourne", "locale": "en-AU", "hours": [{"day": 1, "name": "Monday", "open": null, "close": null}, {"day": 2, "name": "Tuesday", "open": 9, "close": 19}, {"day": 3, "name": "Wednesday", "open": 9, "close": 19}, {"day": 4, "name": "Thursday", "open": 9, "close": 19}, {"day": 5, "name": "Friday", "open": 9, "close": 19}, {"day": 6, "name": "Saturday", "open": 8, "close": 17}, {"day": 0, "name": "Sunday", "open": 10, "close": 16}], "booking": {"slotMinutes": 30, "daysAhead": 7, "takenPercent": 30, "cancellationHours": 24}, "categories": [{"id": "cut", "name": "Cut and style"}, {"id": "colour", "name": "Colour"}, {"id": "treatments", "name": "Treatments"}, {"id": "beauty", "name": "Beauty and wellness"}], "services": [{"slug": "womens-cut", "cat": "cut", "name": "Women's cut and style", "from": 85, "min": 60}, {"slug": "mens-cut", "cat": "cut", "name": "Men's cut", "from": 48, "min": 30}, {"slug": "kids-cut", "cat": "cut", "name": "Kids' cut (under 12)", "from": 38, "min": 30}, {"slug": "blow-dry", "cat": "cut", "name": "Wash and blow-dry", "from": 55, "min": 45}, {"slug": "event-styling", "cat": "cut", "name": "Updo and event styling", "from": 110, "min": 75}, {"slug": "beard-tidy", "cat": "cut", "name": "Beard tidy", "from": 28, "min": 30}, {"slug": "full-colour", "cat": "colour", "name": "Full colour", "from": 160, "min": 120}, {"slug": "root-touch-up", "cat": "colour", "name": "Root touch-up", "from": 120, "min": 90}, {"slug": "half-head-foils", "cat": "colour", "name": "Half-head foils", "from": 190, "min": 120}, {"slug": "balayage", "cat": "colour", "name": "Balayage", "from": 280, "min": 180}, {"slug": "toner-gloss", "cat": "colour", "name": "Toner and gloss", "from": 75, "min": 45}, {"slug": "colour-correction", "cat": "colour", "name": "Colour correction", "from": 240, "min": 240}, {"slug": "keratin", "cat": "treatments", "name": "Keratin smoothing", "from": 320, "min": 150}, {"slug": "bond-repair", "cat": "treatments", "name": "Bond repair treatment", "from": 95, "min": 45}, {"slug": "scalp-treatment", "cat": "treatments", "name": "Scalp treatment", "from": 80, "min": 45}, {"slug": "deep-conditioning", "cat": "treatments", "name": "Deep conditioning", "from": 55, "min": 30}, {"slug": "brow-shape", "cat": "beauty", "name": "Brow shape", "from": 35, "min": 30}, {"slug": "brow-tint", "cat": "beauty", "name": "Brow tint", "from": 30, "min": 30}, {"slug": "lash-tint", "cat": "beauty", "name": "Lash tint", "from": 40, "min": 30}, {"slug": "express-facial", "cat": "beauty", "name": "Express facial", "from": 75, "min": 45}, {"slug": "relaxation-massage-30", "cat": "beauty", "name": "Relaxation massage, 30 min", "from": 60, "min": 30}, {"slug": "relaxation-massage-60", "cat": "beauty", "name": "Relaxation massage, 60 min", "from": 110, "min": 60}], "stylists": [{"slug": "amara", "name": "Amara Voss", "first": "Amara", "speciality": "Balayage, blondes and colour correction"}, {"slug": "jonah", "name": "Jonah Reyes", "first": "Jonah", "speciality": "Men's cuts, fades and texture"}, {"slug": "mei", "name": "Mei Tanaka", "first": "Mei", "speciality": "Keratin, bond repair and scalp care"}, {"slug": "priya", "name": "Priya Nair", "first": "Priya", "speciality": "Event styling, brows and relaxation"}], "vouchers": [50, 100, 150]}</script>
-  <script defer src="vendor/lenis-1.1.18.min.js"></script>
-  <script type="module" src="js/main.js"></script>
+  <script type="application/json" id="site-data">{"name": "Maison Lune", "phone": "03 5550 0188", "phoneHref": "+61355500188", "timezone": "Australia/Melbourne", "locale": "en-AU", "hours": [{"day": 1, "name": "Monday", "open": null, "close": null}, {"day": 2, "name": "Tuesday", "open": 540, "close": 1140}, {"day": 3, "name": "Wednesday", "open": 540, "close": 1140}, {"day": 4, "name": "Thursday", "open": 540, "close": 1140}, {"day": 5, "name": "Friday", "open": 540, "close": 1140}, {"day": 6, "name": "Saturday", "open": 480, "close": 1020}, {"day": 0, "name": "Sunday", "open": 600, "close": 960}], "holidays": {"mode": "closed", "overrides": {}}, "closures": [], "notices": [], "booking": {"slotMinutes": 30, "daysAhead": 90, "takenPercent": 30, "cancellationHours": 24, "leadMinutes": 0, "externalUrl": ""}, "forms": {"endpoint": ""}, "categories": [{"id": "cut", "name": "Cut and style"}, {"id": "colour", "name": "Colour"}, {"id": "treatments", "name": "Treatments"}, {"id": "beauty", "name": "Beauty and wellness"}], "services": [{"slug": "womens-cut", "cat": "cut", "name": "Women's cut and style", "from": 85, "min": 60}, {"slug": "mens-cut", "cat": "cut", "name": "Men's cut", "from": 48, "min": 30}, {"slug": "kids-cut", "cat": "cut", "name": "Kids' cut (under 12)", "from": 38, "min": 30}, {"slug": "blow-dry", "cat": "cut", "name": "Wash and blow-dry", "from": 55, "min": 45}, {"slug": "event-styling", "cat": "cut", "name": "Updo and event styling", "from": 110, "min": 75}, {"slug": "beard-tidy", "cat": "cut", "name": "Beard tidy", "from": 28, "min": 30}, {"slug": "full-colour", "cat": "colour", "name": "Full colour", "from": 160, "min": 120}, {"slug": "root-touch-up", "cat": "colour", "name": "Root touch-up", "from": 120, "min": 90}, {"slug": "half-head-foils", "cat": "colour", "name": "Half-head foils", "from": 190, "min": 120}, {"slug": "balayage", "cat": "colour", "name": "Balayage", "from": 280, "min": 180}, {"slug": "toner-gloss", "cat": "colour", "name": "Toner and gloss", "from": 75, "min": 45}, {"slug": "colour-correction", "cat": "colour", "name": "Colour correction", "from": 240, "min": 240}, {"slug": "keratin", "cat": "treatments", "name": "Keratin smoothing", "from": 320, "min": 150}, {"slug": "bond-repair", "cat": "treatments", "name": "Bond repair treatment", "from": 95, "min": 45}, {"slug": "scalp-treatment", "cat": "treatments", "name": "Scalp treatment", "from": 80, "min": 45}, {"slug": "deep-conditioning", "cat": "treatments", "name": "Deep conditioning", "from": 55, "min": 30}, {"slug": "brow-shape", "cat": "beauty", "name": "Brow shape", "from": 35, "min": 30}, {"slug": "brow-tint", "cat": "beauty", "name": "Brow tint", "from": 30, "min": 30}, {"slug": "lash-tint", "cat": "beauty", "name": "Lash tint", "from": 40, "min": 30}, {"slug": "express-facial", "cat": "beauty", "name": "Express facial", "from": 75, "min": 45}, {"slug": "relaxation-massage-30", "cat": "beauty", "name": "Relaxation massage, 30 min", "from": 60, "min": 30}, {"slug": "relaxation-massage-60", "cat": "beauty", "name": "Relaxation massage, 60 min", "from": 110, "min": 60}], "stylists": [{"slug": "amara", "name": "Amara Voss", "first": "Amara", "speciality": "Balayage, blondes and colour correction"}, {"slug": "jonah", "name": "Jonah Reyes", "first": "Jonah", "speciality": "Men's cuts, fades and texture"}, {"slug": "mei", "name": "Mei Tanaka", "first": "Mei", "speciality": "Keratin, bond repair and scalp care"}, {"slug": "priya", "name": "Priya Nair", "first": "Priya", "speciality": "Event styling, brows and relaxation"}], "vouchers": [50, 100, 150]}</script>
+  <script defer src="vendor/lenis-1.1.18.min.js?v=42bf5944"></script>
+  <script type="module" src="js/main.js?v=c6c17f58"></script>
 </body>
 </html>

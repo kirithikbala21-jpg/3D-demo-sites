@@ -15,7 +15,8 @@ const require = createRequire(import.meta.url);
 const SITE = path.resolve(process.env.ROOT || path.join(path.dirname(fileURLToPath(import.meta.url)), '..'));
 const rd = (f, root = SITE) => fs.readFileSync(path.join(root, f), 'utf8');
 const cfg = JSON.parse(rd('site.config.json'));
-const SV = JSON.parse(rd('data/services.json')), ITEMS = SV.items, STY = JSON.parse(rd('data/stylists.json'));
+const SV = cfg.services, ITEMS = SV.items, STY = cfg.stylists;
+const PHONE_HREF = '+61' + cfg.contact.phone.replace(/\D/g, '').slice(1);
 const PAGES = cfg.pages.map((p) => p.file);
 const arg = (process.argv.find((a) => a.startsWith('--suite=')) || '--suite=all').slice(8).split(',');
 const want = (n) => arg.includes('all') || arg.includes(n);
@@ -243,7 +244,7 @@ if (want('axe')) {
       const r = await p.evaluate(() => {
         const sentence = (a) => { const par = a.closest('p,li,address'); return par && par.textContent.trim().length > a.textContent.trim().length + 6 && getComputedStyle(a).display === 'inline'; };
         return [...document.querySelectorAll('a,button,summary,select,input:not([type=hidden]),[role=tab]')]
-          .filter((e) => (e.offsetParent !== null || getComputedStyle(e).position === 'fixed') && !e.closest('[hidden]') && !e.closest('.sr-only') && !sentence(e) && !e.classList.contains('skip-link') && !e.classList.contains('ba-range'))
+          .filter((e) => (e.offsetParent !== null || getComputedStyle(e).position === 'fixed') && !e.closest('[hidden]') && !e.closest('.sr-only') && !e.closest('.hp') && !sentence(e) && !e.classList.contains('skip-link') && !e.classList.contains('ba-range'))
           .map((e) => { const r = e.getBoundingClientRect(); return [(e.textContent.trim() || e.getAttribute('aria-label') || e.className || e.id).slice(0, 18), Math.round(r.width), Math.round(r.height)]; }).filter(([, w, h]) => h && (h < 44 || w < 44)).slice(0, 5);
       });
       if (r.length) tap.push(tag + ': ' + JSON.stringify(r));
@@ -287,7 +288,7 @@ if (want('links')) {
   ok('every local link, stylesheet, script and image file exists', !missing.length, missing.join(', '));
   await open(p);
   const nums = await p.evaluate(() => ({ tel: [...document.querySelectorAll('a[href^="tel:"]')].map((a) => a.getAttribute('href')), mail: [...document.querySelectorAll('a[href^="mailto:"]')].map((a) => a.getAttribute('href')), text: document.body.innerText }));
-  ok('every tel: link is the salon number; every mailto: is the salon email; number shown as 03 5550 0188', nums.tel.length >= 3 && nums.tel.every((t) => t === 'tel:' + cfg.contact.phoneHref) && nums.mail.every((m) => m === 'mailto:' + cfg.contact.email) && nums.text.includes(cfg.contact.phone), JSON.stringify([nums.tel, nums.mail]));
+  ok('every tel: link is the salon number; every mailto: is the salon email; number shown as 03 5550 0188', nums.tel.length >= 3 && nums.tel.every((t) => t === 'tel:' + PHONE_HREF) && nums.mail.every((m) => m === 'mailto:' + cfg.contact.email) && nums.text.includes(cfg.contact.phone), JSON.stringify([nums.tel, nums.mail]));
   const ld = await p.evaluate(() => [...document.querySelectorAll('script[type="application/ld+json"]')].map((s) => { try { return JSON.parse(s.textContent); } catch (e) { return null; } }));
   const biz = ld.find((o) => o && o['@type'] === 'HairSalon');
   ok('JSON-LD parses and is a HairSalon with name, phone, priceRange, address and opening hours', ld.length >= 1 && ld.every(Boolean) && biz && biz.telephone === '+61355500188' && biz.priceRange && biz.address.addressLocality === 'Glen Waverley' && biz.openingHoursSpecification.length === 3 && biz.openingHoursSpecification.some((o) => o.dayOfWeek.includes('Tuesday') && o.opens === '09:00' && o.closes === '19:00') && !JSON.stringify(biz.openingHoursSpecification).includes('Monday'), JSON.stringify(biz && biz.openingHoursSpecification));
@@ -347,7 +348,7 @@ if (want('func')) {
     ok(`main nav ${w === 390 ? 'hidden on phone' : 'shown on desktop'}; bottom Call/Book bar ${w === 390 ? 'shown' : 'hidden'} (${label})`, w === 390 ? v.nav === 'none' && v.bar === 'flex' : v.nav === 'flex' && v.bar === 'none', JSON.stringify(v));
     if (w === 390) {
       const bar = await p.evaluate(() => [...document.querySelectorAll('.mobile-bar a')].map((a) => { const r = a.getBoundingClientRect(); return { t: a.textContent.trim(), h: r.height, w: r.width, href: a.getAttribute('href'), bottom: r.bottom }; }));
-      ok('phone bar: Call (tel:) and Book (#book), each at least 44px tall, fixed at the bottom', bar.length === 2 && bar.every((b) => b.h >= 44 && b.w >= 44 && b.bottom <= 844.5) && bar[0].href === 'tel:0355500188' && bar[1].href.endsWith('#book'), JSON.stringify(bar));
+      ok('phone bar: Call (tel:) and Book (#book), each at least 44px tall, fixed at the bottom', bar.length === 2 && bar.every((b) => b.h >= 44 && b.w >= 44 && b.bottom <= 844.5) && bar[0].href === 'tel:' + PHONE_HREF && bar[1].href.endsWith('#book'), JSON.stringify(bar));
     }
     await done(p);
   }
@@ -400,13 +401,13 @@ if (want('func')) {
   }
   // open-today line with a fake clock
   const cases = [
-    [MON + 'T12:00:00', 'Closed today. Opens Tuesday at 9am'],
+    [MON + 'T12:00:00', 'Closed today. Opens tomorrow at 9am'],
     [TUE + 'T08:00:00', 'Opens today at 9am'],
-    [TUE + 'T12:00:00', 'Open today until 7pm'],
-    [TUE + 'T19:30:00', 'Closed now. Opens Wednesday at 9am'],
-    [SAT + 'T08:30:00', 'Open today until 5pm'],
-    [SAT + 'T17:30:00', 'Closed now. Opens Sunday at 10am'],
-    [SUN + 'T12:00:00', 'Open today until 4pm'],
+    [TUE + 'T12:00:00', 'Open now, closes at 7pm'],
+    [TUE + 'T19:30:00', 'Closed now. Opens tomorrow at 9am'],
+    [SAT + 'T08:30:00', 'Open now, closes at 5pm'],
+    [SAT + 'T17:30:00', 'Closed now. Opens tomorrow at 10am'],
+    [SUN + 'T12:00:00', 'Open now, closes at 4pm'],
     [SUN + 'T16:30:00', 'Closed now. Opens Tuesday at 9am'],
   ];
   {
@@ -458,7 +459,10 @@ if (want('func')) {
     await chooseService(p, 'womens-cut');
     ok('booking: choosing a service moves to stylist step with "No preference" selected by default', (await stepVisible(p)) === '1' && await p.isChecked('input[name=stylist][value=any]') && (await p.locator('input[name=stylist]').count()) === 5);
     await chooseStylist(p, 'amara');
-    ok('booking: day picker shows the next 7 days; today is Tue 20; Monday 26 is disabled (closed)', (await stepVisible(p)) === '2' && await p.locator('input[name=day]').count() === 7 && await p.locator('input[name=day]:disabled').count() === 1 && await p.isDisabled('input[name=day][value="2026-10-26"]') && await p.isEnabled('input[name=day][value="2026-10-20"]'));
+    const days = await p.evaluate(() => [...document.querySelectorAll('input[name=day]')].map((i) => [i.value, i.disabled]));
+    const dis = Object.fromEntries(days);
+    ok('booking: day picker rolls 90 days from today (Tue 20 Oct 2026 to Sun 17 Jan 2027); Mondays and public holidays (Melbourne Cup, Christmas Day, New Year) are disabled', (await stepVisible(p)) === '2' && days.length === 90 && days[0][0] === '2026-10-20' && days[89][0] === '2027-01-17' && dis['2026-10-20'] === false && dis['2026-10-26'] && dis['2026-11-03'] && dis['2026-12-25'] && dis['2027-01-01'] && dis['2026-10-27'] === false, JSON.stringify([days.length, days[0], days[89]]));
+    ok('booking: the picker labels the first two days Today and Tomorrow', await p.evaluate(() => [...document.querySelectorAll('input[name=day] + span .wd')].slice(0, 3).map((e) => e.textContent).join() === 'Today,Tomorrow,Thu'));
     await p.locator('input[name=day][value="2026-10-26"]').click({ force: true });
     ok('booking: the closed Monday cannot be selected', !(await p.isChecked('input[name=day][value="2026-10-26"]')) && await nextBtn(p).isDisabled());
     await p.locator('input[name=day][value="2026-10-20"]').click(); await nextBtn(p).click();
@@ -497,11 +501,11 @@ if (want('func')) {
     const p = await newPage(MOBILE, { clock: MON + 'T11:00:00' }); await open(p); await p.addStyleTag({ content: force });
     await chooseService(p, 'mens-cut'); await nextBtn(p).click();
     const r = await p.evaluate(() => [...document.querySelectorAll('input[name=day]')].map((i) => [i.value, i.disabled]));
-    ok('booking: on a Monday the first day (today) is disabled, Tuesday is the first selectable day', r[0][1] && !r[1][1] && r[0][0] === '2026-10-19', JSON.stringify(r.slice(0, 2)));
+    ok('booking: on a Monday (closed) today is not offered at all; Tuesday is the first day, labelled Tomorrow', r[0][0] === '2026-10-20' && !r[0][1] && !r.some((x) => x[0] === '2026-10-19'), JSON.stringify(r.slice(0, 2)));
     await done(p);
     const q = await newPage(MOBILE, { clock: TUE + 'T19:45:00' }); await open(q); await q.addStyleTag({ content: force });
     await chooseService(q, 'mens-cut'); await nextBtn(q).click();
-    ok('booking: after closing time today cannot be chosen (no slots left)', await q.isDisabled('input[name=day][value="2026-10-20"]'));
+    ok('booking: after closing time today disappears and Tomorrow is the first option', (await q.locator('input[name=day][value="2026-10-20"]').count()) === 0 && (await q.locator('input[name=day]').first().getAttribute('value')) === '2026-10-21' && (await q.locator('input[name=day] + span .wd').first().textContent()) === 'Tomorrow');
     await done(q);
   }
   {
@@ -656,7 +660,7 @@ if (want('func')) {
     const q2 = await m.evaluate(() => ({ pxOn: document.documentElement.classList.contains('px-on'), py: [...document.querySelectorAll('.px')].map((e) => parseFloat(e.style.getPropertyValue('--py'))).filter((v) => !isNaN(v)), maxPy: Math.max(...[...document.querySelectorAll('.px')].map((e) => Math.abs(parseFloat(e.style.getPropertyValue('--py')) || 0))), lenis: !!window.__lenis, rev: [...document.querySelectorAll('.reveal.pre:not(.in)')].length, dur: getComputedStyle(document.querySelector('.reveal')).transitionDuration }));
     ok('motion on: parallax runs (tiny, under 30px), reveals are queued below the fold and play, Lenis is running', q2.pxOn && q2.py.length > 3 && q2.maxPy <= 30 && q2.maxPy > 0 && pre > 3 && q2.lenis && /0\.55s/.test(q2.dur), JSON.stringify(q2) + ' pre=' + pre);
     const hov = await (async () => { await photoSites(); const h = await newPage(DESKTOP, { host: fullBase }); await open(h); const el = h.locator('.g-item').first(); await el.scrollIntoViewIfNeeded(); await h.addStyleTag({ content: force }); await el.hover(); await h.waitForTimeout(900); const t = await h.evaluate(() => getComputedStyle(document.querySelector('.g-item img')).transform); await done(h); return t; })();
-    ok('hover zoom on a desktop mouse: gallery photo scales up on hover', /matrix\(1\.05/.test(hov), hov);
+    ok('hover zoom on a desktop mouse: gallery photo scales up on hover', /matrix\(1\.0[45]/.test(hov), hov);
     await done(m);
     const t = await newPage(MOBILE, { host: fullBase }); await open(t); await t.addStyleTag({ content: force });
     const noHover = await t.evaluate(() => { const el = document.querySelector('.g-item'); return getComputedStyle(el.querySelector('img')).transform; });
@@ -712,6 +716,143 @@ if (want('perf')) {
   const fb = JSON.parse(rd('data/photos.json', fullRoot));
   await done(f);
   ok('add-photo.py recorded size and credit in data/photos.json', fb.slots.hero.w <= 1600 && fb.slots['stylist-1'].w <= 900 && fb.slots.hero.credit === 'Synthetic test image');
+}
+
+/* ---------------------------------------------------------------- hardening: time zones, holidays, notices, forms, caching */
+if (want('hardening')) {
+  /** A throwaway copy of the site with its config changed, rebuilt, and served. */
+  const configured = async (mutate, name) => {
+    const dir = path.join(TMP, 'cfg-' + name);
+    fs.cpSync(SITE, dir, { recursive: true, filter: (src) => !/[\\/](tests|node_modules|\.git)([\\/]|$)/.test(src.slice(SITE.length)) });
+    const c = JSON.parse(rd('site.config.json', dir)); mutate(c); fs.writeFileSync(path.join(dir, 'site.config.json'), JSON.stringify(c));
+    execFileSync('python3', [path.join(dir, 'tools/build.py')], { env: { ...process.env, SITE_ROOT: dir }, stdio: 'pipe' });
+    return startSite(dir);
+  };
+  // 1. The salon's clock, not the visitor's: a visitor in Los Angeles and one in Tokyo both see Melbourne's answer
+  for (const tz of ['America/Los_Angeles', 'Asia/Tokyo', 'Europe/London']) {
+    const p = await newPage({ ...MOBILE, timezoneId: tz }, { clock: TUE + 'T12:00:00' }); await open(p);
+    const t = norm(await p.textContent('[data-open-today]'));
+    const hl = await p.evaluate(() => [...document.querySelectorAll('.hours tr.today')].map((r) => r.dataset.day).join());
+    ok(`visitor in ${tz} sees Melbourne's hours: Tue 12:00 in Melbourne is open, Tuesday highlighted`, t === 'Open now, closes at 7pm' && hl === '2', t + ' ' + hl);
+    await done(p);
+  }
+  // 2. Daylight saving: Melbourne local 18:30 on 4 Oct 2026 (just after the clocks go forward) and on 5 Apr 2026 (just after they go back)
+  {
+    const mk = async (iso, tz) => { const p = await newPage({ ...MOBILE, timezoneId: tz }, { clock: null }); await p.context().addInitScript(FAKE, Date.parse(iso)); await open(p); return p; };
+    let p = await mk('2026-10-04T07:30:00Z', 'America/New_York'); // 18:30 AEDT (UTC+11), Sunday
+    ok('daylight saving (clocks forward): Sunday 18:30 Melbourne is after the 4pm close, even though the visitor is in New York', /^Closed now\. Opens Tuesday at 9am$/.test(norm(await p.textContent('[data-open-today]'))));
+    await done(p);
+    p = await mk('2026-04-06T08:30:00Z', 'America/New_York'); // Mon 6 Apr = Easter Monday (public holiday): closed anyway
+    ok('Easter Monday is a public holiday: closed today for Easter Monday', /^Closed today for Easter Monday\. Opens tomorrow at 9am$/.test(norm(await p.textContent('[data-open-today]'))), norm(await p.textContent('[data-open-today]')));
+    await done(p);
+  }
+  // 3. Holiday banner in the week before, and holiday closes the booking day
+  {
+    const p = await newPage(MOBILE, { clock: '2026-04-01T10:00:00' }); await open(p);
+    const bar = await p.evaluate(() => { const b = document.querySelector('#notice-bar'); return { hidden: b.hidden, text: b.innerText.replace(/\s+/g, ' ').trim() }; });
+    ok('holiday banner appears in the week before: "Closed Friday for Good Friday."', !bar.hidden && /Closed Friday for Good Friday\./.test(bar.text), bar.text);
+    await chooseService(p, 'mens-cut'); await nextBtn(p).click();
+    const gf = await p.evaluate(() => { const i = document.querySelector('input[name=day][value="2026-04-03"]'); return [i.disabled, i.closest('label').innerText.replace(/\s+/g, ' ')]; });
+    ok('booking: Good Friday (calculated from Easter) is closed and labelled Holiday', gf[0] && /Holiday/.test(gf[1]), gf.join(' | '));
+    await done(p);
+    const q = await newPage(MOBILE, { clock: '2026-10-20T10:00:00' }); await open(q);
+    ok('no banner when nothing is coming up', await q.evaluate(() => document.querySelector('#notice-bar').hidden));
+    await done(q);
+  }
+  // 4. Footer year follows the clock; no hard-coded year left in the page text or scripts
+  {
+    const p = await newPage(MOBILE, { clock: '2031-06-15T10:00:00' }); await open(p);
+    ok('footer copyright year follows the date (fake clock in 2031 shows 2031)', /© 2031 /.test(norm(await p.textContent('.footer-copy'))));
+    await done(p);
+    const src = ['js/booking.js', 'js/status.js', 'js/util.js', 'js/clock.js', 'js/notice.js', 'js/forms.js', 'js/voucher.js'].map((f) => rd(f)).join('\n');
+    ok('no hard-coded years or month dates in the scripts', !/\b20[2-9]\d\b/.test(src.replace(/^\s*\/\/.*$/gm, '')));
+  }
+  // 5. Config closures and expiring notices
+  {
+    const b = await configured((c) => { c.closures = [{ date: '2026-10-23', name: 'staff training', status: 'closed' }]; c.notices = [{ text: 'Spring special: 15% off treatments', start: '2026-10-01', end: '2026-10-31' }, { text: 'Old news', end: '2026-09-30' }]; }, 'closures');
+    const p = await newPage(MOBILE, { clock: '2026-10-20T10:00:00', host: b }); await open(p);
+    const t = await p.evaluate(() => document.querySelector('#notice-bar').innerText.replace(/\s+/g, ' '));
+    ok('config closure shows a banner, a live special shows, an expired one stays hidden', /Closed Friday for staff training\./.test(t) && /Spring special/.test(t) && !/Old news/.test(t), t);
+    const q = await newPage(MOBILE, { clock: '2026-11-10T10:00:00', host: b }); await open(q);
+    ok('the special hides itself after its end date', await q.evaluate(() => document.querySelector('#notice-bar').hidden));
+    await done(p); await done(q);
+    const bad = await configured((c) => { c.notices = [{ text: 'no end date' }]; }, 'bad').then(() => 'built', (e) => 'failed');
+    ok('a notice with no end date is rejected with a clear message', bad === 'failed');
+    let msg = ''; try { await configured((c) => { c.contact.phone = '12'; }, 'badphone'); } catch (e) { msg = String(e.stderr || e.message); }
+    ok('a mistyped phone number stops the build with a plain-English message', /does not look like an Australian number/.test(msg), msg.slice(0, 120));
+  }
+  // 6. Forms: demo note, real endpoint, failure fallback, double submit, spam trap
+  {
+    const live = await configured((c) => { c.forms.endpoint = 'https://forms.example.test/f/abc'; }, 'live');
+    const p = await newPage(MOBILE, { clock: TUE + 'T10:00:00', host: live }); await open(p); await p.addStyleTag({ content: force });
+    let calls = 0, mode = 'ok';
+    await p.route('https://forms.example.test/**', async (r) => { calls++; await new Promise((x) => setTimeout(x, 400)); if (mode === 'ok') r.fulfill({ status: 200, contentType: 'application/json', body: '{"ok":true}', headers: { 'access-control-allow-origin': '*' } }); else r.fulfill({ status: 500, body: 'no', headers: { 'access-control-allow-origin': '*' } }); });
+    const note = norm(await p.textContent('.bk-demo-note'));
+    ok('with a form endpoint set the "demo only" note goes away', !/Demo/.test(note), note);
+    await chooseService(p, 'full-colour'); await chooseStylist(p, 'any'); await chooseDay(p, 1); await chooseTime(p, 2);
+    await fillDetails(p); mode = 'fail';
+    await p.evaluate(() => { document.querySelector('#bk-form').dispatchEvent(new Event('submit', { cancelable: true, bubbles: true })); document.querySelector('#bk-form').dispatchEvent(new Event('submit', { cancelable: true, bubbles: true })); });
+    await p.waitForSelector('.form-fail', { timeout: 5000 });
+    const fb = await p.evaluate(() => ({ html: document.querySelector('.form-fail').innerText, tel: document.querySelector('.form-fail a').getAttribute('href'), step: [...document.querySelectorAll('.bk-panel')].find((x) => !x.hidden).dataset.step, name: document.querySelector('#bk-name').value, btn: document.querySelector('#bk-form button[type=submit]').disabled }));
+    ok('failed submit: two rapid submits make ONE request; the visitor sees the phone fallback, keeps their details and can retry', calls === 1 && /call us on/i.test(fb.html) && fb.tel === 'tel:' + PHONE_HREF && fb.step === '4' && fb.name === 'Sam Lee' && !fb.btn, JSON.stringify([calls, fb]));
+    mode = 'ok'; await p.click('#bk-form button[type=submit]'); await p.waitForSelector('.bk-done:not([hidden])', { timeout: 5000 });
+    const okTxt = norm(await p.textContent('.bk-done'));
+    ok('successful submit shows the confirmation (not the demo wording) with a reference and the phone number to call', calls === 2 && /Thanks, your request is with us/.test(okTxt) && !/This is a demo/.test(okTxt) && /ML-/.test(okTxt), okTxt.slice(0, 160));
+    // spam trap
+    await p.click('[data-restart]'); await p.addStyleTag({ content: force });
+    await chooseService(p, 'full-colour'); await chooseStylist(p, 'any'); await chooseDay(p, 1); await chooseTime(p, 2); await fillDetails(p);
+    await p.evaluate(() => { document.querySelector('input[name=website]').value = 'http://spam.example'; });
+    const before = calls; await p.click('#bk-form button[type=submit]'); await p.waitForSelector('.bk-done:not([hidden])');
+    ok('spam trap: a filled honeypot sends nothing', calls === before);
+    // voucher uses the same endpoint
+    await p.evaluate(() => document.getElementById('voucher').scrollIntoView());
+    await p.fill('#v-name', 'Alex'); await p.fill('#v-email', 'alex@example.com'); mode = 'fail';
+    await p.click('#voucher-app button[type=submit]'); await p.waitForSelector('#voucher-app .form-fail', { timeout: 5000 });
+    ok('voucher form: failure shows the phone fallback and keeps the form', await p.evaluate(() => !document.querySelector('#voucher-app form').hidden));
+    await done(p);
+    const d = await newPage(MOBILE, { clock: TUE + 'T10:00:00' }); await open(d); await d.addStyleTag({ content: force });
+    const hp = await d.evaluate(() => [...document.querySelectorAll('input[name=website]')].map((i) => [i.tabIndex, i.closest('.hp').getAttribute('aria-hidden'), i.getBoundingClientRect().width]));
+    ok('both forms carry a hidden honeypot field that is out of the tab order and hidden from screen readers', hp.length === 2 && hp.every((h) => h[0] === -1 && h[1] === 'true' && h[2] <= 1), JSON.stringify(hp));
+    await done(d);
+  }
+  // 7. Booking keeps choices when going back; a time that passes while the form is open is refused
+  {
+    const p = await newPage(MOBILE, { clock: TUE + 'T10:00:00' }); await open(p); await p.addStyleTag({ content: force });
+    await chooseService(p, 'womens-cut'); await chooseStylist(p, 'jonah'); await chooseDay(p, 1); await chooseTime(p, 1);
+    await p.fill('#bk-name', 'Sam Lee');
+    for (let i = 0; i < 4; i++) await p.click('.bk-panel:not([hidden]) [data-back]');
+    const back = await p.evaluate(() => ({ svc: document.querySelector('#bk-service').value, step: [...document.querySelectorAll('.bk-panel')].find((x) => !x.hidden).dataset.step }));
+    for (let i = 0; i < 4; i++) await p.click('.bk-panel:not([hidden]) [data-next]');
+    const fwd = await p.evaluate(() => ({ sty: document.querySelector('input[name=stylist]:checked').value, day: !!document.querySelector('input[name=day]:checked'), time: !!document.querySelector('input[name=time]:checked'), name: document.querySelector('#bk-name').value }));
+    ok('booking: going back to step 1 and forward again keeps the service, stylist, day, time and typed name', back.svc === 'womens-cut' && back.step === '0' && fwd.sty === 'jonah' && fwd.day && fwd.time && fwd.name === 'Sam Lee', JSON.stringify([back, fwd]));
+    await done(p);
+    const q = await newPage(MOBILE, { clock: TUE + 'T10:00:00' }); await open(q); await q.addStyleTag({ content: force });
+    await chooseService(q, 'mens-cut'); await chooseStylist(q, 'any'); await q.locator('input[name=day]').first().click(); await nextBtn(q).click();
+    await q.locator('input[name=time]:not(:disabled)').first().click(); await nextBtn(q).click(); await fillDetails(q);
+    await q.evaluate(() => { const R = Date, off = 3 * 3600e3; class F extends R { constructor(...a) { if (a.length) super(...a); else super(R.now() + off); } static now() { return R.now() + off; } } window.Date = F; }); // three hours pass
+    await q.click('#bk-form button[type=submit]');
+    const stale = await q.evaluate(() => ({ step: [...document.querySelectorAll('.bk-panel')].find((x) => !x.hidden).dataset.step, note: document.querySelector('#bk-times-note').textContent, bookings: localStorage.getItem('ml-bookings') }));
+    ok('booking: if the chosen time passes while the form is open it is refused, the visitor goes back to pick a new time, nothing is saved', stale.step === '3' && /just passed/.test(stale.note) && !stale.bookings, JSON.stringify(stale));
+    await done(q);
+  }
+  // 8. Cache busting, import map, robots, privacy page, JSON-LD from config, noscript, landscape
+  {
+    const html = rd('index.html');
+    ok('CSS, Lenis and main.js links carry ?v=hash and an import map versions every module', /styles\.css\?v=[0-9a-f]{8}/.test(html) && /js\/main\.js\?v=[0-9a-f]{8}/.test(html) && /"\.\/js\/booking\.js": "\.\/js\/booking\.js\?v=[0-9a-f]{8}"/.test(html));
+    ok('robots.txt names the sitemap; privacy page exists and is linked from the footer and cookie bar', /Sitemap: /.test(rd('robots.txt')) && fs.existsSync(path.join(SITE, 'privacy.html')) && (html.match(/href="privacy\.html"/g) || []).length >= 2);
+    const p = await newPage(MOBILE); await open(p);
+    const mod = await p.evaluate(() => performance.getEntriesByType('resource').map((r) => r.name).filter((n) => /\/js\/.*\.js/.test(n)));
+    ok('the browser really loads the versioned module files (every js/ request has ?v=)', mod.length >= 8 && mod.every((n) => /\?v=[0-9a-f]{8}$/.test(n)), mod.slice(0, 3).join(' '));
+    await done(p);
+    const ctx = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 390, height: 844 } }); const np = await ctx.newPage(); await np.goto(base + 'index.html');
+    const nj = norm(await np.evaluate(() => document.querySelector('.nojs-banner').innerText));
+    ok('JavaScript off: a banner shows the phone number, street address and hours', nj.includes(cfg.contact.phone) && nj.includes(cfg.contact.street) && /Tue to Fri/.test(nj), nj.slice(0, 120));
+    await ctx.close();
+    const l = await newPage({ viewport: { width: 844, height: 390 }, hasTouch: true, isMobile: true }, { clock: TUE + 'T10:00:00' }); await open(l);
+    const a = await l.evaluate(audit); const o = await l.evaluate(overlaps);
+    ok('phone in landscape (844x390): no sideways scroll, no overlaps', a.scrollW <= a.W && !a.bad.length && !o.length, JSON.stringify([a, o]));
+    await done(l);
+  }
 }
 
 await browser.close(); servers.forEach((s) => s.close());

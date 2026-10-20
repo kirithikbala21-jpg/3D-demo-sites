@@ -4,12 +4,15 @@
 Usage:  python3 tools/build.py          (run from anywhere; writes the HTML pages next to site.config.json)
 
 Content lives in:
-  site.config.json   brand, contact, hours, colours, nav, social, voucher amounts, booking settings, page list
-  data/*.json        services, stylists, reviews, jobs (before/after), faq, why, photos
+  site.config.json   THE file the owner edits: business details, phone, address, hours, holidays, closures, notices, services and
+                     prices, stylists, social links, colours, booking and form settings, page list
+  data/*.json        reviews, jobs (recent work), faq, why, photos (written by tools/add-photo.py)
   tools/templates/   layout.html, pages/*.html, sections/*.html
 Set SITE_ROOT=/some/copy to build a copy of the site (the tests do this to try the page with synthetic photos).
 Python 3 standard library only. The generated .html files are committed so GitHub Pages can serve them as-is.
 """
+import datetime
+import hashlib
 import html
 import json
 import os
@@ -20,8 +23,93 @@ import urllib.parse
 
 ROOT = pathlib.Path(os.environ.get("SITE_ROOT") or pathlib.Path(__file__).resolve().parent.parent)
 TPL = ROOT / "tools" / "templates"
-cfg = json.loads((ROOT / "site.config.json").read_text())
+try:
+    cfg = json.loads((ROOT / "site.config.json").read_text())
+except json.JSONDecodeError as e:
+    sys.exit(f"PROBLEM in site.config.json: a comma, quote mark or bracket is wrong near line {e.lineno}, column {e.colno} ({e.msg}). "
+             "Compare that line with the ones around it. Every item in a list needs a comma after it except the last one.")
 DATA = {p.stem: json.loads(p.read_text()) for p in (ROOT / "data").glob("*.json")}
+DATA["services"], DATA["stylists"] = cfg["services"], cfg["stylists"]  # services and stylists live in the one owner file
+
+
+def parse_time(v, where):
+    """'09:00', '9:30', '17.5' or 9 -> minutes since midnight. None stays None."""
+    if v is None or v == "":
+        return None
+    if isinstance(v, (int, float)):
+        return int(round(float(v) * 60))
+    m = re.fullmatch(r"\s*(\d{1,2})[:.](\d{2})\s*", str(v))
+    if not m or int(m.group(1)) > 24 or int(m.group(2)) > 59:
+        raise ValueError(f'{where}: "{v}" is not a time. Write times like "09:00" or "17:30" (24 hour clock).')
+    return int(m.group(1)) * 60 + int(m.group(2))
+
+
+def normalise_hours(entry, where):
+    o, c = parse_time(entry.get("open"), where + " open"), parse_time(entry.get("close"), where + " close")
+    if (o is None) != (c is None):
+        raise ValueError(f"{where}: give both an open and a close time, or neither (closed).")
+    if o is not None and c <= o:
+        c += 1440  # closes after midnight, for example 18:00 to 02:00
+    return o, c
+
+
+def prepare_config():
+    """Check site.config.json with plain-English messages and add the values that are worked out from it."""
+    errs = []
+    c = cfg["contact"]
+    digits = re.sub(r"\D", "", c["phone"])
+    if digits.startswith("61"):
+        digits = "0" + digits[2:]
+    if not re.fullmatch(r"0[2-478]\d{8}|04\d{8}|1[38]00\d{6}|13\d{4}", digits):
+        errs.append(f'contact > phone: "{c["phone"]}" does not look like an Australian number. Use something like "03 5550 0188" or "0412 345 678".')
+    else:
+        c["phoneHref"] = "+61" + digits[1:] if digits.startswith("0") else digits  # what tel: links use (international format)
+        c["phoneIntl"] = "+61" + digits[1:] if digits.startswith("0") else digits
+    if not re.fullmatch(r"[^\s@]+@[^\s@]+\.[^\s@]{2,}", c["email"]):
+        errs.append(f'contact > email: "{c["email"]}" is not an email address.')
+    c["mapsQuery"] = f'{c["street"]}, {c["locality"]}'
+    c["locality"] = c["locality"]
+    for h in cfg["hours"]:
+        try:
+            h["openMin"], h["closeMin"] = normalise_hours(h, f'hours > {h.get("name")}')
+        except ValueError as e:
+            errs.append(str(e))
+    if sorted(h["day"] for h in cfg["hours"]) != list(range(7)):
+        errs.append('hours: there must be one line for each of the 7 days (day 0 = Sunday ... 6 = Saturday).')
+    for k in cfg.get("closures", []):
+        if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", k.get("date", "")):
+            errs.append(f'closures: date "{k.get("date")}" must look like 2026-12-24 (year-month-day).')
+        if k.get("status") not in ("closed", "open"):
+            errs.append(f'closures > {k.get("date")}: status must be "closed" or "open".')
+        try:
+            k["openMin"], k["closeMin"] = normalise_hours(k, f'closures > {k.get("date")}')
+        except ValueError as e:
+            errs.append(str(e))
+    for k, o in (cfg.get("holidays", {}).get("overrides") or {}).items():
+        try:
+            o["openMin"], o["closeMin"] = normalise_hours(o, f"holidays > overrides > {k}")
+        except ValueError as e:
+            errs.append(str(e))
+    for n in cfg.get("notices", []):
+        if not n.get("end"):
+            errs.append(f'notices > "{n.get("text", "")[:30]}": add an "end" date (2026-12-31) so the notice hides itself when it is old.')
+    slugs = [x["slug"] for x in cfg["services"]["items"]]
+    if len(slugs) != len(set(slugs)):
+        errs.append("services: two services share the same slug (the short name used in links). Make each one different.")
+    cats = {x["id"] for x in cfg["services"]["categories"]}
+    for it in cfg["services"]["items"]:
+        if it["cat"] not in cats:
+            errs.append(f'services > {it["name"]}: category "{it["cat"]}" does not exist.')
+        if not isinstance(it["from"], (int, float)) or it["from"] <= 0:
+            errs.append(f'services > {it["name"]}: price must be a number like 85 (no $ sign).')
+    for st in cfg["stylists"]:
+        if not st.get("name") or not st.get("slug"):
+            errs.append("stylists: every person needs a name and a slug.")
+    if errs:
+        sys.exit("PROBLEMS in site.config.json (fix these and save again):\n - " + "\n - ".join(errs))
+
+
+prepare_config()
 
 # ----------------------------------------------------------------------------- tiny template engine
 TOKEN = re.compile(r"\{\{\{(.+?)\}\}\}|\{\{(.+?)\}\}", re.S)
@@ -121,8 +209,13 @@ def money(n):
     return "${:,}".format(n)
 
 
-def fmt_hour(h):
-    return f"{(h % 12) or 12}{'am' if h < 12 else 'pm'}"
+def fmt_hour(mins):
+    """Minutes since midnight -> 9am, 9:30am, 7pm, midnight (same wording as js/clock.js)."""
+    if mins == 1440:
+        return "midnight"
+    t = mins % 1440
+    h, m = divmod(t, 60)
+    return f"{(h % 12) or 12}{':%02d' % m if m else ''}{'am' if h < 12 else 'pm'}"
 
 
 def esc(s):
@@ -137,7 +230,7 @@ def hours_table():
     rows = []
     for d in DAYS_ORDER:
         h = BY_DAY[d]
-        txt = "Closed" if h["open"] is None else f'{fmt_hour(h["open"])} to {fmt_hour(h["close"])}'
+        txt = "Closed" if h["openMin"] is None else f'{fmt_hour(h["openMin"])} to {fmt_hour(h["closeMin"])}'
         rows.append(f'<tr data-day="{d}"><th scope="row">{h["name"]}</th><td>{txt}</td></tr>')
     return ('<table class="hours"><caption class="sr-only">Opening hours</caption>'
             '<thead class="sr-only"><tr><th scope="col">Day</th><th scope="col">Hours</th></tr></thead>'
@@ -148,7 +241,7 @@ def hours_groups():
     groups, cur = [], None
     for d in DAYS_ORDER:
         h = BY_DAY[d]
-        key = (h["open"], h["close"])
+        key = (h["openMin"], h["closeMin"])
         if cur and cur["key"] == key:
             cur["days"].append(h["name"][:3])
         else:
@@ -179,12 +272,25 @@ def jsonld():
         spec.append({"@type": "OpeningHoursSpecification", "dayOfWeek": g["names"], "opens": g["opens"], "closes": g["closes"]})
     biz = {
         "@context": "https://schema.org", "@type": "HairSalon", "name": b["name"] + " (fictional concept demo)",
-        "description": b["description"], "url": s["baseUrl"], "telephone": "+61" + c["phoneHref"][1:], "email": c["email"],
+        "description": b["description"], "url": s["baseUrl"], "telephone": c["phoneIntl"], "email": c["email"],
         "priceRange": "$$", "currenciesAccepted": "AUD", "image": s["baseUrl"] + "img/og.png",
         "address": {"@type": "PostalAddress", "streetAddress": c["street"], "addressLocality": c["suburb"],
                     "addressRegion": c["region"], "postalCode": c["postcode"], "addressCountry": c["country"]},
         "openingHoursSpecification": spec,
+        "hasMap": "https://www.google.com/maps/search/?api=1&query=" + urllib.parse.quote(c["mapsQuery"]),
     }
+    today = datetime.date.today().isoformat()
+    special = []
+    for k in cfg.get("closures", []):  # dated closures and special hours still to come (public holidays are worked out live in the browser)
+        if k["date"] >= today:
+            o, cl = (k["openMin"], k["closeMin"]) if k["status"] == "open" and k.get("openMin") is not None else (0, 0)
+            special.append({"@type": "OpeningHoursSpecification", "validFrom": k["date"], "validThrough": k["date"],
+                            "opens": f"{o // 60:02d}:{o % 60:02d}", "closes": f"{(cl % 1440) // 60:02d}:{cl % 60:02d}", "name": k.get("name", "")})
+    if special:
+        biz["specialOpeningHoursSpecification"] = special
+    same = [x["href"] for x in cfg.get("social", []) if urllib.parse.urlparse(x["href"]).path.strip("/")]
+    if same:
+        biz["sameAs"] = same
     faq = {
         "@context": "https://schema.org", "@type": "FAQPage",
         "mainEntity": [{"@type": "Question", "name": plain(f["q"]), "acceptedAnswer": {"@type": "Answer", "text": plain(f["a"])}} for f in DATA["faq"]],
@@ -196,9 +302,9 @@ def _open_groups():
     groups = []
     for d in DAYS_ORDER:
         h = BY_DAY[d]
-        if h["open"] is None:
+        if h["openMin"] is None:
             continue
-        o, c = f'{h["open"]:02d}:00', f'{h["close"]:02d}:00'
+        o, c = f'{h["openMin"] // 60:02d}:{h["openMin"] % 60:02d}', f'{(h["closeMin"] % 1440) // 60:02d}:{h["closeMin"] % 60:02d}'
         if groups and groups[-1]["opens"] == o and groups[-1]["closes"] == c:
             groups[-1]["names"].append(h["name"])
         else:
@@ -222,6 +328,34 @@ def manifest():
     }, indent=1) + "\n"
 
 
+def hero_preload(sl):
+    small = pathlib.Path(sl["file"]).with_name(pathlib.Path(sl["file"]).stem + "-800.webp")
+    if (ROOT / small).exists() and sl.get("w", 0) > 900:
+        return f'<link rel="preload" as="image" href="{sl["file"]}" imagesrcset="{small} 800w, {sl["file"]} {sl["w"]}w" imagesizes="100vw" fetchpriority="high">'
+    return f'<link rel="preload" as="image" href="{sl["file"]}" fetchpriority="high">'
+
+
+def brand_html():
+    """'Maison Lune' -> 'Maison <em>Lune</em>' (the last word is set in italics)."""
+    words = cfg["brand"]["name"].split()
+    return esc(" ".join(words[:-1])) + (" " if len(words) > 1 else "") + f"<em>{esc(words[-1])}</em>"
+
+
+def file_hash(rel):
+    return hashlib.sha1((ROOT / rel).read_bytes()).hexdigest()[:8]
+
+
+def asset_versions():
+    """Version tags so a browser never shows a stale stylesheet or script after an update (changes only when the file changes)."""
+    return {"css": file_hash("styles.css"), "lenis": file_hash("vendor/lenis-1.1.18.min.js"), "lenisCss": file_hash("vendor/lenis-1.1.18.css"), "main": file_hash("js/main.js")}
+
+
+def import_map():
+    """Every module under js/ gets ?v=hash, so a changed module is fetched fresh while unchanged ones stay cached."""
+    m = {f"./js/{p.name}": f"./js/{p.name}?v={file_hash('js/' + p.name)}" for p in sorted((ROOT / "js").glob("*.js"))}
+    return json.dumps({"imports": m})
+
+
 def photo_slots():
     """Real photos live in img/photos/ and are listed in data/photos.json (see tools/add-photo.py).
     A slot with a file renders an <img>; a slot without one renders a neutral branded panel (crescent watermark, no text);
@@ -234,7 +368,12 @@ def photo_slots():
         if ok:
             pos = f' style="object-position:{sl["pos"]}"' if sl.get("pos") else ""
             load = 'fetchpriority="high" decoding="async"' if key == "hero" else 'loading="lazy" decoding="async"'
-            out[key] = (f'<span class="photo has-img"><span class="px"><img src="{sl["file"]}" alt="{esc(sl.get("alt") or key)}" '
+            small = pathlib.Path(sl["file"]).with_name(pathlib.Path(sl["file"]).stem + "-800.webp")
+            srcset = ""
+            if (ROOT / small).exists() and sl.get("w", 0) > 900 and (ROOT / small).stat().st_size < (ROOT / sl["file"]).stat().st_size:
+                sizes = "100vw" if key == "hero" else "(min-width: 900px) 50vw, 100vw"
+                srcset = f' srcset="{small} 800w, {sl["file"]} {sl["w"]}w" sizes="{sizes}"'  # phones fetch the smaller copy
+            out[key] = (f'<span class="photo has-img"><span class="px"><img src="{sl["file"]}"{srcset} alt="{esc(sl.get("alt") or key)}" '
                         f'width="{sl.get("w", 1600)}" height="{sl.get("h", 1067)}" {load}{pos}></span></span>')
             if sl.get("credit"):
                 credits.setdefault(sl["credit"], {})[sl["file"]] = sl.get("label", "")
@@ -308,7 +447,10 @@ def build():
     site_data = {
         "name": cfg["brand"]["name"], "phone": cfg["contact"]["phone"], "phoneHref": cfg["contact"]["phoneHref"],
         "timezone": cfg["site"]["timezone"], "locale": cfg["site"]["locale"],
-        "hours": cfg["hours"], "booking": cfg["booking"],
+        "hours": [{"day": h["day"], "name": h["name"], "open": h["openMin"], "close": h["closeMin"]} for h in cfg["hours"]],
+        "holidays": {"mode": cfg["holidays"].get("mode", "closed"), "overrides": {k: {"status": o.get("status"), "open": o.get("openMin"), "close": o.get("closeMin")} for k, o in (cfg["holidays"].get("overrides") or {}).items()}},
+        "closures": [{"date": k["date"], "name": k.get("name", ""), "status": k["status"], "open": k.get("openMin"), "close": k.get("closeMin")} for k in cfg.get("closures", [])],
+        "notices": cfg.get("notices", []), "booking": cfg["booking"], "forms": {"endpoint": cfg["forms"].get("endpoint", "")},
         "categories": [{"id": c["id"], "name": c["name"]} for c in DATA["services"]["categories"]],
         "services": [{"slug": s["slug"], "cat": s["cat"], "name": s["name"], "from": s["from"], "min": s["min"]} for s in flat],
         "stylists": [{"slug": s["slug"], "name": s["name"], "first": s["first"], "speciality": s["speciality"]} for s in DATA["stylists"]],
@@ -320,14 +462,17 @@ def build():
         "svcCats": cats, "stylistCards": sty, "jobList": jobs, "galleryItems": gal,
         "hoursTable": hours_table(), "hoursSummary": hours_summary(), "hoursInline": hours_inline(),
         "siteData": json.dumps(site_data, ensure_ascii=False).replace("</", "<\\/"),
-        "year": 2026, "photos": photos, "photoCredits": credits, "heroReal": hero_real,
-        "heroPreload": f'<link rel="preload" as="image" href="{slots["hero"]["file"]}" fetchpriority="high">' if hero_real else "",
+        "year": datetime.date.today().year, "photos": photos, "photoCredits": credits, "heroReal": hero_real,
+        "heroPreload": hero_preload(slots["hero"]) if hero_real else "",
         "vouchers": [{"amount": v, "text": money(v), "checked": i == 1} for i, v in enumerate(cfg["vouchers"])],
         "mapsUrl": "https://www.google.com/maps/search/?api=1&query=" + urllib.parse.quote(cfg["contact"]["mapsQuery"]),
+        "brandHtml": brand_html(), "formsLive": bool(cfg["forms"].get("endpoint")), "assets": asset_versions(),
+        "importMap": import_map(), "lenisCssInline": (ROOT / "vendor/lenis-1.1.18.css").read_text().strip(),
         "themeCss": ":root{" + ";".join(f"--{k}:{v}" for k, v in [("ivory", cfg["theme"]["ivory"]), ("cocoa", cfg["theme"]["cocoa"]), ("clay", cfg["theme"]["clay"]), ("sage", cfg["theme"]["sage"]), ("clay-text", cfg["theme"]["clayText"]), ("sage-text", cfg["theme"]["sageText"])]) + "}",
     }
     layout = parse((TPL / "layout.html").read_text())
     for page in cfg["pages"]:
+        page["description"] = page["description"].replace("{phone}", cfg["contact"]["phone"])
         home = page["file"] == "index.html"
         ctx = {**base, "page": {**page, "isHome": home, "isNotFound": page["file"] == "404.html",
                                 "homeHref": "#top" if home else "index.html", "navBase": "" if home else "index.html",
@@ -343,7 +488,9 @@ def build():
     urls = "".join(f'  <url><loc>{cfg["site"]["baseUrl"]}{"" if p["file"] == "index.html" else p["file"]}</loc></url>\n' for p in cfg["pages"] if not p.get("hidden"))
     (ROOT / "sitemap.xml").write_text(f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{urls}</urlset>\n')
     (ROOT / "site.webmanifest").write_text(manifest())
-    print("wrote sitemap.xml, site.webmanifest")
+    robots = "User-agent: *\nDisallow:\n" + f"\nSitemap: {cfg['site']['baseUrl']}sitemap.xml\n"
+    (ROOT / "robots.txt").write_text(robots)
+    print("wrote sitemap.xml, site.webmanifest, robots.txt")
 
 
 if __name__ == "__main__":

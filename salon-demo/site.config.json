@@ -10,7 +10,6 @@
  },
  "contact": {
   "phone": "03 5550 0188",
-  "phoneHref": "0355500188",
   "email": "hello@maisonlune.example",
   "street": "21 Example Street",
   "locality": "Glen Waverley VIC 3150",
@@ -18,8 +17,7 @@
   "region": "VIC",
   "postcode": "3150",
   "country": "AU",
-  "abn": "00 000 000 000 (placeholder)",
-  "mapsQuery": "21 Example Street, Glen Waverley VIC 3150"
+  "abn": "00 000 000 000 (placeholder)"
  },
  "site": {
   "baseUrl": "https://kirithikbala21-jpg.github.io/3D-demo-sites/salon-demo/",
@@ -41,20 +39,74 @@
  },
  "hours": [
   {"day": 1, "name": "Monday", "open": null, "close": null},
-  {"day": 2, "name": "Tuesday", "open": 9, "close": 19},
-  {"day": 3, "name": "Wednesday", "open": 9, "close": 19},
-  {"day": 4, "name": "Thursday", "open": 9, "close": 19},
-  {"day": 5, "name": "Friday", "open": 9, "close": 19},
-  {"day": 6, "name": "Saturday", "open": 8, "close": 17},
-  {"day": 0, "name": "Sunday", "open": 10, "close": 16}
+  {"day": 2, "name": "Tuesday", "open": "09:00", "close": "19:00"},
+  {"day": 3, "name": "Wednesday", "open": "09:00", "close": "19:00"},
+  {"day": 4, "name": "Thursday", "open": "09:00", "close": "19:00"},
+  {"day": 5, "name": "Friday", "open": "09:00", "close": "19:00"},
+  {"day": 6, "name": "Saturday", "open": "08:00", "close": "17:00"},
+  {"day": 0, "name": "Sunday", "open": "10:00", "close": "16:00"}
  ],
+ "holidays": {
+  "mode": "closed",
+  "overrides": {}
+ },
+ "closures": [],
+ "notices": [],
  "booking": {
   "slotMinutes": 30,
-  "daysAhead": 7,
+  "daysAhead": 90,
   "takenPercent": 30,
-  "cancellationHours": 24
+  "cancellationHours": 24,
+  "leadMinutes": 0,
+  "externalUrl": ""
  },
- "vouchers": [50, 100, 150],
+ "forms": {
+  "endpoint": "",
+  "note": "Paste your Formspree (or similar) address between the quote marks to make the booking and voucher forms send real emails. Leave empty to keep the demo behaviour."
+ },
+ "vouchers": [
+  50,
+  100,
+  150
+ ],
+ "services": {
+  "categories": [
+   {"id": "cut", "name": "Cut and style", "intro": "Every cut starts with a short consultation and ends with a finish you can recreate at home.", "photo": "cut-1"},
+   {"id": "colour", "name": "Colour", "intro": "Colour is our speciality. We mix to your tone and skin, and we never rush a lift.", "photo": "stylist-wash"},
+   {"id": "treatments", "name": "Treatments", "intro": "Repair, smooth and reset, with products chosen for your hair type.", "photo": "treatment-1"},
+   {"id": "beauty", "name": "Beauty and wellness", "intro": "Quiet, unhurried extras you can book on their own or with your hair."}
+  ],
+  "items": [
+   {"slug": "womens-cut", "cat": "cut", "name": "Women's cut and style", "from": 85, "min": 60, "desc": "Consultation, wash, precision cut and blow-dry."},
+   {"slug": "mens-cut", "cat": "cut", "name": "Men's cut", "from": 48, "min": 30, "desc": "Scissor or clipper cut with a wash and style."},
+   {"slug": "kids-cut", "cat": "cut", "name": "Kids' cut (under 12)", "from": 38, "min": 30, "desc": "A calm, quick cut for little ones."},
+   {"slug": "blow-dry", "cat": "cut", "name": "Wash and blow-dry", "from": 55, "min": 45, "desc": "Wash, blow-dry and finish, smooth or with movement."},
+   {"slug": "event-styling", "cat": "cut", "name": "Updo and event styling", "from": 110, "min": 75, "desc": "Updos, waves and styling for weddings and events."},
+   {"slug": "beard-tidy", "cat": "cut", "name": "Beard tidy", "from": 28, "min": 30, "desc": "Shape, line-up and a warm towel finish."},
+   {"slug": "full-colour", "cat": "colour", "name": "Full colour", "from": 160, "min": 120, "desc": "All-over colour, mixed to your shade, with a gloss finish."},
+   {"slug": "root-touch-up", "cat": "colour", "name": "Root touch-up", "from": 120, "min": 90, "desc": "Fresh colour at the regrowth line, blended in."},
+   {"slug": "half-head-foils", "cat": "colour", "name": "Half-head foils", "from": 190, "min": 120, "desc": "Soft brightness around the face and crown."},
+   {"slug": "balayage", "cat": "colour", "name": "Balayage", "from": 280, "min": 180, "desc": "Hand-painted lift with a natural grow-out."},
+   {"slug": "toner-gloss", "cat": "colour", "name": "Toner and gloss", "from": 75, "min": 45, "desc": "Refresh tone and add shine between colours."},
+   {"slug": "colour-correction", "cat": "colour", "name": "Colour correction", "from": 240, "min": 240, "desc": "A plan and a careful reset after a colour that did not go well."},
+   {"slug": "keratin", "cat": "treatments", "name": "Keratin smoothing", "from": 320, "min": 150, "desc": "Smoother, easier hair for around three months."},
+   {"slug": "bond-repair", "cat": "treatments", "name": "Bond repair treatment", "from": 95, "min": 45, "desc": "Rebuilds strength in stretched or lightened hair."},
+   {"slug": "scalp-treatment", "cat": "treatments", "name": "Scalp treatment", "from": 80, "min": 45, "desc": "Exfoliate, cleanse and massage for a calmer scalp."},
+   {"slug": "deep-conditioning", "cat": "treatments", "name": "Deep conditioning", "from": 55, "min": 30, "desc": "A rich mask with steam for dry or tired hair."},
+   {"slug": "brow-shape", "cat": "beauty", "name": "Brow shape", "from": 35, "min": 30, "desc": "Wax and tweeze to a shape that suits your face."},
+   {"slug": "brow-tint", "cat": "beauty", "name": "Brow tint", "from": 30, "min": 30, "desc": "A soft, natural tint to define the brow."},
+   {"slug": "lash-tint", "cat": "beauty", "name": "Lash tint", "from": 40, "min": 30, "desc": "Darker lashes without mascara."},
+   {"slug": "express-facial", "cat": "beauty", "name": "Express facial", "from": 75, "min": 45, "desc": "Cleanse, exfoliate and mask for a quick glow."},
+   {"slug": "relaxation-massage-30", "cat": "beauty", "name": "Relaxation massage, 30 min", "from": 60, "min": 30, "desc": "Back, neck and shoulders with warm oil."},
+   {"slug": "relaxation-massage-60", "cat": "beauty", "name": "Relaxation massage, 60 min", "from": 110, "min": 60, "desc": "A full hour to slow right down."}
+  ]
+ },
+ "stylists": [
+  {"slug": "amara", "name": "Amara Voss", "first": "Amara", "role": "Senior colourist", "speciality": "Balayage, blondes and colour correction", "bio": "Twelve years of colour. Amara plans every lift in stages so your hair stays strong.", "photo": "stylist-1"},
+  {"slug": "jonah", "name": "Jonah Reyes", "first": "Jonah", "role": "Cutting specialist", "speciality": "Men's cuts, fades and texture", "bio": "Sharp, low-fuss cuts that grow out well. Jonah also looks after the kids' chair.", "photo": "stylist-2"},
+  {"slug": "mei", "name": "Mei Tanaka", "first": "Mei", "role": "Treatment specialist", "speciality": "Keratin, bond repair and scalp care", "bio": "Mei tailors each treatment to your hair type, and explains the aftercare in plain words.", "photo": "stylist-3"},
+  {"slug": "priya", "name": "Priya Nair", "first": "Priya", "role": "Stylist and beauty therapist", "speciality": "Event styling, brows and relaxation", "bio": "Priya styles for weddings and events, and runs our brow and massage bookings.", "photo": "stylist-4"}
+ ],
  "nav": [
   {"label": "Prices", "href": "#services"},
   {"label": "Stylists", "href": "#stylists"},
@@ -67,20 +119,8 @@
   {"label": "TikTok", "href": "https://www.tiktok.com/", "path": "M14 3v11.500a3.500 3.500 0 1 1-3.500-3.500 M14 3c.5 2.500 2 4 5 4.200"}
  ],
  "pages": [
-  {
-   "file": "index.html",
-   "template": "index",
-   "title": "Hair and beauty salon in Glen Waverley",
-   "description": "Cuts, colour, treatments and beauty in Glen Waverley with clear prices and online booking. Fictional salon, unofficial concept demo.",
-   "jsonld": true
-  },
-  {
-   "file": "404.html",
-   "template": "notfound",
-   "title": "Page not found",
-   "description": "This page could not be found. Head back to the Maison Lune home page or call 03 5550 0188.",
-   "h1": "This page has slipped away",
-   "hidden": true
-  }
+  {"file": "index.html", "template": "index", "title": "Hair and beauty salon in Glen Waverley", "description": "Cuts, colour, treatments and beauty in Glen Waverley with clear prices and online booking. Fictional salon, unofficial concept demo.", "jsonld": true},
+  {"file": "404.html", "template": "notfound", "title": "Page not found", "description": "This page could not be found. Head back to the Maison Lune home page or call {phone}.", "h1": "This page has slipped away", "hidden": true},
+  {"file": "privacy.html", "template": "privacy", "title": "Privacy and cookies", "description": "What this website stores in your browser, what it does not collect, and how to contact us about your information.", "h1": "Privacy and cookies"}
  ]
 }

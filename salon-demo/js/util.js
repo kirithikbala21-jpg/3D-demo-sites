@@ -13,31 +13,15 @@ export const store = {
 /** Site settings written into the page by tools/build.py (phone, hours, services, stylists, booking settings). */
 export const SITE = (() => { try { return JSON.parse(document.getElementById('site-data').textContent); } catch (e) { return { hours: [], services: [], stylists: [], booking: {}, vouchers: [] }; } })();
 
-export const DAY_NAMES = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-export const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-export const fmtHour = (h) => `${(h % 12) || 12}${h < 12 ? 'am' : 'pm'}`;
-export const fmtTime = (mins) => { const h = Math.floor(mins / 60), m = mins % 60; return `${(h % 12) || 12}:${String(m).padStart(2, '0')} ${h < 12 ? 'am' : 'pm'}`; };
-export const hoursFor = (day) => SITE.hours.find((h) => h.day === day);
-export const isOpenDay = (day) => { const h = hoursFor(day); return !!h && h.open !== null && h.open !== undefined; };
-export const pad = (n) => String(n).padStart(2, '0');
-export const dateKey = (d) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
-export const parseKey = (k) => { const [y, m, d] = k.split('-').map(Number); return new Date(y, m - 1, d); };
-
-/** Opening status from the VISITOR's own clock (local time), using the hours in the page data. */
-export function statusAt(now = new Date()) {
-  const h = hoursFor(now.getDay());
-  const mins = now.getHours() * 60 + now.getMinutes();
-  const openToday = isOpenDay(now.getDay());
-  if (openToday) {
-    if (mins >= h.open * 60 && mins < h.close * 60) return { state: 'open', text: `Open today until ${fmtHour(h.close)}` };
-    if (mins < h.open * 60) return { state: 'soon', text: `Opens today at ${fmtHour(h.open)}` };
-  }
-  for (let i = 1; i <= 7; i++) {
-    const d = (now.getDay() + i) % 7;
-    if (isOpenDay(d)) { const n = hoursFor(d); return { state: 'closed', text: `${openToday ? 'Closed now' : 'Closed today'}. Opens ${n.name} at ${fmtHour(n.open)}` }; }
-  }
-  return { state: 'closed', text: 'Closed' };
-}
+import * as clock from './clock.js';
+export const { DAY_NAMES, MONTHS, fmtTime, fmtClock, pad, dayLabel, addDays } = clock;
+/** Opening hours, public holidays, closures: what clock.js needs, from the page data. */
+export const CLOCK_CFG = { hours: SITE.hours || [], closures: SITE.closures || [], holidays: SITE.holidays || { mode: 'closed' } };
+export const TZ = SITE.timezone || 'Australia/Melbourne';
+/** The current date and time in the BUSINESS's time zone (Melbourne), not the visitor's. */
+export const nowMel = () => clock.nowIn(TZ);
+export const resolveDay = (key) => clock.resolveDay(key, CLOCK_CFG);
+export const statusNow = () => clock.statusAt(nowMel(), CLOCK_CFG);
 
 /** Scroll the page to an element, below the sticky header. Uses Lenis when it is running. */
 export function scrollToEl(el) {

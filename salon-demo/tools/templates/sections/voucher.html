@@ -16,7 +16,7 @@
             <div class="field"><label for="v-name">Recipient's name</label><input id="v-name" name="rname" type="text" autocomplete="off" required aria-describedby="v-name-err"><p class="err" id="v-name-err" hidden></p></div>
             <div class="field"><label for="v-email">Recipient's email</label><input id="v-email" name="remail" type="email" autocomplete="off" inputmode="email" required aria-describedby="v-email-err"><p class="err" id="v-email-err" hidden></p></div>
             <button type="submit" class="btn btn-clay btn-lg">Create demo voucher</button>
-            <p class="small">Demo only: no voucher is issued, no email is sent and nothing is charged.</p>
+            <p class="small">{{#if formsLive}}Your request goes to the salon, who will email the voucher to you.{{else}}Demo only: no voucher is issued, no email is sent and nothing is charged.{{/if}}</p>
           </form>
           <div class="voucher-done" role="status" tabindex="-1" hidden></div>
         </div>

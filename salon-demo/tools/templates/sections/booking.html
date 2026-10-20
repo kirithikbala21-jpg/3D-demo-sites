@@ -11,6 +11,7 @@
             <p class="small">Hours: {{hoursInline}}.</p>
           </div>
         </div>
-        <p class="small bk-demo-note">Demo: this booking form works in your browser only. Nothing is sent to a salon and no real booking is made.</p>
+        {{#if booking.externalUrl}}<p class="small bk-external">Prefer our online booking page? <a href="{{booking.externalUrl}}" target="_blank" rel="noopener">Book there (opens a new tab)</a>.</p>{{/if}}
+        <p class="small bk-demo-note">{{#if formsLive}}Prefer to talk to someone? Call {{contact.phone}}.{{else}}Demo: this booking form works in your browser only. Nothing is sent to a salon and no real booking is made.{{/if}}</p>
       </div>
     </section>

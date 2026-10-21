@@ -1,7 +1,7 @@
 @font-face{font-family:Lato;font-weight:400;font-display:swap;src:url(fonts/lato-latin-400-normal.woff2) format("woff2")}
 @font-face{font-family:Lato;font-weight:700;font-display:swap;src:url(fonts/lato-latin-700-normal.woff2) format("woff2")}
 @font-face{font-family:Lato;font-weight:900;font-display:swap;src:url(fonts/lato-latin-900-normal.woff2) format("woff2")}
-:root{--red:#EE3123;--btn:#EF1818;--green:#009546;--greend:#00703a;--grey:#F4F4F4;--char:#1a1a1a;--line:#d9d9d9;--hh:0px}
+:root{--red:#EE3123;--btn:#D91414;--green:#009546;--greend:#00703a;--grey:#F4F4F4;--char:#1a1a1a;--line:#d9d9d9;--hh:0px}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;scroll-padding-top:130px}
 body{margin:0;font:400 17px/1.55 Lato,system-ui,sans-serif;color:#000;background:#fff;padding-bottom:64px;-webkit-text-size-adjust:100%}
@@ -16,7 +16,7 @@ p{margin:0 0 1em}
 .skip:focus{top:8px}
 :focus-visible{outline:3px solid #0a58ff;outline-offset:2px}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:10px 20px;background:var(--btn);color:#fff;border:2px solid var(--btn);border-radius:3px;font:700 1rem Lato,sans-serif;text-decoration:none;cursor:pointer;text-align:center}
-.btn:hover{background:#c40e0e;border-color:#c40e0e}
+.btn:hover{background:#b00d0d;border-color:#b00d0d}
 .btn-lg{min-height:52px;padding:12px 24px;font-size:1.0625rem}
 .btn-sm{min-height:44px;padding:6px 14px;font-size:.9375rem}
 .btn-white{background:#fff;color:#b3150a;border-color:#fff}.btn-white:hover{background:#f4f4f4;color:#8f0f07;border-color:#f4f4f4}

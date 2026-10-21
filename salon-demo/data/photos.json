@@ -220,15 +220,15 @@
   },
   "interior-1": {
    "file": "img/photos/interior-1.webp",
-   "alt": "A calm salon interior in warm tones, with arched mirrors, chairs and track lighting",
+   "alt": "Bright salon with a crystal-style chandelier, mirrored styling stations and black leather chairs by tall windows",
    "credit": "Photos from Unsplash",
    "label": "Why choose us (tall photo)",
-   "pos": "50% 40%",
+   "pos": "50% 50%",
    "ratio": "4/5",
    "needs": "interior-1 - the salon interior, chairs and mirrors, no people in focus, portrait 4:5, min 900px wide",
    "where": "Why choose us (tall photo)",
-   "w": 1100,
-   "h": 1956
+   "w": 1066,
+   "h": 1333
   },
   "interior-2": {
    "file": "img/photos/interior-2.webp",

@@ -95,6 +95,7 @@
     const c = $('#cart-clear'); if (c) c.onclick = () => { state.cart = {}; upd(); closeDrawer(); };
   }
   $$('#cart-btn,#mb-cart').forEach((a) => a.addEventListener('click', (e) => { e.preventDefault(); openCart(e.currentTarget); }));
+  { const cs = $('#cart'); if (cs) cs.hidden = true; if (location.hash === '#cart') openCart($('#cart-btn')); } // the #cart section is only the no-JavaScript fallback; with JavaScript the link opens the cart panel
   function openJob(id, trigger) {
     const j = JOBS.find((x) => x.id === id);
     const rows = j.parts.map(([k]) => `<li><label><input type="checkbox" checked data-k="${k}" data-p="${partInfo(k).p}"><span class="nm">${partInfo(k).n}</span><span class="pr">${money(partInfo(k).p)}</span></label></li>`).join('');

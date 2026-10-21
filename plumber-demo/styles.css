@@ -474,6 +474,7 @@ input[type="file"]::file-selector-button { min-height: 36px; margin-right: 12px;
 .cookie p { margin: 0; font-size: .9375rem; line-height: 1.2; font-weight: 500; white-space: nowrap; }
 .cookie-actions { display: flex; gap: 8px; }
 .cookie-btn { min-height: 44px; min-width: 44px; padding: 0 14px; border-radius: 10px; font-size: .9375rem; font-weight: 700; cursor: pointer; border: 2px solid #fff; background: transparent; color: #fff; }
+.cookie p a, .cookie a { color: #fff; text-decoration: underline; text-underline-offset: 2px; }
 .cookie-yes { background: #fff; color: var(--navy); }
 .cookie-btn:hover { background: #dbe6f6; color: var(--navy); }
 @media (min-width: 1040px) { .cookie { bottom: 0; justify-content: center; gap: 24px; } }

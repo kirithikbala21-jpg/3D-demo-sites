@@ -15,9 +15,9 @@ const require = createRequire(import.meta.url);
 const SITE = path.resolve(process.env.ROOT || path.join(path.dirname(fileURLToPath(import.meta.url)), '..'));
 const rd = (f) => fs.readFileSync(path.join(SITE, f), 'utf8');
 const cfg = JSON.parse(rd('site.config.json'));
-const D = Object.fromEntries(['services', 'pricing', 'suburbs', 'reviews', 'team', 'jobs', 'faq', 'photos', 'badges', 'steps'].map((n) => [n, JSON.parse(rd(`data/${n}.json`))]));
+const D = { ...Object.fromEntries(['reviews', 'jobs', 'faq', 'photos', 'badges', 'steps'].map((n) => [n, JSON.parse(rd(`data/${n}.json`))])), services: cfg.services, pricing: cfg.pricing, suburbs: cfg.suburbs, team: cfg.team };
 const PAGES = cfg.pages.map((p) => p.file);
-const PHONE = cfg.contact.phone, PHONE_HREF = cfg.contact.phoneHref;
+const PHONE = cfg.contact.phone, PHONE_HREF = '+61' + cfg.contact.phone.replace(/\D/g, '').slice(1);
 const arg = (process.argv.find((a) => a.startsWith('--suite=')) || '--suite=all').slice(8).split(',');
 const want = (n) => arg.includes('all') || arg.includes(n);
 const MIME = { '.html': 'text/html', '.css': 'text/css', '.js': 'text/javascript', '.json': 'application/json', '.woff2': 'font/woff2', '.svg': 'image/svg+xml', '.xml': 'application/xml', '.webmanifest': 'application/manifest+json', '.png': 'image/png', '.webp': 'image/webp', '.ico': 'image/x-icon' };
@@ -193,7 +193,7 @@ if (want('axe')) {
       const r = await p.evaluate(() => {
         const sentence = (a) => { const par = a.closest('p,li,address'); return par && par.textContent.trim().length > a.textContent.trim().length + 6 && getComputedStyle(a).display === 'inline'; };
         const small = [...document.querySelectorAll('a,button,summary,select,textarea,input:not([type=hidden]),[role=tab]')]
-          .filter((e) => (e.offsetParent !== null || getComputedStyle(e).position === 'fixed') && !e.closest('[hidden]') && !e.closest('.sr-only') && !sentence(e) && !e.classList.contains('skip-link'))
+          .filter((e) => (e.offsetParent !== null || getComputedStyle(e).position === 'fixed') && !e.closest('[hidden]') && !e.closest('.sr-only') && !e.closest('.hp') && !sentence(e) && !e.classList.contains('skip-link'))
           .map((e) => { const r = e.getBoundingClientRect(); return [(e.textContent.trim() || e.getAttribute('aria-label') || e.className || e.id).slice(0, 18), Math.round(r.width), Math.round(r.height)]; }).filter(([, w, h]) => h && (h < 44 || w < 44));
         const t = [...document.querySelectorAll('p,li,td,th,address,label,dd,span,a,button,summary,legend,blockquote')].filter((e) => e.offsetParent && !e.closest('[hidden],svg,noscript') && [...e.childNodes].some((n) => n.nodeType === 3 && n.textContent.trim()) && parseFloat(getComputedStyle(e).fontSize) < 14).map((e) => e.textContent.trim().slice(0, 25));
         return { small: small.slice(0, 5), t: t.slice(0, 4), body: parseFloat(getComputedStyle(document.body).fontSize), lh: getComputedStyle(document.body).lineHeight };
@@ -286,7 +286,7 @@ if (want('links')) {
     if (!t.a.includes('Demo website by KB Ventures') || !t.a.includes('Concept demo. Names, prices and reviews are fictional.') || t.robots !== 'noindex') { ok(`footer demo lines and noindex on ${f}`, false, JSON.stringify(t)); }
   }
   ok('footer has both demo lines and every page is noindex', true);
-  // prices on the cards and in the table agree (one source: data/services.json)
+  // prices on the cards and in the table agree (one source: site.config.json (services))
   await open(p);
   const cards = await p.evaluate(() => [...document.querySelectorAll('.svc-card')].map((c) => ({ id: c.dataset.service, price: c.querySelector('.pc-num').textContent.trim(), label: c.querySelector('.pc-label').textContent.trim() })));
   const rows = await p.evaluate(() => [...document.querySelectorAll('.price-table tbody tr')].map((r) => ({ price: r.dataset.price, text: r.querySelector('td').textContent.trim(), name: r.querySelector('th').childNodes[0].textContent.trim() })));
@@ -298,7 +298,7 @@ if (want('links')) {
     if (c.price !== money(s.from)) mism.push(`card ${s.id} ${c.price}`);
     if (!rows.some((r) => r.price === String(s.from) && r.text === 'from ' + money(s.from))) mism.push('table lacks ' + s.id);
   }
-  ok('consistency: every price on a service card also appears in the pricing table, and both match data/services.json', !mism.length && cards.length === 6, mism.join(','));
+  ok('consistency: every price on a service card also appears in the pricing table, and both match site.config.json (services)', !mism.length && cards.length === 6, mism.join(','));
   const need = { 'Blocked drain clearing': 149, 'Tap washer replacement': 129, 'Hot water system repair': 199, 'New electric hot water system': 1490, 'Gas leak check': 169 };
   ok('pricing table has the required rows and prices', Object.entries(need).every(([n, v]) => rows.some((r) => r.name === n && r.text === 'from ' + money(v))) && rows.length >= 7, JSON.stringify(rows.map((r) => r.name + ':' + r.text)));
   const sm = rd('sitemap.xml');
@@ -421,7 +421,7 @@ if (want('func')) {
       await p.clock.setFixedTime(new Date(iso));
       await open(p);
       const r = await p.evaluate(() => ({ state: document.querySelector('#avail').dataset.state, pill: document.querySelector('#avail').textContent.trim(), foot: document.querySelector('.site-footer [data-open-status]').textContent.trim(), find: document.querySelector('#contact [data-open-status]').textContent.trim(), green: getComputedStyle(document.querySelector('#avail .dot')).backgroundColor }));
-      const goodText = open_ ? r.pill.startsWith('Plumbers available now, usually at your door within 60 minutes') && r.green === 'rgb(30, 158, 90)' && /^Office open now, until /.test(r.find) : r.pill.startsWith('Emergency line open 24/7') && /^Office closed, opens \d+am (today|tomorrow)( \(Melbourne time\))?\. Emergency line open 24\/7/.test(r.find);
+      const goodText = open_ ? r.pill.startsWith('Plumbers available now, usually at your door within 60 minutes') && r.green === 'rgb(30, 158, 90)' && /^Office open now, until /.test(r.find) : r.pill.startsWith('Emergency line open 24/7') && /^Office (closed now\. Opens (today|tomorrow)|opens today) at \d+am( \(Melbourne time\))?\. Emergency line open 24\/7/.test(r.find);
       const goodNote = note ? r.pill.includes('(Melbourne time)') === open_ && r.find.includes('(Melbourne time)') && r.foot.includes('(Melbourne time)') : !r.pill.includes('Melbourne time') && !r.find.includes('Melbourne time');
       if (!(r.state === (open_ ? 'open' : 'closed') && goodText && goodNote)) res.push(label + ' => ' + JSON.stringify(r));
       await done(p);
@@ -429,7 +429,7 @@ if (want('func')) {
     ok(`open-now logic with a fake clock: ${cases.length} cases (weekday, weekend edges, other time zones, "(Melbourne time)" note)`, !res.length, res.join(' || '));
     const p = await newPage({ viewport: { width: 1280, height: 800 } });
     await p.clock.setFixedTime(new Date('2026-10-14T11:00:00Z')); await open(p);
-    ok('closed state says when the office reopens', /opens 7am tomorrow/.test(await p.locator('#contact [data-open-status]').innerText()));
+    ok('closed state says when the office reopens', /Opens tomorrow at 7am/.test(await p.locator('#contact [data-open-status]').innerText()));
     await done(p);
   }
 
@@ -686,7 +686,7 @@ if (want('func')) {
     await open(tp);
     const rp = await tp.evaluate(() => { const i = document.querySelector('.frame-hero img'); return { ok: !!i && i.complete && i.naturalWidth === 1600, alt: i && i.alt, w: i && i.getAttribute('width'), h: i && i.getAttribute('height'), fp: i && i.getAttribute('fetchpriority'), fit: i && getComputedStyle(i).objectFit, pos: i && i.style.objectPosition, heroPlaceholder: !!document.querySelector('[data-slot="hero-sink"]'), teamImg: !!document.querySelector('.frame-team img'), team1Ph: !!document.querySelector('[data-slot="team-1"]'), team2Ph: !!document.querySelector('[data-slot="team-2"]'), ba: !!document.querySelector('.ba-before img'), baAfterPh: !!document.querySelector('[data-slot="before-after-1-after"]'), credit: document.querySelector('.footer-credit')?.textContent || '', teamLazy: document.querySelector('.frame-team img')?.getAttribute('loading') }; });
     ok('a real photo renders as an <img> (alt, width+height, object-fit cover, focal point, eager+high priority hero) while other slots stay placeholders; credit shows in the footer', rp.ok && rp.alt.length > 10 && rp.w === '1600' && rp.h === '1067' && rp.fp === 'high' && rp.fit === 'cover' && rp.pos === '50% 50%' && !rp.heroPlaceholder && rp.teamImg && !rp.team1Ph && !rp.team2Ph && rp.ba && /Jane Doe/.test(rp.credit) && rp.teamLazy === 'lazy', JSON.stringify(rp));
-    const lazy = await tp.evaluate(() => [...document.querySelectorAll('img[src]')].filter((i) => !i.closest('.hero') && i.loading !== 'lazy').length);
+    const lazy = await tp.evaluate(() => [...document.querySelectorAll('img[src]')].filter((i) => !i.closest('.hero') && !i.closest('.job-panel') && i.loading !== 'lazy').length);
     ok('every below-the-fold image is lazy-loaded', lazy === 0);
     await tp.setViewportSize({ width: 390, height: 844 }); await tp.reload(); await settle(tp);
     const ov = await tp.evaluate(audit);
@@ -707,7 +707,7 @@ if (want('func')) {
       await p.fill('#q-name', 'Sam'); await p.fill('#q-phone', '0412 345 678'); await p.fill('#q-suburb', 'Clayton'); await p.selectOption('#q-service', 'leaks-taps');
       await p.click('#quote-form button[type=submit]'); await p.waitForTimeout(700);
       const st = await p.evaluate(() => ({ done: !document.querySelector('#quote-done').hidden, err: document.querySelector('#e-photo').textContent }));
-      ok(`quote endpoint (${ep}): ${expect === 'ok' ? 'POSTs the request and then shows the confirmation' : 'a failed POST shows a friendly "please call" message and no confirmation'}`, formHits.length === before + 1 && (expect === 'ok' ? st.done : !st.done && /call 03 5550 0142/.test(st.err)), JSON.stringify(st));
+      ok(`quote endpoint (${ep}): ${expect === 'ok' ? 'POSTs the request and then shows the confirmation' : 'a failed POST shows a friendly "please call" message and no confirmation'}`, formHits.length === before + 1 && (expect === 'ok' ? st.done : !st.done && /call us on 03 5550 0142/.test(st.err)), JSON.stringify(st));
       await done(p);
     }
     ts.close(); fs.rmSync(tmp, { recursive: true, force: true });
@@ -754,8 +754,8 @@ if (want('perf')) {
   const total = Object.entries(sizes).filter(([k]) => !k.endsWith('.webp')).reduce((n, [, v]) => n + v, 0);
   ok(`home page weight is under 450 KB without the map and photos (${(total / 1024).toFixed(0)} KB)`, total < 450 * 1024);
   ok('the only third-party host contacted is maps.google.com (the lazy map, stubbed in tests)', [...hosts].every((h) => h === 'maps.google.com'), [...hosts].join(','));
-  const heavy = Object.entries(sizes).filter(([k, v]) => /\.js$/.test(k) && v > 30 * 1024).map(([k]) => k);
-  ok('no heavy libraries: every script is under 30 KB (Lenis 13 KB is the largest)', !heavy.length && Object.keys(sizes).filter((k) => /\.js$/.test(k)).length >= 8, heavy.join(','));
+  const heavy = Object.entries(sizes).filter(([k, v]) => /\.js(\?|$)/.test(k) && v > 30 * 1024).map(([k]) => k);
+  ok('no heavy libraries: every script is under 30 KB (Lenis 13 KB is the largest)', !heavy.length && Object.keys(sizes).filter((k) => /\.js(\?|$)/.test(k)).length >= 8, heavy.join(','));
   ok('fonts: self-hosted woff2 only (Barlow Condensed 700 + Inter)', Object.keys(sizes).filter((k) => k.startsWith('fonts/')).every((k) => k.endsWith('.woff2')) && fs.existsSync(path.join(SITE, 'fonts/inter-latin.woff2')) && fs.existsSync(path.join(SITE, 'fonts/barlow-condensed-700.woff2')));
   const ld = await p.evaluate(() => [...document.querySelectorAll('script[type="application/ld+json"]')].map((s) => JSON.parse(s.textContent)['@type']));
   ok('home has Plumber and FAQPage structured data', ld.includes('Plumber') && ld.includes('FAQPage'), JSON.stringify(ld));
@@ -794,6 +794,129 @@ if (want('perf')) {
   const same = PAGES.every((f) => fs.existsSync(path.join(SITE, f)));
   ok('python3 tools/build.py runs clean (standard library only) and every page exists', /wrote index\.html/.test(gen) && same && !/import (requests|jinja2|yaml)/.test(rd('tools/build.py')));
   await done(p);
+}
+
+/* ---------------------------------------------------------------- hardening: Melbourne time, holidays, notices, forms, caching */
+if (want('hardening')) {
+  const TMP = fs.mkdtempSync(path.join(os.tmpdir(), 'wp-h-'));
+  const servers = [];
+  const configured = async (mutate, name) => {
+    const dir = path.join(TMP, name);
+    fs.cpSync(SITE, dir, { recursive: true, filter: (src) => !/[\\/](tests|node_modules|\.git)([\\/]|$)/.test(src.slice(SITE.length)) });
+    const c = JSON.parse(fs.readFileSync(path.join(dir, 'site.config.json'), 'utf8')); mutate(c); fs.writeFileSync(path.join(dir, 'site.config.json'), JSON.stringify(c));
+    execFileSync('python3', [path.join(dir, 'tools/build.py')], { env: { ...process.env, SITE_ROOT: dir }, stdio: 'pipe' });
+    const sv = await serve(dir); servers.push(sv); return `http://localhost:${sv.address().port}/`;
+  };
+  const at = async (iso, tz = 'Australia/Melbourne', host = base, opts = MOBILE) => { const p = await newPage({ ...opts, timezoneId: tz }, { host }); await p.clock.setFixedTime(new Date(iso)); await open(p); return p; };
+  // 1. The after-hours "On call tonight" bar follows MELBOURNE time (7am to 6pm), not the visitor's clock
+  for (const [label, iso, tz, hidden] of [['Melbourne 10:00, visitor in Los Angeles', '2026-10-13T23:00:00Z', 'America/Los_Angeles', true], ['Melbourne 19:00, visitor in Los Angeles (their morning)', '2026-10-14T08:00:00Z', 'America/Los_Angeles', false], ['Melbourne 06:30, visitor in London', '2026-10-13T19:30:00Z', 'Europe/London', false], ['Melbourne 17:59, visitor in Tokyo', '2026-10-14T06:59:00Z', 'Asia/Tokyo', true], ['Melbourne 18:00, visitor in Tokyo', '2026-10-14T07:00:00Z', 'Asia/Tokyo', false]]) {
+    const p = await at(iso, tz);
+    ok(`on-call bar (${label}): ${hidden ? 'hidden' : 'shown'}`, (await p.evaluate(() => document.querySelector('#oncall').hidden)) === hidden);
+    await done(p);
+  }
+  // 2. Daylight saving: Melbourne local time is right the day the clocks change (office closes 8pm on Sunday 4 Oct? no: Sun closes 5pm)
+  {
+    const p = await at('2026-10-04T07:30:00Z', 'America/New_York'); // 18:30 AEDT on Sunday 4 October (clocks went forward at 2am that day)
+    ok('daylight saving (clocks forward that morning): Sunday 18:30 Melbourne is after the 5pm close even for a visitor in New York', /Office closed now/.test(await p.locator('footer [data-open-status]').innerText()));
+    await done(p);
+  }
+  // 3. Year, years of experience and the footer follow the date
+  {
+    const p = await at('2031-06-15T00:00:00Z');
+    const t = await p.evaluate(() => ({ y: document.querySelector('.footer-copy').textContent, yrs: [...document.querySelectorAll('[data-since]')].map((e) => [Number(e.dataset.since), Number(e.textContent)]) }));
+    ok('footer year and "years experience" follow the date (fake clock in 2031)', /© 2031 /.test(t.y) && t.yrs.length === 5 && t.yrs.every(([s2, n]) => n === 2031 - s2), JSON.stringify(t));
+    await done(p);
+    const src = ['js/status.js', 'js/util.js', 'js/clock.js', 'js/notice.js', 'js/forms.js', 'js/happening.js', 'js/quote.js'].map((f) => rd(f)).join('\n');
+    ok('no hard-coded years in the scripts', !/\b20[2-9]\d\b/.test(src.replace(/^\s*\/\/.*$/gm, '')));
+  }
+  // 4. Closures, holiday override, expiring notices, config errors
+  {
+    const b = await configured((c) => { c.closures = [{ date: '2026-10-23', name: 'staff training', status: 'closed' }]; c.notices = [{ text: 'Free safety check with any hot water install this month', start: '2026-10-01', end: '2026-10-31' }, { text: 'Old news', end: '2026-09-30' }]; }, 'closures');
+    const p = await at('2026-10-20T00:00:00Z', 'Australia/Melbourne', b);
+    const t = await p.evaluate(() => document.querySelector('#notice-bar').innerText.replace(/\s+/g, ' '));
+    ok('closure banner (office closed, emergency line still open), live special shown, expired one hidden', /Office closed Friday for staff training\. Emergency line open 24\/7\./.test(t) && /Free safety check/.test(t) && !/Old news/.test(t), t);
+    await done(p);
+    const q = await at('2026-11-10T00:00:00Z', 'Australia/Melbourne', b);
+    ok('the special hides itself after its end date', await q.evaluate(() => document.querySelector('#notice-bar').hidden));
+    await done(q);
+    const h = await configured((c) => { c.holidays = { mode: 'closed', overrides: {} }; }, 'holiday');
+    const g = await at('2026-04-02T23:00:00Z', 'Australia/Melbourne', h); // Good Friday 3 Apr, 10:00 Melbourne
+    ok('public holidays can close the office: Good Friday shows "Office closed today for Good Friday" and the emergency line stays open', /Office closed today for Good Friday\..*Emergency line open 24\/7/.test(await g.locator('footer [data-open-status]').innerText()));
+    await done(g);
+    let msg = ''; try { await configured((c) => { c.contact.phone = '12'; }, 'badphone'); } catch (e) { msg = String(e.stderr || e.message); }
+    ok('a mistyped phone number stops the build with a plain-English message', /does not look like an Australian number/.test(msg), msg.slice(0, 100));
+    let m2 = ''; try { await configured((c) => { c.notices = [{ text: 'no end' }]; }, 'badnotice'); } catch (e) { m2 = String(e.stderr || e.message); }
+    ok('a notice with no end date is rejected', /add an "end" date/.test(m2));
+  }
+  // 5. Forms: endpoint, failure fallback, double submit, spam trap, demo note
+  {
+    const live = await configured((c) => { c.form.endpoint = 'https://forms.example.test/f/abc'; }, 'live');
+    const p = await newPage({ ...DESKTOP }, { host: live }); await open(p); await p.addStyleTag({ content: force });
+    let calls = 0, mode = 'ok';
+    await p.route('https://forms.example.test/**', async (r) => { calls++; await new Promise((x) => setTimeout(x, 400)); r.fulfill({ status: mode === 'ok' ? 200 : 500, contentType: 'application/json', body: '{}', headers: { 'access-control-allow-origin': '*' } }); });
+    ok('with a form endpoint set the "demo" note goes away', !/Demo form/.test(await p.locator('#quote .form-card').innerText()));
+    const fill = async () => { await p.fill('#q-name', 'Sam Lee'); await p.fill('#q-phone', '0412 345 678'); await p.fill('#q-suburb', 'Clayton'); await p.selectOption('#q-service', 'leaks-taps'); };
+    await fill(); mode = 'fail';
+    await p.evaluate(() => { const f = document.querySelector('#quote-form'); f.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true })); f.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true })); });
+    await p.waitForFunction(() => !document.querySelector('#e-photo').hidden, null, { timeout: 5000 });
+    const fb = await p.evaluate(() => ({ t: document.querySelector('#e-photo').innerText, tel: document.querySelector('#e-photo a').getAttribute('href'), done: !document.querySelector('#quote-done').hidden, name: document.querySelector('#q-name').value, btn: document.querySelector('#quote-form button[type=submit]').disabled }));
+    ok('failed send: two rapid submits make ONE request; phone fallback shown, details kept, no confirmation, form usable again', calls === 1 && /call us on/i.test(fb.t) && fb.tel === 'tel:' + PHONE_HREF && !fb.done && fb.name === 'Sam Lee' && !fb.btn, JSON.stringify([calls, fb]));
+    mode = 'ok'; await p.click('#quote-form button[type=submit]'); await p.waitForFunction(() => !document.querySelector('#quote-done').hidden, null, { timeout: 5000 });
+    ok('successful send shows the confirmation', calls === 2);
+    await p.click('#quote-again'); await fill(); await p.evaluate(() => { document.querySelector('input[name=website]').value = 'http://spam.example'; });
+    const before = calls; await p.click('#quote-form button[type=submit]'); await p.waitForFunction(() => !document.querySelector('#quote-done').hidden);
+    ok('spam trap: a filled honeypot sends nothing', calls === before);
+    await done(p);
+    const d = await newPage(MOBILE); await open(d);
+    const hp = await d.evaluate(() => [...document.querySelectorAll('input[name=website]')].map((i) => [i.tabIndex, i.closest('.hp').getAttribute('aria-hidden')]));
+    ok('quote form has a hidden honeypot out of the tab order', hp.length === 1 && hp[0][0] === -1 && hp[0][1] === 'true');
+    await done(d);
+  }
+  // 6. Bad phone numbers are refused
+  {
+    const p = await newPage(MOBILE); await open(p); await p.addStyleTag({ content: force });
+    const bad = [];
+    for (const [ph, good] of [['0412 345 678', true], ['+61 412 345 678', true], ['03 5550 0142', true], ['1300 123 456', true], ['0612 345 678', false], ['12345', false], ['abcdefghij', false], ['0412 345', false], ['+44 7911 123456', false]]) {
+      await p.fill('#q-name', 'Sam Lee'); await p.fill('#q-phone', ph); await p.fill('#q-suburb', 'Clayton'); await p.selectOption('#q-service', 'leaks-taps');
+      await p.click('#quote-form button[type=submit]');
+      const accepted = await p.evaluate(() => !document.querySelector('#quote-done').hidden);
+      if (accepted !== good) bad.push(ph);
+      if (accepted) { await p.click('#quote-again'); }
+    }
+    ok('quote form: Australian phone validation accepts mobiles, +61, landlines, 1300 and rejects the rest', !bad.length, bad.join(','));
+    await done(p);
+  }
+  // 7. Cache busting, robots, noscript banner, landscape
+  {
+    const html = rd('index.html');
+    ok('CSS, Lenis and main.js links carry ?v=hash and an import map versions every module', /styles\.css\?v=[0-9a-f]{8}/.test(html) && /js\/main\.js\?v=[0-9a-f]{8}/.test(html) && /"\.\/js\/quote\.js": "\.\/js\/quote\.js\?v=[0-9a-f]{8}"/.test(html));
+    ok('robots.txt names the sitemap; privacy page linked from footer and cookie bar', /Sitemap: /.test(rd('robots.txt')) && (html.match(/href="privacy\.html"/g) || []).length >= 2);
+    const ctx = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 390, height: 844 } }); const np = await ctx.newPage(); await np.goto(base + 'index.html');
+    const nj = norm(await np.evaluate(() => document.querySelector('.nojs-banner').innerText));
+    ok('JavaScript off: a banner shows the phone number, address and office hours', nj.includes(PHONE) && nj.includes(cfg.contact.street) && /Mon to Fri/.test(nj), nj.slice(0, 120));
+    await ctx.close();
+    const l = await newPage({ viewport: { width: 844, height: 390 }, hasTouch: true, isMobile: true }); await open(l);
+    const a = await l.evaluate(audit);
+    ok('phone in landscape (844x390): no sideways scroll', a.scrollW <= a.W && !a.bad.length, JSON.stringify(a));
+    await done(l);
+  }
+  // 8. Job tabs: a real picture in every tab straight away, no slider on single photos, nothing lazy
+  {
+    const p = await newPage(MOBILE); await open(p);
+    const pre = await p.evaluate(() => [...document.querySelectorAll('.job-panel')].map((pn) => { const i = pn.querySelector('img'); return { eager: !!i && i.loading !== 'lazy', loaded: !!i && i.complete && i.naturalWidth > 0, sliderParts: pn.querySelectorAll('.ba-range,.ba-knob,.ba-line').length, grey: pn.querySelectorAll('.slot-empty').length }; }));
+    ok('See the difference: all 3 tabs already have a loaded, non-lazy picture before they are opened; single photos have no slider handle and no empty grey box', pre.length === 3 && pre.every((x) => x.eager && x.loaded && !x.sliderParts && !x.grey), JSON.stringify(pre));
+    const seen = [];
+    for (const id of ['tap', 'hws', 'bath']) { await p.click('#tab-' + id); seen.push(await p.evaluate((i) => { const pn = document.getElementById('job-' + i); const f = pn.querySelector('.ba-frame').getBoundingClientRect(); return !pn.hidden && f.height > 200 && pn.querySelector('img').naturalWidth > 0; }, id)); }
+    ok('each tab shows a picture when selected (390px)', seen.every(Boolean), seen.join());
+    await done(p);
+    const d = await newPage({ viewport: { width: 1440, height: 900 } }); await open(d);
+    const dd = [];
+    for (const id of ['tap', 'hws', 'bath']) { await d.click('#tab-' + id); dd.push(await d.evaluate((i) => { const pn = document.getElementById('job-' + i); const f = pn.querySelector('.ba-frame').getBoundingClientRect(); return !pn.hidden && f.height > 300 && pn.querySelector('img').naturalWidth > 0; }, id)); }
+    ok('each tab shows a picture when selected (1440px)', dd.every(Boolean), dd.join());
+    await done(d);
+  }
+  servers.forEach((x) => x.close());
+  try { fs.rmSync(TMP, { recursive: true, force: true }); } catch (e) { /* ignore */ }
 }
 
 await browser.close(); server.close();

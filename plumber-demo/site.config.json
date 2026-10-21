@@ -8,14 +8,12 @@
   "description": "Licensed family plumbers and gas fitters in Glen Waverley and south-east Melbourne. 24/7 emergency plumbing, blocked drains, hot water and gas. Upfront prices before we start.",
   "established": 2009,
   "plumbers": 6,
-  "yearsInBusiness": 17,
   "city": "Melbourne",
   "demoFooter": "Demo website by KB Ventures",
   "demoNotice": "Concept demo. Names, prices and reviews are fictional."
  },
  "contact": {
   "phone": "03 5550 0142",
-  "phoneHref": "0355500142",
   "email": "hello@example.com",
   "street": "14 Example Road",
   "locality": "Glen Waverley VIC 3150",
@@ -24,8 +22,7 @@
   "postcode": "3150",
   "country": "AU",
   "abn": "00 000 000 000",
-  "licence": "Lic. 000000",
-  "mapsQuery": "14 Example Road, Glen Waverley VIC 3150"
+  "licence": "Lic. 000000"
  },
  "site": {
   "baseUrl": "https://kirithikbala21-jpg.github.io/3D-demo-sites/plumber-demo/",
@@ -48,116 +45,87 @@
   "bg": "#0b2545"
  },
  "hours": [
-  {
-   "day": 1,
-   "name": "Monday",
-   "open": 7,
-   "close": 20
-  },
-  {
-   "day": 2,
-   "name": "Tuesday",
-   "open": 7,
-   "close": 20
-  },
-  {
-   "day": 3,
-   "name": "Wednesday",
-   "open": 7,
-   "close": 20
-  },
-  {
-   "day": 4,
-   "name": "Thursday",
-   "open": 7,
-   "close": 20
-  },
-  {
-   "day": 5,
-   "name": "Friday",
-   "open": 7,
-   "close": 20
-  },
-  {
-   "day": 6,
-   "name": "Saturday",
-   "open": 8,
-   "close": 17
-  },
-  {
-   "day": 0,
-   "name": "Sunday",
-   "open": 8,
-   "close": 17
-  }
+  {"day": 1, "name": "Monday", "open": "07:00", "close": "20:00"},
+  {"day": 2, "name": "Tuesday", "open": "07:00", "close": "20:00"},
+  {"day": 3, "name": "Wednesday", "open": "07:00", "close": "20:00"},
+  {"day": 4, "name": "Thursday", "open": "07:00", "close": "20:00"},
+  {"day": 5, "name": "Friday", "open": "07:00", "close": "20:00"},
+  {"day": 6, "name": "Saturday", "open": "08:00", "close": "17:00"},
+  {"day": 0, "name": "Sunday", "open": "08:00", "close": "17:00"}
  ],
+ "holidays": {
+  "mode": "normal",
+  "overrides": {}
+ },
+ "closures": [],
+ "notices": [],
  "service": {
   "arriveMinutes": 60,
   "callbackMinutes": 15,
   "warrantyMonths": 12,
-  "bigJobFinance": "Afterpay"
+  "bigJobFinance": "Afterpay",
+  "dayStart": "07:00",
+  "dayEnd": "18:00",
+  "bookingDaysAhead": 90
  },
  "reviewsSummary": {
   "rating": "4.9",
   "count": 212
  },
  "announcement": {
-  "text": "We answer 24/7.",
   "lead": "Burst pipe? Blocked drain? ",
-  "link": "Call 03 5550 0142",
-  "href": "tel:0355500142"
+  "text": "We answer 24/7."
  },
  "form": {
   "endpoint": "",
-  "method": "POST",
-  "todo": "TODO: connect the quote form. Set form.endpoint to a form service URL (for example a Formspree, Basin or Getform endpoint) or to your own server route that emails hello@example.com. While endpoint is empty the form only validates, shows the confirmation and saves to this browser (localStorage key wp-quotes). Photo uploads need a service that accepts files."
+  "note": "Paste your Formspree, Basin or Getform address between the quote marks to make the quote form send real emails. While it is empty the form only validates, shows a confirmation and keeps the request in this browser (localStorage key wp-quotes). Photo uploads need a form service that accepts files."
  },
+ "services": [
+  {"id": "emergency", "name": "Emergency plumbing", "promise": "A plumber at your door, any hour.", "from": 199, "photo": "tools-closeup", "urgency": "emergency", "label": "Call-out from"},
+  {"id": "blocked-drains", "name": "Blocked drains", "promise": "Cleared fast, with a camera check if needed.", "from": 149, "photo": "blocked-drain-work", "urgency": "today", "label": "From"},
+  {"id": "hot-water", "name": "Hot water systems", "promise": "Repairs, and same-day replacements.", "from": 199, "photo": "hot-water-unit", "urgency": "today", "label": "Repair from"},
+  {"id": "gas", "name": "Gas fitting", "promise": "Safe installs, repairs and leak checks.", "from": 169, "photo": "gas-pipework", "urgency": "today", "label": "From"},
+  {"id": "renovation", "name": "Bathroom and kitchen renovation", "promise": "All the plumbing for your reno. Quotes are free.", "from": null, "photo": "bathroom-clean", "urgency": "planning", "label": "Quotes"},
+  {"id": "leaks-taps", "name": "Leaks and taps", "promise": "Drips, leaks and toilets sorted.", "from": 129, "photo": "plumber-at-work-1", "urgency": "today", "label": "From"}
+ ],
+ "pricing": [
+  {"item": "Emergency call-out, any hour", "ref": "emergency", "note": "First 30 minutes of work included"},
+  {"item": "Blocked drain clearing", "ref": "blocked-drains", "note": "Camera inspection extra if needed"},
+  {"item": "Tap washer replacement", "ref": "leaks-taps", "note": "Per tap, parts included"},
+  {"item": "Toilet repair", "price": 159, "note": "Cistern, valve or leak"},
+  {"item": "Hot water system repair", "ref": "hot-water", "note": "Electric, gas or solar"},
+  {"item": "New electric hot water system", "price": 1490, "note": "Installed, old unit removed"},
+  {"item": "Gas leak check", "ref": "gas", "note": "Includes a written safety report"},
+  {"item": "Renovation plumbing", "ref": "renovation", "note": "Bathroom or kitchen. Free on-site quote"}
+ ],
+ "suburbs": [
+  {"name": "Glen Waverley", "postcode": "3150", "eta": "30 to 45"},
+  {"name": "Mount Waverley", "postcode": "3149", "eta": "30 to 45"},
+  {"name": "Wheelers Hill", "postcode": "3150", "eta": "30 to 45"},
+  {"name": "Mulgrave", "postcode": "3170", "eta": "40 to 55"},
+  {"name": "Clayton", "postcode": "3168", "eta": "40 to 55"},
+  {"name": "Oakleigh", "postcode": "3166", "eta": "45 to 60"},
+  {"name": "Burwood", "postcode": "3125", "eta": "45 to 60"},
+  {"name": "Ashwood", "postcode": "3147", "eta": "40 to 55"}
+ ],
+ "team": [
+  {"name": "Mark Delaney", "role": "Founder and master plumber", "photo": "team-1", "bio": "Started the business in 2009 with one ute.", "since": 2002},
+  {"name": "Aisha Rahman", "role": "Gas fitter", "photo": "team-2", "bio": "Does the gas installs and leak checks.", "since": 2015},
+  {"name": "Luke Nguyen", "role": "Drainage specialist", "photo": "team-3", "bio": "Runs the camera and the drain machine.", "since": 2017},
+  {"name": "Tom Kerrigan", "role": "Hot water and renovations", "photo": "team-4", "bio": "Your first call for a hot water swap or a new bathroom.", "since": 2012},
+  {"name": "Grace Mensah", "role": "Plumber and drainage", "photo": "team-5", "bio": "Joined as an apprentice and now runs her own van.", "since": 2020}
+ ],
+ "social": [],
  "nav": [
-  {
-   "label": "Services",
-   "href": "#services"
-  },
-  {
-   "label": "Areas",
-   "href": "#areas"
-  },
-  {
-   "label": "Pricing",
-   "href": "#pricing"
-  },
-  {
-   "label": "Reviews",
-   "href": "#reviews"
-  },
-  {
-   "label": "Contact",
-   "href": "#contact"
-  }
+  {"label": "Services", "href": "#services"},
+  {"label": "Areas", "href": "#areas"},
+  {"label": "Pricing", "href": "#pricing"},
+  {"label": "Reviews", "href": "#reviews"},
+  {"label": "Contact", "href": "#contact"}
  ],
  "pages": [
-  {
-   "file": "index.html",
-   "template": "index",
-   "title": "Emergency plumber in Glen Waverley",
-   "description": "Licensed plumbers and gas fitters across south-east Melbourne. 24/7 emergency line, upfront prices and a 12-month workmanship guarantee. Call 03 5550 0142.",
-   "jsonld": true
-  },
-  {
-   "file": "privacy.html",
-   "template": "privacy",
-   "title": "Privacy",
-   "description": "How this demo site handles your details, cookies and quote requests.",
-   "h1": "Privacy",
-   "crumb": "Privacy"
-  },
-  {
-   "file": "404.html",
-   "template": "notfound",
-   "title": "Page not found",
-   "description": "This page could not be found. Call us on 03 5550 0142 or head back to the home page.",
-   "h1": "That page has gone down the drain",
-   "crumb": "Page not found",
-   "hidden": true
-  }
+  {"file": "index.html", "template": "index", "title": "Emergency plumber in Glen Waverley", "description": "Licensed plumbers and gas fitters across south-east Melbourne. 24/7 emergency line, upfront prices and a 12-month workmanship guarantee. Call 03 5550 0142.", "jsonld": true},
+  {"file": "privacy.html", "template": "privacy", "title": "Privacy", "description": "How this demo site handles your details, cookies and quote requests.", "h1": "Privacy", "crumb": "Privacy"},
+  {"file": "404.html", "template": "notfound", "title": "Page not found", "description": "This page could not be found. Call us on 03 5550 0142 or head back to the home page.", "h1": "That page has gone down the drain", "crumb": "Page not found", "hidden": true}
  ]
 }

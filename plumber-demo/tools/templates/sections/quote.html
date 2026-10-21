@@ -3,12 +3,11 @@
         <div class="quote-intro reveal">
           <p class="eyebrow">Free quote</p>
           <h2 id="quote-title" data-pipe>Tell us what is wrong</h2>
-          <p class="sec-lead">We call back within {{service.callbackMinutes}} minutes, 7am to 8pm. A photo helps us price it.</p>
+          <p class="sec-lead">We call back within {{service.callbackMinutes}} minutes, {{callbackWindowText}}. A photo helps us price it.</p>
           <p class="quote-or">In a hurry? <a href="tel:{{contact.phoneHref}}">Call {{contact.phone}}</a></p>
         </div>
         <div class="card form-card reveal">
           <form id="quote-form" novalidate data-endpoint="{{form.endpoint}}">
-            <!-- {{form.todo}} -->
             <div class="field">
               <label for="q-name">Your name</label>
               <input id="q-name" name="name" type="text" autocomplete="name" required aria-describedby="e-name">
@@ -65,14 +64,14 @@
               <textarea id="q-msg" name="message" rows="2" autocomplete="off"></textarea>
             </div>
             <button class="btn btn-navy btn-lg btn-block" type="submit">Request my free quote</button>
-            <p class="demo-note"><strong>Demo form, front end only.</strong> Nothing is sent. Your details and photo stay on this device.</p>
+            <p class="demo-note">{{#if formsLive}}Your request goes straight to our office. For anything urgent, call {{contact.phone}}.{{else}}<strong>Demo form, front end only.</strong> Nothing is sent. Your details and photo stay on this device.{{/if}}</p>
             <noscript><p class="demo-note">This demo form needs JavaScript. To book now, call <a href="tel:{{contact.phoneHref}}">{{contact.phone}}</a>.</p></noscript>
           </form>
           <div class="form-done" id="quote-done" tabindex="-1" role="status" hidden>
             <h3 id="done-title">Request received</h3>
             <p class="done-text" id="done-text"></p>
             <p class="done-sub" id="done-sub"></p>
-            <p class="demo-note"><strong>Demo form.</strong> Nothing was sent.</p>
+            <p class="demo-note">{{#if formsLive}}If you do not hear from us, call {{contact.phone}}.{{else}}<strong>Demo form.</strong> Nothing was sent.{{/if}}</p>
             <div class="done-actions"><a class="btn btn-call" href="tel:{{contact.phoneHref}}">Call {{contact.phone}}</a><button class="btn btn-outline" type="button" id="quote-again">Send another</button></div>
           </div>
         </div>

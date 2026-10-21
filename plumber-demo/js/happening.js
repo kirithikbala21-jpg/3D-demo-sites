@@ -1,5 +1,5 @@
 // "What's happening?" picker, plus the after-hours banner (based on the visitor's own clock).
-import { $, $$ } from './util.js';
+import { $, $$, SITE, nowMel } from './util.js';
 
 (() => {
   const panel = $('#happen-panel'); if (!panel) return;
@@ -13,7 +13,9 @@ import { $, $$ } from './util.js';
   const el = $('[data-happen-else]');
   if (el) el.addEventListener('click', () => { setTimeout(() => { const q = $('#quote'); if (q) q.focus({ preventScroll: true }); }, 50); });
 
-  // Outside 7am to 6pm on the visitor's own clock: show "On call tonight".
-  const h = new Date().getHours(), bar = $('#oncall');
-  if (bar && (h < 7 || h >= 18)) bar.hidden = false;
+  // Outside the day window (service.dayStart to dayEnd in site.config.json: 7am to 6pm) in MELBOURNE time, whatever the visitor's clock says:
+  // show "On call tonight". Re-checked every minute so it appears at 6pm without a reload.
+  const bar = $('#oncall');
+  const tick = () => { if (!bar) return; const m = nowMel().mins; bar.hidden = m >= SITE.dayStart && m < SITE.dayEnd; };
+  tick(); setInterval(tick, 60000);
 })();

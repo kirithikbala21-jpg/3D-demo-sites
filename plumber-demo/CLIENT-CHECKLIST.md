@@ -2,7 +2,7 @@
 
 ## Content
 - [ ] Replace name, address, phone, email, ABN, licence, hours, time zone and map query in `site.config.json`.
-- [ ] Replace `data/services.json`, `pricing.json`, `suburbs.json` (with honest ETAs), `team.json`, `jobs.json`, `faq.json` with real content. Keep prices consistent: service cards and linked table rows share one source.
+- [ ] Replace `services`, `pricing`, `suburbs` (with honest ETAs) and `team` in `site.config.json`, and `data/jobs.json`, `data/faq.json` with real content. Keep prices consistent: service cards and linked table rows share one source.
 - [ ] Replace the invented reviews with real, permitted ones, or remove the section. Remove "Sample reviews. Fictional." and the invented 4.9 / 212 summary (`reviewsSummary`). Never show a rating you cannot back up.
 - [ ] Remove the "Concept demo" and "Demo website by KB Ventures" lines and the "Demo form" notes.
 - [ ] Add real photos (`PHOTO-SLOTS.md`): van, team, before/after jobs. Confirm rights for every photo and person shown. Fill in `CREDITS-TODO.md`.

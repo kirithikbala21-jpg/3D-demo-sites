@@ -1,10 +1,13 @@
 // Quote form. DEMO ONLY: it validates in the browser, shows a confirmation and saves the request to this browser
 // (localStorage key "wp-quotes"). Nothing is sent unless site.config.json > form.endpoint is set (see README, "Connect the quote form").
 import { $, $$, SITE, store } from './util.js';
+import { addHoneypot, tripped, guard, send, isLive, phoneFallback } from './forms.js';
 
 (() => {
   const form = $('#quote-form'); if (!form) return;
   const done = $('#quote-done'), card = form.closest('.form-card');
+  addHoneypot(form);
+  const busy = guard($('button[type=submit]', form));
   const f = { name: $('#q-name'), phone: $('#q-phone'), suburb: $('#q-suburb'), service: $('#q-service'), msg: $('#q-msg'), photo: $('#q-photo') };
 
   /* ---------- Service cards jump here and preselect the problem and urgency ---------- */
@@ -72,24 +75,22 @@ import { $, $$, SITE, store } from './util.js';
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const results = Object.keys(rules).map(check);
-    if (results.includes(false)) { f[Object.keys(rules)[results.indexOf(false)]].focus(); return; }
-    const file = f.photo.files && f.photo.files[0];
-    const rec = {
-      name: f.name.value.trim(), phone: normPhone(f.phone.value), suburb: f.suburb.value.trim(), service: f.service.value, serviceName: serviceName(f.service.value),
-      urgency: form.elements.urgency.value, when: form.elements.when.value, message: f.msg.value.trim(), photoName: file ? file.name : '', savedAt: new Date().toISOString(),
-    };
-    const endpoint = form.dataset.endpoint;
-    if (endpoint) { // Real mode: POST to your form service (see README). Photos need a service that accepts files.
-      try {
-        const body = new FormData(); Object.entries(rec).forEach(([k, v]) => body.append(k, v)); if (file) body.append('photo', file);
-        const res = await fetch(endpoint, { method: 'POST', body, headers: { Accept: 'application/json' } });
-        if (!res.ok) throw new Error(String(res.status));
-      } catch (err) {
-        const out = $('#e-photo'); out.textContent = `Sorry, that did not send. Please call ${SITE.phone} and we will take it over the phone.`; out.hidden = false; return;
+    if (!busy.start()) return; // a second click while the first is still being handled
+    try {
+      const results = Object.keys(rules).map(check);
+      if (results.includes(false)) { f[Object.keys(rules)[results.indexOf(false)]].focus(); return; }
+      const file = f.photo.files && f.photo.files[0];
+      const rec = {
+        name: f.name.value.trim(), phone: normPhone(f.phone.value), suburb: f.suburb.value.trim(), service: f.service.value, serviceName: serviceName(f.service.value),
+        urgency: form.elements.urgency.value, when: form.elements.when.value, message: f.msg.value.trim(), photoName: file ? file.name : '', savedAt: new Date().toISOString(),
+      };
+      const err = $('#e-photo');
+      if (!tripped(form)) { // a filled-in spam trap looks successful but sends nothing
+        const res = await send({ type: 'quote', _subject: `Quote request: ${rec.serviceName} in ${rec.suburb}`, ...rec }, { file });
+        if (!res.ok) { err.innerHTML = phoneFallback().replace(/^<p[^>]*>|<\/p>$/g, ''); err.hidden = false; return; }
+        try { const all = JSON.parse(store.get('wp-quotes') || '[]'); all.push(rec); store.set('wp-quotes', JSON.stringify(all.slice(-20))); } catch (e2) { store.set('wp-quotes', JSON.stringify([rec])); }
       }
-    }
-    try { const all = JSON.parse(store.get('wp-quotes') || '[]'); all.push(rec); store.set('wp-quotes', JSON.stringify(all.slice(-20))); } catch (err) { store.set('wp-quotes', JSON.stringify([rec])); }
-    confirm(rec);
+      confirm(rec);
+    } finally { busy.stop(); }
   });
 })();

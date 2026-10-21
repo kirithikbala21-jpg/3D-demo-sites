@@ -205,7 +205,7 @@ body.no-scroll .mobile-cta { display: none; }
 .sub-title { font-size: var(--fs-h3); color: #F3E9DA; margin: var(--space-12) 0 var(--space-4); }
 
 /* ---------- Hero ---------- */
-.hero { position: relative; display: flex; flex-direction: column; justify-content: center; min-height: calc(100svh - var(--ticker-h)); padding-top: var(--header-h); color: var(--ink); background: var(--black); overflow: hidden; isolation: isolate; }
+.hero { position: relative; display: flex; flex-direction: column; justify-content: center; min-height: calc(100vh - var(--ticker-h)); min-height: calc(100svh - var(--ticker-h)); padding-top: var(--header-h); color: var(--ink); background: var(--black); overflow: hidden; isolation: isolate; }
 .hero-bg { position: absolute; inset: 0; z-index: -1; pointer-events: none; }
 .hero-bg::after { content: ""; position: absolute; inset: 0; background: radial-gradient(120% 90% at 50% 40%, transparent 55%, rgba(0, 0, 0, .65)); }
 .hero-panel { position: absolute; left: 0; right: 0; top: 14%; bottom: -8%; border-top: 2px solid rgba(224, 120, 43, 0.45); box-shadow: 0 -10px 70px rgba(224, 120, 43, 0.28); background: linear-gradient(180deg, #2B1A10 0%, #241811 42%, #120D0A 100%); transform: translate3d(0, var(--py, 0px), 0); animation: drift 24s ease-in-out infinite alternate; }
@@ -747,7 +747,7 @@ form[data-demo-form] .form-success { margin-top: 8px; }
   :root { --header-h: 64px; --ticker-h: 0px; }
   .announce, .mobile-cta { display: none; }
   body { padding-bottom: 0; }
-  .hero { min-height: 100svh; padding-bottom: 8px; }
+  .hero { min-height: 100vh; min-height: 100svh; padding-bottom: 8px; }
   .hero-inner { grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); grid-template-areas: "head stage" "body stage"; grid-template-rows: auto auto; padding-bottom: 24px; align-content: center; }
   .hero-head { align-self: end; }
   .hero-body { align-self: start; }
@@ -922,7 +922,7 @@ main p a:not(.btn):not(.link-arrow):focus-visible, main address a:focus-visible,
 
 /* One of the few warm-cream accents: the gift card */
 .gift-card { color: #120D0A; border-color: rgba(243, 233, 218, .8); background: radial-gradient(120% 120% at 100% 0%, rgba(224, 120, 43, .28), transparent 60%), linear-gradient(135deg, #F3E9DA, #E4D3B9); }
-.gift-card svg, .gift-amount { color: #A8480A; }
+.gift-card svg, .gift-amount { color: #7E3504; }
 
 /* ---------- 404 page ---------- */
 .nf-title { max-width: 18ch; }
@@ -930,3 +930,21 @@ main p a:not(.btn):not(.link-arrow):focus-visible, main address a:focus-visible,
 
 @media (max-width: 479px) { .hours th, .hours td { padding: 14px var(--space-2); } }
 .chip-main { display: inline-flex; align-items: center; gap: 12px; }
+
+/* ---- hardening: tap delay, notices, spam trap, no-JavaScript message, form failure, safe areas */
+a, button, input, select, textarea, label, summary, [role="tab"] { touch-action: manipulation; }
+.hp { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.hp input { width: 1px; height: 1px; padding: 0; border: 0; pointer-events: none; }
+.notice-bar { position: relative; z-index: 90; background: var(--gold-text); color: #0D0907; padding: 8px max(16px, env(safe-area-inset-left, 0px)) 8px max(16px, env(safe-area-inset-right, 0px)); text-align: center; font: 600 .9375rem/1.4 var(--font); }
+.notice-bar[hidden] { display: none; }
+.notice-bar p { margin: 0; }
+.notice-bar p + p { margin-top: 4px; }
+.site-header { margin-top: 0; }
+.nojs-banner { margin: 0; padding: 12px 16px; background: #F3E9DA; color: #0D0907; text-align: center; font: 500 1rem/1.5 var(--font); }
+.nojs-banner a { color: #0D0907; text-decoration: underline; }
+.form-fail { margin: 12px 0 0; padding: 12px 14px; border-radius: 12px; background: #FBEDE8; color: #7A2A12; border: 1.5px solid #7A2A12; font-weight: 500; }
+.form-fail a { color: #7A2A12; font-weight: 700; }
+.legal ul { padding-left: 1.2em; }
+.legal li { margin-bottom: 8px; }
+.legal code { font-size: .9em; background: rgba(243, 233, 218, .12); padding: 1px 5px; border-radius: 4px; }
+.footer-copy { margin: 16px 0 0; font-size: .875rem; opacity: .85; }

@@ -1,5 +1,8 @@
-// All forms are demo-only: they validate in the browser and show a confirmation. Nothing is sent anywhere.
-import { $, $$, site, toast, cafeNow, hoursFor, fmtHour, store } from './util.js';
+// Forms validate in the browser. With no form address in site.config.json (forms.endpoint) they are demos that send nothing; with one,
+// the request is posted to it, and a failure shows a "call us" fallback. Each form has a hidden spam trap and a double-submit guard.
+import { $, $$, site, toast, nowCafe, resolveDay, fmtHour, store } from './util.js';
+import { addDays, DAY_NAMES, dayLabel } from './clock.js';
+import { addHoneypot, tripped, guard, send, isLive, phoneFallback } from './formtools.js';
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 const NOUNS = { experience: 'experience booking', private: 'private dining enquiry', catering: 'catering request', other: 'question' };
@@ -12,44 +15,44 @@ const NOUNS = { experience: 'experience booking', private: 'private dining enqui
   const dateEl = $('#f-date');
   const timeEl = $('#f-time');
   const hint = $('#h-time');
-  const pad = (n) => String(n).padStart(2, '0');
-  const now = new Date();
-  const todayStr = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
+  const todayStr = nowCafe().key; // the café's today (Melbourne), not the visitor's
   dateEl.min = todayStr;
+  dateEl.max = addDays(todayStr, Math.max((site.booking || {}).daysAhead || 90, 365)); // always rolls forward from today
 
   // Pre-select the enquiry type from the link that brought us here (reserve.html?type=private)
   const type = new URLSearchParams(location.search).get('type');
   if (type && [...form.elements.type.options].some((o) => o.value === type)) form.elements.type.value = type;
 
-  // Time slots: only times inside that weekday's opening hours, and a deterministic "fully booked" demo.
+  // Time slots: only times inside that day's opening hours (holidays and closures included), and a deterministic "fully booked" demo.
   const labels = new Map([...timeEl.options].map((o) => [o.value, o.textContent]));
   const full = (dateStr, t) => { let h = 7; for (const c of dateStr + t) h = (h * 31 + c.charCodeAt(0)) % 997; return h % 5 === 0; };
   function updateTimes() {
     const v = dateEl.value;
     if (!v) { hint.textContent = 'Choose a date to see which times are open.'; return; }
-    const [y, m, d] = v.split('-').map(Number);
-    const hrs = hoursFor(new Date(y, m - 1, d).getDay());
-    const cn = cafeNow();
+    const hrs = resolveDay(v);
+    const cn = nowCafe();
     let anyOpen = 0;
     [...timeEl.options].forEach((o) => {
       if (!o.value) return;
-      const [hh, mm] = o.value.split(':').map(Number); const t = hh + mm / 60;
-      const inside = hrs && t >= hrs.open && t <= hrs.close - 0.5;
-      const past = v === todayStr && t <= cn.hour;
+      const [hh, mm] = o.value.split(':').map(Number); const t = hh * 60 + mm;
+      const inside = !hrs.closed && t >= hrs.open && t <= hrs.close - 30;
+      const past = v === cn.key && t <= cn.mins;
       const booked = inside && !past && full(v, o.value);
       o.disabled = !inside || past || booked;
       o.textContent = labels.get(o.value) + (booked ? ' (fully booked)' : '');
       if (!o.disabled) anyOpen++;
     });
     if (timeEl.selectedOptions[0] && timeEl.selectedOptions[0].disabled) timeEl.value = '';
-    hint.textContent = hrs ? `We are open ${fmtHour(hrs.open)} to ${fmtHour(hrs.close)} that day. ${anyOpen ? 'Some times may already be full.' : 'No times are left, so please try another date.'}` : 'Please choose another date.';
+    hint.textContent = !hrs.closed
+      ? `We are open ${fmtHour(hrs.open)} to ${fmtHour(hrs.close)} that day. ${anyOpen ? 'Some times may already be full.' : 'No times are left, so please try another date.'}`
+      : `We are closed that day${hrs.name ? ' for ' + hrs.name : ''}. Please choose another date.`;
   }
   dateEl.addEventListener('change', updateTimes);
 
   const rules = {
     name: (v) => (v.trim().length < 2 ? 'Please tell us your name so we can pop it on the booking.' : ''),
     email: (v) => (!v.trim() ? 'We need an email to confirm your booking.' : !EMAIL.test(v.trim()) ? "That email doesn't look quite right. Could you check it?" : ''),
-    date: (v) => (!v ? 'Which day suits you? Pick a date.' : v < todayStr ? 'That date has already passed. Pick today or later.' : ''),
+    date: (v) => (!v ? 'Which day suits you? Pick a date.' : v < nowCafe().key ? 'That date has already passed. Pick today or later.' : resolveDay(v).closed && field('type').value === 'table' ? `We are closed that day${resolveDay(v).name ? ' for ' + resolveDay(v).name : ''}. Please pick another date.` : ''),
     guests: (v) => { const n = Number(v); return !v ? 'How many people are coming?' : !Number.isInteger(n) || n < 1 || n > 12 ? 'We can seat 1 to 12 guests online. For bigger groups, give us a call.' : ''; },
     message: (v) => (v.length > 500 ? 'Please keep your message under 500 characters.' : ''),
   };
@@ -64,29 +67,37 @@ const NOUNS = { experience: 'experience booking', private: 'private dining enqui
     field(n).addEventListener('blur', () => check(n));
     field(n).addEventListener('input', () => { if (field(n).getAttribute('aria-invalid') === 'true') check(n); });
   });
-  form.addEventListener('submit', (e) => {
+  addHoneypot(form);
+  const busy = guard($('button[type=submit]', form));
+  const failBox = document.createElement('div'); failBox.setAttribute('aria-live', 'assertive'); $('button[type=submit]', form).after(failBox);
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const bad = Object.keys(rules).map((n) => [n, check(n)]).find(([, ok]) => !ok);
-    if (bad) { field(bad[0]).focus(); return; }
-    // DEMO ONLY: this is where a real form service or booking system would be called, e.g.
-    //   fetch('https://formspree.io/f/your-id', { method: 'POST', body: new FormData(form) })
-    // and the success panel below would be shown after a successful response.
-    const date = new Date(dateEl.value + 'T00:00:00').toLocaleDateString(site.locale, { weekday: 'long', day: 'numeric', month: 'long' });
-    const guests = Number(field('guests').value);
-    const email = field('email').value.trim();
-    const kind = field('type').value;
-    const at = timeEl.value ? ` at ${timeEl.selectedOptions[0].textContent}` : '';
-    // DEMO ONLY: the confirmed request is kept in this browser (localStorage 'eo-reservations'); nothing is sent anywhere.
+    if (!busy.start()) return; // a second click while the first is still being handled
     try {
-      const all = JSON.parse(store('eo-reservations') || '[]');
-      all.push({ id: 'ER-' + Date.now().toString(36).toUpperCase(), saved: new Date().toISOString(), type: kind, name: field('name').value.trim(), email, date: dateEl.value, time: timeEl.value || null, guests, message: field('message').value.trim() });
-      store('eo-reservations', JSON.stringify(all.slice(-20)));
-    } catch (_) { /* storage unavailable: carry on */ }
-    $('#ok-name').textContent = field('name').value.trim().split(' ')[0];
-    $('#ok-detail').textContent = kind === 'table'
-      ? `We've noted a table for ${guests} ${guests === 1 ? 'guest' : 'guests'} on ${date}${at}. We'll email ${email} to confirm.`
-      : `We've received your ${NOUNS[kind] || 'request'} for ${date}${at}. A team member will email ${email} within one business day.`;
-    form.hidden = true; success.hidden = false; success.focus();
+      failBox.innerHTML = '';
+      const bad = Object.keys(rules).map((n) => [n, check(n)]).find(([, ok]) => !ok);
+      if (bad) { field(bad[0]).focus(); return; }
+      const guests = Number(field('guests').value);
+      const email = field('email').value.trim();
+      const kind = field('type').value;
+      const rec = { id: 'ER-' + Date.now().toString(36).toUpperCase(), saved: new Date().toISOString(), type: kind, name: field('name').value.trim(), email, date: dateEl.value, time: timeEl.value || null, guests, message: field('message').value.trim() };
+      if (!tripped(form)) { // a filled-in spam trap looks successful but sends nothing
+        const res = await send({ _subject: `Website ${kind} request ${rec.id}`, formType: 'reservation', ...rec });
+        if (!res.ok) { failBox.innerHTML = phoneFallback(); return; }
+        try {
+          const all = JSON.parse(store('eo-reservations') || '[]');
+          all.push(rec);
+          store('eo-reservations', JSON.stringify(all.slice(-20)));
+        } catch (_) { /* storage unavailable: carry on */ }
+      }
+      const date = dayLabel(dateEl.value);
+      const at = timeEl.value ? ` at ${timeEl.selectedOptions[0].textContent}` : '';
+      $('#ok-name').textContent = field('name').value.trim().split(' ')[0];
+      $('#ok-detail').textContent = kind === 'table'
+        ? `We've noted a table for ${guests} ${guests === 1 ? 'guest' : 'guests'} on ${date}${at}. We'll email ${email} to confirm.`
+        : `We've received your ${NOUNS[kind] || 'request'} for ${date}${at}. A team member will email ${email} within one business day.`;
+      form.hidden = true; success.hidden = false; success.focus();
+    } finally { busy.stop(); }
   });
   $('#form-reset').addEventListener('click', () => {
     form.reset();
@@ -111,28 +122,50 @@ $$('form[data-demo-form]').forEach((form) => {
   };
   const check = (el) => { const m = msg(el.dataset.rule, el); const out = el.getAttribute('aria-describedby') && document.getElementById(el.getAttribute('aria-describedby')); if (out) out.textContent = m; el.setAttribute('aria-invalid', m ? 'true' : 'false'); return !m; };
   inputs.forEach((el) => { el.addEventListener('blur', () => check(el)); el.addEventListener('input', () => { if (el.getAttribute('aria-invalid') === 'true') check(el); }); });
-  form.addEventListener('submit', (e) => {
+  addHoneypot(form);
+  const sub = $('button[type=submit]', form), busy = guard(sub);
+  const failBox = document.createElement('div'); failBox.setAttribute('aria-live', 'assertive'); sub.after(failBox);
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const results = inputs.map(check); // check every field so all the messages show at once
-    if (results.includes(false)) { inputs[results.indexOf(false)].focus(); return; }
-    const ok = $('.form-success', form);
-    const nm = form.elements.name;
-    if (nm) $('[data-name]', ok).textContent = nm.value.trim().split(' ')[0];
-    [...form.children].forEach((c) => { if (c !== ok) c.hidden = true; });
-    ok.hidden = false; ok.focus();
+    if (!busy.start()) return;
+    try {
+      failBox.innerHTML = '';
+      const results = inputs.map(check); // check every field so all the messages show at once
+      if (results.includes(false)) { inputs[results.indexOf(false)].focus(); return; }
+      if (!tripped(form)) {
+        const data = Object.fromEntries(new FormData(form).entries()); delete data.website;
+        const res = await send({ formType: location.pathname.split('/').pop().replace('.html', '') || 'form', _subject: 'Website enquiry', ...data });
+        if (!res.ok) { failBox.innerHTML = phoneFallback(); return; }
+      }
+      const ok = $('.form-success', form);
+      const nm = form.elements.name;
+      if (nm) $('[data-name]', ok).textContent = nm.value.trim().split(' ')[0];
+      [...form.children].forEach((c) => { if (c !== ok) c.hidden = true; });
+      ok.hidden = false; ok.focus();
+    } finally { busy.stop(); }
   });
 });
 
 /* ---------- Newsletter ---------- */
 $$('#news-form').forEach((form) => {
   const input = $('#n-email', form), msg = $('#e-news', form);
-  form.addEventListener('submit', (e) => {
+  addHoneypot(form);
+  const busy = guard($('button[type=submit]', form));
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const ok = EMAIL.test(input.value.trim());
-    msg.className = ok ? 'success' : 'error';
-    msg.textContent = ok ? "You're on the list (demo only: nothing was saved)." : "That email doesn't look quite right. Could you check it?";
-    input.setAttribute('aria-invalid', String(!ok));
-    if (ok) form.reset(); else input.focus();
+    if (!busy.start()) return;
+    try {
+      const ok = EMAIL.test(input.value.trim());
+      input.setAttribute('aria-invalid', String(!ok));
+      if (!ok) { msg.className = 'error'; msg.textContent = "That email doesn't look quite right. Could you check it?"; input.focus(); return; }
+      if (!tripped(form)) {
+        const res = await send({ formType: 'newsletter', _subject: 'Newsletter signup', email: input.value.trim() });
+        if (!res.ok) { msg.className = 'error'; msg.innerHTML = `Sorry, that did not send. Please call us on <a href="tel:${site.phoneHref}">${site.phone}</a>.`; return; }
+      }
+      msg.className = 'success';
+      msg.textContent = isLive() ? "You're on the list. Thank you!" : "You're on the list (demo only: nothing was saved).";
+      form.reset();
+    } finally { busy.stop(); }
   });
 });
 
@@ -141,5 +174,18 @@ $$('#news-form').forEach((form) => {
   const form = $('#gift-form'); if (!form) return;
   const out = $('#gift-amount');
   form.addEventListener('change', () => { out.textContent = '$' + form.elements.amount.value; });
-  form.addEventListener('submit', (e) => { e.preventDefault(); toast(`Demo only: a $${form.elements.amount.value} gift card would be sent here. No payment was taken.`); });
+  addHoneypot(form);
+  const busy = guard($('button[type=submit]', form));
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!busy.start()) return;
+    try {
+      const amount = form.elements.amount.value;
+      if (!tripped(form)) {
+        const res = await send({ formType: 'gift-card', _subject: `Gift card request: $${amount}`, amount });
+        if (!res.ok) { toast(`Sorry, that did not send. Please call us on ${site.phone}.`); return; }
+      }
+      toast(isLive() ? `Thanks! We have your $${amount} gift card request and will be in touch to arrange payment.` : `Demo only: a $${amount} gift card would be sent here. No payment was taken.`);
+    } finally { busy.stop(); }
+  });
 })();

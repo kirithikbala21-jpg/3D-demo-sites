@@ -2,7 +2,7 @@
 <html lang="en-AU">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   
   <title>Privacy, terms &amp; cookies | Ember &amp; Oak Coffee (concept demo v2)</title>
   <meta name="description" content="Privacy policy, terms of use and cookie information for this demo site.">
@@ -29,8 +29,9 @@
   <link rel="manifest" href="site.webmanifest">
   <link rel="preload" href="fonts/montserrat-latin.woff2" as="font" type="font/woff2" crossorigin>
   
-  <link rel="stylesheet" href="vendor/lenis-1.1.18.css">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="vendor/lenis-1.1.18.css?v=7720ea7b">
+  <link rel="stylesheet" href="styles.css?v=04bc79d0">
+  <script type="importmap">{"imports": {"./js/cart.js": "./js/cart.js?v=e461db35", "./js/clock.js": "./js/clock.js?v=0d812e35", "./js/forms.js": "./js/forms.js?v=8d2c498f", "./js/formtools.js": "./js/formtools.js?v=b497119e", "./js/hero.js": "./js/hero.js?v=53749c4a", "./js/motion.js": "./js/motion.js?v=60d20297", "./js/notice.js": "./js/notice.js?v=aea4bad6", "./js/search.js": "./js/search.js?v=1c9096f0", "./js/sound.js": "./js/sound.js?v=8f6d4c9c", "./js/ui.js": "./js/ui.js?v=6bb0b26f", "./js/util.js": "./js/util.js?v=897e59b5", "./scene.js": "./scene.js?v=713350ad", "./search-data.js": "./search-data.js?v=34efb359", "three": "./vendor/three.module.min.js", "three/addons/": "./vendor/addons/"}}</script>
   <style>:root{--black:#0D0907;--wine:#E0782B;--wine-deep:#F29049;--wine-night:#1C1511;--gold-light:#E0782B;--gold-text:#E0782B;--cream:#120D0A;--tint:#17110D;--ink:#F3E9DA}</style>
   
   <noscript><style>
@@ -45,15 +46,18 @@
   <script>
     document.documentElement.classList.add('js');
     // A dismissed announcement stays dismissed (set before first paint, so there is no flash and no layout jump).
+    // The top bar hides itself after its end date (config: announcement.end), judged in the café's own time zone.
+    var annoOver = false; try { annoOver = new Intl.DateTimeFormat('en-CA', { timeZone: 'Australia/Melbourne' }).format(new Date()) > '2026-12-31'; } catch (e) {}
+    if (annoOver) { document.documentElement.classList.add('announce-off'); document.documentElement.style.setProperty('--ticker-h', '0px'); }
     try { if (localStorage.getItem('eo-announce') === 'off') { document.documentElement.classList.add('announce-off'); document.documentElement.style.setProperty('--ticker-h', '0px'); } } catch (e) {}
     // Safety net: never leave the hero hidden if the main script fails to start.
     setTimeout(function () { var d = document.documentElement; if (!d.classList.contains('is-ready')) d.classList.add('is-ready', 'is-failsafe'); }, 4500);
   </script>
-  
 </head>
 <body class="page-legal">
   
   <a class="skip-link" href="#main">Skip to content</a>
+  <noscript><p class="nojs-banner">JavaScript is switched off, so live opening times and ordering are unavailable. Please call <a href="tel:+61355500123">03 5550 0123</a> or visit us at 12 Example Street, Melbourne VIC 3000. Hours: 7 days, from 7am (Sundays 8am).</p></noscript>
   <div class="progress" aria-hidden="true"><span></span></div>
 
   <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
@@ -67,12 +71,14 @@
   </svg>
 
   <!-- Announcement bar: one calm, static line. Dismissible; the choice is remembered. -->
-  <div class="announce" id="announce" role="region" aria-label="Announcement">
-    <p class="announce-text"><span class="a-short">New: Guji Natural lands next week</span><span class="a-text">New: Ethiopia Guji Natural lands next week</span><span class="a-hours"> &middot; Open 7 days, from 7am (Sundays 8am)</span></p>
+  <div class="announce" id="announce" role="region" aria-label="Announcement" data-end="2026-12-31">
+    <p class="announce-text"><span class="a-short">New: Guji Natural now pouring</span><span class="a-text">New: Ethiopia Guji Natural is now pouring</span><span class="a-hours"> &middot; Open 7 days, from 7am (Sundays 8am)</span></p>
     <button class="announce-close" type="button" aria-label="Dismiss announcement">
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M3 3l10 10M13 3L3 13"/></svg>
     </button>
   </div>
+
+  <div class="notice-bar" id="notice-bar" role="region" aria-label="Notices" hidden></div>
 
   <header class="site-header" id="top">
     <div class="header-inner">
@@ -112,7 +118,7 @@
       <div class="overlay-info">
         <p class="label">Find us</p>
         <p>12 Example Street<br>Melbourne VIC 3000</p>
-        <p><a href="tel:0355500123">03 5550 0123</a><br><a href="mailto:hello@example.com">hello@example.com</a></p>
+        <p><a href="tel:+61355500123">03 5550 0123</a><br><a href="mailto:hello@example.com">hello@example.com</a></p>
         <p class="label">Hours</p>
         <p>7 days, from 7am (Sundays 8am)<br>Closing 4pm Mon &ndash; Wed, 10pm Thu &ndash; Sat, 4pm Sun</p>
         <p class="label">Atmosphere</p>
@@ -190,8 +196,7 @@
         <p class="note">This is a plain-language template for a demo site. Replace it with a policy reviewed for your business and jurisdiction before going live.</p>
         <article id="privacy" class="reveal">
           <h2>Privacy</h2>
-          <p>This demo does not collect personal information. Forms (reservations, newsletter, careers, wholesale, orders) only check your input in your browser and then show a confirmation. Nothing is sent or stored on a server.</p>
-          <p>If this site were live, we would collect only what we need to take a booking or order (name, email, phone, order details), use it for that purpose, keep it no longer than necessary and never sell it. You could ask us to see or delete your information at any time by emailing hello@example.com.</p>
+          <p>Our full privacy and cookie information is on the <a href="privacy.html">privacy page</a>.</p>
         </article>
         <article id="terms" class="reveal">
           <h2>Terms of use</h2>
@@ -199,7 +204,7 @@
         </article>
         <article id="cookies" class="reveal">
           <h2>Cookies and storage</h2>
-          <p>This demo sets no tracking cookies. It uses your browser&rsquo;s local storage only to remember small preferences: your cookie choice, your current order, and whether ambient sound is on. If analytics were added, they would run only after you accept.</p>
+          <p>See <a href="privacy.html#cookies">cookies and storage</a> on the privacy page.</p>
           <p><button type="button" class="btn btn-secondary btn-sm" data-cookie-reset>Change my cookie choice</button></p>
         </article>
       </div>
@@ -228,7 +233,7 @@
         <div class="footer-col">
           <h2>Visit</h2>
           <p>12 Example Street<br>Melbourne VIC 3000</p>
-          <p><a href="tel:0355500123">03 5550 0123</a><br><a href="mailto:hello@example.com">hello@example.com</a></p>
+          <p><a href="tel:+61355500123">03 5550 0123</a><br><a href="mailto:hello@example.com">hello@example.com</a></p>
         </div>
         <div class="footer-col">
           <h2>Hours</h2>
@@ -240,11 +245,12 @@
         <a href="wholesale.html">Wholesale</a>
         <a href="press.html">Press</a>
         <a href="careers.html">Careers</a>
-        <a href="legal.html#privacy">Privacy</a>
+        <a href="privacy.html">Privacy</a>
         <a href="legal.html#terms">Terms</a>
-        <a href="legal.html#cookies">Cookies</a>
+        <a href="privacy.html#cookies">Cookies</a>
         <button type="button" class="sound-btn" data-sound aria-pressed="false">Ambient sound: <span data-sound-state>Off</span></button>
       </nav>
+      <p class="footer-copy">&copy; <span data-year>2026</span> Ember &amp; Oak Coffee. All rights reserved.</p>
       <p class="photo-credits">Photo credits: Photo: Unsplash (Hero interior, Roastery, Flat white, Ethiopia pour-over, Cardamom bun, Latte cup, Beans, Espresso shot, Barista pour, Espresso machine, Chemex pour, Espresso flat lay, Latte strip)</p>
       <div class="footer-bottom">
         <div class="footer-notes">
@@ -258,13 +264,13 @@
 
   <!-- Mobile quick actions -->
   <nav class="mobile-cta" aria-label="Quick actions">
-    <a class="btn btn-secondary" href="tel:0355500123">Call</a>
+    <a class="btn btn-secondary" href="tel:+61355500123">Call</a>
     <a class="btn btn-primary" href="reserve.html">Reserve a table</a>
   </nav>
 
   <!-- Cookie preferences -->
   <div class="cookie" id="cookie" role="region" aria-label="Cookie preferences" hidden>
-    <p><strong>Cookies.</strong> None are set unless you accept analytics. <a href="legal.html#cookies">Details</a></p>
+    <p><strong>Cookies.</strong> None are set unless you accept analytics. <a href="privacy.html#cookies">Details</a></p>
     <div class="cookie-actions">
       <button class="btn btn-primary btn-sm" type="button" data-cookie="yes">Accept</button>
       <button class="btn btn-secondary btn-sm" type="button" data-cookie="no">Decline</button>
@@ -272,8 +278,8 @@
   </div>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <script type="application/json" id="site-data">{"name": "Ember & Oak", "phone": "03 5550 0123", "phoneHref": "0355500123", "email": "hello@example.com", "timezone": "Australia/Melbourne", "locale": "en-AU", "currency": "AUD", "hours": [{"day": 1, "name": "Monday", "open": 7, "close": 16}, {"day": 2, "name": "Tuesday", "open": 7, "close": 16}, {"day": 3, "name": "Wednesday", "open": 7, "close": 16}, {"day": 4, "name": "Thursday", "open": 7, "close": 22}, {"day": 5, "name": "Friday", "open": 7, "close": 22}, {"day": 6, "name": "Saturday", "open": 7, "close": 22}, {"day": 0, "name": "Sunday", "open": 8, "close": 16}], "city": "Melbourne", "hoursPhrase": "7 days, from 7am (Sundays 8am)"}</script>
-  <script defer src="vendor/lenis-1.1.18.min.js"></script>
-  <script type="module" src="main.js"></script>
+  <script type="application/json" id="site-data">{"name": "Ember & Oak", "phone": "03 5550 0123", "phoneHref": "+61355500123", "email": "hello@example.com", "timezone": "Australia/Melbourne", "locale": "en-AU", "currency": "AUD", "city": "Melbourne", "hours": [{"day": 1, "name": "Monday", "open": 420, "close": 960}, {"day": 2, "name": "Tuesday", "open": 420, "close": 960}, {"day": 3, "name": "Wednesday", "open": 420, "close": 960}, {"day": 4, "name": "Thursday", "open": 420, "close": 1320}, {"day": 5, "name": "Friday", "open": 420, "close": 1320}, {"day": 6, "name": "Saturday", "open": 420, "close": 1320}, {"day": 0, "name": "Sunday", "open": 480, "close": 960}], "holidays": {"mode": "closed", "overrides": {}}, "closures": [], "notices": [], "booking": {"daysAhead": 90, "takenPercent": 20, "leadMinutes": 0}, "forms": {"endpoint": ""}, "announceEnd": "2026-12-31", "hoursPhrase": "7 days, from 7am (Sundays 8am)"}</script>
+  <script defer src="vendor/lenis-1.1.18.min.js?v=42bf5944"></script>
+  <script type="module" src="main.js?v=4b44f9a9"></script>
 </body>
 </html>

@@ -19,15 +19,16 @@ export function store(key, value) {
   return null;
 }
 
-/** Current day (0 = Sunday) and decimal hour in the café's own time zone, not the visitor's. */
-export function cafeNow(date = new Date()) {
-  const parts = new Intl.DateTimeFormat('en-US', { timeZone: site.timezone, weekday: 'short', hour: 'numeric', minute: 'numeric', hourCycle: 'h23' }).formatToParts(date);
-  const get = (t) => parts.find((p) => p.type === t).value;
-  const day = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].indexOf(get('weekday'));
-  return { day, hour: Number(get('hour')) % 24 + Number(get('minute')) / 60 };
-}
-export const hoursFor = (day) => site.hours.find((h) => h.day === day);
-export const fmtHour = (h) => `${(h % 12) || 12}:00${h < 12 ? 'am' : 'pm'}`;
+import * as clock from './clock.js';
+/** Opening hours, public holidays and closures, as clock.js needs them (times in minutes since midnight). */
+export const CLOCK_CFG = { hours: site.hours || [], closures: site.closures || [], holidays: site.holidays || { mode: 'closed' } };
+/** The current date and time in the CAFE's time zone (Melbourne), never the visitor's: { y, m, d, dow, mins, key }. */
+export const nowCafe = (at = new Date()) => clock.nowIn(site.timezone || 'Australia/Melbourne', at);
+export const resolveDay = (key) => clock.resolveDay(key, CLOCK_CFG);
+/** Older shape used by a few callers: weekday (0 = Sunday) and decimal hour in the café's own time zone. */
+export function cafeNow(date = new Date()) { const n = nowCafe(date); return { day: n.dow, hour: n.mins / 60, key: n.key, mins: n.mins }; }
+export const fmtHour = (mins) => { if (mins === 1440) return 'midnight'; const t = ((mins % 1440) + 1440) % 1440, h = Math.floor(t / 60), m = t % 60; return `${(h % 12) || 12}:${String(m).padStart(2, '0')}${h < 12 ? 'am' : 'pm'}`; };
+export const fmtShort = (mins) => fmtHour(mins).replace(':00', '');
 
 const toastEl = $('#toast');
 let toastTimer = 0;

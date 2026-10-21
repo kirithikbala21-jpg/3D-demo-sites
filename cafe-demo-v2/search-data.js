@@ -79,6 +79,12 @@ export default [
 "type": "Page"
 },
 {
+"title": "Privacy and cookies",
+"text": "What this website stores in your browser, what it does not collect, and how to contact us about your information.",
+"url": "privacy.html",
+"type": "Page"
+},
+{
 "title": "Ember Flat White",
 "text": "Double ristretto, silky milk and a pinch of toasted cacao. Vegetarian, signature, house favourite. Coffee. $5.50",
 "url": "menu.html#m-ember-flat-white",

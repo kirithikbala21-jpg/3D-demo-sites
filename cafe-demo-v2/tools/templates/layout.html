@@ -2,7 +2,7 @@
 <html lang="en-AU">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   {{#if page.is404}}<script>
     // The server shows this page for any missing address, which may be several folders deep: point relative links back at the site folder.
     (function () { var m = location.pathname.match(/^(.*\/cafe-demo-v2\/)/); if (m) { var b = document.createElement('base'); b.href = m[1]; document.head.insertBefore(b, document.head.firstChild); } })();
@@ -32,8 +32,9 @@
   <link rel="manifest" href="site.webmanifest">
   <link rel="preload" href="fonts/montserrat-latin.woff2" as="font" type="font/woff2" crossorigin>
   {{#if page.isHome}}<link rel="preload" href="fonts/mrs-saint-delafield-latin.woff2" as="font" type="font/woff2" crossorigin>{{/if}}
-  <link rel="stylesheet" href="vendor/lenis-1.1.18.css">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="vendor/lenis-1.1.18.css?v={{assets.lenisCss}}">
+  <link rel="stylesheet" href="styles.css?v={{assets.css}}">
+  <script type="importmap">{{{importMap}}}</script>
   <style>:root{--black:{{theme.black}};--wine:{{theme.wine}};--wine-deep:{{theme.wineDeep}};--wine-night:{{theme.wineNight}};--gold-light:{{theme.goldLight}};--gold-text:{{theme.goldText}};--cream:{{theme.cream}};--tint:{{theme.tint}};--ink:{{theme.ink}}}</style>
   {{{jsonld}}}
   <noscript><style>
@@ -48,20 +49,20 @@
   <script>
     document.documentElement.classList.add('js');
     // A dismissed announcement stays dismissed (set before first paint, so there is no flash and no layout jump).
+    // The top bar hides itself after its end date (config: announcement.end), judged in the café's own time zone.
+    var annoOver = false; try { annoOver = new Intl.DateTimeFormat('en-CA', { timeZone: '{{site.timezone}}' }).format(new Date()) > '{{announce.end}}'; } catch (e) {}
+    if (annoOver) { document.documentElement.classList.add('announce-off'); document.documentElement.style.setProperty('--ticker-h', '0px'); }
     try { if (localStorage.getItem('eo-announce') === 'off') { document.documentElement.classList.add('announce-off'); document.documentElement.style.setProperty('--ticker-h', '0px'); } } catch (e) {}
     // Safety net: never leave the hero hidden if the main script fails to start.
     setTimeout(function () { var d = document.documentElement; if (!d.classList.contains('is-ready')) d.classList.add('is-ready', 'is-failsafe'); }, 4500);
   </script>
-  {{#if page.isHome}}
-  <!-- Three.js is self-hosted (exact version 0.160.0) and loaded as an ES module through this import map. -->
-  <script type="importmap">{"imports":{"three":"./vendor/three.module.min.js","three/addons/":"./vendor/addons/"}}</script>
-  {{/if}}
 </head>
 <body class="page-{{page.template}}">
   {{#if page.isHome}}
   <div class="preloader" id="preloader" aria-hidden="true"><span class="script">{{{brand.wordmark}}}</span></div>
   {{/if}}
   <a class="skip-link" href="#main">Skip to content</a>
+  <noscript><p class="nojs-banner">JavaScript is switched off, so live opening times and ordering are unavailable. Please call <a href="tel:{{contact.phoneHref}}">{{contact.phone}}</a> or visit us at {{contact.street}}, {{contact.locality}}. Hours: {{hoursPhrase}}.</p></noscript>
   <div class="progress" aria-hidden="true"><span></span></div>
 
   <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
@@ -75,12 +76,14 @@
   </svg>
 
   <!-- Announcement bar: one calm, static line. Dismissible; the choice is remembered. -->
-  <div class="announce" id="announce" role="region" aria-label="Announcement">
+  <div class="announce" id="announce" role="region" aria-label="Announcement" data-end="{{announce.end}}">
     <p class="announce-text"><span class="a-short">{{announce.short}}</span><span class="a-text">{{announce.text}}</span><span class="a-hours"> &middot; Open {{hoursPhrase}}</span></p>
     <button class="announce-close" type="button" aria-label="Dismiss announcement">
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M3 3l10 10M13 3L3 13"/></svg>
     </button>
   </div>
+
+  <div class="notice-bar" id="notice-bar" role="region" aria-label="Notices" hidden></div>
 
   <header class="site-header" id="top">
     <div class="header-inner">
@@ -177,7 +180,7 @@
       <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M7.500 12.500l3 3 6-7"/></svg>
       <h3>Thanks, <span id="done-name">friend</span>!</h3>
       <p id="done-detail"></p>
-      <p class="note">Demo only: no order was sent and nothing was charged. A copy is saved in this browser only.</p>
+      <p class="note">{{#if formsLive}}Your order has been sent to the café. Questions? Call {{contact.phone}}. Payment is taken at pick-up.{{else}}Demo only: no order was sent and nothing was charged. A copy is saved in this browser only.{{/if}}</p>
       <button class="btn btn-secondary" type="button" id="done-close">Close</button>
     </div>
   </aside>
@@ -229,11 +232,12 @@
         <a href="wholesale.html">Wholesale</a>
         <a href="press.html">Press</a>
         <a href="careers.html">Careers</a>
-        <a href="legal.html#privacy">Privacy</a>
+        <a href="privacy.html">Privacy</a>
         <a href="legal.html#terms">Terms</a>
-        <a href="legal.html#cookies">Cookies</a>
+        <a href="privacy.html#cookies">Cookies</a>
         <button type="button" class="sound-btn" data-sound aria-pressed="false">Ambient sound: <span data-sound-state>Off</span></button>
       </nav>
+      <p class="footer-copy">&copy; <span data-year>{{year}}</span> {{brand.fullName}}. All rights reserved.</p>
       {{#if photoCredits}}<p class="photo-credits">Photo credits: {{photoCredits}}</p>{{/if}}
       <div class="footer-bottom">
         <div class="footer-notes">
@@ -253,7 +257,7 @@
 
   <!-- Cookie preferences -->
   <div class="cookie" id="cookie" role="region" aria-label="Cookie preferences" hidden>
-    <p><strong>Cookies.</strong> None are set unless you accept analytics. <a href="legal.html#cookies">Details</a></p>
+    <p><strong>Cookies.</strong> None are set unless you accept analytics. <a href="privacy.html#cookies">Details</a></p>
     <div class="cookie-actions">
       <button class="btn btn-primary btn-sm" type="button" data-cookie="yes">Accept</button>
       <button class="btn btn-secondary btn-sm" type="button" data-cookie="no">Decline</button>
@@ -262,7 +266,7 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <script type="application/json" id="site-data">{{{siteData}}}</script>
-  <script defer src="vendor/lenis-1.1.18.min.js"></script>
-  <script type="module" src="main.js"></script>
+  <script defer src="vendor/lenis-1.1.18.min.js?v={{assets.lenis}}"></script>
+  <script type="module" src="main.js?v={{assets.main}}"></script>
 </body>
 </html>

@@ -4,7 +4,7 @@
         <div class="reveal">
           <p class="eyebrow">Reservations &amp; enquiries</p>
           <h2 id="reserve-title" data-split>Save a table <em>for your crew.</em></h2>
-          <p class="lead">Tell us when and how many. We&rsquo;ll confirm by email, usually within a few hours. (This demo form doesn&rsquo;t send anything.)</p>
+          <p class="lead">Tell us when and how many. We&rsquo;ll confirm by email, usually within a few hours.{{#if formsLive}}{{else}} (This demo form doesn&rsquo;t send anything.){{/if}} Prefer to talk? Call <a href="tel:{{contact.phoneHref}}">{{contact.phone}}</a>.</p>
           <ul class="reserve-points">
             <li>Free cancellation up to 24 hours before</li>
             <li>High chairs, accessible seating and dog-friendly terrace tables</li>
@@ -66,7 +66,7 @@
             <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M7.500 12.500l3 3 6-7"/></svg>
             <h3>Thanks, <span id="ok-name">friend</span>!</h3>
             <p id="ok-detail"></p>
-            <p class="note">Demo only: no email was sent. A copy of this request is saved in this browser only.</p>
+            <p class="note" id="ok-note">{{#if formsLive}}If you have not heard from us within a day, please call {{contact.phone}}.{{else}}Demo only: no email was sent. A copy of this request is saved in this browser only.{{/if}}</p>
             <button class="btn btn-secondary btn-on-light" type="button" id="form-reset">Make another request</button>
           </div>
         </div>

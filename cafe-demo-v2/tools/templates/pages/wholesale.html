@@ -20,7 +20,7 @@
             <div class="field"><label for="w-msg">Anything else? <span class="optional">(optional)</span></label><textarea id="w-msg" name="message" rows="4" maxlength="600"></textarea></div>
             <!-- DEMO ONLY: post to your CRM or a form service here. -->
             <button class="btn btn-primary btn-block" type="submit">Request a call back</button>
-            <div class="form-success" role="status" tabindex="-1" hidden><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M7.500 12.500l3 3 6-7"/></svg><h3>Thanks, <span data-name>friend</span>!</h3><p>We would call you within one business day. <span class="note">Demo only: nothing was sent.</span></p></div>
+            <div class="form-success" role="status" tabindex="-1" hidden><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M7.500 12.500l3 3 6-7"/></svg><h3>Thanks, <span data-name>friend</span>!</h3><p>We would call you within one business day. {{#if formsLive}}{{else}}<span class="note">Demo only: nothing was sent.</span>{{/if}}</p></div>
           </form>
         </div>
       </div>

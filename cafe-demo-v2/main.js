@@ -2,6 +2,7 @@
 import { startUp, initHero } from './js/hero.js';
 import './js/motion.js';
 import './js/ui.js';
+import './js/notice.js';
 import './js/cart.js';
 import './js/search.js';
 import './js/sound.js';

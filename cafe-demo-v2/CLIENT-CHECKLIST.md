@@ -20,7 +20,7 @@ Work through this list when a café (or any business using this template) says y
 - [ ] **Analytics:** add your snippet in `js/ui.js` ("DEMO ONLY: add your analytics snippet"). It runs only after the visitor accepts cookies.
 
 ## Legal and trust
-- [ ] Replace `legal.html` with a privacy policy, terms and cookie notice reviewed for the business and its country.
+- [ ] Review `privacy.html` and replace `legal.html` with a policy, terms and cookie notice reviewed for the business and its country.
 - [ ] Add the business's registered details (ABN or similar), allergen information and any licensing text required.
 
 ## Launch

@@ -1,0 +1,35 @@
+    <section class="section" aria-label="Privacy">
+      <div class="container legal">
+        <p class="note">This site is an unofficial concept demo for a fictional café. It is built to collect as little as possible.</p>
+        <article id="privacy" class="reveal">
+          <h2>What is stored on your device</h2>
+          <ul>
+            <li><strong>Your cookie choice</strong> (accept or decline), so the notice does not come back. Key: <code>eo-cookie</code>.</li>
+            <li><strong>Your current order</strong> and any demo reservation you make, only if you make one. They stay in your own browser (keys <code>eo-cart</code> and <code>eo-reservations</code>). {{#if formsLive}}Once the café switches on its enquiry form, reservation and enquiry details are sent to the café so it can reply.{{else}}Nothing is sent to the café in this demo.{{/if}}</li>
+            <li><strong>Small preferences</strong>: whether you dismissed the top notice and whether ambient sound is on.</li>
+          </ul>
+          <p>You can clear all of this at any time in your browser settings (clear site data).</p>
+        </article>
+        <article id="not-collected" class="reveal">
+          <h2>What we do not do</h2>
+          <ul>
+            <li>No analytics, advertising or tracking scripts are loaded. If the café adds analytics later, they will run only after you press Accept.</li>
+            <li>The map loads only when you press its button, and fonts and 3D libraries are hosted on this site.</li>
+            <li>We do not sell or share personal information.</li>
+          </ul>
+        </article>
+        <article id="enquiries" class="reveal">
+          <h2>If you send us an enquiry</h2>
+          <p>Details you give for a booking, order, careers or wholesale enquiry (name, email, phone) are used only to reply to you. Under the Australian Privacy Principles you can ask to see or correct the information we hold about you.</p>
+        </article>
+        <article id="cookies" class="reveal">
+          <h2>Cookies and storage</h2>
+          <p>This site sets no tracking cookies. It uses your browser&rsquo;s local storage only for the small items above.</p>
+          <p><button type="button" class="btn btn-secondary btn-sm" data-cookie-reset>Change my cookie choice</button></p>
+        </article>
+        <article id="contact" class="reveal">
+          <h2>Contact</h2>
+          <p>Questions about privacy: <a href="mailto:{{contact.email}}">{{contact.email}}</a> or <a href="tel:{{contact.phoneHref}}">{{contact.phone}}</a>.</p>
+        </article>
+      </div>
+    </section>

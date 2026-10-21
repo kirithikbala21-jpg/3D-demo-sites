@@ -1,5 +1,6 @@
 // Page behaviour: header, full-screen menu, tabs, reveal / split-text / count-up animations, magnetic buttons, hours status, map, cookies.
-import { $, $$, site, reduceMotion, finePointer, cafeNow, hoursFor, store, toast } from './util.js';
+import { $, $$, site, reduceMotion, finePointer, cafeNow, nowCafe, resolveDay, fmtShort, store, toast } from './util.js';
+import { addDays, DAY_NAMES } from './clock.js';
 import { scrollToEl } from './motion.js';
 
 /* ---------- Header solid on scroll, progress bar, hero parallax ---------- */
@@ -168,25 +169,42 @@ import { scrollToEl } from './motion.js';
   });
 })();
 
-/* ---------- Opening hours: today's row + "Open now" chips, always in the café's own time zone ---------- */
+/* ---------- Opening hours: today's row + "Open now" chips, always in the café's own time zone (holidays and closures included) ---------- */
 (() => {
-  const { day, hour } = cafeNow();
-  const row = $(`.hours tr[data-day="${day}"]`);
-  if (row) { row.classList.add('is-today'); $('th', row).insertAdjacentHTML('beforeend', ' <span class="today-badge">Today</span>'); }
-  const t = hoursFor(day);
-  const short = (h) => `${(h % 12) || 12}${h < 12 ? 'am' : 'pm'}`;
-  // If the visitor's clock differs from the café's (another time zone), say so: the status is always the café's local time.
-  const local = new Date();
-  const away = cafeNow(local).day !== local.getDay() || Math.abs(cafeNow(local).hour - (local.getHours() + local.getMinutes() / 60)) > 0.01;
-  const zone = away ? ` (${site.city || 'café'} time)` : '';
-  let text, isOpen = false;
-  if (t && hour >= t.open && hour < t.close) { text = `Open now \u00b7 until ${short(t.close)}${zone}`; isOpen = true; }
-  else if (t && hour < t.open) text = `Closed now \u00b7 opens ${short(t.open)} today${zone}`;
-  else { const nx = hoursFor((day + 1) % 7); text = `Closed now \u00b7 opens ${short(nx.open)} tomorrow${zone}`; }
-  $$('[data-open-status]').forEach((el) => {
-    el.textContent = text;
-    el.closest('.chip').classList.toggle('is-closed', !isOpen);
-  });
+  const tick = () => {
+    const n = nowCafe();
+    $$('.hours tr.is-today').forEach((r) => { r.classList.remove('is-today'); $$('.today-badge', r).forEach((x) => x.remove()); });
+    const row = $(`.hours tr[data-day="${n.dow}"]`);
+    if (row) { row.classList.add('is-today'); $('th', row).insertAdjacentHTML('beforeend', ' <span class="today-badge">Today</span>'); }
+    const t = resolveDay(n.key);
+    // If the visitor's clock differs from the café's (another time zone), say so: the status is always the café's local time.
+    const local = new Date(), lc = cafeNow(local);
+    const away = lc.day !== local.getDay() || Math.abs(lc.hour - (local.getHours() + local.getMinutes() / 60)) > 0.01;
+    const zone = away ? ` (${site.city || 'café'} time)` : '';
+    let text, isOpen = false;
+    // a late night that started yesterday and runs past midnight
+    const y = resolveDay(addDays(n.key, -1));
+    if (!y.closed && y.close > 1440 && n.mins < y.close - 1440) { text = `Open now \u00b7 until ${fmtShort(y.close)}${zone}`; isOpen = true; }
+    else if (!t.closed && n.mins >= t.open && n.mins < t.close) { text = `Open now \u00b7 until ${fmtShort(t.close)}${zone}`; isOpen = true; }
+    else if (!t.closed && n.mins < t.open) text = `Closed now \u00b7 opens ${fmtShort(t.open)} today${zone}`;
+    else {
+      let next = null, i = 1;
+      for (; i <= 21; i++) { const k = addDays(n.key, i), r = resolveDay(k); if (!r.closed) { next = { r, k }; break; } }
+      const why = t.closed && t.name ? ` for ${t.name}` : '';
+      text = next ? `Closed ${t.closed ? 'today' : 'now'}${why} \u00b7 opens ${fmtShort(next.r.open)} ${i === 1 ? 'tomorrow' : DAY_NAMES[new Date(next.k + 'T12:00:00Z').getUTCDay()]}${zone}` : 'Closed for now';
+    }
+    $$('[data-open-status]').forEach((el) => {
+      el.textContent = text;
+      el.closest('.chip').classList.toggle('is-closed', !isOpen);
+    });
+    $$('[data-year]').forEach((el) => { el.textContent = String(n.y); });
+    // the top announcement hides itself after its end date
+    const bar = $('#announce');
+    if (bar && bar.dataset.end && n.key > bar.dataset.end) { document.documentElement.classList.add('announce-off'); document.documentElement.style.setProperty('--ticker-h', '0px'); }
+  };
+  tick();
+  setInterval(tick, 60000);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) tick(); });
 })();
 
 /* ---------- Map: load the interactive map only when asked (privacy + speed) ---------- */

@@ -17,7 +17,6 @@
   "postcode": "3000",
   "region": "VIC",
   "phone": "03 5550 0123",
-  "phoneHref": "0355500123",
   "email": "hello@example.com",
   "country": "AU",
   "mapsQuery": "Federation Square, Melbourne VIC",
@@ -46,44 +45,44 @@
   {
    "day": 1,
    "name": "Monday",
-   "open": 7,
-   "close": 16
+   "open": "07:00",
+   "close": "16:00"
   },
   {
    "day": 2,
    "name": "Tuesday",
-   "open": 7,
-   "close": 16
+   "open": "07:00",
+   "close": "16:00"
   },
   {
    "day": 3,
    "name": "Wednesday",
-   "open": 7,
-   "close": 16
+   "open": "07:00",
+   "close": "16:00"
   },
   {
    "day": 4,
    "name": "Thursday",
-   "open": 7,
-   "close": 22
+   "open": "07:00",
+   "close": "22:00"
   },
   {
    "day": 5,
    "name": "Friday",
-   "open": 7,
-   "close": 22
+   "open": "07:00",
+   "close": "22:00"
   },
   {
    "day": 6,
    "name": "Saturday",
-   "open": 7,
-   "close": 22
+   "open": "07:00",
+   "close": "22:00"
   },
   {
    "day": 0,
    "name": "Sunday",
-   "open": 8,
-   "close": 16
+   "open": "08:00",
+   "close": "16:00"
   }
  ],
  "hero": {
@@ -260,6 +259,17 @@
    "kicker": "Legal",
    "lead": "A plain-language template. Replace with your own policy before going live.",
    "crumb": "Legal"
+  },
+  {
+   "file": "privacy.html",
+   "template": "privacy",
+   "title": "Privacy and cookies",
+   "description": "What this website stores in your browser, what it does not collect, and how to contact us about your information.",
+   "pageHero": true,
+   "h1": "Privacy and cookies",
+   "kicker": "Privacy",
+   "lead": "What we store, what we do not collect, and how to reach us.",
+   "crumb": "Privacy"
   }
  ],
  "searchExtra": [
@@ -305,8 +315,9 @@
   }
  ],
  "announcement": {
-  "short": "New: Guji Natural lands next week",
-  "text": "New: Ethiopia Guji Natural lands next week"
+  "short": "New: Guji Natural now pouring",
+  "text": "New: Ethiopia Guji Natural is now pouring",
+  "end": "2026-12-31"
  },
  "errorPage": {
   "file": "404.html",
@@ -318,5 +329,20 @@
   "kicker": "Error 404",
   "lead": "That page has wandered off. Try one of these instead.",
   "crumb": "Page not found"
+ },
+ "holidays": {
+  "mode": "closed",
+  "overrides": {}
+ },
+ "closures": [],
+ "notices": [],
+ "booking": {
+  "daysAhead": 90,
+  "takenPercent": 20,
+  "leadMinutes": 0
+ },
+ "forms": {
+  "endpoint": "",
+  "note": "Paste your Formspree (or similar) address between the quote marks to make the reservation, enquiry, careers, wholesale, newsletter and gift card forms send real emails. Leave empty to keep the demo behaviour."
  }
 }

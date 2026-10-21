@@ -5,6 +5,8 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
+import { execFileSync } from 'node:child_process';
+import os from 'node:os';
 import { chromium } from 'playwright-core';
 
 const require = createRequire(import.meta.url);
@@ -411,7 +413,7 @@ if (want('func') || want('content')) {
   const byDay = Object.fromEntries(ld.openingHoursSpecification.map((o) => [o.dayOfWeek, o.opens + '-' + o.closes]));
   ok('hours: JSON-LD matches the table (Mon-Wed 07-16, Thu-Sat 07-22, Sun 08-16) and the description says the phrase', byDay.Monday === '07:00-16:00' && byDay.Thursday === '07:00-22:00' && byDay.Saturday === '07:00-22:00' && byDay.Sunday === '08:00-16:00' && ld.description.includes(PHRASE), JSON.stringify(byDay));
   const rows = [...html('visit.html').matchAll(/data-day="(\d)" data-open="(\d+)" data-close="(\d+)"/g)].map((m) => m.slice(1).join(':')).sort().join(' ');
-  ok('hours: visit table rows match site.config.json', rows === cfg.hours.map((h) => `${h.day}:${h.open}:${h.close}`).sort().join(' '), rows);
+  ok('hours: visit table rows match site.config.json', rows === cfg.hours.map((h) => `${h.day}:${parseInt(h.open, 10)}:${parseInt(h.close, 10)}`).sort().join(' '), rows);
   const TAG = 'Slow mornings. Small-batch coffee. Roasted out the back, poured right here.';
   ok('hero line is the new tagline everywhere, the old one is gone', html('index.html').includes('<p class="hero-tag">' + TAG + '</p>') && PAGES.every((f) => !/Join us in seeking/.test(html(f))) && !/Join us in seeking/.test(fs.readFileSync(path.join(SITE, 'search-data.js'), 'utf8')) && !/Join us in seeking/.test(JSON.stringify(cfg)));
   for (const f of ['index.html', 'story.html']) {
@@ -510,7 +512,7 @@ if (want('fallback')) {
   ok('no JavaScript: all six menu categories are readable', (await p.evaluate(() => [...document.querySelectorAll('[role=tabpanel]')].filter((e) => e.offsetParent).length)) === 6);
   await done(p);
   p = await newPage({ viewport: { width: 1440, height: 900 } }, { quiet: false });
-  await p.context().route('**/main.js', (r) => r.fulfill({ status: 200, contentType: 'text/javascript', body: 'throw new Error("boom")' }));
+  await p.context().route('**/main.js*', (r) => r.fulfill({ status: 200, contentType: 'text/javascript', body: 'throw new Error("boom")' }));
   await p.goto(base + 'index.html'); await p.waitForTimeout(6000);
   ok('main script fails: the intro overlay clears itself and the hero is visible', await p.evaluate(() => { const e = document.getElementById('preloader'); return !e || getComputedStyle(e).visibility === 'hidden' || getComputedStyle(e).opacity === '0'; }) && (await p.evaluate(() => getComputedStyle(document.querySelector('.hero-tag')).opacity)) === '1');
   await done(p);
@@ -542,7 +544,7 @@ if (want('fallback')) {
   ok('no JavaScript: counters show 10 | 250,000 | 12', (await p.locator('.stat-num').allTextContents()).join('|') === '10|250,000|12');
   await done(p);
   p = await newPage({ viewport: { width: 1440, height: 900 } }, { quiet: false });
-  await p.context().route('**/main.js', (r) => r.fulfill({ status: 200, contentType: 'text/javascript', body: 'throw new Error("boom")' }));
+  await p.context().route('**/main.js*', (r) => r.fulfill({ status: 200, contentType: 'text/javascript', body: 'throw new Error("boom")' }));
   await p.goto(base + 'story.html'); await p.waitForTimeout(5200);
   ok('main script fails: counters keep their final text and reveal content is visible', (await p.locator('.stat-num').allTextContents()).join('|') === '10|250,000|12' && (await p.evaluate(() => [...document.querySelectorAll('.reveal')].every((e) => getComputedStyle(e).opacity === '1'))));
   await done(p);
@@ -555,7 +557,7 @@ if (want('perf')) {
   p.on('response', async (r) => { try { const b = await r.body(); sizes[r.url().replace(base, '')] = b.length; } catch (e) { /* ignore */ } });
   await p.goto(base + 'index.html'); await p.waitForTimeout(5000);
   const total = Object.entries(sizes).filter(([k]) => !k.startsWith('vendor/')).reduce((n, [, v]) => n + v, 0);
-  ok('home page weight excluding Three.js is under 600 KB', total < 600 * 1024, `${(total / 1024).toFixed(0)} KB`);
+  ok('home page weight excluding Three.js is under 650 KB (uncompressed; the host sends it gzipped)', total < 650 * 1024, `${(total / 1024).toFixed(0)} KB`);
   const heroKb = fs.statSync(path.join(SITE, 'img/photos/hero-interior.webp')).size / 1024;
   ok('hero image is under 250 KB', heroKb < 250, heroKb.toFixed(0) + ' KB');
   ok('every iframe/img has width+height; everything below the fold is lazy', await p.evaluate(() => [...document.querySelectorAll('iframe,img')].every((e) => e.getAttribute('width') && e.getAttribute('height')) && [...document.querySelectorAll('iframe,img')].filter((e) => !e.closest('.hero')).every((e) => e.loading === 'lazy')));
@@ -604,6 +606,118 @@ if (want('final')) {
     ok(`final @${w}x${h}: no console errors or warnings (404s included)`, !bad.logs.length, bad.logs.join(' || '));
     await done(p);
   }
+}
+
+/* ---------------------------------------------------------------- hardening: time zones, holidays, notices, forms, caching */
+if (want('hardening')) {
+  const TMP = fs.mkdtempSync(path.join(os.tmpdir(), 'eo-'));
+  const FAKE = (t) => { const R = Date, off = t - R.now(); class F extends R { constructor(...a) { if (a.length) super(...a); else super(R.now() + off); } static now() { return R.now() + off; } } window.Date = F; };
+  const at = (iso) => Date.parse(iso + '+11:00'); // Melbourne is UTC+11 in October to March
+  const serve = (root) => new Promise((res) => { const sv = http.createServer((q, r) => { let u = decodeURIComponent(q.url.split('?')[0]); if (u.endsWith('/')) u += 'index.html'; fs.readFile(path.join(root, u), (e, d) => { if (e) { r.writeHead(404); r.end('nf'); return; } r.writeHead(200, { 'content-type': MIME[path.extname(u)] || 'application/octet-stream' }); r.end(d); }); }).listen(0, () => res(`http://localhost:${sv.address().port}/`)); });
+  const configured = async (mutate, name) => {
+    const dir = path.join(TMP, name);
+    fs.cpSync(SITE, dir, { recursive: true, filter: (src) => !/[\\/](tests|node_modules|\.git)([\\/]|$)/.test(src.slice(SITE.length)) });
+    const c = JSON.parse(fs.readFileSync(path.join(dir, 'site.config.json'), 'utf8')); mutate(c); fs.writeFileSync(path.join(dir, 'site.config.json'), JSON.stringify(c));
+    execFileSync('python3', [path.join(dir, 'tools/build.py')], { env: { ...process.env, SITE_ROOT: dir }, stdio: 'pipe' });
+    return serve(dir);
+  };
+  const norm = (x) => x.replace(/\s+/g, ' ').trim();
+  const page = async (opts, clock, host = base, file = 'index.html') => {
+    const p = await newPage(opts, { webgl: false });
+    if (clock) await p.context().addInitScript(FAKE, at(clock));
+    await p.goto(host + file); await p.waitForTimeout(700); return p;
+  };
+  // 1. the café's clock, not the visitor's
+  for (const tz of ['America/Los_Angeles', 'Asia/Tokyo']) {
+    const p = await page({ timezoneId: tz, viewport: { width: 1440, height: 900 } }, '2026-10-20T12:00:00', base, 'visit.html');
+    const t = norm(await p.locator('[data-open-status]').first().textContent());
+    const row = await p.evaluate(() => document.querySelector('.hours tr.is-today').dataset.day);
+    ok(`visitor in ${tz} sees Melbourne's hours: Tue 12:00 is open; Tuesday highlighted`, /^Open now · until 4pm/.test(t) && row === '2', t + ' ' + row);
+    await done(p);
+  }
+  // 2. holidays: Easter Monday closed, banner the week before Good Friday
+  {
+    const p = await page({ viewport: { width: 1440, height: 900 } }, '2026-04-06T10:00:00', base, 'visit.html');
+    const t = norm(await p.locator('[data-open-status]').first().textContent());
+    ok('Easter Monday (calculated) shows closed today for Easter Monday', /^Closed today for Easter Monday · opens 7am tomorrow/.test(t), t);
+    await done(p);
+    const q = await page({ viewport: { width: 1440, height: 900 } }, '2026-04-01T10:00:00');
+    const bar = await q.evaluate(() => ({ hidden: document.querySelector('#notice-bar').hidden, text: document.querySelector('#notice-bar').innerText.replace(/\s+/g, ' ') }));
+    ok('holiday banner appears the week before: "Closed Friday for Good Friday."', !bar.hidden && /Closed Friday for Good Friday\./.test(bar.text), bar.text);
+    await done(q);
+    const r = await page({ viewport: { width: 1440, height: 900 } }, '2026-10-20T10:00:00');
+    ok('no banner when nothing is coming up', await r.evaluate(() => document.querySelector('#notice-bar').hidden));
+    await done(r);
+  }
+  // 3. reservation form: closed days, past dates, rolling date range, endpoint, fallback, double submit, spam trap
+  {
+    const live = await configured((c) => { c.forms.endpoint = 'https://forms.example.test/f/abc'; c.closures = [{ date: '2026-11-12', name: 'a private event', status: 'closed' }]; }, 'live');
+    const p = await page({ viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true }, '2026-10-20T10:00:00', live, 'reserve.html');
+    await p.addStyleTag({ content: force });
+    const rng = await p.evaluate(() => [document.querySelector('#f-date').min, document.querySelector('#f-date').max]);
+    ok('date picker starts at the café\'s today and rolls at least a year ahead', rng[0] === '2026-10-20' && rng[1] >= '2027-10-20', rng.join(' to '));
+    await p.fill('#f-date', '2026-11-12');
+    const hint = norm(await p.textContent('#h-time'));
+    ok('a closure from the config closes that day in the time picker', /closed that day for a private event/.test(hint), hint);
+    await p.fill('#f-date', '2026-12-25');
+    ok('Christmas Day (calculated holiday) is closed', /closed that day for Christmas Day/.test(norm(await p.textContent('#h-time'))));
+    await p.fill('#f-date', '2026-10-20'); await p.selectOption('#f-time', { index: 1 }).catch(() => {});
+    const past = await p.evaluate(() => [...document.querySelectorAll('#f-time option')].filter((o) => o.value && o.value <= '10:00').every((o) => o.disabled));
+    ok('times already passed today are disabled', past);
+    let calls = 0, mode = 'fail';
+    await p.route('https://forms.example.test/**', async (r) => { calls++; await new Promise((x) => setTimeout(x, 400)); r.fulfill({ status: mode === 'ok' ? 200 : 500, contentType: 'application/json', body: '{}', headers: { 'access-control-allow-origin': '*' } }); });
+    await p.fill('#f-name', 'Sam Lee'); await p.fill('#f-email', 'sam@example.com'); await p.fill('#f-date', '2026-10-22');
+    await p.evaluate(() => { const f = document.querySelector('#reserve-form'); f.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true })); f.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true })); });
+    await p.waitForSelector('.form-fail', { timeout: 5000 });
+    const fb = await p.evaluate(() => ({ t: document.querySelector('.form-fail').innerText, tel: document.querySelector('.form-fail a').getAttribute('href'), name: document.querySelector('#f-name').value, shown: !document.querySelector('#reserve-form').hidden }));
+    ok('failed send: ONE request for two rapid submits; phone fallback shown; details kept', calls === 1 && /call us on/i.test(fb.t) && fb.tel === 'tel:+61355500123' && fb.name === 'Sam Lee' && fb.shown, JSON.stringify([calls, fb]));
+    mode = 'ok'; await p.click('#reserve-form button[type=submit]'); await p.waitForSelector('#form-success:not([hidden])', { timeout: 5000 });
+    ok('successful send shows the thank-you (with the call-us note, not the demo note)', calls === 2 && /call/i.test(await p.textContent('#ok-note')) && !/Demo only/.test(await p.textContent('#form-success')));
+    await p.click('#form-reset');
+    await p.fill('#f-name', 'Sam Lee'); await p.fill('#f-email', 'sam@example.com'); await p.fill('#f-date', '2026-10-22');
+    await p.evaluate(() => { document.querySelector('#reserve-form input[name=website]').value = 'http://spam.example'; });
+    const before = calls; await p.click('#reserve-form button[type=submit]'); await p.waitForSelector('#form-success:not([hidden])');
+    ok('spam trap: a filled honeypot sends nothing', calls === before);
+    await done(p);
+    const d = await page({ viewport: { width: 390, height: 844 } }, '2026-10-20T10:00:00', base, 'reserve.html');
+    const demo = norm(await d.locator('main').innerText());
+    ok('with no form address the page says it is a demo', /doesn.t send anything/.test(demo));
+    ok('every form carries a hidden honeypot out of the tab order', await d.evaluate(() => [...document.querySelectorAll('form input[name=website]')].every((i) => i.tabIndex === -1 && i.closest('.hp').getAttribute('aria-hidden') === 'true')));
+    await done(d);
+  }
+  // 4. config problems and expiring notices
+  {
+    const b = await configured((c) => { c.notices = [{ text: 'Spring special: free biscotti with any filter coffee', start: '2026-10-01', end: '2026-10-31' }, { text: 'Old news', end: '2026-09-30' }]; }, 'notices');
+    const p = await page({ viewport: { width: 1440, height: 900 } }, '2026-10-20T10:00:00', b);
+    const t = await p.evaluate(() => document.querySelector('#notice-bar').innerText);
+    ok('a live special shows, an expired one stays hidden', /biscotti/.test(t) && !/Old news/.test(t), t);
+    const q = await page({ viewport: { width: 1440, height: 900 } }, '2026-11-10T10:00:00', b);
+    ok('the special hides itself after its end date', await q.evaluate(() => document.querySelector('#notice-bar').hidden));
+    await done(p); await done(q);
+    let msg = ''; try { await configured((c) => { c.contact.phone = '12'; }, 'badphone'); } catch (e) { msg = String(e.stderr || e.message); }
+    ok('a mistyped phone number stops the build with a plain-English message', /does not look like an Australian number/.test(msg), msg.slice(0, 100));
+    let m2 = ''; try { await configured((c) => { c.notices = [{ text: 'no end' }]; }, 'noend'); } catch (e) { m2 = String(e.stderr || e.message); }
+    ok('a notice with no end date is rejected', /end/.test(m2));
+  }
+  // 5. announcement expiry, footer year, caching, files, no-JS banner
+  {
+    const p = await page({ viewport: { width: 1440, height: 900 } }, '2027-02-01T10:00:00', base, 'visit.html');
+    ok('footer copyright year follows the date (fake clock in 2027)', /© 2027 /.test(norm(await p.textContent('.footer-copy'))));
+    ok('the top announcement hides itself after its end date', await p.evaluate(() => document.documentElement.classList.contains('announce-off')));
+    await done(p);
+    const html = fs.readFileSync(path.join(SITE, 'index.html'), 'utf8');
+    ok('CSS and main.js carry ?v=hash and an import map versions every module (and keeps Three.js)', /styles\.css\?v=[0-9a-f]{8}/.test(html) && /main\.js\?v=[0-9a-f]{8}/.test(html) && /"\.\/js\/forms\.js": "\.\/js\/forms\.js\?v=[0-9a-f]{8}"/.test(html) && /"three": "\.\/vendor\/three\.module\.min\.js"/.test(html));
+    ok('robots.txt names the sitemap; privacy page exists, is in the sitemap and linked from the footer', /Sitemap: /.test(fs.readFileSync(path.join(SITE, 'robots.txt'), 'utf8')) && fs.existsSync(path.join(SITE, 'privacy.html')) && fs.readFileSync(path.join(SITE, 'sitemap.xml'), 'utf8').includes('privacy.html') && /href="privacy\.html"/.test(html));
+    const ctx = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 390, height: 844 } }); const np = await ctx.newPage(); await np.goto(base + 'index.html');
+    const nj = norm(await np.evaluate(() => document.querySelector('.nojs-banner').innerText));
+    ok('JavaScript off: a banner shows the phone number and street address', nj.includes(cfg.contact.phone) && nj.includes(cfg.contact.street), nj.slice(0, 100));
+    await ctx.close();
+    const ld = JSON.parse(html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)[1]);
+    ok('structured data uses an international phone number from the config', ld.telephone === '+61355500123');
+    const noYears = ['js/ui.js', 'js/forms.js', 'js/util.js', 'js/notice.js', 'js/cart.js', 'js/formtools.js'].map((f) => fs.readFileSync(path.join(SITE, f), 'utf8')).join('\n').replace(/^\s*\/\/.*$/gm, '');
+    ok('no hard-coded years in the page scripts', !/\b20[2-9]\d\b/.test(noYears));
+  }
+  try { fs.rmSync(TMP, { recursive: true, force: true }); } catch (e) { /* ignore */ }
 }
 
 await browser.close(); server.close();

@@ -1,5 +1,7 @@
 // Pick-up / shop order drawer (demo): items live in localStorage, nothing is sent anywhere.
-import { $, $$, site, money, store, toast, modal, cafeNow, hoursFor, fmtHour, escapeHtml } from './util.js';
+import { $, $$, site, money, store, toast, modal, nowCafe, resolveDay, fmtHour, escapeHtml } from './util.js';
+import { addDays, DAY_NAMES } from './clock.js';
+import { addHoneypot, tripped, guard, send, phoneFallback } from './formtools.js';
 
 const KEY = 'eo-cart';
 let items = [];
@@ -66,8 +68,8 @@ function add(id, name, price, btn) {
 /** Pick-up times: ASAP plus the next slots inside opening hours (in the café's time zone). */
 function fillTimes() {
   const sel = $('#cart-when');
-  const { day, hour } = cafeNow();
-  const today = hoursFor(day);
+  const n = nowCafe(), r = resolveDay(n.key), hour = n.mins / 60;
+  const today = r.closed ? null : { open: r.open / 60, close: r.close / 60 };
   const opts = [];
   if (today && hour >= today.open && hour < today.close - 0.5) opts.push('<option value="asap">As soon as possible (about 15 minutes)</option>');
   const start = Math.max(Math.ceil((hour + 0.5) * 4) / 4, today ? today.open : 0);
@@ -75,7 +77,12 @@ function fillTimes() {
     const h = Math.floor(t), m = Math.round((t - h) * 60);
     opts.push(`<option value="${h}:${m}">Today at ${(h % 12) || 12}:${String(m).padStart(2, '0')}${h < 12 ? 'am' : 'pm'}</option>`);
   }
-  if (!opts.length) { const nd = hoursFor((day + 1) % 7); opts.push(`<option value="tomorrow">Tomorrow at ${fmtHour(nd.open)}</option>`); }
+  if (!opts.length) {
+    for (let i = 1; i <= 21; i++) {
+      const k = addDays(n.key, i), nr = resolveDay(k);
+      if (!nr.closed) { opts.push(`<option value="tomorrow">${i === 1 ? 'Tomorrow' : DAY_NAMES[new Date(k + 'T12:00:00Z').getUTCDay()]} at ${fmtHour(nr.open)}</option>`); break; }
+    }
+  }
   sel.innerHTML = opts.join('');
 }
 
@@ -98,23 +105,35 @@ list.addEventListener('click', (e) => {
   save(); render();
   if (items.length) { const again = $(`[data-id="${CSS.escape(li.dataset.id)}"] [data-qty="1"]`, list); if (again) again.focus(); } else $('#cart-close').focus();
 });
-form.addEventListener('submit', (e) => {
+addHoneypot(form);
+const placeBtn = $('button[type=submit]', form), busy = guard(placeBtn);
+const orderFail = document.createElement('div'); orderFail.setAttribute('aria-live', 'assertive'); placeBtn.after(orderFail);
+form.addEventListener('submit', async (e) => {
   e.preventDefault();
-  const name = $('#cart-name');
-  const err = $('#e-cart-name');
-  if (name.value.trim().length < 2) {
-    err.textContent = 'Please add a name so we can call it out when your order is ready.';
-    name.setAttribute('aria-invalid', 'true'); name.focus(); return;
-  }
-  err.textContent = ''; name.setAttribute('aria-invalid', 'false');
-  const whenOpt = $('#cart-when').selectedOptions[0];
-  const when = whenOpt.textContent.toLowerCase();
-  saveOrder({ name: name.value.trim(), pickup: whenOpt.textContent, items: items.map((i) => ({ name: i.name, qty: i.qty, price: i.price })), total: Number(total().toFixed(2)) });
-  $('#done-name').textContent = name.value.trim().split(' ')[0];
-  $('#done-detail').textContent = `Your order of ${count()} ${count() === 1 ? 'item' : 'items'} (${money(total())}) would be ready ${when}.`;
-  items = []; save();
-  done.hidden = false; render();
-  done.focus();
+  if (!busy.start()) return; // a second click while the first is still being handled
+  try {
+    orderFail.innerHTML = '';
+    const name = $('#cart-name');
+    const err = $('#e-cart-name');
+    if (name.value.trim().length < 2) {
+      err.textContent = 'Please add a name so we can call it out when your order is ready.';
+      name.setAttribute('aria-invalid', 'true'); name.focus(); return;
+    }
+    err.textContent = ''; name.setAttribute('aria-invalid', 'false');
+    const whenOpt = $('#cart-when').selectedOptions[0];
+    const when = whenOpt.textContent.toLowerCase();
+    const order = { name: name.value.trim(), pickup: whenOpt.textContent, items: items.map((i) => ({ name: i.name, qty: i.qty, price: i.price })), total: Number(total().toFixed(2)) };
+    if (!tripped(form)) {
+      const res = await send({ formType: 'pickup-order', _subject: `Pick-up order for ${order.name}`, ...order });
+      if (!res.ok) { orderFail.innerHTML = phoneFallback(); return; }
+      saveOrder(order);
+    }
+    $('#done-name').textContent = name.value.trim().split(' ')[0];
+    $('#done-detail').textContent = `Your order of ${count()} ${count() === 1 ? 'item' : 'items'} (${money(total())}) would be ready ${when}.`;
+    items = []; save();
+    done.hidden = false; render();
+    done.focus();
+  } finally { busy.stop(); }
 });
 // keep several open tabs in sync
 window.addEventListener('storage', (e) => { if (e.key === KEY) { try { items = JSON.parse(e.newValue || '[]'); } catch (_) { items = []; } render(); } });

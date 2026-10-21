@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  
+  <title>Privacy and cookies | Ember &amp; Oak Coffee (concept demo v2)</title>
+  <meta name="description" content="What this website stores in your browser, what it does not collect, and how to contact us about your information.">
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#120D0A">
+  <link rel="canonical" href="https://kirithikbala21-jpg.github.io/3D-demo-sites/cafe-demo-v2/privacy.html">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Privacy and cookies | Ember &amp; Oak Coffee (concept demo v2)">
+  <meta property="og:description" content="What this website stores in your browser, what it does not collect, and how to contact us about your information.">
+  <meta property="og:url" content="https://kirithikbala21-jpg.github.io/3D-demo-sites/cafe-demo-v2/privacy.html">
+  <meta property="og:image" content="https://kirithikbala21-jpg.github.io/3D-demo-sites/cafe-demo-v2/img/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="A steaming coffee cup above the Ember &amp; Oak wordmark on a dark espresso background">
+  <meta property="og:site_name" content="Ember &amp; Oak Coffee">
+  <meta property="og:locale" content="en_AU">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Privacy and cookies | Ember &amp; Oak Coffee (concept demo v2)">
+  <meta name="twitter:description" content="What this website stores in your browser, what it does not collect, and how to contact us about your information.">
+  <meta name="twitter:image" content="https://kirithikbala21-jpg.github.io/3D-demo-sites/cafe-demo-v2/img/og.png">
+  <link rel="icon" href="favicon.ico" sizes="16x16 32x32 48x48">
+  <link rel="icon" href="img/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="preload" href="fonts/montserrat-latin.woff2" as="font" type="font/woff2" crossorigin>
+  
+  <link rel="stylesheet" href="vendor/lenis-1.1.18.css?v=7720ea7b">
+  <link rel="stylesheet" href="styles.css?v=04bc79d0">
+  <script type="importmap">{"imports": {"./js/cart.js": "./js/cart.js?v=e461db35", "./js/clock.js": "./js/clock.js?v=0d812e35", "./js/forms.js": "./js/forms.js?v=8d2c498f", "./js/formtools.js": "./js/formtools.js?v=b497119e", "./js/hero.js": "./js/hero.js?v=53749c4a", "./js/motion.js": "./js/motion.js?v=60d20297", "./js/notice.js": "./js/notice.js?v=aea4bad6", "./js/search.js": "./js/search.js?v=1c9096f0", "./js/sound.js": "./js/sound.js?v=8f6d4c9c", "./js/ui.js": "./js/ui.js?v=6bb0b26f", "./js/util.js": "./js/util.js?v=897e59b5", "./scene.js": "./scene.js?v=713350ad", "./search-data.js": "./search-data.js?v=34efb359", "three": "./vendor/three.module.min.js", "three/addons/": "./vendor/addons/"}}</script>
+  <style>:root{--black:#0D0907;--wine:#E0782B;--wine-deep:#F29049;--wine-night:#1C1511;--gold-light:#E0782B;--gold-text:#E0782B;--cream:#120D0A;--tint:#17110D;--ink:#F3E9DA}</style>
+  
+  <noscript><style>
+    /* Without JavaScript: show the navigation and every menu category as plain content. */
+    .preloader, .nav-toggle, .icon-btn, .announce-close, [data-sound] { display: none !important; }
+    .mobile-nav[hidden] { display: block !important; position: static !important; animation: none; padding-top: calc(var(--header-h) + 8px) !important; padding-bottom: 8px !important; }
+    .tablist-wrap { display: none; }
+    .menu-panel[hidden] { display: block !important; }
+    .menu-panel::before { content: attr(data-label); display: block; font: 600 1.6rem var(--font); margin: 32px 0 8px; }
+    .menu-panel:first-of-type::before { margin-top: 0; }
+  </style></noscript>
+  <script>
+    document.documentElement.classList.add('js');
+    // A dismissed announcement stays dismissed (set before first paint, so there is no flash and no layout jump).
+    // The top bar hides itself after its end date (config: announcement.end), judged in the café's own time zone.
+    var annoOver = false; try { annoOver = new Intl.DateTimeFormat('en-CA', { timeZone: 'Australia/Melbourne' }).format(new Date()) > '2026-12-31'; } catch (e) {}
+    if (annoOver) { document.documentElement.classList.add('announce-off'); document.documentElement.style.setProperty('--ticker-h', '0px'); }
+    try { if (localStorage.getItem('eo-announce') === 'off') { document.documentElement.classList.add('announce-off'); document.documentElement.style.setProperty('--ticker-h', '0px'); } } catch (e) {}
+    // Safety net: never leave the hero hidden if the main script fails to start.
+    setTimeout(function () { var d = document.documentElement; if (!d.classList.contains('is-ready')) d.classList.add('is-ready', 'is-failsafe'); }, 4500);
+  </script>
+</head>
+<body class="page-privacy">
+  
+  <a class="skip-link" href="#main">Skip to content</a>
+  <noscript><p class="nojs-banner">JavaScript is switched off, so live opening times and ordering are unavailable. Please call <a href="tel:+61355500123">03 5550 0123</a> or visit us at 12 Example Street, Melbourne VIC 3000. Hours: 7 days, from 7am (Sundays 8am).</p></noscript>
+  <div class="progress" aria-hidden="true"><span></span></div>
+
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <symbol id="logo-mark" viewBox="0 0 32 32">
+      <path d="M16 3c1.200 4.600 7 7.600 7 13.200a7 7 0 0 1-14 0c0-3 1.600-5 3-6.500.5 1.600 1.200 2.500 2.100 3C14.300 10.600 14.700 6.800 16 3z" fill="currentColor"/>
+      <path d="M16 29c-3.800-1-6-3.600-6-7 3.400.2 5.400 1.600 6 4 .6-2.400 2.600-3.800 6-4 0 3.400-2.200 6-6 7z" fill="none" stroke="currentColor" stroke-width="1.400"/>
+    </symbol>
+    <symbol id="star" viewBox="0 0 24 24">
+      <path d="M12 2.500l2.900 6.300 6.900.8-5.100 4.700 1.400 6.800L12 17.700l-6.100 3.400 1.400-6.800-5.100-4.700 6.900-.8z" fill="currentColor"/>
+    </symbol>
+  </svg>
+
+  <!-- Announcement bar: one calm, static line. Dismissible; the choice is remembered. -->
+  <div class="announce" id="announce" role="region" aria-label="Announcement" data-end="2026-12-31">
+    <p class="announce-text"><span class="a-short">New: Guji Natural now pouring</span><span class="a-text">New: Ethiopia Guji Natural is now pouring</span><span class="a-hours"> &middot; Open 7 days, from 7am (Sundays 8am)</span></p>
+    <button class="announce-close" type="button" aria-label="Dismiss announcement">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M3 3l10 10M13 3L3 13"/></svg>
+    </button>
+  </div>
+
+  <div class="notice-bar" id="notice-bar" role="region" aria-label="Notices" hidden></div>
+
+  <header class="site-header" id="top">
+    <div class="header-inner">
+      <a class="brand" href="index.html" aria-label="Ember &amp; Oak Coffee, home">
+        <svg width="26" height="26" aria-hidden="true" focusable="false"><use href="#logo-mark"/></svg>
+      </a>
+      <div class="header-actions">
+        <button class="icon-btn" type="button" id="search-open" aria-label="Search the site" aria-haspopup="dialog">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+        </button>
+        <button class="icon-btn cart-btn" type="button" id="cart-open" aria-label="Your order, empty" aria-haspopup="dialog">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1.500 12h-11zM9 8a3 3 0 0 1 6 0"/></svg>
+          <span class="cart-count" id="cart-count" aria-hidden="true" hidden>0</span>
+        </button>
+        <a class="header-link" href="reserve.html">Reserve</a>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="mobile-nav" aria-label="Open menu">
+          <span class="bars" aria-hidden="true"><span></span><span></span><span></span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="mobile-nav" id="mobile-nav" role="dialog" aria-modal="true" aria-label="Site menu" hidden>
+    <div class="overlay-inner">
+      <nav aria-label="Main">
+        <ul>
+          <li><a href="index.html"><span class="n" aria-hidden="true">01</span>Home</a></li><li><a href="menu.html"><span class="n" aria-hidden="true">02</span>Menu</a></li><li><a href="shop.html"><span class="n" aria-hidden="true">03</span>Shop</a></li><li><a href="experiences.html"><span class="n" aria-hidden="true">04</span>Experiences</a></li><li><a href="story.html"><span class="n" aria-hidden="true">05</span>Our story</a></li><li><a href="journal.html"><span class="n" aria-hidden="true">06</span>Journal</a></li><li><a href="visit.html"><span class="n" aria-hidden="true">07</span>Visit</a></li>
+        </ul>
+        <a class="btn btn-primary" href="reserve.html">Reserve</a>
+        <ul class="overlay-sub" aria-label="More">
+          <li><a href="sustainability.html">Sustainability</a></li>
+          <li><a href="wholesale.html">Wholesale</a></li>
+          <li><a href="press.html">Press</a></li>
+          <li><a href="careers.html">Careers</a></li>
+        </ul>
+      </nav>
+      <div class="overlay-info">
+        <p class="label">Find us</p>
+        <p>12 Example Street<br>Melbourne VIC 3000</p>
+        <p><a href="tel:+61355500123">03 5550 0123</a><br><a href="mailto:hello@example.com">hello@example.com</a></p>
+        <p class="label">Hours</p>
+        <p>7 days, from 7am (Sundays 8am)<br>Closing 4pm Mon &ndash; Wed, 10pm Thu &ndash; Sat, 4pm Sun</p>
+        <p class="label">Atmosphere</p>
+        <p><button type="button" class="sound-btn" data-sound aria-pressed="false">Ambient sound: <span data-sound-state>Off</span></button></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Site search -->
+  <div class="search" id="search" role="dialog" aria-modal="true" aria-label="Search the site" hidden>
+    <div class="search-inner">
+      <form id="search-form" role="search" novalidate>
+        <label class="sr-only" for="search-input">Search the menu, shop and pages</label>
+        <input id="search-input" type="search" placeholder="Search the menu, shop and pages" autocomplete="off" spellcheck="false">
+        <button type="button" class="icon-btn search-close" id="search-close" aria-label="Close search">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg>
+        </button>
+      </form>
+      <p class="search-hint" id="search-hint" aria-live="polite">Try &ldquo;flat white&rdquo;, &ldquo;gluten free&rdquo; or &ldquo;parking&rdquo;.</p>
+      <ul class="search-results" id="search-results"></ul>
+    </div>
+  </div>
+
+  <!-- Order / cart drawer (demo) -->
+  <div class="scrim" id="scrim" hidden></div>
+  <aside class="cart" id="cart" role="dialog" aria-modal="true" aria-labelledby="cart-title" hidden>
+    <div class="cart-head">
+      <h2 id="cart-title">Your order</h2>
+      <button class="icon-btn" type="button" id="cart-close" aria-label="Close your order">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg>
+      </button>
+    </div>
+    <div class="cart-body">
+      <p class="cart-empty" id="cart-empty">Your order is empty. Add something from the <a href="menu.html">menu</a> or the <a href="shop.html">shop</a>.</p>
+      <ul class="cart-list" id="cart-list"></ul>
+    </div>
+    <form class="cart-foot" id="cart-form" novalidate hidden>
+      <div class="cart-total"><span>Total</span><strong id="cart-total">$0.00</strong></div>
+      <div class="field">
+        <label for="cart-name">Name for the order</label>
+        <input id="cart-name" name="name" type="text" autocomplete="name" aria-describedby="e-cart-name">
+        <p class="error" id="e-cart-name" aria-live="polite"></p>
+      </div>
+      <div class="field">
+        <label for="cart-when">Pick-up time</label>
+        <select id="cart-when" name="when"></select>
+      </div>
+      <p class="demo-note" id="cart-demo-note"><strong>Demo checkout.</strong> No payment is taken and no order is sent. Your order is only saved in this browser.</p>
+      <button class="btn btn-primary btn-block" type="submit">Place order (demo)</button>
+      <button class="cart-clear" type="button" id="cart-clear">Clear order</button>
+      <!-- DEMO ONLY: send the order to your ordering system or payment provider here (see main.js / cart.js). -->
+    </form>
+    <div class="cart-done" id="cart-done" role="status" tabindex="-1" hidden>
+      <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M7.500 12.500l3 3 6-7"/></svg>
+      <h3>Thanks, <span id="done-name">friend</span>!</h3>
+      <p id="done-detail"></p>
+      <p class="note">Demo only: no order was sent and nothing was charged. A copy is saved in this browser only.</p>
+      <button class="btn btn-secondary" type="button" id="done-close">Close</button>
+    </div>
+  </aside>
+
+  <main id="main">
+
+    <section class="page-hero" aria-labelledby="page-title">
+      <div class="container">
+        <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="index.html">Home</a></li><li aria-current="page">Privacy</li></ol></nav>
+        <p class="eyebrow">Privacy</p>
+        <h1 id="page-title" data-split>Privacy and cookies</h1>
+        <p class="lead">What we store, what we do not collect, and how to reach us.</p>
+      </div>
+    </section>
+
+    <section class="section" aria-label="Privacy">
+      <div class="container legal">
+        <p class="note">This site is an unofficial concept demo for a fictional café. It is built to collect as little as possible.</p>
+        <article id="privacy" class="reveal">
+          <h2>What is stored on your device</h2>
+          <ul>
+            <li><strong>Your cookie choice</strong> (accept or decline), so the notice does not come back. Key: <code>eo-cookie</code>.</li>
+            <li><strong>Your current order</strong> and any demo reservation you make, only if you make one. They stay in your own browser (keys <code>eo-cart</code> and <code>eo-reservations</code>). Nothing is sent to the café in this demo.</li>
+            <li><strong>Small preferences</strong>: whether you dismissed the top notice and whether ambient sound is on.</li>
+          </ul>
+          <p>You can clear all of this at any time in your browser settings (clear site data).</p>
+        </article>
+        <article id="not-collected" class="reveal">
+          <h2>What we do not do</h2>
+          <ul>
+            <li>No analytics, advertising or tracking scripts are loaded. If the café adds analytics later, they will run only after you press Accept.</li>
+            <li>The map loads only when you press its button, and fonts and 3D libraries are hosted on this site.</li>
+            <li>We do not sell or share personal information.</li>
+          </ul>
+        </article>
+        <article id="enquiries" class="reveal">
+          <h2>If you send us an enquiry</h2>
+          <p>Details you give for a booking, order, careers or wholesale enquiry (name, email, phone) are used only to reply to you. Under the Australian Privacy Principles you can ask to see or correct the information we hold about you.</p>
+        </article>
+        <article id="cookies" class="reveal">
+          <h2>Cookies and storage</h2>
+          <p>This site sets no tracking cookies. It uses your browser&rsquo;s local storage only for the small items above.</p>
+          <p><button type="button" class="btn btn-secondary btn-sm" data-cookie-reset>Change my cookie choice</button></p>
+        </article>
+        <article id="contact" class="reveal">
+          <h2>Contact</h2>
+          <p>Questions about privacy: <a href="mailto:hello@example.com">hello@example.com</a> or <a href="tel:+61355500123">03 5550 0123</a>.</p>
+        </article>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a class="brand-wide" href="index.html" aria-label="Ember &amp; Oak, home page">
+            <svg width="30" height="30" aria-hidden="true" focusable="false"><use href="#logo-mark"/></svg>
+            <span class="script">Ember &amp; Oak</span>
+          </a>
+          <p>Small-batch coffee, all-day dining and long tables in the heart of Melbourne.</p>
+        </div>
+        <nav class="footer-col" aria-label="Footer: explore">
+          <h2>Explore</h2>
+          <ul>
+            <li><a href="index.html">Home</a></li><li><a href="menu.html">Menu</a></li><li><a href="shop.html">Shop</a></li><li><a href="experiences.html">Experiences</a></li><li><a href="story.html">Our story</a></li><li><a href="journal.html">Journal</a></li><li><a href="visit.html">Visit</a></li>
+            <li><a href="reserve.html">Reserve</a></li>
+          </ul>
+        </nav>
+        <div class="footer-col">
+          <h2>Visit</h2>
+          <p>12 Example Street<br>Melbourne VIC 3000</p>
+          <p><a href="tel:+61355500123">03 5550 0123</a><br><a href="mailto:hello@example.com">hello@example.com</a></p>
+        </div>
+        <div class="footer-col">
+          <h2>Hours</h2>
+          <p>7 days, from 7am (Sundays 8am)<br>Closing 4pm Mon &ndash; Wed, 10pm Thu &ndash; Sat, 4pm Sun</p>
+        </div>
+      </div>
+      <nav class="footer-legal" aria-label="Footer: more">
+        <a href="sustainability.html">Sustainability</a>
+        <a href="wholesale.html">Wholesale</a>
+        <a href="press.html">Press</a>
+        <a href="careers.html">Careers</a>
+        <a href="privacy.html">Privacy</a>
+        <a href="legal.html#terms">Terms</a>
+        <a href="privacy.html#cookies">Cookies</a>
+        <button type="button" class="sound-btn" data-sound aria-pressed="false">Ambient sound: <span data-sound-state>Off</span></button>
+      </nav>
+      <p class="footer-copy">&copy; <span data-year>2026</span> Ember &amp; Oak Coffee. All rights reserved.</p>
+      <p class="photo-credits">Photo credits: Photo: Unsplash (Hero interior, Roastery, Flat white, Ethiopia pour-over, Cardamom bun, Latte cup, Beans, Espresso shot, Barista pour, Espresso machine, Chemex pour, Espresso flat lay, Latte strip)</p>
+      <div class="footer-bottom">
+        <div class="footer-notes">
+          <p>Concept demo by KB Ventures. Not a real business.</p>
+          <p class="footer-concept">Concept website by KB Ventures. Want one for your business?</p>
+        </div>
+        <a class="back-top" href="#top">Back to top &uarr;</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Mobile quick actions -->
+  <nav class="mobile-cta" aria-label="Quick actions">
+    <a class="btn btn-secondary" href="tel:+61355500123">Call</a>
+    <a class="btn btn-primary" href="reserve.html">Reserve a table</a>
+  </nav>
+
+  <!-- Cookie preferences -->
+  <div class="cookie" id="cookie" role="region" aria-label="Cookie preferences" hidden>
+    <p><strong>Cookies.</strong> None are set unless you accept analytics. <a href="privacy.html#cookies">Details</a></p>
+    <div class="cookie-actions">
+      <button class="btn btn-primary btn-sm" type="button" data-cookie="yes">Accept</button>
+      <button class="btn btn-secondary btn-sm" type="button" data-cookie="no">Decline</button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script type="application/json" id="site-data">{"name": "Ember & Oak", "phone": "03 5550 0123", "phoneHref": "+61355500123", "email": "hello@example.com", "timezone": "Australia/Melbourne", "locale": "en-AU", "currency": "AUD", "city": "Melbourne", "hours": [{"day": 1, "name": "Monday", "open": 420, "close": 960}, {"day": 2, "name": "Tuesday", "open": 420, "close": 960}, {"day": 3, "name": "Wednesday", "open": 420, "close": 960}, {"day": 4, "name": "Thursday", "open": 420, "close": 1320}, {"day": 5, "name": "Friday", "open": 420, "close": 1320}, {"day": 6, "name": "Saturday", "open": 420, "close": 1320}, {"day": 0, "name": "Sunday", "open": 480, "close": 960}], "holidays": {"mode": "closed", "overrides": {}}, "closures": [], "notices": [], "booking": {"daysAhead": 90, "takenPercent": 20, "leadMinutes": 0}, "forms": {"endpoint": ""}, "announceEnd": "2026-12-31", "hoursPhrase": "7 days, from 7am (Sundays 8am)"}</script>
+  <script defer src="vendor/lenis-1.1.18.min.js?v=42bf5944"></script>
+  <script type="module" src="main.js?v=4b44f9a9"></script>
+</body>
+</html>

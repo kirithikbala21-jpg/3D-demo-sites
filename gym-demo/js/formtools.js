@@ -1,0 +1,52 @@
+// Shared form helpers: Australian phone check, spam trap, double-submit guard, sending to the endpoint set in site.config.json
+// (forms.endpoint). With no endpoint the forms stay clearly labelled demos (nothing is sent). Failures are logged and shown with a phone fallback.
+import { site } from './util.js';
+
+export const endpoint = () => ((site.forms || {}).endpoint || '').trim();
+export const isLive = () => !!endpoint();
+
+/** Normalise an Australian phone number: 04xx mobiles, 02/03/07/08 landlines, 13/1300/1800 numbers, +61 forms. Returns digits or null. */
+export function auPhone(v) {
+  let d = String(v).replace(/[\s\-().]/g, '');
+  if (/^\+61/.test(d)) d = '0' + d.slice(3); else if (/^61\d{9}$/.test(d)) d = '0' + d.slice(2);
+  if (!/^\d+$/.test(d)) return null;
+  return (/^04\d{8}$/.test(d) || /^0[2378]\d{8}$/.test(d) || /^1[38]00\d{6}$/.test(d) || /^13\d{4}$/.test(d)) ? d : null;
+}
+export const prettyPhone = (d) => (d.startsWith('04') || /^1[38]00/.test(d) ? `${d.slice(0, 4)} ${d.slice(4, 7)} ${d.slice(7)}` : d.startsWith('13') && d.length === 6 ? `${d.slice(0, 2)} ${d.slice(2)}` : `${d.slice(0, 2)} ${d.slice(2, 6)} ${d.slice(6)}`);
+/** The friendly message for a phone field (empty string = fine). */
+export const phoneMessage = (v) => (!String(v).trim() ? 'We need a phone number in case we have to reach you.' : auPhone(v) ? '' : "That doesn't look like an Australian phone number. Try 0412 345 678 or 07 5550 0188.");
+
+/** A hidden field real people never fill in; if it has a value, treat the submission as spam. */
+export const tripped = (form) => { const hp = form.querySelector('input[name="website"]'); return !!(hp && hp.value.trim()); };
+export function addHoneypot(form) {
+  if (!form || form.querySelector('input[name="website"]')) return;
+  const d = document.createElement('div'); d.className = 'hp'; d.setAttribute('aria-hidden', 'true');
+  d.innerHTML = '<label>Leave this field empty<input type="text" name="website" tabindex="-1" autocomplete="off"></label>';
+  form.append(d);
+}
+/** Stops a second click while the first is being handled. */
+export function guard(button) {
+  let on = false;
+  return {
+    start() { if (on) return false; on = true; if (button) { button.disabled = true; button.setAttribute('aria-busy', 'true'); } return true; },
+    stop() { on = false; if (button) { button.disabled = false; button.removeAttribute('aria-busy'); } },
+  };
+}
+/** Send a payload. Resolves { ok, demo }. Never throws. */
+export async function send(payload) {
+  const url = endpoint();
+  if (!url) return { ok: true, demo: true };
+  try {
+    const ctl = new AbortController(); const t = setTimeout(() => ctl.abort(), 15000);
+    const res = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(payload), signal: ctl.signal });
+    clearTimeout(t);
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    return { ok: true, demo: false };
+  } catch (err) {
+    console.error('[form] could not send the enquiry:', err && err.message ? err.message : err, payload && payload.type);
+    return { ok: false, demo: false };
+  }
+}
+export const phoneFallback = () => `<p class="form-fail" role="alert">Sorry, that did not send. Please call us on <a href="tel:${site.phoneHref}">${site.phone}</a> and we will sort it out.</p>`;
+/** Puts a failure box after the form's submit button (created once). */
+export function failBox(form) { let b = form.querySelector('.fail-box'); if (!b) { b = document.createElement('div'); b.className = 'fail-box'; b.setAttribute('aria-live', 'assertive'); form.append(b); } return b; }

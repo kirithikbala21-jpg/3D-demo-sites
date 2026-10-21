@@ -1,5 +1,5 @@
 // Page behaviour: header, full-screen menu, announcement bar, split-text / reveal / count-up animations, magnetic buttons, hours status, cookies, photo zoom.
-import { $, $$, site, reduceMotion, finePointer, gymNow, hoursFor, fmtHour, store, toast } from './util.js';
+import { $, $$, site, reduceMotion, finePointer, gymNow, clock, CLOCK_CFG, store, toast } from './util.js';
 
 /* ---------- Header shrinks on scroll, progress bar, hero parallax ---------- */
 (() => {
@@ -102,23 +102,32 @@ import { $, $$, site, reduceMotion, finePointer, gymNow, hoursFor, fmtHour, stor
   counters.forEach((el) => cio.observe(el));
 })();
 
-/* ---------- Opening hours: today's row + "Open now" chip, in the gym's own time zone ---------- */
+/* ---------- Opening hours: today's row, "Open now" chip and footer year, in the gym's own time zone (holidays and closures included) ---------- */
 (() => {
-  const { day, hour } = gymNow();
-  $$(`.hours tr[data-day="${day}"]`).forEach((row) => { row.classList.add('is-today'); $('th', row).insertAdjacentHTML('beforeend', ' <span class="today-badge">Today</span>'); });
-  const t = hoursFor(day);
-  let text, isOpen = false;
-  if (t && hour >= t.open && hour < t.close) { text = `Open now · until ${fmtHour(t.close)}`; isOpen = true; }
-  else if (t && hour < t.open) text = `Closed · opens ${fmtHour(t.open)} today`;
-  else { const nx = hoursFor((day + 1) % 7); text = `Closed · opens ${fmtHour(nx.open)} tomorrow`; }
-  let away = false;
-  try { away = Intl.DateTimeFormat().resolvedOptions().timeZone !== site.timezone; } catch (_) { /* ignore */ }
-  if (away) text += ` (${site.timezoneLabel} time)`;
-  ['#open-status', '#open-status-2', '#open-status-3'].forEach((sel) => {
-    const el = $(sel); if (!el) return;
-    el.textContent = text;
-    el.closest('.chip').classList.toggle('is-closed', !isOpen);
-  });
+  const tick = () => {
+    const now = gymNow();
+    $$('.hours tr').forEach((row) => {
+      const today = Number(row.dataset.day) === now.day;
+      row.classList.toggle('is-today', today);
+      const badge = $('.today-badge', row);
+      if (today && !badge) $('th', row).insertAdjacentHTML('beforeend', ' <span class="today-badge">Today</span>');
+      if (!today && badge) badge.remove();
+    });
+    const st = clock.statusAt(now, CLOCK_CFG);
+    let text = st.text;
+    let away = false;
+    try { away = Intl.DateTimeFormat().resolvedOptions().timeZone !== site.timezone; } catch (_) { /* ignore */ }
+    if (away) text += ` (${site.timezoneLabel} time)`;
+    ['#open-status', '#open-status-2', '#open-status-3'].forEach((sel) => {
+      const el = $(sel); if (!el) return;
+      el.textContent = text;
+      el.closest('.chip').classList.toggle('is-closed', st.state !== 'open');
+    });
+    $$('[data-year]').forEach((el) => { el.textContent = String(now.y); });
+  };
+  tick();
+  setInterval(tick, 60000);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) tick(); });
 })();
 
 /* ---------- Magnetic buttons (fine pointers only, never with reduced motion) ---------- */

@@ -2,7 +2,7 @@
 <html lang="en-AU">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   
   <title>Careers | Iron &amp; Ember Athletic Club (concept demo)</title>
   <meta name="description" content="Join the team at Iron &amp; Ember Athletic Club: coaches, front of house and class instructors.">
@@ -29,8 +29,8 @@
   <link rel="manifest" href="site.webmanifest">
   <link rel="preload" href="fonts/barlow-condensed-700.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="fonts/montserrat-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="vendor/lenis-1.1.18.css">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="vendor/lenis-1.1.18.css?v=7720ea7b">
+  <link rel="stylesheet" href="styles.css?v=7cb23ccf">
   
   <noscript><style>
     /* Without JavaScript: show the navigation and every timetable day as plain content. */
@@ -46,11 +46,13 @@
     // Safety net: never leave the hero hidden if the main script fails to start.
     setTimeout(function () { var d = document.documentElement; if (!d.classList.contains('is-ready')) d.classList.add('is-ready', 'is-failsafe'); }, 4500);
   </script>
-  
+  <!-- Import map: Three.js is self-hosted (exact version 0.160.0); every module also gets ?v=hash so an update is never served stale. -->
+  <script type="importmap">{"imports": {"three": "./vendor/three.module.min.js", "three/addons/": "./vendor/addons/", "./js/classes.js": "./js/classes.js?v=85c76944", "./js/clock.js": "./js/clock.js?v=c26c12fc", "./js/forms.js": "./js/forms.js?v=e379c82a", "./js/formtools.js": "./js/formtools.js?v=6b66cb93", "./js/hero.js": "./js/hero.js?v=904f658b", "./js/notice.js": "./js/notice.js?v=3c019d68", "./js/plans.js": "./js/plans.js?v=96db272d", "./js/search.js": "./js/search.js?v=6489c063", "./js/smooth.js": "./js/smooth.js?v=83ee1647", "./js/trial.js": "./js/trial.js?v=e95bd506", "./js/ui.js": "./js/ui.js?v=37a67fcf", "./js/util.js": "./js/util.js?v=f06e2c91", "./scene.js": "./scene.js?v=b0cc0edb", "./search-data.js": "./search-data.js?v=f9e0d97c"}}</script>
 </head>
 <body class="page-careers">
   
   <a class="skip-link" href="#main">Skip to content</a>
+  <noscript><p class="nojs-banner">JavaScript is switched off, so online booking and live opening times are unavailable. Please call <a href="tel:+61755500188">07 5550 0188</a> or visit us at 22 Example Street, Fortitude Valley QLD 4006. Hours: Mon &ndash; Fri 5am &ndash; 10pm<br>Sat &ndash; Sun 7am &ndash; 6pm.</p></noscript>
   <div class="progress" aria-hidden="true"><span></span></div>
 
   <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
@@ -64,6 +66,8 @@
     <p>First week free. No lock-in. <a href="trial.html">Start your trial</a></p>
     <button class="announce-close" type="button" id="announce-close" aria-label="Dismiss announcement"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" focusable="false"><path d="M2 2l10 10M12 2L2 12" stroke="currentColor" stroke-width="1.600" stroke-linecap="round"/></svg></button>
   </div>
+
+  <div class="notice-bar" id="notice-bar" role="region" aria-label="Notices" hidden></div>
 
   <header class="site-header" id="top">
     <div class="header-inner">
@@ -106,7 +110,7 @@
       <div class="overlay-info">
         <p class="label">Find us</p>
         <p>22 Example Street<br>Fortitude Valley QLD 4006</p>
-        <p><a href="tel:0755500188">07 5550 0188</a><br><a href="mailto:hello@example.com">hello@example.com</a></p>
+        <p><a href="tel:+61755500188">07 5550 0188</a><br><a href="mailto:hello@example.com">hello@example.com</a></p>
         <p class="label">Hours</p>
         <p>Mon &ndash; Fri 5am &ndash; 10pm<br>Sat &ndash; Sun 7am &ndash; 6pm</p>
       </div>
@@ -155,7 +159,6 @@
             <div class="field"><label for="c-email">Email</label><input id="c-email" name="email" type="email" autocomplete="email" data-rule="required email" aria-describedby="e-c-email"><p class="error" id="e-c-email" aria-live="polite"></p></div>
             <div class="field"><label for="c-role">Role</label><select id="c-role" name="role"><option>Strength &amp; conditioning coach</option><option>Yoga &amp; mobility instructor</option><option>Front of house (early starts)</option><option>Something else</option></select></div>
             <div class="field"><label for="c-msg">Tell us about yourself</label><textarea id="c-msg" name="message" rows="5" maxlength="800" data-rule="required min:10" aria-describedby="e-c-msg"></textarea><p class="error" id="e-c-msg" aria-live="polite"></p></div>
-            <!-- DEMO ONLY: post to your applicant tracking system or a form service here. -->
             <button class="btn btn-primary btn-block" type="submit">Send application</button>
             <div class="form-success" role="status" tabindex="-1" hidden><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M7.500 12.500l3 3 6-7"/></svg><h3>Thanks, <span data-name>friend</span>!</h3><p>Your application would be on its way. <span class="note">Demo only: nothing was sent.</span></p></div>
           </form>
@@ -186,7 +189,7 @@
         <div class="footer-col">
           <h2>Visit</h2>
           <p>22 Example Street<br>Fortitude Valley QLD 4006</p>
-          <p><a href="tel:0755500188">07 5550 0188</a><br><a href="mailto:hello@example.com">hello@example.com</a></p>
+          <p><a href="tel:+61755500188">07 5550 0188</a><br><a href="mailto:hello@example.com">hello@example.com</a></p>
         </div>
         <div class="footer-col">
           <h2>Hours</h2>
@@ -203,6 +206,7 @@
       <div class="footer-bottom">
         <p>Concept demo by KB Ventures. Not a real business.</p>
         <p class="brandline">Demo website by KB Ventures</p>
+        <p class="footer-copy">&copy; <span data-year>2026</span> Iron &amp; Ember Athletic Club. All rights reserved.</p>
         <p class="photo-credits">Photo: Unsplash (Hero, Class studio, Banner, Coaching, Weights floor, Kettlebells, Cardio and rowing, Recovery, Treadmills, Equipment rack, Sled track, Coach portrait 1, Coach portrait 2, Coach portrait 3, Coach portrait 4)</p>
         <a class="back-top" href="#top">Back to top &uarr;</a>
       </div>
@@ -211,7 +215,7 @@
 
   <!-- Mobile quick actions -->
   <nav class="mobile-cta" aria-label="Quick actions">
-    <a class="btn btn-secondary" href="tel:0755500188">Call</a>
+    <a class="btn btn-secondary" href="tel:+61755500188">Call</a>
     <a class="btn btn-primary" href="trial.html">Free trial</a>
   </nav>
 
@@ -226,8 +230,8 @@
 
   
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <script type="application/json" id="site-data">{"name": "Iron & Ember Athletic Club", "phone": "07 5550 0188", "phoneHref": "0755500188", "email": "hello@example.com", "timezone": "Australia/Brisbane", "timezoneLabel": "Brisbane", "locale": "en-AU", "currency": "AUD", "hours": [{"day": 1, "name": "Monday", "open": 5, "close": 22}, {"day": 2, "name": "Tuesday", "open": 5, "close": 22}, {"day": 3, "name": "Wednesday", "open": 5, "close": 22}, {"day": 4, "name": "Thursday", "open": 5, "close": 22}, {"day": 5, "name": "Friday", "open": 5, "close": 22}, {"day": 6, "name": "Saturday", "open": 7, "close": 18}, {"day": 0, "name": "Sunday", "open": 7, "close": 18}], "coaches": {"marcus": "Marcus Quinn", "jonah": "Jonah Reyes", "dev": "Dev Nair", "dex": "Dex Holloway"}}</script>
-  <script defer src="vendor/lenis-1.1.18.min.js"></script><!-- Lenis 1.1.18 (MIT), self-hosted, pinned -->
-  <script type="module" src="main.js"></script>
+  <script type="application/json" id="site-data">{"name": "Iron & Ember Athletic Club", "phone": "07 5550 0188", "phoneHref": "+61755500188", "email": "hello@example.com", "timezone": "Australia/Brisbane", "timezoneLabel": "Brisbane", "locale": "en-AU", "currency": "AUD", "hours": [{"day": 1, "name": "Monday", "open": 5, "close": 22}, {"day": 2, "name": "Tuesday", "open": 5, "close": 22}, {"day": 3, "name": "Wednesday", "open": 5, "close": 22}, {"day": 4, "name": "Thursday", "open": 5, "close": 22}, {"day": 5, "name": "Friday", "open": 5, "close": 22}, {"day": 6, "name": "Saturday", "open": 7, "close": 18}, {"day": 0, "name": "Sunday", "open": 7, "close": 18}], "holidays": {"region": "QLD", "mode": "normal", "overrides": {"Christmas Day": {"status": "closed", "open": null, "close": null}, "Good Friday": {"status": "open", "open": 420, "close": 780}, "New Year's Day": {"status": "open", "open": 480, "close": 840}}}, "closures": [], "notices": [], "booking": {"daysAhead": 90, "leadMinutes": 0}, "forms": {"endpoint": ""}, "coaches": {"marcus": "Marcus Quinn", "jonah": "Jonah Reyes", "dev": "Dev Nair", "dex": "Dex Holloway"}}</script>
+  <script defer src="vendor/lenis-1.1.18.min.js?v=42bf5944"></script><!-- Lenis 1.1.18 (MIT), self-hosted, pinned -->
+  <script type="module" src="main.js?v=59076242"></script>
 </body>
 </html>

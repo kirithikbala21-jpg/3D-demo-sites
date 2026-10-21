@@ -1,5 +1,6 @@
 // Free trial / class booking (demo): session, coach, calendar, time grid, details, confirmation. Saved to localStorage "vc-bookings" only.
-import { $, $$, site, hoursFor, fmtHour, fmtClock, gymNow, pad, reduceMotion } from './util.js';
+import { $, $$, site, resolveDay, fmtClock, gymNow, pad, reduceMotion } from './util.js';
+import { phoneMessage, auPhone, prettyPhone, addHoneypot, tripped, guard, send, isLive, phoneFallback, failBox } from './formtools.js';
 
 (() => {
   const form = $('#trial-form');
@@ -14,7 +15,8 @@ import { $, $$, site, hoursFor, fmtHour, fmtClock, gymNow, pad, reduceMotion } f
   const [ty, tm, td] = today.split('-').map(Number);
   const utc = (y, m, d) => new Date(Date.UTC(y, m - 1, d));
   const iso = (d) => `${d.getUTCFullYear()}-${pad(d.getUTCMonth() + 1)}-${pad(d.getUTCDate())}`;
-  const lastDay = iso(utc(ty, tm, td + 60)); // bookable up to 60 days ahead
+  const AHEAD = Math.max((site.booking || {}).daysAhead || 90, 90);
+  const lastDay = iso(utc(ty, tm, td + AHEAD)); // always rolls forward from today: bookable up to 90+ days ahead
   const weekday = (v) => { const [y, m, d] = v.split('-').map(Number); return utc(y, m, d).getUTCDay(); };
   const long = (v) => { const [y, m, d] = v.split('-').map(Number); return utc(y, m, d).toLocaleDateString(site.locale, { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'UTC' }); };
 
@@ -61,8 +63,8 @@ import { $, $$, site, hoursFor, fmtHour, fmtClock, gymNow, pad, reduceMotion } f
       const date = utc(view.getUTCFullYear(), view.getUTCMonth() + 1, d), v = iso(date), dow = date.getUTCDay();
       const b = document.createElement('button'); b.type = 'button'; b.className = 'cal-day'; b.textContent = d; b.dataset.date = v;
       b.setAttribute('aria-label', long(v));
-      const closed = !hoursFor(dow), past = v < today || v > lastDay, wrongDay = s.isClass && dow !== s.day;
-      if (closed || past || wrongDay) { b.disabled = true; if (!past) b.title = closed ? 'Closed' : 'No ' + s.label.replace(/^[\d:apm]+ /, '') + ' this day'; }
+      const day = resolveDay(v), closed = day.closed, past = v < today || v > lastDay, wrongDay = s.isClass && dow !== s.day;
+      if (closed || past || wrongDay) { b.disabled = true; if (!past) b.title = closed ? (day.name ? 'Closed: ' + day.name : 'Closed') : 'No ' + s.label.replace(/^[\d:apm]+ /, '') + ' this day'; }
       if (v === today) b.classList.add('is-today');
       b.setAttribute('aria-pressed', String(v === dateEl.value));
       grid.appendChild(b);
@@ -84,7 +86,7 @@ import { $, $$, site, hoursFor, fmtHour, fmtClock, gymNow, pad, reduceMotion } f
     slotsEl.textContent = '';
     const v = dateEl.value, s = session();
     if (!v) { hint.textContent = 'Choose a date to see which times are open.'; return; }
-    const dow = weekday(v), hrs = hoursFor(dow), gn = gymNow();
+    const dow = weekday(v), day = resolveDay(v), hrs = day.closed ? null : { open: day.open / 60, close: day.close / 60 }, gn = gymNow();
     const times = [];
     if (hrs) {
       if (s.isClass) { if (dow === s.day) times.push(Number(s.start.slice(0, 2)) + Number(s.start.slice(3)) / 60); }
@@ -108,8 +110,8 @@ import { $, $$, site, hoursFor, fmtHour, fmtClock, gymNow, pad, reduceMotion } f
       });
       g.append(lab, row); slotsEl.appendChild(g);
     });
-    hint.textContent = !hrs ? 'We are closed that day. Please choose another date.'
-      : `We are open ${fmtHour(hrs.open)} to ${fmtHour(hrs.close)} that day (${site.timezoneLabel} time). ${open ? 'Crossed-out times are taken.' : 'No times are left, so please try another date.'}`;
+    hint.textContent = !hrs ? (day.name ? `We are closed that day for ${day.name}. Please choose another date.` : 'We are closed that day. Please choose another date.')
+      : `We are open ${fmtClock(hrs.open)} to ${fmtClock(hrs.close)} that day (${site.timezoneLabel} time). ${open ? 'Crossed-out times are taken.' : 'No times are left, so please try another date.'}`;
   }
   slotsEl.addEventListener('click', (e) => {
     const b = e.target.closest('.slot'); if (!b || b.disabled) return;
@@ -124,7 +126,7 @@ import { $, $$, site, hoursFor, fmtHour, fmtClock, gymNow, pad, reduceMotion } f
   /* ----- validation ----- */
   const rules = {
     name: (v) => (v.trim().length < 2 ? 'Please tell us your name so we can put it on the list.' : ''),
-    phone: (v) => (!v.trim() ? 'We need a phone number in case we have to reach you.' : v.replace(/\D/g, '').length < 8 || /[^\d\s()+-]/.test(v) ? "That phone number doesn't look right. Use digits, spaces or +." : ''),
+    phone: phoneMessage,
     date: (v) => (!v ? 'Which day suits you? Pick a date in the calendar.' : v < today ? 'That date has already passed. Pick today or later.' : ''),
     time: (v) => (!v ? 'Pick a time from the list.' : ''),
     message: (v) => (v.length > 500 ? 'Please keep your notes under 500 characters.' : ''),
@@ -137,21 +139,31 @@ import { $, $$, site, hoursFor, fmtHour, fmtClock, gymNow, pad, reduceMotion } f
     return !msg;
   }
   ['name', 'phone', 'message'].forEach((n) => {
-    field(n).addEventListener('blur', () => check(n));
+    field(n).addEventListener('blur', () => { if (field(n).value.trim()) check(n); }); // empty fields are reported on submit, so a message never shifts the button away from a tap
     field(n).addEventListener('input', () => { if (field(n).getAttribute('aria-invalid') === 'true') check(n); });
   });
-  form.addEventListener('submit', (e) => {
+  addHoneypot(form);
+  const submitBtn = $('button[type=submit]', form), busy = guard(submitBtn);
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
+    if (!busy.start()) return; // a second click while the first is still being handled
+    try {
+    failBox(form).innerHTML = '';
     const order = ['date', 'time', 'name', 'phone', 'message'];
     const bad = order.map((n) => [n, check(n)]).find(([, ok]) => !ok);
     if (bad) { const t = { date: $('.cal-day:not(:disabled)', grid), time: $('.slot:not(:disabled)', slotsEl) }[bad[0]]; (t || field(bad[0])).focus(); return; }
-    // DEMO ONLY: this is where a real booking system would be called, e.g.
-    //   fetch('https://your-booking-system.example/api/bookings', { method: 'POST', body: new FormData(form) })
-    // and the confirmation would be shown only after a successful response.
+    // the clock keeps moving while the form is open: refuse a time that has passed in the meantime
+    const gn = gymNow(), [h0, m0] = timeEl.value.split(':').map(Number);
+    if (dateEl.value === gn.date && h0 * 60 + m0 <= gn.mins) { timeEl.value = ''; drawSlots(); $('#e-time').textContent = 'That time has just passed. Pick another time from the list.'; return; }
     const s = session();
     const [hh, mm] = timeEl.value.split(':').map(Number), startT = hh + mm / 60;
     const ref = 'VC-' + Math.random().toString(36).slice(2, 7).toUpperCase();
+    const isSpam = tripped(form);
     const record = { ref, kind: s.isClass ? 'class' : 'trial', session: s.id, sessionLabel: s.label, coach: coachName(), date: dateEl.value, time: timeEl.value, name: field('name').value.trim(), phone: field('phone').value.trim(), savedAt: new Date().toISOString() };
+    if (!isSpam) { // a filled-in spam trap looks successful but sends nothing
+      const res = await send({ type: s.isClass ? 'class booking' : 'free trial', _subject: `Booking request ${ref}`, ...record });
+      if (!res.ok) { failBox(form).innerHTML = phoneFallback(); return; }
+    }
     try { const all = JSON.parse(localStorage.getItem('vc-bookings') || '[]'); all.unshift(record); localStorage.setItem('vc-bookings', JSON.stringify(all.slice(0, 20))); } catch (_) { /* storage blocked: the confirmation still shows */ }
     const who = coachVal() === 'any' ? 'the next available coach' : coachName();
     $('#ok-name').textContent = record.name.split(' ')[0];
@@ -162,6 +174,7 @@ import { $, $$, site, hoursFor, fmtHour, fmtClock, gymNow, pad, reduceMotion } f
     rows.forEach(([k, v]) => { const dt = document.createElement('dt'), dd = document.createElement('dd'); dt.textContent = k; dd.textContent = v; dl.append(dt, dd); });
     form.hidden = true; success.hidden = false; success.focus();
     success.scrollIntoView({ block: 'center', behavior: reduceMotion ? 'auto' : 'smooth' });
+    } finally { busy.stop(); }
   });
   $('#form-reset').addEventListener('click', () => {
     form.reset();

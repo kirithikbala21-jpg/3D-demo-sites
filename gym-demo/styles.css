@@ -739,3 +739,17 @@ h1, h2, h3 { line-height: 1.18; }
   .coach-leads { display: none; }
   .swipe-hint { display: block; margin: var(--space-1) 0 0; font-size: .875rem; color: var(--muted, #C9CDC4); }
 }
+
+/* ---- hardening: notices, spam trap, no-JavaScript message, form failure, safe areas, tap delay */
+a, button, input, select, textarea, label, summary, [role="tab"] { touch-action: manipulation; }
+.hp { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.hp input { width: 1px; height: 1px; padding: 0; border: 0; pointer-events: none; }
+.notice-bar { background: var(--accent); color: #0b0b0c; padding: 8px max(16px, env(safe-area-inset-left, 0px)) 8px max(16px, env(safe-area-inset-right, 0px)); text-align: center; font: 700 15px/1.4 var(--font); }
+.notice-bar[hidden] { display: none; }
+.notice-bar p { margin: 0; max-width: none; }
+.notice-bar p + p { margin-top: 4px; }
+.nojs-banner { margin: 0; padding: 12px 16px; background: var(--accent); color: #0b0b0c; text-align: center; font: 600 16px/1.5 system-ui, sans-serif; max-width: none; }
+.nojs-banner a { color: #0b0b0c; text-decoration: underline; }
+.form-fail { margin: 16px 0 0; padding: 12px 14px; border-radius: 12px; background: #2a1210; color: #ffd2c8; border: 1.5px solid #ff8a73; font-weight: 600; max-width: none; }
+.form-fail a { color: #fff; font-weight: 800; }
+.footer-copy { margin-top: 8px; }

@@ -4,22 +4,112 @@
 Usage:  python3 tools/build.py          (run from anywhere; writes the HTML pages next to site.config.json)
 
 Content lives in:
-  site.config.json   brand, contact, hours, colours, nav, page list
-  data/*.json        classes, coaches, plans, journal, careers, faq, photos
+  site.config.json   THE file the owner edits: business details, phone, address, hours, holidays, closures, notices, plans and prices,
+                     coaches, class timetable, colours, nav, booking and form settings, page list
+  data/*.json        journal, careers, faq, plan faq, photos (written by tools/add-photo.py)
   tools/templates/   layout.html, pages/*.html, partials/*.html, sections/*.html
 Python 3 standard library only. The generated .html files are committed so GitHub Pages can serve them as-is.
 """
+import datetime
+import hashlib
 import html
 import json
+import os
 import pathlib
 import re
 import sys
 import urllib.parse
 
-ROOT = pathlib.Path(__file__).resolve().parent.parent
+ROOT = pathlib.Path(os.environ.get("SITE_ROOT") or pathlib.Path(__file__).resolve().parent.parent)
 TPL = ROOT / "tools" / "templates"
-cfg = json.loads((ROOT / "site.config.json").read_text())
+try:
+    cfg = json.loads((ROOT / "site.config.json").read_text())
+except json.JSONDecodeError as e:
+    sys.exit(f"PROBLEM in site.config.json: a comma, quote mark or bracket is wrong near line {e.lineno}, column {e.colno} ({e.msg}). "
+             "Compare that line with the ones around it. Every item in a list needs a comma after it except the last one.")
 DATA = {p.stem: json.loads(p.read_text()) for p in (ROOT / "data").glob("*.json")}
+DATA["plans"], DATA["coaches"], DATA["classes"] = cfg["plans"], cfg["coaches"], cfg["classes"]  # these live in the one owner file
+
+
+def parse_time(v, where):
+    """'09:00', '9:30', '17.5' or 9 -> minutes since midnight. None stays None."""
+    if v is None or v == "":
+        return None
+    if isinstance(v, (int, float)):
+        return int(round(float(v) * 60))
+    m = re.fullmatch(r"\s*(\d{1,2})[:.](\d{2})\s*", str(v))
+    if not m or int(m.group(1)) > 24 or int(m.group(2)) > 59:
+        raise ValueError(f'{where}: "{v}" is not a time. Write times like "09:00" or "17:30" (24 hour clock).')
+    return int(m.group(1)) * 60 + int(m.group(2))
+
+
+def normalise_hours(entry, where):
+    o, c = parse_time(entry.get("open"), where + " open"), parse_time(entry.get("close"), where + " close")
+    if (o is None) != (c is None):
+        raise ValueError(f"{where}: give both an open and a close time, or neither (closed).")
+    if o is not None and c <= o:
+        c += 1440  # closes after midnight, for example 18:00 to 02:00
+    return o, c
+
+
+def prepare_config():
+    """Check site.config.json with plain-English messages and add the values that are worked out from it."""
+    errs = []
+    c = cfg["contact"]
+    digits = re.sub(r"\D", "", c["phone"])
+    if digits.startswith("61"):
+        digits = "0" + digits[2:]
+    if not re.fullmatch(r"0[2-478]\d{8}|1[38]00\d{6}|13\d{4}", digits):
+        errs.append(f'contact > phone: "{c["phone"]}" does not look like an Australian number. Use something like "07 5550 0188" or "0412 345 678".')
+    else:
+        c["phoneHref"] = "+61" + digits[1:] if digits.startswith("0") else digits
+        c["phoneIntl"] = c["phoneHref"]
+    if not re.fullmatch(r"[^\s@]+@[^\s@]+\.[^\s@]{2,}", c["email"]):
+        errs.append(f'contact > email: "{c["email"]}" is not an email address.')
+    for h in cfg["hours"]:
+        try:
+            h["openMin"], h["closeMin"] = normalise_hours(h, f'hours > {h.get("name")}')
+        except ValueError as e:
+            errs.append(str(e))
+    if sorted(h["day"] for h in cfg["hours"]) != list(range(7)):
+        errs.append("hours: there must be one line for each of the 7 days (day 0 = Sunday ... 6 = Saturday).")
+    if cfg["holidays"].get("region", "QLD") not in ("QLD", "VIC"):
+        errs.append('holidays > region must be "QLD" or "VIC".')
+    for k in cfg.get("closures", []):
+        if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", k.get("date", "")):
+            errs.append(f'closures: date "{k.get("date")}" must look like 2026-12-24 (year-month-day).')
+        if k.get("status") not in ("closed", "open"):
+            errs.append(f'closures > {k.get("date")}: status must be "closed" or "open".')
+        try:
+            k["openMin"], k["closeMin"] = normalise_hours(k, f'closures > {k.get("date")}')
+        except ValueError as e:
+            errs.append(str(e))
+    for k, o in (cfg["holidays"].get("overrides") or {}).items():
+        try:
+            o["openMin"], o["closeMin"] = normalise_hours(o, f"holidays > overrides > {k}")
+        except ValueError as e:
+            errs.append(str(e))
+    for n in cfg.get("notices", []):
+        if not n.get("end"):
+            errs.append(f'notices > "{n.get("text", "")[:30]}": add an "end" date (2026-12-31) so the notice hides itself when it is old.')
+    for pl in cfg["plans"]:
+        for key in ("monthly", "annual"):
+            if not isinstance(pl[key], (int, float)) or pl[key] <= 0:
+                errs.append(f'plans > {pl["name"]}: {key} must be a number like 89 (no $ sign).')
+    ids = [x["id"] for x in cfg["classes"]]
+    if len(ids) != len(set(ids)):
+        errs.append("classes: two classes share the same id. Make each one different (for example tue-1730-power-hour).")
+    coach_ids = {x["id"] for x in cfg["coaches"]}
+    for cl in cfg["classes"]:
+        if cl["coach"] not in coach_ids:
+            errs.append(f'classes > {cl["id"]}: coach "{cl["coach"]}" is not in the coaches list.')
+    if cfg["booking"].get("daysAhead", 90) < 90:
+        errs.append("booking > daysAhead must be at least 90.")
+    if errs:
+        sys.exit("PROBLEMS in site.config.json (fix these and save again):\n - " + "\n - ".join(errs))
+
+
+prepare_config()
 
 # ----------------------------------------------------------------------------- tiny template engine
 TOKEN = re.compile(r"\{\{\{(.+?)\}\}\}|\{\{(.+?)\}\}", re.S)
@@ -119,8 +209,17 @@ def slug(s):
     return re.sub(r"[^a-z0-9]+", "-", plain(s).lower()).strip("-")
 
 
-def fmt_hour(h):
-    return f"{(h % 12) or 12}:00{'am' if h < 12 else 'pm'}"
+def fmt_hour(mins):
+    """Minutes since midnight -> 5:00am, 7:30am, 10:00pm (same wording the pages always used)."""
+    t = mins % 1440
+    h, m = divmod(t, 60)
+    return f"{(h % 12) or 12}:{m:02d}{'am' if h < 12 else 'pm'}"
+
+
+def hrs(mins):
+    """Minutes -> hours as a plain number for the page data (5 or 7.5)."""
+    v = mins / 60
+    return int(v) if v == int(v) else round(v, 2)
 
 
 def fmt_clock(hhmm):
@@ -205,8 +304,8 @@ def session_options():
 
 def hours_table():
     rows = "".join(
-        f'              <tr data-day="{h["day"]}" data-open="{h["open"]}" data-close="{h["close"]}"><th scope="row">{h["name"]}</th>'
-        f'<td>{fmt_hour(h["open"])} &ndash; {fmt_hour(h["close"])}</td></tr>\n'
+        f'              <tr data-day="{h["day"]}" data-open="{hrs(h["openMin"])}" data-close="{hrs(h["closeMin"])}"><th scope="row">{h["name"]}</th>'
+        f'<td>{fmt_hour(h["openMin"])} &ndash; {fmt_hour(h["closeMin"])}</td></tr>\n'
         for h in cfg["hours"]
     )
     return (
@@ -223,7 +322,7 @@ def hours_summary():
     groups, cur = [], None
     for d in order:
         h = by[d]
-        key = (h["open"], h["close"])
+        key = (h["openMin"], h["closeMin"])
         if cur and cur["key"] == key:
             cur["days"].append(h["name"][:3])
         else:
@@ -244,14 +343,14 @@ def jsonld(page):
         "name": b["fullName"],
         "description": b["description"],
         "url": s["baseUrl"],
-        "telephone": c["phone"],
+        "telephone": c["phoneIntl"],
         "email": c["email"],
         "priceRange": "$$",
         "makesOffer": [{"@type": "Offer", "name": "Memberships, group classes and coaching", "url": s["baseUrl"] + "membership.html"}],
         "address": {"@type": "PostalAddress", "streetAddress": c["street"], "addressLocality": b["city"],
                     "addressRegion": c["region"], "postalCode": c["postcode"], "addressCountry": c["country"]},
         "openingHoursSpecification": [
-            {"@type": "OpeningHoursSpecification", "dayOfWeek": DAYNAMES[h["day"]], "opens": f'{h["open"]:02d}:00', "closes": f'{h["close"]:02d}:00'}
+            {"@type": "OpeningHoursSpecification", "dayOfWeek": DAYNAMES[h["day"]], "opens": f'{h["openMin"] // 60:02d}:{h["openMin"] % 60:02d}', "closes": f'{(h["closeMin"] % 1440) // 60:02d}:{h["closeMin"] % 60:02d}'}
             for h in cfg["hours"]
         ],
     }
@@ -305,11 +404,11 @@ def manifest():
 
 # ----------------------------------------------------------------------------- build
 def time_options():
-    lo = min(h["open"] for h in cfg["hours"])
-    hi = max(h["close"] for h in cfg["hours"])
+    lo = min(h["openMin"] for h in cfg["hours"])
+    hi = max(h["closeMin"] for h in cfg["hours"])
     out = ['<option value="">Any time</option>']
-    t = lo * 60
-    while t <= hi * 60 - 30:
+    t = lo
+    while t <= hi - 30:
         h, m = divmod(t, 60)
         out.append(f'<option value="{h:02d}:{m:02d}">{(h % 12) or 12}:{m:02d}{"am" if h < 12 else "pm"}</option>')
         t += 30
@@ -336,6 +435,23 @@ def photo_slots():
     return html_by_slot, text
 
 
+def file_hash(rel):
+    return hashlib.sha1((ROOT / rel).read_bytes()).hexdigest()[:8]
+
+
+def asset_versions():
+    """Version tags so a browser never shows a stale stylesheet or script after an update (they change only when the file changes)."""
+    return {"css": file_hash("styles.css"), "lenisCss": file_hash("vendor/lenis-1.1.18.css"), "lenis": file_hash("vendor/lenis-1.1.18.min.js"), "main": file_hash("main.js")}
+
+
+def import_map():
+    """Every module gets ?v=hash through the import map (merged with the three.js entries the 3D hero needs)."""
+    m = {"three": "./vendor/three.module.min.js", "three/addons/": "./vendor/addons/"}
+    for rel in sorted([f"js/{p.name}" for p in (ROOT / "js").glob("*.js")] + ["scene.js", "search-data.js"]):
+        m[f"./{rel}"] = f"./{rel}?v={file_hash(rel)}"
+    return json.dumps({"imports": m})
+
+
 def build():
     photos, credits = photo_slots()
     classes = DATA["classes"]
@@ -354,7 +470,11 @@ def build():
     site_data = {
         "name": cfg["brand"]["name"], "phone": cfg["contact"]["phone"], "phoneHref": cfg["contact"]["phoneHref"],
         "email": cfg["contact"]["email"], "timezone": cfg["site"]["timezone"], "timezoneLabel": cfg["site"]["timezoneLabel"],
-        "locale": cfg["site"]["locale"], "currency": cfg["site"]["currency"], "hours": cfg["hours"],
+        "locale": cfg["site"]["locale"], "currency": cfg["site"]["currency"],
+        "hours": [{"day": h["day"], "name": h["name"], "open": hrs(h["openMin"]), "close": hrs(h["closeMin"])} for h in cfg["hours"]],
+        "holidays": {"region": cfg["holidays"].get("region", "QLD"), "mode": cfg["holidays"].get("mode", "normal"), "overrides": {k: {"status": o.get("status"), "open": o.get("openMin"), "close": o.get("closeMin")} for k, o in (cfg["holidays"].get("overrides") or {}).items()}},
+        "closures": [{"date": k["date"], "name": k.get("name", ""), "status": k["status"], "open": k.get("openMin"), "close": k.get("closeMin")} for k in cfg.get("closures", [])],
+        "notices": cfg.get("notices", []), "booking": cfg["booking"], "forms": {"endpoint": cfg["forms"].get("endpoint", "")},
         "coaches": {c["id"]: c["name"] for c in DATA["coaches"]},
     }
     base = {
@@ -362,13 +482,14 @@ def build():
         "classChips": chips, "classTabs": tabs, "classPanels": panels, "sessionOptions": session_options(),
         "classCount": len(classes), "maxSave": max(round(100 * (p["monthly"] - p["annual"]) / p["monthly"]) for p in DATA["plans"]), "hoursTable": hours_table(), "hoursSummary": hours_summary(),
         "siteData": json.dumps(site_data, ensure_ascii=False).replace("</", "<\\/"),
-        "year": 2026,
+        "year": datetime.date.today().year, "assets": asset_versions(), "importMap": import_map(), "formsLive": bool(cfg["forms"].get("endpoint")),
         "photos": photos, "photoCredits": credits,
         "gmapEmbed": "https://maps.google.com/maps?q=" + urllib.parse.quote(cfg["contact"]["mapsQuery"]) + "&output=embed",
         "mapsUrl": "https://www.google.com/maps/search/?api=1&query=" + urllib.parse.quote(cfg["contact"]["mapsQuery"]),
     }
     layout = parse((TPL / "layout.html").read_text())
     for page in cfg["pages"]:
+        page["description"] = page["description"].replace("{phone}", cfg["contact"]["phone"])
         ctx = {**base, "page": {**page, "isHome": page["file"] == "index.html", "isNotFound": page["file"] == "404.html", "hasVisitModal": page["file"] in ("index.html", "visit.html"),
                                 "canonical": cfg["site"]["baseUrl"] + ("" if page["file"] == "index.html" else page["file"]),
                                 "fullTitle": ("" if page["file"] == "index.html" else page["title"] + " | ") + cfg["brand"]["fullName"] + " (concept demo)"},
@@ -383,7 +504,8 @@ def build():
     urls = "".join(f'  <url><loc>{cfg["site"]["baseUrl"]}{"" if p["file"] == "index.html" else p["file"]}</loc></url>\n' for p in cfg["pages"] if not p.get("hidden"))
     (ROOT / "sitemap.xml").write_text(f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{urls}</urlset>\n')
     (ROOT / "site.webmanifest").write_text(manifest())
-    print("wrote search-data.js, sitemap.xml, site.webmanifest")
+    (ROOT / "robots.txt").write_text(f"User-agent: *\nDisallow:\n\nSitemap: {cfg['site']['baseUrl']}sitemap.xml\n")
+    print("wrote search-data.js, sitemap.xml, site.webmanifest, robots.txt")
 
 
 if __name__ == "__main__":

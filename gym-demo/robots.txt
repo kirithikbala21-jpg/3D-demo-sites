@@ -1,0 +1,4 @@
+User-agent: *
+Disallow:
+
+Sitemap: https://kirithikbala21-jpg.github.io/3D-demo-sites/gym-demo/sitemap.xml

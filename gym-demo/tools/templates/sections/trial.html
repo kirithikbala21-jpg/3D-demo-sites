@@ -4,7 +4,7 @@
         <div class="reveal">
           <p class="eyebrow">Free trial &amp; classes</p>
           <h2 id="book-title" data-split>Reserve your spot.</h2>
-          <p class="lead">Choose a free trial or a class, then a coach, a day and a time. You&rsquo;ll see your confirmation straight away. (This is a demo: nothing is sent.)</p>
+          <p class="lead">Choose a free trial or a class, then a coach, a day and a time. You&rsquo;ll see your confirmation straight away. {{#if formsLive}}We will also confirm by phone or text.{{else}}(This is a demo: nothing is sent.){{/if}}</p>
           <ul class="reserve-points">
             <li>Your first coached session is free, with no card and no contract</li>
             <li>Classes keep the same weekday and time every week</li>
@@ -53,7 +53,7 @@
             <p class="step-label"><span aria-hidden="true">5</span> Your details</p>
             <div class="field">
               <label for="f-name">Name</label>
-              <input id="f-name" name="name" type="text" autocomplete="name" aria-describedby="e-name">
+              <input id="f-name" name="name" type="text" required aria-required="true" autocomplete="name" aria-describedby="e-name">
               <p class="error" id="e-name" aria-live="polite"></p>
             </div>
             <div class="field">
@@ -66,20 +66,15 @@
               <textarea id="f-message" name="message" rows="2" maxlength="500" placeholder="Injuries, goals, anything your coach should know" aria-describedby="e-message"></textarea>
               <p class="error" id="e-message" aria-live="polite"></p>
             </div>
-            <!--
-              DEMO ONLY: there is no backend. The booking is saved to this browser (localStorage key "vc-bookings").
-              To make it real, post the data in js/trial.js (see "DEMO ONLY") to your booking system
-              (Mindbody, Glofox, Pike13, Cal.com) and show the confirmation after a 200 response.
-            -->
             <button class="btn btn-primary btn-block" type="submit">Confirm booking</button>
-            <p class="note">Demo only: nothing is sent to a real gym.</p>
+            <p class="note">{{#if formsLive}}Prefer to talk to someone? Call {{contact.phone}}.{{else}}Demo only: nothing is sent to a real gym.{{/if}}</p>
           </form>
           <div class="form-success" id="form-success" role="status" tabindex="-1" hidden>
             <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M7.500 12.500l3 3 6-7"/></svg>
             <h3>You&rsquo;re in, <span id="ok-name">friend</span>.</h3>
             <p id="ok-detail"></p>
             <dl class="ok-summary" id="ok-summary"></dl>
-            <p class="demo-banner"><strong>This is a demo, no real booking was made.</strong> The details were saved only in this browser.</p>
+            <p class="demo-banner">{{#if formsLive}}<strong>Thanks, your request is with us.</strong> We will confirm by phone or text. If you have not heard from us within a day, please call <a href="tel:{{contact.phoneHref}}">{{contact.phone}}</a>.{{else}}<strong>This is a demo, no real booking was made.</strong> The details were saved only in this browser.{{/if}}</p>
             <button class="btn btn-secondary" type="button" id="form-reset">Book another session</button>
           </div>
         </div>

@@ -2,7 +2,7 @@
 <html lang="en-AU">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   {{#if page.isNotFound}}<script>document.write('<base href="' + (location.pathname.match(/^.*\/{{site.folder}}\//) || ['/'])[0] + '">');</script>{{/if}}
   <title>{{page.fullTitle}}</title>
   <meta name="description" content="{{page.description}}">
@@ -29,8 +29,8 @@
   <link rel="manifest" href="site.webmanifest">
   <link rel="preload" href="fonts/barlow-condensed-700.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="fonts/montserrat-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="vendor/lenis-1.1.18.css">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="vendor/lenis-1.1.18.css?v={{assets.lenisCss}}">
+  <link rel="stylesheet" href="styles.css?v={{assets.css}}">
   {{{jsonld}}}
   <noscript><style>
     /* Without JavaScript: show the navigation and every timetable day as plain content. */
@@ -46,16 +46,15 @@
     // Safety net: never leave the hero hidden if the main script fails to start.
     setTimeout(function () { var d = document.documentElement; if (!d.classList.contains('is-ready')) d.classList.add('is-ready', 'is-failsafe'); }, 4500);
   </script>
-  {{#if page.isHome}}
-  <!-- Three.js is self-hosted (exact version 0.160.0) and loaded as an ES module through this import map. -->
-  <script type="importmap">{"imports":{"three":"./vendor/three.module.min.js","three/addons/":"./vendor/addons/"}}</script>
-  {{/if}}
+  <!-- Import map: Three.js is self-hosted (exact version 0.160.0); every module also gets ?v=hash so an update is never served stale. -->
+  <script type="importmap">{{{importMap}}}</script>
 </head>
 <body class="page-{{page.template}}">
   {{#if page.isHome}}
   <div class="preloader" id="preloader" aria-hidden="true"><span class="script">{{{brand.wordmark}}}</span></div>
   {{/if}}
   <a class="skip-link" href="#main">Skip to content</a>
+  <noscript><p class="nojs-banner">JavaScript is switched off, so online booking and live opening times are unavailable. Please call <a href="tel:{{contact.phoneHref}}">{{contact.phone}}</a> or visit us at {{contact.street}}, {{contact.locality}}. Hours: {{{hoursSummary}}}.</p></noscript>
   <div class="progress" aria-hidden="true"><span></span></div>
 
   <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
@@ -69,6 +68,8 @@
     <p>{{announcement.text}} <a href="{{announcement.href}}">{{announcement.link}}</a></p>
     <button class="announce-close" type="button" id="announce-close" aria-label="Dismiss announcement"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" focusable="false"><path d="M2 2l10 10M12 2L2 12" stroke="currentColor" stroke-width="1.600" stroke-linecap="round"/></svg></button>
   </div>
+
+  <div class="notice-bar" id="notice-bar" role="region" aria-label="Notices" hidden></div>
 
   <header class="site-header" id="top">
     <div class="header-inner">
@@ -185,6 +186,7 @@
       <div class="footer-bottom">
         <p>{{brand.demoFooter}}</p>
         <p class="brandline">Demo website by KB Ventures</p>
+        <p class="footer-copy">&copy; <span data-year>{{year}}</span> {{brand.fullName}}. All rights reserved.</p>
         {{#if photoCredits}}<p class="photo-credits">{{photoCredits}}</p>{{/if}}
         <a class="back-top" href="#top">Back to top &uarr;</a>
       </div>
@@ -209,7 +211,7 @@
   {{#if page.hasVisitModal}}{{> visit-modal}}{{/if}}
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <script type="application/json" id="site-data">{{{siteData}}}</script>
-  <script defer src="vendor/lenis-1.1.18.min.js"></script><!-- Lenis 1.1.18 (MIT), self-hosted, pinned -->
-  <script type="module" src="main.js"></script>
+  <script defer src="vendor/lenis-1.1.18.min.js?v={{assets.lenis}}"></script><!-- Lenis 1.1.18 (MIT), self-hosted, pinned -->
+  <script type="module" src="main.js?v={{assets.main}}"></script>
 </body>
 </html>

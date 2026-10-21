@@ -3,21 +3,20 @@
     <button type="button" class="icon-btn vmodal-close" id="visit-close" aria-label="Close the visit form"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg></button>
     <form id="visit-form" novalidate>
       <h2 id="visit-modal-title">Schedule a visit</h2>
-      <p class="note">Come for a tour of the floor. Pick a day and a time and we will have someone ready. (Demo: nothing is sent.)</p>
-      <div class="field"><label for="v-name">Name</label><input id="v-name" name="name" type="text" autocomplete="name" aria-describedby="e-v-name"><p class="error" id="e-v-name" aria-live="polite"></p></div>
-      <div class="field"><label for="v-phone">Phone</label><input id="v-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="e.g. 07 5550 0100" aria-describedby="e-v-phone"><p class="error" id="e-v-phone" aria-live="polite"></p></div>
+      <p class="note">Come for a tour of the floor. Pick a day and a time and we will have someone ready. {{#if formsLive}}We will confirm by phone or text.{{else}}(Demo: nothing is sent.){{/if}}</p>
+      <div class="field"><label for="v-name">Name</label><input id="v-name" name="name" type="text" autocomplete="name" required aria-required="true" aria-describedby="e-v-name"><p class="error" id="e-v-name" aria-live="polite"></p></div>
+      <div class="field"><label for="v-phone">Phone</label><input id="v-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="e.g. 07 5550 0100" required aria-required="true" aria-describedby="e-v-phone"><p class="error" id="e-v-phone" aria-live="polite"></p></div>
       <div class="field-row">
-        <div class="field"><label for="v-day">Preferred day</label><select id="v-day" name="day"><option value="">Choose a day</option><option>Monday</option><option>Tuesday</option><option>Wednesday</option><option>Thursday</option><option>Friday</option><option>Saturday</option><option>Sunday</option></select><p class="error" id="e-v-day" aria-live="polite"></p></div>
-        <div class="field"><label for="v-time">Preferred time</label><select id="v-time" name="time"><option value="">Choose a time</option><option>Morning (5am to 12pm)</option><option>Afternoon (12pm to 5pm)</option><option>Evening (5pm to 10pm)</option></select><p class="error" id="e-v-time" aria-live="polite"></p></div>
+        <div class="field"><label for="v-day">Preferred day</label><select id="v-day" name="day" required aria-required="true" aria-describedby="e-v-day"><option value="">Choose a day</option><option>Monday</option><option>Tuesday</option><option>Wednesday</option><option>Thursday</option><option>Friday</option><option>Saturday</option><option>Sunday</option></select><p class="error" id="e-v-day" aria-live="polite"></p></div>
+        <div class="field"><label for="v-time">Preferred time</label><select id="v-time" name="time" required aria-required="true" aria-describedby="e-v-time"><option value="">Choose a time</option><option>Morning (5am to 12pm)</option><option>Afternoon (12pm to 5pm)</option><option>Evening (5pm to 10pm)</option></select><p class="error" id="e-v-time" aria-live="polite"></p></div>
       </div>
       <button class="btn btn-primary btn-block" type="submit">Request a visit</button>
-      <!-- DEMO ONLY: post to your CRM or inbox here (see js/forms.js). Requests are saved to this browser only (localStorage "vc-visits"). -->
     </form>
     <div class="form-success" id="visit-done" role="status" tabindex="-1" hidden>
       <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M7.500 12.500l3 3 6-7"/></svg>
       <h3>Thanks, <span id="visit-name">friend</span>.</h3>
       <p id="visit-detail"></p>
-      <p class="demo-banner"><strong>This is a demo, nothing was sent.</strong> Your request was saved only in this browser.</p>
+      <p class="demo-banner">{{#if formsLive}}<strong>Thanks, your request is with us.</strong> We will confirm by phone or text. If you have not heard from us within a day, please call <a href="tel:{{contact.phoneHref}}">{{contact.phone}}</a>.{{else}}<strong>This is a demo, nothing was sent.</strong> Your request was saved only in this browser.{{/if}}</p>
       <button class="btn btn-secondary" type="button" id="visit-ok">Close</button>
     </div>
   </div>

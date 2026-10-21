@@ -17,18 +17,22 @@ export function store(key, value) {
   return null;
 }
 
-/** Current day (0 = Sunday), decimal hour and yyyy-mm-dd date in the gym's own time zone, not the visitor's. */
+import * as clock from './clock.js';
+export { clock };
+/** Opening hours, public holidays and closures, in the form clock.js needs (times in minutes). */
+export const CLOCK_CFG = { hours: (site.hours || []).map((h) => ({ day: h.day, open: Math.round(h.open * 60), close: Math.round(h.close * 60) })), closures: site.closures || [], holidays: site.holidays || { region: 'QLD', mode: 'normal' } };
+/** Current day (0 = Sunday), decimal hour, minutes and yyyy-mm-dd key in the gym's own time zone (Brisbane), never the visitor's. */
 export function gymNow(date = new Date()) {
-  const parts = new Intl.DateTimeFormat('en-US', { timeZone: site.timezone, weekday: 'short', year: 'numeric', month: '2-digit', day: '2-digit', hour: 'numeric', minute: 'numeric', hourCycle: 'h23' }).formatToParts(date);
-  const get = (t) => parts.find((p) => p.type === t).value;
-  const day = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].indexOf(get('weekday'));
-  return { day, hour: Number(get('hour')) % 24 + Number(get('minute')) / 60, date: `${get('year')}-${get('month')}-${get('day')}` };
+  const n = clock.nowIn(site.timezone || 'Australia/Brisbane', date);
+  return { day: n.dow, hour: n.mins / 60, mins: n.mins, date: n.key, key: n.key, y: n.y };
 }
+/** What the gym does on a day (yyyy-mm-dd): { closed, open, close (minutes), name, why } including holidays and closures. */
+export const resolveDay = (key) => clock.resolveDay(key, CLOCK_CFG);
 export const hoursFor = (day) => site.hours.find((h) => h.day === day);
-export const fmtHour = (h) => `${(h % 12) || 12}:00${h < 12 ? 'am' : 'pm'}`;
 export const pad = (n) => String(n).padStart(2, '0');
 /** 13.5 -> "1:30pm" */
-export const fmtClock = (t) => { const h = Math.floor(t + 1e-9), m = Math.round((t - h) * 60); return `${((h + 11) % 12) + 1}:${pad(m)}${h < 12 ? 'am' : 'pm'}`; };
+export const fmtClock = (t) => { const h = Math.floor(t + 1e-9), m = Math.round((t - h) * 60); return `${((h + 11) % 12) + 1}:${pad(m)}${h % 24 < 12 ? 'am' : 'pm'}`; };
+export const fmtHour = fmtClock;
 
 const toastEl = $('#toast');
 let toastTimer = 0;

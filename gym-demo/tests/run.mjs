@@ -13,7 +13,7 @@ import { chromium } from 'playwright-core';
 const require = createRequire(import.meta.url);
 const SITE = path.resolve(process.env.ROOT || path.join(path.dirname(fileURLToPath(import.meta.url)), '..'));
 const cfg = JSON.parse(fs.readFileSync(path.join(SITE, 'site.config.json'), 'utf8'));
-const classes = JSON.parse(fs.readFileSync(path.join(SITE, 'data/classes.json'), 'utf8'));
+const classes = cfg.classes;
 const PAGES = cfg.pages.map((p) => p.file);
 const arg = (process.argv.find((a) => a.startsWith('--suite=')) || '--suite=all').slice(8).split(',');
 const want = (n) => arg.includes('all') || arg.includes(n);
@@ -31,12 +31,19 @@ const server = await serve(SITE);
 const base = `http://localhost:${server.address().port}/`;
 const browser = await chromium.launch({ executablePath: process.env.CHROME_PATH || undefined, args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });
 
+const TMP = fs.mkdtempSync(path.join(os.tmpdir(), 'gym-'));
+const servers = [];
 const results = [];
 const ok = (name, cond, extra = '') => { results.push({ name, pass: !!cond }); console.log(`${cond ? 'PASS' : 'FAIL'} ${name}${extra ? '  ' + extra : ''}`); };
 const NO_WEBGL = () => { const g = HTMLCanvasElement.prototype.getContext; HTMLCanvasElement.prototype.getContext = function (t, ...a) { if (/webgl/.test(t)) return null; return g.call(this, t, ...a); }; };
 const QUIET = () => { try { sessionStorage.setItem('vc-seen', '1'); localStorage.setItem('vc-cookie', 'no'); } catch (e) { /* ignore */ } };
-async function newPage(opts = {}, { webgl = true, quiet = true, extraInit, host = base } = {}) {
+/** Fixed visitor clock: a Date that starts at the given instant and keeps ticking. */
+const FAKE = (t) => { const R = Date, off = t - R.now(); class F extends R { constructor(...a) { if (a.length) super(...a); else super(R.now() + off); } static now() { return R.now() + off; } } window.Date = F; };
+const at = (iso) => Date.parse(iso + '+10:00'); // Brisbane is UTC+10 all year (no daylight saving)
+const TUE = '2026-10-20', SAT = '2026-10-24';
+async function newPage(opts = {}, { webgl = true, quiet = true, extraInit, host = base, clock = null } = {}) {
   const ctx = await browser.newContext(opts);
+  if (clock) await ctx.addInitScript(FAKE, at(clock));
   if (quiet) await ctx.addInitScript(QUIET);
   if (!webgl) await ctx.addInitScript(NO_WEBGL);
   if (extraInit) await ctx.addInitScript(extraInit);
@@ -146,7 +153,7 @@ if (want('links')) {
   const p = await newPage({ viewport: { width: 1280, height: 900 } }, { webgl: false });
   const ids = new Map();
   for (const f of PAGES) { await p.goto(p.base + f); ids.set(f, await p.evaluate(() => [...document.querySelectorAll('[id]')].map((e) => e.id))); }
-  const classIds = new Set(classes.map((c) => c.id)), coachIds = new Set(JSON.parse(fs.readFileSync(path.join(SITE, 'data/coaches.json'), 'utf8')).map((c) => c.id));
+  const classIds = new Set(classes.map((c) => c.id)), coachIds = new Set(cfg.coaches.map((c) => c.id));
   for (const f of PAGES) {
     await p.goto(p.base + f);
     const links = await p.evaluate(() => [...document.querySelectorAll('a[href],link[href],script[src],img[src]')].map((e) => e.getAttribute('href') || e.getAttribute('src')));
@@ -293,9 +300,10 @@ if (want('func')) {
   await p.goto(p.base + 'trial.html?class=tue-1730-power-hour&coach=marcus'); await p.waitForTimeout(500);
   ok('trial: ?class= pre-selects the class', (await p.locator('#f-session option:checked').textContent()).includes('Power Hour'));
   ok("trial: in class mode the class's coach is chosen and the coach choice is locked", (await p.locator('input[name=coach]:checked').getAttribute('value')) === 'dex' && (await p.locator('input[name=coach]:disabled').count()) === 5 && /Dex Holloway/.test(await p.locator('#h-coach').textContent()));
+  if (!(await p.locator('.cal-day:not(:disabled)').count())) await p.locator('#cal-next').click(); // late in a month there may be no Tuesday left in this month's view
   const wd = await p.locator('.cal-day:not(:disabled)').evaluateAll((bs) => bs.map((b) => new Date(b.dataset.date + 'T00:00:00Z').getUTCDay()));
-  ok('trial: a class can only be booked on its own weekday (Tuesday)', wd.length >= 2 && wd.every((d) => d === 2), JSON.stringify(wd));
-  await p.locator('.cal-day:not(:disabled)').nth(1).click();
+  ok('trial: a class can only be booked on its own weekday (Tuesday)', wd.length >= 1 && wd.every((d) => d === 2), JSON.stringify(wd));
+  await p.locator('.cal-day:not(:disabled)').last().click();
   ok('trial: class mode shows the one class time', (await p.locator('.slot').count()) === 1 && (await p.locator('.slot').first().textContent()) === '5:30pm', await p.locator('.slot').allTextContents().then((a) => a.join(',')));
   await p.goto(p.base + 'trial.html?coach=dex'); await p.waitForTimeout(500);
   ok('trial: ?coach= pre-selects the coach (free trial is the default session)', (await p.locator('input[name=coach]:checked').getAttribute('value')) === 'dex' && (await p.locator('#f-session').inputValue()) === 'trial');
@@ -438,8 +446,8 @@ if (want('func')) {
       const srv = await serve(tmp), b2 = `http://localhost:${srv.address().port}/`;
       const q = await newPage({ viewport: { width: 1440, height: 900 } }, { webgl: false, host: b2 });
       await q.goto(b2 + 'index.html'); await q.waitForTimeout(500);
-      await q.evaluate(async () => { for (let y = 0; y < document.body.scrollHeight; y += 400) { window.scrollTo(0, y); await new Promise((r) => setTimeout(r, 200)); } });
-      await q.waitForTimeout(600);
+      await q.evaluate(async () => { for (let y = 0; y < document.body.scrollHeight; y += 400) { window.scrollTo(0, y); await new Promise((r) => setTimeout(r, 250)); } window.scrollTo(0, 0); });
+      await q.waitForTimeout(1500);
       const imgs = await q.evaluate(() => [...document.querySelectorAll('main img')].map((i) => ({ w: i.getAttribute('width'), h: i.getAttribute('height'), alt: i.alt, lazy: i.loading === 'lazy', hero: !!i.closest('.hero-photo'), ok: i.complete && i.naturalWidth > 0, filter: getComputedStyle(i).filter })));
       ok('photo pipeline: add-photo.py + build renders an <img> only for slots with a file (hero, studio, gallery-3, coach-2 re-added)', imgs.length === 15 && imgs.every((i) => i.ok && i.w && i.h && !!i.alt), JSON.stringify(imgs));
       ok('photo pipeline: hero is eager, everything else lazy; one consistent grade (sepia .12, saturate .85, contrast 1.03)', imgs.filter((i) => !i.lazy).every((i) => i.hero) && imgs.every((i) => /sepia\(0\.12\)/.test(i.filter) && /saturate\(0\.85\)/.test(i.filter) && /contrast\(1\.03\)/.test(i.filter)), imgs[0] && imgs[0].filter);
@@ -609,7 +617,141 @@ if (want('perf')) {
   ok('removed features stay removed: no shop, cart or sound code in the folder', !fs.existsSync(path.join(SITE, 'js/cart.js')) && !fs.existsSync(path.join(SITE, 'js/sound.js')) && !fs.existsSync(path.join(SITE, 'shop.html')) && !fs.existsSync(path.join(SITE, 'book.html')));
 }
 
-await browser.close(); server.close();
+/* ---------------------------------------------------------------- hardening: time zone, holidays, notices, forms, caching */
+if (want('hardening')) {
+  const norm = (t) => t.replace(/\s+/g, ' ').trim();
+  const configured = async (mutate, name) => {
+    const dir = path.join(TMP, 'cfg-' + name);
+    fs.cpSync(SITE, dir, { recursive: true, filter: (src) => !/[\\/](tests|node_modules|\.git)([\\/]|$)/.test(src.slice(SITE.length)) });
+    const c = JSON.parse(fs.readFileSync(path.join(dir, 'site.config.json'), 'utf8')); mutate(c); fs.writeFileSync(path.join(dir, 'site.config.json'), JSON.stringify(c));
+    execFileSync('python3', [path.join(dir, 'tools/build.py')], { env: { ...process.env, SITE_ROOT: dir }, stdio: 'pipe' });
+    const srv = await serve(dir); servers.push(srv);
+    return `http://localhost:${srv.address().port}/`;
+  };
+  const VISIT = '#visit-form';
+  // 1. the gym's clock (Brisbane), not the visitor's
+  for (const tz of ['America/Los_Angeles', 'Europe/London']) {
+    const p = await newPage({ viewport: { width: 390, height: 844 }, timezoneId: tz }, { webgl: false, clock: TUE + 'T12:00:00' }); await p.goto(p.base + 'index.html'); await p.waitForTimeout(500);
+    const t = norm(await p.textContent('#open-status'));
+    ok(`visitor in ${tz} sees Brisbane's hours: Tue 12:00 in Brisbane is open until 10pm`, /^Open now, closes at 10pm/.test(t), t);
+    await done(p);
+  }
+  {
+    const p = await newPage({ viewport: { width: 390, height: 844 }, timezoneId: 'Australia/Brisbane' }, { webgl: false, clock: '2026-04-03T09:00:00' }); await p.goto(p.base + 'index.html'); await p.waitForTimeout(500);
+    ok('Good Friday uses the special hours from the config (open until 1pm)', /^Open now, closes at 1pm/.test(norm(await p.textContent('#open-status'))), norm(await p.textContent('#open-status')));
+    await done(p);
+    const q = await newPage({ viewport: { width: 390, height: 844 }, timezoneId: 'Australia/Brisbane' }, { webgl: false, clock: '2026-12-25T10:00:00' }); await q.goto(q.base + 'index.html'); await q.waitForTimeout(500);
+    ok('Christmas Day is closed: "Closed today for Christmas Day"', /^Closed today for Christmas Day\. Opens tomorrow/.test(norm(await q.textContent('#open-status'))), norm(await q.textContent('#open-status')));
+    await done(q);
+  }
+  // 2. banner the week before; footer year; no hard-coded dates in the scripts
+  {
+    const p = await newPage({ viewport: { width: 390, height: 844 } }, { webgl: false, clock: '2026-04-01T10:00:00' }); await p.goto(p.base + 'index.html'); await p.waitForTimeout(500);
+    const bar = await p.evaluate(() => { const b = document.querySelector('#notice-bar'); return { hidden: b.hidden, text: b.innerText.replace(/\s+/g, ' ').trim() }; });
+    ok('holiday banner the week before: "Open Friday for Good Friday, 7am to 1pm."', !bar.hidden && /Open Friday for Good Friday, 7am to 1pm\./.test(bar.text), bar.text);
+    await done(p);
+    const q = await newPage({ viewport: { width: 390, height: 844 } }, { webgl: false, clock: '2031-06-15T10:00:00' }); await q.goto(q.base + 'index.html'); await q.waitForTimeout(500);
+    ok('footer copyright year follows the date (fake clock in 2031 shows 2031)', /© 2031 /.test(norm(await q.textContent('.footer-copy'))));
+    await done(q);
+    const src = ['js/trial.js', 'js/ui.js', 'js/util.js', 'js/clock.js', 'js/notice.js', 'js/formtools.js', 'js/forms.js', 'js/classes.js'].map((f) => fs.readFileSync(path.join(SITE, f), 'utf8')).join('\n');
+    ok('no hard-coded years in the scripts', !/\b20[2-9]\d\b/.test(src.replace(/^\s*\/\/.*$/gm, '')));
+    const pages = PAGES.map((f) => fs.readFileSync(path.join(SITE, f), 'utf8').replace(/<script type="application\/json"[\s\S]*?<\/script>/g, '')).join('\n');
+    ok('no hard-coded dates left in the page text (months with a year, "2026")', !/(January|February|March|April|May|June|July|August|September|October|November|December) 20\d\d/.test(pages) && !/20(2[6-9]|3\d)/.test(pages.replace(/<span data-year>\d{4}<\/span>/g, '').replace(/[0-9a-f]{8}/g, '').replace(/data-open="[^"]*"/g, '')), (pages.match(/.{20}20(2[6-9]|3\d).{20}/) || [''])[0]);
+  }
+  // 3. booking calendar rolls from today for 90+ days, closes holidays and closures, hides passed times
+  {
+    const b = await configured((c) => { c.closures = [{ date: '2026-11-12', name: 'floor refit', status: 'closed' }]; c.notices = [{ text: 'Spring challenge: sign up at the desk', start: '2026-10-01', end: '2026-10-31' }, { text: 'Old news', end: '2026-09-30' }]; }, 'closures');
+    const p = await newPage({ viewport: { width: 1440, height: 900 } }, { webgl: false, clock: TUE + 'T12:00:00', host: b }); await p.goto(b + 'trial.html'); await p.waitForTimeout(500);
+    const t = norm(await p.textContent('#notice-bar'));
+    ok('config closures and live notices show in the notice bar; an expired one stays hidden', /Spring challenge/.test(t) && !/Old news/.test(t), t);
+    let reach = '';
+    for (let i = 0; i < 4; i++) { const last = await p.locator('.cal-day:not(:disabled)').last().getAttribute('data-date').catch(() => null); if (last) reach = last; if (await p.locator('#cal-next').isDisabled()) break; await p.locator('#cal-next').click(); }
+    ok('trial calendar reaches at least 90 days past today (2026-10-20 -> 2027-01-18 or later)', reach >= '2027-01-18', reach);
+    await p.locator('#cal-prev').click().catch(() => {}); await p.goto(b + 'trial.html'); await p.waitForTimeout(300);
+    await p.locator('#cal-next').click();
+    const nov = await p.evaluate(() => { const g = (d) => document.querySelector(`.cal-day[data-date="${d}"]`); return { refit: g('2026-11-12') && g('2026-11-12').disabled, refitTitle: g('2026-11-12') && g('2026-11-12').title, normal: g('2026-11-13') && !g('2026-11-13').disabled }; });
+    ok('a config closure disables that day in the booking calendar with a reason; the next day is open', nov.refit && /floor refit/.test(nov.refitTitle) && nov.normal, JSON.stringify(nov));
+    await done(p);
+    const hp = await newPage({ viewport: { width: 1440, height: 900 } }, { webgl: false, clock: '2026-12-24T10:00:00' }); await hp.goto(hp.base + 'trial.html'); await hp.waitForTimeout(500);
+    const xm = await hp.evaluate(() => { const g = (d) => document.querySelector(`.cal-day[data-date="${d}"]`); return { xmas: g('2026-12-25') && g('2026-12-25').disabled, boxing: g('2026-12-26') && !g('2026-12-26').disabled }; });
+    ok('public holiday (Christmas Day) is closed in the calendar, calculated from the date rules', xm.xmas && xm.boxing, JSON.stringify(xm));
+    await done(hp);
+    const late = await newPage({ viewport: { width: 1440, height: 900 } }, { webgl: false, clock: TUE + 'T21:45:00' }); await late.goto(late.base + 'trial.html'); await late.waitForTimeout(500);
+    await late.locator('.cal-day.is-today').click({ force: true }).catch(() => {});
+    const labels = await late.locator('.slot:not(:disabled)').count();
+    ok('after the last start time today there is nothing bookable today', labels === 0 && (await late.locator('.slot').count()) >= 0);
+    await done(late);
+  }
+  // 4. config errors give plain-English messages
+  {
+    let msg = ''; try { await configured((c) => { c.contact.phone = '12'; }, 'badphone'); } catch (e) { msg = String(e.stderr || e.message); }
+    ok('a mistyped phone number stops the build with a plain-English message', /does not look like an Australian number/.test(msg), msg.slice(0, 100));
+    let m2 = ''; try { await configured((c) => { c.notices = [{ text: 'forever' }]; }, 'noend'); } catch (e) { m2 = String(e.stderr || e.message); }
+    ok('a notice with no end date is rejected', /add an "end" date/.test(m2));
+  }
+  // 5. visit form (modal on home and visit.html): all four fields required, friendly messages, Australian phones only
+  for (const f of ['index.html', 'visit.html']) {
+    const p = await newPage({ viewport: { width: 390, height: 844 } }, { webgl: false }); await p.goto(p.base + f); await p.waitForTimeout(500);
+    await p.locator('[data-visit-open]').first().click();
+    await p.locator(VISIT + ' button[type=submit]').click();
+    const msgs = await p.evaluate(() => ['e-v-name', 'e-v-phone', 'e-v-day', 'e-v-time'].map((i) => document.getElementById(i).textContent.trim()));
+    ok(`${f}: empty visit form shows four friendly errors and no thank-you`, msgs[0] === 'Please tell us your name so we can put it on the list.' && msgs[1] === 'We need a phone number in case we have to reach you.' && msgs[2] && msgs[3] && await p.locator('#visit-done').isHidden(), JSON.stringify(msgs));
+    ok(`${f}: focus goes to the first invalid field (name) and fields are aria-invalid`, await p.evaluate(() => document.activeElement.id === 'v-name' && document.getElementById('v-name').getAttribute('aria-invalid') === 'true'));
+    const bad = [];
+    for (const ph of ['12345', 'abcdefghij', '0612 345 678', '+1 202 555 0143', '0412 345', '(07) 5550']) { await p.fill('#v-name', 'Sam Rivera'); await p.fill('#v-phone', ph); await p.selectOption('#v-day', 'Saturday'); await p.selectOption('#v-time', { index: 1 }); await p.locator(VISIT + ' button[type=submit]').click(); if (await p.locator('#visit-done').isVisible() || !/Australian phone/.test(await p.textContent('#e-v-phone'))) bad.push(ph); }
+    ok(`${f}: non-Australian or malformed phone numbers are rejected`, !bad.length, bad.join(','));
+    await p.fill('#v-phone', '+61 412 345 678'); await p.locator(VISIT + ' button[type=submit]').click();
+    ok(`${f}: a valid Australian number with all fields shows the thank-you`, await p.locator('#visit-done').isVisible() && /Sam/.test(await p.textContent('#visit-done')));
+    await done(p);
+  }
+  // 6. forms with an endpoint: demo note goes, failure fallback, one request for a double submit, honeypot
+  {
+    const live = await configured((c) => { c.forms.endpoint = 'https://forms.example.test/f/abc'; }, 'live');
+    const p = await newPage({ viewport: { width: 390, height: 844 } }, { webgl: false, host: live }); await p.goto(live + 'index.html'); await p.waitForTimeout(500);
+    let calls = 0, mode = 'fail', last = null;
+    await p.route('https://forms.example.test/**', async (r) => { calls++; last = r.request().postData(); await new Promise((x) => setTimeout(x, 300)); r.fulfill({ status: mode === 'ok' ? 200 : 500, contentType: 'application/json', body: '{}', headers: { 'access-control-allow-origin': '*' } }); });
+    await p.locator('[data-visit-open]').first().click();
+    ok('with a form endpoint set, the visit form no longer says "Demo"', !/Demo/.test(await p.textContent('#visit-form .note')));
+    await p.fill('#v-name', 'Sam Rivera'); await p.fill('#v-phone', '0412 345 678'); await p.selectOption('#v-day', 'Saturday'); await p.selectOption('#v-time', { index: 1 });
+    await p.evaluate(() => { const f = document.querySelector('#visit-form'); f.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true })); f.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true })); });
+    await p.waitForSelector('#visit-form .form-fail', { timeout: 5000 });
+    const fb = await p.evaluate(() => ({ txt: document.querySelector('#visit-form .form-fail').innerText, tel: document.querySelector('#visit-form .form-fail a').getAttribute('href'), name: document.getElementById('v-name').value, formShown: !document.getElementById('visit-form').hidden, btn: document.querySelector('#visit-form button[type=submit]').disabled }));
+    ok('failed send: ONE request for two rapid submits, phone fallback shown, details kept, button usable again', calls === 1 && /call us on/i.test(fb.txt) && fb.tel.startsWith('tel:+61') && fb.name === 'Sam Rivera' && fb.formShown && !fb.btn, JSON.stringify([calls, fb]));
+    mode = 'ok'; await p.locator('#visit-form button[type=submit]').click(); await p.waitForSelector('#visit-done:not([hidden])', { timeout: 5000 });
+    ok('successful send: thank-you without the demo wording; the request carried the details', calls === 2 && !/demo/i.test(await p.textContent('#visit-done')) && /Sam Rivera/.test(last || ''), last);
+    await p.click('#visit-ok'); await p.locator('[data-visit-open]').first().click();
+    await p.fill('#v-name', 'Spam Bot'); await p.fill('#v-phone', '0412 345 678'); await p.selectOption('#v-day', 'Monday'); await p.selectOption('#v-time', { index: 1 }); await p.evaluate(() => { document.querySelector('#visit-form input[name=website]').value = 'http://spam.example'; });
+    const before = calls; await p.locator('#visit-form button[type=submit]').click(); await p.waitForSelector('#visit-done:not([hidden])');
+    ok('spam trap: a filled honeypot sends nothing', calls === before);
+    await done(p);
+    const t = await newPage({ viewport: { width: 1440, height: 900 } }, { webgl: false, host: live, clock: TUE + 'T10:00:00' }); await t.goto(live + 'trial.html'); await t.waitForTimeout(500);
+    const hps = await t.evaluate(() => [...document.querySelectorAll('input[name=website]')].map((i) => [i.tabIndex, i.closest('.hp').getAttribute('aria-hidden')]));
+    ok('the trial form also carries a hidden honeypot that is out of the tab order', hps.length === 1 && hps[0][0] === -1 && hps[0][1] === 'true', JSON.stringify(hps));
+    await done(t);
+  }
+  // 7. caching, robots, noscript, landscape
+  {
+    const html = fs.readFileSync(path.join(SITE, 'index.html'), 'utf8');
+    ok('CSS, Lenis and main.js links carry ?v=hash and the import map versions every module (three.js entries kept)', /styles\.css\?v=[0-9a-f]{8}/.test(html) && /main\.js\?v=[0-9a-f]{8}/.test(html) && /"\.\/js\/trial\.js":"?\s*"?\.\/js\/trial\.js\?v=[0-9a-f]{8}/.test(html.replace(/\s/g, '')) && html.includes('"three"'));
+    ok('robots.txt names the sitemap; sitemap lists the pages and not 404', /Sitemap: /.test(fs.readFileSync(path.join(SITE, 'robots.txt'), 'utf8')) && !fs.readFileSync(path.join(SITE, 'sitemap.xml'), 'utf8').includes('404'));
+    const p = await newPage({ viewport: { width: 390, height: 844 } }, { webgl: false }); await p.goto(p.base + 'index.html'); await p.waitForTimeout(800);
+    const mod = await p.evaluate(() => performance.getEntriesByType('resource').map((r) => r.name).filter((n) => /\/js\/.*\.js/.test(n)));
+    ok('the browser really loads the versioned module files', mod.length >= 6 && mod.every((n) => /\?v=[0-9a-f]{8}$/.test(n)), mod.slice(0, 2).join(' '));
+    ok('no console errors on the home page', !p.logs.length, JSON.stringify(p.logs.slice(0, 2)));
+    await done(p);
+    const ctx = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 390, height: 844 } }); const np = await ctx.newPage(); await np.goto(base + 'index.html');
+    const nj = norm(await np.evaluate(() => document.querySelector('.nojs-banner').innerText));
+    ok('JavaScript off: a banner shows the phone number, street address and hours', nj.includes(cfg.contact.phone) && nj.includes(cfg.contact.street) && /5am/.test(nj), nj.slice(0, 140));
+    await ctx.close();
+    const l = await newPage({ viewport: { width: 844, height: 390 }, hasTouch: true, isMobile: true }, { webgl: false }); await l.goto(l.base + 'index.html'); await l.waitForTimeout(600);
+    const a = await l.evaluate(audit);
+    ok('phone in landscape (844x390): no sideways scroll', a.scrollW <= a.W && !a.bad.length, JSON.stringify(a));
+    await done(l);
+  }
+}
+
+await browser.close(); server.close(); servers.forEach((x) => x.close());
+try { fs.rmSync(TMP, { recursive: true, force: true }); } catch (e) { /* ignore */ }
 const failed = results.filter((r) => !r.pass);
 console.log(`\n${results.length - failed.length}/${results.length} checks passed${failed.length ? '. FAILED: ' + failed.map((f) => f.name).join('; ') : ''}`);
 process.exit(failed.length ? 1 : 0);

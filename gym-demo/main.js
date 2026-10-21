@@ -1,6 +1,7 @@
 // Entry point. Each module wires up its own part of the page.
 import { startUp, initHero } from './js/hero.js';
 import './js/ui.js';
+import './js/notice.js';
 import './js/search.js';
 import './js/forms.js';
 import './js/classes.js';

@@ -2,7 +2,8 @@
 <html lang="en-AU">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="dark">
   
   <title>Journal | Brass &amp; Blade Barbershop (concept demo)</title>
   <meta name="description" content="Grooming advice and stories from the chairs at Brass &amp; Blade.">
@@ -29,8 +30,9 @@
   <link rel="manifest" href="site.webmanifest">
   <link rel="preload" href="fonts/montserrat-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="fonts/oswald-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="vendor/lenis-1.1.18.css">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="vendor/lenis-1.1.18.css?v=7720ea7b">
+  <link rel="stylesheet" href="styles.css?v=1c606888">
+  <script type="importmap">{"imports": {"three": "./vendor/three.module.min.js?v=2992ecd7", "three/addons/": "./vendor/addons/", "./js/cart.js": "./js/cart.js?v=bfe8c569", "./js/clock.js": "./js/clock.js?v=ae87c07c", "./js/formkit.js": "./js/formkit.js?v=9329b8a0", "./js/forms.js": "./js/forms.js?v=af40526f", "./js/hero.js": "./js/hero.js?v=a4eaba0f", "./js/notice.js": "./js/notice.js?v=172abec3", "./js/search.js": "./js/search.js?v=1c9096f0", "./js/smooth.js": "./js/smooth.js?v=9a2fb764", "./js/sound.js": "./js/sound.js?v=0469ebd1", "./js/ui.js": "./js/ui.js?v=8e92986a", "./js/util.js": "./js/util.js?v=2029537a", "./scene.js": "./scene.js?v=30875fb2", "./search-data.js": "./search-data.js?v=354c7072"}}</script>
   <style>:root{--black:#0B0B0C;--charcoal:#161617;--gold:#C9A24B;--wine:#E4C77A;--wine-deep:#F2EBDD;--wine-night:#161617;--gold-light:#E4C77A;--gold-text:#E4C77A;--cream:#0B0B0C;--tint:#121213;--ink:#F2EBDD}</style>
   
   <noscript><style>
@@ -48,11 +50,11 @@
     // Safety net: never leave the hero hidden if the main script fails to start.
     setTimeout(function () { var d = document.documentElement; if (!d.classList.contains('is-ready')) d.classList.add('is-ready', 'is-failsafe'); }, 4500);
   </script>
-  
 </head>
 <body class="page-journal">
   
   <a class="skip-link" href="#main">Skip to content</a>
+  <noscript><p class="nojs-banner">JavaScript is switched off, so online booking and live opening times are unavailable. Please call <a href="tel:+61255500144">02 5550 0144</a> or visit us at 48 Example Lane, Surry Hills NSW 2010. Hours: Mon 10am &ndash; 6pm<br>Tue &ndash; Wed 9am &ndash; 7pm<br>Thu 9am &ndash; 8pm<br>Fri 9am &ndash; 7pm<br>Sat 9am &ndash; 5pm<br>Sun 10am &ndash; 4pm.</p></noscript>
   <div class="progress" aria-hidden="true"><span></span></div>
 
   <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
@@ -69,6 +71,8 @@
     <p>Walk-ins welcome. Memberships from $79. <a href="membership.html">See plans</a></p>
     <button class="announce-close" type="button" id="announce-close" aria-label="Dismiss announcement"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" focusable="false"><path d="M2 2l10 10M12 2L2 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
   </div>
+
+  <div class="notice-bar" id="notice-bar" role="region" aria-label="Notices" hidden></div>
 
   <header class="site-header" id="top">
     <div class="header-inner">
@@ -107,7 +111,7 @@
       <div class="overlay-info">
         <p class="label">Find us</p>
         <p>48 Example Lane<br>Surry Hills NSW 2010</p>
-        <p><a href="tel:0255500144">02 5550 0144</a><br><a href="mailto:hello@example.com">hello@example.com</a></p>
+        <p><a href="tel:+61255500144">02 5550 0144</a><br><a href="mailto:hello@brassandblade.example">hello@brassandblade.example</a></p>
         <p class="label">Hours</p>
         <p>Mon 10am &ndash; 6pm<br>Tue &ndash; Wed 9am &ndash; 7pm<br>Thu 9am &ndash; 8pm<br>Fri 9am &ndash; 7pm<br>Sat 9am &ndash; 5pm<br>Sun 10am &ndash; 4pm</p>
         <p class="label">In the shop</p>
@@ -153,6 +157,11 @@
         <p class="error" id="e-cart-name" aria-live="polite"></p>
       </div>
       <div class="field">
+        <label for="cart-phone">Phone</label>
+        <input id="cart-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" aria-describedby="e-cart-phone">
+        <p class="error" id="e-cart-phone" aria-live="polite"></p>
+      </div>
+      <div class="field">
         <label for="cart-barber">Barber</label>
         <select id="cart-barber" name="barber"><option value="any">Any available barber</option><option value="Marco">Marco</option><option value="Jess">Jess</option><option value="Dev">Dev</option><option value="Ollie">Ollie (apprentice)</option></select>
       </div>
@@ -191,7 +200,7 @@
           <header>
             <p class="eyebrow">Cuts &middot; 3 min read</p>
             <h2 id="how-often-title" data-split>How often should you get a haircut?</h2>
-            <p class="post-meta"><time datetime="2026-09-22">22 September 2026</time></p>
+            <p class="post-meta"><time data-days-ago="29">Recent post</time></p>
           </header>
           <div class="post-body">
             <p>The honest answer is: when you stop liking it. A skin fade looks its best for about two weeks and starts to soften by week three, so most fade regulars come every two to three weeks. A scissor cut with some length can happily go six to eight.</p><p>Hair grows about a centimetre a month, so a short cut loses its shape faster than a long one. If you like crisp edges around the ears and neck, you will want a tidy-up between full cuts, and that is what our fifteen-minute Neck &amp; Edge Clean-Up is for.</p><p>If you are not sure, book a consultation with your barber and ask what suits your hair type and your routine. We would rather tell you to wait another week than sell you a cut you do not need.</p>
@@ -202,7 +211,7 @@
           <header>
             <p class="eyebrow">Beards &middot; 4 min read</p>
             <h2 id="beard-care-title" data-split>Beard care in five minutes a day</h2>
-            <p class="post-meta"><time datetime="2026-08-14">14 August 2026</time></p>
+            <p class="post-meta"><time data-days-ago="68">Recent post</time></p>
           </header>
           <div class="post-body">
             <p>Wash it two or three times a week with a gentle beard wash, not the same shampoo you use on your head. Daily washing strips the natural oils and leaves everything dry and itchy.</p><p>After washing, pat it dry and use a few drops of oil, working it into the skin as well as the hair. Brush or comb it into shape while it is still slightly damp. That is the whole routine and it takes about five minutes.</p><p>Trim every four to six weeks to keep the shape, and keep the neckline about two fingers above your Adam&#x27;s apple. If you are growing it out, keep going through the awkward stage. Almost everyone wants to quit at week three.</p>
@@ -213,7 +222,7 @@
           <header>
             <p class="eyebrow">Shave &middot; 3 min read</p>
             <h2 id="hot-towels-title" data-split>Why we still shave with hot towels</h2>
-            <p class="post-meta"><time datetime="2026-07-03">3 July 2026</time></p>
+            <p class="post-meta"><time data-days-ago="110">Recent post</time></p>
           </header>
           <div class="post-body">
             <p>Heat and steam soften the hair and open the skin, which is why a hot towel shave is smoother and kinder than a quick pass with a cartridge razor at home. The towel is the first step, not decoration.</p><p>After the towel we apply a warm lather with a brush, which lifts the hair away from the skin. The straight razor goes with the grain first, then across it if your skin can take it, and a cold towel closes everything up at the end.</p><p>It takes forty-five minutes, which is about forty-four more than most of us give ourselves in a week. People tell us it is the only time they put their phone away.</p>
@@ -265,7 +274,7 @@
         <div class="footer-col">
           <h2>Visit</h2>
           <p>48 Example Lane<br>Surry Hills NSW 2010</p>
-          <p><a href="tel:0255500144">02 5550 0144</a><br><a href="mailto:hello@example.com">hello@example.com</a></p>
+          <p><a href="tel:+61255500144">02 5550 0144</a><br><a href="mailto:hello@brassandblade.example">hello@brassandblade.example</a></p>
         </div>
         <div class="footer-col">
           <h2>Hours</h2>
@@ -281,7 +290,7 @@
         <button type="button" class="sound-btn" data-sound aria-pressed="false">Shop ambience: <span data-sound-state>off</span></button>
       </nav>
       <div class="footer-bottom">
-        <p>Concept demo by KB Ventures. Not a real business.</p>
+        <p>&copy; <span data-year>2026</span> Brass &amp;amp; Blade Barbershop. Concept demo by KB Ventures. Not a real business.</p>
         <p class="brandline">Concept website by KB Ventures. Want one for your business?</p>
         <p class="photo-credits">Photo credits: Photo: Unsplash (Hero chair, Skin fade, Hot towel shave, The full works, Red chair room, Tools, Products, Fade in progress, Tools detail, Red chair detail, Fade detail, Products strip)</p>
         <a class="back-top" href="#top">Back to top &uarr;</a>
@@ -291,7 +300,7 @@
 
   <!-- Mobile quick actions -->
   <nav class="mobile-cta" aria-label="Quick actions">
-    <a class="btn btn-secondary" href="tel:0255500144">Call</a>
+    <a class="btn btn-secondary" href="tel:+61255500144">Call</a>
     <a class="btn btn-primary" href="book.html">Book a chair</a>
   </nav>
 
@@ -305,8 +314,8 @@
   </div>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <script type="application/json" id="site-data">{"name": "Brass & Blade", "phone": "02 5550 0144", "phoneHref": "0255500144", "email": "hello@example.com", "timezone": "Australia/Sydney", "locale": "en-AU", "currency": "AUD", "hours": [{"day": 1, "name": "Monday", "open": 10, "close": 18}, {"day": 2, "name": "Tuesday", "open": 9, "close": 19}, {"day": 3, "name": "Wednesday", "open": 9, "close": 19}, {"day": 4, "name": "Thursday", "open": 9, "close": 20}, {"day": 5, "name": "Friday", "open": 9, "close": 19}, {"day": 6, "name": "Saturday", "open": 9, "close": 17}, {"day": 0, "name": "Sunday", "open": 10, "close": 16}]}</script>
-  <script defer src="vendor/lenis-1.1.18.min.js"></script><!-- Lenis 1.1.18 (MIT), self-hosted, pinned -->
-  <script type="module" src="main.js"></script>
+  <script type="application/json" id="site-data">{"name": "Brass & Blade", "phone": "02 5550 0144", "phoneHref": "+61255500144", "email": "hello@brassandblade.example", "timezone": "Australia/Sydney", "locale": "en-AU", "currency": "AUD", "region": "NSW", "hours": [{"day": 1, "name": "Monday", "open": 600, "close": 1080}, {"day": 2, "name": "Tuesday", "open": 540, "close": 1140}, {"day": 3, "name": "Wednesday", "open": 540, "close": 1140}, {"day": 4, "name": "Thursday", "open": 540, "close": 1200}, {"day": 5, "name": "Friday", "open": 540, "close": 1140}, {"day": 6, "name": "Saturday", "open": 540, "close": 1020}, {"day": 0, "name": "Sunday", "open": 600, "close": 960}], "holidays": {"mode": "closed", "overrides": {}}, "closures": [], "notices": [], "booking": {"slotMinutes": 30, "daysAhead": 90, "leadMinutes": 0, "externalUrl": ""}, "forms": {"endpoint": ""}}</script>
+  <script defer src="vendor/lenis-1.1.18.min.js?v=42bf5944"></script><!-- Lenis 1.1.18 (MIT), self-hosted, pinned -->
+  <script type="module" src="main.js?v=60aba37c"></script>
 </body>
 </html>

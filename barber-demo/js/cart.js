@@ -1,5 +1,7 @@
 // "Your visit" drawer (demo): chosen services and products live in localStorage, nothing is sent anywhere.
-import { $, $$, site, money, store, toast, modal, cafeNow, hoursFor, fmtHour, escapeHtml } from './util.js';
+import { $, $$, site, money, store, toast, modal, nowShop, resolveDay, addDays, fmtHour, escapeHtml } from './util.js';
+import { DAY_NAMES } from './clock.js';
+import { addHoneypot, tripped, guard, send, isLive, phoneFallback, auPhone, PHONE_ERR } from './formkit.js';
 
 const KEY = 'eo-cart';
 let items = [];
@@ -63,19 +65,20 @@ function add(id, name, price, btn) {
   toast(`Added ${name}. ${count()} ${count() === 1 ? 'item' : 'items'} in your visit.`);
 }
 
-/** Pick-up times: ASAP plus the next slots inside opening hours (in the café's time zone). */
+/** Visit times: "next available" plus the next slots inside opening hours (shop time zone, holidays and closures included). */
 function fillTimes() {
   const sel = $('#cart-when');
-  const { day, hour } = cafeNow();
-  const today = hoursFor(day);
+  const n = nowShop(), today = resolveDay(n.key);
   const opts = [];
-  if (today && hour >= today.open && hour < today.close - 0.5) opts.push('<option value="asap">Next available chair (about 15 minutes)</option>');
-  const start = Math.max(Math.ceil((hour + 0.5) * 4) / 4, today ? today.open : 0);
-  if (today) for (let t = start; t <= today.close - 0.5 && opts.length < 9; t += 0.5) {
-    const h = Math.floor(t), m = Math.round((t - h) * 60);
-    opts.push(`<option value="${h}:${m}">Today at ${(h % 12) || 12}:${String(m).padStart(2, '0')}${h < 12 ? 'am' : 'pm'}</option>`);
+  const lab = (t) => { const h = Math.floor((t % 1440) / 60), m = t % 60; return `${(h % 12) || 12}:${String(m).padStart(2, '0')}${h < 12 ? 'am' : 'pm'}`; };
+  if (!today.closed && n.mins >= today.open && n.mins < today.close - 30) opts.push('<option value="asap">Next available chair (about 15 minutes)</option>');
+  if (!today.closed) for (let t = Math.max(Math.ceil((n.mins + 30) / 15) * 15, today.open); t <= today.close - 30 && opts.length < 9; t += 30) opts.push(`<option value="${t}">Today at ${lab(t)}</option>`);
+  if (!opts.length) {
+    for (let i = 1; i <= 21; i++) {
+      const key = addDays(n.key, i), r = resolveDay(key);
+      if (!r.closed) { opts.push(`<option value="tomorrow">${i === 1 ? 'Tomorrow' : DAY_NAMES[new Date(key + 'T12:00:00Z').getUTCDay()]} at ${fmtHour(r.open)}</option>`); break; }
+    }
   }
-  if (!opts.length) { const nd = hoursFor((day + 1) % 7); opts.push(`<option value="tomorrow">Tomorrow at ${fmtHour(nd.open)}</option>`); }
   sel.innerHTML = opts.join('');
 }
 
@@ -98,22 +101,35 @@ list.addEventListener('click', (e) => {
   save(); render();
   if (items.length) { const again = $(`[data-id="${CSS.escape(li.dataset.id)}"] [data-qty="1"]`, list); if (again) again.focus(); } else $('#cart-close').focus();
 });
-form.addEventListener('submit', (e) => {
+addHoneypot(form);
+const submitBtn = $('button[type=submit]', form), busy = guard(submitBtn);
+const failBox = document.createElement('div'); failBox.setAttribute('aria-live', 'assertive'); submitBtn.before(failBox);
+form.addEventListener('submit', async (e) => {
   e.preventDefault();
-  const name = $('#cart-name');
-  const err = $('#e-cart-name');
-  if (name.value.trim().length < 2) {
-    err.textContent = 'Please add a name so we can find your booking when you arrive.';
-    name.setAttribute('aria-invalid', 'true'); name.focus(); return;
-  }
-  err.textContent = ''; name.setAttribute('aria-invalid', 'false');
-  const when = $('#cart-when').selectedOptions[0].textContent.toLowerCase();
-  const barber = $('#cart-barber').value === 'any' ? 'the next available barber' : $('#cart-barber').value;
-  $('#done-name').textContent = name.value.trim().split(' ')[0];
-  $('#done-detail').textContent = `Your visit (${count()} ${count() === 1 ? 'item' : 'items'}, ${money(total())}${minutes() ? `, about ${fmtMins(minutes())}` : ''}) would be pencilled in with ${barber}: ${when}.`;
-  items = []; save();
-  done.hidden = false; render();
-  done.focus();
+  if (!busy.start()) return;
+  try {
+    failBox.innerHTML = '';
+    const name = $('#cart-name'), phone = $('#cart-phone');
+    const err = $('#e-cart-name'), perr = $('#e-cart-phone');
+    err.textContent = perr.textContent = ''; name.setAttribute('aria-invalid', 'false'); phone.setAttribute('aria-invalid', 'false');
+    let firstBad = null;
+    if (name.value.trim().length < 2) { err.textContent = 'Please add a name so we can find your booking when you arrive.'; name.setAttribute('aria-invalid', 'true'); firstBad = name; }
+    if (!phone.value.trim()) { perr.textContent = 'We need a phone number in case we have to reach you.'; phone.setAttribute('aria-invalid', 'true'); firstBad = firstBad || phone; }
+    else if (!auPhone(phone.value)) { perr.textContent = PHONE_ERR; phone.setAttribute('aria-invalid', 'true'); firstBad = firstBad || phone; }
+    if (firstBad) { firstBad.focus(); return; }
+    const when = $('#cart-when').selectedOptions[0].textContent.toLowerCase();
+    const barber = $('#cart-barber').value === 'any' ? 'the next available barber' : $('#cart-barber').value;
+    if (!tripped(form)) {
+      const res = await send({ type: 'visit', _subject: 'Visit request', name: name.value.trim(), phone: auPhone(phone.value), barber: $('#cart-barber').value, when, items: items.map((i) => `${i.qty} x ${i.name}`), total: total() });
+      if (!res.ok) { failBox.innerHTML = phoneFallback(); return; }
+    }
+    $('#done-name').textContent = name.value.trim().split(' ')[0];
+    $('#done-detail').textContent = `Your visit (${count()} ${count() === 1 ? 'item' : 'items'}, ${money(total())}${minutes() ? `, about ${fmtMins(minutes())}` : ''}) ${isLive() ? 'is requested' : 'would be pencilled in'} with ${barber}: ${when}.`;
+    const note = $('.note', done); if (note) note.textContent = isLive() ? `We will confirm by phone or text. Questions? Call ${site.phone}.` : 'Demo only: nothing was booked and nothing was charged.';
+    items = []; save();
+    done.hidden = false; render();
+    done.focus();
+  } finally { busy.stop(); }
 });
 // keep several open tabs in sync
 window.addEventListener('storage', (e) => { if (e.key === KEY) { try { items = JSON.parse(e.newValue || '[]'); } catch (_) { items = []; } render(); } });

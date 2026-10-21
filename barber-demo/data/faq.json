@@ -13,7 +13,7 @@
  },
  {
   "q": "Do you cut kids&rsquo; hair?",
-  "a": "Absolutely. Kids under 12 are $34, and the Father &amp; Son package puts two chairs side by side on Saturday mornings."
+  "a": "Absolutely. Kids under 12 are [[price:Kids&rsquo; Cut (under 12)]], and the Father &amp; Son package puts two chairs side by side on Saturday mornings."
  },
  {
   "q": "How do I pay?",

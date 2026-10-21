@@ -4,7 +4,7 @@
         <div class="reveal">
           <p class="eyebrow">Appointments</p>
           <h2 id="book-title" data-split>Book your <em>chair.</em></h2>
-          <p class="lead">Tell us what you need and when. Pick a service, a barber and a time. You&rsquo;ll see your confirmation straight away. (This is a demo: nothing is sent.)</p>
+          <p class="lead">Tell us what you need and when. Pick a service, a barber and a time. You&rsquo;ll see your confirmation straight away.{{#if formsLive}}{{else}} (This is a demo: nothing is sent.){{/if}}</p>
           <ul class="reserve-points">
             <li>Free changes and cancellations up to 24 hours before</li>
             <li>Every cut includes a consultation and a hot towel finish</li>
@@ -25,10 +25,8 @@
             <fieldset class="barber-pick">
               <legend class="step-label"><span aria-hidden="true">2</span> Barber</legend>
               <label class="bp bp-any"><input type="radio" name="barber" value="any" checked><span class="bp-card"><span class="bp-ph" aria-hidden="true">Any</span><span class="bp-txt"><strong>Next available</strong><small>Shortest wait</small></span></span></label>
-              <label class="bp"><input type="radio" name="barber" value="marco"><span class="bp-card"><span class="bp-ph" aria-hidden="true">{{#if photos.barberMarco}}{{{photos.barberMarco}}}{{else}}M{{/if}}</span><span class="bp-txt"><strong>Marco</strong><small>Owner · fades and razor work</small></span></span></label>
-              <label class="bp"><input type="radio" name="barber" value="jess"><span class="bp-card"><span class="bp-ph" aria-hidden="true">{{#if photos.barberJess}}{{{photos.barberJess}}}{{else}}J{{/if}}</span><span class="bp-txt"><strong>Jess</strong><small>Scissor cuts and texture</small></span></span></label>
-              <label class="bp"><input type="radio" name="barber" value="dev"><span class="bp-card"><span class="bp-ph" aria-hidden="true">{{#if photos.barberDev}}{{{photos.barberDev}}}{{else}}D{{/if}}</span><span class="bp-txt"><strong>Dev</strong><small>Beards and hot towel shaves</small></span></span></label>
-              <label class="bp"><input type="radio" name="barber" value="ollie"><span class="bp-card"><span class="bp-ph" aria-hidden="true">{{#if photos.barberOllie}}{{{photos.barberOllie}}}{{else}}O{{/if}}</span><span class="bp-txt"><strong>Ollie</strong><small>Apprentice · kids and classic cuts</small></span></span></label>
+              {{#each staffList}}<label class="bp"><input type="radio" name="barber" value="{{this.slug}}"><span class="bp-card"><span class="bp-ph" aria-hidden="true">{{#if this.photoHtml}}{{{this.photoHtml}}}{{else}}{{this.initial}}{{/if}}</span><span class="bp-txt"><strong>{{this.name}}</strong><small>{{this.pick}}</small></span></span></label>
+              {{/each}}
             </fieldset>
 
             <p class="step-label"><span aria-hidden="true">3</span> Date</p>
@@ -72,14 +70,14 @@
               (Fresha, Square Appointments, Timely) and show the confirmation after a 200 response.
             -->
             <button class="btn btn-primary btn-block" type="submit">Confirm booking</button>
-            <p class="note">Demo only: nothing is sent to a real shop.</p>
+            <p class="note">{{#if formsLive}}Prefer to talk to someone? Call {{contact.phone}}.{{else}}Demo only: nothing is sent to a real shop.{{/if}}</p>
           </form>
           <div class="form-success" id="form-success" role="status" tabindex="-1" hidden>
             <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M7.500 12.500l3 3 6-7"/></svg>
             <h3>You&rsquo;re booked in, <span id="ok-name">friend</span>.</h3>
             <p id="ok-detail"></p>
             <dl class="ok-summary" id="ok-summary"></dl>
-            <p class="demo-banner"><strong>This is a demo, no real booking was made.</strong> The details were saved only in this browser.</p>
+            <p class="demo-banner">{{#if formsLive}}<strong>Thanks, your request is with us.</strong> We will confirm by phone or text.{{else}}<strong>This is a demo, no real booking was made.</strong> The details were saved only in this browser.{{/if}}</p>
             <button class="btn btn-secondary btn-on-light" type="button" id="form-reset">Book another visit</button>
           </div>
         </div>

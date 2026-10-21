@@ -2,7 +2,8 @@
 <html lang="en-AU">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="dark">
   
   <title>The crew | Brass &amp; Blade Barbershop (concept demo)</title>
   <meta name="description" content="Meet the barbers at Brass &amp; Blade and read the story of the shop.">
@@ -29,8 +30,9 @@
   <link rel="manifest" href="site.webmanifest">
   <link rel="preload" href="fonts/montserrat-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="fonts/oswald-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="vendor/lenis-1.1.18.css">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="vendor/lenis-1.1.18.css?v=7720ea7b">
+  <link rel="stylesheet" href="styles.css?v=1c606888">
+  <script type="importmap">{"imports": {"three": "./vendor/three.module.min.js?v=2992ecd7", "three/addons/": "./vendor/addons/", "./js/cart.js": "./js/cart.js?v=bfe8c569", "./js/clock.js": "./js/clock.js?v=ae87c07c", "./js/formkit.js": "./js/formkit.js?v=9329b8a0", "./js/forms.js": "./js/forms.js?v=af40526f", "./js/hero.js": "./js/hero.js?v=a4eaba0f", "./js/notice.js": "./js/notice.js?v=172abec3", "./js/search.js": "./js/search.js?v=1c9096f0", "./js/smooth.js": "./js/smooth.js?v=9a2fb764", "./js/sound.js": "./js/sound.js?v=0469ebd1", "./js/ui.js": "./js/ui.js?v=8e92986a", "./js/util.js": "./js/util.js?v=2029537a", "./scene.js": "./scene.js?v=30875fb2", "./search-data.js": "./search-data.js?v=354c7072"}}</script>
   <style>:root{--black:#0B0B0C;--charcoal:#161617;--gold:#C9A24B;--wine:#E4C77A;--wine-deep:#F2EBDD;--wine-night:#161617;--gold-light:#E4C77A;--gold-text:#E4C77A;--cream:#0B0B0C;--tint:#121213;--ink:#F2EBDD}</style>
   
   <noscript><style>
@@ -48,11 +50,11 @@
     // Safety net: never leave the hero hidden if the main script fails to start.
     setTimeout(function () { var d = document.documentElement; if (!d.classList.contains('is-ready')) d.classList.add('is-ready', 'is-failsafe'); }, 4500);
   </script>
-  
 </head>
 <body class="page-barbers">
   
   <a class="skip-link" href="#main">Skip to content</a>
+  <noscript><p class="nojs-banner">JavaScript is switched off, so online booking and live opening times are unavailable. Please call <a href="tel:+61255500144">02 5550 0144</a> or visit us at 48 Example Lane, Surry Hills NSW 2010. Hours: Mon 10am &ndash; 6pm<br>Tue &ndash; Wed 9am &ndash; 7pm<br>Thu 9am &ndash; 8pm<br>Fri 9am &ndash; 7pm<br>Sat 9am &ndash; 5pm<br>Sun 10am &ndash; 4pm.</p></noscript>
   <div class="progress" aria-hidden="true"><span></span></div>
 
   <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
@@ -69,6 +71,8 @@
     <p>Walk-ins welcome. Memberships from $79. <a href="membership.html">See plans</a></p>
     <button class="announce-close" type="button" id="announce-close" aria-label="Dismiss announcement"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" focusable="false"><path d="M2 2l10 10M12 2L2 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
   </div>
+
+  <div class="notice-bar" id="notice-bar" role="region" aria-label="Notices" hidden></div>
 
   <header class="site-header" id="top">
     <div class="header-inner">
@@ -107,7 +111,7 @@
       <div class="overlay-info">
         <p class="label">Find us</p>
         <p>48 Example Lane<br>Surry Hills NSW 2010</p>
-        <p><a href="tel:0255500144">02 5550 0144</a><br><a href="mailto:hello@example.com">hello@example.com</a></p>
+        <p><a href="tel:+61255500144">02 5550 0144</a><br><a href="mailto:hello@brassandblade.example">hello@brassandblade.example</a></p>
         <p class="label">Hours</p>
         <p>Mon 10am &ndash; 6pm<br>Tue &ndash; Wed 9am &ndash; 7pm<br>Thu 9am &ndash; 8pm<br>Fri 9am &ndash; 7pm<br>Sat 9am &ndash; 5pm<br>Sun 10am &ndash; 4pm</p>
         <p class="label">In the shop</p>
@@ -151,6 +155,11 @@
         <label for="cart-name">Your name</label>
         <input id="cart-name" name="name" type="text" autocomplete="name" aria-describedby="e-cart-name">
         <p class="error" id="e-cart-name" aria-live="polite"></p>
+      </div>
+      <div class="field">
+        <label for="cart-phone">Phone</label>
+        <input id="cart-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" aria-describedby="e-cart-phone">
+        <p class="error" id="e-cart-phone" aria-live="polite"></p>
       </div>
       <div class="field">
         <label for="cart-barber">Barber</label>
@@ -198,7 +207,7 @@
       </div>
       <div class="container">
         <ul class="stats reveal" aria-label="Brass &amp; Blade in numbers">
-          <li><span class="stat-num" data-count="12" data-suffix="">12</span><span class="stat-label">years in the same shop</span></li>
+          <li><span class="stat-num" data-since="2014" data-count="12" data-suffix="">12</span><span class="stat-label">years in the same shop</span></li>
           <li><span class="stat-num" data-count="38000" data-suffix="">38,000</span><span class="stat-label">cuts and shaves a year</span></li>
           <li><span class="stat-num" data-count="4" data-suffix="">4</span><span class="stat-label">chairs, always busy</span></li>
         </ul>
@@ -209,6 +218,7 @@
           <li class="reveal"><span class="avatar" aria-hidden="true">J</span><div><strong>Jess</strong><span>Senior barber</span><p>Scissor cuts, long hair and kids. Calm, quick and good at making nervous clients laugh.</p><a class="link-arrow" href="book.html?barber=jess">Book with Jess <span aria-hidden="true">&rarr;</span></a></div></li>
           <li class="reveal"><span class="avatar" aria-hidden="true">D</span><div><strong>Dev</strong><span>Beard &amp; shave specialist</span><p>Straight-razor shaves and beard sculpting. Will tell you exactly why your beard is itchy.</p><a class="link-arrow" href="book.html?barber=dev">Book with Dev <span aria-hidden="true">&rarr;</span></a></div></li>
           <li class="reveal"><span class="avatar" aria-hidden="true">O</span><div><strong>Ollie</strong><span>Apprentice barber</span><p>Second-year apprentice with a steady hand. Lower prices on weekday afternoons while he learns.</p><a class="link-arrow" href="book.html?barber=ollie">Book with Ollie <span aria-hidden="true">&rarr;</span></a></div></li>
+          
         </ul>
         <p class="note team-note">Sample team members for demo purposes.</p>
       </div>
@@ -266,7 +276,7 @@
         <div class="footer-col">
           <h2>Visit</h2>
           <p>48 Example Lane<br>Surry Hills NSW 2010</p>
-          <p><a href="tel:0255500144">02 5550 0144</a><br><a href="mailto:hello@example.com">hello@example.com</a></p>
+          <p><a href="tel:+61255500144">02 5550 0144</a><br><a href="mailto:hello@brassandblade.example">hello@brassandblade.example</a></p>
         </div>
         <div class="footer-col">
           <h2>Hours</h2>
@@ -282,7 +292,7 @@
         <button type="button" class="sound-btn" data-sound aria-pressed="false">Shop ambience: <span data-sound-state>off</span></button>
       </nav>
       <div class="footer-bottom">
-        <p>Concept demo by KB Ventures. Not a real business.</p>
+        <p>&copy; <span data-year>2026</span> Brass &amp;amp; Blade Barbershop. Concept demo by KB Ventures. Not a real business.</p>
         <p class="brandline">Concept website by KB Ventures. Want one for your business?</p>
         <p class="photo-credits">Photo credits: Photo: Unsplash (Hero chair, Skin fade, Hot towel shave, The full works, Red chair room, Tools, Products, Fade in progress, Tools detail, Red chair detail, Fade detail, Products strip)</p>
         <a class="back-top" href="#top">Back to top &uarr;</a>
@@ -292,7 +302,7 @@
 
   <!-- Mobile quick actions -->
   <nav class="mobile-cta" aria-label="Quick actions">
-    <a class="btn btn-secondary" href="tel:0255500144">Call</a>
+    <a class="btn btn-secondary" href="tel:+61255500144">Call</a>
     <a class="btn btn-primary" href="book.html">Book a chair</a>
   </nav>
 
@@ -306,8 +316,8 @@
   </div>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <script type="application/json" id="site-data">{"name": "Brass & Blade", "phone": "02 5550 0144", "phoneHref": "0255500144", "email": "hello@example.com", "timezone": "Australia/Sydney", "locale": "en-AU", "currency": "AUD", "hours": [{"day": 1, "name": "Monday", "open": 10, "close": 18}, {"day": 2, "name": "Tuesday", "open": 9, "close": 19}, {"day": 3, "name": "Wednesday", "open": 9, "close": 19}, {"day": 4, "name": "Thursday", "open": 9, "close": 20}, {"day": 5, "name": "Friday", "open": 9, "close": 19}, {"day": 6, "name": "Saturday", "open": 9, "close": 17}, {"day": 0, "name": "Sunday", "open": 10, "close": 16}]}</script>
-  <script defer src="vendor/lenis-1.1.18.min.js"></script><!-- Lenis 1.1.18 (MIT), self-hosted, pinned -->
-  <script type="module" src="main.js"></script>
+  <script type="application/json" id="site-data">{"name": "Brass & Blade", "phone": "02 5550 0144", "phoneHref": "+61255500144", "email": "hello@brassandblade.example", "timezone": "Australia/Sydney", "locale": "en-AU", "currency": "AUD", "region": "NSW", "hours": [{"day": 1, "name": "Monday", "open": 600, "close": 1080}, {"day": 2, "name": "Tuesday", "open": 540, "close": 1140}, {"day": 3, "name": "Wednesday", "open": 540, "close": 1140}, {"day": 4, "name": "Thursday", "open": 540, "close": 1200}, {"day": 5, "name": "Friday", "open": 540, "close": 1140}, {"day": 6, "name": "Saturday", "open": 540, "close": 1020}, {"day": 0, "name": "Sunday", "open": 600, "close": 960}], "holidays": {"mode": "closed", "overrides": {}}, "closures": [], "notices": [], "booking": {"slotMinutes": 30, "daysAhead": 90, "leadMinutes": 0, "externalUrl": ""}, "forms": {"endpoint": ""}}</script>
+  <script defer src="vendor/lenis-1.1.18.min.js?v=42bf5944"></script><!-- Lenis 1.1.18 (MIT), self-hosted, pinned -->
+  <script type="module" src="main.js?v=60aba37c"></script>
 </body>
 </html>

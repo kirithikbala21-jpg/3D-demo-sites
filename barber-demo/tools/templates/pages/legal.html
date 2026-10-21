@@ -3,7 +3,7 @@
         <p class="note">This is a plain-language template for a demo site. Replace it with a policy reviewed for your business and jurisdiction before going live.</p>
         <article id="privacy" class="reveal">
           <h2>Privacy</h2>
-          <p>This demo does not collect personal information. Forms (bookings, newsletter, careers, orders) only check your input in your browser and then show a confirmation. Nothing is sent or stored on a server.</p>
+          <p>{{#if formsLive}}When you send a booking, order, application or newsletter sign-up, the details you type (name, phone, email, what you asked for) are sent to the business so it can reply and run the appointment or order. They are not sold or shared.{{else}}This demo does not collect personal information. Forms (bookings, newsletter, careers, orders) only check your input in your browser and then show a confirmation. Nothing is sent or stored on a server.{{/if}} No analytics or advertising scripts are loaded unless you accept them.</p>
           <p>If this site were live, we would collect only what we need to take a booking or order (name, email, phone, order details), use it for that purpose, keep it no longer than necessary and never sell it. You could ask us to see or delete your information at any time by emailing {{contact.email}}.</p>
         </article>
         <article id="terms" class="reveal">

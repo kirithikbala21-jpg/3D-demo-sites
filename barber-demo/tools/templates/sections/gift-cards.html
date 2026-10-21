@@ -5,7 +5,7 @@
           <div class="gift-card">
             <svg width="44" height="44" focusable="false"><use href="#logo-mark"/></svg>
             <span class="gift-brand">{{{brand.wordmark}}}</span>
-            <span class="gift-amount" id="gift-amount">$50</span>
+            <span class="gift-amount" id="gift-amount">${{giftCards.default}}</span>
           </div>
         </div>
         <div class="reveal">
@@ -16,10 +16,7 @@
             <fieldset>
               <legend>Choose an amount</legend>
               <div class="chips">
-                <label class="chip-opt"><input type="radio" name="amount" value="25"><span>$25</span></label>
-                <label class="chip-opt"><input type="radio" name="amount" value="50" checked><span>$50</span></label>
-                <label class="chip-opt"><input type="radio" name="amount" value="100"><span>$100</span></label>
-                <label class="chip-opt"><input type="radio" name="amount" value="150"><span>$150</span></label>
+                {{#each giftAmounts}}<label class="chip-opt"><input type="radio" name="amount" value="{{this.amount}}"{{#if this.checked}} checked{{/if}}><span>${{this.amount}}</span></label>{{/each}}
               </div>
             </fieldset>
             <button class="btn btn-primary" type="submit">Buy a gift card</button>

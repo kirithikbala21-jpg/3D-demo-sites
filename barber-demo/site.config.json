@@ -8,7 +8,8 @@
   "city": "Sydney",
   "tagline": "Classic cuts, sharp fades and hot towel shaves in the heart of Surry Hills. Walk in, or book your chair.",
   "description": "Brass & Blade is a fictional barbershop used as a concept demo: classic cuts, skin fades, hot towel shaves, memberships and a spinning 3D barber pole.",
-  "demoFooter": "Concept demo by KB Ventures. Not a real business."
+  "demoFooter": "Concept demo by KB Ventures. Not a real business.",
+  "established": 2014
  },
  "contact": {
   "street": "48 Example Lane",
@@ -16,8 +17,7 @@
   "postcode": "2010",
   "region": "NSW",
   "phone": "02 5550 0144",
-  "phoneHref": "0255500144",
-  "email": "hello@example.com",
+  "email": "hello@brassandblade.example",
   "country": "AU",
   "mapsQuery": "Central Station, Sydney NSW",
   "lat": -33.8833,
@@ -28,8 +28,10 @@
   "noindex": true,
   "currency": "AUD",
   "timezone": "Australia/Sydney",
-  "locale": "en-AU"
+  "locale": "en-AU",
+  "region": "NSW"
  },
+ "region": "NSW",
  "theme": {
   "black": "#0B0B0C",
   "wine": "#E4C77A",
@@ -42,254 +44,134 @@
   "ink": "#F2EBDD"
  },
  "hours": [
-  {
-   "day": 1,
-   "name": "Monday",
-   "open": 10,
-   "close": 18
-  },
-  {
-   "day": 2,
-   "name": "Tuesday",
-   "open": 9,
-   "close": 19
-  },
-  {
-   "day": 3,
-   "name": "Wednesday",
-   "open": 9,
-   "close": 19
-  },
-  {
-   "day": 4,
-   "name": "Thursday",
-   "open": 9,
-   "close": 20
-  },
-  {
-   "day": 5,
-   "name": "Friday",
-   "open": 9,
-   "close": 19
-  },
-  {
-   "day": 6,
-   "name": "Saturday",
-   "open": 9,
-   "close": 17
-  },
-  {
-   "day": 0,
-   "name": "Sunday",
-   "open": 10,
-   "close": 16
-  }
+  {"day": 1, "name": "Monday", "open": "10:00", "close": "18:00"},
+  {"day": 2, "name": "Tuesday", "open": "09:00", "close": "19:00"},
+  {"day": 3, "name": "Wednesday", "open": "09:00", "close": "19:00"},
+  {"day": 4, "name": "Thursday", "open": "09:00", "close": "20:00"},
+  {"day": 5, "name": "Friday", "open": "09:00", "close": "19:00"},
+  {"day": 6, "name": "Saturday", "open": "09:00", "close": "17:00"},
+  {"day": 0, "name": "Sunday", "open": "10:00", "close": "16:00"}
  ],
+ "holidays": {
+  "mode": "closed",
+  "overrides": {}
+ },
+ "closures": [],
+ "notices": [],
+ "booking": {
+  "slotMinutes": 30,
+  "daysAhead": 90,
+  "leadMinutes": 0,
+  "externalUrl": ""
+ },
+ "forms": {
+  "endpoint": "",
+  "note": "Paste your Formspree (or similar) address between the quote marks to make the booking, careers, newsletter and gift-card forms send real emails. Leave empty to keep the demo behaviour."
+ },
+ "staff": [
+  {"slug": "marco", "name": "Marco", "role": "Owner & master barber", "pick": "Owner · fades and razor work", "blurb": "Seventeen years behind the chair. Skin fades, classic cuts and the best neckline in the building.", "photo": "barberMarco"},
+  {"slug": "jess", "name": "Jess", "role": "Senior barber", "pick": "Scissor cuts and texture", "blurb": "Scissor cuts, long hair and kids. Calm, quick and good at making nervous clients laugh.", "photo": "barberJess"},
+  {"slug": "dev", "name": "Dev", "role": "Beard & shave specialist", "pick": "Beards and hot towel shaves", "blurb": "Straight-razor shaves and beard sculpting. Will tell you exactly why your beard is itchy.", "photo": "barberDev"},
+  {"slug": "ollie", "name": "Ollie", "role": "Apprentice barber", "pick": "Apprentice · kids and classic cuts", "blurb": "Second-year apprentice with a steady hand. Lower prices on weekday afternoons while he learns.", "photo": "barberOllie"}
+ ],
+ "services": [
+  {"id": "cuts", "label": "Haircuts", "note": "Every cut includes a consultation and a hot towel finish",
+   "items": [
+    {"name": "Classic Cut", "price": 48, "mins": 45, "desc": "Scissors and clippers, tailored to your head shape. Finished with a hot towel and styling.", "tags": ["45 min"], "sig": true},
+    {"name": "Skin Fade", "price": 52, "mins": 45, "desc": "A seamless zero-to-skin blend, a sharp neckline and a straight-razor edge-up.", "tags": ["45 min"], "sig": true},
+    {"name": "Scissor Cut", "price": 65, "mins": 60, "desc": "Cut entirely with shears for longer styles, with a wash and style to finish.", "tags": ["60 min"], "sig": false},
+    {"name": "Kids&rsquo; Cut (under 12)", "price": 34, "mins": 30, "desc": "Patient, friendly and quick. Booster seat and a lolly for good behaviour.", "tags": ["30 min"], "sig": false},
+    {"name": "Senior Cut (65+)", "price": 38, "mins": 30, "desc": "A classic short back and sides at a kinder price. Weekdays before 2pm.", "tags": ["30 min"], "sig": false},
+    {"name": "Buzz Cut", "price": 32, "mins": 20, "desc": "One guard, even all over, with a crisp neckline.", "tags": ["20 min"], "sig": false}
+   ]},
+  {"id": "beard", "label": "Beard & shave", "note": "Straight-razor work, done properly",
+   "items": [
+    {"name": "Hot Towel Shave", "price": 58, "mins": 45, "desc": "The full ritual: hot towels, rich lather, a straight razor and a cooling balm.", "tags": ["45 min"], "sig": true},
+    {"name": "Beard Trim &amp; Shape", "price": 32, "mins": 30, "desc": "Tidy the length, define the lines and soften the edges.", "tags": ["30 min"], "sig": false},
+    {"name": "Beard Sculpt", "price": 42, "mins": 40, "desc": "A full reshape with razor lines, a trim, oil and a hot towel.", "tags": ["40 min"], "sig": false},
+    {"name": "Head Shave", "price": 52, "mins": 40, "desc": "Hot towel, lather and a razor-smooth finish from crown to neck.", "tags": ["40 min"], "sig": false},
+    {"name": "Moustache Tidy", "price": 16, "mins": 15, "desc": "A quick trim and shape, with a little wax if you like.", "tags": ["15 min"], "sig": false},
+    {"name": "Neck &amp; Edge Clean-Up", "price": 22, "mins": 15, "desc": "Razor the neckline and sharpen the edges between cuts.", "tags": ["15 min"], "sig": false}
+   ]},
+  {"id": "packages", "label": "Packages", "note": "Save up to $25 compared with booking separately",
+   "items": [
+    {"name": "The Full Works", "price": 105, "mins": 90, "desc": "A cut, a hot towel shave, a scalp massage and styling. The whole experience.", "tags": ["90 min"], "sig": true},
+    {"name": "Cut &amp; Beard", "price": 78, "mins": 70, "desc": "Any cut with a beard trim and shape, finished with hot towels.", "tags": ["70 min"], "sig": true},
+    {"name": "Father &amp; Son", "price": 75, "mins": 75, "desc": "Two chairs side by side: a cut for you and one for your kid (under 12).", "tags": ["75 min"], "sig": false},
+    {"name": "The Groom&rsquo;s Package", "price": 165, "mins": 120, "desc": "Cut, shave and scalp treatment, booked ahead for the big day, with a drink on the house.", "tags": ["120 min"], "sig": false},
+    {"name": "Fade &amp; Beard Trim", "price": 72, "mins": 65, "desc": "A skin fade and a beard trim in one sitting.", "tags": ["65 min"], "sig": false},
+    {"name": "The Quick Tidy", "price": 55, "mins": 40, "desc": "A cut and neck clean-up for when you are short on time.", "tags": ["40 min"], "sig": false}
+   ]},
+  {"id": "extras", "label": "Extras", "note": "Add to any service",
+   "items": [
+    {"name": "Scalp Massage", "price": 22, "mins": 15, "desc": "Five minutes of firm, slow hands and warming oil.", "tags": ["15 min"], "sig": false},
+    {"name": "Grey Blending", "price": 38, "mins": 30, "desc": "Subtle colour that softens grey without a harsh line.", "tags": ["30 min"], "sig": false},
+    {"name": "Eyebrow Tidy", "price": 14, "mins": 10, "desc": "A quick shape and trim, no thread or wax needed.", "tags": ["10 min"], "sig": false},
+    {"name": "Ear &amp; Nose Wax", "price": 16, "mins": 10, "desc": "Quick, clean and over faster than you expect.", "tags": ["10 min"], "sig": false},
+    {"name": "Charcoal Face Mask", "price": 24, "mins": 15, "desc": "A deep-clean mask with a hot towel to finish.", "tags": ["15 min"], "sig": false},
+    {"name": "Hair Wash &amp; Style", "price": 18, "mins": 15, "desc": "A wash, a condition and the product of your choice.", "tags": ["15 min"], "sig": false}
+   ]}
+ ],
+ "products": [
+  {"id": "p-clay", "name": "Matte Clay Pomade, 100g", "price": 26, "desc": "Strong hold with a natural matte finish. Our most-used product in the chair.", "badge": "Bestseller", "art": "jar"},
+  {"id": "p-oil", "name": "Cedar & Orange Beard Oil, 30ml", "price": 28, "desc": "Softens, conditions and smells like a very good workshop.", "badge": "", "art": "bottle"},
+  {"id": "p-soap", "name": "Sandalwood Shave Soap", "price": 18, "desc": "A dense, creamy lather that lasts for months. Use with a brush.", "badge": "", "art": "jar"},
+  {"id": "p-comb", "name": "Brass-Tipped Beard Comb", "price": 22, "desc": "Hand-finished, anti-static and small enough for a back pocket.", "badge": "New", "art": "comb"},
+  {"id": "p-razor", "name": "Safety Razor Starter Set", "price": 85, "desc": "A weighty brass razor, ten blades and a travel case. Easy to learn.", "badge": "Gift idea", "art": "razor"},
+  {"id": "p-balm", "name": "Cooling Aftershave Balm, 100ml", "price": 30, "desc": "Calms razor burn and leaves skin soft, not greasy.", "badge": "", "art": "bottle"}
+ ],
+ "memberships": [
+  {"name": "The Regular", "price": 79, "headline": "Two cuts a month", "text": "Any haircut, twice a month, with a hot towel finish. Priority booking and 10% off the shop.", "cta": "Join the Regular", "featured": false},
+  {"name": "The Gentleman", "price": 129, "headline": "Two cuts and a shave", "text": "Two haircuts and a hot towel shave every month, priority booking, 15% off the shop and a free beard oil on joining.", "cta": "Join the Gentleman", "featured": true, "tag": "most popular"},
+  {"name": "Unlimited", "price": 179, "headline": "As often as you like", "text": "Unlimited haircuts and beard trims, one hot towel shave a month and 20% off the shop. Fair use, one visit a week.", "cta": "Join Unlimited", "featured": false}
+ ],
+ "giftCards": {
+  "amounts": [
+   25,
+   50,
+   100,
+   150
+  ],
+  "default": 50
+ },
+ "shop": {
+  "deliveryFee": 8,
+  "freeOver": 60
+ },
+ "social": [],
  "hero": {
   "video": null,
   "poster": null
  },
  "nav": [
-  {
-   "label": "Home",
-   "href": "index.html"
-  },
-  {
-   "label": "Services",
-   "href": "services.html"
-  },
-  {
-   "label": "The crew",
-   "href": "barbers.html"
-  },
-  {
-   "label": "Shop",
-   "href": "shop.html"
-  },
-  {
-   "label": "Membership",
-   "href": "membership.html"
-  },
-  {
-   "label": "Journal",
-   "href": "journal.html"
-  },
-  {
-   "label": "Visit",
-   "href": "visit.html"
-  }
- ],
- "pages": [
-  {
-   "file": "index.html",
-   "template": "index",
-   "title": "Home",
-   "description": "Classic cuts, skin fades and hot towel shaves in Surry Hills, Sydney. A concept demo for a fictional barbershop with a 3D barber pole.",
-   "jsonld": true
-  },
-  {
-   "file": "services.html",
-   "template": "services",
-   "title": "Services & prices",
-   "description": "Haircuts, beard and shave, packages and extras with prices and times. Add services to your visit.",
-   "pageHero": true,
-   "h1": "Services & prices",
-   "kicker": "Sharp, clean, unhurried",
-   "lead": "Twenty-four ways to leave looking better than you arrived. Every cut includes a consultation and a hot towel finish.",
-   "crumb": "Services"
-  },
-  {
-   "file": "barbers.html",
-   "template": "barbers",
-   "title": "The crew",
-   "description": "Meet the barbers at Brass & Blade and read the story of the shop.",
-   "pageHero": true,
-   "h1": "The crew",
-   "kicker": "Since 2014",
-   "lead": "Four chairs, four barbers and one very old pole out the front.",
-   "crumb": "The crew"
-  },
-  {
-   "file": "book.html",
-   "template": "book",
-   "title": "Book a chair",
-   "description": "Book a haircut, shave or package with your favourite barber. Demo booking form with live time slots.",
-   "pageHero": true,
-   "h1": "Book a chair",
-   "kicker": "Appointments",
-   "lead": "Pick a service, a barber and a time. Walk-ins are welcome too.",
-   "crumb": "Book"
-  },
-  {
-   "file": "shop.html",
-   "template": "shop",
-   "title": "Shop grooming products",
-   "description": "Pomade, beard oil, shave soap and tools from the shop. Pick up at your appointment or have it delivered (demo).",
-   "pageHero": true,
-   "h1": "The shop",
-   "kicker": "What we use on you",
-   "lead": "The products we use in the chair, plus the tools to keep the cut looking sharp at home.",
-   "crumb": "Shop"
-  },
-  {
-   "file": "membership.html",
-   "template": "membership",
-   "title": "Memberships & gift cards",
-   "description": "Monthly memberships from $79 and gift cards for Brass & Blade (fictional demo).",
-   "pageHero": true,
-   "h1": "Memberships",
-   "kicker": "Stay sharp for less",
-   "lead": "Pay monthly, skip the queue and never wonder when your next cut is due.",
-   "crumb": "Membership"
-  },
-  {
-   "file": "journal.html",
-   "template": "journal",
-   "title": "Journal",
-   "description": "Grooming advice and stories from the chairs at Brass & Blade.",
-   "pageHero": true,
-   "h1": "The journal",
-   "kicker": "Notes from the chairs",
-   "lead": "Honest advice on cuts, beards and looking after yourself.",
-   "crumb": "Journal"
-  },
-  {
-   "file": "visit.html",
-   "template": "visit",
-   "title": "Visit & FAQ",
-   "description": "Opening hours, address, getting here and answers to the questions we hear most.",
-   "pageHero": true,
-   "h1": "Visit us",
-   "kicker": "Find the pole",
-   "lead": "Look for the red, white and blue stripes. Hours, directions and answers below.",
-   "crumb": "Visit",
-   "jsonld": true
-  },
-  {
-   "file": "careers.html",
-   "template": "careers",
-   "title": "Careers",
-   "description": "Join the crew at Brass & Blade: barbers, apprentices and front of house.",
-   "pageHero": true,
-   "h1": "Join the crew",
-   "kicker": "Careers",
-   "lead": "We hire for attitude and teach the rest. These roles are fictional.",
-   "crumb": "Careers"
-  },
-  {
-   "file": "legal.html",
-   "template": "legal",
-   "title": "Privacy, terms & cookies",
-   "description": "Privacy policy, terms of use and cookie information for this demo site.",
-   "pageHero": true,
-   "h1": "Privacy, terms & cookies",
-   "kicker": "Legal",
-   "lead": "A plain-language template. Replace with your own policy before going live.",
-   "crumb": "Legal"
-  },
-  {
-   "file": "404.html",
-   "template": "notfound",
-   "title": "Page not found",
-   "description": "This page could not be found. Head back to the home page, the services list or the booking page.",
-   "pageHero": true,
-   "h1": "Page not found",
-   "kicker": "Error 404",
-   "lead": "That page has wandered off for a trim. Here are a few places to pick up the trail.",
-   "crumb": "Page not found",
-   "hidden": true
-  }
- ],
- "searchExtra": [
-  {
-   "title": "Marco, owner and master barber",
-   "text": "Skin fades and classic cuts, 17 years behind the chair",
-   "url": "barbers.html"
-  },
-  {
-   "title": "Jess, senior barber",
-   "text": "Scissor cuts, long hair and kids",
-   "url": "barbers.html"
-  },
-  {
-   "title": "Dev, beard and shave specialist",
-   "text": "Beard sculpting and straight-razor shaves",
-   "url": "barbers.html"
-  },
-  {
-   "title": "Ollie, apprentice barber",
-   "text": "Budget-friendly cuts while he trains",
-   "url": "barbers.html"
-  },
-  {
-   "title": "The Regular membership",
-   "text": "Two cuts a month, $79 per month",
-   "url": "membership.html"
-  },
-  {
-   "title": "The Gentleman membership",
-   "text": "Two cuts, a hot towel shave and 10% off the shop, $129 per month",
-   "url": "membership.html"
-  },
-  {
-   "title": "Unlimited membership",
-   "text": "Unlimited cuts and beard trims, $179 per month",
-   "url": "membership.html"
-  },
-  {
-   "title": "Gift cards",
-   "text": "Emailed instantly, valid three years",
-   "url": "membership.html#gift-cards"
-  },
-  {
-   "title": "Walk-ins",
-   "text": "Walk-ins welcome until 30 minutes before close",
-   "url": "visit.html#faq"
-  }
+  {"label": "Home", "href": "index.html"},
+  {"label": "Services", "href": "services.html"},
+  {"label": "The crew", "href": "barbers.html"},
+  {"label": "Shop", "href": "shop.html"},
+  {"label": "Membership", "href": "membership.html"},
+  {"label": "Journal", "href": "journal.html"},
+  {"label": "Visit", "href": "visit.html"}
  ],
  "announcement": {
-  "text": "Walk-ins welcome. Memberships from $79.",
+  "text": "Walk-ins welcome. Memberships from [[memberFrom]].",
   "link": "See plans",
   "href": "membership.html"
- }
+ },
+ "pages": [
+  {"file": "index.html", "template": "index", "title": "Home", "description": "Classic cuts, skin fades and hot towel shaves in Surry Hills, Sydney. A concept demo for a fictional barbershop with a 3D barber pole.", "jsonld": true},
+  {"file": "services.html", "template": "services", "title": "Services & prices", "description": "Haircuts, beard and shave, packages and extras with prices and times. Add services to your visit.", "pageHero": true, "h1": "Services & prices", "kicker": "Sharp, clean, unhurried", "lead": "Twenty-four ways to leave looking better than you arrived. Every cut includes a consultation and a hot towel finish.", "crumb": "Services"},
+  {"file": "barbers.html", "template": "barbers", "title": "The crew", "description": "Meet the barbers at Brass & Blade and read the story of the shop.", "pageHero": true, "h1": "The crew", "kicker": "Since 2014", "lead": "Four chairs, four barbers and one very old pole out the front.", "crumb": "The crew"},
+  {"file": "book.html", "template": "book", "title": "Book a chair", "description": "Book a haircut, shave or package with your favourite barber. Demo booking form with live time slots.", "pageHero": true, "h1": "Book a chair", "kicker": "Appointments", "lead": "Pick a service, a barber and a time. Walk-ins are welcome too.", "crumb": "Book"},
+  {"file": "shop.html", "template": "shop", "title": "Shop grooming products", "description": "Pomade, beard oil, shave soap and tools from the shop. Pick up at your appointment or have it delivered (demo).", "pageHero": true, "h1": "The shop", "kicker": "What we use on you", "lead": "The products we use in the chair, plus the tools to keep the cut looking sharp at home.", "crumb": "Shop"},
+  {"file": "membership.html", "template": "membership", "title": "Memberships & gift cards", "description": "Monthly memberships from [[memberFrom]] and gift cards for Brass & Blade (fictional demo).", "pageHero": true, "h1": "Memberships", "kicker": "Stay sharp for less", "lead": "Pay monthly, skip the queue and never wonder when your next cut is due.", "crumb": "Membership"},
+  {"file": "journal.html", "template": "journal", "title": "Journal", "description": "Grooming advice and stories from the chairs at Brass & Blade.", "pageHero": true, "h1": "The journal", "kicker": "Notes from the chairs", "lead": "Honest advice on cuts, beards and looking after yourself.", "crumb": "Journal"},
+  {"file": "visit.html", "template": "visit", "title": "Visit & FAQ", "description": "Opening hours, address, getting here and answers to the questions we hear most.", "pageHero": true, "h1": "Visit us", "kicker": "Find the pole", "lead": "Look for the red, white and blue stripes. Hours, directions and answers below.", "crumb": "Visit", "jsonld": true},
+  {"file": "careers.html", "template": "careers", "title": "Careers", "description": "Join the crew at Brass & Blade: barbers, apprentices and front of house.", "pageHero": true, "h1": "Join the crew", "kicker": "Careers", "lead": "We hire for attitude and teach the rest. These roles are fictional.", "crumb": "Careers"},
+  {"file": "legal.html", "template": "legal", "title": "Privacy, terms & cookies", "description": "Privacy policy, terms of use and cookie information for this demo site.", "pageHero": true, "h1": "Privacy, terms & cookies", "kicker": "Legal", "lead": "A plain-language template. Replace with your own policy before going live.", "crumb": "Legal"},
+  {"file": "404.html", "template": "notfound", "title": "Page not found", "description": "This page could not be found. Head back to the home page, the services list or the booking page.", "pageHero": true, "h1": "Page not found", "kicker": "Error 404", "lead": "That page has wandered off for a trim. Here are a few places to pick up the trail.", "crumb": "Page not found", "hidden": true}
+ ],
+ "searchExtra": [
+  {"title": "Gift cards", "text": "Emailed instantly, valid three years", "url": "membership.html#gift-cards"},
+  {"title": "Walk-ins", "text": "Walk-ins welcome until 30 minutes before close", "url": "visit.html#faq"}
+ ]
 }

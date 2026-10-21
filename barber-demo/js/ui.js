@@ -1,5 +1,5 @@
 // Page behaviour: header, full-screen menu, tabs, reveal / split-text / count-up animations, magnetic buttons, hours status, map, cookies.
-import { $, $$, site, reduceMotion, finePointer, cafeNow, hoursFor, fmtHour, store, toast } from './util.js';
+import { $, $$, site, reduceMotion, finePointer, nowShop, statusNow, store, toast, dayLabel, addDays as addDaysKey } from './util.js';
 
 /* ---------- Header solid on scroll, progress bar, hero parallax ---------- */
 (() => {
@@ -164,25 +164,37 @@ import { $, $$, site, reduceMotion, finePointer, cafeNow, hoursFor, fmtHour, sto
   });
 })();
 
-/* ---------- Opening hours: today's row + "Open now" chip, in the shop's own time zone ---------- */
+/* ---------- Opening hours: today's row + "Open now" chip, in the shop's own time zone (holidays and closures included) ---------- */
 (() => {
-  const { day, hour } = cafeNow();
-  $$(`.hours tr[data-day="${day}"]`).forEach((row) => { row.classList.add('is-today'); $('th', row).insertAdjacentHTML('beforeend', ' <span class="today-badge">Today</span>'); });
-  const t = hoursFor(day);
-  let text, isOpen = false;
-  if (t && hour >= t.open && hour < t.close) { text = `Open now · until ${fmtHour(t.close)}`; isOpen = true; }
-  else if (t && hour < t.open) text = `Closed · opens ${fmtHour(t.open)} today`;
-  else { const nx = hoursFor((day + 1) % 7); text = `Closed · opens ${fmtHour(nx.open)} tomorrow`; }
   let away = false;
   try { away = Intl.DateTimeFormat().resolvedOptions().timeZone !== site.timezone; } catch (_) { /* ignore */ }
-  if (away) text += ' (Sydney time)';
-  ['#open-status', '#open-status-2', '#open-status-3'].forEach((sel) => {
-    const el = $(sel); if (!el) return;
-    el.textContent = text;
-    el.closest('.chip').classList.toggle('is-closed', !isOpen);
-  });
+  const zone = (site.timezone || '').split('/').pop().replace(/_/g, ' ');
+  function tick() {
+    const n = nowShop();
+    $$('.hours tr').forEach((row) => {
+      const today = Number(row.dataset.day) === n.dow, th = $('th', row), badge = $('.today-badge', row);
+      row.classList.toggle('is-today', today);
+      if (today && !badge) th.insertAdjacentHTML('beforeend', ' <span class="today-badge">Today</span>');
+      if (!today && badge) badge.remove();
+    });
+    const st = statusNow();
+    const text = st.text + (away ? ` (${zone} time)` : '');
+    ['#open-status', '#open-status-2', '#open-status-3'].forEach((sel) => {
+      const el = $(sel); if (!el) return;
+      el.textContent = text;
+      el.closest('.chip').classList.toggle('is-closed', st.state !== 'open');
+    });
+    $$('[data-year]').forEach((el) => { el.textContent = String(n.y); });
+    $$('[data-since]').forEach((el) => { el.textContent = String(n.y - Number(el.dataset.since)); el.dataset.count = el.textContent; });
+    $$('time[data-days-ago]').forEach((el) => { // sample journal posts: dated relative to today, so they never look old
+      const key = addDaysKey(n.key, -Number(el.dataset.daysAgo));
+      el.setAttribute('datetime', key); el.textContent = dayLabel(key).replace(/^\w+ /, '') + ' ' + key.slice(0, 4);
+    });
+  }
+  tick();
+  setInterval(tick, 60000);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) tick(); });
 })();
-
 
 /* ---------- Magnetic buttons (fine pointers only, never with reduced motion) ---------- */
 (() => {

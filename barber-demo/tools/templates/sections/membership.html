@@ -7,27 +7,14 @@
           <p class="note">Plans and prices are fictional. Cancel or pause any time.</p>
         </div>
         <ul class="exp-grid">
-          <li class="exp-card reveal">
-            <p class="eyebrow">The Regular</p>
-            <p class="big-num">$79<span class="per">/mo</span></p>
-            <h3>Two cuts a month</h3>
-            <p>Any haircut, twice a month, with a hot towel finish. Priority booking and 10% off the shop.</p>
-            <a class="exp-link" href="book.html">Join the Regular &rarr;</a>
+          {{#each memberships}}<li class="exp-card{{#if this.featured}} exp-featured{{/if}} reveal">
+            <p class="eyebrow">{{this.name}}{{#if this.tag}} &middot; {{this.tag}}{{/if}}</p>
+            <p class="big-num">${{this.price}}<span class="per">/mo</span></p>
+            <h3>{{this.headline}}</h3>
+            <p>{{this.text}}</p>
+            <a class="exp-link" href="book.html">{{this.cta}} &rarr;</a>
           </li>
-          <li class="exp-card exp-featured reveal">
-            <p class="eyebrow">The Gentleman &middot; most popular</p>
-            <p class="big-num">$129<span class="per">/mo</span></p>
-            <h3>Two cuts and a shave</h3>
-            <p>Two haircuts and a hot towel shave every month, priority booking, 15% off the shop and a free beard oil on joining.</p>
-            <a class="exp-link" href="book.html">Join the Gentleman &rarr;</a>
-          </li>
-          <li class="exp-card reveal">
-            <p class="eyebrow">Unlimited</p>
-            <p class="big-num">$179<span class="per">/mo</span></p>
-            <h3>As often as you like</h3>
-            <p>Unlimited haircuts and beard trims, one hot towel shave a month and 20% off the shop. Fair use, one visit a week.</p>
-            <a class="exp-link" href="book.html">Join Unlimited &rarr;</a>
-          </li>
+          {{/each}}
         </ul>
       </div>
     </section>

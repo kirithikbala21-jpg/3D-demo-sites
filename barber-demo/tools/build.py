@@ -1,25 +1,118 @@
 #!/usr/bin/env python3
-"""Static site builder for the Ember & Oak demo (and any sibling demo that copies this folder).
+"""Static site builder for the Brass & Blade barbershop concept demo.
 
 Usage:  python3 tools/build.py          (run from anywhere; writes the HTML pages next to site.config.json)
+Set SITE_ROOT=/some/copy to build a copy of the site (the tests do this).
 
 Content lives in:
-  site.config.json   brand, contact, hours, colours, nav, page list
-  data/*.json        menu, products, journal, careers, press, faq
+  site.config.json   THE file the owner edits: business details, phone, address, hours, holidays, closures, notices, services and
+                     prices, shop products, staff, social links, colours, booking and form settings, page list
+  data/*.json        journal, careers, faq, photos (written by tools/add-photo.py)
   tools/templates/   layout.html, pages/*.html, partials/*.html, sections/*.html
 Python 3 standard library only. The generated .html files are committed so GitHub Pages can serve them as-is.
 """
+import datetime
+import hashlib
 import html
 import json
+import os
 import pathlib
 import re
 import sys
 import urllib.parse
 
-ROOT = pathlib.Path(__file__).resolve().parent.parent
+ROOT = pathlib.Path(os.environ.get("SITE_ROOT") or pathlib.Path(__file__).resolve().parent.parent)
 TPL = ROOT / "tools" / "templates"
-cfg = json.loads((ROOT / "site.config.json").read_text())
+try:
+    cfg = json.loads((ROOT / "site.config.json").read_text())
+except json.JSONDecodeError as e:
+    sys.exit(f"PROBLEM in site.config.json: a comma, quote mark or bracket is wrong near line {e.lineno}, column {e.colno} ({e.msg}). "
+             "Compare that line with the ones around it. Every item in a list needs a comma after it except the last one.")
 DATA = {p.stem: json.loads(p.read_text()) for p in (ROOT / "data").glob("*.json")}
+DATA["menu"], DATA["products"] = cfg["services"], cfg["products"]  # services and shop products live in the one owner file
+
+
+def parse_time(v, where):
+    """'09:00', '9:30', '17.5' or 9 -> minutes since midnight. None stays None."""
+    if v is None or v == "":
+        return None
+    if isinstance(v, (int, float)):
+        return int(round(float(v) * 60))
+    m = re.fullmatch(r"\s*(\d{1,2})[:.](\d{2})\s*", str(v))
+    if not m or int(m.group(1)) > 24 or int(m.group(2)) > 59:
+        raise ValueError(f'{where}: "{v}" is not a time. Write times like "09:00" or "17:30" (24 hour clock).')
+    return int(m.group(1)) * 60 + int(m.group(2))
+
+
+def normalise_hours(entry, where):
+    o, c = parse_time(entry.get("open"), where + " open"), parse_time(entry.get("close"), where + " close")
+    if (o is None) != (c is None):
+        raise ValueError(f"{where}: give both an open and a close time, or neither (closed).")
+    if o is not None and c <= o:
+        c += 1440  # closes after midnight, for example 18:00 to 02:00
+    return o, c
+
+
+def prepare_config():
+    """Check site.config.json with plain-English messages and add the values that are worked out from it."""
+    errs = []
+    c = cfg["contact"]
+    digits = re.sub(r"\D", "", c["phone"])
+    if digits.startswith("61"):
+        digits = "0" + digits[2:]
+    if not re.fullmatch(r"0[2-478]\d{8}|1[38]00\d{6}|13\d{4}", digits):
+        errs.append(f'contact > phone: "{c["phone"]}" does not look like an Australian number. Use something like "02 5550 0144" or "0412 345 678".')
+    else:
+        c["phoneHref"] = "+61" + digits[1:] if digits.startswith("0") else digits  # what tel: links use (international format)
+    if not re.fullmatch(r"[^\s@]+@[^\s@]+\.[^\s@]{2,}", c["email"]):
+        errs.append(f'contact > email: "{c["email"]}" is not an email address.')
+    if cfg.get("region") not in ("NSW", "VIC"):
+        errs.append('region: must be "NSW" or "VIC" (decides which public holidays are calculated).')
+    for h in cfg["hours"]:
+        try:
+            h["openMin"], h["closeMin"] = normalise_hours(h, f'hours > {h.get("name")}')
+        except ValueError as e:
+            errs.append(str(e))
+    if sorted(h["day"] for h in cfg["hours"]) != list(range(7)):
+        errs.append("hours: there must be one line for each of the 7 days (day 0 = Sunday ... 6 = Saturday).")
+    for k in cfg.get("closures", []):
+        if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", k.get("date", "")):
+            errs.append(f'closures: date "{k.get("date")}" must look like 2026-12-24 (year-month-day).')
+        if k.get("status") not in ("closed", "open"):
+            errs.append(f'closures > {k.get("date")}: status must be "closed" or "open".')
+        try:
+            k["openMin"], k["closeMin"] = normalise_hours(k, f'closures > {k.get("date")}')
+        except ValueError as e:
+            errs.append(str(e))
+    for k, o in (cfg.get("holidays", {}).get("overrides") or {}).items():
+        try:
+            o["openMin"], o["closeMin"] = normalise_hours(o, f"holidays > overrides > {k}")
+        except ValueError as e:
+            errs.append(str(e))
+    for n in cfg.get("notices", []):
+        if not n.get("end"):
+            errs.append(f'notices > "{n.get("text", "")[:30]}": add an "end" date (2026-12-31) so the notice hides itself when it is old.')
+    ids = {cat["id"] for cat in cfg["services"]}
+    names = [it["name"] for cat in cfg["services"] for it in cat["items"]]
+    if len(names) != len(set(names)):
+        errs.append("services: two services have the same name. Make each one different.")
+    for cat in cfg["services"]:
+        for it in cat["items"]:
+            if not isinstance(it["price"], (int, float)) or it["price"] <= 0:
+                errs.append(f'services > {it["name"]}: price must be a number like 48 (no $ sign).')
+    for pr in cfg["products"]:
+        if not isinstance(pr["price"], (int, float)) or pr["price"] <= 0:
+            errs.append(f'products > {pr.get("name")}: price must be a number like 24 (no $ sign).')
+    slugs = [x["slug"] for x in cfg["staff"]]
+    if len(slugs) != len(set(slugs)):
+        errs.append("staff: two people share the same slug (the short name used in links). Make each one different.")
+    if not cfg["staff"]:
+        errs.append("staff: add at least one person.")
+    if errs:
+        sys.exit("PROBLEMS in site.config.json (fix these and save again):\n - " + "\n - ".join(errs))
+
+
+prepare_config()
 
 # ----------------------------------------------------------------------------- tiny template engine
 TOKEN = re.compile(r"\{\{\{(.+?)\}\}\}|\{\{(.+?)\}\}", re.S)
@@ -111,6 +204,20 @@ def load_partial(name):
 
 
 # ----------------------------------------------------------------------------- generators
+PRICES = {}
+
+
+def resolve_tokens(text):
+    """[[price:Skin Fade]] -> $52, [[memberFrom]] -> $79, [[deliveryFee]] / [[freeOver]]: so a price is only ever typed once, in site.config.json."""
+    def one(m):
+        key = m.group(1)
+        if key.startswith("price:"):
+            return "$" + format(PRICES[html.unescape(key[6:])], "g")
+        return {"memberFrom": "$" + format(min(x["price"] for x in cfg["memberships"]), "g"), "deliveryFee": "$" + format(cfg["shop"]["deliveryFee"], "g"),
+                "freeOver": "$" + format(cfg["shop"]["freeOver"], "g")}[key]
+    return re.sub(r"\[\[([^\]]+)\]\]", one, text)
+
+
 def plain(s):
     return html.unescape(re.sub(r"<[^>]+>", "", s))
 
@@ -119,8 +226,13 @@ def slug(s):
     return re.sub(r"[^a-z0-9]+", "-", plain(s).lower()).strip("-")
 
 
-def fmt_hour(h):
-    return f"{(h % 12) or 12}:00{'am' if h < 12 else 'pm'}"
+def fmt_hour(mins, short=False):
+    """Minutes since midnight -> 9:00am, 9:30am (short: 9am), midnight (same wording as js/clock.js)."""
+    t = mins % 1440
+    h, m = divmod(t, 60)
+    if short:
+        return f"{(h % 12) or 12}{':%02d' % m if m else ''}{'am' if h < 12 else 'pm'}"
+    return f"{(h % 12) or 12}:{m:02d}{'am' if h < 12 else 'pm'}"
 
 
 TAGS = {}  # service tags are free text such as "45 min" (see data/menu.json)
@@ -161,8 +273,8 @@ def menu_html():
 
 def hours_table():
     rows = "".join(
-        f'              <tr data-day="{h["day"]}" data-open="{h["open"]}" data-close="{h["close"]}"><th scope="row">{h["name"]}</th>'
-        f'<td>{fmt_hour(h["open"])} &ndash; {fmt_hour(h["close"])}</td></tr>\n'
+        f'              <tr data-day="{h["day"]}"><th scope="row">{h["name"]}</th>'
+        f'<td>{"Closed" if h["openMin"] is None else fmt_hour(h["openMin"]) + " &ndash; " + fmt_hour(h["closeMin"])}</td></tr>\n'
         for h in cfg["hours"]
     )
     return (
@@ -179,7 +291,7 @@ def hours_summary():
     groups, cur = [], None
     for d in order:
         h = by[d]
-        key = (h["open"], h["close"])
+        key = (h["openMin"], h["closeMin"])
         if cur and cur["key"] == key:
             cur["days"].append(h["name"][:3])
         else:
@@ -188,7 +300,7 @@ def hours_summary():
     lines = []
     for g in groups:
         days = g["days"][0] if len(g["days"]) == 1 else f'{g["days"][0]} &ndash; {g["days"][-1]}'
-        lines.append(f'{days} {fmt_hour(g["key"][0]).replace(":00", "")} &ndash; {fmt_hour(g["key"][1]).replace(":00", "")}')
+        lines.append(f'{days} closed' if g["key"][0] is None else f'{days} {fmt_hour(g["key"][0], True)} &ndash; {fmt_hour(g["key"][1], True)}')
     return "<br>".join(lines)
 
 
@@ -203,17 +315,30 @@ def jsonld(page):
         "name": b["fullName"],
         "description": b["description"],
         "url": s["baseUrl"],
-        "telephone": c["phone"],
+        "telephone": "+61" + c["phoneHref"][3:],
         "email": c["email"],
         "priceRange": "$$",
         "makesOffer": [{"@type": "Offer", "name": "Haircuts, shaves and beard grooming", "url": s["baseUrl"] + "services.html"}],
         "address": {"@type": "PostalAddress", "streetAddress": c["street"], "addressLocality": c["city"] if "city" in c else cfg["brand"]["city"],
                     "addressRegion": c["region"], "postalCode": c["postcode"], "addressCountry": c["country"]},
         "openingHoursSpecification": [
-            {"@type": "OpeningHoursSpecification", "dayOfWeek": DAYNAMES[h["day"]], "opens": f'{h["open"]:02d}:00', "closes": f'{h["close"]:02d}:00'}
-            for h in cfg["hours"]
+            {"@type": "OpeningHoursSpecification", "dayOfWeek": DAYNAMES[h["day"]], "opens": f'{h["openMin"] // 60:02d}:{h["openMin"] % 60:02d}',
+             "closes": f'{(h["closeMin"] % 1440) // 60:02d}:{h["closeMin"] % 60:02d}'}
+            for h in cfg["hours"] if h["openMin"] is not None
         ],
     }
+    today = datetime.date.today().isoformat()
+    special = []
+    for k in cfg.get("closures", []):  # dated closures and special hours still to come (public holidays are worked out live in the browser)
+        if k["date"] >= today:
+            o, cl = (k["openMin"], k["closeMin"]) if k["status"] == "open" and k.get("openMin") is not None else (0, 0)
+            special.append({"@type": "OpeningHoursSpecification", "validFrom": k["date"], "validThrough": k["date"],
+                            "opens": f"{o // 60:02d}:{o % 60:02d}", "closes": f"{(cl % 1440) // 60:02d}:{cl % 60:02d}", "name": k.get("name", "")})
+    if special:
+        shop["specialOpeningHoursSpecification"] = special
+    same = [x["href"] for x in cfg.get("social", []) if urllib.parse.urlparse(x["href"]).path.strip("/")]
+    if same:
+        shop["sameAs"] = same
     out = [shop]
     if page["file"] == "visit.html":
         out.append({
@@ -241,7 +366,11 @@ def search_data():
     for e in cfg["searchExtra"]:
         entries.append({**e, "type": "Experiences"})
     assert pages
-    return "// Generated by tools/build.py. Do not edit by hand.\nexport default " + json.dumps(entries, ensure_ascii=False, indent=0) + ";\n"
+    for st in cfg["staff"]:
+        entries.append({"title": f'{st["name"]}, {st["role"].lower()}', "text": st["blurb"], "url": "barbers.html", "type": "Experiences"})
+    for m in cfg["memberships"]:
+        entries.append({"title": f'{m["name"]} membership', "text": f'{m["headline"]}. ${m["price"]} per month', "url": "membership.html", "type": "Experiences"})
+    return "// Generated by tools/build.py. Do not edit by hand.\nexport default " + resolve_tokens(json.dumps(entries, ensure_ascii=False, indent=0)) + ";\n"
 
 
 VENUES = [
@@ -254,16 +383,34 @@ VENUES = [
 
 # ----------------------------------------------------------------------------- build
 def time_options():
-    lo = min(h["open"] for h in cfg["hours"])
-    hi = max(h["close"] for h in cfg["hours"])
+    opens = [h for h in cfg["hours"] if h["openMin"] is not None]
+    lo = min(h["openMin"] for h in opens)
+    hi = max(h["closeMin"] for h in opens)
     out = ['<option value="">Any time</option>']
-    t = lo * 60
-    while t <= hi * 60 - 30:
+    t = lo
+    while t <= min(hi, 1440) - 30:
         h, m = divmod(t, 60)
         label = f"{(h % 12) or 12}:{m:02d}{'am' if h < 12 else 'pm'}"
         out.append(f'<option value="{h:02d}:{m:02d}">{label}</option>')
         t += 30
     return "".join(out)
+
+
+def file_hash(rel):
+    return hashlib.sha1((ROOT / rel).read_bytes()).hexdigest()[:8]
+
+
+def asset_versions():
+    """Version tags so a browser never shows a stale stylesheet or script after an update (changes only when the file changes)."""
+    return {"css": file_hash("styles.css"), "lenis": file_hash("vendor/lenis-1.1.18.min.js"), "lenisCss": file_hash("vendor/lenis-1.1.18.css"), "main": file_hash("main.js")}
+
+
+def import_map():
+    """One import map for every page: Three.js plus every module with ?v=hash, so a changed module is fetched fresh while unchanged ones stay cached."""
+    m = {"three": "./vendor/three.module.min.js?v=" + file_hash("vendor/three.module.min.js"), "three/addons/": "./vendor/addons/"}
+    for rel in sorted([f"js/{p.name}" for p in (ROOT / "js").glob("*.js")] + ["scene.js", "search-data.js"]):
+        m["./" + rel] = f"./{rel}?v={file_hash(rel)}"
+    return json.dumps({"imports": m})
 
 
 def photo_slots():
@@ -295,17 +442,37 @@ def build():
         for it in cat["items"]:
             it["plainName"] = plain(it["name"])
             it["slug"] = slug(it["name"])
+    for cat in DATA["menu"]:
+        for it in cat["items"]:
+            PRICES[html.unescape(it["name"])] = it["price"]
+    for pg in cfg["pages"]:
+        pg["description"] = resolve_tokens(pg["description"])
+    cfg["announcement"]["text"] = resolve_tokens(cfg["announcement"]["text"])
     tabs, panels = menu_html()
+    (ROOT / "search-data.js").write_text(search_data())  # written before the import map hashes it
     site_data = {
         "name": cfg["brand"]["name"], "phone": cfg["contact"]["phone"], "phoneHref": cfg["contact"]["phoneHref"],
         "email": cfg["contact"]["email"], "timezone": cfg["site"]["timezone"], "locale": cfg["site"]["locale"],
-        "currency": cfg["site"]["currency"], "hours": cfg["hours"],
+        "currency": cfg["site"]["currency"], "region": cfg["region"],
+        "hours": [{"day": h["day"], "name": h["name"], "open": h["openMin"], "close": h["closeMin"]} for h in cfg["hours"]],
+        "holidays": {"mode": cfg["holidays"].get("mode", "closed"), "overrides": {k: {"status": o.get("status"), "open": o.get("openMin"), "close": o.get("closeMin")} for k, o in (cfg["holidays"].get("overrides") or {}).items()}},
+        "closures": [{"date": k["date"], "name": k.get("name", ""), "status": k["status"], "open": k.get("openMin"), "close": k.get("closeMin")} for k in cfg.get("closures", [])],
+        "notices": cfg.get("notices", []), "booking": cfg["booking"], "forms": {"endpoint": cfg["forms"].get("endpoint", "")},
     }
+    staff = []
+    for st in cfg["staff"]:
+        st = dict(st)
+        st["initial"] = st["name"][:1].upper()
+        st["isApprentice"] = "apprentice" in st["role"].lower()
+        st["photoHtml"] = photo_slots()[0].get(st.get("photo", ""), "")
+        staff.append(st)
     base = {
         **cfg, **DATA,
         "menuTabs": tabs, "menuPanels": panels, "hoursTable": hours_table(), "hoursSummary": hours_summary(),
         "siteData": json.dumps(site_data, ensure_ascii=False).replace("</", "<\\/"),
-        "year": 2026,
+        "year": datetime.date.today().year, "years": datetime.date.today().year - cfg["brand"]["established"],
+        "giftAmounts": [{"amount": a, "checked": a == cfg["giftCards"]["default"]} for a in cfg["giftCards"]["amounts"]],
+        "staffList": staff, "formsLive": bool(cfg["forms"].get("endpoint")), "assets": asset_versions(), "importMap": import_map(),
         "timeOptions": time_options(),
         "photos": photo_slots()[0], "photoCredits": photo_slots()[1],
         "gmapEmbed": "https://maps.google.com/maps?q=" + urllib.parse.quote(cfg["contact"]["mapsQuery"]) + "&output=embed",
@@ -315,6 +482,7 @@ def build():
     }
     layout = parse((TPL / "layout.html").read_text())
     for page in cfg["pages"]:
+        page["description"] = page["description"].replace("{phone}", cfg["contact"]["phone"])
         ctx = {**base, "page": {**page, "isHome": page["file"] == "index.html", "isNotFound": page["file"] == "404.html",
                                 "canonical": cfg["site"]["baseUrl"] + ("" if page["file"] == "index.html" else page["file"]),
                                 "fullTitle": ("" if page["file"] == "index.html" else page["title"] + " | ") + cfg["brand"]["fullName"] + " (concept demo)"},
@@ -322,10 +490,10 @@ def build():
         ctx["jsonld"] = jsonld(page) if page.get("jsonld") else ""
         content = render_nodes(parse((TPL / "pages" / f'{page["template"]}.html').read_text()), [ctx])
         ctx["content"] = content
-        out = render_nodes(layout, [ctx])
+        out = resolve_tokens(render_nodes(layout, [ctx]))
         (ROOT / page["file"]).write_text(out)
         print("wrote", page["file"], len(out))
-    (ROOT / "search-data.js").write_text(search_data())
+    (ROOT / "robots.txt").write_text("User-agent: *\nDisallow:\n\nSitemap: " + cfg["site"]["baseUrl"] + "sitemap.xml\n")
     urls = "".join(f'  <url><loc>{cfg["site"]["baseUrl"]}{"" if p["file"] == "index.html" else p["file"]}</loc></url>\n' for p in cfg["pages"] if not p.get("hidden"))
     (ROOT / "sitemap.xml").write_text(f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{urls}</urlset>\n')
     print("wrote search-data.js, sitemap.xml")

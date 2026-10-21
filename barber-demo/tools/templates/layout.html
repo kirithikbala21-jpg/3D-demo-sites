@@ -2,7 +2,8 @@
 <html lang="en-AU">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="dark">
   {{#if page.isNotFound}}<script>document.write('<base href="' + (location.pathname.match(/^.*\/barber-demo\//) || ['/'])[0] + '">');</script>{{/if}}
   <title>{{page.fullTitle}}</title>
   <meta name="description" content="{{page.description}}">
@@ -29,8 +30,9 @@
   <link rel="manifest" href="site.webmanifest">
   <link rel="preload" href="fonts/montserrat-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="fonts/oswald-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="vendor/lenis-1.1.18.css">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="vendor/lenis-1.1.18.css?v={{assets.lenisCss}}">
+  <link rel="stylesheet" href="styles.css?v={{assets.css}}">
+  <script type="importmap">{{{importMap}}}</script>
   <style>:root{--black:{{theme.black}};--charcoal:#161617;--gold:#C9A24B;--wine:{{theme.wine}};--wine-deep:{{theme.wineDeep}};--wine-night:{{theme.wineNight}};--gold-light:{{theme.goldLight}};--gold-text:{{theme.goldText}};--cream:{{theme.cream}};--tint:{{theme.tint}};--ink:{{theme.ink}}}</style>
   {{{jsonld}}}
   <noscript><style>
@@ -48,16 +50,13 @@
     // Safety net: never leave the hero hidden if the main script fails to start.
     setTimeout(function () { var d = document.documentElement; if (!d.classList.contains('is-ready')) d.classList.add('is-ready', 'is-failsafe'); }, 4500);
   </script>
-  {{#if page.isHome}}
-  <!-- Three.js is self-hosted (exact version 0.160.0) and loaded as an ES module through this import map. -->
-  <script type="importmap">{"imports":{"three":"./vendor/three.module.min.js","three/addons/":"./vendor/addons/"}}</script>
-  {{/if}}
 </head>
 <body class="page-{{page.template}}">
   {{#if page.isHome}}
   <div class="preloader" id="preloader" aria-hidden="true"><span class="script">{{{brand.wordmark}}}</span></div>
   {{/if}}
   <a class="skip-link" href="#main">Skip to content</a>
+  <noscript><p class="nojs-banner">JavaScript is switched off, so online booking and live opening times are unavailable. Please call <a href="tel:{{contact.phoneHref}}">{{contact.phone}}</a> or visit us at {{contact.street}}, {{contact.locality}}. Hours: {{{hoursSummary}}}.</p></noscript>
   <div class="progress" aria-hidden="true"><span></span></div>
 
   <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
@@ -74,6 +73,8 @@
     <p>{{announcement.text}} <a href="{{announcement.href}}">{{announcement.link}}</a></p>
     <button class="announce-close" type="button" id="announce-close" aria-label="Dismiss announcement"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" focusable="false"><path d="M2 2l10 10M12 2L2 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
   </div>
+
+  <div class="notice-bar" id="notice-bar" role="region" aria-label="Notices" hidden></div>
 
   <header class="site-header" id="top">
     <div class="header-inner">
@@ -158,14 +159,19 @@
         <p class="error" id="e-cart-name" aria-live="polite"></p>
       </div>
       <div class="field">
+        <label for="cart-phone">Phone</label>
+        <input id="cart-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" aria-describedby="e-cart-phone">
+        <p class="error" id="e-cart-phone" aria-live="polite"></p>
+      </div>
+      <div class="field">
         <label for="cart-barber">Barber</label>
-        <select id="cart-barber" name="barber"><option value="any">Any available barber</option><option value="Marco">Marco</option><option value="Jess">Jess</option><option value="Dev">Dev</option><option value="Ollie">Ollie (apprentice)</option></select>
+        <select id="cart-barber" name="barber"><option value="any">Any available barber</option>{{#each staffList}}<option value="{{this.name}}">{{this.name}}{{#if this.isApprentice}} (apprentice){{/if}}</option>{{/each}}</select>
       </div>
       <div class="field">
         <label for="cart-when">Time</label>
         <select id="cart-when" name="when"></select>
       </div>
-      <button class="btn btn-primary btn-block" type="submit">Book this visit (demo)</button>
+      <button class="btn btn-primary btn-block" type="submit">Book this visit{{#if formsLive}}{{else}} (demo){{/if}}</button>
       <button class="cart-clear" type="button" id="cart-clear">Clear visit</button>
       <!-- DEMO ONLY: send the booking to your diary or booking system here (see js/cart.js). -->
     </form>
@@ -173,7 +179,7 @@
       <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M7.500 12.500l3 3 6-7"/></svg>
       <h3>Thanks, <span id="done-name">friend</span>!</h3>
       <p id="done-detail"></p>
-      <p class="note">Demo only: nothing was booked and nothing was charged.</p>
+      <p class="note">{{#if formsLive}}We will confirm by phone or text.{{else}}Demo only: nothing was booked and nothing was charged.{{/if}}</p>
       <button class="btn btn-secondary" type="button" id="done-close">Close</button>
     </div>
   </aside>
@@ -229,7 +235,7 @@
         <button type="button" class="sound-btn" data-sound aria-pressed="false">Shop ambience: <span data-sound-state>off</span></button>
       </nav>
       <div class="footer-bottom">
-        <p>{{brand.demoFooter}}</p>
+        <p>&copy; <span data-year>{{year}}</span> {{brand.fullNameHtml}}. {{brand.demoFooter}}</p>
         <p class="brandline">Concept website by KB Ventures. Want one for your business?</p>
         {{#if photoCredits}}<p class="photo-credits">Photo credits: {{photoCredits}}</p>{{/if}}
         <a class="back-top" href="#top">Back to top &uarr;</a>
@@ -254,7 +260,7 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <script type="application/json" id="site-data">{{{siteData}}}</script>
-  <script defer src="vendor/lenis-1.1.18.min.js"></script><!-- Lenis 1.1.18 (MIT), self-hosted, pinned -->
-  <script type="module" src="main.js"></script>
+  <script defer src="vendor/lenis-1.1.18.min.js?v={{assets.lenis}}"></script><!-- Lenis 1.1.18 (MIT), self-hosted, pinned -->
+  <script type="module" src="main.js?v={{assets.main}}"></script>
 </body>
 </html>

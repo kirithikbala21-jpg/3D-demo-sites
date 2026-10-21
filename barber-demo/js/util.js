@@ -19,15 +19,17 @@ export function store(key, value) {
   return null;
 }
 
-/** Current day (0 = Sunday) and decimal hour in the café's own time zone, not the visitor's. */
-export function cafeNow(date = new Date()) {
-  const parts = new Intl.DateTimeFormat('en-US', { timeZone: site.timezone, weekday: 'short', hour: 'numeric', minute: 'numeric', hourCycle: 'h23' }).formatToParts(date);
-  const get = (t) => parts.find((p) => p.type === t).value;
-  const day = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].indexOf(get('weekday'));
-  return { day, hour: Number(get('hour')) % 24 + Number(get('minute')) / 60 };
-}
-export const hoursFor = (day) => site.hours.find((h) => h.day === day);
-export const fmtHour = (h) => `${(h % 12) || 12}:00${h < 12 ? 'am' : 'pm'}`;
+import * as clock from './clock.js';
+export const { addDays, dayLabel, pad } = clock;
+/** Opening hours (minutes since midnight), public holidays and closures: everything clock.js needs, from the page data. */
+export const CLOCK_CFG = { region: site.region || 'NSW', hours: site.hours || [], closures: site.closures || [], holidays: site.holidays || { mode: 'closed' } };
+/** The current date and time in the SHOP's time zone (not the visitor's): { y, m, d, dow, mins, key }. */
+export const nowShop = (at = new Date()) => clock.nowIn(site.timezone, at);
+export const resolveDay = (key) => clock.resolveDay(key, CLOCK_CFG);
+export const statusNow = () => clock.statusAt(nowShop(), CLOCK_CFG);
+export const hoursFor = (day) => site.hours.find((h) => h.day === day && h.open != null);
+/** Minutes since midnight to "9:00am" (values past 24h wrap round). */
+export const fmtHour = (mins) => { const t = ((mins % 1440) + 1440) % 1440, h = Math.floor(t / 60), m = t % 60; return `${(h % 12) || 12}:${pad(m)}${h < 12 ? 'am' : 'pm'}`; };
 
 const toastEl = $('#toast');
 let toastTimer = 0;

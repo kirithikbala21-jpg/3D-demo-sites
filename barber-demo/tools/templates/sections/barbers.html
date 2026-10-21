@@ -6,23 +6,21 @@
           <h2 id="story-title" data-split>A hardware store, a rescued pole and <em>one very long mirror.</em></h2>
         </div>
         <div class="story-copy reveal">
-          <p>{{brand.name}} opened in 2014 in a former hardware store on a Surry Hills lane. Marco had been cutting hair for five years in other people&rsquo;s shops and wanted a place that felt like a club: proper chairs, proper towels, and nobody rushing you out the door.</p>
+          <p>{{brand.name}} opened in {{brand.established}} in a former hardware store on a Surry Hills lane. Marco had been cutting hair for five years in other people&rsquo;s shops and wanted a place that felt like a club: proper chairs, proper towels, and nobody rushing you out the door.</p>
           <p>The brass fittings, the black-and-white floor and the long mirror were all here when he took the lease. The pole out front came from a barbershop in Newtown that was closing down, and it has been spinning ever since. Today there are four chairs, a waiting list for Saturdays and the same rule we started with: everybody gets a hot towel.</p>
         </div>
       </div>
       <div class="container">
         <ul class="stats reveal" aria-label="{{brand.name}} in numbers">
-          <li><span class="stat-num" data-count="12" data-suffix="">12</span><span class="stat-label">years in the same shop</span></li>
+          <li><span class="stat-num" data-since="{{brand.established}}" data-count="{{years}}" data-suffix="">{{years}}</span><span class="stat-label">years in the same shop</span></li>
           <li><span class="stat-num" data-count="38000" data-suffix="">38,000</span><span class="stat-label">cuts and shaves a year</span></li>
           <li><span class="stat-num" data-count="4" data-suffix="">4</span><span class="stat-label">chairs, always busy</span></li>
         </ul>
 
         <h3 class="sub-title reveal">The crew</h3>
         <ul class="crew">
-          <li class="reveal"><span class="avatar" aria-hidden="true">M</span><div><strong>Marco</strong><span>Owner &amp; master barber</span><p>Seventeen years behind the chair. Skin fades, classic cuts and the best neckline in the building.</p><a class="link-arrow" href="book.html?barber=marco">Book with Marco <span aria-hidden="true">&rarr;</span></a></div></li>
-          <li class="reveal"><span class="avatar" aria-hidden="true">J</span><div><strong>Jess</strong><span>Senior barber</span><p>Scissor cuts, long hair and kids. Calm, quick and good at making nervous clients laugh.</p><a class="link-arrow" href="book.html?barber=jess">Book with Jess <span aria-hidden="true">&rarr;</span></a></div></li>
-          <li class="reveal"><span class="avatar" aria-hidden="true">D</span><div><strong>Dev</strong><span>Beard &amp; shave specialist</span><p>Straight-razor shaves and beard sculpting. Will tell you exactly why your beard is itchy.</p><a class="link-arrow" href="book.html?barber=dev">Book with Dev <span aria-hidden="true">&rarr;</span></a></div></li>
-          <li class="reveal"><span class="avatar" aria-hidden="true">O</span><div><strong>Ollie</strong><span>Apprentice barber</span><p>Second-year apprentice with a steady hand. Lower prices on weekday afternoons while he learns.</p><a class="link-arrow" href="book.html?barber=ollie">Book with Ollie <span aria-hidden="true">&rarr;</span></a></div></li>
+          {{#each staffList}}<li class="reveal"><span class="avatar" aria-hidden="true">{{this.initial}}</span><div><strong>{{this.name}}</strong><span>{{this.role}}</span><p>{{this.blurb}}</p><a class="link-arrow" href="book.html?barber={{this.slug}}">Book with {{this.name}} <span aria-hidden="true">&rarr;</span></a></div></li>
+          {{/each}}
         </ul>
         <p class="note team-note">Sample team members for demo purposes.</p>
       </div>

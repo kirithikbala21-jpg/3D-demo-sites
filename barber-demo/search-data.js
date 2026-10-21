@@ -325,48 +325,6 @@ export default [
 "type": "Careers"
 },
 {
-"title": "Marco, owner and master barber",
-"text": "Skin fades and classic cuts, 17 years behind the chair",
-"url": "barbers.html",
-"type": "Experiences"
-},
-{
-"title": "Jess, senior barber",
-"text": "Scissor cuts, long hair and kids",
-"url": "barbers.html",
-"type": "Experiences"
-},
-{
-"title": "Dev, beard and shave specialist",
-"text": "Beard sculpting and straight-razor shaves",
-"url": "barbers.html",
-"type": "Experiences"
-},
-{
-"title": "Ollie, apprentice barber",
-"text": "Budget-friendly cuts while he trains",
-"url": "barbers.html",
-"type": "Experiences"
-},
-{
-"title": "The Regular membership",
-"text": "Two cuts a month, $79 per month",
-"url": "membership.html",
-"type": "Experiences"
-},
-{
-"title": "The Gentleman membership",
-"text": "Two cuts, a hot towel shave and 10% off the shop, $129 per month",
-"url": "membership.html",
-"type": "Experiences"
-},
-{
-"title": "Unlimited membership",
-"text": "Unlimited cuts and beard trims, $179 per month",
-"url": "membership.html",
-"type": "Experiences"
-},
-{
 "title": "Gift cards",
 "text": "Emailed instantly, valid three years",
 "url": "membership.html#gift-cards",
@@ -376,6 +334,48 @@ export default [
 "title": "Walk-ins",
 "text": "Walk-ins welcome until 30 minutes before close",
 "url": "visit.html#faq",
+"type": "Experiences"
+},
+{
+"title": "Marco, owner & master barber",
+"text": "Seventeen years behind the chair. Skin fades, classic cuts and the best neckline in the building.",
+"url": "barbers.html",
+"type": "Experiences"
+},
+{
+"title": "Jess, senior barber",
+"text": "Scissor cuts, long hair and kids. Calm, quick and good at making nervous clients laugh.",
+"url": "barbers.html",
+"type": "Experiences"
+},
+{
+"title": "Dev, beard & shave specialist",
+"text": "Straight-razor shaves and beard sculpting. Will tell you exactly why your beard is itchy.",
+"url": "barbers.html",
+"type": "Experiences"
+},
+{
+"title": "Ollie, apprentice barber",
+"text": "Second-year apprentice with a steady hand. Lower prices on weekday afternoons while he learns.",
+"url": "barbers.html",
+"type": "Experiences"
+},
+{
+"title": "The Regular membership",
+"text": "Two cuts a month. $79 per month",
+"url": "membership.html",
+"type": "Experiences"
+},
+{
+"title": "The Gentleman membership",
+"text": "Two cuts and a shave. $129 per month",
+"url": "membership.html",
+"type": "Experiences"
+},
+{
+"title": "Unlimited membership",
+"text": "As often as you like. $179 per month",
+"url": "membership.html",
 "type": "Experiences"
 }
 ];

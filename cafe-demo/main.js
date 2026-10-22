@@ -1,4 +1,11 @@
 // Ember & Oak: page behaviour. 3D lives in scene.js and is loaded lazily with a safety net.
+// Business details, hours and feature switches come from site.config.json (js/config.js); the café's own time zone drives every clock.
+import { loadConfig } from './js/config.js';
+import { initGrowth, initReserve } from './js/growth.js';
+import { initOrdering } from './js/order.js';
+import { nowIn } from './js/clock.js';
+import { addDays } from './js/dates.js';
+const CFG = await loadConfig();
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const $ = (sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
@@ -129,34 +136,9 @@ function toast(msg) {
   });
 })();
 
-/* ---------- Highlight today's opening hours ---------- */
-(() => {
-  const row = $(`.hours tr[data-day="${new Date().getDay()}"]`);
-  if (!row) return;
-  row.classList.add('is-today');
-  const th = $('th', row);
-  th.insertAdjacentHTML('beforeend', ' <span class="today-badge">Today</span>');
-})();
-
-/* ---------- "Open now" status chip (uses the visitor's local clock) ---------- */
-(() => {
-  // Keep in sync with the opening-hours table: [open hour, close hour] in 24h time, 0 = Sunday.
-  const hours = { 0: [8, 16], 1: [7, 16], 2: [7, 16], 3: [7, 16], 4: [7, 22], 5: [7, 22], 6: [7, 22] };
-  const fmt = (h) => { const hr = h % 12 || 12; return `${hr}:00${h < 12 ? 'am' : 'pm'}`; };
-  const now = new Date();
-  const [open, close] = hours[now.getDay()];
-  const t = now.getHours() + now.getMinutes() / 60;
-  let text, isOpen = false;
-  if (t >= open && t < close) { text = `Open now \u00B7 until ${fmt(close)}`; isOpen = true; }
-  else if (t < open) text = `Closed \u00B7 opens ${fmt(open)} today`;
-  else text = `Closed \u00B7 opens ${fmt(hours[(now.getDay() + 1) % 7][0])} tomorrow`;
-  ['#open-status', '#open-status-2'].forEach((sel) => {
-    const el = $(sel);
-    if (!el) return;
-    el.textContent = text;
-    el.closest('.chip').classList.toggle('is-closed', !isOpen);
-  });
-})();
+/* ---------- Opening hours table, "Open now" chips, review/social/rating/busy features: see js/growth.js ---------- */
+initGrowth(CFG, { toast });
+initOrdering(CFG, { toast });
 
 /* ---------- Links that pre-select the enquiry type in the form ---------- */
 $$('[data-enquiry]').forEach((a) => a.addEventListener('click', () => {
@@ -197,14 +179,15 @@ $$('[data-enquiry]').forEach((a) => a.addEventListener('click', () => {
   const success = $('#form-success');
   const dateEl = $('#f-date');
   const pad = (n) => String(n).padStart(2, '0');
-  const now = new Date();
-  const todayStr = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
+  const todayStr = nowIn(CFG.timezone).key; // today in the café's time zone
   dateEl.min = todayStr;
+  const extras = initReserve(CFG); // time slots (demo-full times + waitlist) and the Remind me control
 
   const rules = {
     name: (v) => (v.trim().length < 2 ? 'Please tell us your name so we can pop it on the booking.' : ''),
     email: (v) => (!v.trim() ? 'We need an email to confirm your table.' : !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()) ? "That email doesn't look quite right. Could you check it?" : ''),
-    date: (v) => (!v ? 'Which day suits you? Pick a date.' : v < todayStr ? "That date has already passed. Pick today or later." : ''),
+    date: (v) => (!v ? 'Which day suits you? Pick a date.' : v < todayStr ? "That date has already passed. Pick today or later." : extras.dateClosed(v)),
+    time: () => extras.timeError(),
     guests: (v) => { const n = Number(v); return !v ? 'How many people are coming?' : !Number.isInteger(n) || n < 1 || n > 12 ? 'We can seat 1 to 12 guests online. For bigger groups, give us a call.' : ''; },
     message: (v) => (v.length > 500 ? 'Please keep your message under 500 characters.' : ''),
   };
@@ -216,7 +199,7 @@ $$('[data-enquiry]').forEach((a) => a.addEventListener('click', () => {
     return !msg;
   }
   Object.keys(rules).forEach((name) => {
-    field(name).addEventListener('blur', () => check(name));
+    if (name !== 'time') field(name).addEventListener('blur', () => check(name)); // the time is checked on submit only: an error line appearing on blur would shift the Submit button under the tap
     field(name).addEventListener('input', () => { if (field(name).getAttribute('aria-invalid') === 'true') check(name); });
   });
 
@@ -225,6 +208,8 @@ $$('[data-enquiry]').forEach((a) => a.addEventListener('click', () => {
     const results = Object.keys(rules).map((n) => [n, check(n)]);
     const bad = results.find(([, ok]) => !ok);
     if (bad) { field(bad[0]).focus(); return; }
+    const rm = extras.reminder ? extras.reminder.read() : { ok: true, mode: 'none' };
+    if (!rm.ok) { rm.input.focus(); return; }
 
     // DEMO ONLY: this is where a real form service would be called, e.g.
     //   fetch('https://formspree.io/f/your-id', { method: 'POST', body: new FormData(form) })
@@ -235,8 +220,11 @@ $$('[data-enquiry]').forEach((a) => a.addEventListener('click', () => {
     const type = field('type').value;
     $('#ok-name').textContent = field('name').value.trim().split(' ')[0];
     $('#ok-detail').textContent = type === 'table'
-      ? `We've noted a table for ${guests} ${guests === 1 ? 'guest' : 'guests'} on ${date}. We'll email ${email} to confirm.`
+      ? `We've noted a table for ${guests} ${guests === 1 ? 'guest' : 'guests'} on ${date}${field('time').value ? ' at ' + extras.time12(field('time').value) : ''}. We'll email ${email} to confirm.`
       : `We've received your ${field('type').selectedOptions[0].textContent.toLowerCase()} for ${date}. A team member will email ${email} within one business day.`;
+    const remind = extras.reminder ? extras.reminder.confirmation(dateEl.value, todayStr) : '';
+    // Reminders are NOT connected to any email or SMS service: this line only says a reminder is "set". See js/reminder.js.
+    $('#ok-remind').textContent = remind; $('#ok-remind').hidden = !remind;
     form.hidden = true;
     success.hidden = false;
     success.focus();
@@ -245,6 +233,7 @@ $$('[data-enquiry]').forEach((a) => a.addEventListener('click', () => {
     form.reset();
     field('guests').value = 2;
     field('type').value = 'table';
+    extras.reset();
     $$('[aria-invalid]', form).forEach((el) => el.setAttribute('aria-invalid', 'false'));
     success.hidden = true;
     form.hidden = false;

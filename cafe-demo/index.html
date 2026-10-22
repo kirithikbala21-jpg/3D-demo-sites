@@ -79,7 +79,7 @@
         <li><a href="#visit">Visit</a></li>
       </ul>
       <a class="btn btn-primary" href="#reserve">Reserve a table</a>
-      <p class="mobile-nav-note">12 Example Street, Melbourne<br>03 5550 0123</p>
+      <p class="mobile-nav-note"><span data-cfg="street">12 Example Street</span>, <span data-cfg="suburb">Melbourne</span><br><span data-cfg="phone">03 5550 0123</span></p>
     </nav>
   </div>
 
@@ -95,7 +95,7 @@
             <a class="btn btn-primary" href="#reserve">Reserve a table</a>
             <a class="btn btn-secondary" href="#menu">Explore the menu</a>
           </div>
-          <p class="hero-rating"><span class="stars" role="img" aria-label="5 out of 5 stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span> <strong>4.9</strong> <span>sample rating from 1,200+ imaginary guests</span></p>
+          <div class="hero-rating" id="hero-rating" hidden></div>
         </div>
 
         <div class="hero-stage" id="stage">
@@ -193,6 +193,7 @@
             <button role="tab" id="tab-evening" aria-controls="panel-evening" aria-selected="false" tabindex="-1" type="button">Evening</button>
             </div>
           </div>
+          <div class="order-bar" id="order-bar" hidden></div>
           <div role="tabpanel" id="panel-coffee" aria-labelledby="tab-coffee" tabindex="0" class="menu-panel">
             <p class="panel-note">Served all day</p>
             <div class="menu-grid">
@@ -609,6 +610,15 @@
     </section>
 
     <!-- GALLERY -->
+    <section class="section" id="review-us" aria-labelledby="review-us-title" hidden>
+      <div class="container narrow-ish review-us">
+        <p class="eyebrow">Loved your visit?</p>
+        <h2 id="review-us-title">Tell us, <em>and tell Google.</em></h2>
+        <p class="lead">A quick review helps neighbours find a good coffee. It takes a minute, and we read every one. (Demo link: it does not go to a real Google page.)</p>
+        <p class="btn-row"><a class="btn btn-primary" id="review-us-btn" href="reviews.html" target="_blank" rel="noopener">Leave us a Google review</a> <a class="btn btn-secondary btn-on-light" href="reviews.html">Show the QR code</a></p>
+      </div>
+    </section>
+
     <section class="section section-tint" id="gallery" aria-labelledby="gallery-title">
       <div class="container">
         <div class="section-head reveal">
@@ -788,10 +798,12 @@
           <h2 id="visit-title">Come <em>say g&rsquo;day.</em></h2>
           <p class="chip chip-light"><span class="dot" aria-hidden="true"></span><span id="open-status-2">Open 7 days</span></p>
           <address>
-            12 Example Street<br>Melbourne VIC 3000<br>
-            <a href="tel:0355500123">03 5550 0123</a><br>
-            <a href="mailto:hello@example.com">hello@example.com</a>
+            <span data-cfg="street">12 Example Street</span><br><span data-cfg="locality">Melbourne VIC 3000</span><br>
+            <a href="tel:0355500123" data-cfg-href="tel"><span data-cfg="phone">03 5550 0123</span></a><br>
+            <a href="mailto:hello@example.com" data-cfg-href="mailto"><span data-cfg="email">hello@example.com</span></a>
           </address>
+          <p class="visit-links" id="visit-links" hidden></p>
+          <div class="busy" id="busy-visit" hidden></div>
           <table class="hours">
             <caption>Opening hours</caption>
             <thead class="sr-only"><tr><th scope="col">Day</th><th scope="col">Hours</th></tr></thead>
@@ -836,7 +848,7 @@
         <div class="reveal">
           <p class="eyebrow">Good to know</p>
           <h2 id="faq-title">Questions, <em>answered.</em></h2>
-          <p class="lead">Still stuck? Call us on 03 5550 0123 and a human will pick up.</p>
+          <p class="lead">Still stuck? Call us on <span data-cfg="phone">03 5550 0123</span> and a human will pick up.</p>
         </div>
         <div class="faq reveal">
           <details><summary>Do I need to book?</summary><p>Walk-ins are always welcome. We recommend booking for weekend brunch, evenings and any group of 6 or more.</p></details>
@@ -856,6 +868,7 @@
           <p class="eyebrow">Reservations &amp; enquiries</p>
           <h2 id="reserve-title">Save a table <em>for your crew.</em></h2>
           <p class="lead">Tell us when and how many. We&rsquo;ll confirm by email, usually within a few hours. (This demo form doesn&rsquo;t send anything.)</p>
+          <p class="busy-line" id="busy-line" hidden></p>
           <ul class="reserve-points">
             <li>Free cancellation up to 24 hours before</li>
             <li>High chairs, accessible seating and dog-friendly terrace tables</li>
@@ -896,6 +909,12 @@
                 <p class="error" id="e-guests" aria-live="polite"></p>
               </div>
             </div>
+            <div class="field" id="time-field">
+              <label for="f-time">Time <span class="optional">(for tables)</span></label>
+              <select id="f-time" name="time" aria-describedby="e-time"><option value="">Choose a date first</option></select>
+              <p class="error" id="e-time" aria-live="polite"></p>
+            </div>
+            <div id="wl-host" aria-live="polite"></div>
             <div class="field">
               <label for="f-message">Message <span class="optional">(optional)</span></label>
               <textarea id="f-message" name="message" rows="4" maxlength="500" placeholder="Birthday, pram, allergies, anything we should know" aria-describedby="e-message"></textarea>
@@ -912,6 +931,7 @@
             <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M7.500 12.500l3 3 6-7"/></svg>
             <h3>Thanks, <span id="ok-name">friend</span>!</h3>
             <p id="ok-detail"></p>
+            <p id="ok-remind" class="ok-remind" hidden></p>
             <p class="note">Demo only: no email was sent and nothing was saved.</p>
             <button class="btn btn-secondary btn-on-light" type="button" id="form-reset">Make another request</button>
           </div>
@@ -943,8 +963,11 @@
         </nav>
         <div class="footer-col">
           <h2>Visit</h2>
-          <p>12 Example Street<br>Melbourne VIC 3000</p>
-          <p><a href="tel:0355500123">03 5550 0123</a><br><a href="mailto:hello@example.com">hello@example.com</a></p>
+          <p><span data-cfg="street">12 Example Street</span><br><span data-cfg="locality">Melbourne VIC 3000</span></p>
+          <p><a href="tel:0355500123" data-cfg-href="tel"><span data-cfg="phone">03 5550 0123</span></a><br><a href="mailto:hello@example.com" data-cfg-href="mailto"><span data-cfg="email">hello@example.com</span></a></p>
+          <ul class="soc-list" id="footer-social" role="list" hidden></ul>
+          <div class="footer-rating" id="footer-rating" hidden></div>
+          <p><a class="btn btn-secondary footer-review" id="footer-review" href="reviews.html" hidden>Leave us a Google review</a></p>
         </div>
         <div class="footer-col newsletter">
           <h2>The Ember letter</h2>
@@ -969,7 +992,7 @@
 
   <!-- Mobile quick actions -->
   <div class="mobile-cta">
-    <a class="btn btn-secondary" href="tel:0355500123">Call</a>
+    <a class="btn btn-secondary" href="tel:0355500123" data-cfg-href="tel">Call</a>
     <a class="btn btn-primary" href="#reserve">Reserve a table</a>
   </div>
 

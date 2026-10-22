@@ -1,0 +1,46 @@
+{
+ "name": "Ember & Oak Coffee",
+ "phone": "03 5550 0123",
+ "email": "hello@example.com",
+ "street": "12 Example Street",
+ "locality": "Melbourne VIC 3000",
+ "timezone": "Australia/Melbourne",
+ "hours": [
+  {"day": 1, "name": "Monday", "open": "07:00", "close": "16:00"},
+  {"day": 2, "name": "Tuesday", "open": "07:00", "close": "16:00"},
+  {"day": 3, "name": "Wednesday", "open": "07:00", "close": "16:00"},
+  {"day": 4, "name": "Thursday", "open": "07:00", "close": "22:00"},
+  {"day": 5, "name": "Friday", "open": "07:00", "close": "22:00"},
+  {"day": 6, "name": "Saturday", "open": "07:00", "close": "22:00"},
+  {"day": 0, "name": "Sunday", "open": "08:00", "close": "16:00"}
+ ],
+ "closures": [],
+ "googleReviewUrl": "https://g.page/r/DEMO/review",
+ "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=12%20Example%20Street%2C%20Melbourne%20VIC%203000",
+ "instagramUrl": "https://www.instagram.com/demo_ember_and_oak/",
+ "facebookUrl": "",
+ "googleRating": 4.9,
+ "googleReviewCount": 120,
+ "remindersEnabled": true,
+ "reminderLeadHours": 24,
+ "waitlistEnabled": true,
+ "orderingEnabled": true,
+ "busynessEnabled": true,
+ "busyness": {
+  "blocks": [
+   {"label": "Morning", "from": "07:00", "to": "11:00"},
+   {"label": "Lunch", "from": "11:00", "to": "14:00"},
+   {"label": "Afternoon", "from": "14:00", "to": "17:00"},
+   {"label": "Evening", "from": "17:00", "to": "22:00"}
+  ],
+  "week": {
+   "mon": ["quiet", "medium", "quiet", "closed"],
+   "tue": ["quiet", "medium", "quiet", "closed"],
+   "wed": ["quiet", "medium", "quiet", "closed"],
+   "thu": ["medium", "busy", "medium", "medium"],
+   "fri": ["medium", "busy", "medium", "busy"],
+   "sat": ["busy", "busy", "medium", "busy"],
+   "sun": ["medium", "busy", "quiet", "closed"]
+  }
+ }
+}

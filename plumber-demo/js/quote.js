@@ -75,6 +75,8 @@ import { addDays } from './dates.js';
       : `${SITE.weekendLine} Outside those hours, the emergency line is open 24/7 on ${SITE.phone}.`;
     const rl = $('#done-reminder'); const now = nowMel();
     if (rl) { const line = rec.reminder !== 'none' && reminder ? reminder.confirmation(addDays(now.key, WHEN_DAYS[rec.when] || 0), now) : ''; rl.textContent = line; rl.hidden = !line; }
+    const rp = $('#done-reminder-preview'); // reminder PREVIEW only: SENDING IS NOT CONNECTED, nothing is sent (plug an email/SMS service in here per customer)
+    if (rp) { const on = rec.reminder !== 'none' && reminder; rp.textContent = on ? `Preview (${rec.reminder.mode === 'email' ? 'email' : 'text'}): "Hi ${first}, a reminder that ${SITE.name} will call you about your ${rec.serviceName.toLowerCase()} request. In an emergency call ${SITE.phone}."` : ''; rp.hidden = !on; }
     form.hidden = true; done.hidden = false; done.focus();
   }
   function reset() { form.reset(); if (reminder) { reminder.reset(); syncReminder(); } clearPhoto(); $$('[aria-invalid]', form).forEach((e) => e.removeAttribute('aria-invalid')); $$('.field-error', form).forEach((e) => { e.hidden = true; }); done.hidden = true; form.hidden = false; }

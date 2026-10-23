@@ -4,6 +4,11 @@ This is an **unofficial concept demo** of a family plumbing business. Every busi
 
 ---
 
+## Features at a glance (all switched from `site.config.json`)
+Google review button + QR page, quote reminders (front end only), Google/Instagram/Facebook links, Google rating badge, "Call me back" form (browser-only demo), open-hours banner, Get directions links, tap-to-call everywhere. A feature with an empty value or its switch set to off disappears completely. Keys: section 12. What changed and what is still a placeholder: `CHANGES.md`. Brand and style notes: `brand.md`.
+
+---
+
 ## 0. Launch checklist: replace every placeholder before going live
 
 All "site.config.json" items are in the **one file** described in section 1.

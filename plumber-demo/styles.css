@@ -664,3 +664,10 @@ html.cookie-open body { padding-bottom: calc(var(--bar-h) + var(--cookie-h) + en
 .site-footer .foot-review .btn { color: var(--navy); }
 .site-footer .foot-review .btn:hover { color: var(--navy); }
 @media (max-width: 599px) { .open-banner .ob-em { display: none; } .open-banner-in { align-items: center; } .open-banner .dot { margin-top: 0; } }
+
+/* hero: directions link and reminder preview */
+.hero-links { margin: 10px 0 0; display: none; }
+@media (min-width: 900px) { .hero-links { display: block; } }
+.hero-links a { display: inline-flex; align-items: center; min-height: 44px; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+.done-reminder-preview { margin: 8px 0 0; padding: 12px 14px; border-radius: 12px; border: 1px solid currentColor; font-size: .9375rem; }
+@media (max-width: 480px) { .hero-copy h1 { font-size: 2rem; line-height: 1.1; } }

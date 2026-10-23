@@ -2,12 +2,13 @@
       <div class="container hero-grid">
         <div class="hero-copy">
           <p class="badge-orange">Family owned since {{brand.established}}</p>
-          <h1 id="hero-title" data-pipe>Plumbers who turn up when they say they will.</h1>
+          <h1 id="hero-title" data-pipe>{{contact.suburb}} plumbers who turn up when they say they will.</h1>
           <p class="lead">Licensed, insured, 24/7 emergency across south-east Melbourne. Upfront prices before we start.</p>
           <div class="hero-cta">
             <a class="btn btn-call btn-lg" href="tel:{{contact.phoneHref}}"><svg width="24" height="24" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg><span>Call now</span><span class="btn-num">{{contact.phone}}</span></a>
             <a class="btn btn-outline btn-lg" href="#quote">Get a free quote</a>
           </div>
+          {{#if googleMapsUrl}}<p class="hero-links"><a href="{{googleMapsUrl}}" target="_blank" rel="noopener">Get directions<span class="sr-only"> (opens Google Maps in a new tab)</span></a></p>{{/if}}
           <p class="avail" id="avail" data-state="closed"><span class="dot" aria-hidden="true"></span><span class="avail-text" data-avail-text>Emergency line open 24/7</span></p>
           {{#if ratingBadge}}<p class="g-rating-wrap hero-rating">{{{ratingBadge}}}</p>{{/if}}
         </div>

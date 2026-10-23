@@ -1,0 +1,14 @@
+    <section class="section page-top" aria-labelledby="page-title">
+      <div class="container narrow reviews-page">
+        <nav class="crumbs no-print" aria-label="Breadcrumb"><ol><li><a href="index.html">Home</a></li><li aria-current="page">{{page.crumb}}</li></ol></nav>
+        <div class="qr-card" id="qr-print">
+          <p class="eyebrow">{{brand.name}}</p>
+          <h1 id="page-title">{{page.h1}}</h1>
+          <p class="lead">Scan to leave a review</p>
+          <div class="qr-box" id="qr" data-url="{{googleReviewUrl}}"><noscript><p>Open this link to leave a review: <a href="{{googleReviewUrl}}">{{googleReviewUrl}}</a></p></noscript></div>
+          <p class="qr-url" id="qr-url">{{googleReviewUrl}}</p>
+        </div>
+        <p class="no-print qr-actions"><a class="btn btn-navy btn-lg" href="{{googleReviewUrl}}" target="_blank" rel="noopener">Leave us a Google review<span class="sr-only"> (opens in a new tab)</span></a> <button class="btn btn-outline btn-lg js-only" type="button" id="qr-print-btn" hidden>Print this</button></p>
+        <p class="demo-note no-print"><strong>Demo link.</strong> This review link and QR code are placeholders, so they do not lead to a real Google review page. A real business pastes its own link into <code>googleReviewUrl</code> in site.config.json and the QR code updates by itself. Print this page to put the QR code on the counter or a receipt: only the heading and the code are printed.</p>
+      </div>
+    </section>

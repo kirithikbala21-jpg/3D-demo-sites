@@ -1,12 +1,19 @@
 // Quote form. DEMO ONLY: it validates in the browser, shows a confirmation and saves the request to this browser
 // (localStorage key "wp-quotes"). Nothing is sent unless site.config.json > form.endpoint is set (see README, "Connect the quote form").
-import { $, $$, SITE, store } from './util.js';
+import { $, $$, SITE, store, nowMel } from './util.js';
 import { addHoneypot, tripped, guard, send, isLive, phoneFallback } from './forms.js';
+import { normPhone, phoneOk } from './phone.js';
+import { mountReminder } from './reminder.js';
+import { addDays } from './dates.js';
 
 (() => {
   const form = $('#quote-form'); if (!form) return;
   const done = $('#quote-done'), card = form.closest('.form-card');
   addHoneypot(form);
+  // "Remind me" (None / Email / Text). Hidden for emergencies: those get "call us now". Sending is NOT connected (see js/reminder.js).
+  const reminder = mountReminder($('button[type=submit]', form), SITE);
+  const syncReminder = () => { if (reminder) reminder.show(form.elements.urgency.value !== 'emergency'); };
+  if (reminder) { form.elements.urgency.addEventListener('change', syncReminder); syncReminder(); }
   const busy = guard($('button[type=submit]', form));
   const f = { name: $('#q-name'), phone: $('#q-phone'), suburb: $('#q-suburb'), service: $('#q-service'), msg: $('#q-msg'), photo: $('#q-photo') };
 
@@ -19,12 +26,9 @@ import { addHoneypot, tripped, guard, send, isLive, phoneFallback } from './form
   }));
 
   /* ---------- Validation ---------- */
-  // Australian numbers: 04xx xxx xxx mobiles, 02/03/07/08 landlines, 13xx xxxx and 1300/1800 numbers; +61 is accepted.
-  const normPhone = (v) => { let d = v.replace(/[\s().-]/g, ''); if (/^\+?61/.test(d)) d = '0' + d.replace(/^\+?61/, '').replace(/^0/, ''); return d; };
-  const phoneOk = (v) => { const d = normPhone(v); return /^0[2-478]\d{8}$/.test(d) || /^13\d{4}$/.test(d) || /^1[38]00\d{6}$/.test(d); };
   const rules = {
     name: () => (f.name.value.trim().length >= 2 ? '' : 'Please tell us your name.'),
-    phone: () => (!f.phone.value.trim() ? 'Please enter a phone number so we can call you.' : phoneOk(f.phone.value) ? '' : 'That does not look like an Australian phone number. Try 0412 345 678 or 03 5550 0142.'),
+    phone: () => (!f.phone.value.trim() ? 'Please enter a phone number so we can call you.' : phoneOk(f.phone.value) ? '' : 'That does not look like an Australian phone number. Try 0412 345 678 or ' + SITE.phone + '.'),
     suburb: () => (f.suburb.value.trim().length >= 3 ? '' : 'Please enter your suburb.'),
     service: () => (f.service.value ? '' : 'Please choose what the problem is.'),
   };
@@ -59,6 +63,7 @@ import { addHoneypot, tripped, guard, send, isLive, phoneFallback } from './form
 
   /* ---------- Submit ---------- */
   const serviceName = (id) => (SITE.services.find((s) => s.id === id) || {}).name || id;
+  const WHEN_DAYS = { today: 0, tomorrow: 1, week: 3 };
   function confirm(rec) {
     const first = rec.name.trim().split(/\s+/)[0];
     $('#done-title').textContent = rec.urgency === 'emergency' ? 'Please call us now' : 'Request received';
@@ -68,9 +73,11 @@ import { addHoneypot, tripped, guard, send, isLive, phoneFallback } from './form
     $('#done-sub').textContent = rec.urgency === 'emergency'
       ? 'Water off at the mains if you can, and keep clear of any gas smell.'
       : `${SITE.weekendLine} Outside those hours, the emergency line is open 24/7 on ${SITE.phone}.`;
+    const rl = $('#done-reminder'); const now = nowMel();
+    if (rl) { const line = rec.reminder !== 'none' && reminder ? reminder.confirmation(addDays(now.key, WHEN_DAYS[rec.when] || 0), now) : ''; rl.textContent = line; rl.hidden = !line; }
     form.hidden = true; done.hidden = false; done.focus();
   }
-  function reset() { form.reset(); clearPhoto(); $$('[aria-invalid]', form).forEach((e) => e.removeAttribute('aria-invalid')); $$('.field-error', form).forEach((e) => { e.hidden = true; }); done.hidden = true; form.hidden = false; }
+  function reset() { form.reset(); if (reminder) { reminder.reset(); syncReminder(); } clearPhoto(); $$('[aria-invalid]', form).forEach((e) => e.removeAttribute('aria-invalid')); $$('.field-error', form).forEach((e) => { e.hidden = true; }); done.hidden = true; form.hidden = false; }
   $('#quote-again').addEventListener('click', () => { reset(); f.name.focus(); });
 
   form.addEventListener('submit', async (e) => {
@@ -79,10 +86,13 @@ import { addHoneypot, tripped, guard, send, isLive, phoneFallback } from './form
     try {
       const results = Object.keys(rules).map(check);
       if (results.includes(false)) { f[Object.keys(rules)[results.indexOf(false)]].focus(); return; }
+      const rem = reminder && form.elements.urgency.value !== 'emergency' ? reminder.read() : { ok: true, mode: 'none' };
+      if (!rem.ok) { rem.input.focus(); return; }
       const file = f.photo.files && f.photo.files[0];
       const rec = {
         name: f.name.value.trim(), phone: normPhone(f.phone.value), suburb: f.suburb.value.trim(), service: f.service.value, serviceName: serviceName(f.service.value),
         urgency: form.elements.urgency.value, when: form.elements.when.value, message: f.msg.value.trim(), photoName: file ? file.name : '', savedAt: new Date().toISOString(),
+        reminder: rem.mode === 'none' ? 'none' : { mode: rem.mode, contact: rem.contact }, // sending is not connected: plug an email/SMS service in here (see js/reminder.js)
       };
       const err = $('#e-photo');
       if (!tripped(form)) { // a filled-in spam trap looks successful but sends nothing

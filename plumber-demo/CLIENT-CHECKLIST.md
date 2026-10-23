@@ -23,3 +23,9 @@
 - [ ] Point the client's domain at the site (GitHub Pages custom domain or other host, HTTPS on).
 - [ ] Run the tests (`ROOT=$PWD node tests/run.mjs`) and Lighthouse; check on a real iPhone and Android phone.
 - [ ] Submit `sitemap.xml` in Search Console and set up the Google Business Profile.
+
+## Growth features (reviews, QR, rating badge, social links, reminders, call-back)
+- [ ] `googleReviewUrl`: the real Google review link (then print the QR page for the counter).
+- [ ] `googleMapsUrl`, `instagramUrl`, `facebookUrl`: the real links (empty = hidden).
+- [ ] `googleRating` and `googleReviewCount`: the REAL numbers from Google. Never invent a rating. Remove the "Demo number" note in `tools/build.py` > `rating_badge()`.
+- [ ] Reminders and call-backs only work once an email or SMS service is connected (README section 12). Until then keep the demo wording, or set `remindersEnabled` / `waitlistEnabled` to `false` to hide them.

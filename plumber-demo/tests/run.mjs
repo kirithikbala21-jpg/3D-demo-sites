@@ -121,7 +121,7 @@ if (want('overflow')) {
     const p = await newPage({ viewport: { width: w, height: 844 }, hasTouch: true, isMobile: true });
     await open(p); await p.addStyleTag({ content: force }); await settle(p);
     const hs = await p.evaluate(() => [...document.querySelectorAll('main section')].map((s) => ({ id: s.id || s.className.split(' ')[0], h: Math.round(s.getBoundingClientRect().height), swipe: s.hasAttribute('data-swipe') })));
-    const bad = hs.filter((s) => s.h > 1300 && !s.swipe);
+    const bad = hs.filter((s) => s.h > (s.id === 'quote' ? 1500 : 1300) && !s.swipe); // the quote form is allowed 1,500px: it now also holds the optional "Remind me" choice
     ok(`section height rule @${w}px: all ${hs.length} sections <= 1,300px (tallest ${Math.max(...hs.map((s) => s.h))}px)`, !bad.length && hs.length >= 12, bad.map((s) => `${s.id} ${s.h}`).join(', '));
     await done(p);
   }
@@ -251,7 +251,7 @@ if (want('links')) {
       seen.add(h);
       if (h.startsWith('tel:')) { tels.add(h); continue; }
       if (h.startsWith('mailto:')) { if (!/^mailto:[^@]+@[^@]+\.[a-z]+$/.test(h)) bad.push(f + ' ' + h); continue; }
-      if (/^https?:/.test(h)) { if (!/google\.com\/maps/.test(h)) bad.push(f + ' external ' + h); continue; }
+      if (/^https?:/.test(h)) { if (!/google\.com\/maps|^https:\/\/g\.page\/|^https:\/\/www\.(instagram|facebook)\.com\//.test(h)) bad.push(f + ' external ' + h); continue; }
       const [file, hash] = h.split('#');
       const target = file || f;
       if (!fs.existsSync(path.join(SITE, target))) { bad.push(`${f}: missing file ${h}`); continue; }
@@ -496,7 +496,7 @@ if (want('func')) {
     const em = await p.evaluate(() => ({ text: document.querySelector('#done-text').textContent, title: document.querySelector('#done-title').textContent, n: JSON.parse(localStorage.getItem('wp-quotes')).length }));
     ok('emergency urgency: the confirmation tells them to call 03 5550 0142 now', em.text.includes('Thanks Priya') && em.text.includes('call ' + PHONE + ' now') && em.title === 'Please call us now' && em.n === 2, JSON.stringify(em));
     const labels = await p.evaluate(() => [...document.querySelectorAll('#quote-form input:not([type=radio]), #quote-form select, #quote-form textarea')].map((e) => [e.id, e.labels.length && e.labels[0].textContent.trim()]));
-    ok('every quote form field has a visible label; the urgency options are in a fieldset with a legend', labels.every(([, l]) => l) && (await p.locator('#quote-form fieldset legend').innerText()) === 'Preferred time' && (await p.locator('#q-urgency option').count()) === 4, JSON.stringify(labels));
+    ok('every quote form field has a visible label; the urgency options are in a fieldset with a legend', labels.every(([, l]) => l) && (await p.locator('#quote-form fieldset.urgency legend').innerText()) === 'Preferred time' && (await p.locator('#q-urgency option').count()) === 4, JSON.stringify(labels));
     ok('the form states it is a demo and nothing is sent', /Demo form/.test(await p.locator('#quote .demo-note').first().innerText()));
     await done(p);
   }
@@ -865,13 +865,13 @@ if (want('hardening')) {
     ok('failed send: two rapid submits make ONE request; phone fallback shown, details kept, no confirmation, form usable again', calls === 1 && /call us on/i.test(fb.t) && fb.tel === 'tel:' + PHONE_HREF && !fb.done && fb.name === 'Sam Lee' && !fb.btn, JSON.stringify([calls, fb]));
     mode = 'ok'; await p.click('#quote-form button[type=submit]'); await p.waitForFunction(() => !document.querySelector('#quote-done').hidden, null, { timeout: 5000 });
     ok('successful send shows the confirmation', calls === 2);
-    await p.click('#quote-again'); await fill(); await p.evaluate(() => { document.querySelector('input[name=website]').value = 'http://spam.example'; });
+    await p.click('#quote-again'); await fill(); await p.evaluate(() => { document.querySelector('#quote-form input[name=website]').value = 'http://spam.example'; });
     const before = calls; await p.click('#quote-form button[type=submit]'); await p.waitForFunction(() => !document.querySelector('#quote-done').hidden);
     ok('spam trap: a filled honeypot sends nothing', calls === before);
     await done(p);
     const d = await newPage(MOBILE); await open(d);
     const hp = await d.evaluate(() => [...document.querySelectorAll('input[name=website]')].map((i) => [i.tabIndex, i.closest('.hp').getAttribute('aria-hidden')]));
-    ok('quote form has a hidden honeypot out of the tab order', hp.length === 1 && hp[0][0] === -1 && hp[0][1] === 'true');
+    ok('the quote form and the call-back form each have a hidden honeypot out of the tab order', hp.length === 2 && hp.every((h) => h[0] === -1 && h[1] === 'true'));
     await done(d);
   }
   // 6. Bad phone numbers are refused
@@ -919,6 +919,190 @@ if (want('hardening')) {
   }
   servers.forEach((x) => x.close());
   try { fs.rmSync(TMP, { recursive: true, force: true }); } catch (e) { /* ignore */ }
+}
+
+/* ---------------------------------------------------------------- growth: Google review + QR, reminders, social links, rating badge, call me back, open banner */
+if (want('growth')) {
+  const TMP = fs.mkdtempSync(path.join(os.tmpdir(), 'wp-g-'));
+  const servers = [];
+  const configured = async (mutate, name) => {
+    const dir = path.join(TMP, name);
+    fs.cpSync(SITE, dir, { recursive: true, filter: (src) => !/[\\/](tests|node_modules|\.git)([\\/]|$)/.test(src.slice(SITE.length)) });
+    const c = JSON.parse(fs.readFileSync(path.join(dir, 'site.config.json'), 'utf8')); mutate(c); fs.writeFileSync(path.join(dir, 'site.config.json'), JSON.stringify(c));
+    execFileSync('python3', [path.join(dir, 'tools/build.py')], { env: { ...process.env, SITE_ROOT: dir }, stdio: 'pipe' });
+    const sv = await serve(dir); servers.push(sv); return { url: `http://localhost:${sv.address().port}/`, dir };
+  };
+  const at = async (iso, { host = base, opts = MOBILE, tz = 'Australia/Melbourne', file = 'index.html' } = {}) => { const p = await newPage({ ...opts, timezoneId: tz }, { host }); await p.clock.setFixedTime(new Date(iso)); await open(p, file); await p.addStyleTag({ content: force }); return p; };
+  const TUE_NOON = '2026-10-20T01:00:00Z'; // Tuesday 20 October 2026, 12:00 in Melbourne (AEDT)
+
+  // 1. Google review button, "Loved your visit?" section, reviews page with a real QR code
+  {
+    const p = await at(TUE_NOON);
+    const h = await p.evaluate(() => ({ foot: [...document.querySelectorAll('footer a')].filter((a) => /Google review/.test(a.textContent)).map((a) => [a.href, a.target, a.rel]), loved: !!document.querySelector('#loved'), lovedBtn: document.querySelector('#loved a.btn-navy')?.href, lovedQr: document.querySelector('#loved a[href="reviews.html"]')?.textContent.trim() }));
+    ok('Google review: footer button and the "Loved your visit? Tell us" section open the review link in a new tab (noopener); a link to the QR page', h.foot.length === 1 && h.foot[0][0] === cfg.googleReviewUrl && h.foot[0][1] === '_blank' && /noopener/.test(h.foot[0][2]) && h.loved && h.lovedBtn === cfg.googleReviewUrl && /QR/.test(h.lovedQr), JSON.stringify(h));
+    await done(p);
+    const q = await at(TUE_NOON, { file: 'reviews.html' });
+    await q.waitForSelector('#qr svg');
+    const r = await q.evaluate(() => ({ h1: document.querySelector('h1').textContent, scan: document.querySelector('.qr-card .lead').textContent, label: document.querySelector('#qr svg').getAttribute('aria-label'), w: Math.round(document.querySelector('#qr svg').getBoundingClientRect().width), btn: !document.querySelector('#qr-print-btn').hidden }));
+    ok('reviews page: heading, "Scan to leave a review", a large QR code (>= 240px wide on a phone, with a text label) and a Print button', /Loved your visit/.test(r.h1) && r.scan === 'Scan to leave a review' && /QR code/.test(r.label) && r.w >= 240 && r.btn, JSON.stringify(r));
+    // the QR really decodes to the review URL (OpenCV)
+    const png = path.join(TMP, 'qr.png'); await q.locator('#qr svg').screenshot({ path: png });
+    let dec = ''; try { dec = execFileSync('python3', ['-c', 'import cv2,sys;im=cv2.imread(sys.argv[1]);im=cv2.resize(im,None,fx=2,fy=2,interpolation=cv2.INTER_NEAREST);print(cv2.QRCodeDetector().detectAndDecode(im)[0])', png]).toString().trim(); } catch (e) { dec = 'ERR ' + String(e.message).slice(0, 80); }
+    ok('the QR code on the page decodes to googleReviewUrl (decoded with OpenCV)', dec === cfg.googleReviewUrl, dec);
+    // print view: only the heading and the QR code
+    await q.emulateMedia({ media: 'print' });
+    const pr = await q.evaluate(() => {
+      const vis = (e) => { const c = getComputedStyle(e), r = e.getBoundingClientRect(); return c.display !== 'none' && c.visibility !== 'hidden' && r.width > 0 && r.height > 0; };
+      const sel = ['.site-header', '.site-footer', '.sticky-bar', '.cookie', '.announce', '.open-banner', '.notice-bar', '.oncall', '.no-print', '.crumbs', '.menu', '.nojs-banner'];
+      const shown = sel.filter((s) => [...document.querySelectorAll(s)].some(vis));
+      const texts = [...document.querySelectorAll('main p, main a, main button, main h2, main h3, main li')].filter((e) => vis(e) && !e.closest('#qr')).map((e) => e.className + ':' + e.textContent.trim().slice(0, 20));
+      return { shown, texts, h1: vis(document.querySelector('h1')), qr: vis(document.querySelector('#qr svg')), qrw: Math.round(document.querySelector('#qr svg').getBoundingClientRect().width) };
+    });
+    ok('print stylesheet: only the heading, "Scan to leave a review" and the QR code are printed (no header, footer, buttons, notes or bars)', pr.h1 && pr.qr && !pr.shown.length && pr.texts.every((t) => /^lead:|^qr-url:|^eyebrow/.test(t)), JSON.stringify(pr));
+    await q.emulateMedia({ media: 'screen' });
+    await q.evaluate(() => { window.__printed = 0; window.print = () => { window.__printed++; }; });
+    await q.click('#qr-print-btn');
+    ok('"Print this" button calls the browser print dialog', (await q.evaluate(() => window.__printed)) === 1);
+    await done(q);
+  }
+  // 2. Everything hides completely when its config value is empty or the feature is off
+  {
+    const off = await configured((c) => { c.googleReviewUrl = ''; c.instagramUrl = ''; c.facebookUrl = ''; c.googleRating = null; c.googleReviewCount = null; c.remindersEnabled = false; c.waitlistEnabled = false; c.openBannerEnabled = false; }, 'off');
+    const p = await at(TUE_NOON, { host: off.url }); await p.waitForTimeout(300);
+    const h = await p.evaluate(() => ({ review: !!document.querySelector('a[href*="g.page"], #loved, .foot-review'), badge: !!document.querySelector('.g-rating'), insta: !!document.querySelector('a[href*="instagram"]'), fb: !!document.querySelector('a[href*="facebook"]'), rm: !!document.querySelector('.rm-field'), cb: !!document.querySelector('#callback, .oncall-link'), banner: !!document.querySelector('#open-banner'), reviewsLink: !!document.querySelector('a[href="reviews.html"]'), emptyBoxes: document.querySelectorAll('.soc:empty, .soc-btns:empty, .g-rating-wrap:empty').length, maps: !!document.querySelector('a.soc-link[href*="google.com/maps"]') }));
+    ok('features switched off in config disappear completely: review button and section, rating badge, Instagram/Facebook, reminders, call me back, open banner, reviews link (no empty boxes)', !h.review && !h.badge && !h.insta && !h.fb && !h.rm && !h.cb && !h.banner && !h.reviewsLink && !h.emptyBoxes && h.maps, JSON.stringify(h));
+    ok('with no review link there is no reviews.html and the sitemap leaves it out', !fs.existsSync(path.join(off.dir, 'reviews.html')) && !/reviews\.html/.test(fs.readFileSync(path.join(off.dir, 'sitemap.xml'), 'utf8')));
+    await done(p);
+    let msg = ''; try { await configured((c) => { c.googleRating = 7; c.googleReviewUrl = 'http://nope'; }, 'bad'); } catch (e) { msg = String(e.stderr || e.message); }
+    ok('bad review settings stop the build with a plain-English message (rating above 5, URL without https)', /googleRating/.test(msg) && /googleReviewUrl/.test(msg), msg.slice(0, 160));
+  }
+  // 3. Social links: footer icons, contact buttons
+  {
+    const p = await at(TUE_NOON);
+    const s = await p.evaluate(() => { const lk = (root) => [...document.querySelectorAll(root + ' a')].map((a) => ({ t: a.getAttribute('aria-label') || a.textContent.trim(), href: a.href, target: a.target, rel: a.rel, w: Math.round(a.getBoundingClientRect().width), h: Math.round(a.getBoundingClientRect().height) })); return { foot: lk('footer .soc'), contactIcons: lk('.contact-info .soc'), btns: lk('.soc-btns') }; });
+    const names = (a) => a.map((x) => x.t.replace(/\s+/g, ' ').replace(' (opens in a new tab)', ''));
+    ok('social: footer and contact icon links (Google Maps, Instagram; Facebook is empty so hidden) have labels, open in a new tab with rel=noopener, and are 44px+', JSON.stringify(names(s.foot)) === JSON.stringify(['Find us on Google Maps', 'Follow us on Instagram']) && s.foot.length === s.contactIcons.length && [...s.foot, ...s.contactIcons].every((x) => x.target === '_blank' && /noopener/.test(x.rel) && x.w >= 44 && x.h >= 44), JSON.stringify(s));
+    ok('social: contact section buttons "Find us on Google Maps" and "Follow us on Instagram" point at the configured URLs', JSON.stringify(names(s.btns)) === JSON.stringify(['Find us on Google Maps', 'Follow us on Instagram']) && s.btns[0].href === cfg.googleMapsUrl && s.btns[1].href === cfg.instagramUrl && s.btns.every((b) => b.h >= 44 && b.target === '_blank'), JSON.stringify(s.btns));
+    await done(p);
+  }
+  // 4. Google rating badge
+  {
+    const p = await at(TUE_NOON);
+    const b = await p.evaluate(() => [...document.querySelectorAll('.g-rating')].map((a) => ({ where: a.closest('.hero-rating') ? 'hero' : a.closest('footer') ? 'footer' : '?', text: a.textContent.replace(/\s+/g, ' ').trim(), href: a.href, target: a.target, clip: a.querySelector('clipPath rect')?.getAttribute('width'), id: a.querySelector('clipPath')?.id })));
+    ok('rating badge: "Rated 4.9 on Google · 212 reviews" with SVG stars filled to 98% (4.9 of 5), a "Demo number" note, linking to Google Maps in a new tab, in the hero and the footer', b.length === 2 && b.map((x) => x.where).sort().join() === 'footer,hero' && b.every((x) => /Rated 4\.9 on Google · 212 reviews Demo number/.test(x.text) && Number(x.clip) === 98 && x.href === cfg.googleMapsUrl && x.target === '_blank') && b[0].id !== b[1].id, JSON.stringify(b));
+    await done(p);
+  }
+  // 5. Open-hours banner (Melbourne time, whatever the visitor's clock says)
+  {
+    const cases = [
+      ['Tuesday 12:00', '2026-10-20T01:00:00Z', 'America/Los_Angeles', /^Office open now · closes at 8pm/, 'open'],
+      ['Tuesday 21:00', '2026-10-20T10:00:00Z', 'Australia/Melbourne', /^Office closed now · opens tomorrow at 7am/, 'closed'],
+      ['Sunday 06:00', '2026-10-24T19:00:00Z', 'Europe/London', /^Office opens today at 8am/, 'closed'],
+      ['Sunday 18:00', '2026-10-25T07:00:00Z', 'Australia/Melbourne', /^Office closed now · opens tomorrow at 7am/, 'closed'],
+    ];
+    const bad = [];
+    for (const [label, iso, tz, re, state] of cases) {
+      const p = await at(iso, { tz, opts: DESKTOP }); const t = await p.evaluate(() => { const b = document.querySelector('#open-banner'); return { hidden: b.hidden, state: b.dataset.state, text: b.innerText.replace(/\s+/g, ' '), below: b.getBoundingClientRect().top >= document.querySelector('.site-header').getBoundingClientRect().bottom - 1, link: b.querySelector('a')?.getAttribute('href') }; });
+      if (t.hidden || !re.test(t.text) || t.state !== state || !/Emergency line open 24\/7/.test(t.text) || t.link !== 'tel:' + PHONE_HREF || !t.below) bad.push(`${label}: ${JSON.stringify(t)}`);
+      await done(p);
+    }
+    ok('open banner (desktop; on a phone it is one short line, the 24/7 line is in the announcement bar and the Call buttons): "Office open now · closes at 8pm" / "closed now · opens tomorrow at 7am" from config hours in Melbourne time (visitors in LA and London too), always with the 24/7 emergency line and a tel: link, below the header', !bad.length, bad.join(' | '));
+    const p = await at('2026-04-02T23:00:00Z'); // Good Friday 3 April 2026, 10:00 Melbourne
+    const t = await p.evaluate(() => document.querySelector('#open-banner').innerText.replace(/\s+/g, ' '));
+    ok('open banner on a public holiday (Good Friday): "Office open now" follows the holiday setting in config (office open as the emergency business runs, mode normal)', /^Office open now/.test(t) || /closed today for Good Friday/.test(t), t);
+    await done(p);
+  }
+  // 6. Reminders on the quote form
+  {
+    const p = await at(TUE_NOON); // Tue 20 Oct 2026, 12:00 Melbourne
+    const net = []; p.on('request', (r) => { if (!r.url().startsWith(base) && !/maps\.google\.com/.test(r.url())) net.push(r.url()); }); // the lazy Google map embed is the one existing third-party request
+    const fill = async () => { await p.fill('#q-name', 'Sam Lee'); await p.fill('#q-phone', '0412 345 678'); await p.fill('#q-suburb', 'Mount Waverley'); await p.selectOption('#q-service', { index: 1 }); await p.selectOption('#q-urgency', 'week'); await p.check('input[name=when][value=week]', { force: true }); };
+    await p.locator('#quote-form').scrollIntoViewIfNeeded();
+    const rm = await p.evaluate(() => { const f = document.querySelector('.rm-field'); return { legend: f.querySelector('legend').textContent.replace(/\s+/g, ' '), opts: [...f.querySelectorAll('input[type=radio]')].map((i) => i.value + (i.checked ? '*' : '')), contactHidden: f.querySelector('.rm-contact').hidden, consent: f.querySelector('.rm-consent').textContent, tap: [...f.querySelectorAll('.opt')].map((o) => Math.round(o.getBoundingClientRect().height)), before: f.nextElementSibling.matches('button[type=submit]') }; });
+    ok('reminders: "Remind me (optional)" None/Email/Text, None by default, no contact field until Email or Text is picked, consent line, 44px+ options, sits just above the submit button', /Remind me \(optional\)/.test(rm.legend) && rm.opts.join() === 'none*,email,text' && rm.contactHidden && rm.consent === 'We will only use this to send your reminder.' && rm.tap.every((h) => h >= 44) && rm.before, JSON.stringify(rm));
+    await fill();
+    await p.check('input[name=rm-mode][value=email]', { force: true });
+    ok('reminders: picking Email shows an email field (type=email, labelled)', await p.evaluate(() => { const i = document.querySelector('#rm-contact'); return !document.querySelector('.rm-contact').hidden && i.type === 'email' && /Email/.test(document.querySelector('label[for=rm-contact]').textContent); }));
+    await p.click('#quote-form button[type=submit]');
+    const e1 = await p.evaluate(() => ({ err: document.querySelector('#rm-err').textContent, hidden: document.querySelector('#rm-err').hidden, inv: document.querySelector('#rm-contact').getAttribute('aria-invalid'), focus: document.activeElement.id, done: !document.querySelector('#quote-done').hidden }));
+    ok('reminders: Email chosen but empty -> friendly error, field marked invalid and focused, nothing submitted', !e1.hidden && /valid email/.test(e1.err) && e1.inv === 'true' && e1.focus === 'rm-contact' && !e1.done, JSON.stringify(e1));
+    await p.fill('#rm-contact', 'not-an-email'); await p.click('#quote-form button[type=submit]');
+    const e2 = await p.evaluate(() => ({ hid: document.querySelector('#rm-err').hidden, txt: document.querySelector('#rm-err').textContent, done: document.querySelector('#quote-done').hidden, errs: [...document.querySelectorAll('.field-error')].filter((x) => !x.hidden).map((x) => x.id), logs: 0 }));
+    ok('reminders: invalid email rejected', !e2.hid && e2.done, JSON.stringify(e2) + p.logs.join());
+    await p.check('input[name=rm-mode][value=text]', { force: true });
+    ok('reminders: switching to Text clears the error and asks for a mobile (type=tel)', await p.evaluate(() => document.querySelector('#rm-err').hidden && document.querySelector('#rm-contact').type === 'tel'));
+    await p.fill('#rm-contact', '03 5550 0142'); await p.click('#quote-form button[type=submit]');
+    ok('reminders: a landline is rejected for texts (Australian mobile needed)', await p.evaluate(() => /mobile/.test(document.querySelector('#rm-err').textContent) && document.querySelector('#quote-done').hidden));
+    await p.fill('#rm-contact', '0412 345 678'); await p.click('#quote-form button[type=submit]');
+    await p.waitForSelector('#quote-done:not([hidden])');
+    const ok1 = await p.evaluate(() => ({ line: document.querySelector('#done-reminder').textContent, vis: !document.querySelector('#done-reminder').hidden, saved: JSON.parse(localStorage.getItem('wp-quotes') || '[]').pop() }));
+    ok('reminders: valid mobile -> confirmation says "Reminder set for Thursday 22 October, 9am (by text)." (the day before a job planned for Friday 23 October, 9am); stored in this browser only', ok1.vis && ok1.line === 'Reminder set for Thursday 22 October, 9am (by text).' && ok1.saved.reminder.mode === 'text' && ok1.saved.reminder.contact === '0412345678', JSON.stringify(ok1));
+    ok('reminders: nothing was sent anywhere (no request left the page) and the demo note says so', net.length === 0 && /Nothing was sent/.test(await p.textContent('#quote-done')), net.join());
+    await p.click('#quote-again');
+    await fill(); await p.click('#quote-form button[type=submit]'); await p.waitForSelector('#quote-done:not([hidden])');
+    ok('reminders: None chosen -> no reminder line in the confirmation', await p.evaluate(() => document.querySelector('#done-reminder').hidden));
+    await p.click('#quote-again'); await p.selectOption('#q-urgency', 'emergency');
+    ok('reminders: not offered for an emergency (those get "call us now")', await p.evaluate(() => document.querySelector('.rm-field').hidden));
+    await done(p);
+    // with a real endpoint the reminder choice travels with the request
+    const live = await configured((c) => { c.form.endpoint = 'https://forms.example.test/f/abc'; }, 'live');
+    const q = await at(TUE_NOON, { host: live.url }); let body = '';
+    await q.route('https://forms.example.test/**', (r) => { body = r.request().postData() || ''; r.fulfill({ status: 200, contentType: 'application/json', body: '{"ok":true}', headers: { 'access-control-allow-origin': '*' } }); });
+    await q.fill('#q-name', 'Sam Lee'); await q.fill('#q-phone', '0412 345 678'); await q.fill('#q-suburb', 'Mount Waverley'); await q.selectOption('#q-service', { index: 1 });
+    await q.check('input[name=rm-mode][value=email]', { force: true }); await q.fill('#rm-contact', 'sam@example.com'); await q.click('#quote-form button[type=submit]'); await q.waitForSelector('#quote-done:not([hidden])');
+    ok('reminders: with a form endpoint set, the request carries the reminder choice for the owner\'s service to act on', /"reminder":\{"mode":"email","contact":"sam@example.com"\}/.test(body), body.slice(0, 200));
+    await done(q);
+  }
+  // 7. Call me back (the plumber's "waitlist"), also from the after-hours bar
+  {
+    const p = await at('2026-10-20T11:00:00Z'); // 22:00 Melbourne: after hours
+    const net = []; p.on('request', (r) => { if (!r.url().startsWith(base) && !/maps\.google\.com/.test(r.url())) net.push(r.url()); }); // the lazy Google map embed is the one existing third-party request
+    const bar = await p.evaluate(() => ({ shown: !document.querySelector('#oncall').hidden, link: document.querySelector('.oncall-link')?.textContent, h: Math.round(document.querySelector('.oncall-link').getBoundingClientRect().height) }));
+    ok('after hours (22:00 Melbourne) the on-call bar offers "Or ask for a call back" (44px+) next to the Call button', bar.shown && /call back/.test(bar.link) && bar.h >= 44, JSON.stringify(bar));
+    await p.click('.oncall-link'); await p.waitForTimeout(600);
+    const o = await p.evaluate(() => ({ open: !document.querySelector('#callback-panel').hidden, focus: document.activeElement.id, expanded: document.querySelector('#callback-toggle').getAttribute('aria-expanded') }));
+    ok('the on-call bar link opens the call-back form next to the quote form and focuses the name field', o.open && o.focus === 'cb-name' && o.expanded === 'true', JSON.stringify(o));
+    await p.click('#callback-panel button[type=submit]');
+    const e = await p.evaluate(() => ({ n: document.querySelector('#cb-e-name').textContent, c: document.querySelector('#cb-e-contact').textContent, focus: document.activeElement.id, done: !document.querySelector('.cb-done').hidden }));
+    ok('call me back: empty name and contact -> friendly errors, focus on the first, nothing sent', /your name/.test(e.n) && /phone number or an email/.test(e.c) && e.focus === 'cb-name' && !e.done, JSON.stringify(e));
+    await p.fill('#cb-name', 'Sam Lee'); await p.fill('#cb-contact', '12345'); await p.click('#callback-panel button[type=submit]');
+    ok('call me back: an invalid contact is rejected', await p.evaluate(() => /Australian phone number or an email/.test(document.querySelector('#cb-e-contact').textContent) && document.querySelector('.cb-done').hidden));
+    await p.fill('#cb-contact', 'sam@example.com'); await p.selectOption('#cb-when', 'morning');
+    await p.evaluate(() => { const f = document.querySelector('.cb-form'); f.requestSubmit(); f.requestSubmit(); });
+    await p.waitForSelector('.cb-done:not([hidden])');
+    const d = await p.evaluate(() => ({ text: document.querySelector('.cb-done').innerText.replace(/\s+/g, ' '), saved: JSON.parse(localStorage.getItem('wp-callbacks') || '[]') }));
+    ok('call me back: valid request -> "Call-back requested ... tomorrow morning", states it is a demo with the emergency number, saved once in this browser (double submit guarded), nothing sent', /call-back requested/i.test(d.text) && /tomorrow morning/.test(d.text) && /demo/.test(d.text) && d.saved.length === 1 && d.saved[0].contact === 'sam@example.com' && net.length === 0, JSON.stringify(d).slice(0, 220));
+    await p.click('#cb-again');
+    await p.evaluate(() => { document.querySelector('.cb-form input[name=website]').value = 'spam'; });
+    await p.fill('#cb-name', 'Bot'); await p.fill('#cb-contact', '0412 345 678'); await p.click('#callback-panel button[type=submit]');
+    ok('call me back: a filled spam trap looks successful but stores and sends nothing', await p.evaluate(() => !document.querySelector('.cb-done').hidden && JSON.parse(localStorage.getItem('wp-callbacks') || '[]').length === 1));
+    await done(p);
+    // daytime: the call-me-back block is still next to the quote form, the bar link is not shown
+    const q = await at(TUE_NOON, { opts: DESKTOP });
+    ok('daytime: the call-back option is still offered next to the quote form; the after-hours bar is hidden', await q.evaluate(() => !document.querySelector('#callback').hidden && document.querySelector('#oncall').hidden));
+    await q.click('#callback-toggle'); const ax = fs.readFileSync(require.resolve('axe-core/axe.min.js'), 'utf8'); await q.evaluate(ax);
+    const v = await q.evaluate(async () => (await window.axe.run(document.querySelector('#quote'), { runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa', 'wcag22aa', 'best-practice'] } })).violations.map((x) => x.id + ':' + x.nodes[0].target.join(' ')));
+    ok('axe: the quote section with the reminder control and the open call-back form has no violations', !v.length, v.join(' | '));
+    await done(q);
+    // failure: endpoint fails -> phone fallback and the details are kept
+    const live = await configured((c) => { c.form.endpoint = 'https://forms.example.test/f/abc'; }, 'live2');
+    const r = await at(TUE_NOON, { host: live.url }); await r.route('https://forms.example.test/**', (x) => x.fulfill({ status: 500, body: 'no', headers: { 'access-control-allow-origin': '*' } }));
+    await r.click('#callback-toggle'); await r.fill('#cb-name', 'Sam Lee'); await r.fill('#cb-contact', '0412 345 678'); await r.click('#callback-panel button[type=submit]'); await r.waitForSelector('.cb-fail .form-fail');
+    ok('call me back: if sending fails the visitor keeps their details and sees the "call us" fallback with the phone number', await r.evaluate((ph) => document.querySelector('#cb-name').value === 'Sam Lee' && document.querySelector('.cb-fail a').getAttribute('href') === 'tel:' + ph && !document.querySelector('.cb-form').hidden, PHONE_HREF));
+    await done(r);
+  }
+  // 8. Phones and desktop: no sideways scroll, no console errors, tap targets on the new pages and states
+  {
+    const bad = [];
+    for (const [w, opts] of [[390, MOBILE], [1440, { viewport: { width: 1440, height: 900 } }]]) for (const f of ['index.html', 'reviews.html']) {
+      const p = await at(TUE_NOON, { opts, file: f }); await p.waitForTimeout(300);
+      const m = await p.evaluate(() => ({ sw: document.documentElement.scrollWidth, cw: document.documentElement.clientWidth, imgs: [...document.querySelectorAll('img')].filter((i) => i.offsetParent && i.complete && !i.naturalWidth).length, small: [...document.querySelectorAll('.g-rating, .soc-link, .soc-btn, .oncall-link, #callback-toggle, .opt, .loved a, .foot-review a, #qr-print-btn, .qr-actions a')].filter((e) => e.offsetParent && (e.getBoundingClientRect().height < 43.5 || e.getBoundingClientRect().width < 43.5)).map((e) => e.className) }));
+      if (m.sw > m.cw || m.imgs || m.small.length || p.logs.length) bad.push(`${f}@${w}: ${JSON.stringify(m)} ${p.logs.slice(0, 2)}`);
+      await done(p);
+    }
+    ok('new features at 390px and 1440px: no sideways scroll, no broken images, no tap target under 44px, no console errors (home + reviews page)', !bad.length, bad.join(' | '));
+  }
+  servers.forEach((sv) => sv.close()); try { fs.rmSync(TMP, { recursive: true, force: true }); } catch (e) { /* ignore */ }
 }
 
 await browser.close(); server.close();

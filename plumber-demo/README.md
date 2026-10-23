@@ -19,6 +19,7 @@ All "site.config.json" items are in the **one file** described in section 1.
 - [ ] **Reviews**: `data/reviews.json` are invented and labelled "Sample reviews. Fictional." Replace with real reviews you have permission to use, remove that label in `tools/templates/sections/reviews.html`, and replace `reviewsSummary` (rating and count) with real figures. Never show a rating you cannot back up.
 - [ ] **FAQ**: `data/faq.json` (prices, hours and the phone number in the answers fill in automatically from the config).
 - [ ] **Photos**: replace the stock photos with your own (section 9).
+- [ ] **Google review link, Maps link, Instagram, Facebook, rating**: `googleReviewUrl`, `googleMapsUrl`, `instagramUrl`, `facebookUrl`, `googleRating`, `googleReviewCount` (section 12). The values in the demo are placeholders: replace every one with the business's REAL link and numbers.
 - [ ] **Quote form**: paste a form address into `form` > `endpoint` (section 8). Until then it is a labelled demo that sends nothing.
 - [ ] **Remove the "concept demo" wording**: `brand` > `demoNotice` and `demoFooter`, the "Demo form" notes, the "(concept demo)" part of page titles (`tools/build.py` > `fullTitle`).
 - [ ] **Let Google find the site**: `site` > `noindex` to `false`, and `site` > `baseUrl` to your real address (ending in `/`).
@@ -186,6 +187,26 @@ This resizes, converts to WebP, writes the alt text and credit and rebuilds. Com
 - The footer credits the photographers while stock photos are used (`CREDITS-TODO.md` lists names still to record). "Concept demo" wording is deliberate until the real owner's details are in (checklist, section 0).
 
 ---
+## 12. Google reviews, QR code, rating badge, social links, reminders and call-back
+
+All of this is controlled from `site.config.json`. **If a value is empty, or a feature is switched off, it disappears completely** (no empty box, no dead link).
+
+| Key | What it does |
+| --- | --- |
+| `googleReviewUrl` | The business's Google review link (looks like `https://g.page/r/XXXX/review`). Gives the "Leave us a Google review" button in the footer, the "Loved your visit? Tell us" section on the home page and the `reviews.html` page with a large **QR code** ("Scan to leave a review") and a **Print this** button that prints only the heading and the QR code. Empty = all of that, and the reviews page itself, is removed. The QR code is drawn in the visitor's browser from this link, so it always matches. |
+| `googleMapsUrl` | The business's Google Maps link. Used by the rating badge, the "Find us on Google Maps" icon and button. |
+| `instagramUrl`, `facebookUrl` | Icon links in the footer and the contact section, plus a "Follow us on Instagram" button. Leave `facebookUrl` empty to hide Facebook. They open in a new tab. |
+| `googleRating`, `googleReviewCount` | The badge "Rated 4.9 on Google · 212 reviews" with five star shapes filled to the rating, in the top of the home page and the footer, linking to Google Maps. **Use the business's REAL rating and review count. Never invent one.** (JSON files cannot hold comments, so this warning lives here.) The demo badge shows a "Demo number" note: delete `<span class="g-rating-demo">` text in `tools/build.py` > `rating_badge()` when real numbers go in. Empty rating, count or Maps link = no badge. |
+| `remindersEnabled`, `reminderLeadHours` | "Remind me: None / Email / Text" on the quote form (not shown for emergencies). The confirmation says "Reminder set for <the day before, 9am>". `reminderLeadHours` 24 = the day before, 48 = two days before. |
+| `waitlistEnabled` | For the plumber this is the **"Call me back"** form beside the quote form, and an "Or ask for a call back" link in the after-hours (on call) bar. |
+| `openBannerEnabled` | The "Office open now · closes at 8pm" / "Office closed now · opens tomorrow at 7am" banner under the header, worked out from `hours` in Melbourne time, always with the 24/7 emergency number. |
+
+**Reminders and call-backs are front end only. Sending is not connected.** Nothing emails or texts anyone, and the confirmation never claims a message was sent. To make it real, send the reminder choice (the quote request already carries `reminder: {mode, contact}`; the code is in `js/reminder.js`, with a comment saying where) to an email or SMS service per customer. With a form endpoint set (section 8) the choice reaches the owner with each request. Call-back requests (`js/callback.js`) are kept in this browser (`wp-callbacks`) and sent to the same endpoint when one is set, so they arrive as their own "Call me back" emails. Tell the customer what happens with their contact details (the privacy page has a paragraph to edit).
+
+**Printing the QR code:** open `reviews.html` and press **Print this** (or Ctrl/Cmd+P). Only the heading and the QR code print. Put the page on the counter, receipts or a van sticker.
+
+---
+
 ---
 
 # Notes for developers
@@ -196,6 +217,8 @@ This resizes, converts to WebP, writes the alt text and credit and rebuilds. Com
 | `data/*.json` | `reviews`, `faq` (supports `{phone}`, `{callout}`, `{gasFrom}`, `{weekendHours}`, `{arrive}`), `jobs`, `steps`, `badges`, `happening`, `photos` |
 | `tools/build.py` | Stdlib generator: pages, `sitemap.xml`, `robots.txt`, `site.webmanifest`, JSON-LD (Plumber + FAQ, special hours from `closures`), `?v=hash` cache busting and an import map, inlined Lenis CSS |
 | `js/clock.js` | Pure Melbourne-time logic (DST-safe, Easter, Victorian holidays, opening status, banners). Unit-tested in Node (`node tests/unit.mjs`). |
+| `js/reviews.js`, `qr.js` | Reviews page: self-contained QR generator (byte mode, level M, versions 1 to 40; no libraries, no network; checked by decoding it with OpenCV in the tests) and the Print button |
+| `js/reminder.js`, `phone.js`, `callback.js`, `dates.js` | "Remind me" control (+ `reminderDay`, the day-before-at-9am rule), Australian phone and email checks, the "Call me back" form, small date helpers |
 | `js/status.js`, `notice.js`, `happening.js`, `quote.js`, `forms.js` | Open-now lines and year, notice bar, picker and after-hours bar (Melbourne 7am to 6pm), quote form, shared form helpers (honeypot, double-submit guard, endpoint, phone fallback) |
 | `.github/workflows/plumber-demo-checks.yml` | On a push to `main`: rebuilds pages from the config and commits them (the owner's edit goes live), then runs tests. Pull requests fail if the generated pages are stale. Also runs on 1 January. |
 
@@ -206,9 +229,9 @@ Job tabs ("See the difference"): photos inside the tabs are rendered `loading="e
 cd plumber-demo
 node tests/unit.mjs
 export CHROME_PATH=/path/to/chromium
-ROOT=$PWD node tests/run.mjs [--suite=overflow,axe,links,func,fallback,perf,hardening]
+ROOT=$PWD node tests/run.mjs [--suite=overflow,axe,links,func,fallback,perf,hardening,growth]
 ```
-`tests/node_modules` must exist (playwright-core + axe-core; a symlink to another demo's works). The `hardening` suite covers Melbourne time for overseas visitors, daylight saving, the on-call bar, year, closures, holidays, notices, config errors, the form (endpoint, failure fallback, double submit, honeypot, Australian phone check), cache busting, the no-JavaScript banner, landscape phones and the job tabs.
+`tests/node_modules` must exist (playwright-core + axe-core; a symlink to another demo's works). The `growth` suite covers the review button and section, the QR page (QR decoded with OpenCV, print view, Print button), features switching off completely from config, social links, the rating badge, the open banner in Melbourne time, reminders (validation, confirmation text, nothing sent, endpoint payload, hidden for emergencies), the call-back form (after-hours link, validation, double submit, spam trap, failure fallback) and phone/desktop layout. The `hardening` suite covers Melbourne time for overseas visitors, daylight saving, the on-call bar, year, closures, holidays, notices, config errors, the form (endpoint, failure fallback, double submit, honeypot, Australian phone check), cache busting, the no-JavaScript banner, landscape phones and the job tabs.
 
 ## No JavaScript
 Headline, hours, services, areas list, pricing, jobs (every job shown stacked), reviews, FAQ, contact details and a banner with the phone number, address and hours all show. The suburb checker, quote form, live status and animations need JavaScript.

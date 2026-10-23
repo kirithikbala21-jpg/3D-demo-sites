@@ -50,4 +50,24 @@ eq('no banner for a holiday on a day already closed (Monday)', C.upcomingChanges
 eq('banner for a weekday holiday', C.upcomingChanges({ key: '2026-04-01', mins: 600 }, { ...cfg, closures: [] }, 7).map(C.changeText), ['Closed Friday for Good Friday.', 'Closed Saturday for Easter Saturday.', 'Closed Sunday for Easter Sunday.']);
 eq('notices expire', [C.liveNotices([{ text: 'x', start: '2026-10-01', end: '2026-10-31' }], '2026-10-31').length, C.liveNotices([{ text: 'x', start: '2026-10-01', end: '2026-10-31' }], '2026-11-01').length, C.liveNotices([{ text: 'x' }], '2026-10-01').length], [1, 0, 0]);
 eq('clock format', [C.fmtClock(540), C.fmtClock(570), C.fmtClock(1140), C.fmtClock(1560), C.fmtClock(1440), C.fmtClock(720), C.fmtClock(0)], ['9am', '9:30am', '7pm', '2am', 'midnight', '12pm', '12am']);
+// ---- reminders (js/reminder.js, js/phone.js): the day before at 9am, never in the past, never after the day itself
+import { reminderDay } from '../js/reminder.js';
+import { auMobile, phoneOk, emailOk } from '../js/phone.js';
+import { qrMatrix } from '../js/qr.js';
+const R = (target, lead, key, mins) => reminderDay(target, lead, { key, mins }).label;
+eq('reminder: day before at 9am', R('2026-10-23', 24, '2026-10-20', 600), 'Thursday 22 October, 9am');
+eq('reminder: lead 48 hours = two days before', R('2026-10-23', 48, '2026-10-20', 600), 'Wednesday 21 October, 9am');
+eq('reminder: tomorrow job, already past 9am today -> tomorrow 9am (the day itself)', R('2026-10-21', 24, '2026-10-20', 600), 'Wednesday 21 October, 9am');
+eq('reminder: same-day job before 9am -> today 9am', R('2026-10-20', 24, '2026-10-20', 480), 'Tuesday 20 October, 9am');
+eq('reminder: same-day job after 9am -> never later than the day itself', R('2026-10-20', 24, '2026-10-20', 600), 'Tuesday 20 October, 9am');
+eq('reminder: across a month end', R('2026-11-01', 24, '2026-10-20', 600), 'Saturday 31 October, 9am');
+eq('mobile numbers: 04, +61 and spaced forms accepted', [auMobile('0412 345 678'), auMobile('+61 412 345 678'), auMobile('(04) 1234-5678')], ['0412345678', '0412345678', '0412345678']);
+eq('mobile numbers: landlines, short and foreign numbers rejected for texts', [auMobile('03 5550 0142'), auMobile('12345'), auMobile('+44 7911 123456'), auMobile('0512 345 678')], [null, null, null, null]);
+eq('phones: landline and 1300 accepted for the quote and call-back forms', [phoneOk('03 5550 0142'), phoneOk('1300 123 456'), phoneOk('13 11 11'), phoneOk('0612 345 678')], [true, true, true, false]);
+eq('email check', [emailOk('a@b.co'), emailOk('a@b'), emailOk('a b@c.com')], [true, false, false]);
+// ---- QR generator: structure checks (the browser tests decode the real QR with OpenCV)
+{ const m = qrMatrix('https://g.page/r/DEMO/review'); const n = m.length;
+  eq('QR: version 3 (29 modules), square', [n, m.every((r) => r.length === n)], [29, true]);
+  eq('QR: finder patterns in three corners and the dark module', [m[0][0] && m[0][6] && m[6][0] && m[6][6] && !m[1][1] && m[2][2], m[0][n - 1] && m[6][n - 7], m[n - 1][0] && m[n - 7][6], m[n - 8][8]], [true, true, true, true]);
+  eq('QR: timing pattern alternates', Array.from({ length: n - 16 }, (_, i) => m[6][8 + i]).every((v, i) => v === ((8 + i) % 2 === 0)), true); }
 console.log(`${n - bad}/${n} unit checks passed`); process.exit(bad ? 1 : 0);

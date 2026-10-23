@@ -109,6 +109,19 @@ def prepare_config():
     for t in cfg["team"]:
         if not isinstance(t.get("since"), int) or t["since"] > TODAY.year:
             errs.append(f'team > {t.get("name")}: "since" must be the year they started, like 2015.')
+    for key in ("googleReviewUrl", "googleMapsUrl", "instagramUrl", "facebookUrl"):
+        v = cfg.get(key, "")
+        if v and not re.fullmatch(r"https://\S+", v):
+            errs.append(f'{key}: "{v}" must start with https:// (or be empty to hide it).')
+    if cfg.get("googleRating") not in (None, "") and not (isinstance(cfg["googleRating"], (int, float)) and 0 < cfg["googleRating"] <= 5):
+        errs.append(f'googleRating: "{cfg["googleRating"]}" must be a number between 0 and 5, like 4.9. Use the business\'s REAL rating.')
+    if cfg.get("googleReviewCount") not in (None, "") and not (isinstance(cfg["googleReviewCount"], int) and cfg["googleReviewCount"] > 0):
+        errs.append(f'googleReviewCount: "{cfg["googleReviewCount"]}" must be a whole number above 0. Use the business\'s REAL review count.')
+    if not isinstance(cfg.get("reminderLeadHours", 24), int) or cfg.get("reminderLeadHours", 24) < 1:
+        errs.append("reminderLeadHours: must be a whole number of hours, 1 or more (24 = the day before).")
+    for flag in ("remindersEnabled", "waitlistEnabled", "openBannerEnabled"):
+        if not isinstance(cfg.get(flag, True), bool):
+            errs.append(f"{flag}: must be true or false (no quote marks).")
     if errs:
         sys.exit("PROBLEMS in site.config.json (fix these and save again):\n - " + "\n - ".join(errs))
     cfg["announcement"]["link"] = "Call " + c["phone"]
@@ -351,6 +364,54 @@ def photo_slots():
     return html_by_slot, text
 
 
+def esc(s):
+    return html.escape(str(s), quote=True)
+
+
+ICONS = {
+    "google": "M12 21s7-6.200 7-11.500A7 7 0 0 0 5 9.500C5 14.800 12 21 12 21z M12 7a2.500 2.500 0 1 0 0 5 2.500 2.500 0 0 0 0-5z",
+    "instagram": "M7 3h10a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4z M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8z M17.500 6.500h.01",
+    "facebook": "M14 8h3V4h-3a4 4 0 0 0-4 4v3H7v4h3v6h4v-6h3l1-4h-4V8.500a.5.5 0 0 1 .5-.5z",
+}
+_STAR_N = [0]
+
+
+def icon_svg(key):
+    return (f'<svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="{ICONS[key]}" fill="none" '
+            'stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/></svg>')
+
+
+def social_links():
+    """(icon list, plain buttons) for Google Maps, Instagram and Facebook. A link with an empty URL in site.config.json is left out."""
+    items = [("google", "Find us on Google Maps", cfg.get("googleMapsUrl")), ("instagram", "Follow us on Instagram", cfg.get("instagramUrl")),
+             ("facebook", "Find us on Facebook", cfg.get("facebookUrl"))]
+    items = [i for i in items if i[2]]
+    lis = "".join(f'<li><a class="soc-link" href="{esc(u)}" target="_blank" rel="noopener" aria-label="{l} (opens in a new tab)">{icon_svg(k)}</a></li>' for k, l, u in items)
+    btns = "".join(f'<a class="btn btn-outline soc-btn" href="{esc(u)}" target="_blank" rel="noopener">{icon_svg(k)}<span>{l}<span class="sr-only"> (opens in a new tab)</span></span></a>'
+                   for k, l, u in items if k in ("google", "instagram"))
+    return (f'<ul class="soc" role="list">{lis}</ul>' if lis else ""), btns
+
+
+def stars_svg(rating, size=18):
+    _STAR_N[0] += 1
+    cid = f"rs{_STAR_N[0]}"
+    pct = max(0.0, min(5.0, float(rating))) / 5 * 100
+    star = lambda i: f'<path transform="translate({i * 20} 0)" d="M10 1.500l2.600 5.500 6 .8-4.400 4.100 1.100 5.900L10 15l-5.300 2.800 1.100-5.900L1.400 7.800l6-.8z"/>'
+    allp = "".join(star(i) for i in range(5))
+    return (f'<svg class="g-stars" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 19" width="{round(size * 100 / 19)}" height="{size}" aria-hidden="true" focusable="false">'
+            f'<defs><clipPath id="{cid}"><rect width="{round(pct, 2)}" height="19"/></clipPath></defs><g fill="#c9ced6">{allp}</g><g fill="#f5b301" clip-path="url(#{cid})">{allp}</g></svg>')
+
+
+def rating_badge():
+    """'Rated 4.9 on Google · 212 reviews' with SVG stars. Empty (nothing shown) unless the rating, the count and the Maps link are all set.
+    USE THE BUSINESS'S REAL NUMBERS. The demo numbers carry a 'Demo number' note."""
+    r, n, u = cfg.get("googleRating"), cfg.get("googleReviewCount"), cfg.get("googleMapsUrl")
+    if not (isinstance(r, (int, float)) and 0 < r <= 5 and isinstance(n, int) and n > 0 and u):
+        return ""
+    return (f'<a class="g-rating" href="{esc(u)}" target="_blank" rel="noopener">'
+            f'{stars_svg(r)}<span class="g-rating-text">Rated {r} on Google · {n} reviews</span> <span class="g-rating-demo">Demo number</span><span class="sr-only"> (opens Google Maps in a new tab)</span></a>')
+
+
 def build():
     photos, credits = photo_slots()
     svc = {s["id"]: s for s in DATA["services"]}
@@ -416,9 +477,16 @@ def build():
         "callbackWindow": "between " + fmt_hour(min(h["openMin"] for h in cfg["hours"])) + " and " + fmt_hour(max(h["closeMin"] for h in cfg["hours"])),
         "weekendLine": "Weekends: " + " to ".join(fmt_hour(x) for x in [next(h for h in cfg["hours"] if h["day"] == 6)["openMin"], next(h for h in cfg["hours"] if h["day"] == 6)["closeMin"]]) + ".",
         "formEndpoint": cfg["form"]["endpoint"],
+        "remindersEnabled": bool(cfg.get("remindersEnabled")), "reminderLeadHours": cfg.get("reminderLeadHours", 24),
+        "waitlistEnabled": bool(cfg.get("waitlistEnabled")), "openBannerEnabled": bool(cfg.get("openBannerEnabled", True)),
+        "googleReviewUrl": cfg.get("googleReviewUrl", ""),
     }
+    soc_list, soc_btns = social_links()
     base = {
         **cfg, **DATA,
+        "socialList": soc_list, "socialButtons": soc_btns, "ratingBadge": rating_badge(), "ratingBadgeFooter": rating_badge(),
+        "hasReviewPage": bool(cfg.get("googleReviewUrl")), "waitlistOn": bool(cfg.get("waitlistEnabled")),
+        "openBannerOn": bool(cfg.get("openBannerEnabled", True)),
         "hoursTable": hours_table(), "hoursSummary": hours_summary(), "hoursInline": hours_inline(),
         "suburbCount": len(DATA["suburbs"]), "suburbList": ", ".join(s["name"] for s in DATA["suburbs"]),
         "siteData": json.dumps(site_data, ensure_ascii=False).replace("</", "<\\/"),
@@ -429,8 +497,15 @@ def build():
         "themeCss": ":root{" + ";".join(f"--{k}:{v}" for k, v in [("navy", cfg["theme"]["navy"]), ("orange", cfg["theme"]["orange"]), ("grey", cfg["theme"]["grey"]), ("ink", cfg["theme"]["text"]), ("green", cfg["theme"]["green"]), ("green-text", cfg["theme"]["greenText"]), ("copper", cfg["theme"]["copper"])]) + "}",
     }
     layout = parse((TPL / "layout.html").read_text())
+    live_pages = []
     for page in cfg["pages"]:
-        page["description"] = page["description"].replace("{phone}", cfg["contact"]["phone"])
+        if page["template"] == "reviews" and not cfg.get("googleReviewUrl"):  # no review link set: no reviews page at all
+            stale = ROOT / page["file"]
+            if stale.exists():
+                stale.unlink()
+            continue
+        live_pages.append(page)
+        page["description"] = page["description"].replace("{phone}", cfg["contact"]["phone"]).replace("{name}", cfg["brand"]["name"])
         home = page["file"] == "index.html"
         ctx = {**base, "page": {**page, "isHome": home, "isNotFound": page["file"] == "404.html",
                                 "homeHref": "#top" if home else "index.html", "navBase": "" if home else "index.html",
@@ -443,7 +518,7 @@ def build():
         out = render_nodes(layout, [ctx])
         (ROOT / page["file"]).write_text(out)
         print("wrote", page["file"], len(out))
-    urls = "".join(f'  <url><loc>{cfg["site"]["baseUrl"]}{"" if p["file"] == "index.html" else p["file"]}</loc></url>\n' for p in cfg["pages"] if not p.get("hidden"))
+    urls = "".join(f'  <url><loc>{cfg["site"]["baseUrl"]}{"" if p["file"] == "index.html" else p["file"]}</loc></url>\n' for p in live_pages if not p.get("hidden"))
     (ROOT / "sitemap.xml").write_text(f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{urls}</urlset>\n')
     (ROOT / "site.webmanifest").write_text(manifest())
     (ROOT / "robots.txt").write_text(f"User-agent: *\nDisallow:\n\nSitemap: {cfg['site']['baseUrl']}sitemap.xml\n")

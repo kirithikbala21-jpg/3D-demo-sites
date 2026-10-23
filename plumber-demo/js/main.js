@@ -5,6 +5,8 @@ import './notice.js';
 import './areas.js';
 import './happening.js';
 import './quote.js';
+import './callback.js';
+import './reviews.js';
 import './jobs.js';
 import './pipe.js';
 import './smooth.js';

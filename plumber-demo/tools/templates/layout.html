@@ -86,7 +86,7 @@
     <p><span class="a-long">{{announcement.lead}}</span>{{announcement.text}} <a href="{{announcement.href}}">{{announcement.link}}</a></p>
     <button class="announce-close" type="button" id="announce-close" aria-label="Dismiss announcement"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" focusable="false"><path d="M2 2l10 10M12 2L2 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
   </div>
-  <div class="oncall" id="oncall" role="status" hidden><div class="container oncall-in"><p><strong>On call tonight.</strong> A plumber is on the emergency line.</p><a class="btn btn-call btn-sm" href="tel:{{contact.phoneHref}}">Call {{contact.phone}}</a></div></div>
+  <div class="oncall" id="oncall" role="status" hidden><div class="container oncall-in"><p><strong>On call tonight.</strong> A plumber is on the emergency line.</p>{{#if waitlistOn}}<a class="oncall-link" href="{{page.navBase}}#callback" data-callback-open>Or ask for a call back</a>{{/if}}<a class="btn btn-call btn-sm" href="tel:{{contact.phoneHref}}">Call {{contact.phone}}</a></div></div>
 
   <header class="site-header">
     <div class="header-inner container">
@@ -118,6 +118,7 @@
     </div>
   </div>
 
+  {{#if openBannerOn}}<div class="open-banner" id="open-banner" role="status" data-state="closed" hidden><div class="container open-banner-in"><span class="dot" aria-hidden="true"></span><p><span data-open-banner-text></span> <span class="ob-em">Emergency line open 24/7: <a href="tel:{{contact.phoneHref}}">{{contact.phone}}</a></span></p></div></div>{{/if}}
   <main id="main">
 {{{content}}}
   </main>
@@ -131,6 +132,7 @@
         </a>
         <p>{{brand.tagline}}. Family owned since {{brand.established}}.</p>
         <p class="legal-ids"><span>{{contact.licence}}</span> <span>ABN {{contact.abn}}</span></p>
+        {{#if ratingBadgeFooter}}<p class="g-rating-wrap">{{{ratingBadgeFooter}}}</p>{{/if}}
       </div>
       <div class="footer-col">
         <h2 class="footer-h">Contact</h2>
@@ -139,6 +141,8 @@
           <a href="mailto:{{contact.email}}">{{contact.email}}</a><br>
           {{contact.street}}<br>{{contact.locality}}
         </address>
+        {{{socialList}}}
+        {{#if hasReviewPage}}<p class="foot-review"><a class="btn btn-call btn-sm" href="{{googleReviewUrl}}" target="_blank" rel="noopener">Leave us a Google review<span class="sr-only"> (opens in a new tab)</span></a></p>{{/if}}
       </div>
       <div class="footer-col">
         <h2 class="footer-h">Hours</h2>
@@ -152,7 +156,7 @@
       <div class="footer-col">
         <h2 class="footer-h">Payment</h2>
         <p>Card on the day. {{service.bigJobFinance}} for big jobs. Invoice for businesses. All prices in AUD, GST included.</p>
-        <p><a href="privacy.html">Privacy</a></p>
+        <p><a href="privacy.html">Privacy</a>{{#if hasReviewPage}} &middot; <a href="reviews.html">Reviews and QR code</a>{{/if}}</p>
       </div>
     </div>
     <div class="container footer-end">

@@ -10,6 +10,8 @@
             <li><svg width="24" height="24" aria-hidden="true" focusable="false"><use href="#i-clock"/></svg><span>Office and booking hours<br>{{{hoursSummary}}}</span></li>
           </ul>
           <p class="open-status" data-open-status data-tone="light">Emergency line open 24/7</p>
+          {{#if socialButtons}}<p class="soc-btns">{{{socialButtons}}}</p>{{/if}}
+          {{{socialList}}}
         </div>
         <div class="map-wrap reveal">
           <iframe class="map" title="Map showing {{contact.street}}, {{contact.locality}}" src="{{gmapEmbed}}" width="600" height="320" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>

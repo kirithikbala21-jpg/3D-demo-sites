@@ -80,6 +80,16 @@
   "endpoint": "",
   "note": "Paste your Formspree, Basin or Getform address between the quote marks to make the quote form send real emails. While it is empty the form only validates, shows a confirmation and keeps the request in this browser (localStorage key wp-quotes). Photo uploads need a form service that accepts files."
  },
+ "googleReviewUrl": "https://g.page/r/DEMO/review",
+ "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=14%20Example%20Road%2C%20Glen%20Waverley%20VIC%203150",
+ "instagramUrl": "https://www.instagram.com/demo_waverley_plumbing/",
+ "facebookUrl": "",
+ "googleRating": 4.9,
+ "googleReviewCount": 212,
+ "remindersEnabled": true,
+ "reminderLeadHours": 24,
+ "waitlistEnabled": true,
+ "openBannerEnabled": true,
  "services": [
   {"id": "emergency", "name": "Emergency plumbing", "promise": "A plumber at your door, any hour.", "from": 199, "photo": "tools-closeup", "urgency": "emergency", "label": "Call-out from"},
   {"id": "blocked-drains", "name": "Blocked drains", "promise": "Cleared fast, with a camera check if needed.", "from": 149, "photo": "blocked-drain-work", "urgency": "today", "label": "From"},
@@ -125,6 +135,7 @@
  ],
  "pages": [
   {"file": "index.html", "template": "index", "title": "Emergency plumber in Glen Waverley", "description": "Licensed plumbers and gas fitters across south-east Melbourne. 24/7 emergency line, upfront prices and a 12-month workmanship guarantee. Call 03 5550 0142.", "jsonld": true},
+  {"file": "reviews.html", "template": "reviews", "title": "Leave us a Google review", "description": "Loved your visit? Scan the QR code or tap the button to leave {name} a Google review. Concept demo.", "h1": "Loved your visit? Tell us", "crumb": "Reviews"},
   {"file": "privacy.html", "template": "privacy", "title": "Privacy", "description": "How this demo site handles your details, cookies and quote requests.", "h1": "Privacy", "crumb": "Privacy"},
   {"file": "404.html", "template": "notfound", "title": "Page not found", "description": "This page could not be found. Call us on 03 5550 0142 or head back to the home page.", "h1": "That page has gone down the drain", "crumb": "Page not found", "hidden": true}
  ]

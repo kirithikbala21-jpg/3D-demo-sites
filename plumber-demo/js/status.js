@@ -23,6 +23,17 @@ function render() {
     el.dataset.state = s.state === 'open' ? 'open' : 'closed';
     el.textContent = s.state === 'open' ? `Office ${lower(s.text).replace('open now, closes at', 'open now, until')}${tz}` : `Office ${lower(s.text)}${tz}. Emergency line open 24/7`;
   });
+  // Open-hours banner: "Office open now · closes at 8pm" / "Office closed now · opens tomorrow at 7am", always with the 24/7 emergency line.
+  const ob = $('#open-banner');
+  if (ob) {
+    if (!SITE.openBannerEnabled) ob.remove();
+    else {
+      ob.dataset.state = s.state === 'open' ? 'open' : 'closed';
+      const t = s.state === 'open' ? s.text.replace('Open now, closes at', 'open now · closes at') : s.state === 'soon' ? s.text.replace('Opens today at', 'opens today at') : s.text.replace(/^Closed (now|today)(.*?)\. Opens/, 'closed $1$2 · opens');
+      $('[data-open-banner-text]', ob).textContent = 'Office ' + t + tz + '.';
+      ob.hidden = false;
+    }
+  }
   $$('[data-year]').forEach((el) => { el.textContent = String(now.y); });
   $$('[data-since]').forEach((el) => { el.textContent = String(now.y - Number(el.dataset.since)); });
   $$('.hours tr').forEach((tr) => {

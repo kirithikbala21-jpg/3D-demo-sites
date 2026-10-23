@@ -9,6 +9,7 @@
             <a class="btn btn-outline btn-lg" href="#quote">Get a free quote</a>
           </div>
           <p class="avail" id="avail" data-state="closed"><span class="dot" aria-hidden="true"></span><span class="avail-text" data-avail-text>Emergency line open 24/7</span></p>
+          {{#if ratingBadge}}<p class="g-rating-wrap hero-rating">{{{ratingBadge}}}</p>{{/if}}
         </div>
         <div class="hero-visual">
           <div class="frame frame-hero">{{{photos.hero-sink}}}</div>

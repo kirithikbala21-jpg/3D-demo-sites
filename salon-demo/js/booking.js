@@ -233,7 +233,7 @@ if (root) {
         <div><dt>Phone</dt><dd>${prettyPhone(ph)}</dd></div>
         ${rem.mode !== 'none' ? `<div><dt>Reminder</dt><dd>${rm.confirmation(state.date, nowM.key)}</dd></div>` : ''}
       </dl>
-      ${rem.mode !== 'none' ? '<p class="small bk-rm-note">Demo: reminders are not connected, so no message will actually be sent.</p>' : ''}
+      ${rem.mode !== 'none' ? `<p class="bk-rm-preview"><strong>Reminder preview (${rem.mode === 'email' ? 'email' : 'text'}):</strong> &ldquo;Hi ${first1.replace(/[<>&]/g, '')}, a reminder that your ${s.name} with ${booking.stylistName} is on ${dayLabel(state.date)} at ${booking.time}. See you at ${SITE.name}.&rdquo;</p><p class="small bk-rm-note">Demo: reminders are not connected, so no message will actually be sent.</p>` : ''}
       ${closing}
       <button type="button" class="btn btn-ghost btn-lg" data-restart>Make another booking</button>`;
       go('done');

@@ -15,7 +15,7 @@ export function bestTimeLine(cfg, todayDow) {
   const { blocks, week } = cfg.busyness; let best = null;
   for (let i = 0; i < 7; i++) { const d = (todayDow + i) % 7, row = week[KEYS[d]] || []; row.forEach((l, b) => { if (LEVEL[l] === 1 && !best) best = { d, b }; }); }
   if (!best) { for (let i = 0; i < 7 && !best; i++) { const d = (todayDow + i) % 7, row = week[KEYS[d]] || []; row.forEach((l, b) => { if (LEVEL[l] === 2 && !best) best = { d, b }; }); } if (!best) return ''; return `Typically a steady pace ${when(DAYS[best.d], blocks[best.b].label)}.`; }
-  return `Usually quiet ${when(DAYS[best.d], blocks[best.b].label)}.`;
+  return `Usually quieter ${when(DAYS[best.d], blocks[best.b].label)}.`;
 }
 /** SVG strip: 7 columns (Mon to Sun) by one row per block; darker = busier. Today's column is outlined and labelled. Accessible via <title>/<desc>. */
 export function busySvg(cfg, todayDow, { width = 360 } = {}) {

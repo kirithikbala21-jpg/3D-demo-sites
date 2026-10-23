@@ -75,6 +75,7 @@
       <nav class="header-nav" aria-label="Main">
         {{#each nav}}<a href="{{page.navBase}}{{this.href}}">{{this.label}}</a>{{/each}}
       </nav>
+      <a class="header-phone" href="tel:{{contact.phoneHref}}" aria-label="Call {{contact.phone}}">{{contact.phone}}</a>
       <a class="btn btn-primary header-book" href="{{page.navBase}}#book" data-book-link>Book now</a>
     </div>
   </header>

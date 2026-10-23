@@ -4,6 +4,11 @@ This is an **unofficial concept demo** of a hair and beauty salon website. Every
 
 ---
 
+## Features at a glance (all switched from `site.config.json`)
+Google review button + QR page, booking reminders (front end only), Google/Instagram/Facebook links, Google rating badge, waitlist (browser-only demo), "usually quieter" busy-times line and strip, "Open now / Closed, opens at ..." strip, Get directions links, tap-to-call everywhere. A feature with an empty value or its switch set to off disappears completely. Keys and rules are in section 12. What changed and what is still a placeholder: `CHANGES.md`. Brand and style notes: `brand.md`.
+
+---
+
 ## 0. Launch checklist: replace every placeholder before going live
 
 Work down this list. Each item says where to change it. All the "site.config.json" items are in the **one file** described in section 1.

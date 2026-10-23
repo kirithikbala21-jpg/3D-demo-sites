@@ -588,7 +588,7 @@ if (want('func')) {
     ok('voucher: confirmation shows $150, the recipient and a clear demo label; form is replaced', /\$150/.test(vt) && /Ana Silva/.test(vt) && /demo/i.test(vt) && /no voucher was issued/i.test(vt) && await d.locator('.voucher-form').isHidden() && JSON.parse(await d.evaluate(() => localStorage.getItem('ml-vouchers')))[0].amount === 150);
     // visit
     const v = await d.evaluate(() => ({ map: !!document.querySelector('.map-svg'), link: document.querySelector('.map-link').href, role: document.querySelector('.map-svg').getAttribute('role'), iframe: document.querySelectorAll('iframe').length }));
-    ok('visit: stylised SVG map placeholder (no iframe) and an "Open in Google Maps" search link', v.map && v.role === 'img' && !v.iframe && v.link.startsWith('https://www.google.com/maps/search/?api=1&query=21%20Example%20Street'), v.link);
+    ok('visit: stylised SVG map placeholder (no iframe) and a "Get directions" search link', v.map && v.role === 'img' && !v.iframe && v.link.startsWith('https://www.google.com/maps/search/?api=1&query=21%20Example%20Street'), v.link);
     await done(d);
   }
   // before / after with no photos, partial, full
@@ -674,7 +674,7 @@ if (want('fallback')) {
   const ctx = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 390, height: 844 }, locale: 'en-AU' });
   const p = await ctx.newPage(); await p.goto(base + 'index.html');
   const q = await p.evaluate(() => ({ h1: document.querySelector('h1').innerText, hero: document.querySelector('[data-open-today]').innerText, svc: [...document.querySelectorAll('.svc')].filter((e) => e.offsetParent).length, tabs: getComputedStyle(document.querySelector('.tabs')).display, bk: document.querySelector('.bk-fallback').offsetParent !== null, tel: !!document.querySelector('.bk-fallback a[href^="tel:"]'), faq: document.querySelectorAll('details').length, reveal: [...document.querySelectorAll('.reveal')].filter((e) => getComputedStyle(e).opacity !== '1').length, hours: document.querySelectorAll('.hours tbody tr').length, jobs: [...document.querySelectorAll('.job')].filter((e) => e.offsetParent).length, cta: [...document.querySelectorAll('.svc-book')].every((a) => /\?service=[a-z0-9-]+#book/.test(a.getAttribute('href'))) }));
-  ok('JavaScript off: headline, plain hours text, all 22 services, booking fallback with phone link, FAQ, hours table all readable', /Hair that feels like you\./.test(q.h1) && /Tue to Fri 9am to 7pm/.test(q.hero) && /Mon closed/.test(q.hero) && q.svc === 22 && q.tabs === 'none' && q.bk && q.tel && q.faq === 6 && !q.reveal && q.hours === 7 && q.jobs === 3 && q.cta, JSON.stringify(q));
+  ok('JavaScript off: headline, plain hours text, all 22 services, booking fallback with phone link, FAQ, hours table all readable', /Hair that feels like you, in Glen Waverley\./.test(q.h1) && /Tue to Fri 9am to 7pm/.test(q.hero) && /Mon closed/.test(q.hero) && q.svc === 22 && q.tabs === 'none' && q.bk && q.tel && q.faq === 6 && !q.reveal && q.hours === 7 && q.jobs === 3 && q.cta, JSON.stringify(q));
   await ctx.close();
   const e = await newPage({ viewport: { width: 390, height: 844 } }, { host: await startSite(SITE, { prefix: '/salon-demo/' }).then((b) => b + 'salon-demo/') });
   await e.goto(e.base + 'no/such/page/'); await settle(e);

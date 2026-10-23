@@ -89,12 +89,12 @@
       <div class="container hero-grid">
         <div class="hero-copy">
           <p class="chip"><span class="dot" aria-hidden="true"></span><span id="open-status">Open 7 days from 7am</span></p>
-          <h1 id="hero-title">Coffee roasted <em>out back,</em> poured right here.</h1>
+          <h1 id="hero-title">Coffee roasted <em>out back,</em> poured right here in <span data-cfg="suburb">Melbourne</span>.</h1>
           <p class="lead">Flat whites that taste like toasted caramel, a cabinet of things baked before sunrise, and a corner table with your name on it.</p>
           <div class="btn-row">
-            <a class="btn btn-primary" href="#reserve">Reserve a table</a>
-            <a class="btn btn-secondary" href="#menu">Explore the menu</a>
+            <a class="btn btn-primary" href="#menu" id="hero-main">Order for pick-up</a>
           </div>
+          <p class="hero-links"><a href="#reserve">Reserve a table</a><a href="tel:0355500123" data-cfg-href="tel">Call <span data-cfg="phone">03 5550 0123</span></a><a href="#visit" id="hero-directions" data-cfg-href="maps" hidden target="_blank" rel="noopener">Get directions<span class="sr-only"> (opens Google Maps in a new tab)</span></a></p>
           <div class="hero-rating" id="hero-rating" hidden></div>
         </div>
 
@@ -932,6 +932,7 @@
             <h3>Thanks, <span id="ok-name">friend</span>!</h3>
             <p id="ok-detail"></p>
             <p id="ok-remind" class="ok-remind" hidden></p>
+            <p id="ok-remind-preview" class="ok-remind-preview" hidden></p>
             <p class="note">Demo only: no email was sent and nothing was saved.</p>
             <button class="btn btn-secondary btn-on-light" type="button" id="form-reset">Make another request</button>
           </div>

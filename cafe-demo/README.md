@@ -6,6 +6,9 @@ A sample café website, built to show local café owners what a modern, fast, 3D
 It is a single scrolling page (no frameworks, no build step), styled like a premium restaurant site: announcement bar, dark glass header, hero with a 3D coffee cup and a live "Open now" chip, scrolling ticker, press quotes, a 38-item tabbed menu (Coffee & tea, Breakfast, Lunch, Bakery & sweets, Cold drinks, Evening), house signatures, experiences (tours, workshops, private dining, catering, subscriptions, gift cards), story with stats, farm-to-cup steps and team, sample reviews, bento gallery, events, gift card picker, opening hours + map placeholder + getting-here info, FAQ, reservation/enquiry form, newsletter sign-up, footer, and a sticky Call / Reserve bar on phones.
 Design decision: one page with anchor links suits a café this size, so all content lives in `index.html` instead of separate pages.
 
+## Features at a glance (all switched from `site.config.json`)
+Google review button + QR page, reservation reminders (front end only), Google/Instagram/Facebook links, Google rating badge, waitlist (browser-only demo), "usually quieter" busy-times line, click and collect (demo, pay in store), "Open now" chip, Get directions, tap-to-call. A feature with an empty value or its switch set to off disappears completely. What changed and what is still a placeholder: `CHANGES.md`. Brand notes: `brand.md`.
+
 ## Files
 
 | File | What it does |

@@ -39,6 +39,7 @@ export function initGrowth(cfg, { toast } = {}) {
   const suburb = parts.length > 2 ? parts.slice(0, -2).join(' ') : cfg.locality;
   const vals = { phone: cfg.phone, email: cfg.email, street: cfg.street, locality: cfg.locality, suburb, name: cfg.name };
   $$('[data-cfg]').forEach((el) => { const v = vals[el.dataset.cfg]; if (v) el.textContent = v; });
+  $$('[data-cfg-href="maps"]').forEach((el) => { if (cfg.googleMapsUrl) { el.href = cfg.googleMapsUrl; el.hidden = false; } else el.hidden = true; });
   $$('[data-cfg-href]').forEach((el) => { if (el.dataset.cfgHref === 'tel' && cfg.phone) el.href = telHref(cfg.phone); if (el.dataset.cfgHref === 'mailto' && cfg.email) el.href = 'mailto:' + cfg.email; });
 
   /* ---- 8. opening-hours table, "Open now / Closed, opens ..." chips, today highlight (all from config, in the café's time zone) ---- */

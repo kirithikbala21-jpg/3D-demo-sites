@@ -629,3 +629,9 @@ input[aria-invalid="true"], textarea[aria-invalid="true"] { border-color: #B3261
 .order-number { font: 700 1.5rem var(--font-head); margin: 0 0 8px; }
 .order-done:focus { outline: none; }
 @media (prefers-reduced-motion: reduce) { .add-btn, .soc-link { transition: none; } }
+
+/* hero: one big main button, then quiet links; reminder preview */
+.hero-links { display: flex; flex-wrap: wrap; gap: 0 20px; margin: 10px 0 0; font-weight: 600; }
+.hero-links a { display: inline-flex; align-items: center; min-height: 44px; color: var(--espresso); text-decoration: underline; text-underline-offset: 3px; }
+.hero-links a[hidden] { display: none; }
+.ok-remind-preview { margin: 10px 0 0; padding: 12px 14px; border-radius: 12px; border: 1px solid currentColor; font-size: .9375rem; }

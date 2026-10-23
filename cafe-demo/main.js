@@ -225,6 +225,7 @@ $$('[data-enquiry]').forEach((a) => a.addEventListener('click', () => {
     const remind = extras.reminder ? extras.reminder.confirmation(dateEl.value, todayStr) : '';
     // Reminders are NOT connected to any email or SMS service: this line only says a reminder is "set". See js/reminder.js.
     $('#ok-remind').textContent = remind; $('#ok-remind').hidden = !remind;
+    const rp = $('#ok-remind-preview'); if (rp) { const rr = extras.reminder ? extras.reminder.read() : { mode: 'none' }; rp.textContent = remind ? `Preview (${rr.mode === 'email' ? 'email' : 'text'}): "Hi ${field('name').value.trim().split(' ')[0]}, a reminder that your ${type === 'table' ? 'table for ' + guests : 'enquiry'} is on ${date}${field('time').value ? ' at ' + extras.time12(field('time').value) : ''} at ' + document.title.split(' ')[0] + '."` : ''; rp.hidden = !remind; }
     form.hidden = true;
     success.hidden = false;
     success.focus();

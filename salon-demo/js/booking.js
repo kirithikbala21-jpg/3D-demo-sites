@@ -4,6 +4,8 @@
 import { $, $$, SITE, store, DAY_NAMES, MONTHS, fmtTime, nowMel, resolveDay, dayLabel, addDays, scrollToEl, CLOCK_CFG } from './util.js';
 import { hasFutureSlot } from './clock.js';
 import { addHoneypot, tripped, guard, send, isLive, phoneFallback } from './forms.js';
+import { mountReminder, reminderWhen } from './reminder.js';
+import { waitlistForm } from './waitlist.js';
 
 const root = $('#booking-app');
 if (root) {
@@ -77,6 +79,7 @@ if (root) {
       <section class="bk-panel" data-step="3" aria-labelledby="bk-h3" hidden>
         <fieldset><legend id="bk-h3" tabindex="-1">Choose a time</legend><div class="times" id="bk-times"></div></fieldset>
         <p class="small times-note" id="bk-times-note"></p>
+        <div class="bk-wl" id="bk-wl" aria-live="polite"></div>
         <div class="bk-nav"><button type="button" class="btn btn-ghost btn-lg" data-back>Back</button><button type="button" class="btn btn-primary btn-lg" data-next disabled>Continue</button></div>
       </section>
       <section class="bk-panel" data-step="4" aria-labelledby="bk-h4" hidden>
@@ -117,9 +120,12 @@ if (root) {
     const grid = $('#bk-times');
     $('#bk-h3').textContent = `Choose a time on ${dayLabel(state.date)}`;
     if (state.time !== null && !slots.some((s) => s.mins === state.time && !s.reason)) state.time = null;
-    grid.innerHTML = slots.map((s) => `<label class="pick"><input type="radio" name="time" value="${s.mins}"${s.reason ? ` disabled data-reason="${s.reason}"` : ''}${state.time === s.mins ? ' checked' : ''}><span>${fmtTime(s.mins)}${s.reason ? `<span class="sr-only">, ${s.reason}</span>` : ''}</span></label>`).join('');
+    const WL = !!SITE.waitlistEnabled;
+    $('#bk-wl').innerHTML = '';
+    grid.innerHTML = slots.map((s) => (WL && s.reason === 'taken') ? `<button type="button" class="wl-slot" data-mins="${s.mins}"><span class="wl-t">${fmtTime(s.mins)}</span><span class="wl-s">Join the waitlist</span><span class="sr-only">, this time is full</span></button>` : `<label class="pick"><input type="radio" name="time" value="${s.mins}"${s.reason ? ` disabled data-reason="${s.reason}"` : ''}${state.time === s.mins ? ' checked' : ''}><span>${fmtTime(s.mins)}${s.reason ? `<span class="sr-only">, ${s.reason}</span>` : ''}</span></label>`).join('');
     const free = slots.filter((s) => !s.reason).length;
-    $('#bk-times-note').textContent = free ? 'Crossed-out times are taken or have passed.' : 'No times left on this day. Please go back and choose another day.';
+    const anyFull = slots.some((s) => s.reason === 'taken');
+    $('#bk-times-note').textContent = free ? (WL && anyFull ? 'Crossed-out times have passed. On a full time, choose "Join the waitlist".' : 'Crossed-out times are taken or have passed.') : (WL && anyFull ? 'Everything is full on this day. Join the waitlist on a time, or go back and choose another day.' : 'No times left on this day. Please go back and choose another day.');
     nextBtn(3).disabled = state.time === null;
   }
   const nextBtn = (i) => $('[data-next]', panels[i]);
@@ -164,6 +170,13 @@ if (root) {
     if (t.name === 'time') { state.time = Number(t.value); nextBtn(3).disabled = false; }
   });
   root.addEventListener('click', (e) => {
+    const wl = e.target.closest('.wl-slot');
+    if (wl) { // a full time: show the waitlist form (front end only, nothing is sent)
+      const host = $('#bk-wl'), s = svcBySlug[state.service];
+      host.replaceChildren(waitlistForm({ dayKey: state.date, mins: Number(wl.dataset.mins), what: s ? s.name : '', phone: SITE.phone, phoneHref: SITE.phoneHref }));
+      const f = $('.wl-form input', host); if (f) f.focus(); host.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      return;
+    }
     const nx = e.target.closest('[data-next]'), bk = e.target.closest('[data-back]');
     if (nx && !nx.disabled) go(state.step + 1);
     if (bk) go(state.step - 1);
@@ -171,6 +184,8 @@ if (root) {
   const fail = (input, errEl, msg) => { errEl.textContent = msg; errEl.hidden = false; input.setAttribute('aria-invalid', 'true'); };
   const clear = (input, errEl) => { errEl.hidden = true; input.removeAttribute('aria-invalid'); };
   const form = $('#bk-form'); addHoneypot(form);
+  // Optional "Remind me". SENDING IS NOT CONNECTED: plug an email or SMS service in here per customer (see the `reminder` object in the booking below and README).
+  const rm = mountReminder($('.bk-nav', form), { remindersEnabled: SITE.remindersEnabled, reminderLeadHours: SITE.reminderLeadHours }, 'bk-rm');
   const submitBtn = $('button[type=submit]', form), busy = guard(submitBtn);
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -182,6 +197,8 @@ if (root) {
       if (!/^[\p{L}][\p{L} '’.-]{1,59}$/u.test(name.value.trim())) { fail(name, ne, 'Please enter your name (letters only, at least 2).'); first = first || name; }
       const ph = auPhone(phone.value);
       if (!ph) { fail(phone, pe, `Please enter an Australian phone number, like 0412 345 678 or ${SITE.phone}.`); first = first || phone; }
+      const rem = rm ? rm.read() : { ok: true, mode: 'none' };
+      if (!rem.ok) first = first || rem.input;
       if (first) { first.focus(); return; }
       // the clock keeps moving while the form is open: make sure the chosen time has not passed or been taken in the meantime
       const nowM = nowInfo(), s = svcBySlug[state.service];
@@ -193,7 +210,8 @@ if (root) {
       const assigned = free[0] || (state.stylist === 'any' ? SITE.stylists[0].slug : state.stylist);
       const ref = 'ML-' + hash(name.value + ph + Date.now() + Math.random()).toString(36).toUpperCase().slice(0, 6).padStart(6, '0');
       const end = fmtTime(state.time + Math.ceil(s.min / SLOT) * SLOT);
-      const booking = { ref, service: s.slug, serviceName: s.name, from: s.from, minutes: s.min, stylist: assigned, stylistName: styBySlug[assigned].name, date: state.date, time: fmtTime(state.time), name: name.value.trim(), phone: ph, created: new Date().toISOString() };
+      const booking = { ref, service: s.slug, serviceName: s.name, from: s.from, minutes: s.min, stylist: assigned, stylistName: styBySlug[assigned].name, date: state.date, time: fmtTime(state.time), name: name.value.trim(), phone: ph, created: new Date().toISOString(),
+        reminder: rem.mode === 'none' ? null : { mode: rem.mode, contact: rem.contact, remindAt: reminderWhen(state.date, SITE.reminderLeadHours || 24, nowM.key) } };
       if (tripped(form)) { /* spam trap filled in: look successful, send nothing */ } else {
         const res = await send({ type: 'booking', _subject: `Booking request ${ref}`, ...booking, when: `${dayLabel(state.date)}, ${booking.time} to ${end}` });
         if (!res.ok) { failBox.innerHTML = phoneFallback(); return; }
@@ -213,7 +231,9 @@ if (root) {
         <div><dt>When</dt><dd>${dayLabel(state.date)}, ${booking.time} to ${end}</dd></div>
         <div><dt>Name</dt><dd>${booking.name.replace(/[<>&]/g, '')}</dd></div>
         <div><dt>Phone</dt><dd>${prettyPhone(ph)}</dd></div>
+        ${rem.mode !== 'none' ? `<div><dt>Reminder</dt><dd>${rm.confirmation(state.date, nowM.key)}</dd></div>` : ''}
       </dl>
+      ${rem.mode !== 'none' ? '<p class="small bk-rm-note">Demo: reminders are not connected, so no message will actually be sent.</p>' : ''}
       ${closing}
       <button type="button" class="btn btn-ghost btn-lg" data-restart>Make another booking</button>`;
       go('done');
@@ -222,7 +242,7 @@ if (root) {
   root.addEventListener('click', (e) => { if (e.target.closest('[data-restart]')) reset(); });
   function reset() {
     Object.assign(state, { service: null, stylist: 'any', stylistChosen: false, date: null, time: null, done: null });
-    $('#bk-form').reset(); $$('.err', root).forEach((x) => { x.hidden = true; }); $$('[aria-invalid]', root).forEach((x) => x.removeAttribute('aria-invalid'));
+    $('#bk-form').reset(); if (rm) rm.reset(); $$('.err', root).forEach((x) => { x.hidden = true; }); $$('[aria-invalid]', root).forEach((x) => x.removeAttribute('aria-invalid'));
     syncService(); go(0);
   }
 

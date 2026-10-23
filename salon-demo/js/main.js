@@ -2,6 +2,8 @@
 import './ui.js';
 import './status.js';
 import './notice.js';
+import './busytime.js';
+import './reviews.js';
 import './services.js';
 import './booking.js';
 import './results.js';

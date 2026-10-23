@@ -18,7 +18,7 @@ Work down this list. Each item says where to change it. All the "site.config.jso
 - [ ] **Stylists**: `stylists` (section 5). The four names are invented. Their photos are stock photos: swap them (section 9).
 - [ ] **Reviews**: `data/reviews.json`. They are labelled "Sample content". Replace with real reviews you have permission to use, then change the heading in `tools/templates/sections/reviews.html`.
 - [ ] **FAQ answers** (cancellation time, patch tests, payment): `data/faq.json`.
-- [ ] **Social links**: `social` (they currently point to the Instagram, Facebook and TikTok home pages).
+- [ ] **Google and social links**: `googleReviewUrl`, `googleMapsUrl`, `instagramUrl`, `facebookUrl` (demo placeholders now), `social` (TikTok placeholder), and the **real** `googleRating` and `googleReviewCount` (section 12). Never invent a rating.
 - [ ] **Photos**: replace the Unsplash stock photos with your own (section 9) and update the credit line. Unsplash photos need no credit by licence, but the site shows "Photos from Unsplash" while they are in use.
 - [ ] **Booking and enquiry forms**: paste a form address into `forms` > `endpoint` (section 8) so bookings and gift-voucher requests reach you. Until then both forms are demos that send nothing, and say so.
 - [ ] **Remove the "concept demo" wording**: `brand` > `demoNotice` and `demoFooter`, the "Sample content" labels, the wording in `README`, the footer line "Photos are stock images used for this concept demo" in `tools/templates/layout.html`.
@@ -197,6 +197,24 @@ Photo rules: only use photos you took or are licensed to use. Every photo needs 
 - `privacy.html` is a plain-English policy matching the design and the footer links to it. Review it before launch.
 - The footer shows "Photos from Unsplash (concept demo)" while stock photos are used. `CREDITS-TODO.md` lists the photographer names still to record.
 - All demo wording ("concept demo", "Sample content") is deliberate until the real owner's details are filled in (checklist in section 0).
+
+---
+
+## 12. Reviews, reminders, waitlist, busy times and links (added features)
+
+All of these are **front end only demos**: nothing is sent anywhere, no fake live data is shown. Each one is switched on or off, and filled in, in `site.config.json`. **If a value is empty or a feature is switched off, it disappears completely** (no empty box, no broken link). Edit, commit, wait a minute or two.
+
+| Setting in `site.config.json` | What it does |
+| --- | --- |
+| `googleReviewUrl` | Your Google review address (get it from Google Business Profile > "Ask for reviews"). Powers the "Leave us a Google review" button in the footer, the "Loved your visit? Tell us" section on the home page, and the **reviews page** (`reviews.html`) with a large **QR code** you can print ("Print this" button prints only the QR and heading). Empty = no button, no section, no page. The demo value `https://g.page/r/DEMO/review` is a placeholder. |
+| `googleMapsUrl`, `instagramUrl`, `facebookUrl` | Icon links in the footer and the "Visit us" section, plus "Find us on Google Maps", "Follow us on Instagram", "Find us on Facebook" buttons. Open in a new tab. Empty = hidden. Must start with `https://`. |
+| `googleRating`, `googleReviewCount` | The "Rated 4.9 on Google · 120 reviews" badge with five stars (hero and footer, links to `googleMapsUrl`). **Use the business's REAL rating and review count from Google. Never invent one.** The badge shows a small "Demo number" tag on this demo: delete the `<span class="g-rating-demo">` in `tools/build.py` (function `rating_badge`) when real numbers are in. Empty rating or count = no badge. |
+| `remindersEnabled`, `reminderLeadHours` | Optional "Remind me: None / Email / Text" on the booking form, with the line "We will only use this to send your reminder." The confirmation says "Reminder set for <day before>, 9am". `reminderLeadHours` 24 = the day before, 48 = two days before. **Sending is not connected. Plug in an email or SMS service here per customer:** in `js/booking.js` the saved booking has `reminder: { mode, contact, remindAt }` (look for `mountReminder`); send that to your email/SMS service. Until then no message is sent and the confirmation says so. |
+| `waitlistEnabled` | Full times in the booking calendar show "Join the waitlist" (name, mobile or email, preferred day/time, consent line, confirmation "You're on the waitlist for <day, time>"). In this demo some times are always full so you can see it. **Real notifications are not connected:** where the form is handled (`js/waitlist.js`, the `onJoin` callback used in `js/booking.js`) send the entry to your email/SMS service and tell the customer when a spot opens. |
+| `busynessEnabled`, `busyness` | "Best time to come": a line such as "Usually quiet on Tuesday mornings." and a 7-day strip, near the booking form, from the weekly table you set (`blocks` = time blocks, `week` = one list per day of `quiet`, `medium`, `busy` or `closed`, one per block). It is a **typical pattern you set yourself, never live data**, and the wording always says "usually"/"typically". Empty table = hidden. |
+| `openBannerEnabled` | The slim "Open now, closes at 7pm" / "Closed now. Opens tomorrow at 9am" strip under the header, from your hours and Melbourne time. |
+
+Where the code is: `js/qr.js` (QR generator, no library), `js/reviews.js`, `js/reminder.js`, `js/waitlist.js`, `js/busy.js` + `js/busytime.js`, `tools/build.py` (rating badge, links, validation: addresses must be `https://`, rating 0 to 5, count above 0, `reminderLeadHours` 1 or more, busyness levels spelled right).
 
 ---
 ---

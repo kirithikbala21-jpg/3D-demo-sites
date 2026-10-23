@@ -64,6 +64,29 @@
   "endpoint": "",
   "note": "Paste your Formspree (or similar) address between the quote marks to make the booking and voucher forms send real emails. Leave empty to keep the demo behaviour."
  },
+ "googleReviewUrl": "https://g.page/r/DEMO/review",
+ "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=21%20Example%20Street%2C%20Glen%20Waverley%20VIC%203150",
+ "instagramUrl": "https://www.instagram.com/demo_maisonlune/",
+ "facebookUrl": "",
+ "googleRating": 4.9,
+ "googleReviewCount": 120,
+ "remindersEnabled": true,
+ "reminderLeadHours": 24,
+ "waitlistEnabled": true,
+ "busynessEnabled": true,
+ "openBannerEnabled": true,
+ "busyness": {
+  "blocks": [{"label": "Morning", "from": "09:00", "to": "12:00"}, {"label": "Midday", "from": "12:00", "to": "15:00"}, {"label": "Afternoon", "from": "15:00", "to": "17:00"}, {"label": "Evening", "from": "17:00", "to": "19:00"}],
+  "week": {
+   "mon": ["closed", "closed", "closed", "closed"],
+   "tue": ["quiet", "quiet", "medium", "medium"],
+   "wed": ["quiet", "medium", "medium", "busy"],
+   "thu": ["medium", "medium", "busy", "busy"],
+   "fri": ["medium", "busy", "busy", "medium"],
+   "sat": ["busy", "busy", "medium", "closed"],
+   "sun": ["quiet", "medium", "quiet", "closed"]
+  }
+ },
  "vouchers": [
   50,
   100,
@@ -114,13 +137,12 @@
   {"label": "Visit", "href": "#visit"}
  ],
  "social": [
-  {"label": "Instagram", "href": "https://www.instagram.com/", "path": "M7 3h10a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4z M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8z M17.500 6.500h.01"},
-  {"label": "Facebook", "href": "https://www.facebook.com/", "path": "M14 8h3V4h-3a4 4 0 0 0-4 4v3H7v4h3v6h4v-6h3l1-4h-4V8.500a.5.5 0 0 1 .5-.5z"},
   {"label": "TikTok", "href": "https://www.tiktok.com/", "path": "M14 3v11.500a3.500 3.500 0 1 1-3.500-3.500 M14 3c.5 2.500 2 4 5 4.200"}
  ],
  "pages": [
   {"file": "index.html", "template": "index", "title": "Hair and beauty salon in Glen Waverley", "description": "Cuts, colour, treatments and beauty in Glen Waverley with clear prices and online booking. Fictional salon, unofficial concept demo.", "jsonld": true},
   {"file": "404.html", "template": "notfound", "title": "Page not found", "description": "This page could not be found. Head back to the Maison Lune home page or call {phone}.", "h1": "This page has slipped away", "hidden": true},
-  {"file": "privacy.html", "template": "privacy", "title": "Privacy and cookies", "description": "What this website stores in your browser, what it does not collect, and how to contact us about your information.", "h1": "Privacy and cookies"}
+  {"file": "privacy.html", "template": "privacy", "title": "Privacy and cookies", "description": "What this website stores in your browser, what it does not collect, and how to contact us about your information.", "h1": "Privacy and cookies"},
+  {"file": "reviews.html", "template": "review-qr", "title": "Leave us a Google review", "description": "Scan the QR code or tap the button to leave a Google review for the salon. Demo link.", "h1": "Leave us a Google review", "requires": "googleReviewUrl"}
  ]
 }

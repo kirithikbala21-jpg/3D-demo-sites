@@ -5,6 +5,11 @@
           <h2 id="book-title">Book a time in under a minute</h2>
           <p class="lead">Five quick steps. Pick a service, a stylist, a day and a time.</p>
         </div>
+        {{#if hasBusyness}}<div class="busy reveal" id="busy" data-busy hidden>
+          <h3 class="busy-h">Best time to come</h3>
+          <p class="busy-line" data-busy-line></p>
+          <div class="busy-chart" data-busy-chart></div>
+        </div>{{/if}}
         <div class="bk reveal" id="booking-app" data-booking>
           <div class="bk-fallback">
             <p>Online booking needs JavaScript. To book, call <a href="tel:{{contact.phoneHref}}">{{contact.phone}}</a> or email <a href="mailto:{{contact.email}}">{{contact.email}}</a>.</p>

@@ -105,6 +105,24 @@ def prepare_config():
     for st in cfg["stylists"]:
         if not st.get("name") or not st.get("slug"):
             errs.append("stylists: every person needs a name and a slug.")
+    for k in ("googleReviewUrl", "googleMapsUrl", "instagramUrl", "facebookUrl"):
+        v = cfg.get(k, "")
+        if v and not re.fullmatch(r"https://\S+", v):
+            errs.append(f'{k}: "{v}" must be a web address starting with https:// (or leave it empty "" to hide it).')
+    if cfg.get("googleRating") not in (None, ""):
+        if not isinstance(cfg["googleRating"], (int, float)) or not 0 < cfg["googleRating"] <= 5:
+            errs.append("googleRating: must be a number from 0 to 5 (use the REAL rating from Google, never invent one).")
+        if not isinstance(cfg.get("googleReviewCount"), int) or cfg.get("googleReviewCount", 0) <= 0:
+            errs.append("googleReviewCount: must be a whole number above 0 (the REAL count from Google).")
+    if not isinstance(cfg.get("reminderLeadHours", 24), (int, float)) or cfg.get("reminderLeadHours", 24) < 1:
+        errs.append("reminderLeadHours: must be a number of hours, 1 or more (24 = the day before).")
+    bz = cfg.get("busyness") or {}
+    if bz.get("blocks"):
+        for day, row in (bz.get("week") or {}).items():
+            if day not in ("sun", "mon", "tue", "wed", "thu", "fri", "sat"):
+                errs.append(f'busyness > week: "{day}" must be one of sun, mon, tue, wed, thu, fri, sat.')
+            elif len(row) != len(bz["blocks"]) or any(x not in ("quiet", "medium", "busy", "closed", None) for x in row):
+                errs.append(f'busyness > week > {day}: needs one of quiet, medium, busy or closed for each of the {len(bz["blocks"])} time blocks.')
     if errs:
         sys.exit("PROBLEMS in site.config.json (fix these and save again):\n - " + "\n - ".join(errs))
 
@@ -335,6 +353,43 @@ def hero_preload(sl):
     return f'<link rel="preload" as="image" href="{sl["file"]}" fetchpriority="high">'
 
 
+def stars_svg(rating, uid):
+    """Five SVG stars filled to the rating (same drawing as the kit's rating.js). Decorative: the link carries the text."""
+    pct = max(0, min(5, rating)) / 5 * 100
+    star = "".join(f'<path transform="translate({i * 20} 0)" d="M10 1.5l2.6 5.5 6 .8-4.4 4.1 1.1 5.9L10 15l-5.3 2.8 1.1-5.9L1.4 7.8l6-.8z"/>' for i in range(5))
+    return (f'<svg class="stars" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 19" width="95" height="18" aria-hidden="true" focusable="false">'
+            f'<defs><clipPath id="{uid}"><rect width="{pct}" height="19"/></clipPath></defs><g fill="rgba(128,128,128,.45)">{star}</g><g fill="#F2B84B" clip-path="url(#{uid})">{star}</g></svg>')
+
+
+def rating_badge(uid):
+    """'Rated 4.9 on Google · 120 reviews'. Empty string (nothing shown) unless rating, count and Maps link are all set."""
+    r, n, u = cfg.get("googleRating"), cfg.get("googleReviewCount"), cfg.get("googleMapsUrl")
+    if not (isinstance(r, (int, float)) and 0 < r <= 5 and isinstance(n, int) and n > 0 and u):
+        return ""
+    return (f'<a class="g-rating" href="{esc(u)}" target="_blank" rel="noopener">{stars_svg(r, uid)}'
+            f'<span class="g-rating-text">Rated {r} on Google &middot; {n} reviews</span><span class="g-rating-demo">Demo number</span><span class="sr-only"> (opens Google Maps in a new tab)</span></a>')
+
+
+GOOGLE_PATH = "M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21z M12 7a2.500 2.500 0 1 0 0 5 2.500 2.500 0 0 0 0-5z"
+INSTA_PATH = "M7 3h10a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4z M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8z M17.500 6.500h.01"
+FB_PATH = "M14 8h3V4h-3a4 4 0 0 0-4 4v3H7v4h3v6h4v-6h3l1-4h-4V8.500a.5.5 0 0 1 .5-.5z"
+
+
+def social_links():
+    """Footer and contact icons. Only links whose address is set in site.config.json are listed (empty = hidden)."""
+    out = []
+    for key, label, path in (("googleMapsUrl", "Find us on Google Maps", GOOGLE_PATH), ("instagramUrl", "Follow us on Instagram", INSTA_PATH), ("facebookUrl", "Find us on Facebook", FB_PATH)):
+        if cfg.get(key):
+            out.append({"label": label, "href": cfg[key], "path": path})
+    out += [{"label": x["label"], "href": x["href"], "path": x["path"]} for x in cfg.get("social", [])]
+    return out
+
+
+def has_busyness():
+    bz = cfg.get("busyness") or {}
+    return bool(cfg.get("busynessEnabled") and bz.get("blocks") and any(any(v in ("quiet", "medium", "busy") for v in row or []) for row in (bz.get("week") or {}).values()))
+
+
 def brand_html():
     """'Maison Lune' -> 'Maison <em>Lune</em>' (the last word is set in italics)."""
     words = cfg["brand"]["name"].split()
@@ -451,6 +506,9 @@ def build():
         "holidays": {"mode": cfg["holidays"].get("mode", "closed"), "overrides": {k: {"status": o.get("status"), "open": o.get("openMin"), "close": o.get("closeMin")} for k, o in (cfg["holidays"].get("overrides") or {}).items()}},
         "closures": [{"date": k["date"], "name": k.get("name", ""), "status": k["status"], "open": k.get("openMin"), "close": k.get("closeMin")} for k in cfg.get("closures", [])],
         "notices": cfg.get("notices", []), "booking": cfg["booking"], "forms": {"endpoint": cfg["forms"].get("endpoint", "")},
+        "remindersEnabled": bool(cfg.get("remindersEnabled")), "reminderLeadHours": cfg.get("reminderLeadHours", 24),
+        "waitlistEnabled": bool(cfg.get("waitlistEnabled")),
+        "busyness": cfg.get("busyness") if has_busyness() else None,
         "categories": [{"id": c["id"], "name": c["name"]} for c in DATA["services"]["categories"]],
         "services": [{"slug": s["slug"], "cat": s["cat"], "name": s["name"], "from": s["from"], "min": s["min"]} for s in flat],
         "stylists": [{"slug": s["slug"], "name": s["name"], "first": s["first"], "speciality": s["speciality"]} for s in DATA["stylists"]],
@@ -465,12 +523,19 @@ def build():
         "year": datetime.date.today().year, "photos": photos, "photoCredits": credits, "heroReal": hero_real,
         "heroPreload": hero_preload(slots["hero"]) if hero_real else "",
         "vouchers": [{"amount": v, "text": money(v), "checked": i == 1} for i, v in enumerate(cfg["vouchers"])],
-        "mapsUrl": "https://www.google.com/maps/search/?api=1&query=" + urllib.parse.quote(cfg["contact"]["mapsQuery"]),
-        "brandHtml": brand_html(), "formsLive": bool(cfg["forms"].get("endpoint")), "assets": asset_versions(),
+        "mapsUrl": cfg.get("googleMapsUrl") or "https://www.google.com/maps/search/?api=1&query=" + urllib.parse.quote(cfg["contact"]["mapsQuery"]),
+        "brandHtml": brand_html(), "ratingHero": rating_badge("rs-hero"), "ratingFooter": rating_badge("rs-foot"),
+        "socialLinks": social_links(), "hasBusyness": has_busyness(), "openBanner": bool(cfg.get("openBannerEnabled", True)),
+        "reviewsOn": bool(cfg.get("googleReviewUrl")), "formsLive": bool(cfg["forms"].get("endpoint")), "assets": asset_versions(),
         "importMap": import_map(), "lenisCssInline": (ROOT / "vendor/lenis-1.1.18.css").read_text().strip(),
         "themeCss": ":root{" + ";".join(f"--{k}:{v}" for k, v in [("ivory", cfg["theme"]["ivory"]), ("cocoa", cfg["theme"]["cocoa"]), ("clay", cfg["theme"]["clay"]), ("sage", cfg["theme"]["sage"]), ("clay-text", cfg["theme"]["clayText"]), ("sage-text", cfg["theme"]["sageText"])]) + "}",
     }
     layout = parse((TPL / "layout.html").read_text())
+    for page in list(cfg["pages"]):
+        if page.get("requires") and not cfg.get(page["requires"]):
+            cfg["pages"].remove(page)  # feature switched off in config: the page does not exist
+            if (ROOT / page["file"]).exists():
+                (ROOT / page["file"]).unlink()
     for page in cfg["pages"]:
         page["description"] = page["description"].replace("{phone}", cfg["contact"]["phone"])
         home = page["file"] == "index.html"

@@ -1,0 +1,15 @@
+    <section class="section page-top review-page" aria-labelledby="page-title">
+      <div class="container narrow">
+        <div id="qr-print" class="qr-print">
+          <p class="eyebrow no-print">Reviews</p>
+          <h1 id="page-title">{{page.h1}}</h1>
+          <div class="qr-box" id="qr-box" data-url="{{googleReviewUrl}}" data-label="QR code. Scan it to leave a Google review for {{brand.name}}"></div>
+          <p class="qr-scan">Scan to leave a review</p>
+          <p class="qr-name">{{brand.name}}</p>
+        </div>
+        <p class="lead no-print">Point your phone camera at the code, or use the button. It takes about a minute and helps other people find us.</p>
+        <p class="no-print qr-actions"><a class="btn btn-primary btn-lg" href="{{googleReviewUrl}}" target="_blank" rel="noopener">Leave us a Google review<span class="sr-only"> (opens in a new tab)</span></a> <button type="button" class="btn btn-ghost btn-lg" data-print>Print this</button> <a class="btn btn-ghost btn-lg" href="index.html">Back to the home page</a></p>
+        <noscript><p class="no-print">The QR code needs JavaScript. Use the button above, or open this address: {{googleReviewUrl}}</p></noscript>
+        <p class="small no-print">Demo: this review address is a placeholder and does not go to a real review page. The owner sets the real one in <code>site.config.json</code> (googleReviewUrl).</p>
+      </div>
+    </section>

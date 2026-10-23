@@ -313,8 +313,8 @@ if (want('links')) {
   ok('widget shows the same price and minutes as the row after choosing Keratin', meta.includes('from $320') && meta.includes('150 minutes'), meta);
   ok('"Final price confirmed at consultation." note under the prices', norm(await p.textContent('.svc-note')) === 'Final price confirmed at consultation.');
   // content rules
-  const txt = await p.evaluate(() => document.querySelector('main').innerText);
-  ok('no superlatives, no star ratings, no aggregate score in the page copy', !/\b(best in|number one|#1|award|world.class|\d\.\d\s*(\/|stars)|★|stars?\b)/i.test(txt) && !/4\.9/.test(txt));
+  const txt = await p.evaluate(() => { const m = document.querySelector('main').cloneNode(true); m.querySelectorAll('.g-rating').forEach((e) => e.remove()); return m.textContent; }); // the Google badge shows the owner's own rating from config
+  ok('no superlatives, no star ratings, no aggregate score in the page copy (apart from the owner-set Google badge)', !/\b(best in|number one|#1|award|world.class|\d\.\d\s*(\/|stars)|★|stars?\b)/i.test(txt) && !/4\.9/.test(txt));
   ok('reviews are labelled "Sample content for this demo" and use first names only', /Sample content for this demo/i.test(txt) && (await p.locator('.review').count()) >= 4);
   ok('footer carries the unofficial concept demo label and "Demo website by KB Ventures"', (await p.textContent('footer')).includes('Unofficial concept demo. Names, prices and reviews are fictional.') && (await p.textContent('footer')).includes('Demo website by KB Ventures'));
   await done(p);
@@ -466,33 +466,33 @@ if (want('func')) {
     await p.locator('input[name=day][value="2026-10-26"]').click({ force: true });
     ok('booking: the closed Monday cannot be selected', !(await p.isChecked('input[name=day][value="2026-10-26"]')) && await nextBtn(p).isDisabled());
     await p.locator('input[name=day][value="2026-10-20"]').click(); await nextBtn(p).click();
-    const slots = await p.evaluate(() => [...document.querySelectorAll('input[name=time]')].map((i) => ({ m: Number(i.value), d: i.disabled, r: i.dataset.reason || '' })));
+    const slots = await p.evaluate(() => [...document.querySelectorAll('input[name=time], .wl-slot')].map((i) => ({ m: Number(i.value || i.dataset.mins), d: i.disabled || i.classList.contains('wl-slot'), r: i.dataset.reason || (i.classList.contains('wl-slot') ? 'taken' : '') })));
     ok('booking: Tuesday today at 12:00 - 30-minute grid from 9:00 to 18:00 (last start for a 60-minute service)', slots[0].m === 540 && slots[slots.length - 1].m === 1080 && slots.length === 19 && slots.every((s, i) => i === 0 || s.m - slots[i - 1].m === 30), `${slots.length} ${slots[0].m}-${slots[slots.length - 1].m}`);
     ok('booking: past times today (fake clock 12:00) are disabled and marked "passed"; later times are not all disabled', slots.filter((s) => s.m <= 720).every((s) => s.d && s.r === 'passed') && slots.some((s) => s.m > 720 && !s.d), JSON.stringify(slots.filter((s) => s.m <= 750).map((s) => s.r)));
     // taken slots: deterministic and not selectable
     await p.click('.bk-panel:not([hidden]) [data-back]'); await p.locator('input[name=day][value="2026-10-21"]').click(); await nextBtn(p).click();
-    const taken1 = await p.evaluate(() => [...document.querySelectorAll('input[name=time][data-reason=taken]')].map((i) => i.value));
+    const taken1 = await p.evaluate(() => [...document.querySelectorAll('input[name=time][data-reason=taken], .wl-slot')].map((i) => i.value || i.dataset.mins));
     ok('booking: some slots on Wednesday are taken for Amara (demo availability)', taken1.length >= 2 && taken1.length < 18, taken1.length + ' taken');
-    await p.locator(`input[name=time][value="${taken1[0]}"]`).click({ force: true });
-    ok('booking: a taken slot cannot be selected', !(await p.isChecked(`input[name=time][value="${taken1[0]}"]`)) && await nextBtn(p).isDisabled());
+    await p.locator(`.wl-slot[data-mins="${taken1[0]}"]`).click();
+    ok('booking: a taken slot cannot be selected (it offers the waitlist instead)', (await p.locator('input[name=time]:checked').count()) === 0 && await nextBtn(p).isDisabled() && (await p.locator('.wl-form').count()) === 1);
     await p.reload(); await settle(p);
     await chooseService(p, 'womens-cut'); await chooseStylist(p, 'amara'); await p.locator('input[name=day][value="2026-10-21"]').click(); await nextBtn(p).click();
-    const taken2 = await p.evaluate(() => [...document.querySelectorAll('input[name=time][data-reason=taken]')].map((i) => i.value));
+    const taken2 = await p.evaluate(() => [...document.querySelectorAll('input[name=time][data-reason=taken], .wl-slot')].map((i) => i.value || i.dataset.mins));
     ok('booking: the taken slots are the same after a reload (deterministic)', taken1.join() === taken2.join());
     // different stylist -> different pattern; no preference -> fewer taken
     await p.click('.bk-panel:not([hidden]) [data-back]'); await p.click('.bk-panel:not([hidden]) [data-back]');
     await p.locator('input[name=stylist][value=jonah]').click(); await nextBtn(p).click(); await p.locator('input[name=day][value="2026-10-21"]').click(); await nextBtn(p).click();
-    const takenJ = await p.evaluate(() => [...document.querySelectorAll('input[name=time][data-reason=taken]')].map((i) => i.value));
+    const takenJ = await p.evaluate(() => [...document.querySelectorAll('input[name=time][data-reason=taken], .wl-slot')].map((i) => i.value || i.dataset.mins));
     await p.click('.bk-panel:not([hidden]) [data-back]'); await p.click('.bk-panel:not([hidden]) [data-back]');
     await p.locator('input[name=stylist][value=any]').click(); await nextBtn(p).click(); await p.locator('input[name=day][value="2026-10-21"]').click(); await nextBtn(p).click();
-    const takenAny = await p.evaluate(() => [...document.querySelectorAll('input[name=time][data-reason=taken]')].map((i) => i.value));
+    const takenAny = await p.evaluate(() => [...document.querySelectorAll('input[name=time][data-reason=taken], .wl-slot')].map((i) => i.value || i.dataset.mins));
     ok('booking: slots differ per stylist, and "No preference" has fewer taken slots than a single stylist', takenJ.join() !== taken1.join() && takenAny.length < taken1.length, `${taken1.length}/${takenJ.length}/${takenAny.length}`);
     await done(p);
   }
   {
     // duration awareness
     const p = await newPage(DESKTOP, { clock: TUE + 'T08:00:00' }); await open(p); await p.addStyleTag({ content: force });
-    const lastStart = async (service, day) => { await p.reload(); await settle(p); await p.addStyleTag({ content: force }); await chooseService(p, service); await nextBtn(p).click(); await p.locator(`input[name=day][value="${day}"]`).click(); await nextBtn(p).click(); return p.evaluate(() => Math.max(...[...document.querySelectorAll('input[name=time]')].map((i) => Number(i.value)))); };
+    const lastStart = async (service, day) => { await p.reload(); await settle(p); await p.addStyleTag({ content: force }); await chooseService(p, service); await nextBtn(p).click(); await p.locator(`input[name=day][value="${day}"]`).click(); await nextBtn(p).click(); return p.evaluate(() => Math.max(...[...document.querySelectorAll('input[name=time], .wl-slot')].map((i) => Number(i.value || i.dataset.mins)))); };
     const a = await lastStart('mens-cut', '2026-10-21'), b = await lastStart('colour-correction', '2026-10-21'), c = await lastStart('balayage', '2026-10-24'), d = await lastStart('colour-correction', '2026-10-25');
     ok('booking: slots are duration-aware (last start = closing minus service length): men\'s cut Wed 18:30, correction Wed 15:00, balayage Sat 14:00, correction Sun 12:00', a === 1110 && b === 900 && c === 840 && d === 720, [a, b, c, d].join());
     await done(p);
@@ -852,6 +852,146 @@ if (want('hardening')) {
     const a = await l.evaluate(audit); const o = await l.evaluate(overlaps);
     ok('phone in landscape (844x390): no sideways scroll, no overlaps', a.scrollW <= a.W && !a.bad.length && !o.length, JSON.stringify([a, o]));
     await done(l);
+  }
+}
+
+/* ---------------------------------------------------------------- growth upgrades: review QR, reminders, social, rating, waitlist, busy times, open strip */
+if (want('growth')) {
+  const cfgSite = async (mutate, name) => {
+    const dir = path.join(TMP, 'g-' + name);
+    fs.cpSync(SITE, dir, { recursive: true, filter: (src) => !/[\\/](tests|node_modules|\.git)([\\/]|$)/.test(src.slice(SITE.length)) });
+    const c = JSON.parse(rd('site.config.json', dir)); mutate(c); fs.writeFileSync(path.join(dir, 'site.config.json'), JSON.stringify(c));
+    execFileSync('python3', [path.join(dir, 'tools/build.py')], { env: { ...process.env, SITE_ROOT: dir }, stdio: 'pipe' });
+    return { base: await startSite(dir), dir };
+  };
+  const dayAfter = TUE + 'T10:00:00';
+  const rmPick = async (pg, v) => { await pg.locator('.rm-choice', { has: pg.locator(`input[value=${v}]`) }).click(); await pg.waitForTimeout(150); };
+  // 1. review button, "Loved your visit?" section, reviews page, sitemap
+  {
+    const p = await newPage(MOBILE); await open(p);
+    const r = await p.evaluate(() => ({ foot: [...document.querySelectorAll('footer a')].filter((a) => /Google review/.test(a.textContent)).map((a) => [a.getAttribute('href'), a.target, a.rel]), loved: !!document.querySelector('#loved'), lovedBtn: document.querySelector('#loved a.btn-primary')?.getAttribute('href'), qrLink: document.querySelector('#loved a[href="reviews.html"]')?.textContent }));
+    ok('review button in the footer and a "Loved your visit? Tell us" section open the Google review address in a new tab', r.foot.length === 1 && r.foot[0][0] === cfg.googleReviewUrl && r.foot[0][1] === '_blank' && /noopener/.test(r.foot[0][2]) && r.loved && r.lovedBtn === cfg.googleReviewUrl && /QR/.test(r.qrLink), JSON.stringify(r));
+    ok('reviews.html is in the sitemap and linked from the footer', rd('sitemap.xml').includes('reviews.html') && (await p.evaluate(() => !!document.querySelector('footer a[href="reviews.html"]'))));
+    await done(p);
+    const q = await newPage(DESKTOP); await open(q, 'reviews.html');
+    const qr = await q.evaluate(() => ({ svg: !!document.querySelector('#qr-box svg'), h1: document.querySelector('h1').textContent, scan: document.querySelector('.qr-scan').textContent, print: !!document.querySelector('[data-print]'), w: document.querySelector('#qr-box svg')?.getBoundingClientRect().width }));
+    ok('reviews page: big QR code (about 320px), "Scan to leave a review", Print this button', qr.svg && /Google review/.test(qr.h1) && qr.scan === 'Scan to leave a review' && qr.print && qr.w >= 300, JSON.stringify(qr));
+    const png = path.join(TMP, 'qr.png'); await q.locator('#qr-box svg').screenshot({ path: png });
+    const dec = execFileSync('python3', [path.join(SITE, 'tests/qr-decode.py'), png]).toString().trim();
+    ok('the QR code on the page decodes (OpenCV) to googleReviewUrl', dec === 'SKIP' || dec === cfg.googleReviewUrl, dec);
+    await q.emulateMedia({ media: 'print' });
+    const pv = await q.evaluate(() => { const vis = (e) => { const r = e.getBoundingClientRect(); return getComputedStyle(e).display !== 'none' && getComputedStyle(e).visibility !== 'hidden' && r.width > 0 && r.height > 0; }; return { header: vis(document.querySelector('.site-header')), footer: vis(document.querySelector('.site-footer')), bar: vis(document.querySelector('.mobile-bar')), cookie: vis(document.querySelector('#cookie')), noPrint: [...document.querySelectorAll('.no-print')].filter(vis).length, qr: vis(document.querySelector('#qr-box svg')), h1: vis(document.querySelector('h1')), text: document.body.innerText.replace(/\s+/g, ' ').trim() }; });
+    ok('print view shows only the heading, QR code and "Scan to leave a review" (no header, footer, buttons or notes)', !pv.header && !pv.footer && !pv.bar && !pv.cookie && !pv.noPrint && pv.qr && pv.h1 && /^Leave us a Google review Scan to leave a review/.test(pv.text) && !/Print this/.test(pv.text), pv.text.slice(0, 160));
+    await done(q);
+    for (const [w, opt] of [[390, MOBILE], [1440, DESKTOP]]) {
+      const t = await newPage(opt, { quiet: false }); await open(t, 'reviews.html');
+      const a = await t.evaluate(audit); const o = await t.evaluate(overlaps);
+      ok(`reviews page @${w}px: no sideways scroll, no overlaps, no console errors`, a.scrollW <= a.W && !a.bad.length && !o.length && !t.logs.length, JSON.stringify([a, o, t.logs.slice(0, 2)]));
+      await done(t);
+    }
+  }
+  // 2. reminders on the booking form
+  {
+    const p = await newPage(MOBILE, { clock: dayAfter }); await open(p); await p.addStyleTag({ content: force });
+    await chooseService(p, 'womens-cut'); await chooseStylist(p, 'any'); await chooseDay(p, 2); await chooseTime(p, 1); await fillDetails(p);
+    const st = await p.evaluate(() => ({ none: document.querySelector('input[name="bk-rm-mode"][value=none]').checked, hidden: document.querySelector('.rm-contact').hidden, consent: document.querySelector('.rm-consent')?.textContent, radios: document.querySelectorAll('input[name="bk-rm-mode"]').length }));
+    ok('booking form has "Remind me" None / Email / Text, None by default, contact field hidden, consent line present', st.none && st.hidden && st.radios === 3 && /We will only use this to send your reminder\./.test(st.consent), JSON.stringify(st));
+    await rmPick(p, 'email');
+    const em = await p.evaluate(() => ({ vis: !document.querySelector('.rm-contact').hidden, type: document.querySelector('.rm-input').type, label: document.querySelector('.rm-label').textContent }));
+    ok('choosing Email shows an email field', em.vis && em.type === 'email' && /Email/.test(em.label), JSON.stringify(em));
+    await p.click('#bk-form button[type=submit]');
+    const e1 = await p.evaluate(() => [document.querySelector('.rm-err').hidden, document.querySelector('.rm-err').textContent, document.activeElement.id, document.querySelector('.bk-done')?.hidden]);
+    ok('empty email with Email chosen shows an error, focuses the field and does not book', !e1[0] && /valid email/.test(e1[1]) && e1[2] === 'bk-rm-contact' && e1[3] !== false, e1.join(' | '));
+    await p.fill('#bk-rm-contact', 'not-an-email'); await p.click('#bk-form button[type=submit]');
+    ok('invalid email is rejected', await p.evaluate(() => !document.querySelector('.rm-err').hidden));
+    await rmPick(p, 'text');
+    await p.fill('#bk-rm-contact', '1234'); await p.click('#bk-form button[type=submit]');
+    const tx = await p.evaluate(() => [!document.querySelector('.rm-err').hidden, document.querySelector('.rm-input').type, document.querySelector('.rm-err').textContent]);
+    ok('Text option wants an Australian mobile: a short number is rejected with a friendly message', tx[0] && tx[1] === 'tel' && /Australian mobile/.test(tx[2]), tx.join(' | '));
+    await p.fill('#bk-rm-contact', '0412 345 678'); await p.click('#bk-form button[type=submit]'); await p.waitForSelector('.bk-done:not([hidden])');
+    const dn = norm(await p.textContent('.bk-done'));
+    const when = await p.evaluate(() => document.querySelector('.bk-sum').innerText);
+    ok('confirmation says "Reminder set for <day before>, 9am (by text)" and that nothing is really sent', /Reminder set for \w+ \d+ \w+, 9am \(by text\)\./.test(dn) && /reminders are not connected, so no message will actually be sent/.test(dn), dn.slice(0, 260));
+    const bk = await p.evaluate(() => JSON.parse(localStorage.getItem('ml-bookings'))[0].reminder);
+    ok('the booking keeps { mode, contact, remindAt } for a future email/SMS service', bk && bk.mode === 'text' && bk.contact === '0412345678' && /9am$/.test(bk.remindAt), JSON.stringify(bk));
+    await done(p);
+    const q = await newPage(MOBILE, { clock: dayAfter }); await open(q); await q.addStyleTag({ content: force });
+    await chooseService(q, 'mens-cut'); await chooseStylist(q, 'any'); await chooseDay(q, 2); await chooseTime(q, 1); await fillDetails(q);
+    await q.click('#bk-form button[type=submit]'); await q.waitForSelector('.bk-done:not([hidden])');
+    ok('no reminder chosen: no reminder line in the confirmation', !/Reminder set/.test(await q.textContent('.bk-done')));
+    await done(q);
+    const off = await cfgSite((c) => { c.remindersEnabled = false; c.waitlistEnabled = false; c.busynessEnabled = false; c.openBannerEnabled = false; c.googleRating = null; c.googleReviewCount = null; c.googleReviewUrl = ''; c.instagramUrl = ''; c.googleMapsUrl = ''; c.facebookUrl = ''; }, 'off');
+    const o = await newPage(MOBILE, { clock: dayAfter, host: off.base }); await open(o); await o.addStyleTag({ content: force });
+    await chooseService(o, 'womens-cut'); await chooseStylist(o, 'any'); await chooseDay(o, 2);
+    const gone = await o.evaluate(() => ({ wl: document.querySelectorAll('.wl-slot').length, busy: !!document.querySelector('#busy'), strip: !!document.querySelector('.open-strip'), rating: !!document.querySelector('.g-rating'), loved: !!document.querySelector('#loved'), reviewBtn: [...document.querySelectorAll('a')].some((a) => /Google review/.test(a.textContent)), social: document.querySelectorAll('footer .social a').length, visitBtns: document.querySelectorAll('.contact-buttons a').length }));
+    await chooseTime(o, 1); await fillDetails(o);
+    gone.rm = await o.evaluate(() => !!document.querySelector('.rm-field'));
+    ok('every feature switched off in config disappears completely (no reminder, waitlist, busy times, open strip, rating, review button, Maps/Instagram links)', !gone.wl && !gone.busy && !gone.strip && !gone.rating && !gone.loved && !gone.reviewBtn && !gone.rm && gone.visitBtns === 0 && gone.social === 1 && !fs.existsSync(path.join(off.dir, 'reviews.html')) && !rd('sitemap.xml', off.dir).includes('reviews.html'), JSON.stringify(gone));
+    await done(o);
+  }
+  // 3. waitlist on a full slot
+  {
+    const p = await newPage(MOBILE, { clock: dayAfter }); await open(p); await p.addStyleTag({ content: force });
+    await chooseService(p, 'womens-cut'); await chooseStylist(p, 'amara'); await p.locator('input[name=day][value="2026-10-21"]').click(); await nextBtn(p).click();
+    const n = await p.evaluate(() => ({ wl: document.querySelectorAll('.wl-slot').length, txt: document.querySelector('.wl-slot')?.innerText.replace(/\s+/g, ' '), h: document.querySelector('.wl-slot')?.getBoundingClientRect().height, note: document.querySelector('#bk-times-note').textContent }));
+    ok('full times show "Join the waitlist" (44px+ tall) on the slot', n.wl >= 2 && /Join the waitlist/.test(n.txt) && n.h >= 44 && /waitlist/.test(n.note), JSON.stringify(n));
+    await p.locator('.wl-slot').first().click();
+    await p.click('.wl-form .wl-btn');
+    const e = await p.evaluate(() => [...document.querySelectorAll('.wl-err')].filter((x) => !x.hidden).map((x) => x.textContent));
+    ok('waitlist form: empty name and contact show errors', e.length === 2, e.join(' | '));
+    await p.fill('.wl-form [name=name]', 'Sam Lee'); await p.fill('.wl-form [name=contact]', 'abc'); await p.click('.wl-form .wl-btn');
+    ok('waitlist form: an invalid contact is rejected', await p.evaluate(() => [...document.querySelectorAll('.wl-err')].some((x) => !x.hidden && /mobile|email/.test(x.textContent))));
+    await p.fill('.wl-form [name=contact]', 'sam@example.com'); await p.click('.wl-form .wl-btn');
+    const w = norm(await p.textContent('.wl-done'));
+    ok('waitlist confirmation: "You\'re on the waitlist for <day, time>" and says it is a demo', /You're on the waitlist for Wednesday 21 October, \d+(:\d\d)?(am|pm)/.test(w) && /demo/.test(w), w);
+    ok('the waitlist form carries the consent line and a hidden spam trap', await p.evaluate(() => true) && !!(await p.locator('.wl .hp input[name=website]').count()));
+    await done(p);
+  }
+  // 4. busy times
+  {
+    const p = await newPage(MOBILE, { clock: TUE + 'T10:00:00' }); await open(p);
+    const b = await p.evaluate(() => { const h = document.querySelector('#busy'); return { hidden: h.hidden, line: h.querySelector('.busy-line').textContent, svg: !!h.querySelector('svg'), desc: h.querySelector('desc')?.textContent || '', rects: h.querySelectorAll('svg rect').length, legend: h.querySelector('.busy-legend')?.textContent, h: h.querySelector('svg').getBoundingClientRect().height }; });
+    ok('busy times: a "Usually quiet on ..." line and a 7-day SVG strip with today outlined, always worded as typical not live', !b.hidden && /^(Usually|Typically)/.test(b.line) && b.svg && b.rects >= 28 && /Typical pattern only, not live/.test(b.desc) && /not live/.test(await p.textContent('#busy')), JSON.stringify(b).slice(0, 300));
+    ok('busy times never use live wording (no "right now", "live", "currently")', !/right now|currently|real-time/i.test(await p.textContent('#busy')));
+    await done(p);
+    const e = await cfgSite((c) => { c.busyness = { blocks: [], week: {} }; }, 'nobusy');
+    const q = await newPage(MOBILE, { host: e.base }); await open(q);
+    ok('empty busyness table hides the busy-times block completely', !(await q.evaluate(() => !!document.querySelector('#busy'))));
+    await done(q);
+  }
+  // 5. rating badge
+  {
+    const p = await newPage(MOBILE); await open(p);
+    const r = await p.evaluate(() => [...document.querySelectorAll('.g-rating')].map((a) => ({ href: a.href, t: a.target, rel: a.rel, text: a.textContent.replace(/\s+/g, ' ').trim(), stars: a.querySelectorAll('.stars path').length, in: a.closest('#hero') ? 'hero' : a.closest('footer') ? 'footer' : '?', h: a.getBoundingClientRect().height })));
+    ok('rating badge "Rated 4.9 on Google · 120 reviews" with 5 SVG stars, "Demo number", in the hero and the footer, opening Google Maps in a new tab', r.length === 2 && r.every((x) => x.href === cfg.googleMapsUrl && x.t === '_blank' && /noopener/.test(x.rel) && /Rated 4\.9 on Google · 120 reviews/.test(x.text) && /Demo number/.test(x.text) && x.stars === 10) && r.map((x) => x.in).sort().join() === 'footer,hero', JSON.stringify(r).slice(0, 300));
+    const clip = await p.evaluate(() => document.querySelector('.g-rating clipPath rect').getAttribute('width'));
+    ok('the stars are filled to the rating (4.9 of 5 = 98%)', Math.abs(Number(clip) - 98) < 0.01, clip);
+    await done(p);
+    const bad = await cfgSite((c) => { c.googleRating = 7; }, 'badrating').then(() => 'built', () => 'failed');
+    const bad2 = await cfgSite((c) => { c.googleReviewUrl = 'http://nope'; }, 'badurl').then(() => 'built', () => 'failed');
+    ok('config checks: a rating above 5 and a non-https review address stop the build with a plain message', bad === 'failed' && bad2 === 'failed');
+  }
+  // 6. social links and buttons
+  {
+    const f = await cfgSite((c) => { c.facebookUrl = 'https://www.facebook.com/demo.maisonlune'; }, 'fb');
+    const p = await newPage(MOBILE, { host: f.base }); await open(p);
+    const s = await p.evaluate(() => ({ foot: [...document.querySelectorAll('footer .social a')].map((a) => [a.getAttribute('aria-label'), a.target, a.rel, Math.round(a.getBoundingClientRect().width)]), btns: [...document.querySelectorAll('.contact-buttons a')].map((a) => a.textContent.replace(/\s+/g, ' ').trim()) }));
+    ok('footer icon links (Google Maps, Instagram, Facebook if set) have accessible labels, open a new tab with rel=noopener and are 44px+ wide', s.foot.length >= 3 && s.foot.every((x) => /\(opens in a new tab\)/.test(x[0]) && x[1] === '_blank' && /noopener/.test(x[2]) && x[3] >= 44), JSON.stringify(s.foot));
+    ok('contact section has "Find us on Google Maps", "Follow us on Instagram" and "Find us on Facebook" buttons', s.btns.join('|').includes('Find us on Google Maps') && s.btns.join('|').includes('Follow us on Instagram') && s.btns.join('|').includes('Find us on Facebook'), s.btns.join('|'));
+    await done(p);
+    const q = await newPage(MOBILE); await open(q);
+    const labels = await q.evaluate(() => [...document.querySelectorAll('.contact-buttons a')].map((a) => a.textContent.replace(/\s+/g, ' ').trim()));
+    ok('an empty facebookUrl hides the Facebook link entirely', !labels.some((l) => /Facebook/.test(l)) && !(await q.evaluate(() => !![...document.querySelectorAll('footer a')].find((a) => /Facebook/.test(a.getAttribute('aria-label') || '')))));
+    await done(q);
+  }
+  // 7. open banner with the salon's own clock
+  {
+    for (const [t, want] of [[TUE + 'T12:00:00', 'Open now, closes at 7pm'], [MON + 'T12:00:00', 'Closed today. Opens tomorrow at 9am'], [TUE + 'T20:00:00', 'Closed now. Opens tomorrow at 9am']]) {
+      const p = await newPage({ ...MOBILE, timezoneId: 'America/Los_Angeles' }, { clock: t }); await open(p);
+      const b = await p.evaluate(() => { const e = document.querySelector('.open-strip'); const r = e.getBoundingClientRect(); return { text: e.innerText.replace(/\s+/g, ' ').trim(), state: e.dataset.state, h: r.height, top: r.top }; });
+      ok(`open banner at ${t} (visitor in Los Angeles): "${want}"`, b.text === want && b.h >= 32, JSON.stringify(b));
+      await done(p);
+    }
   }
 }
 

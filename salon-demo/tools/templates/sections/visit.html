@@ -25,6 +25,14 @@
           {{{hoursTable}}}
           <h3 class="visit-h">Get in touch</h3>
           <p class="contact-links"><a href="tel:{{contact.phoneHref}}">{{contact.phone}}</a><a href="mailto:{{contact.email}}">{{contact.email}}</a></p>
+          <ul class="contact-buttons" role="list">
+            {{#if googleMapsUrl}}<li><a class="btn btn-ghost" href="{{googleMapsUrl}}" target="_blank" rel="noopener">Find us on Google Maps<span class="sr-only"> (opens in a new tab)</span></a></li>{{/if}}
+            {{#if instagramUrl}}<li><a class="btn btn-ghost" href="{{instagramUrl}}" target="_blank" rel="noopener">Follow us on Instagram<span class="sr-only"> (opens in a new tab)</span></a></li>{{/if}}
+            {{#if facebookUrl}}<li><a class="btn btn-ghost" href="{{facebookUrl}}" target="_blank" rel="noopener">Find us on Facebook<span class="sr-only"> (opens in a new tab)</span></a></li>{{/if}}
+          </ul>
+          <ul class="social social-visit" role="list">
+            {{#each socialLinks}}<li><a href="{{this.href}}" target="_blank" rel="noopener" aria-label="{{this.label}} (opens in a new tab)"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="{{this.path}}" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/></svg></a></li>{{/each}}
+          </ul>
         </div>
         <div class="visit-photo zoom reveal" data-parallax="8">{{{photos.interior-2}}}</div>
       </div>

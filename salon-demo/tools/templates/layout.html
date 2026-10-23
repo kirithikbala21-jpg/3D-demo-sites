@@ -79,6 +79,8 @@
     </div>
   </header>
 
+  {{#if openBanner}}<div class="open-strip" role="status" data-open-today data-state="closed"><span class="dot" aria-hidden="true"></span><span data-open-text>{{{hoursInline}}}</span></div>{{/if}}
+
   <main id="main">
 {{{content}}}
   </main>
@@ -108,15 +110,17 @@
       </div>
       <div class="footer-col">
         <h2 class="footer-h">Follow</h2>
+        {{#if reviewsOn}}<p class="footer-review"><a class="btn btn-clay btn-sm" href="{{googleReviewUrl}}" target="_blank" rel="noopener">Leave us a Google review<span class="sr-only"> (opens in a new tab)</span></a></p>{{/if}}
+        {{#if ratingFooter}}<p class="footer-rating">{{{ratingFooter}}}</p>{{/if}}
         <ul class="social" role="list">
-          {{#each social}}<li><a href="{{this.href}}" target="_blank" rel="noopener" aria-label="{{this.label}} (placeholder link)"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="{{this.path}}" fill="none" stroke="currentColor" stroke-width="1.700" stroke-linecap="round" stroke-linejoin="round"/></svg></a></li>{{/each}}
+          {{#each socialLinks}}<li><a href="{{this.href}}" target="_blank" rel="noopener" aria-label="{{this.label}} (opens in a new tab)"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="{{this.path}}" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/></svg></a></li>{{/each}}
         </ul>
       </div>
     </div>
     <div class="container footer-end">
       <p class="footer-demo"><strong>{{brand.demoNotice}}</strong></p>
       <p class="footer-demo">{{brand.demoFooter}}</p>
-      <p class="footer-links"><a href="{{page.homeHref}}">Home</a> <a href="privacy.html">Privacy</a> <a href="#top">Back to top <svg width="16" height="16" aria-hidden="true" focusable="false"><use href="#i-up"/></svg></a></p>
+      <p class="footer-links"><a href="{{page.homeHref}}">Home</a> {{#if reviewsOn}}<a href="reviews.html">Reviews</a> {{/if}}<a href="privacy.html">Privacy</a> <a href="#top">Back to top <svg width="16" height="16" aria-hidden="true" focusable="false"><use href="#i-up"/></svg></a></p>
       <p class="small">Prices are in AUD and include GST. Final price confirmed at consultation. Bookings made on this site are not real. Photos are stock images used for this concept demo.</p>
       <p class="small footer-copy">&copy; <span data-year>{{year}}</span> {{brand.name}}. All rights reserved.</p>
       {{#if photoCredits}}<p class="footer-credit">{{photoCredits}} (concept demo)</p>{{/if}}

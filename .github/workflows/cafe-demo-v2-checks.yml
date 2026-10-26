@@ -25,6 +25,9 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Python test helpers (Pillow builds the synthetic-photo copies, OpenCV decodes the QR codes)
+        run: pip install pillow opencv-python-headless numpy
+
       # The owner edits cafe-demo-v2/site.config.json on github.com; this step rebuilds the pages and commits them, so the
       # site updates itself about a minute after "Commit changes". A typo in the file makes this step fail with a plain-English message.
       - name: Rebuild the pages from site.config.json

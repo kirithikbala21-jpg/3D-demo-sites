@@ -1,0 +1,18 @@
+{
+  "name": "KB Ventures",
+  "email": "kb.ventures@outlook.com",
+  "year": 2026,
+  "location": "Melbourne, Australia",
+
+  "aceguidesShopUrl": "",
+
+  "demosNote": "These are concept demos for made-up businesses. Names, prices and reviews are examples only.",
+
+  "demos": [
+    { "type": "Barbershop", "name": "Brass & Blade", "line": "Classic cuts, skin fades and hot towel shaves, with a spinning 3D barber pole.", "url": "https://kirithikbala21-jpg.github.io/3D-demo-sites/barber-demo/" },
+    { "type": "Cafe", "name": "Ember & Oak", "line": "Small-batch coffee, all-day dining and long tables, with a cinematic 3D hero.", "url": "https://kirithikbala21-jpg.github.io/3D-demo-sites/cafe-demo-v2/" },
+    { "type": "Gym", "name": "Iron & Ember Athletic Club", "line": "Strength coaching, group classes and open gym, with a slowly rotating 3D barbell.", "url": "https://kirithikbala21-jpg.github.io/3D-demo-sites/gym-demo/" },
+    { "type": "Plumber", "name": "Waverley Plumbing & Gas", "line": "Licensed family plumbers and gas fitters with an emergency line and upfront prices.", "url": "https://kirithikbala21-jpg.github.io/3D-demo-sites/plumber-demo/" },
+    { "type": "Hair salon", "name": "Maison Lune", "line": "Cuts, colour, treatments and beauty with clear prices and online booking.", "url": "https://kirithikbala21-jpg.github.io/3D-demo-sites/salon-demo/" }
+  ]
+}

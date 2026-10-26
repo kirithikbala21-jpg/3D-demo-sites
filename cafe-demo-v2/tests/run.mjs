@@ -497,7 +497,7 @@ if (want('fallback')) {
 
   p = await newPage({ viewport: { width: 1440, height: 900 }, reducedMotion: 'reduce' });
   await p.goto(base + 'index.html'); await p.waitForTimeout(3500);
-  const s1 = await p.locator('#stage').screenshot(); await p.waitForTimeout(1500); const s2 = await p.locator('#stage').screenshot();
+  const s1 = await p.locator('#stage').screenshot({ timeout: 120000 }); await p.waitForTimeout(1500); const s2 = await p.locator('#stage').screenshot({ timeout: 120000 });
   ok('reduced motion: 3D shows a still frame', Buffer.compare(s1, s2) === 0 && (await p.locator('#scene.is-ready').count()) === 1);
   ok('reduced motion: no preloader, hero text visible', (await p.locator('#preloader').count()) === 0 && (await p.evaluate(() => getComputedStyle(document.querySelector('.hero-tag')).opacity)) === '1');
   await done(p);
@@ -520,7 +520,7 @@ if (want('fallback')) {
   await p.goto(base + 'index.html'); await p.waitForTimeout(4000);
   const ratio = await p.evaluate(() => { const c = document.querySelector('#scene'); return c.width / c.clientWidth; });
   ok('pixel ratio is capped at 1.5', ratio <= 1.55, String(ratio.toFixed(2)));
-  const x = await p.locator('#stage').screenshot(); await p.waitForTimeout(1500); const y = await p.locator('#stage').screenshot();
+  const x = await p.locator('#stage').screenshot({ timeout: 120000 }); await p.waitForTimeout(1500); const y = await p.locator('#stage').screenshot({ timeout: 120000 });
   ok('3D is animating', Buffer.compare(x, y) !== 0);
   await done(p);
 

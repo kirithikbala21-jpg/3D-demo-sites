@@ -849,3 +849,4 @@ a, button, input, select, textarea, label, summary, [role="tab"] { touch-action:
 /* hero text sits on a darker wash so every line stays at 4.5:1 or better on the bright gym photo (measured on real pixels at 390 and 1440px) */
 .hero-bg::after { background: linear-gradient(180deg, rgba(11, 11, 12, .62), rgba(11, 11, 12, .45) 38%, rgba(11, 11, 12, .92)), linear-gradient(90deg, rgba(11, 11, 12, .82), rgba(11, 11, 12, .45) 55%, rgba(11, 11, 12, 0) 100%); }
 @media (max-width: 899px) { .hero-bg::after { background: linear-gradient(180deg, rgba(11, 11, 12, .72), rgba(11, 11, 12, .72) 35%, rgba(11, 11, 12, .94)); } }
+@media (max-width: 420px) { .hero-rating { display: none; } } /* small phones: the rating stays in the footer and on the reviews page so the hero never runs under the cookie and phone bars */

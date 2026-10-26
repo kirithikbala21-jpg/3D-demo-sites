@@ -1,0 +1,53 @@
+{
+ "_readme": "Photo slots. Add a real photo with: python3 tools/add-photo.py photo.jpg SLOT --alt \"...\" --credit \"...\". Empty slots show 'Photo to come'.",
+ "slots": {
+  "hero": {
+   "file": "img/photos/hero.webp",
+   "alt": "",
+   "credit": "",
+   "label": "Hero photo (optional)",
+   "w": 900,
+   "h": 600
+  },
+  "barber": {
+   "file": "img/photos/barber.webp",
+   "alt": "",
+   "credit": "",
+   "label": "Your barber (photo to come)",
+   "w": 900,
+   "h": 600
+  },
+  "shop1": {
+   "file": "img/photos/shop1.webp",
+   "alt": "",
+   "credit": "",
+   "label": "Inside the shop 1",
+   "w": 900,
+   "h": 600
+  },
+  "shop2": {
+   "file": "img/photos/shop2.webp",
+   "alt": "",
+   "credit": "",
+   "label": "Inside the shop 2",
+   "w": 900,
+   "h": 600
+  },
+  "shop3": {
+   "file": "img/photos/shop3.webp",
+   "alt": "",
+   "credit": "",
+   "label": "Inside the shop 3",
+   "w": 900,
+   "h": 600
+  },
+  "shop4": {
+   "file": "img/photos/shop4.webp",
+   "alt": "",
+   "credit": "",
+   "label": "Inside the shop 4",
+   "w": 900,
+   "h": 600
+  }
+ }
+}

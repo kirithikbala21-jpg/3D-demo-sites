@@ -1,0 +1,11 @@
+    <!-- MEET YOUR BARBER -->
+    <section class="section section-night" id="meet" aria-labelledby="meet-title">
+      <div class="container">
+        <p class="eyebrow" data-zh="认识你的理发师">Meet your barber</p>
+        <h2 id="meet-title"><span data-zh="认识">Meet</span> <em data-zh="你的理发师">your barber.</em></h2>
+        <ul class="crew meet-cards">
+          {{#each staffList}}<li class="reveal meet-card"><span class="avatar" aria-hidden="true">{{#if this.photoHtml}}{{{this.photoHtml}}}{{else}}{{this.initial}}{{/if}}</span><div><strong>{{this.name}}</strong><span>{{this.role}}</span><p>{{this.blurb}}</p><a class="btn btn-primary" href="book.html?barber={{this.slug}}"><span data-zh="和他预约">Book with him</span><span class="sr-only"> ({{this.name}})</span></a></div></li>{{/each}}
+        </ul>
+        <p class="note" data-zh="理发师的名字、照片和简介还没有提供，先用占位内容。">The barber&rsquo;s name, photo and bio are not known yet, so these are placeholders.</p>
+      </div>
+    </section>

@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="dark">
+  {{#if page.isNotFound}}<script>document.write('<base href="' + (location.pathname.match(/^.*\/the-one-barber-demo\//) || ['/'])[0] + '">');</script>{{/if}}
+  <title>{{page.fullTitle}}</title>
+  <meta name="description" content="{{page.description}}">
+  {{#if site.noindex}}<meta name="robots" content="noindex">{{/if}}
+  <meta name="theme-color" content="{{theme.black}}">
+  <link rel="canonical" href="{{page.canonical}}">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="{{page.fullTitle}}">
+  <meta property="og:description" content="{{page.description}}">
+  <meta property="og:url" content="{{page.canonical}}">
+  <meta property="og:image" content="{{site.baseUrl}}img/og.png">
+  <meta property="og:locale" content="en_AU">
+  <meta property="og:site_name" content="{{brand.fullName}} (concept demo)">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="The One Barber, Glen Waverley: walk-ins welcome, open 6 days. Unofficial concept demo.">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{page.fullTitle}}">
+  <meta name="twitter:description" content="{{page.description}}">
+  <meta name="twitter:image" content="{{site.baseUrl}}img/og.png">
+  <link rel="icon" href="img/icon.svg" type="image/svg+xml">
+  <link rel="icon" href="favicon.ico" sizes="48x48">
+  <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="preload" href="fonts/montserrat-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/oswald-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="vendor/lenis-1.1.18.css?v={{assets.lenisCss}}">
+  <link rel="stylesheet" href="styles.css?v={{assets.css}}">
+  <script type="importmap">{{{importMap}}}</script>
+  <style>:root{--black:{{theme.black}};--charcoal:#161617;--gold:#C9A24B;--wine:{{theme.wine}};--wine-deep:{{theme.wineDeep}};--wine-night:{{theme.wineNight}};--gold-light:{{theme.goldLight}};--gold-text:{{theme.goldText}};--cream:{{theme.cream}};--tint:{{theme.tint}};--ink:{{theme.ink}}}</style>
+  {{{jsonld}}}
+  <noscript><style>
+    /* Without JavaScript: show the navigation and every menu category as plain content. */
+    .preloader, .nav-toggle, .icon-btn, .announce-close, .lang-btn { display: none !important; }
+    .mobile-nav[hidden] { display: block !important; position: static !important; animation: none; padding-top: calc(var(--header-h) + 8px) !important; padding-bottom: 8px !important; }
+  </style></noscript>
+  <script>
+    document.documentElement.classList.add('js');
+    try { if (localStorage.getItem('tob-announce') === 'off') document.documentElement.classList.add('no-announce'); } catch (e) { /* ignore */ }
+    // Safety net: never leave the hero hidden if the main script fails to start.
+    setTimeout(function () { var d = document.documentElement; if (!d.classList.contains('is-ready')) d.classList.add('is-ready', 'is-failsafe'); }, 4500);
+  </script>
+</head>
+<body class="page-{{page.template}}">
+  {{#if page.isHome}}
+  <div class="preloader" id="preloader" aria-hidden="true"><span class="script">{{{brand.wordmark}}}</span></div>
+  {{/if}}
+  <a class="skip-link" href="#main" data-zh="跳到主要内容">Skip to content</a>
+  <noscript><p class="nojs-banner">JavaScript is switched off, so online booking and live opening times are unavailable. Please call <a href="tel:{{contact.phoneHref}}">{{contact.phone}}</a> or visit us at {{contact.street}}, {{contact.locality}}. Hours: {{hoursInline}}.</p></noscript>
+  <div class="progress" aria-hidden="true"><span></span></div>
+
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <symbol id="logo-mark" viewBox="0 0 32 32">
+      <rect x="11" y="6" width="10" height="20" rx="4" fill="none" stroke="currentColor" stroke-width="1.800"/>
+      <path d="M11.500 11.500l9-4.500M11 16.500l10-5M11 21.500l10-5M11.500 26l9-4.500" stroke="currentColor" stroke-width="1.800" stroke-linecap="round"/>
+      <rect x="9.500" y="3" width="13" height="3.200" rx="1.200" fill="currentColor"/>
+      <rect x="9.500" y="25.800" width="13" height="3.200" rx="1.200" fill="currentColor"/>
+    </symbol>
+  </svg>
+
+  <!-- Announcement bar: one calm line, dismissible, remembered in localStorage -->
+  <div class="announce" id="announce" role="region" aria-label="Announcement">
+    <p><span data-zh="{{announcement.zh}}">{{announcement.text}}</span> <a href="{{announcement.href}}" data-zh="{{announcement.linkZh}}">{{announcement.link}}</a></p>
+    <button class="announce-close" type="button" id="announce-close" aria-label="Dismiss announcement"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" focusable="false"><path d="M2 2l10 10M12 2L2 12" stroke="currentColor" stroke-width="1.800" stroke-linecap="round"/></svg></button>
+  </div>
+
+  <div class="notice-bar" id="notice-bar" role="region" aria-label="Notices" hidden></div>
+  {{#if hasOpenBanner}}<div class="open-banner" id="open-banner" role="status" hidden><span class="dot" aria-hidden="true"></span><span class="ob-text"></span></div>{{/if}}
+
+  <header class="site-header" id="top">
+    <div class="header-inner">
+      <a class="brand" href="index.html" aria-label="{{brand.fullName}}, home">
+        <svg width="26" height="26" aria-hidden="true" focusable="false"><use href="#logo-mark"/></svg>
+      </a>
+      <div class="header-actions">
+        <button class="lang-btn" type="button" id="lang-toggle" aria-pressed="false" aria-label="中文 (Chinese)"><span class="lang-en">中文</span><span class="lang-zh" hidden>EN</span></button>
+        <a class="header-phone" href="tel:{{contact.phoneHref}}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 3.500h4l2 5-2.500 1.500a11 11 0 0 0 5 5l1.500-2.500 5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 5.500a2 2 0 0 1 2-2z"/></svg><span>{{contact.phone}}</span></a>
+        <a class="header-link" href="book.html" data-zh="预约">Book</a>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="mobile-nav" aria-label="Open menu">
+          <span class="bars" aria-hidden="true"><span></span><span></span><span></span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="mobile-nav" id="mobile-nav" data-lenis-prevent role="dialog" aria-modal="true" aria-label="Site menu" hidden>
+    <div class="overlay-inner">
+      <nav aria-label="Main">
+        <ul>
+          {{#each nav}}<li><a href="{{this.href}}"><span class="n" aria-hidden="true">0{{n}}</span><span data-zh="{{this.zh}}">{{this.label}}</span></a></li>{{/each}}
+        </ul>
+        <a class="btn btn-primary" href="book.html" data-zh="预约时间">Book a time</a>
+        <ul class="overlay-sub" aria-label="More">
+          {{#if hasReviewLink}}<li><a href="reviews.html" data-zh="谷歌评价">Google reviews</a></li>{{/if}}
+          <li><a href="legal.html#privacy" data-zh="隐私">Privacy</a></li>
+        </ul>
+      </nav>
+      <div class="overlay-info">
+        <p class="label" data-zh="地址">Find us</p>
+        <p>{{contact.street}}<br>{{contact.locality}}</p>
+        <p><a href="tel:{{contact.phoneHref}}">{{contact.phone}}</a>{{#if contact.email}}<br><a href="mailto:{{contact.email}}">{{contact.email}}</a>{{/if}}</p>
+        <p class="label" data-zh="营业时间">Hours</p>
+        <p>{{{hoursSummary}}}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="scrim" id="scrim" hidden></div>
+
+  <main id="main">
+{{#if page.pageHero}}
+    <section class="page-hero" aria-labelledby="page-title">
+      <div class="container">
+        <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="index.html" data-zh="首页">Home</a></li><li aria-current="page">{{page.crumb}}</li></ol></nav>
+        <p class="eyebrow">{{page.kicker}}</p>
+        <h1 id="page-title" data-split>{{page.h1}}</h1>
+        <p class="lead">{{page.lead}}</p>
+      </div>
+    </section>
+{{/if}}
+{{{content}}}
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a class="brand-wide" href="index.html" aria-label="{{brand.name}}, home page">
+            <svg width="30" height="30" aria-hidden="true" focusable="false"><use href="#logo-mark"/></svg>
+            <span class="script">{{{brand.wordmark}}}</span>
+          </a>
+          <p data-zh="格伦华莱（Glen Waverley）的理发店。欢迎直接到店，每周营业6天。">Barber in Glen Waverley. Walk-ins welcome, open 6 days.</p>
+          {{{ratingFooter}}}
+          {{#if hasReviewLink}}<p><a class="btn btn-secondary btn-sm footer-review" href="{{googleReviewUrl}}" target="_blank" rel="noopener"><span data-zh="留下谷歌评价">Leave us a Google review</span><span class="sr-only"> (opens in a new tab)</span></a></p>{{/if}}
+          {{#if socialIcons}}<ul class="soc-list" role="list" aria-label="Find us online">{{{socialIcons}}}</ul>{{/if}}
+        </div>
+        <nav class="footer-col" aria-label="Footer: explore">
+          <h2 data-zh="浏览">Explore</h2>
+          <ul>
+            {{#each nav}}<li><a href="{{this.href}}" data-zh="{{this.zh}}">{{this.label}}</a></li>{{/each}}
+          </ul>
+        </nav>
+        <div class="footer-col">
+          <h2 data-zh="到店">Visit</h2>
+          <p>{{contact.street}}<br>{{contact.locality}}</p>
+          <p><a href="tel:{{contact.phoneHref}}">{{contact.phone}}</a>{{#if contact.email}}<br><a href="mailto:{{contact.email}}">{{contact.email}}</a>{{/if}}</p>
+          <p><a href="{{googleMapsUrl}}" target="_blank" rel="noopener"><span data-zh="获取路线">Get directions</span><span class="sr-only"> (opens Google Maps in a new tab)</span></a></p>
+        </div>
+        <div class="footer-col">
+          <h2 data-zh="营业时间">Hours</h2>
+          <p>{{{hoursSummary}}}</p>
+          <p data-zh="周二休息，每周营业6天。">Open 6 days. Closed Tuesday.</p>
+        </div>
+      </div>
+      <nav class="footer-legal" aria-label="Footer: more">
+        {{#if hasReviewLink}}<a href="reviews.html" data-zh="谷歌评价">Google reviews</a>{{/if}}
+        <a href="legal.html#privacy" data-zh="隐私">Privacy</a>
+        <a href="legal.html#terms" data-zh="条款">Terms</a>
+        <a href="legal.html#cookies" data-zh="Cookie 说明">Cookies</a>
+      </nav>
+      <div class="footer-bottom">
+        <p>&copy; <span data-year>{{year}}</span> {{brand.fullNameHtml}}. {{brand.demoFooter}}</p>
+        <p class="brandline" data-zh="这是一个概念演示网站（非官方），店铺信息来自公开资料，待店主确认。">This is an unofficial concept demo. The shop details come from public information and are to be confirmed by the owner.</p>
+        {{#if photoCredits}}<p class="photo-credits">Photo credits: {{photoCredits}}</p>{{/if}}
+        <a class="back-top" href="#top">Back to top &uarr;</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Mobile quick actions -->
+  <nav class="mobile-cta" aria-label="Quick actions">
+    <a class="btn btn-secondary" href="tel:{{contact.phoneHref}}" data-zh="拨打电话">Call</a>
+    <a class="btn btn-primary" href="book.html" data-zh="预约时间">Book a time</a>
+  </nav>
+
+  <!-- Cookie preferences -->
+  <div class="cookie" id="cookie" role="region" aria-label="Cookie preferences" hidden>
+    <p><strong data-zh="默认不追踪。">No tracking by default.</strong> <span data-zh="允许简单的访问统计？">Allow simple analytics?</span> <a href="legal.html#cookies" data-zh="详情">Details</a></p>
+    <div class="cookie-actions">
+      <button class="btn btn-primary btn-sm" type="button" data-cookie="yes" data-zh="接受">Accept</button>
+      <button class="btn btn-secondary btn-sm" type="button" data-cookie="no" data-zh="拒绝">Decline</button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script type="application/json" id="site-data">{{{siteData}}}</script>
+  <script defer src="vendor/lenis-1.1.18.min.js?v={{assets.lenis}}"></script><!-- Lenis 1.1.18 (MIT), self-hosted, pinned -->
+  <script type="module" src="main.js?v={{assets.main}}"></script>
+</body>
+</html>

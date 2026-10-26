@@ -1,0 +1,12 @@
+    <section class="section" id="qr-section" aria-labelledby="qr-title">
+      <div class="container narrow">
+        <div class="qr-print" id="qr-print">
+          <h2 id="qr-title" data-zh="留下谷歌评价">Leave us a Google review</h2>
+          <div class="qr-card"><div id="qr-host" class="qr-host"><noscript><p>Please use the button below to leave a review.</p></noscript></div></div>
+          <p class="qr-caption"><strong data-zh="扫描二维码，留下评价">Scan to leave a review</strong></p>
+          <p class="qr-brand">{{brand.fullName}}</p>
+        </div>
+        <p class="qr-actions"><button type="button" class="btn btn-primary" id="print-qr"data-zh="打印">Print this</button> <a class="btn btn-secondary" href="{{googleReviewUrl}}" target="_blank" rel="noopener">Open the review page<span class="sr-only"> (opens in a new tab)</span></a></p>
+        <p class="note"><span data-zh="这个二维码会打开店铺的谷歌页面。店主可以在 site.config.json 里换成准确的评价链接。">This QR code opens the shop\u2019s Google page. The owner can swap in the exact review link in site.config.json (googleReviewUrl).</span></p>
+      </div>
+    </section>

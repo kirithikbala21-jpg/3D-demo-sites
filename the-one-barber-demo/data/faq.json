@@ -1,0 +1,44 @@
+[
+ {
+  "q": "Do I need to book?",
+  "qZh": "需要预约吗？",
+  "a": "No. Walk-ins are welcome, and you can also book a time online. We are open 6 days a week and closed on Tuesday.",
+  "aZh": "不需要。欢迎直接到店，也可以在网上预约。我们每周营业6天，周二休息。"
+ },
+ {
+  "q": "What are your opening hours?",
+  "qZh": "营业时间是什么时候？",
+  "a": "Monday and Wednesday 9:30am to 6pm, Thursday and Friday 9:30am to 6:30pm, Saturday and Sunday 10am to 4:30pm. Closed on Tuesday.",
+  "aZh": "周一和周三 9:30am 到 6pm；周四和周五 9:30am 到 6:30pm；周六和周日 10am 到 4:30pm；周二休息。"
+ },
+ {
+  "q": "Do you cut kids&rsquo; hair?",
+  "qZh": "可以给小朋友理发吗？",
+  "a": "Yes. A kids cut is on the list, and the shop is good for kids&rsquo; haircuts.",
+  "aZh": "可以。价格表里有儿童理发，这家店适合带小朋友理发。"
+ },
+ {
+  "q": "Is there a pensioner price?",
+  "qZh": "有退休人士价格吗？",
+  "a": "Pensioner is on the price list. The price is to be confirmed by the shop.",
+  "aZh": "价格表里有退休人士理发，价格待店家确认。"
+ },
+ {
+  "q": "How can I pay?",
+  "qZh": "可以怎么付款？",
+  "a": "Credit card, debit card and phone tap (Apple Pay or Google Pay).",
+  "aZh": "可以用信用卡、借记卡和手机碰触支付（Apple Pay 或 Google Pay）。"
+ },
+ {
+  "q": "Is there parking?",
+  "qZh": "有停车位吗？",
+  "a": "There is wheelchair-accessible parking.",
+  "aZh": "有无障碍（轮椅）停车位。"
+ },
+ {
+  "q": "Where are you?",
+  "qZh": "店在哪里？",
+  "a": "1/270 Blackburn Road (Suite 1), Glen Waverley VIC 3150. Use the Get directions button to open Google Maps.",
+  "aZh": "地址：1/270 Blackburn Road (Suite 1), Glen Waverley VIC 3150。点“获取路线”可以打开谷歌地图。"
+ }
+]

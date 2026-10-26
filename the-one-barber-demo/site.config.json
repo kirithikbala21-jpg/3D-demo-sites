@@ -1,0 +1,429 @@
+{
+ "brand": {
+  "name": "The One Barber",
+  "nameHtml": "The One Barber",
+  "fullName": "The One Barber",
+  "fullNameHtml": "The One Barber",
+  "wordmark": "The One Barber",
+  "city": "Melbourne",
+  "tagline": "Barber in Glen Waverley. Walk-ins welcome, open 6 days.",
+  "description": "The One Barber is a barber at Blackburn Road, Glen Waverley, Melbourne. Walk-ins welcome, open 6 days. This website is an unofficial concept demo.",
+  "established": null,
+  "demoFooter": "Unofficial concept demo website by KB Ventures. Not run by The One Barber.",
+  "demoNotice": "Unofficial concept demo."
+ },
+ "contact": {
+  "street": "1/270 Blackburn Road (Suite 1)",
+  "locality": "Glen Waverley VIC 3150",
+  "postcode": "3150",
+  "region": "VIC",
+  "phone": "+61 432 399 303",
+  "email": "",
+  "country": "AU",
+  "mapsQuery": "The One Barber, 1/270 Blackburn Road, Glen Waverley VIC 3150"
+ },
+ "site": {
+  "baseUrl": "https://kirithikbala21-jpg.github.io/3D-demo-sites/the-one-barber-demo/",
+  "noindex": true,
+  "currency": "AUD",
+  "timezone": "Australia/Melbourne",
+  "locale": "en-AU",
+  "region": "VIC"
+ },
+ "region": "VIC",
+ "theme": {
+  "black": "#0B0B0C",
+  "wine": "#E4C77A",
+  "wineDeep": "#F2EBDD",
+  "wineNight": "#161617",
+  "goldLight": "#E4C77A",
+  "goldText": "#E4C77A",
+  "cream": "#0B0B0C",
+  "tint": "#121213",
+  "ink": "#F2EBDD"
+ },
+ "hours": [
+  {
+   "day": 1,
+   "name": "Monday",
+   "open": "09:30",
+   "close": "18:00"
+  },
+  {
+   "day": 2,
+   "name": "Tuesday",
+   "open": null,
+   "close": null
+  },
+  {
+   "day": 3,
+   "name": "Wednesday",
+   "open": "09:30",
+   "close": "18:00"
+  },
+  {
+   "day": 4,
+   "name": "Thursday",
+   "open": "09:30",
+   "close": "18:30"
+  },
+  {
+   "day": 5,
+   "name": "Friday",
+   "open": "09:30",
+   "close": "18:30"
+  },
+  {
+   "day": 6,
+   "name": "Saturday",
+   "open": "10:00",
+   "close": "16:30"
+  },
+  {
+   "day": 0,
+   "name": "Sunday",
+   "open": "10:00",
+   "close": "16:30"
+  }
+ ],
+ "holidays": {
+  "mode": "closed",
+  "overrides": {}
+ },
+ "closures": [],
+ "notices": [],
+ "booking": {
+  "slotMinutes": 30,
+  "daysAhead": 90,
+  "leadMinutes": 0,
+  "externalUrl": ""
+ },
+ "forms": {
+  "endpoint": "",
+  "note": "Paste your Formspree (or similar) address between the quote marks to make the booking, careers, newsletter and gift-card forms send real emails. Leave empty to keep the demo behaviour."
+ },
+ "googleReviewUrl": "https://www.google.com/maps/search/?api=1&query=The+One+Barber+1%2F270+Blackburn+Road+Glen+Waverley+VIC+3150",
+ "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=The+One+Barber+1%2F270+Blackburn+Road+Glen+Waverley+VIC+3150",
+ "instagramUrl": "",
+ "facebookUrl": "",
+ "googleRating": 5.0,
+ "googleReviewCount": 30,
+ "googleRatingIsDemo": false,
+ "remindersEnabled": true,
+ "reminderLeadHours": 24,
+ "waitlistEnabled": true,
+ "busynessEnabled": true,
+ "openBannerEnabled": true,
+ "busynessIsDemo": true,
+ "busyness": {
+  "blocks": [
+   {
+    "label": "Morning",
+    "from": "09:30",
+    "to": "12:00"
+   },
+   {
+    "label": "Lunch",
+    "from": "12:00",
+    "to": "14:00"
+   },
+   {
+    "label": "Afternoon",
+    "from": "14:00",
+    "to": "16:30"
+   },
+   {
+    "label": "Evening",
+    "from": "16:30",
+    "to": "18:30"
+   }
+  ],
+  "week": {
+   "mon": [
+    "quiet",
+    "medium",
+    "medium",
+    "closed"
+   ],
+   "tue": [
+    "closed",
+    "closed",
+    "closed",
+    "closed"
+   ],
+   "wed": [
+    "quiet",
+    "medium",
+    "medium",
+    "closed"
+   ],
+   "thu": [
+    "quiet",
+    "medium",
+    "medium",
+    "busy"
+   ],
+   "fri": [
+    "medium",
+    "medium",
+    "busy",
+    "busy"
+   ],
+   "sat": [
+    "medium",
+    "busy",
+    "busy",
+    "closed"
+   ],
+   "sun": [
+    "medium",
+    "busy",
+    "medium",
+    "closed"
+   ]
+  }
+ },
+ "services": [
+  {
+   "id": "cuts",
+   "label": "Haircuts",
+   "labelZh": "理发",
+   "note": "Prices are placeholders until the shop confirms them.",
+   "noteZh": "价格待店家确认。",
+   "items": [
+    {
+     "name": "Men's cut 男士理发",
+     "nameZh": "男士理发",
+     "price": null,
+     "mins": 30,
+     "desc": "",
+     "tags": [],
+     "sig": false
+    },
+    {
+     "name": "Skin fade",
+     "nameZh": "渐变平头（皮肤渐变）",
+     "price": null,
+     "mins": 30,
+     "desc": "",
+     "tags": [],
+     "sig": false
+    },
+    {
+     "name": "Buzz cuts",
+     "nameZh": "寸头",
+     "price": null,
+     "mins": 30,
+     "desc": "",
+     "tags": [],
+     "sig": false
+    },
+    {
+     "name": "Pensioner",
+     "nameZh": "退休人士理发",
+     "price": null,
+     "mins": 30,
+     "desc": "",
+     "tags": [],
+     "sig": false
+    },
+    {
+     "name": "Kids cut",
+     "nameZh": "儿童理发",
+     "price": null,
+     "mins": 30,
+     "desc": "",
+     "tags": [],
+     "sig": false
+    }
+   ]
+  },
+  {
+   "id": "beard",
+   "label": "Beard",
+   "labelZh": "胡须",
+   "note": "Price placeholder until the shop confirms it.",
+   "noteZh": "价格待店家确认。",
+   "items": [
+    {
+     "name": "Beard trim",
+     "nameZh": "修剪胡须",
+     "price": null,
+     "mins": 30,
+     "desc": "",
+     "tags": [],
+     "sig": false
+    }
+   ]
+  },
+  {
+   "id": "combos",
+   "label": "Combo deals",
+   "labelZh": "套餐优惠",
+   "note": "Combo offer shown as a placeholder: the shop sets the deal and the price.",
+   "noteZh": "套餐只是占位示例：优惠内容和价格由店家决定。",
+   "items": [
+    {
+     "name": "Cut + Beard",
+     "nameZh": "理发 + 胡须套餐",
+     "price": null,
+     "mins": 60,
+     "desc": "",
+     "tags": [],
+     "sig": false
+    }
+   ]
+  }
+ ],
+ "staff": [
+  {
+   "slug": "barber",
+   "name": "[Barber name]",
+   "role": "Barber",
+   "pick": "Your barber",
+   "blurb": "[Short bio to be written by the owner. Not known yet.]",
+   "photo": "barber",
+   "initial": "B"
+  }
+ ],
+ "policy": {
+  "title": "Booking policy",
+  "text": "[Booking and cancellation policy: placeholder, to be written by the owner.]",
+  "cancellationNote": "[Cancellation notice period: placeholder]"
+ },
+ "googleReviewQuotes": [],
+ "shopPhotos": [
+  "shop1",
+  "shop2",
+  "shop3",
+  "shop4"
+ ],
+ "social": [],
+ "hero": {
+  "video": null,
+  "poster": null
+ },
+ "nav": [
+  {
+   "label": "Home",
+   "href": "index.html",
+   "zh": "首页"
+  },
+  {
+   "label": "Prices",
+   "href": "services.html",
+   "zh": "价格"
+  },
+  {
+   "label": "Your barber",
+   "href": "barbers.html",
+   "zh": "你的理发师"
+  },
+  {
+   "label": "Book",
+   "href": "book.html",
+   "zh": "预约"
+  },
+  {
+   "label": "Visit",
+   "href": "visit.html",
+   "zh": "到店"
+  }
+ ],
+ "announcement": {
+  "text": "Walk-ins welcome. Open 6 days, closed Tuesday.",
+  "zh": "欢迎直接到店，每周营业6天，周二休息。",
+  "link": "Book a time",
+  "href": "book.html",
+  "linkZh": "预约时间"
+ },
+ "pages": [
+  {
+   "file": "index.html",
+   "template": "index",
+   "title": "Barber in Glen Waverley",
+   "description": "The One Barber, Glen Waverley: walk-ins welcome, open 6 days. Men's cuts, skin fades, buzz cuts, beard trims, pensioner and kids cuts. Unofficial concept demo.",
+   "jsonld": true
+  },
+  {
+   "file": "services.html",
+   "template": "services",
+   "title": "Prices and services",
+   "description": "Men's cut, skin fade, buzz cuts, beard trim, pensioner and kids cuts, and combo deals at The One Barber in Glen Waverley. Prices to be confirmed. Concept demo.",
+   "pageHero": true,
+   "crumb": "Prices",
+   "kicker": "Prices and services",
+   "h1": "Cuts, fades and beards",
+   "lead": "Men's cut, skin fade, buzz cuts, beard trim, pensioner and kids cuts. Walk-ins welcome."
+  },
+  {
+   "file": "barbers.html",
+   "template": "barbers",
+   "title": "Your barber",
+   "description": "Meet your barber at The One Barber, Glen Waverley, and book with him. Name and photo to come. Concept demo.",
+   "pageHero": true,
+   "crumb": "Your barber",
+   "kicker": "Meet your barber",
+   "h1": "Your barber in Glen Waverley",
+   "lead": "Book with him, or just walk in."
+  },
+  {
+   "file": "book.html",
+   "template": "book",
+   "title": "Book a time",
+   "description": "Book a time at The One Barber in Glen Waverley, change or cancel a booking, and read the booking policy. Concept demo: nothing is sent.",
+   "pageHero": true,
+   "crumb": "Book",
+   "kicker": "Book",
+   "h1": "Book a time",
+   "lead": "Pick a service, a day and a time. Or just walk in: we are open 6 days."
+  },
+  {
+   "file": "visit.html",
+   "template": "visit",
+   "title": "Visit us",
+   "description": "Find The One Barber at 1/270 Blackburn Road (Suite 1), Glen Waverley VIC 3150. Hours, directions and phone. Concept demo.",
+   "pageHero": true,
+   "crumb": "Visit",
+   "kicker": "Visit",
+   "h1": "Find The One Barber",
+   "lead": "Directions, hours and how to find us."
+  },
+  {
+   "file": "reviews.html",
+   "template": "review-us",
+   "title": "Google reviews",
+   "description": "Leave a Google review for The One Barber with one tap or by scanning a QR code. Concept demo.",
+   "pageHero": true,
+   "crumb": "Reviews",
+   "kicker": "Google reviews",
+   "h1": "Loved your visit? Tell us",
+   "lead": "A Google review takes about a minute.",
+   "requires": "googleReviewUrl"
+  },
+  {
+   "file": "legal.html",
+   "template": "legal",
+   "title": "Privacy and terms",
+   "description": "How this concept demo handles your information.",
+   "pageHero": true,
+   "crumb": "Privacy",
+   "kicker": "Legal",
+   "h1": "Privacy, terms and cookies",
+   "lead": "This is a concept demo. Here is what it stores."
+  },
+  {
+   "file": "404.html",
+   "template": "notfound",
+   "title": "Page not found",
+   "description": "This page could not be found.",
+   "hidden": true,
+   "pageHero": true,
+   "h1": "Page not found",
+   "kicker": "Error 404",
+   "lead": "That page could not be found. Try the home page, the prices or the booking page.",
+   "crumb": "404"
+  }
+ ],
+ "searchExtra": []
+}

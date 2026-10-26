@@ -1,0 +1,43 @@
+{
+ "name": "The One Barber (unofficial concept demo)",
+ "short_name": "The One Barber",
+ "start_url": "./index.html",
+ "display": "standalone",
+ "background_color": "#0B0B0C",
+ "theme_color": "#0B0B0C",
+ "icons": [
+  {
+   "src": "img/icon-192.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "img/icon-512.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "img/icon-maskable-512.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "maskable"
+  },
+  {
+   "src": "img/icon.svg",
+   "sizes": "any",
+   "type": "image/svg+xml",
+   "purpose": "any"
+  }
+ ],
+ "id": "./index.html",
+ "description": "Unofficial concept demo website for The One Barber, a barber in Glen Waverley.",
+ "lang": "en-AU",
+ "scope": "./",
+ "orientation": "portrait",
+ "categories": [
+  "lifestyle",
+  "business"
+ ]
+}

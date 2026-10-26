@@ -1,0 +1,15 @@
+    <!-- MANAGE MY BOOKING (change or cancel). Demo: bookings live only in this browser. -->
+    <section class="section section-tint" id="manage" aria-labelledby="manage-title">
+      <div class="container narrow">
+        <p class="eyebrow" data-zh="管理预约">Manage my booking</p>
+        <h2 id="manage-title"><span data-zh="修改或取消">Change or cancel</span> <em data-zh="我的预约">my booking.</em></h2>
+        <p class="lead" data-zh="输入预约编号和电话号码。（演示：预约只保存在这个浏览器里。）">Enter your booking reference and phone number. (Demo: bookings are only saved in this browser.)</p>
+        <form id="manage-form" class="manage-form" novalidate>
+          <div class="field"><label for="m-ref" data-zh="预约编号">Booking reference</label><input id="m-ref" name="ref" type="text" autocomplete="off" placeholder="TOB-XXXXXX" aria-describedby="e-m-ref"><p class="error" id="e-m-ref" aria-live="polite"></p></div>
+          <div class="field"><label for="m-phone" data-zh="电话号码">Phone</label><input id="m-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" aria-describedby="e-m-phone"><p class="error" id="e-m-phone" aria-live="polite"></p></div>
+          <button class="btn btn-primary" type="submit" data-zh="查找预约">Find my booking</button>
+        </form>
+        <div class="manage-result" id="manage-result" role="status" tabindex="-1" hidden></div>
+        <p class="note" data-zh="演示：不会真的修改或取消任何预约。">Demo: nothing is really changed or cancelled.</p>
+      </div>
+    </section>

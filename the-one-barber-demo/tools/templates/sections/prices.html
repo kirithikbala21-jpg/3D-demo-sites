@@ -1,0 +1,21 @@
+    <!-- PRICES -->
+    <section class="section section-tint" id="prices" aria-labelledby="prices-title">
+      <div class="container">
+        <p class="eyebrow" data-zh="价格">Prices</p>
+        <h2 id="prices-title"><span data-zh="理发、渐变和胡须">Cuts, fades and</span> <em data-zh="胡须">beards.</em></h2>
+        <p class="lead" data-zh="包括退休人士和儿童理发，也有套餐优惠。价格待店家确认（占位）。">Pensioner and kids cuts are on the list, and there are combo deals. Prices are placeholders until the shop confirms them.</p>
+        <div class="price-groups">
+          {{#each menu}}
+          <article class="price-group price-group-{{this.id}}{{#if this.isCombo}} price-offer{{/if}} reveal">
+            <h3><span data-zh="{{this.labelZh}}">{{this.label}}</span>{{#if this.isCombo}} <span class="offer-tag" data-zh="优惠">Offer</span>{{/if}}</h3>
+            <p class="panel-note" data-zh="{{this.noteZh}}">{{this.note}}</p>
+            <ul class="price-list">
+              {{#each this.items}}<li class="price-row" id="m-{{this.slug}}"><span class="pr-name" data-zh="{{this.nameZh}}">{{this.plainName}}</span><span class="leader" aria-hidden="true"></span><span class="price">{{{this.priceHtml}}}</span></li>{{/each}}
+            </ul>
+          </article>
+          {{/each}}
+        </div>
+        <p class="note" data-zh="[价格] 表示价格还没有确定。">[price] means the price is not known yet.</p>
+        <p class="prices-cta"><a class="btn btn-primary" href="book.html" data-zh="预约时间">Book a time</a> <span class="walkin-note" data-zh="或者直接到店，欢迎 walk-in。">Or just walk in.</span></p>
+      </div>
+    </section>

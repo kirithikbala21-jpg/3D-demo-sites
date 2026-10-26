@@ -1,0 +1,11 @@
+{{#if hasReviewLink}}
+    <!-- GOOGLE REVIEWS -->
+    <section class="section section-tint" id="loved" aria-labelledby="loved-title">
+      <div class="container narrow loved">
+        <h2 id="loved-title" class="reveal"><span data-zh="满意这次体验？">Loved your visit?</span> <em data-zh="告诉我们。">Tell us.</em></h2>
+        {{{ratingHero}}}
+        <p class="lead reveal" data-zh="一条谷歌评价能帮助更多人找到好理发店，只需要大约一分钟。">A quick Google review helps other people find a good barber. It takes about a minute.</p>
+        <p class="loved-actions reveal"><a class="btn btn-primary" href="{{googleReviewUrl}}" target="_blank" rel="noopener"><span data-zh="留下谷歌评价">Leave us a Google review</span><span class="sr-only"> (opens in a new tab)</span></a> <a class="btn btn-secondary" href="reviews.html" data-zh="改用二维码扫描">Scan a QR code instead</a></p>
+      </div>
+    </section>
+{{/if}}

@@ -1,0 +1,15 @@
+    <!-- FAQ -->
+    <section class="section section-tint" id="faq" aria-labelledby="faq-title">
+      <div class="container faq-grid">
+        <div class="reveal">
+          <p class="eyebrow" data-zh="常见问题">Good to know</p>
+          <h2 id="faq-title"><span data-zh="常见问题，">Questions,</span> <em data-zh="解答。">answered.</em></h2>
+          <p class="lead"><span data-zh="还有问题？请致电">Still stuck? Call us on</span> {{contact.phone}}</p>
+        </div>
+        <div class="faq reveal">
+          {{#each faq}}
+          <details><summary data-zh="{{this.qZh}}">{{{this.q}}}</summary><p data-zh="{{this.aZh}}">{{{this.a}}}</p></details>
+          {{/each}}
+        </div>
+      </div>
+    </section>

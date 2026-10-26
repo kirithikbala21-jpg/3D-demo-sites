@@ -1,0 +1,89 @@
+    <!-- BOOKING -->
+    <section class="section section-dark" id="book" aria-labelledby="book-title">
+      <div class="container reserve-grid">
+        <div class="reveal">
+          <p class="eyebrow" data-zh="预约">Appointments</p>
+          <h2 id="book-title"><span data-zh="预约你的">Book your</span> <em data-zh="时间。">time.</em></h2>
+          <p class="lead" data-zh="选择服务、理发师和时间，马上就能看到确认。（演示：不会发送任何信息。）">Pick a service, a barber and a time. You&rsquo;ll see your confirmation straight away.{{#if formsLive}}{{else}} (This is a demo: nothing is sent.){{/if}}</p>
+          <div class="busy" data-busy hidden></div>
+          <ul class="reserve-points">
+            <li data-zh="欢迎直接到店，每周营业6天（周二休息）">Walk-ins welcome. Open 6 days, closed Tuesday</li>
+            <li data-zh="需要修改或取消？见下面的“管理预约”">Need to change or cancel? See &ldquo;Manage my booking&rdquo; below</li>
+            <li><span data-zh="迟到了？请致电">Running late? Call us on</span> {{contact.phone}}</li>
+          </ul>
+        </div>
+        <div class="form-card reveal">
+          <form id="book-form" novalidate>
+            <p class="note change-note" id="change-note" role="status" hidden></p>
+            <p class="step-label"><span aria-hidden="true">1</span> Service</p>
+            <div class="field">
+              <label for="f-service" class="sr-only">Service</label>
+              <select id="f-service" name="service" aria-describedby="h-service">
+                {{#each menu}}<optgroup label="{{this.label}}">{{#each this.items}}<option value="{{this.slug}}" data-mins="{{this.mins}}" data-price="{{this.dataPrice}}">{{this.plainName}} ({{this.priceShort}})</option>{{/each}}</optgroup>{{/each}}
+              </select>
+              <p class="hint" id="h-service" aria-live="polite"></p>
+            </div>
+
+            <fieldset class="barber-pick">
+              <legend class="step-label"><span aria-hidden="true">2</span> Barber</legend>
+              <label class="bp bp-any"><input type="radio" name="barber" value="any" checked><span class="bp-card"><span class="bp-ph" aria-hidden="true">Any</span><span class="bp-txt"><strong>Next available</strong><small>Shortest wait</small></span></span></label>
+              {{#each staffList}}<label class="bp"><input type="radio" name="barber" value="{{this.slug}}"><span class="bp-card"><span class="bp-ph" aria-hidden="true">{{#if this.photoHtml}}{{{this.photoHtml}}}{{else}}{{this.initial}}{{/if}}</span><span class="bp-txt"><strong>{{this.name}}</strong><small>{{this.pick}}</small></span></span></label>
+              {{/each}}
+            </fieldset>
+
+            <p class="step-label"><span aria-hidden="true">3</span> Date</p>
+            <div class="cal" id="cal">
+              <div class="cal-head">
+                <button type="button" class="cal-nav" id="cal-prev" aria-label="Previous month">&lsaquo;</button>
+                <strong id="cal-title" aria-live="polite"></strong>
+                <button type="button" class="cal-nav" id="cal-next" aria-label="Next month">&rsaquo;</button>
+              </div>
+              <div class="cal-dow" aria-hidden="true"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span></div>
+              <div class="cal-grid" id="cal-grid" role="group" aria-label="Days"></div>
+            </div>
+            <input type="hidden" id="f-date" name="date">
+            <p class="error" id="e-date" aria-live="polite"></p>
+
+            <p class="step-label"><span aria-hidden="true">4</span> Time</p>
+            <div class="slots" id="slots" role="group" aria-label="Available times"></div>
+            <div id="waitlist-host" class="waitlist-host" aria-live="polite"></div>
+            <input type="hidden" id="f-time" name="time">
+            <p class="hint" id="h-time" aria-live="polite">Choose a date to see which times are open.</p>
+            <p class="error" id="e-time" aria-live="polite"></p>
+
+            <p class="step-label"><span aria-hidden="true">5</span> Your details</p>
+            <div class="field">
+              <label for="f-name">Name</label>
+              <input id="f-name" name="name" type="text" autocomplete="name" aria-describedby="e-name">
+              <p class="error" id="e-name" aria-live="polite"></p>
+            </div>
+            <div class="field">
+              <label for="f-phone">Phone</label>
+              <input id="f-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="e.g. 0412 345 678" aria-describedby="e-phone">
+              <p class="error" id="e-phone" aria-live="polite"></p>
+            </div>
+            <div class="field">
+              <label for="f-message">Notes <span class="optional">(optional)</span></label>
+              <textarea id="f-message" name="message" rows="2" maxlength="500" placeholder="Anything we should know" aria-describedby="e-message"></textarea>
+              <p class="error" id="e-message" aria-live="polite"></p>
+            </div>
+            <!--
+              DEMO ONLY: there is no backend. The booking is saved to this browser (localStorage key "tob-bookings").
+              To make it real, post the data in js/forms.js (see "DEMO ONLY") to your booking system
+              (any online booking system) and show the confirmation after a 200 response.
+            -->
+            <button class="btn btn-primary btn-block" type="submit">Confirm booking</button>
+            <p class="note">{{#if formsLive}}Prefer to talk to someone? Call {{contact.phone}}.{{else}}Demo only: nothing is sent to the shop.{{/if}}</p>
+          </form>
+          <div class="form-success" id="form-success" role="status" tabindex="-1" hidden>
+            <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M7.500 12.500l3 3 6-7"/></svg>
+            <h3><span data-zh="预约成功，">You&rsquo;re booked in,</span> <span id="ok-name">friend</span>.</h3>
+            <p id="ok-detail"></p>
+            <p class="note rm-preview" id="ok-preview" hidden></p>
+            <dl class="ok-summary" id="ok-summary"></dl>
+            <p class="demo-banner">{{#if formsLive}}<strong>Thanks, your request is with us.</strong> We will confirm by phone or text.{{else}}<strong>This is a demo, no real booking was made.</strong> The details were saved only in this browser.{{/if}}</p>
+            <button class="btn btn-secondary btn-on-light" type="button" id="form-reset">Book another visit</button>
+          </div>
+        </div>
+      </div>
+    </section>

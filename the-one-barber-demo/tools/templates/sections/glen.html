@@ -1,0 +1,26 @@
+    <!-- BARBER IN GLEN WAVERLEY + DIRECTIONS -->
+    <section class="section" id="glen" aria-labelledby="glen-title">
+      <div class="container visit-grid">
+        <div class="reveal">
+          <p class="eyebrow" data-zh="找到我们">Find us</p>
+          <h2 id="glen-title"><span data-zh="格伦华莱的理发店">Barber in</span> <em>{{suburb}}</em></h2>
+          <p class="lead" data-zh="The One Barber 位于格伦华莱 Blackburn Road。欢迎直接到店，也可以先预约。">The One Barber is on Blackburn Road in {{suburb}}. Walk in, or book a time first.</p>
+          <p class="chip chip-light"><span class="dot" aria-hidden="true"></span><span id="open-status-2">{{hoursSummary}}</span></p>
+          <address>
+            {{contact.street}}<br>{{contact.locality}}<br>
+            <a href="tel:{{contact.phoneHref}}">{{contact.phone}}</a>{{#if contact.email}}<br><a href="mailto:{{contact.email}}">{{contact.email}}</a>{{/if}}
+          </address>
+          <p class="glen-known" data-zh="以量身定制的理发和精准渐变闻名（皮肤渐变、低渐变、层次质感）。（来自谷歌简介，待店主确认）">Known for tailored barbering and precision fades (skin fade, low fade, textured blends).</p>
+          <p class="glen-actions">
+            {{#if googleMapsUrl}}<a class="btn btn-primary" href="{{googleMapsUrl}}" target="_blank" rel="noopener"><span data-zh="获取路线">Get directions</span><span class="sr-only"> (opens Google Maps in a new tab)</span></a>{{/if}}
+            <a class="btn btn-secondary" href="tel:{{contact.phoneHref}}" data-zh="拨打电话">Call {{contact.phone}}</a>
+          </p>
+          {{#if socialButtons}}<p class="find-online">{{{socialButtons}}}</p>{{/if}}
+        </div>
+        <div class="visit-side reveal">
+          {{{hoursTable}}}
+          <p class="note" data-zh="周二休息。公共假日营业时间待确认。">Closed Tuesday. Public-holiday hours to be confirmed.</p>
+          <div class="busy" data-busy hidden></div>
+        </div>
+      </div>
+    </section>

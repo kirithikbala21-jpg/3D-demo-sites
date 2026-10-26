@@ -1,0 +1,57 @@
+    <!-- HERO -->
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-bg{{#if photos.hero}} has-photo{{/if}}">
+        {{#if photos.hero}}<div class="hero-photo">{{{photos.hero}}}</div>{{/if}}
+        {{#if hero.video}}<video class="hero-video" autoplay muted loop playsinline preload="metadata" poster="{{hero.poster}}"><source src="{{hero.video}}"></video>{{/if}}
+        <div class="hero-panel"></div>
+        <div class="hero-glow"></div>
+        <div class="hero-grain"></div>
+      </div>
+      <div class="hero-inner">
+        <div class="hero-head">
+          <h1 id="hero-title" class="wordmark"><span class="hero-kicker"><span data-zh="格伦华莱（Glen Waverley）的理发店 · 欢迎直接到店">Barber in {{suburb}} &middot; walk-ins welcome</span></span><span class="wm-1">The One</span> <span class="wm-2">Barber</span></h1>
+          {{{ratingHero}}}
+        </div>
+
+        <div class="hero-stage" id="stage">
+          <!-- Fallback / poster illustration: visible until the 3D canvas is ready, and kept if 3D fails -->
+          <svg class="stage-fallback" viewBox="0 0 300 420" role="img" aria-label="Illustration of a spinning black and white barber pole with brass caps">
+            <defs>
+              <radialGradient id="fb-red" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#C9A24B" stop-opacity=".5"/><stop offset="1" stop-color="#C9A24B" stop-opacity="0"/></radialGradient>
+              <radialGradient id="fb-blue" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#E4C77A" stop-opacity=".4"/><stop offset="1" stop-color="#E4C77A" stop-opacity="0"/></radialGradient>
+              <linearGradient id="fb-brass" x1="0" x2="1"><stop offset="0" stop-color="#8E6A2B"/><stop offset=".45" stop-color="#F0D28C"/><stop offset="1" stop-color="#8E6A2B"/></linearGradient>
+              <linearGradient id="fb-glass" x1="0" x2="1"><stop offset="0" stop-color="#000" stop-opacity=".35"/><stop offset=".3" stop-color="#fff" stop-opacity=".12"/><stop offset=".5" stop-color="#fff" stop-opacity=".02"/><stop offset="1" stop-color="#000" stop-opacity=".4"/></linearGradient>
+              <pattern id="fb-stripes" width="90" height="90" patternUnits="userSpaceOnUse">
+                <rect width="90" height="90" fill="#F2EBDD"/>
+                <g><path d="M0 -15L90 -60L90 -30L0 15Z" fill="#1B1B1C"/><path d="M0 75L90 30L90 60L0 105Z" fill="#1B1B1C"/><path d="M0 15L90 -30L90 -22L0 23Z" fill="#B3202A"/><path d="M0 105L90 60L90 68L0 113Z" fill="#B3202A"/></g>
+              </pattern>
+              <clipPath id="fb-clip"><rect x="105" y="78" width="90" height="264" rx="6"/></clipPath>
+            </defs>
+            <ellipse cx="40" cy="210" rx="120" ry="170" fill="url(#fb-red)"/>
+            <ellipse cx="260" cy="210" rx="120" ry="170" fill="url(#fb-blue)"/>
+            <rect x="196" y="190" width="70" height="14" rx="3" fill="url(#fb-brass)" opacity=".9"/>
+            <g clip-path="url(#fb-clip)"><rect class="fb-move" x="105" y="-12" width="90" height="450" fill="url(#fb-stripes)"/></g>
+            <rect x="105" y="78" width="90" height="264" rx="6" fill="url(#fb-glass)"/>
+            <path d="M92 78h116v-12c0-8-8-14-18-16l-14-22c-4-6-12-6-16 0l-14 22c-10 2-18 8-18 16z" fill="url(#fb-brass)"/>
+            <circle cx="150" cy="22" r="9" fill="url(#fb-brass)"/>
+            <path d="M92 342h116v12c0 8-8 14-18 16l-14 8c-4 2-12 2-16 0l-14-8c-10-2-18-8-18-16z" fill="url(#fb-brass)"/>
+          </svg>
+          <canvas id="scene" aria-hidden="true"></canvas>
+        </div>
+
+        <div class="hero-body">
+          <p class="hero-tag" data-zh="格伦华莱的理发店。欢迎直接到店，每周营业6天。">{{brand.tagline}}</p>
+          <div class="hero-cta">
+            <a class="btn btn-primary btn-hero" href="book.html" data-zh="预约时间">Book a time</a>
+            <a class="link-arrow" href="services.html"><span data-zh="查看价格">See prices</span> <span aria-hidden="true">&rarr;</span></a>
+            {{#if googleMapsUrl}}<a class="link-arrow" href="{{googleMapsUrl}}" target="_blank" rel="noopener"><span data-zh="获取路线">Get directions</span> <span aria-hidden="true">&rarr;</span><span class="sr-only"> (opens Google Maps in a new tab)</span></a>{{/if}}
+          </div>
+          <ul class="hero-facts" aria-label="Hours and prices">
+            <li><strong data-zh="营业时间">Hours</strong> <span>{{hoursInline}}</span></li>
+            <li><strong data-zh="价格">Prices</strong> <span data-zh="男士理发、渐变平头、寸头、修胡须、退休人士和儿童理发，价格见价格页。">{{#if minPrice}}Cuts from ${{minPrice}}.{{else}}Men's cuts, skin fades, buzz cuts, beard trims, pensioner and kids cuts. Prices on the prices page.{{/if}}</span></li>
+          </ul>
+          <p class="chip"><span class="dot" aria-hidden="true"></span><span id="open-status">{{hoursInline}}</span></p>
+        </div>
+      </div>
+      <a class="scroll-cue" href="#facts">Scroll<svg width="14" height="8" viewBox="0 0 14 8" fill="none" stroke="currentColor" stroke-width="1.600" aria-hidden="true"><path d="M1 1l6 5 6-5"/></svg></a>
+    </section>

@@ -1,0 +1,13 @@
+    <!-- INSIDE THE SHOP: empty photo slots until the owner supplies photos -->
+    <section class="section" id="inside" aria-labelledby="inside-title">
+      <div class="container">
+        <p class="eyebrow" data-zh="店内">Inside the shop</p>
+        <h2 id="inside-title"><span data-zh="走进">Inside</span> <em data-zh="店内">the shop.</em></h2>
+        <ul class="inside-grid">
+          <li class="inside-slot reveal">{{#if photos.shop1}}{{{photos.shop1}}}{{else}}<span class="slot-empty" role="img" aria-label="Photo of the shop to come"><span data-zh="照片即将上传">Photo to come</span></span>{{/if}}</li>
+          <li class="inside-slot reveal">{{#if photos.shop2}}{{{photos.shop2}}}{{else}}<span class="slot-empty" role="img" aria-label="Photo of the shop to come"><span data-zh="照片即将上传">Photo to come</span></span>{{/if}}</li>
+          <li class="inside-slot reveal">{{#if photos.shop3}}{{{photos.shop3}}}{{else}}<span class="slot-empty" role="img" aria-label="Photo of the shop to come"><span data-zh="照片即将上传">Photo to come</span></span>{{/if}}</li>
+          <li class="inside-slot reveal">{{#if photos.shop4}}{{{photos.shop4}}}{{else}}<span class="slot-empty" role="img" aria-label="Photo of the shop to come"><span data-zh="照片即将上传">Photo to come</span></span>{{/if}}</li>
+        </ul>
+      </div>
+    </section>

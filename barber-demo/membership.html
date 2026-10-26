@@ -31,8 +31,8 @@
   <link rel="preload" href="fonts/montserrat-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="fonts/oswald-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="vendor/lenis-1.1.18.css?v=7720ea7b">
-  <link rel="stylesheet" href="styles.css?v=1c606888">
-  <script type="importmap">{"imports": {"three": "./vendor/three.module.min.js?v=2992ecd7", "three/addons/": "./vendor/addons/", "./js/cart.js": "./js/cart.js?v=bfe8c569", "./js/clock.js": "./js/clock.js?v=ae87c07c", "./js/formkit.js": "./js/formkit.js?v=9329b8a0", "./js/forms.js": "./js/forms.js?v=af40526f", "./js/hero.js": "./js/hero.js?v=a4eaba0f", "./js/notice.js": "./js/notice.js?v=172abec3", "./js/search.js": "./js/search.js?v=1c9096f0", "./js/smooth.js": "./js/smooth.js?v=9a2fb764", "./js/sound.js": "./js/sound.js?v=0469ebd1", "./js/ui.js": "./js/ui.js?v=8e92986a", "./js/util.js": "./js/util.js?v=2029537a", "./scene.js": "./scene.js?v=30875fb2", "./search-data.js": "./search-data.js?v=354c7072"}}</script>
+  <link rel="stylesheet" href="styles.css?v=85aeb0ea">
+  <script type="importmap">{"imports": {"three": "./vendor/three.module.min.js?v=2992ecd7", "three/addons/": "./vendor/addons/", "./js/busy.js": "./js/busy.js?v=2a1c81fb", "./js/cart.js": "./js/cart.js?v=89ec9c3e", "./js/clock.js": "./js/clock.js?v=ae87c07c", "./js/dates.js": "./js/dates.js?v=8d4ea101", "./js/formkit.js": "./js/formkit.js?v=9329b8a0", "./js/forms.js": "./js/forms.js?v=a2bea851", "./js/growth.js": "./js/growth.js?v=c8958ca1", "./js/hero.js": "./js/hero.js?v=a4eaba0f", "./js/notice.js": "./js/notice.js?v=172abec3", "./js/qr.js": "./js/qr.js?v=66604d0d", "./js/reminder.js": "./js/reminder.js?v=d385e3fa", "./js/search.js": "./js/search.js?v=1c9096f0", "./js/smooth.js": "./js/smooth.js?v=9a2fb764", "./js/sound.js": "./js/sound.js?v=0469ebd1", "./js/ui.js": "./js/ui.js?v=8e92986a", "./js/util.js": "./js/util.js?v=2029537a", "./js/waitlist.js": "./js/waitlist.js?v=64b366d8", "./scene.js": "./scene.js?v=30875fb2", "./search-data.js": "./search-data.js?v=69fc86bc"}}</script>
   <style>:root{--black:#0B0B0C;--charcoal:#161617;--gold:#C9A24B;--wine:#E4C77A;--wine-deep:#F2EBDD;--wine-night:#161617;--gold-light:#E4C77A;--gold-text:#E4C77A;--cream:#0B0B0C;--tint:#121213;--ink:#F2EBDD}</style>
   
   <noscript><style>
@@ -73,6 +73,7 @@
   </div>
 
   <div class="notice-bar" id="notice-bar" role="region" aria-label="Notices" hidden></div>
+  <div class="open-banner" id="open-banner" role="status" hidden><span class="dot" aria-hidden="true"></span><span class="ob-text"></span></div>
 
   <header class="site-header" id="top">
     <div class="header-inner">
@@ -87,6 +88,7 @@
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1.500 12h-11zM9 8a3 3 0 0 1 6 0"/></svg>
           <span class="cart-count" id="cart-count" aria-hidden="true" hidden>0</span>
         </button>
+        <a class="header-phone" href="tel:+61255500144"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 3.5h4l2 5-2.5 1.5a11 11 0 0 0 5 5l1.5-2.5 5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 5.5a2 2 0 0 1 2-2z"/></svg><span>02 5550 0144</span><span class="sr-only"> (tap to call)</span></a>
         <a class="header-link" href="book.html">Book</a>
         <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="mobile-nav" aria-label="Open menu">
           <span class="bars" aria-hidden="true"><span></span><span></span><span></span></span>
@@ -177,6 +179,7 @@
       <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M7.500 12.500l3 3 6-7"/></svg>
       <h3>Thanks, <span id="done-name">friend</span>!</h3>
       <p id="done-detail"></p>
+      <p class="note rm-preview" id="done-preview" hidden></p>
       <p class="note">Demo only: nothing was booked and nothing was charged.</p>
       <button class="btn btn-secondary" type="button" id="done-close">Close</button>
     </div>
@@ -269,6 +272,9 @@
             <span class="script">Brass &amp; Blade</span>
           </a>
           <p>Classic cuts, sharp fades and hot towel shaves in the heart of Surry Hills, Sydney.</p>
+          <a class="g-rating g-rating-footer" href="https://www.google.com/maps/search/?api=1&amp;query=Brass+%26+Blade+Barbershop+Surry+Hills" target="_blank" rel="noopener" aria-label="Rated 4.9 on Google · 120 reviews Demo number (opens Google Maps in a new tab)"><svg class="g-stars" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 19" width="95" height="18" aria-hidden="true" focusable="false"><defs><clipPath id="rs3793853790197292627"><rect width="98" height="19"/></clipPath></defs><g fill="rgba(242,235,221,.3)"><path transform="translate(0 0)" d="M10 1.5l2.6 5.5 6 .8-4.4 4.1 1.1 5.9L10 15l-5.3 2.8 1.1-5.9L1.4 7.8l6-.8z"/><path transform="translate(20 0)" d="M10 1.5l2.6 5.5 6 .8-4.4 4.1 1.1 5.9L10 15l-5.3 2.8 1.1-5.9L1.4 7.8l6-.8z"/><path transform="translate(40 0)" d="M10 1.5l2.6 5.5 6 .8-4.4 4.1 1.1 5.9L10 15l-5.3 2.8 1.1-5.9L1.4 7.8l6-.8z"/><path transform="translate(60 0)" d="M10 1.5l2.6 5.5 6 .8-4.4 4.1 1.1 5.9L10 15l-5.3 2.8 1.1-5.9L1.4 7.8l6-.8z"/><path transform="translate(80 0)" d="M10 1.5l2.6 5.5 6 .8-4.4 4.1 1.1 5.9L10 15l-5.3 2.8 1.1-5.9L1.4 7.8l6-.8z"/></g><g fill="#E4C77A" clip-path="url(#rs3793853790197292627)"><path transform="translate(0 0)" d="M10 1.5l2.6 5.5 6 .8-4.4 4.1 1.1 5.9L10 15l-5.3 2.8 1.1-5.9L1.4 7.8l6-.8z"/><path transform="translate(20 0)" d="M10 1.5l2.6 5.5 6 .8-4.4 4.1 1.1 5.9L10 15l-5.3 2.8 1.1-5.9L1.4 7.8l6-.8z"/><path transform="translate(40 0)" d="M10 1.5l2.6 5.5 6 .8-4.4 4.1 1.1 5.9L10 15l-5.3 2.8 1.1-5.9L1.4 7.8l6-.8z"/><path transform="translate(60 0)" d="M10 1.5l2.6 5.5 6 .8-4.4 4.1 1.1 5.9L10 15l-5.3 2.8 1.1-5.9L1.4 7.8l6-.8z"/><path transform="translate(80 0)" d="M10 1.5l2.6 5.5 6 .8-4.4 4.1 1.1 5.9L10 15l-5.3 2.8 1.1-5.9L1.4 7.8l6-.8z"/></g></svg><span class="g-rating-text">Rated 4.9 on Google · 120 reviews</span> <span class="g-rating-demo">Demo number</span></a>
+          <p><a class="btn btn-secondary btn-sm footer-review" href="https://g.page/r/DEMO/review" target="_blank" rel="noopener">Leave us a Google review<span class="sr-only"> (opens in a new tab)</span></a></p>
+          <ul class="soc-list" role="list" aria-label="Find us online"><li><a class="soc-link" href="https://www.google.com/maps/search/?api=1&amp;query=Brass+%26+Blade+Barbershop+Surry+Hills" target="_blank" rel="noopener" aria-label="Find us on Google Maps (opens in a new tab)"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21z M12 7a2.500 2.500 0 1 0 0 5 2.500 2.500 0 0 0 0-5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/></svg></a></li><li><a class="soc-link" href="https://www.instagram.com/demo_brassandblade/" target="_blank" rel="noopener" aria-label="Follow us on Instagram (opens in a new tab)"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 3h10a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4z M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8z M17.500 6.500h.01" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/></svg></a></li></ul>
         </div>
         <nav class="footer-col" aria-label="Footer: explore">
           <h2>Explore</h2>
@@ -290,6 +296,7 @@
       <nav class="footer-legal" aria-label="Footer: more">
         <a href="membership.html#gift-cards">Gift cards</a>
         <a href="careers.html">Careers</a>
+        <a href="reviews.html">Reviews</a>
         <a href="legal.html#privacy">Privacy</a>
         <a href="legal.html#terms">Terms</a>
         <a href="legal.html#cookies">Cookies</a>
@@ -320,8 +327,8 @@
   </div>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <script type="application/json" id="site-data">{"name": "Brass & Blade", "phone": "02 5550 0144", "phoneHref": "+61255500144", "email": "hello@brassandblade.example", "timezone": "Australia/Sydney", "locale": "en-AU", "currency": "AUD", "region": "NSW", "hours": [{"day": 1, "name": "Monday", "open": 600, "close": 1080}, {"day": 2, "name": "Tuesday", "open": 540, "close": 1140}, {"day": 3, "name": "Wednesday", "open": 540, "close": 1140}, {"day": 4, "name": "Thursday", "open": 540, "close": 1200}, {"day": 5, "name": "Friday", "open": 540, "close": 1140}, {"day": 6, "name": "Saturday", "open": 540, "close": 1020}, {"day": 0, "name": "Sunday", "open": 600, "close": 960}], "holidays": {"mode": "closed", "overrides": {}}, "closures": [], "notices": [], "booking": {"slotMinutes": 30, "daysAhead": 90, "leadMinutes": 0, "externalUrl": ""}, "forms": {"endpoint": ""}}</script>
+  <script type="application/json" id="site-data">{"name": "Brass & Blade", "phone": "02 5550 0144", "phoneHref": "+61255500144", "email": "hello@brassandblade.example", "timezone": "Australia/Sydney", "locale": "en-AU", "currency": "AUD", "region": "NSW", "hours": [{"day": 1, "name": "Monday", "open": 600, "close": 1080}, {"day": 2, "name": "Tuesday", "open": 540, "close": 1140}, {"day": 3, "name": "Wednesday", "open": 540, "close": 1140}, {"day": 4, "name": "Thursday", "open": 540, "close": 1200}, {"day": 5, "name": "Friday", "open": 540, "close": 1140}, {"day": 6, "name": "Saturday", "open": 540, "close": 1020}, {"day": 0, "name": "Sunday", "open": 600, "close": 960}], "holidays": {"mode": "closed", "overrides": {}}, "closures": [], "notices": [], "booking": {"slotMinutes": 30, "daysAhead": 90, "leadMinutes": 0, "externalUrl": ""}, "forms": {"endpoint": ""}, "growth": {"googleReviewUrl": "https://g.page/r/DEMO/review", "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Brass+%26+Blade+Barbershop+Surry+Hills", "instagramUrl": "https://www.instagram.com/demo_brassandblade/", "facebookUrl": "", "googleRating": 4.9, "googleReviewCount": 120, "remindersEnabled": true, "reminderLeadHours": 24, "waitlistEnabled": true, "busynessEnabled": true, "openBannerEnabled": true, "busyness": {"blocks": [{"label": "Morning", "from": "09:00", "to": "12:00"}, {"label": "Lunch", "from": "12:00", "to": "14:00"}, {"label": "Afternoon", "from": "14:00", "to": "17:00"}, {"label": "Evening", "from": "17:00", "to": "19:00"}], "week": {"mon": ["quiet", "medium", "medium", "closed"], "tue": ["quiet", "quiet", "medium", "medium"], "wed": ["quiet", "medium", "medium", "busy"], "thu": ["medium", "medium", "busy", "busy"], "fri": ["medium", "busy", "busy", "busy"], "sat": ["busy", "busy", "busy", "medium"], "sun": ["medium", "medium", "quiet", "closed"]}}}}</script>
   <script defer src="vendor/lenis-1.1.18.min.js?v=42bf5944"></script><!-- Lenis 1.1.18 (MIT), self-hosted, pinned -->
-  <script type="module" src="main.js?v=60aba37c"></script>
+  <script type="module" src="main.js?v=b6a173c4"></script>
 </body>
 </html>

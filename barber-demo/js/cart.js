@@ -2,6 +2,7 @@
 import { $, $$, site, money, store, toast, modal, nowShop, resolveDay, addDays, fmtHour, escapeHtml } from './util.js';
 import { DAY_NAMES } from './clock.js';
 import { addHoneypot, tripped, guard, send, isLive, phoneFallback, auPhone, PHONE_ERR } from './formkit.js';
+import { mountReminder, reminderPreview } from './reminder.js';
 
 const KEY = 'eo-cart';
 let items = [];
@@ -104,6 +105,8 @@ list.addEventListener('click', (e) => {
 addHoneypot(form);
 const submitBtn = $('button[type=submit]', form), busy = guard(submitBtn);
 const failBox = document.createElement('div'); failBox.setAttribute('aria-live', 'assertive'); submitBtn.before(failBox);
+// Optional reminder (front end only: SENDING IS NOT CONNECTED, see js/reminder.js)
+const rem = mountReminder(failBox, site.growth || {}, 'cart-rm');
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
   if (!busy.start()) return;
@@ -117,6 +120,8 @@ form.addEventListener('submit', async (e) => {
     if (!phone.value.trim()) { perr.textContent = 'We need a phone number in case we have to reach you.'; phone.setAttribute('aria-invalid', 'true'); firstBad = firstBad || phone; }
     else if (!auPhone(phone.value)) { perr.textContent = PHONE_ERR; phone.setAttribute('aria-invalid', 'true'); firstBad = firstBad || phone; }
     if (firstBad) { firstBad.focus(); return; }
+    const rr = rem ? rem.read() : { ok: true, mode: 'none' };
+    if (!rr.ok) { rr.input.focus(); return; }
     const when = $('#cart-when').selectedOptions[0].textContent.toLowerCase();
     const barber = $('#cart-barber').value === 'any' ? 'the next available barber' : $('#cart-barber').value;
     if (!tripped(form)) {
@@ -126,6 +131,12 @@ form.addEventListener('submit', async (e) => {
     $('#done-name').textContent = name.value.trim().split(' ')[0];
     $('#done-detail').textContent = `Your visit (${count()} ${count() === 1 ? 'item' : 'items'}, ${money(total())}${minutes() ? `, about ${fmtMins(minutes())}` : ''}) ${isLive() ? 'is requested' : 'would be pencilled in'} with ${barber}: ${when}.`;
     const note = $('.note', done); if (note) note.textContent = isLive() ? `We will confirm by phone or text. Questions? Call ${site.phone}.` : 'Demo only: nothing was booked and nothing was charged.';
+    const remLine = rem ? rem.confirmation(null) : '';
+    if (remLine) $('#done-detail').textContent += ' ' + remLine;
+    // Preview only: SENDING IS NOT CONNECTED. Plug an email or SMS service in here, per customer (see js/reminder.js).
+    const pv = $('#done-preview'); pv.hidden = !remLine;
+    pv.textContent = remLine ? reminderPreview({ name: name.value, what: 'visit', dayKey: null, time: '', business: site.name }) + ' (Demo: this message is not sent.)' : '';
+    if (rem) rem.reset();
     items = []; save();
     done.hidden = false; render();
     done.focus();

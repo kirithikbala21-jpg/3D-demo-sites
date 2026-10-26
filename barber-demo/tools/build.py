@@ -108,6 +108,32 @@ def prepare_config():
         errs.append("staff: two people share the same slug (the short name used in links). Make each one different.")
     if not cfg["staff"]:
         errs.append("staff: add at least one person.")
+    for k in ("googleReviewUrl", "googleMapsUrl", "instagramUrl", "facebookUrl"):
+        v = cfg.get(k, "")
+        if v and not re.fullmatch(r"https://\S+", v):
+            errs.append(f'{k}: must start with https:// (or be empty "" to hide it). Found "{v}".')
+    r, n = cfg.get("googleRating"), cfg.get("googleReviewCount")
+    if r not in (None, "") and not (isinstance(r, (int, float)) and 0 < r <= 5):
+        errs.append("googleRating: must be a number from 0 to 5 (use the business's REAL rating), or empty to hide the badge.")
+    if n not in (None, "") and not (isinstance(n, int) and n > 0):
+        errs.append("googleReviewCount: must be a whole number above 0 (use the REAL count), or empty to hide the badge.")
+    if not isinstance(cfg.get("reminderLeadHours", 24), (int, float)) or cfg.get("reminderLeadHours", 24) < 1:
+        errs.append("reminderLeadHours: must be a number of hours, 1 or more (24 = the day before).")
+    for flag in ("remindersEnabled", "waitlistEnabled", "busynessEnabled", "openBannerEnabled"):
+        if flag in cfg and not isinstance(cfg[flag], bool):
+            errs.append(f"{flag}: must be true or false (no quote marks).")
+    bz = cfg.get("busyness") or {}
+    if bz.get("blocks"):
+        nb = len(bz["blocks"])
+        for day, row in (bz.get("week") or {}).items():
+            if day not in ("mon", "tue", "wed", "thu", "fri", "sat", "sun"):
+                errs.append(f'busyness > week: "{day}" is not a day. Use mon, tue, wed, thu, fri, sat, sun.')
+            elif len(row) != nb:
+                errs.append(f"busyness > week > {day}: needs exactly {nb} entries (one per block).")
+            else:
+                for lv in row:
+                    if lv not in ("quiet", "medium", "busy", "closed", None):
+                        errs.append(f'busyness > week > {day}: "{lv}" must be quiet, medium, busy or closed.')
     if errs:
         sys.exit("PROBLEMS in site.config.json (fix these and save again):\n - " + "\n - ".join(errs))
 
@@ -284,6 +310,11 @@ def hours_table():
     )
 
 
+def hours_inline():
+    """One-line hours for the hero (Mon 10am - 6pm, Tue - Fri 9am - 7pm ...), plain text."""
+    return re.sub(r"\s+", " ", html.unescape(hours_summary().replace("<br>", ", ")))
+
+
 def hours_summary():
     """Compact grouped hours for the footer / overlay (Mon - Wed 7am - 4pm ...)."""
     order = [1, 2, 3, 4, 5, 6, 0]
@@ -432,6 +463,60 @@ def photo_slots():
     return html_by_slot, text
 
 
+def esc(s):
+    return html.escape(str(s), quote=True)
+
+
+def stars_svg(rating):
+    """Five SVG stars, filled to the rating (static markup, no JavaScript needed)."""
+    pct = round(max(0, min(5, float(rating))) / 5 * 100, 2)
+    star = "".join(f'<path transform="translate({i * 20} 0)" d="M10 1.5l2.6 5.5 6 .8-4.4 4.1 1.1 5.9L10 15l-5.3 2.8 1.1-5.9L1.4 7.8l6-.8z"/>' for i in range(5))
+    uid = "rs%d" % abs(hash(str(rating) + str(len(_STARS)))); _STARS.append(uid)
+    return (f'<svg class="g-stars" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 19" width="95" height="18" aria-hidden="true" focusable="false">'
+            f'<defs><clipPath id="{uid}"><rect width="{pct:g}" height="19"/></clipPath></defs><g fill="rgba(242,235,221,.3)">{star}</g><g fill="#E4C77A" clip-path="url(#{uid})">{star}</g></svg>')
+
+
+_STARS = []
+
+
+def rating_badge(where):
+    """"Rated 4.9 on Google · 120 reviews" badge, or "" when the rating, count or Maps link is missing. The numbers are DEMO numbers."""
+    r, n, u = cfg.get("googleRating"), cfg.get("googleReviewCount"), cfg.get("googleMapsUrl")
+    if not (r and n and u):
+        return ""
+    demo = '<span class="g-rating-demo">Demo number</span>'
+    return (f'<a class="g-rating g-rating-{where}" href="{esc(u)}" target="_blank" rel="noopener" '
+            f'aria-label="Rated {r} on Google · {n} reviews Demo number (opens Google Maps in a new tab)">{stars_svg(r)}'
+            f'<span class="g-rating-text">Rated {r} on Google · {n} reviews</span> {demo}</a>')
+
+
+ICON_PATHS = {
+    "google": "M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21z M12 7a2.500 2.500 0 1 0 0 5 2.500 2.500 0 0 0 0-5z",
+    "instagram": "M7 3h10a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4z M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8z M17.500 6.500h.01",
+    "facebook": "M14 8h3V4h-3a4 4 0 0 0-4 4v3H7v4h3v6h4v-6h3l1-4h-4V8.500a.5.5 0 0 1 .5-.5z",
+    "star": "M12 3l2.800 5.800 6.200.9-4.500 4.400 1.100 6.200L12 17.300 6.400 20.300l1.100-6.200L3 9.700l6.200-.9z",
+}
+
+
+def _icon(k):
+    return (f'<svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="{ICON_PATHS[k]}" fill="none" '
+            'stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/></svg>')
+
+
+def _social_items():
+    return [(k, lab, cfg.get(key)) for k, lab, key in (("google", "Find us on Google Maps", "googleMapsUrl"), ("instagram", "Follow us on Instagram", "instagramUrl"), ("facebook", "Find us on Facebook", "facebookUrl")) if cfg.get(key)]
+
+
+def social_icons():
+    """Icon links for the footer and contact page; a link appears only when its URL is set in site.config.json."""
+    return "".join(f'<li><a class="soc-link" href="{esc(u)}" target="_blank" rel="noopener" aria-label="{lab} (opens in a new tab)">{_icon(k)}</a></li>' for k, lab, u in _social_items())
+
+
+def social_buttons():
+    return "".join(f'<a class="btn btn-secondary" href="{esc(u)}" target="_blank" rel="noopener">{_icon(k)} {lab}</a>' for k, lab, u in _social_items() if k != "facebook") + \
+        "".join(f'<a class="btn btn-secondary" href="{esc(u)}" target="_blank" rel="noopener">{_icon(k)} {lab}</a>' for k, lab, u in _social_items() if k == "facebook")
+
+
 def build():
     for p in DATA["products"]:
         p["isJar"] = p["art"] == "jar"
@@ -458,6 +543,8 @@ def build():
         "holidays": {"mode": cfg["holidays"].get("mode", "closed"), "overrides": {k: {"status": o.get("status"), "open": o.get("openMin"), "close": o.get("closeMin")} for k, o in (cfg["holidays"].get("overrides") or {}).items()}},
         "closures": [{"date": k["date"], "name": k.get("name", ""), "status": k["status"], "open": k.get("openMin"), "close": k.get("closeMin")} for k in cfg.get("closures", [])],
         "notices": cfg.get("notices", []), "booking": cfg["booking"], "forms": {"endpoint": cfg["forms"].get("endpoint", "")},
+        "growth": {k: cfg.get(k) for k in ("googleReviewUrl", "googleMapsUrl", "instagramUrl", "facebookUrl", "googleRating", "googleReviewCount", "remindersEnabled",
+                                           "reminderLeadHours", "waitlistEnabled", "busynessEnabled", "openBannerEnabled", "busyness")},
     }
     staff = []
     for st in cfg["staff"]:
@@ -474,6 +561,13 @@ def build():
         "giftAmounts": [{"amount": a, "checked": a == cfg["giftCards"]["default"]} for a in cfg["giftCards"]["amounts"]],
         "staffList": staff, "formsLive": bool(cfg["forms"].get("endpoint")), "assets": asset_versions(), "importMap": import_map(),
         "timeOptions": time_options(),
+        "ratingHero": rating_badge("hero"), "ratingFooter": rating_badge("footer"), "socialIcons": social_icons(), "socialButtons": social_buttons(),
+        "hasBusyness": bool(cfg.get("busynessEnabled", True) and (cfg.get("busyness") or {}).get("blocks")),
+        "hasOpenBanner": cfg.get("openBannerEnabled", True),
+        "hasReviewLink": bool(cfg.get("googleReviewUrl")),
+        "suburb": re.split(r"\s+(?:NSW|VIC|QLD|SA|WA|TAS|ACT|NT)\b", cfg["contact"]["locality"])[0],
+        "hoursInline": hours_inline(),
+        "minPrice": int(min(it["price"] for cat in cfg["services"] for it in cat["items"])),
         "photos": photo_slots()[0], "photoCredits": photo_slots()[1],
         "gmapEmbed": "https://maps.google.com/maps?q=" + urllib.parse.quote(cfg["contact"]["mapsQuery"]) + "&output=embed",
         "mapsUrl": "https://www.google.com/maps/search/?api=1&query=" + urllib.parse.quote(cfg["contact"]["mapsQuery"]),
@@ -482,6 +576,11 @@ def build():
     }
     layout = parse((TPL / "layout.html").read_text())
     for page in cfg["pages"]:
+        if page.get("requires") and not cfg.get(page["requires"]):  # a page whose config value is empty is not built at all
+            page["hidden"] = True
+            if (ROOT / page["file"]).exists():
+                (ROOT / page["file"]).unlink()
+            continue
         page["description"] = page["description"].replace("{phone}", cfg["contact"]["phone"])
         ctx = {**base, "page": {**page, "isHome": page["file"] == "index.html", "isNotFound": page["file"] == "404.html",
                                 "canonical": cfg["site"]["baseUrl"] + ("" if page["file"] == "index.html" else page["file"]),

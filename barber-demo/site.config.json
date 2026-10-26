@@ -68,6 +68,34 @@
   "endpoint": "",
   "note": "Paste your Formspree (or similar) address between the quote marks to make the booking, careers, newsletter and gift-card forms send real emails. Leave empty to keep the demo behaviour."
  },
+ "googleReviewUrl": "https://g.page/r/DEMO/review",
+ "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Brass+%26+Blade+Barbershop+Surry+Hills",
+ "instagramUrl": "https://www.instagram.com/demo_brassandblade/",
+ "facebookUrl": "",
+ "googleRating": 4.9,
+ "googleReviewCount": 120,
+ "remindersEnabled": true,
+ "reminderLeadHours": 24,
+ "waitlistEnabled": true,
+ "busynessEnabled": true,
+ "openBannerEnabled": true,
+ "busyness": {
+  "blocks": [
+   {"label": "Morning", "from": "09:00", "to": "12:00"},
+   {"label": "Lunch", "from": "12:00", "to": "14:00"},
+   {"label": "Afternoon", "from": "14:00", "to": "17:00"},
+   {"label": "Evening", "from": "17:00", "to": "19:00"}
+  ],
+  "week": {
+   "mon": ["quiet", "medium", "medium", "closed"],
+   "tue": ["quiet", "quiet", "medium", "medium"],
+   "wed": ["quiet", "medium", "medium", "busy"],
+   "thu": ["medium", "medium", "busy", "busy"],
+   "fri": ["medium", "busy", "busy", "busy"],
+   "sat": ["busy", "busy", "busy", "medium"],
+   "sun": ["medium", "medium", "quiet", "closed"]
+  }
+ },
  "staff": [
   {"slug": "marco", "name": "Marco", "role": "Owner & master barber", "pick": "Owner · fades and razor work", "blurb": "Seventeen years behind the chair. Skin fades, classic cuts and the best neckline in the building.", "photo": "barberMarco"},
   {"slug": "jess", "name": "Jess", "role": "Senior barber", "pick": "Scissor cuts and texture", "blurb": "Scissor cuts, long hair and kids. Calm, quick and good at making nervous clients laugh.", "photo": "barberJess"},
@@ -166,6 +194,7 @@
   {"file": "membership.html", "template": "membership", "title": "Memberships & gift cards", "description": "Monthly memberships from [[memberFrom]] and gift cards for Brass & Blade (fictional demo).", "pageHero": true, "h1": "Memberships", "kicker": "Stay sharp for less", "lead": "Pay monthly, skip the queue and never wonder when your next cut is due.", "crumb": "Membership"},
   {"file": "journal.html", "template": "journal", "title": "Journal", "description": "Grooming advice and stories from the chairs at Brass & Blade.", "pageHero": true, "h1": "The journal", "kicker": "Notes from the chairs", "lead": "Honest advice on cuts, beards and looking after yourself.", "crumb": "Journal"},
   {"file": "visit.html", "template": "visit", "title": "Visit & FAQ", "description": "Opening hours, address, getting here and answers to the questions we hear most.", "pageHero": true, "h1": "Visit us", "kicker": "Find the pole", "lead": "Look for the red, white and blue stripes. Hours, directions and answers below.", "crumb": "Visit", "jsonld": true},
+  {"file": "reviews.html", "template": "review-us", "title": "Leave a Google review", "description": "Scan the QR code or tap the button to leave Brass & Blade a Google review. A concept demo with a placeholder link.", "pageHero": true, "h1": "Leave us a review", "kicker": "Loved your visit?", "lead": "Scan the code with your phone camera, or tap the button below. It takes about a minute.", "crumb": "Reviews", "requires": "googleReviewUrl"},
   {"file": "careers.html", "template": "careers", "title": "Careers", "description": "Join the crew at Brass & Blade: barbers, apprentices and front of house.", "pageHero": true, "h1": "Join the crew", "kicker": "Careers", "lead": "We hire for attitude and teach the rest. These roles are fictional.", "crumb": "Careers"},
   {"file": "legal.html", "template": "legal", "title": "Privacy, terms & cookies", "description": "Privacy policy, terms of use and cookie information for this demo site.", "pageHero": true, "h1": "Privacy, terms & cookies", "kicker": "Legal", "lead": "A plain-language template. Replace with your own policy before going live.", "crumb": "Legal"},
   {"file": "404.html", "template": "notfound", "title": "Page not found", "description": "This page could not be found. Head back to the home page, the services list or the booking page.", "pageHero": true, "h1": "Page not found", "kicker": "Error 404", "lead": "That page has wandered off for a trim. Here are a few places to pick up the trail.", "crumb": "Page not found", "hidden": true}

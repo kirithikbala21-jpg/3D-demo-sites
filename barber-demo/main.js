@@ -6,6 +6,7 @@ import './js/cart.js';
 import './js/search.js';
 import './js/sound.js';
 import './js/forms.js';
+import './js/growth.js';
 import './js/smooth.js';
 
 // The 3D scene starts only after the short intro, so the intro is never held up by 3D work.

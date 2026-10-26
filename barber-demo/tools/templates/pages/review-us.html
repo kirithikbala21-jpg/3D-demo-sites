@@ -1,0 +1,12 @@
+    <section class="section" id="qr-section" aria-labelledby="qr-title">
+      <div class="container narrow">
+        <div class="qr-print" id="qr-print">
+          <h2 id="qr-title">Leave us a Google review</h2>
+          <div class="qr-card"><div id="qr-host" class="qr-host"><noscript><p>Please use the button below to leave a review.</p></noscript></div></div>
+          <p class="qr-caption"><strong>Scan to leave a review</strong></p>
+          <p class="qr-brand">{{brand.fullName}}</p>
+        </div>
+        <p class="qr-actions"><button type="button" class="btn btn-primary" id="print-qr">Print this</button> <a class="btn btn-secondary" href="{{googleReviewUrl}}" target="_blank" rel="noopener">Open the review page<span class="sr-only"> (opens in a new tab)</span></a></p>
+        <p class="note">Demo link: this QR code points to a placeholder address. The owner sets the real one in site.config.json (googleReviewUrl).</p>
+      </div>
+    </section>

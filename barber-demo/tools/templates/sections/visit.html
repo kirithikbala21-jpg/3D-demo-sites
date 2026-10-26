@@ -11,6 +11,8 @@
             <a href="mailto:{{contact.email}}">{{contact.email}}</a>
           </address>
           {{{hoursTable}}}
+          {{#if socialButtons}}<p class="find-online">{{{socialButtons}}}</p>{{/if}}
+          <div class="busy" data-busy hidden></div>
         </div>
         <div class="visit-side reveal">
           {{> gmap}}

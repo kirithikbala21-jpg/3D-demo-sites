@@ -4,6 +4,8 @@ This is an **unofficial concept demo** of a barbershop website, with a spinning 
 
 ---
 
+**What this site does:** home page with a hero (suburb in the H1, one Book button, hours, prices, tap-to-call, Google rating badge when real numbers are set), services and prices, the crew, online booking calendar with a waitlist for full times and optional reminders, shop and "Your visit" drawer, memberships and gift cards, journal, careers, Visit page (hours, map link, Instagram and Google Maps buttons, best time to come), a Google review page with a printable QR code, an "Open now" banner on every page, privacy and cookie pages, and a 404. Everything runs in the browser: nothing is sent anywhere until you add a form address (section 8).
+
 ## 0. Launch checklist: replace every placeholder before going live
 
 All the `site.config.json` items are in the **one file** described in section 1.
@@ -26,6 +28,10 @@ All the `site.config.json` items are in the **one file** described in section 1.
 - [ ] **Let Google find the site**: `site` > `noindex` from `true` to `false`, and `site` > `baseUrl` to your real web address (ending in `/`).
 - [ ] **Privacy policy**: `legal.html` is a plain-language template. Have it checked for your business before launch.
 - [ ] **Share picture and icons**: `node tools/make-assets.mjs` regenerates `img/og.png` (shown when the link is posted on Facebook or in a text), the icons and the price-list PDF. Ask your developer.
+- [ ] **Google review link, Maps link and rating**: `googleReviewUrl`, `googleMapsUrl`, `googleRating`, `googleReviewCount` (section 12). The demo values are placeholders: use the shop's REAL review link, Maps link, rating and review count. Never invent a rating.
+- [ ] **Instagram and Facebook**: `instagramUrl`, `facebookUrl` (empty = hidden).
+- [ ] **Best-time table**: `busyness` (section 12) with the shop's real typical pattern, or empty `blocks` to hide it.
+- [ ] **Reminders and waitlist**: decide if you want them (`remindersEnabled`, `waitlistEnabled`). Sending is NOT connected in the demo (section 12).
 - [ ] **Domain name and https**: section 10.
 
 ---
@@ -193,6 +199,33 @@ This resizes (1600px wide), converts to WebP under 250 KB, records the alt text 
 - Photo credits are listed in the footer automatically. `CREDITS-TODO.md` lists the photographer names still to record.
 - The "concept demo" wording is deliberate until the real owner's details are filled in (checklist in section 0).
 
+## 12. Growth features (Google reviews, reminders, waitlist, best time, open banner)
+
+All switches and values are in `site.config.json`. **An empty value, or `false`, hides the whole feature** (no empty box, no broken link). Run nothing: edit the file on GitHub and the site rebuilds itself (section 1).
+
+| Key | What it does | Notes |
+| --- | --- | --- |
+| `googleReviewUrl` | "Leave us a Google review" button in the footer, the "Loved your visit? Tell us" section on the home page, and the `reviews.html` page with a large QR code, "Scan to leave a review" and a **Print this** button (the printout shows only the QR and heading) | Demo placeholder `https://g.page/r/DEMO/review`. Empty = no button, no section, no `reviews.html`. The QR is drawn in the browser (`js/qr.js`), nothing is fetched |
+| `googleMapsUrl` | "Find us on Google Maps" button on the Visit and home pages, the Maps icon in the footer, and the link behind the rating badge | Empty = hidden |
+| `instagramUrl`, `facebookUrl` | Icon links in the footer and "Follow us on Instagram" button on the Visit page | Empty = hidden. All open in a new tab with `rel="noopener"` |
+| `googleRating`, `googleReviewCount` | Badge "Rated 4.9 on Google · 120 reviews" with five SVG stars (filled to the rating) in the hero and footer, linking to `googleMapsUrl` | **Use the business's REAL rating and review count. Never invent one.** The demo shows a "Demo number" note: remove it (`g-rating-demo` in `tools/build.py`) once real numbers are in. Empty = hidden |
+| `remindersEnabled`, `reminderLeadHours` | Optional "Remind me: None / Email / Text" on the booking form and the "Your visit" drawer, with the consent line "We will only use this to send your reminder." The confirmation says "Reminder set for Tuesday 27 October, 9am" and shows a short **preview** of the message ("Preview: Hi Sam, a reminder that your Skin fade is on Wednesday 28 October at 9:00am at Brass & Blade.") | `reminderLeadHours` 24 = the day before at 9am, 48 = two days before. **Sending is not connected. Plug in an email or SMS service here per customer:** in `js/forms.js` (booking) and `js/cart.js` (drawer) look for `rem.confirmation(` and send `{ mode, contact, remindAt }` to your service. The demo never claims a message was sent |
+| `waitlistEnabled` | Full times on the booking calendar show "Waitlist"; clicking one opens a small name + phone form (consent line "We will only contact you if a spot opens") | Demo: some times are always "full" so you can see it. Nothing is sent: the entry is saved only in the visitor's browser (`localStorage` key `bb-waitlist`). **Real saving and notifications are connected later, at `onJoin` in `js/waitlist.js`** (tell the customer when a spot opens) |
+| `busynessEnabled`, `busyness` | "Best time to come": one line such as "Usually quieter at 9am to 12pm on Tuesdays." and a 7-day SVG strip with today highlighted, on the Book and Visit pages | A **typical weekly pattern you set**, never live. Edit `blocks` (names and times) and `week` (`mon` ... `sun`, one level per block: `quiet`, `medium`, `busy` or `closed`). Empty `blocks` = hidden |
+| `openBannerEnabled` | Slim "Open now, closes at 7pm / Closed now. Opens tomorrow at 10am" bar at the top of every page, in the shop's own time zone (Sydney) | Uses `hours`, holidays and closures |
+
+### Hero and trust (home page)
+- The H1 reads "Brass & Blade", with the line "Barbershop in Surry Hills, Sydney · Est. 2014" inside it (suburb comes from `contact` > `locality`; the year from `brand` > `established`). Facts only: no "best" or "friendliest".
+- One big **Book a chair** button; "See services & prices" and "Get directions" (opens `googleMapsUrl` in a new tab) are plain links. Hours and "Cuts from $38" (the cheapest service in `services`) are shown under the buttons, and the live "Open now" line sits beneath them.
+- **Tap-to-call** is on every screen: the phone number in the header from 1040px wide, the sticky Call bar below that.
+- The photo behind it is `data/photos.json` > `hero`. Parallax is subtle (the photo moves slowly, the brass panel a little faster, the text stays still) and is switched off for visitors who prefer reduced motion.
+- The rating badge appears only when `googleRating` and `googleReviewCount` are set (real numbers only; the "Demo number" note stays until you remove it). The three reviews further down the page are invented samples and say so on every card; they are never shown as Google reviews.
+
+### How to fill the growth settings in site.config.json
+1. `googleReviewUrl`: in Google Business Profile, "Get more reviews", copy the link. 2. `googleMapsUrl`: open your listing on Google Maps, Share, copy the link. 3. `instagramUrl` / `facebookUrl`: your page addresses, or `""`. 4. `googleRating` / `googleReviewCount`: what your Google listing shows today. 5. `busyness`: for each day, one word per block (`quiet`, `medium`, `busy`, `closed`) from what you see at the counter. 6. Switch any feature off with `false`, or empty the value.
+
+Privacy: `legal.html` already says reminders are optional and only used to send the reminder.
+
 ---
 ---
 
@@ -205,6 +238,7 @@ This resizes (1600px wide), converts to WebP under 250 KB, records the alt text 
 | `data/*.json` | `journal`, `careers`, `faq`, `photos` (written by `add-photo.py`) |
 | `tools/build.py` | Stdlib-only generator: pages, `search-data.js`, `sitemap.xml`, `robots.txt`, JSON-LD (BarberShop + FAQ, special hours from `closures`), `?v=hash` cache busting and one import map (Three.js plus every module). `[[price:Name]]`, `[[memberFrom]]`, `[[deliveryFee]]`, `[[freeOver]]` tokens in text are replaced by the real numbers. |
 | `tools/templates/` | `layout.html`, `pages/`, `sections/`, `partials/` |
+| `js/qr.js`, `js/reminder.js`, `js/waitlist.js`, `js/busy.js`, `js/growth.js` | Growth features (section 12): QR generator (byte mode, level M, versions 1 to 40, verified with OpenCV), reminder control, waitlist form, best-time chart, review page / busyness / open banner wiring |
 | `js/clock.js` | **Pure** date/time logic: shop time zone via `Intl` (DST-safe), Easter, NSW and VIC public holidays, opening status, banners. Unit-tested under Node. |
 | `js/forms.js`, `js/formkit.js`, `js/cart.js` | Booking calendar (month view, rolling 90 days, shop-time "today"), forms (honeypot, double-submit guard, `fetch` to `forms.endpoint`, phone fallback, Australian phone validation) |
 | `js/notice.js` | Holiday/closure banner and expiring notices |
@@ -223,7 +257,7 @@ Caching: `styles.css`, `vendor/lenis*`, `main.js` carry `?v=<sha1>`; the import 
 cd barber-demo
 node tests/unit.mjs                                   # clock logic, no browser
 export CHROME_PATH=/path/to/chromium
-ROOT=$PWD node tests/run.mjs [--suite=overflow,axe,links,func,fallback,perf,hardening]
+ROOT=$PWD node tests/run.mjs [--suite=growth,overflow,axe,links,func,fallback,perf,hardening]
 ```
 `tests/node_modules` needs playwright-core and axe-core (a symlink to another demo's works). Overflow on every page at 360 to 1920px, axe at 375 and 1440, tap targets and text sizes, links, tabs, drawer, search, booking validation, cookie bar, no-WebGL and no-JS fallbacks, weight, and the `hardening` suite (visitor time zones, holidays, banners, expiring notices, config errors, forms, honeypot, double submit, stale-time refusal, cache busting, no-JS banner). Software WebGL is slow: run the suites one at a time on a busy machine.
 

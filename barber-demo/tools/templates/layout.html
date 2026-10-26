@@ -75,6 +75,7 @@
   </div>
 
   <div class="notice-bar" id="notice-bar" role="region" aria-label="Notices" hidden></div>
+  {{#if hasOpenBanner}}<div class="open-banner" id="open-banner" role="status" hidden><span class="dot" aria-hidden="true"></span><span class="ob-text"></span></div>{{/if}}
 
   <header class="site-header" id="top">
     <div class="header-inner">
@@ -89,6 +90,7 @@
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1.500 12h-11zM9 8a3 3 0 0 1 6 0"/></svg>
           <span class="cart-count" id="cart-count" aria-hidden="true" hidden>0</span>
         </button>
+        <a class="header-phone" href="tel:{{contact.phoneHref}}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 3.5h4l2 5-2.5 1.5a11 11 0 0 0 5 5l1.5-2.5 5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 5.5a2 2 0 0 1 2-2z"/></svg><span>{{contact.phone}}</span><span class="sr-only"> (tap to call)</span></a>
         <a class="header-link" href="book.html">Book</a>
         <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="mobile-nav" aria-label="Open menu">
           <span class="bars" aria-hidden="true"><span></span><span></span><span></span></span>
@@ -179,6 +181,7 @@
       <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M7.500 12.500l3 3 6-7"/></svg>
       <h3>Thanks, <span id="done-name">friend</span>!</h3>
       <p id="done-detail"></p>
+      <p class="note rm-preview" id="done-preview" hidden></p>
       <p class="note">{{#if formsLive}}We will confirm by phone or text.{{else}}Demo only: nothing was booked and nothing was charged.{{/if}}</p>
       <button class="btn btn-secondary" type="button" id="done-close">Close</button>
     </div>
@@ -208,6 +211,9 @@
             <span class="script">{{{brand.wordmark}}}</span>
           </a>
           <p>Classic cuts, sharp fades and hot towel shaves in the heart of Surry Hills, {{brand.city}}.</p>
+          {{{ratingFooter}}}
+          {{#if hasReviewLink}}<p><a class="btn btn-secondary btn-sm footer-review" href="{{googleReviewUrl}}" target="_blank" rel="noopener">Leave us a Google review<span class="sr-only"> (opens in a new tab)</span></a></p>{{/if}}
+          {{#if socialIcons}}<ul class="soc-list" role="list" aria-label="Find us online">{{{socialIcons}}}</ul>{{/if}}
         </div>
         <nav class="footer-col" aria-label="Footer: explore">
           <h2>Explore</h2>
@@ -229,6 +235,7 @@
       <nav class="footer-legal" aria-label="Footer: more">
         <a href="membership.html#gift-cards">Gift cards</a>
         <a href="careers.html">Careers</a>
+        {{#if hasReviewLink}}<a href="reviews.html">Reviews</a>{{/if}}
         <a href="legal.html#privacy">Privacy</a>
         <a href="legal.html#terms">Terms</a>
         <a href="legal.html#cookies">Cookies</a>

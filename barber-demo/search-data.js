@@ -49,6 +49,12 @@ export default [
 "type": "Page"
 },
 {
+"title": "Leave a Google review",
+"text": "Scan the QR code or tap the button to leave Brass & Blade a Google review. A concept demo with a placeholder link.",
+"url": "reviews.html",
+"type": "Page"
+},
+{
 "title": "Careers",
 "text": "Join the crew at Brass & Blade: barbers, apprentices and front of house.",
 "url": "careers.html",

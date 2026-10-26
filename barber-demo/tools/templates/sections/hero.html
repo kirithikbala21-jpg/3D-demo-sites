@@ -9,8 +9,8 @@
       </div>
       <div class="hero-inner">
         <div class="hero-head">
-          <p class="hero-kicker">Barbershop &middot; Surry Hills &middot; Est. {{brand.established}}</p>
-          <h1 id="hero-title" class="wordmark"><span class="wm-1">Brass &amp;</span> <span class="wm-2">Blade</span><span class="sr-only"> Barbershop, {{brand.city}}</span></h1>
+          <h1 id="hero-title" class="wordmark"><span class="hero-kicker">Barbershop in {{suburb}}, {{brand.city}} &middot; Est. {{brand.established}}</span><span class="wm-1">Brass &amp;</span> <span class="wm-2">Blade</span></h1>
+          {{{ratingHero}}}
         </div>
 
         <div class="hero-stage" id="stage">
@@ -41,11 +41,16 @@
 
         <div class="hero-body">
           <p class="hero-tag">{{brand.tagline}}</p>
-          <p class="chip"><span class="dot" aria-hidden="true"></span><span id="open-status">Open 7 days</span></p>
           <div class="hero-cta">
-            <a class="btn btn-primary" href="book.html">Book a chair</a>
+            <a class="btn btn-primary btn-hero" href="book.html">Book a chair</a>
             <a class="link-arrow" href="services.html">See services &amp; prices <span aria-hidden="true">&rarr;</span></a>
+            {{#if googleMapsUrl}}<a class="link-arrow" href="{{googleMapsUrl}}" target="_blank" rel="noopener">Get directions <span aria-hidden="true">&rarr;</span><span class="sr-only"> (opens Google Maps in a new tab)</span></a>{{/if}}
           </div>
+          <ul class="hero-facts" aria-label="Hours and prices">
+            <li><strong>Hours</strong> <span>{{hoursInline}}</span></li>
+            <li><strong>Prices</strong> <span>Cuts from ${{minPrice}}. Full list under See services &amp; prices.</span></li>
+          </ul>
+          <p class="chip"><span class="dot" aria-hidden="true"></span><span id="open-status">{{hoursInline}}</span></p>
         </div>
       </div>
       <a class="scroll-cue" href="#facts">Scroll<svg width="14" height="8" viewBox="0 0 14 8" fill="none" stroke="currentColor" stroke-width="1.600" aria-hidden="true"><path d="M1 1l6 5 6-5"/></svg></a>

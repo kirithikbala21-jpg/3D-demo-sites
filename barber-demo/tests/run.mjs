@@ -220,9 +220,9 @@ if (want('func')) {
   ok('book: focus goes to the first problem (the calendar)', await p.evaluate(() => !!document.activeElement.closest('#cal-grid')));
   ok('book: past and closed days cannot be picked', (await p.locator('.cal-day:disabled').count()) > 0);
   let open = 0, taken = 0;
-  for (let i = 2; i < 12 && !taken; i++) { await p.locator('.cal-day:not(:disabled)').nth(i).click(); open = await p.locator('.slot:not(:disabled)').count(); taken = await p.locator('.slot:disabled').count(); }
+  for (let i = 2; i < 12 && !taken; i++) { await p.locator('.cal-day:not(:disabled)').nth(i).click(); open = await p.locator('.slot:not(:disabled):not(.is-waitlist)').count(); taken = await p.locator('.slot:disabled, .slot.is-full').count(); }
   ok('book: time grid follows opening hours and shows taken slots', open > 3 && taken > 0, `${open} open, ${taken} unavailable; ${await p.locator('#h-time').textContent()}`);
-  await p.locator('.slot:not(:disabled)').nth(1).click();
+  await p.locator('.slot:not(:disabled):not(.is-waitlist)').nth(1).click();
   ok('book: chosen time is marked', (await p.locator('.slot[aria-pressed=true]').count()) === 1);
   await p.fill('#f-name', 'Sam Rivera'); await p.fill('#f-phone', 'abc'); await p.locator('#f-phone').blur();
   ok('book: bad phone message', (await p.locator('#e-phone').textContent()).includes("Australian phone"));
@@ -490,7 +490,7 @@ if (want('hardening')) {
   {
     const bookingFlow = async (p) => {
       await p.goto(p.base + 'book.html?service=skin-fade&barber=marco'); await p.waitForTimeout(600);
-      await p.locator('.cal-day:not(:disabled)').nth(3).click(); await p.locator('.slot:not(:disabled)').nth(1).click();
+      await p.locator('.cal-day:not(:disabled)').nth(3).click(); await p.locator('.slot:not(:disabled):not(.is-waitlist)').nth(1).click();
       await p.fill('#f-name', 'Sam Rivera'); await p.fill('#f-phone', '0412 345 678');
     };
     const p0 = await newPage({ viewport: { width: 1280, height: 800 } }, { ...light, clock: TUE + T }); await bookingFlow(p0);
@@ -533,13 +533,13 @@ if (want('hardening')) {
     const d = await newPage({ viewport: { width: 1280, height: 800 } }, { ...light, clock: TUE + T }); await d.goto(base + 'book.html'); await d.waitForTimeout(500);
     const hp = await d.evaluate(() => [...document.querySelectorAll('input[name=website]')].map((i) => [i.tabIndex, i.closest('.hp').getAttribute('aria-hidden'), i.getBoundingClientRect().width]));
     ok('booking form carries a hidden honeypot field that is out of the tab order and hidden from screen readers', hp.length >= 1 && hp.every((h) => h[0] === -1 && h[1] === 'true' && h[2] <= 1), JSON.stringify(hp));
-    ok('without an endpoint the confirmation says it is a demo', await (async () => { await d.locator('.cal-day:not(:disabled)').nth(3).click(); await d.locator('.slot:not(:disabled)').nth(1).click(); await d.fill('#f-name', 'Sam Rivera'); await d.fill('#f-phone', '0412 345 678'); await d.click('#book-form button[type=submit]'); await d.waitForSelector('#form-success:not([hidden])'); return /This is a demo/.test(await d.locator('#form-success').textContent()); })());
+    ok('without an endpoint the confirmation says it is a demo', await (async () => { await d.locator('.cal-day:not(:disabled)').nth(3).click(); await d.locator('.slot:not(:disabled):not(.is-waitlist)').nth(1).click(); await d.fill('#f-name', 'Sam Rivera'); await d.fill('#f-phone', '0412 345 678'); await d.click('#book-form button[type=submit]'); await d.waitForSelector('#form-success:not([hidden])'); return /This is a demo/.test(await d.locator('#form-success').textContent()); })());
     await done(d);
   }
   // 7. A time that passes while the form is open is refused
   {
     const q = await newPage({ viewport: { width: 1280, height: 800 } }, { ...light, clock: TUE + 'T10:00:00' }); await q.goto(base + 'book.html?service=classic-cut'); await q.waitForTimeout(600);
-    await q.locator('.cal-day.is-today').click(); await q.locator('.slot:not(:disabled)').first().click(); await q.fill('#f-name', 'Sam Rivera'); await q.fill('#f-phone', '0412 345 678');
+    await q.locator('.cal-day.is-today').click(); await q.locator('.slot:not(:disabled):not(.is-waitlist)').first().click(); await q.fill('#f-name', 'Sam Rivera'); await q.fill('#f-phone', '0412 345 678');
     await q.evaluate(() => { const R = Date, off = 3 * 3600e3; class F extends R { constructor(...a) { if (a.length) super(...a); else super(R.now() + off); } static now() { return R.now() + off; } } window.Date = F; }); // three hours pass
     await q.click('#book-form button[type=submit]');
     const st = await q.evaluate(() => ({ err: document.querySelector('#e-time').textContent, shown: !document.querySelector('#book-form').hidden, saved: localStorage.getItem('bb-bookings') }));
@@ -563,6 +563,233 @@ if (want('hardening')) {
     const mod = await m.evaluate(() => performance.getEntriesByType('resource').map((r) => r.name).filter((n) => /\/js\/.*\.js/.test(n)));
     ok('the browser really loads the versioned module files (every js/ request has ?v=)', mod.length >= 6 && mod.every((n) => /\?v=[0-9a-f]{8}$/.test(n)), mod.slice(0, 2).join(' '));
     await done(m);
+  }
+  servers.forEach((sv) => sv.close()); try { fs.rmSync(TMP, { recursive: true, force: true }); } catch (e) { /* ignore */ }
+}
+
+/* ---------------------------------------------------------------- growth upgrades: review QR, reminders, social, rating, waitlist, best time, open banner */
+if (want('growth')) {
+  const TMP = fs.mkdtempSync(path.join(os.tmpdir(), 'bbg-'));
+  const servers = [];
+  const MIMEX = { ...MIME, '.webp': 'image/webp', '.txt': 'text/plain', '.png': 'image/png', '.ico': 'image/x-icon' };
+  const startSite = (root) => new Promise((res) => {
+    const sv = http.createServer((q, r) => { let u = decodeURIComponent(q.url.split('?')[0]); if (u.endsWith('/')) u += 'index.html'; fs.readFile(path.join(root, u), (e, d) => { if (e) { r.writeHead(404); r.end('nf'); return; } r.writeHead(200, { 'content-type': MIMEX[path.extname(u)] || 'application/octet-stream' }); r.end(d); }); }).listen(0, () => { servers.push(sv); res(`http://localhost:${sv.address().port}/`); });
+  });
+  const configured = async (mutate, name) => {
+    const dir = path.join(TMP, 'cfg-' + name);
+    fs.cpSync(SITE, dir, { recursive: true, filter: (src) => !/[\\/](tests|node_modules|\.git)([\\/]|$)/.test(src.slice(SITE.length)) });
+    const c = JSON.parse(fs.readFileSync(path.join(dir, 'site.config.json'), 'utf8')); mutate(c); fs.writeFileSync(path.join(dir, 'site.config.json'), JSON.stringify(c));
+    execFileSync('python3', [path.join(dir, 'tools/build.py')], { env: { ...process.env, SITE_ROOT: dir }, stdio: 'pipe' });
+    return startSite(dir);
+  };
+  const norm = (x) => x.replace(/\s+/g, ' ').trim();
+  const light = { webgl: false }, TUE = '2026-10-20', T = 'T12:00:00';
+  const D = { viewport: { width: 1280, height: 900 } }, M = { viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true };
+  const go = async (p, f) => { await p.goto(p.base + f); await p.waitForTimeout(700); await p.addStyleTag({ content: force }); };
+  const axeSrc = fs.readFileSync(require.resolve('axe-core/axe.min.js'), 'utf8');
+  const axe = async (p) => { await p.evaluate(axeSrc); return p.evaluate(async () => (await window.axe.run(document, { runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'] } })).violations.map((v) => `${v.id}(${v.nodes.length}) ${v.nodes[0].target.join(' ')}`)); };
+
+  // 1. Google review: footer button, home section, QR page, print view
+  {
+    const p = await newPage(D, { ...light, clock: TUE + T }); await go(p, 'index.html');
+    const f = await p.evaluate(() => ({ btn: [...document.querySelectorAll('.footer-review')].map((a) => [a.href, a.target, a.rel]), loved: !!document.querySelector('#loved a[href="https://g.page/r/DEMO/review"]'), lovedQr: !!document.querySelector('#loved a[href="reviews.html"]'), link: !!document.querySelector('.footer-legal a[href="reviews.html"]') }));
+    ok('Google review: footer button, the "Loved your visit? Tell us" home section and the footer Reviews link all point at the config URL, new tab, rel=noopener', f.btn.length === 1 && f.btn[0][0] === 'https://g.page/r/DEMO/review' && f.btn[0][1] === '_blank' && /noopener/.test(f.btn[0][2]) && f.loved && f.lovedQr && f.link, JSON.stringify(f));
+    await go(p, 'reviews.html');
+    const q = await p.evaluate(() => ({ svg: !!document.querySelector('#qr-host svg'), cap: document.querySelector('.qr-caption').textContent.trim(), h: document.querySelector('#qr-title').textContent, print: !!document.querySelector('#print-qr') }));
+    ok('reviews.html: large QR drawn in the browser, "Scan to leave a review" caption, Print this button', q.svg && q.cap === 'Scan to leave a review' && /Google review/.test(q.h) && q.print, JSON.stringify(q));
+    const qrPng = path.join(TMP, 'qr.png'); await p.locator('#qr-host svg').screenshot({ path: qrPng });
+    let dec = ''; try { dec = execFileSync('python3', ['-c', 'import cv2,sys;print(cv2.QRCodeDetector().detectAndDecode(cv2.resize(cv2.imread(sys.argv[1]),None,fx=2,fy=2,interpolation=cv2.INTER_NEAREST))[0])', qrPng]).toString().trim(); } catch (e) { dec = 'decoder missing: ' + String(e.message).slice(0, 60); }
+    ok('the QR code decodes (OpenCV) to exactly googleReviewUrl', dec === cfg.googleReviewUrl, dec);
+    await p.emulateMedia({ media: 'print' });
+    const pr = await p.evaluate(() => { const v = (s) => { const e = document.querySelector(s); return e ? getComputedStyle(e).visibility : 'none'; }; return { header: v('.site-header'), footer: v('.site-footer'), hero: v('.page-hero'), h2: v('#qr-title'), qr: v('#qr-host svg'), cap: v('.qr-caption'), nav: v('.mobile-cta'), banner: v('#open-banner') }; });
+    ok('print view shows ONLY the QR and heading (header, footer, hero, bars hidden)', pr.header === 'hidden' && pr.footer === 'hidden' && pr.hero === 'hidden' && pr.nav === 'hidden' && pr.h2 === 'visible' && pr.qr === 'visible' && pr.cap === 'visible', JSON.stringify(pr));
+    await p.emulateMedia({ media: 'screen' });
+    const hits = await p.evaluate(() => { window.__printed = 0; window.print = () => { window.__printed++; }; document.querySelector('#print-qr').click(); return window.__printed; });
+    ok('"Print this" opens the print dialog', hits === 1);
+    await done(p);
+    const off = await configured((c) => { c.googleReviewUrl = ''; c.instagramUrl = ''; }, 'noreview');
+    const q2 = await newPage(D, { ...light, host: off }); await go(q2, 'index.html');
+    const h = await q2.evaluate(() => ({ btn: !!document.querySelector('.footer-review'), loved: !!document.querySelector('#loved'), link: !!document.querySelector('a[href="reviews.html"]'), ig: !!document.querySelector('a[href*="instagram"]') }));
+    ok('empty googleReviewUrl hides everything: button, section, footer link, and reviews.html is not built; empty instagramUrl hides the Instagram links', !h.btn && !h.loved && !h.link && !h.ig && !fs.existsSync(path.join(TMP, 'cfg-noreview', 'reviews.html')) && !fs.readFileSync(path.join(TMP, 'cfg-noreview', 'sitemap.xml'), 'utf8').includes('reviews.html'), JSON.stringify(h));
+    await done(q2);
+  }
+  // 2. Google Maps / Instagram links
+  {
+    const p = await newPage(M, { ...light }); await go(p, 'visit.html');
+    const l = await p.evaluate(() => { const a = (sel) => [...document.querySelectorAll(sel)].map((e) => [e.href, e.target, e.rel, e.getAttribute('aria-label') || e.textContent.trim().slice(0, 30), Math.round(e.getBoundingClientRect().height)]); return { page: a('.find-online a'), foot: a('.soc-list a') }; });
+    ok('contact (visit) page: "Find us on Google Maps" and "Follow us on Instagram" buttons; footer icon links with accessible labels, new tab, noopener, 44px tap targets; Facebook (empty) is hidden',
+      l.page.length === 2 && /Google Maps/.test(l.page[0][3]) && /Instagram/.test(l.page[1][3]) && l.page.every((x) => x[1] === '_blank' && /noopener/.test(x[2]) && x[4] >= 44) && l.foot.length === 2 && l.foot.every((x) => /opens in a new tab/.test(x[3]) && x[4] >= 44 && x[1] === '_blank'), JSON.stringify(l));
+    await done(p);
+  }
+  // 3. Google rating badge
+  {
+    const p = await newPage(M, { ...light }); await go(p, 'index.html');
+    const b = await p.evaluate(() => [...document.querySelectorAll('.g-rating')].map((a) => ({ href: a.href, t: a.textContent.replace(/\s+/g, ' ').trim(), target: a.target, aria: a.getAttribute('aria-label'), w: a.querySelector('clipPath rect').getAttribute('width'), vis: a.getBoundingClientRect().height > 0 })));
+    ok('rating badge in the hero and the footer: "Rated 4.9 on Google · 120 reviews", 98% of the stars filled, "Demo number" note, links to Maps in a new tab', b.length === 2 && b.every((x) => /^Rated 4\.9 on Google · 120 reviews\s*Demo number$/.test(x.t) && x.w === '98' && x.target === '_blank' && x.href === cfg.googleMapsUrl && /^Rated 4\.9 on Google · 120 reviews/.test(x.aria)), JSON.stringify(b));
+    await done(p);
+    const off = await configured((c) => { c.googleRating = ''; }, 'norating');
+    const q = await newPage(M, { ...light, host: off }); await go(q, 'index.html');
+    ok('empty googleRating hides the rating badge completely', (await q.locator('.g-rating').count()) === 0);
+    await done(q);
+  }
+  // 4. Reminders on the booking form and the Your visit drawer
+  {
+    const p = await newPage(M, { ...light, clock: TUE + T }); await go(p, 'book.html');
+    const submit = async () => { await p.waitForTimeout(300); await p.evaluate(() => { const f = document.querySelector('#book-form'); f.requestSubmit(f.querySelector('button[type=submit]')); }); await p.waitForTimeout(200); }; // a real submit; avoids a mouse click being moved by the browser scrolling the focused button above the sticky bar
+    const pickDay = async (key) => { await p.evaluate((k) => { document.querySelector(`.cal-day[data-date="${k}"]`).click(); }, key); await p.waitForTimeout(150); };
+    await pickDay('2026-10-28');
+    await p.evaluate(() => document.querySelector('.slot:not(:disabled):not(.is-waitlist)').click());
+    await p.fill('#f-name', 'Sam Lee'); await p.fill('#f-phone', '0412 345 678');
+    const hidden0 = await p.evaluate(() => document.querySelector('#book-form .rm-contact').hidden);
+    await p.locator('#book-form .rm-field input[value=email]').evaluate((i) => i.click());
+    const shown = await p.evaluate(() => ({ vis: !document.querySelector('#book-form .rm-contact').hidden, label: document.querySelector('#book-form .rm-label').textContent, type: document.querySelector('#book-form .rm-input').type, consent: document.querySelector('#book-form .rm-consent').textContent }));
+    ok('reminders: "Remind me" None/Email/Text; the contact field appears only when Email is picked, with the consent line', hidden0 && shown.vis && shown.label === 'Email address' && shown.type === 'email' && shown.consent === 'We will only use this to send your reminder.', JSON.stringify(shown));
+    await submit();
+    const e1 = await p.evaluate(() => ({ err: document.querySelector('#book-form .rm-err').textContent, focus: document.activeElement.className, form: !document.querySelector('#book-form').hidden, inv: document.querySelector('#book-form .rm-input').getAttribute('aria-invalid') }));
+    ok('reminders: an empty or bad email blocks the booking, shows a friendly error and focuses the field', /valid email address/.test(e1.err) && /rm-input/.test(e1.focus) && e1.form && e1.inv === 'true', JSON.stringify(e1));
+    ok('reminders: error text is readable (axe, no violations with the error showing)', !(await axe(p)).length, (await axe(p)).join('; '));
+    await p.fill('#book-form .rm-input', 'nope'); await submit();
+    ok('reminders: "nope" is still rejected', /valid email/.test(await p.textContent('#book-form .rm-err')));
+    await p.locator('#book-form .rm-field input[value=text]').evaluate((i) => i.click());
+    const t1 = await p.evaluate(() => ({ label: document.querySelector('#book-form .rm-label').textContent, type: document.querySelector('#book-form .rm-input').type, val: document.querySelector('#book-form .rm-input').value }));
+    await p.fill('#book-form .rm-input', '02 5550 0100'); await submit();
+    ok('reminders: Text switches the field to a mobile number; a landline is rejected', t1.label === 'Mobile number' && t1.type === 'tel' && /Australian mobile/.test(await p.textContent('#book-form .rm-err')));
+    await p.fill('#book-form .rm-input', '0412 345 678'); await submit(); await p.waitForSelector('#form-success:not([hidden])');
+    const ok1 = norm(await p.textContent('#ok-detail'));
+    ok('reminders: confirmation says "Reminder set for Tuesday 27 October, 9am (by text)." (the day before) and never claims anything was sent', /Reminder set for Tuesday 27 October, 9am \(by text\)\./.test(ok1) && !/sent a|we sent|message was sent/i.test(ok1), ok1);
+    const pv = norm(await p.textContent('#ok-preview'));
+    ok('reminders: the confirmation shows a message PREVIEW and says it is not sent', /^Preview: Hi Sam, a reminder that your .+ is on Wednesday 28 October at \d+:\d\d[ap]m at Brass & Blade\. \(Demo: this message is not sent\.\)$/.test(pv), pv);
+    await p.click('#form-reset');
+    ok('reminders: "Book another visit" resets the reminder to None', await p.evaluate(() => document.querySelector('#book-form .rm-field input[value=none]').checked && document.querySelector('#book-form .rm-contact').hidden));
+    await done(p);
+    const q = await newPage(M, { ...light, clock: TUE + T }); await go(q, 'services.html');
+    await q.evaluate(() => document.querySelector('[data-add]').click()); await q.waitForTimeout(200);
+    await q.evaluate(() => document.querySelector('#cart-open').click()); await q.waitForTimeout(300);
+    await q.fill('#cart-name', 'Sam Lee'); await q.fill('#cart-phone', '0412 345 678');
+    await q.locator('#cart-form .rm-field input[value=email]').evaluate((i) => i.click()); await q.fill('#cart-rm-contact', 'sam@example.com');
+    await q.evaluate(() => { const f = document.querySelector('#cart-form'); f.requestSubmit(f.querySelector('button[type=submit]')); }); await q.waitForSelector('#cart-done:not([hidden])');
+    ok('reminders in the Your visit drawer: a preview of the message appears', /^Preview: Hi Sam, a reminder that your visit at Brass & Blade is coming up\./.test(norm(await q.textContent('#done-preview'))));
+    ok('reminders in the Your visit drawer: confirmation "Reminder set for 9am the day before your visit (by email)."', /Reminder set for 9am the day before your visit \(by email\)\./.test(norm(await q.textContent('#done-detail'))), norm(await q.textContent('#done-detail')));
+    await done(q);
+    const off = await configured((c) => { c.remindersEnabled = false; }, 'norem');
+    const r = await newPage(M, { ...light, host: off }); await go(r, 'book.html');
+    ok('remindersEnabled false removes the "Remind me" control entirely', (await r.locator('.rm-field').count()) === 0);
+    await done(r);
+  }
+  // 5. Waitlist on full slots
+  {
+    const p = await newPage(M, { ...light, clock: TUE + T }); await go(p, 'book.html');
+    let found = null;
+    for (const k of ['2026-10-21', '2026-10-22', '2026-10-23', '2026-10-24', '2026-10-26', '2026-10-27']) {
+      await p.evaluate((d) => document.querySelector(`.cal-day[data-date="${d}"]:not(:disabled)`)?.click(), k); await p.waitForTimeout(100);
+      if (await p.locator('.slot.is-waitlist').count()) { found = k; break; }
+    }
+    ok('waitlist: full times are shown with a "Waitlist" label on a booking day (demo full slots exist)', !!found, String(found));
+    const slot = p.locator('.slot.is-waitlist').first();
+    const sl = await slot.evaluate((e) => ({ aria: e.getAttribute('aria-label'), h: Math.round(e.getBoundingClientRect().height), text: e.textContent, dis: e.disabled }));
+    ok('waitlist slot: not disabled, label mentions fully booked and the waitlist, tap target 44px+', !sl.dis && /fully booked\. Join the waitlist/.test(sl.aria) && sl.h >= 44 && /Waitlist/.test(sl.text), JSON.stringify(sl));
+    await slot.click();
+    const w = await p.evaluate(() => ({ form: !!document.querySelector('#waitlist-host .wl-form'), when: document.querySelector('.wl-when')?.textContent.replace(/\s+/g, ' '), time: document.querySelector('#f-time').value, consent: document.querySelector('.wl-consent')?.textContent, focus: document.activeElement.id, phoneField: !!document.querySelector('#wl-phone') && !document.querySelector('#wl-contact') }));
+    ok('waitlist: clicking a full time opens the small name + phone form with the consent line, and does NOT select the time', w.form && /For: /.test(w.when) && w.time === '' && w.consent === 'We will only contact you if a spot opens.' && w.focus === 'wl-name' && w.phoneField, JSON.stringify(w));
+    await p.click('.wl-form button[type=submit]');
+    const we = await p.evaluate(() => [...document.querySelectorAll('.wl-form .error')].map((e) => e.textContent));
+    ok('waitlist: empty name and phone show friendly errors', /your name/.test(we[0]) && /phone number/.test(we[1]), JSON.stringify(we));
+    await p.fill('#wl-name', 'Sam Lee'); await p.fill('#wl-phone', '12345'); await p.click('.wl-form button[type=submit]');
+    ok('waitlist: a non-Australian phone number is rejected', /Australian/.test(await p.evaluate(() => document.querySelectorAll('.wl-form .error')[1].textContent)));
+    ok('waitlist: error text passes axe contrast', !(await axe(p)).length, (await axe(p)).join('; '));
+    await p.fill('#wl-phone', '0412 345 678'); await p.click('.wl-form button[type=submit]');
+    const dn = norm(await p.textContent('.wl-done'));
+    ok('waitlist: confirmation "You\'re on the waitlist for <day, time>" and says nothing was sent', /^You're on the waitlist for [A-Z][a-z]+day \d+ [A-Z][a-z]+, \d+(:\d\d)?[ap]m\./.test(dn) && /saved in this browser only/.test(dn) && /bb-waitlist/.test(await p.evaluate(() => Object.keys(localStorage).join())) && JSON.parse(await p.evaluate(() => localStorage.getItem('bb-waitlist')))[0].phone === '0412345678', dn);
+    await done(p);
+    const off = await configured((c) => { c.waitlistEnabled = false; }, 'nowait');
+    const q = await newPage(M, { ...light, host: off, clock: TUE + T }); await go(q, 'book.html');
+    await q.evaluate(() => document.querySelector('.cal-day[data-date="2026-10-22"]:not(:disabled)')?.click()); await q.waitForTimeout(100);
+    ok('waitlistEnabled false: full times are plain disabled slots, no waitlist', (await q.locator('.slot.is-waitlist').count()) === 0 && (await q.locator('.slot.is-full:disabled').count()) > 0);
+    await done(q);
+  }
+  // 6. Best time to come
+  {
+    const p = await newPage(M, { ...light, clock: TUE + T }); await go(p, 'book.html');
+    const b = await p.evaluate(() => { const e = document.querySelector('[data-busy]'); return { hidden: e.hidden, line: e.querySelector('.busy-line')?.textContent, rects: e.querySelectorAll('svg rect[fill-opacity]').length, today: [...e.querySelectorAll('svg text')].find((t) => t.getAttribute('font-weight') === '700')?.textContent, desc: e.querySelector('desc')?.textContent.slice(-40), legend: e.querySelector('.busy-legend')?.textContent }; });
+    ok('best time: "Usually quieter at 9am to 12pm on Tuesdays." line, a 7-day SVG strip (4 blocks x 6 open days drawn), today (Tue) highlighted, wording says usually/typically and "not live"', !b.hidden && /^Usually quieter at \d+(:\d\d)?[ap]m to \d+(:\d\d)?[ap]m on \w+days\./.test(b.line) && b.rects >= 20 && b.today === 'Tue' && /not live/.test(b.desc) && /not live/.test(b.legend), JSON.stringify(b));
+    await done(p);
+    const off = await configured((c) => { c.busyness = { blocks: [], week: {} }; }, 'nobusy');
+    const q = await newPage(M, { ...light, host: off }); await go(q, 'book.html');
+    ok('an empty busyness table hides the whole section', await q.evaluate(() => [...document.querySelectorAll('[data-busy]')].every((e) => e.hidden)));
+    await done(q);
+  }
+  // 7. Open banner on every page, in the shop's own time zone
+  {
+    const cases = [[TUE + 'T12:00:00', 'Open now, closes at 7pm'], ['2026-10-25T17:00:00', 'Closed now. Opens tomorrow at 10am'], ['2026-10-20T07:30:00', 'Opens today at 9am']];
+    const bad = [];
+    for (const [t, want1] of cases) {
+      const p = await newPage({ ...D, timezoneId: 'America/Los_Angeles' }, { ...light, clock: t }); await go(p, 'book.html');
+      const got = await p.evaluate(() => ({ hidden: document.querySelector('#open-banner').hidden, t: document.querySelector('#open-banner .ob-text').textContent, state: document.querySelector('#open-banner').dataset.state }));
+      if (got.hidden || got.t !== want1) bad.push(`${t}: ${JSON.stringify(got)}`);
+      await done(p);
+    }
+    ok('open banner (Sydney time, even for a visitor in Los Angeles): Open now / Closed, opens tomorrow / Opens today', !bad.length, bad.join(' | '));
+    const p = await newPage(M, { ...light, clock: TUE + T }); const miss = [];
+    for (const f of PAGES) { await go(p, f); if (!(await p.evaluate(() => { const b = document.querySelector('#open-banner'); return b && !b.hidden && b.textContent.trim().length > 5; }))) miss.push(f); }
+    ok('the open banner shows on every page', !miss.length, miss.join(','));
+    ok('open banner text is readable (axe)', !(await axe(p)).filter((v) => /color-contrast/.test(v)).length);
+    await done(p);
+    const off = await configured((c) => { c.openBannerEnabled = false; }, 'nobanner');
+    const q = await newPage(M, { ...light, host: off }); await go(q, 'index.html');
+    ok('openBannerEnabled false: no banner element', (await q.locator('#open-banner').count()) === 0);
+    await done(q);
+  }
+  // 7b. Hero / trust upgrade
+  {
+    const p = await newPage(D, { webgl: false, clock: TUE + T }); await go(p, 'index.html');
+    const h = await p.evaluate(() => ({ h1: document.querySelector('#hero-title').textContent.replace(/\s+/g, ' ').trim(), btns: document.querySelectorAll('.hero a.btn').length, big: Math.round(document.querySelector('.btn-hero').getBoundingClientRect().height), dir: (() => { const a = [...document.querySelectorAll('.hero-cta a')].find((x) => /directions/i.test(x.textContent)); return a && [a.href, a.target, a.rel]; })(), facts: document.querySelector('.hero-facts').textContent.replace(/\s+/g, ' '), photo: !!document.querySelector('.hero-photo img'), phone: (() => { const a = document.querySelector('.header-phone'); const r = a.getBoundingClientRect(); return [a.getAttribute('href'), r.width > 0, Math.round(r.height)]; })() }));
+    ok('hero: H1 names the suburb factually ("Barbershop in Surry Hills, Sydney"), no superlatives', /Barbershop in Surry Hills, Sydney/.test(h.h1) && !/best|friendliest|number one|#1|award/i.test(h.h1), h.h1);
+    ok('hero: ONE big main button (Book a chair, 60px+), the rest are plain links; "Get directions" opens googleMapsUrl in a new tab', h.btns === 1 && h.big >= 60 && h.dir && h.dir[0] === cfg.googleMapsUrl && h.dir[1] === '_blank' && /noopener/.test(h.dir[2]), JSON.stringify(h));
+    ok('hero: hours and prices are visible, and a real photo is behind it', /Hours/.test(h.facts) && /Tue/.test(h.facts) && /Cuts from \$\d+/.test(h.facts) && h.photo, h.facts);
+    ok('tap-to-call: header phone link visible and 44px+ on desktop', h.phone[0] === 'tel:' + '+61255500144' && h.phone[1] && h.phone[2] >= 44, JSON.stringify(h.phone));
+    await p.mouse.move(600, 400); await p.mouse.wheel(0, 300); await p.waitForTimeout(1500);
+    const hp = await p.evaluate(() => ({ photo: getComputedStyle(document.querySelector('.hero-photo')).transform, panel: getComputedStyle(document.querySelector('.hero-panel')).transform, layers: 3 }));
+    ok('parallax: the photo layer and the brass panel layer move (at different speeds) when scrolling; content stays still', hp.photo !== 'none' && hp.photo !== hp.panel, JSON.stringify(hp));
+    await done(p);
+    const rm = await newPage({ ...D, reducedMotion: 'reduce' }, { webgl: false, clock: TUE + T }); await go(rm, 'index.html');
+    await rm.evaluate(() => window.scrollTo(0, 300)); await rm.waitForTimeout(300);
+    const rmo = await rm.evaluate(() => ({ photo: getComputedStyle(document.querySelector('.hero-photo')).transform, anim: getComputedStyle(document.querySelector('.hero-panel')).animationName, py: document.querySelector('.hero').style.getPropertyValue('--py') }));
+    ok('prefers-reduced-motion: no parallax and no drifting panel', rmo.photo === 'none' && rmo.anim === 'none' && !rmo.py, JSON.stringify(rmo));
+    await done(rm);
+    const m = await newPage(M, { webgl: false, clock: TUE + T }); await go(m, 'index.html');
+    const mm = await m.evaluate(() => ({ header: getComputedStyle(document.querySelector('.header-phone')).display, bar: [...document.querySelectorAll('.mobile-cta a')].map((a) => [a.getAttribute('href'), Math.round(a.getBoundingClientRect().height)]) }));
+    ok('tap-to-call on phones: the sticky bar has Call (tel link, 44px+); the header phone is hidden there', mm.header === 'none' && mm.bar[0][0].startsWith('tel:') && mm.bar[0][1] >= 44, JSON.stringify(mm));
+    await done(m);
+    for (const [name, opts] of [['390x844 phone', M], ['1440x900 desktop', D], ['1280x800 laptop', { viewport: { width: 1280, height: 800 } }]]) {
+      const c = await newPage(opts, { webgl: false, quiet: false, extraInit: () => { try { sessionStorage.setItem('bb-seen', '1'); } catch (e) { /* ignore */ } } });
+      await c.goto(c.base + 'index.html'); await c.waitForSelector('.hero-cta', { state: 'attached' }); await c.waitForTimeout(6000);
+      const hits = await c.evaluate(() => { const cov = [...document.querySelectorAll('#cookie, .mobile-cta')].filter((e) => !e.hidden && getComputedStyle(e).display !== 'none').map((e) => [e.id || e.className, e.getBoundingClientRect()]); const out = []; for (const a of document.querySelectorAll('a[href], button')) { if (a.closest('#cookie, .mobile-cta, #cart, #search, #mobile-nav')) continue; const r = a.getBoundingClientRect(); if (!r.width || !r.height || r.bottom < 0 || r.top > innerHeight || getComputedStyle(a).visibility === 'hidden') continue; for (const [n, q] of cov) if (r.left < q.right && r.right > q.left && r.top < q.bottom && r.bottom > q.top) out.push(`${n} covers ${(a.textContent.trim().slice(0, 20) || a.className)}`); } return out; });
+      ok(`hero at first load, ${name}: the cookie bar and the sticky phone bar cover no button or link`, !hits.length, hits.join(' | '));
+      await done(c);
+    }
+    const none = await configured((c) => { c.googleRating = ''; c.googleMapsUrl = ''; }, 'nohero');
+    const q = await newPage(D, { webgl: false, host: none }); await go(q, 'index.html');
+    ok('hero: no rating badge and no "Get directions" when googleRating and googleMapsUrl are empty', (await q.locator('.hero .g-rating').count()) === 0 && (await q.locator('.hero-cta a', { hasText: 'directions' }).count()) === 0);
+    await done(q);
+    const r = await newPage(D, { webgl: false }); await go(r, 'index.html');
+    const rv = await r.evaluate(() => { const sec = document.querySelector('#reviews'); return { sample: /Sample reviews/.test(sec.textContent), google: /google/i.test(sec.textContent), each: [...sec.querySelectorAll('figcaption')].every((f) => /Sample review/.test(f.textContent)) }; });
+    ok('reviews on the page are labelled "Sample" and are never presented as Google reviews', rv.sample && rv.each && !rv.google, JSON.stringify(rv));
+    await done(r);
+  }
+  // 8. Phone checks on the new page and sections
+  {
+    const p = await newPage(M, { ...light, clock: TUE + T }); const rows = [];
+    for (const f of ['index.html', 'reviews.html', 'visit.html', 'book.html']) {
+      await go(p, f);
+      const a = await p.evaluate(audit);
+      const tiny = await p.evaluate(() => [...document.querySelectorAll('body *')].filter((e) => e.children.length === 0 && e.textContent.trim() && e.offsetParent && parseFloat(getComputedStyle(e).fontSize) < 12 && !e.closest('svg,script,style,.sr-only')).map((e) => e.className + ':' + e.textContent.trim().slice(0, 15)).slice(0, 3));
+      const small = await p.evaluate(() => [...document.querySelectorAll('.soc-link,.footer-review,#print-qr,.loved-actions a,.find-online a,.g-rating')].filter((e) => e.offsetParent && e.getBoundingClientRect().height < 43.5).map((e) => e.className));
+      if (a.scrollW > a.W || a.bad.length || tiny.length || small.length) rows.push(`${f} ${JSON.stringify({ a, tiny, small })}`);
+    }
+    ok('390px: no sideways scroll, no text under 12px, new buttons/links all 44px+ on index, reviews, visit and book', !rows.length, rows.join(' | '));
+    const errs = p.logs.filter((l) => !/Failed to load resource|three|webgl/i.test(l));
+    ok('no JavaScript errors on the new features', !errs.length, errs.slice(0, 3).join(' | '));
+    await done(p);
   }
   servers.forEach((sv) => sv.close()); try { fs.rmSync(TMP, { recursive: true, force: true }); } catch (e) { /* ignore */ }
 }

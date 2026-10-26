@@ -5,6 +5,7 @@
           <p class="eyebrow">Appointments</p>
           <h2 id="book-title" data-split>Book your <em>chair.</em></h2>
           <p class="lead">Tell us what you need and when. Pick a service, a barber and a time. You&rsquo;ll see your confirmation straight away.{{#if formsLive}}{{else}} (This is a demo: nothing is sent.){{/if}}</p>
+          <div class="busy" data-busy hidden></div>
           <ul class="reserve-points">
             <li>Free changes and cancellations up to 24 hours before</li>
             <li>Every cut includes a consultation and a hot towel finish</li>
@@ -44,6 +45,7 @@
 
             <p class="step-label"><span aria-hidden="true">4</span> Time</p>
             <div class="slots" id="slots" role="group" aria-label="Available times"></div>
+            <div id="waitlist-host" class="waitlist-host" aria-live="polite"></div>
             <input type="hidden" id="f-time" name="time">
             <p class="hint" id="h-time" aria-live="polite">Choose a date to see which times are open.</p>
             <p class="error" id="e-time" aria-live="polite"></p>
@@ -76,6 +78,7 @@
             <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M7.500 12.500l3 3 6-7"/></svg>
             <h3>You&rsquo;re booked in, <span id="ok-name">friend</span>.</h3>
             <p id="ok-detail"></p>
+            <p class="note rm-preview" id="ok-preview" hidden></p>
             <dl class="ok-summary" id="ok-summary"></dl>
             <p class="demo-banner">{{#if formsLive}}<strong>Thanks, your request is with us.</strong> We will confirm by phone or text.{{else}}<strong>This is a demo, no real booking was made.</strong> The details were saved only in this browser.{{/if}}</p>
             <button class="btn btn-secondary btn-on-light" type="button" id="form-reset">Book another visit</button>

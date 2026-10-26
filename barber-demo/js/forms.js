@@ -3,6 +3,10 @@
 import { $, $$, site, toast, nowShop, resolveDay, fmtHour, dayLabel, addDays, pad, CLOCK_CFG, reduceMotion } from './util.js';
 import { dowOf, hasFutureSlot } from './clock.js';
 import { addHoneypot, tripped, guard, send, isLive, phoneFallback, auPhone, prettyPhone, PHONE_ERR } from './formkit.js';
+import { mountReminder, reminderPreview } from './reminder.js';
+import { waitlistForm } from './waitlist.js';
+
+const G = site.growth || {}; // growth settings from site.config.json (reminders, waitlist ...)
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 const NOUNS = { experience: 'experience booking', private: 'private dining enquiry', catering: 'catering request', other: 'question' };
@@ -59,7 +63,7 @@ const NOUNS = { experience: 'experience booking', private: 'private dining enqui
     const b = e.target.closest('.cal-day'); if (!b || b.disabled) return;
     dateEl.value = b.dataset.date; $('#e-date').textContent = '';
     $$('.cal-day', grid).forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
-    timeEl.value = ''; drawSlots();
+    timeEl.value = ''; clearWaitlist(); drawSlots();
   });
   $('#cal-prev').addEventListener('click', () => { view = view.m === 1 ? { y: view.y - 1, m: 12 } : { y: view.y, m: view.m - 1 }; drawCal(); });
   $('#cal-next').addEventListener('click', () => { view = view.m === 12 ? { y: view.y + 1, m: 1 } : { y: view.y, m: view.m + 1 }; drawCal(); });
@@ -79,7 +83,10 @@ const NOUNS = { experience: 'experience booking', private: 'private dining enqui
         const val = `${pad(Math.floor((t % 1440) / 60))}:${pad(t % 60)}`;
         const past = v === n.key && t <= n.mins + LEAD, booked = !past && full(v, val, barber());
         const b = document.createElement('button'); b.type = 'button'; b.className = 'slot'; b.dataset.time = val; b.dataset.mins = t; b.textContent = label(t);
-        if (past || booked) { b.disabled = true; if (booked) { b.classList.add('is-full'); b.title = 'Fully booked'; b.setAttribute('aria-label', label(t) + ', fully booked'); } }
+        if (booked && G.waitlistEnabled) { // a full time stays clickable: it opens the waitlist form instead of selecting the time
+          b.classList.add('is-full', 'is-waitlist'); b.dataset.full = '1'; b.innerHTML = `${label(t)}<span class="slot-wl">Waitlist</span>`;
+          b.setAttribute('aria-label', label(t) + ', fully booked. Join the waitlist');
+        } else if (past || booked) { b.disabled = true; if (booked) { b.classList.add('is-full'); b.title = 'Fully booked'; b.setAttribute('aria-label', label(t) + ', fully booked'); } }
         else open++;
         b.setAttribute('aria-pressed', String(val === timeEl.value));
         slotsEl.appendChild(b);
@@ -87,13 +94,22 @@ const NOUNS = { experience: 'experience booking', private: 'private dining enqui
     }
     hint.textContent = !r.closed ? `We are open ${fmtHour(r.open)} to ${fmtHour(r.close)} that day. ${open ? 'Crossed-out times are taken.' : 'No times are left, so please try another date.'}` : `We are closed that day${r.name ? ' for ' + r.name : ''}. Please choose another date.`;
   }
+  const wlHost = $('#waitlist-host');
+  const clearWaitlist = () => { if (wlHost) wlHost.textContent = ''; };
   slotsEl.addEventListener('click', (e) => {
     const b = e.target.closest('.slot'); if (!b || b.disabled) return;
+    if (b.dataset.full) { // full slot: show the waitlist form for that day and time
+      timeEl.value = ''; clearWaitlist();
+      $$('.slot', slotsEl).forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+      if (wlHost) { wlHost.append(waitlistForm({ dayKey: dateEl.value, mins: Number(b.dataset.mins), what: `${svcEl.selectedOptions[0].textContent.replace(/ \(\$.*$/, '')} with ${barberName()}` })); $('#wl-name', wlHost).focus(); }
+      return;
+    }
+    clearWaitlist();
     timeEl.value = b.dataset.time; timeEl.dataset.mins = b.dataset.mins; $('#e-time').textContent = '';
     $$('.slot', slotsEl).forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
   });
-  svcEl.addEventListener('change', () => { timeEl.value = ''; drawSlots(); });
-  $$('input[name=barber]', form).forEach((r) => r.addEventListener('change', () => { timeEl.value = ''; drawSlots(); }));
+  svcEl.addEventListener('change', () => { timeEl.value = ''; clearWaitlist(); drawSlots(); });
+  $$('input[name=barber]', form).forEach((r) => r.addEventListener('change', () => { timeEl.value = ''; clearWaitlist(); drawSlots(); }));
   drawCal(); showService();
 
   const rules = {
@@ -115,6 +131,8 @@ const NOUNS = { experience: 'experience booking', private: 'private dining enqui
     field(n).addEventListener('input', () => { if (field(n).getAttribute('aria-invalid') === 'true') check(n); });
   });
   addHoneypot(form); form.querySelector('button[type=submit]').before(fail);
+  // Optional reminder (front end only: SENDING IS NOT CONNECTED, see js/reminder.js)
+  const rem = mountReminder(fail, G);
   const busy = guard(form.querySelector('button[type=submit]'));
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -123,7 +141,9 @@ const NOUNS = { experience: 'experience booking', private: 'private dining enqui
       fail.innerHTML = '';
       const order = ['date', 'time', 'name', 'phone', 'message'];
       const bad = order.map((n) => [n, check(n)]).find(([, ok]) => !ok);
-      if (bad) { const t = { date: $('.cal-day:not(:disabled)', grid), time: $('.slot:not(:disabled)', slotsEl) }[bad[0]]; (t || field(bad[0])).focus(); return; }
+      if (bad) { const t = { date: $('.cal-day:not(:disabled)', grid), time: $('.slot:not(:disabled):not(.is-waitlist)', slotsEl) }[bad[0]]; (t || field(bad[0])).focus(); return; }
+      const rr = rem ? rem.read() : { ok: true, mode: 'none' };
+      if (!rr.ok) { rr.input.focus(); return; }
       // the clock keeps moving while the form is open: make sure the chosen time has not just passed
       const n0 = nowShop(), startM = Number(timeEl.dataset.mins);
       if (dateEl.value === n0.key && startM <= n0.mins + LEAD) {
@@ -136,12 +156,17 @@ const NOUNS = { experience: 'experience booking', private: 'private dining enqui
       const phone = auPhone(field('phone').value);
       const record = { ref, service: svc, barber: barberName(), date: dateEl.value, time: timeEl.value, name: field('name').value.trim(), phone, notes: field('message').value.trim(), price: Number(svcEl.selectedOptions[0].dataset.price), savedAt: new Date().toISOString() };
       if (!tripped(form)) { // a filled-in spam trap looks successful but sends nothing
-        const res = await send({ type: 'booking', _subject: `Booking request ${ref}`, ...record, when: `${date}, ${label(startM)}` });
+        const res = await send({ type: 'booking', _subject: `Booking request ${ref}`, ...record, when: `${date}, ${label(startM)}`, reminder: rr.mode === 'none' ? 'none' : { mode: rr.mode, contact: rr.contact, remindAt: rem.confirmation(dateEl.value, todayKey()) } });
         if (!res.ok) { fail.innerHTML = phoneFallback(); return; }
         try { const all = JSON.parse(localStorage.getItem('bb-bookings') || '[]'); all.unshift(record); localStorage.setItem('bb-bookings', JSON.stringify(all.slice(0, 20))); } catch (_) { /* storage blocked: the confirmation still shows */ }
       }
       $('#ok-name').textContent = record.name.split(' ')[0];
       $('#ok-detail').textContent = `Your ${svc} with ${who} is ${isLive() ? 'requested' : 'pencilled in'} for ${date} at ${label(startM)}.`;
+      const remLine = rem ? rem.confirmation(dateEl.value, todayKey()) : '';
+      if (remLine) $('#ok-detail').textContent += ' ' + remLine;
+      // Preview of the reminder text (sending is NOT connected: plug an email or SMS service in here, per customer; see js/reminder.js)
+      const pv = $('#ok-preview'); pv.hidden = !remLine;
+      pv.textContent = remLine ? reminderPreview({ name: record.name, what: svc, dayKey: dateEl.value, time: label(startM), business: site.name }) + ' (Demo: this message is not sent.)' : '';
       const rows = [['Reference', ref], ['Service', `${svc} (about ${mins()} min)`], ['Barber', barberName()], ['When', `${date}, ${label(startM)} to ${label(startM + mins())}`], ['Price', `$${record.price} (pay in the shop)`], ['Name', record.name], ['Phone', prettyPhone(phone)]];
       const dl = $('#ok-summary'); dl.textContent = '';
       rows.forEach(([k, v]) => { const dt = document.createElement('dt'), dd = document.createElement('dd'); dt.textContent = k; dd.textContent = v; dl.append(dt, dd); });
@@ -154,7 +179,7 @@ const NOUNS = { experience: 'experience booking', private: 'private dining enqui
   $('#form-reset').addEventListener('click', () => {
     form.reset();
     $$('[aria-invalid]', form).forEach((el) => el.setAttribute('aria-invalid', 'false'));
-    dateEl.value = timeEl.value = ''; drawCal(); drawSlots();
+    dateEl.value = timeEl.value = ''; if (rem) rem.reset(); clearWaitlist(); drawCal(); drawSlots();
     success.hidden = true; form.hidden = false; field('name').focus();
   });
 })();

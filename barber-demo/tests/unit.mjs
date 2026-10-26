@@ -1,5 +1,8 @@
 // Unit tests for js/clock.js (no browser needed): node tests/unit.mjs
 import * as C from '../js/clock.js';
+import * as R from '../js/reminder.js';
+import * as B from '../js/busy.js';
+import { qrMatrix } from '../js/qr.js';
 let n = 0, bad = 0;
 const eq = (name, got, want) => { n++; const ok = JSON.stringify(got) === JSON.stringify(want); if (!ok) { bad++; console.log('FAIL', name, 'got', JSON.stringify(got), 'want', JSON.stringify(want)); } else console.log('PASS', name); };
 // Easter Sundays (published dates)
@@ -57,4 +60,14 @@ eq("NSW King's Birthday 2026", nsw(2026)["King's Birthday"], '2026-06-08'); eq('
 const nswCfg = { region: 'NSW', hours: cfg.hours, closures: [], holidays: { mode: 'closed' } };
 eq('NSW: Labour Day closes the shop', C.statusAt({ key: '2026-10-05', mins: 12 * 60 }, nswCfg).text, 'Closed today for Labour Day. Opens tomorrow at 9am');
 eq('NSW: first Monday of March is a normal day', C.statusAt({ key: '2026-03-09', mins: 12 * 60 }, nswCfg).state, 'closed');
+// growth helpers: reminders, best time to come, QR
+eq('reminder: the day before at 9am', R.reminderWhen('2026-10-28', 24), 'Tuesday 27 October, 9am');
+eq('reminder: 48 hours = two days before', R.reminderWhen('2026-10-28', 48), 'Monday 26 October, 9am');
+eq('reminder: crosses a month end', R.reminderWhen('2026-11-01', 24), 'Saturday 31 October, 9am');
+eq('AU mobile validator', ['0412 345 678', '+61 412 345 678', '0412-345-678', '02 5550 0100', '12345', '0512 345 678'].map((v) => R.auMobile(v)), ['0412345678', '0412345678', '0412345678', null, null, null]);
+const bz = { busyness: { blocks: [{ label: 'Morning' }, { label: 'Lunch' }], week: { mon: ['busy', 'busy'], tue: ['quiet', 'busy'], wed: ['medium', 'busy'] } } };
+eq('best time: first quiet block in the next 7 days', B.bestTimeLine(bz, 1), 'Usually quieter on Tuesday mornings.');
+eq('best time: wording is never live', /^(Usually|Typically)/.test(B.bestTimeLine(bz, 3)), true);
+eq('best time: empty table is hidden', [B.hasBusyness({}), B.hasBusyness({ busyness: { blocks: [], week: {} } }), B.bestTimeLine({}, 1), B.busySvg({}, 1)], [false, false, '', '']);
+eq('QR: size follows the version (29 for a short URL)', qrMatrix('https://g.page/r/DEMO/review').length, 29);
 console.log(`${n - bad}/${n} unit checks passed`); process.exit(bad ? 1 : 0);

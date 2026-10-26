@@ -94,10 +94,10 @@
         <button class="icon-btn" type="button" id="search-open" aria-label="Search the site" aria-haspopup="dialog">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
         </button>
-        <button class="icon-btn cart-btn" type="button" id="cart-open" aria-label="Your order, empty" aria-haspopup="dialog">
+        {{#if orderingEnabled}}<button class="icon-btn cart-btn" type="button" id="cart-open" aria-label="Your order, empty" aria-haspopup="dialog">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1.500 12h-11zM9 8a3 3 0 0 1 6 0"/></svg>
           <span class="cart-count" id="cart-count" aria-hidden="true" hidden>0</span>
-        </button>
+        </button>{{/if}}
         <a class="header-link" href="reserve.html">Reserve</a>
         <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="mobile-nav" aria-label="Open menu">
           <span class="bars" aria-hidden="true"><span></span><span></span><span></span></span>
@@ -147,11 +147,12 @@
     </div>
   </div>
 
-  <!-- Order / cart drawer (demo) -->
+  {{#if orderingEnabled}}
+  <!-- Click and collect: order / cart drawer (demo). Hidden completely when orderingEnabled is false in site.config.json. -->
   <div class="scrim" id="scrim" hidden></div>
   <aside class="cart" id="cart" role="dialog" aria-modal="true" aria-labelledby="cart-title" hidden>
     <div class="cart-head">
-      <h2 id="cart-title">Your order</h2>
+      <h2 id="cart-title">Your pick-up order</h2>
       <button class="icon-btn" type="button" id="cart-close" aria-label="Close your order">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg>
       </button>
@@ -162,28 +163,45 @@
     </div>
     <form class="cart-foot" id="cart-form" novalidate hidden>
       <div class="cart-total"><span>Total</span><strong id="cart-total">$0.00</strong></div>
+      <div class="field-row">
+        <div class="field">
+          <label for="cart-day">Pick-up day</label>
+          <select id="cart-day" name="day"></select>
+        </div>
+        <div class="field">
+          <label for="cart-when">Pick-up time</label>
+          <select id="cart-when" name="when" aria-describedby="h-cart-when"></select>
+        </div>
+      </div>
+      <p class="hint" id="h-cart-when" aria-live="polite"></p>
       <div class="field">
         <label for="cart-name">Name for the order</label>
         <input id="cart-name" name="name" type="text" autocomplete="name" aria-describedby="e-cart-name">
         <p class="error" id="e-cart-name" aria-live="polite"></p>
       </div>
       <div class="field">
-        <label for="cart-when">Pick-up time</label>
-        <select id="cart-when" name="when"></select>
+        <label for="cart-phone">Mobile or phone number</label>
+        <input id="cart-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="0412 345 678" aria-describedby="e-cart-phone">
+        <p class="error" id="e-cart-phone" aria-live="polite"></p>
       </div>
-      <p class="demo-note" id="cart-demo-note"><strong>Demo checkout.</strong> No payment is taken and no order is sent. Your order is only saved in this browser.</p>
-      <button class="btn btn-primary btn-block" type="submit">Place order (demo)</button>
+      <p class="demo-note" id="cart-demo-note"><strong>Pay in store.</strong> No payment is taken here; online payment is connected later. {{#if formsLive}}Your order is sent to the café.{{else}}<strong>Demo:</strong> orders are not sent anywhere. Your order is only saved in this browser tab.{{/if}}</p>
+      <button class="btn btn-primary btn-block" type="submit">Place pickup order</button>
       <button class="cart-clear" type="button" id="cart-clear">Clear order</button>
-      <!-- DEMO ONLY: send the order to your ordering system or payment provider here (see main.js / cart.js). -->
+      <!-- DEMO ONLY: send the order to your ordering system here (see js/cart.js, the submit handler). Payment is in store. -->
     </form>
     <div class="cart-done" id="cart-done" role="status" tabindex="-1" hidden>
       <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M7.500 12.500l3 3 6-7"/></svg>
       <h3>Thanks, <span id="done-name">friend</span>!</h3>
+      <p class="order-no">Order number <strong id="done-no"></strong></p>
       <p id="done-detail"></p>
-      <p class="note">{{#if formsLive}}Your order has been sent to the café. Questions? Call {{contact.phone}}. Payment is taken at pick-up.{{else}}Demo only: no order was sent and nothing was charged. A copy is saved in this browser only.{{/if}}</p>
+      <p id="done-reminder" class="reminder-set" hidden></p>
+      <p id="done-preview" class="reminder-preview" hidden></p>
+      <p class="pay-note"><strong>Pay in store</strong> when you collect.</p>
+      <p class="note">{{#if formsLive}}Your order has been sent to the café. Questions? Call {{contact.phone}}.{{else}}Demo only: this order number is made up, no order was sent and nothing was charged. A copy is saved in this browser only.{{/if}}</p>
       <button class="btn btn-secondary" type="button" id="done-close">Close</button>
     </div>
   </aside>
+  {{/if}}
 
   <main id="main">
 {{#if page.pageHero}}
@@ -227,6 +245,7 @@
           <p>{{{hoursSummary}}}</p>
         </div>
       </div>
+      {{#if hasSocial}}<div class="footer-social">{{#if ratingOn}}<p class="footer-rating">{{{ratingFooter}}}</p>{{/if}}{{#if googleReviewUrl}}<a class="btn btn-secondary btn-sm" href="{{googleReviewUrl}}" target="_blank" rel="noopener">Leave us a Google review<span class="sr-only"> (opens in a new tab)</span></a>{{/if}}<ul class="soc-list" aria-label="Find us online" role="list">{{{socialItems}}}</ul></div>{{else}}{{#if googleReviewUrl}}<div class="footer-social"><a class="btn btn-secondary btn-sm" href="{{googleReviewUrl}}" target="_blank" rel="noopener">Leave us a Google review<span class="sr-only"> (opens in a new tab)</span></a></div>{{/if}}{{/if}}
       <nav class="footer-legal" aria-label="Footer: more">
         <a href="sustainability.html">Sustainability</a>
         <a href="wholesale.html">Wholesale</a>
@@ -257,7 +276,7 @@
 
   <!-- Cookie preferences -->
   <div class="cookie" id="cookie" role="region" aria-label="Cookie preferences" hidden>
-    <p><strong>Cookies.</strong> None are set unless you accept analytics. <a href="privacy.html#cookies">Details</a></p>
+    <p><strong>Cookies.</strong> <span class="ck-long">None are set unless you accept analytics.</span><span class="ck-short">None unless you accept.</span> <a href="privacy.html#cookies">Details</a></p>
     <div class="cookie-actions">
       <button class="btn btn-primary btn-sm" type="button" data-cookie="yes">Accept</button>
       <button class="btn btn-secondary btn-sm" type="button" data-cookie="no">Decline</button>

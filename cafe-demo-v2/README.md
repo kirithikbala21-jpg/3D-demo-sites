@@ -4,6 +4,27 @@ This is an **unofficial concept demo** of a café website. Every business detail
 
 ---
 
+## Features at a glance
+
+- **Hero**: the place name in the heading (Melbourne), a real photo, ONE big main button (Order for pick-up, or Reserve a table when ordering is off), tap-to-call and Get directions on every screen size, opening hours, real "from" prices taken from the menu, the existing "Open now" banner and (only with real numbers in config) the Google rating badge. Two background layers drift very slightly on scroll; with "reduce motion" switched on the hero is completely still.
+- **Click and collect**: menu and shop "+" buttons, an order drawer, pick-up time every 10 minutes (from 15 minutes ahead, inside opening hours), name and phone, "Place pickup order", a made-up order number, **Pay in store** (online payment is connected later). Orders are not sent anywhere in the demo.
+- **Google reviews**: footer button, "Loved your visit? Tell us" section, and `reviews.html` with a big QR code and a Print button.
+- **Reminders**: "Remind me: None / Email / Text" on reservations, orders and the wholesale enquiry. The confirmation says "Reminder set for <day before, 9am>" and shows a **Preview** of the message. **Sending is not connected**: plug an email or SMS service in per customer where the code comments say so (section 12).
+- **Waitlist**: full table times show "Join the waitlist" (name, phone or email, preferred day and time). Saved in this browser for the demo; real saving is connected later.
+- **Best time to come**: "Usually quieter on ..." plus a 7-day strip, from a typical pattern the owner sets. Never live.
+- **Social links**: Google Maps, Instagram, Facebook icons and buttons (only those you fill in).
+
+### How to fill in `site.config.json` (the new keys)
+Open `site.config.json` and set, in plain words:
+1. `googleReviewUrl` and `googleMapsUrl`: the real links from your Google Business Profile (both start with `https://`).
+2. `instagramUrl`, `facebookUrl`: your pages, or `""` to hide.
+3. `googleRating` and `googleReviewCount`: your REAL numbers from Google (never invent them). Leave both out (or `0`) to hide the badge.
+4. `remindersEnabled`, `reminderLeadHours` (24 = the day before), `waitlistEnabled`, `orderingEnabled`, `busynessEnabled`: `true` or `false`.
+5. `busyness`: the typical week (section 12).
+Anything empty or `false` disappears completely from the site. A short change list and the open questions are in `CHANGES.md`.
+
+---
+
 ## 0. Launch checklist: replace every placeholder before going live
 
 All "site.config.json" items are in the **one file** described in section 1.
@@ -22,6 +43,10 @@ All "site.config.json" items are in the **one file** described in section 1.
 - [ ] **Let Google find the site**: `site` > `noindex` from `true` to `false`, and `site` > `baseUrl` to your real web address (ending in `/`).
 - [ ] **Privacy page**: read `tools/templates/pages/privacy.html` and check it matches what you actually do (for example if you add analytics).
 - [ ] **Share picture**: `node tools/make-assets.mjs` regenerates `img/og.png` and the icons.
+- [ ] **Google review link and rating**: `googleReviewUrl` (the real "write a review" link from your Google Business Profile), `googleMapsUrl`, `googleRating` and `googleReviewCount`. **Use the café's REAL rating and review count. Never invent one.** (The badge shows a "Demo number" note while these are demo values: remove `<span class="g-rating-demo">` in `tools/build.py` > `rating_html` once real.) Then print the QR page (`/reviews.html`) for the counter.
+- [ ] **Social links**: `instagramUrl`, `facebookUrl` (empty hides it).
+- [ ] **Reminders, waitlist and pick-up orders**: sending is NOT connected (section 12). Decide whether to switch them off (`remindersEnabled`, `waitlistEnabled`, `orderingEnabled`) until a real service is plugged in.
+- [ ] **"Best time to come"**: set `busyness` to the café's real typical pattern, or set `busynessEnabled` to false.
 - [ ] **Domain name and https**: section 10. Also see `CLIENT-CHECKLIST.md` for the longer list.
 
 ---
@@ -176,6 +201,23 @@ This resizes, converts to WebP under 250 KB, writes the alt text and credit, and
 - Photo credits are listed in the footer. `CREDITS-TODO.md` lists photographer names still to record.
 - The "concept demo" wording and "Sample" labels are deliberate until real details are filled in (checklist in section 0).
 
+## 12. Reviews, reminders, waitlist, pick-up orders and "best time to come" (config reference)
+
+All of these switch on and off from `site.config.json`. **An empty value or `false` hides the whole feature** (no empty box, no broken link; the reviews page is not even built). Everything is a clearly labelled demo: nothing is really sent anywhere.
+
+| Key | What it does |
+| --- | --- |
+| `googleReviewUrl` | The Google "leave a review" link. Drives the footer button, the "Loved your visit? Tell us" home section and `reviews.html` (a big QR code, "Scan to leave a review", and a **Print this** button that prints only the heading and the code). The QR is drawn in the browser by `js/qr.js`: no library, no request. Empty = all of that disappears. |
+| `googleMapsUrl` | "Find us on Google Maps" (footer icon, contact page button) and where the rating badge links. |
+| `instagramUrl`, `facebookUrl` | Footer icons and the contact page buttons ("Follow us on Instagram"). Empty = hidden. Links open in a new tab with `rel="noopener"`. |
+| `googleRating`, `googleReviewCount` | The badge "Rated 4.9 on Google · 120 reviews" with five SVG stars filled to the rating, in the hero and the footer. Needs all three of rating, count and `googleMapsUrl`. **Use the café's REAL numbers. Never invent a rating.** |
+| `remindersEnabled`, `reminderLeadHours` | A "Remind me: None / Email / Text" choice on the reservation, pick-up order and wholesale enquiry forms. The email or mobile field only shows when picked and is validated (Australian mobiles). The confirmation says "Reminder set for <the day before, 9am>" (24 hours = 1 day; 48 = 2 days). If that moment has already passed (a booking for tomorrow) it says the reminder is one hour before instead. |
+| `waitlistEnabled` | On the table reservation, every fully booked time shows "Join the waitlist" with a small form (name, mobile or email, preferred day and time, consent line). Some demo times are always full so you can see it work. |
+| `orderingEnabled` | Click and collect: "+" buttons on the menu and shop, the order drawer, a pick-up day and time (every 10 minutes, from 15 minutes ahead, inside the opening hours, holidays and closures from this file, in the café's time zone), name and phone, "Place pickup order", a made-up order number and "Pay in store". `false` removes all of it. |
+| `busynessEnabled`, `busyness` | "Best time to come": a line such as "Usually quiet on Tuesday mornings." and a 7-day strip (today outlined). **It is a typical pattern the owner sets, never live data**; the wording always says "usually" or "typically". `blocks` are the time blocks of the day; `week` has one list per day (`mon` ... `sun`) with one level per block: `quiet`, `medium`, `busy` or `closed`. An empty table hides it. |
+
+**Sending is not connected.** Reminders, waitlist entries and orders are only kept in the visitor's own browser. When you are ready, plug an email or SMS service in per customer at these places (each is marked with a comment): the reservation submit handler in `js/forms.js` (`rec.reminder`), the pick-up order submit handler in `js/cart.js` (`reminder` in the payload) and `js/waitlist.js` (`onJoin`). The forms already post to `forms.endpoint` once you set it (section 8), so a service like Formspree receives the reminder choice too. Until then the confirmations never claim a message was sent.
+
 ---
 ---
 
@@ -219,6 +261,9 @@ Common edits:
 - **Experiences, events, gallery, story, reviews, gift cards:** the files in `tools/templates/sections/`.
 - **Hero background video:** set `hero.video` (and `hero.poster`) in `site.config.json`, for example `"video": "img/hero.mp4"`. It plays muted and looped behind the burgundy panel, and is paused for visitors who prefer reduced motion.
 - **After changing the menu:** run `node tools/make-assets.mjs` to refresh `menu.pdf`.
+
+## Growth upgrades (developer notes)
+`js/qr.js` (QR encoder, level M, versions 1-40, checked against a real decoder), `js/growth.js` (QR + print button + best-time strip), `js/reminder.js`, `js/waitlist.js`, `js/busy.js`, `js/dates.js` (kit modules), `js/cart.js` (click and collect; `pickupTimes()` and `pickupDays()` live in `js/clock.js` so they are unit tested). The rating badge and the social links are built by `tools/build.py` (`rating_html`, `social_items_html`), so they work without JavaScript. `reviews.html` carries `"requires": "googleReviewUrl"` in its `pages` entry: when that key is empty the page is not built and leaves the sitemap. Browser tests: `node tests/run.mjs --suite=growth` (QR decoded with OpenCV, print view, all features hidden when switched off, reminders, waitlist, cart end to end, pick-up times with fake clocks). Unit tests: `node tests/unit.mjs`.
 
 ## Photos
 The site now uses 12 real photos (originals and crops in `img/source/`, compressed WebP in `img/photos/`; credits read "Photo: Unsplash" until names are added, see `CREDITS-TODO.md`). Palette: dark roast and cream, with warm ember orange `#E0782B` as the one accent (edit the `:root` variables in `styles.css` and `theme` in `site.config.json`).

@@ -16,7 +16,7 @@
                 <p>{{this.desc}}</p>
                 <div class="product-foot">
                   <span class="price">${{this.price}}</span>
-                  <button class="btn btn-secondary btn-sm" type="button" data-add data-id="{{this.id}}" data-name="{{this.name}}" data-price="{{this.price}}">Add to order<span class="sr-only">: {{this.name}}</span></button>
+                  {{#if orderingEnabled}}<button class="btn btn-secondary btn-sm" type="button" data-add data-id="{{this.id}}" data-name="{{this.name}}" data-price="{{this.price}}">Add to order<span class="sr-only">: {{this.name}}</span></button>{{/if}}
                 </div>
               </div>
             </article>

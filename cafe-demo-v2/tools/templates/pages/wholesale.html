@@ -12,7 +12,7 @@
           <p class="note">Details are fictional demo content.</p>
         </div>
         <div class="form-card reveal">
-          <form data-demo-form novalidate>
+          <form data-demo-form data-reminder novalidate>
             <div class="field"><label for="w-biz">Business name</label><input id="w-biz" name="business" type="text" data-rule="required min:2" aria-describedby="e-w-biz"><p class="error" id="e-w-biz" aria-live="polite"></p></div>
             <div class="field"><label for="w-name">Your name</label><input id="w-name" name="name" type="text" autocomplete="name" data-rule="required min:2" aria-describedby="e-w-name"><p class="error" id="e-w-name" aria-live="polite"></p></div>
             <div class="field"><label for="w-email">Email</label><input id="w-email" name="email" type="email" autocomplete="email" data-rule="required email" aria-describedby="e-w-email"><p class="error" id="e-w-email" aria-live="polite"></p></div>
@@ -20,7 +20,7 @@
             <div class="field"><label for="w-msg">Anything else? <span class="optional">(optional)</span></label><textarea id="w-msg" name="message" rows="4" maxlength="600"></textarea></div>
             <!-- DEMO ONLY: post to your CRM or a form service here. -->
             <button class="btn btn-primary btn-block" type="submit">Request a call back</button>
-            <div class="form-success" role="status" tabindex="-1" hidden><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M7.500 12.500l3 3 6-7"/></svg><h3>Thanks, <span data-name>friend</span>!</h3><p>We would call you within one business day. {{#if formsLive}}{{else}}<span class="note">Demo only: nothing was sent.</span>{{/if}}</p></div>
+            <div class="form-success" role="status" tabindex="-1" hidden><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M7.500 12.500l3 3 6-7"/></svg><h3>Thanks, <span data-name>friend</span>!</h3><p>We would call you within one business day. {{#if formsLive}}{{else}}<span class="note">Demo only: nothing was sent.</span>{{/if}}</p><p class="reminder-set" data-reminder-line hidden></p></div>
           </form>
         </div>
       </div>

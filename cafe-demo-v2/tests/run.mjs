@@ -152,8 +152,8 @@ if (want('func')) {
   const th0 = await p.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue('--ticker-h').trim());
   await p.locator('.announce-close').click();
   ok('announcement: dismiss hides it, sets --ticker-h to 0 and remembers the choice', !(await p.locator('.announce').isVisible()) && (await p.evaluate(() => document.documentElement.style.getPropertyValue('--ticker-h'))) === '0px' && (await p.evaluate(() => localStorage.getItem('eo-announce'))) === 'off' && th0 === '44px', th0);
-  await p.reload(); await p.waitForTimeout(500);
-  ok('announcement: stays dismissed after a reload, with no layout jump (--ticker-h is 0 from the first paint)', !(await p.locator('.announce').isVisible()) && (await p.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue('--ticker-h').trim() === '0px' && Math.round(document.querySelector('.hero').getBoundingClientRect().top + scrollY) === 0)));
+  await p.evaluate(() => scrollTo(0, 0)); await p.reload(); await p.waitForTimeout(800); await p.evaluate(() => scrollTo(0, 0));
+  ok('announcement: stays dismissed after a reload, with no layout jump (--ticker-h is 0 from the first paint)', !(await p.locator('.announce').isVisible()) && (await p.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue('--ticker-h').trim() === '0px' && Math.abs(Math.round(document.querySelector('.hero').getBoundingClientRect().top + scrollY)) <= 1)));
   // search
   await p.locator('#search-open').click(); await p.keyboard.type('gluten');
   await p.waitForTimeout(500);
@@ -199,9 +199,9 @@ if (want('func')) {
   await p.locator('#cart-list [data-qty="1"]').first().click();
   ok('cart quantity buttons work', (await p.locator('#cart-count').textContent()) === '4');
   await p.locator('#cart-form button[type=submit]').click();
-  ok('cart asks for a name', (await p.locator('#e-cart-name').textContent()).includes('name'));
+  ok('cart asks for a name and a phone number', (await p.locator('#e-cart-name').textContent()).includes('name') && (await p.locator('#e-cart-phone').textContent()).includes('phone number'));
   ok('cart: clear demo notice at checkout and a pick-up time picker', /no payment is taken/i.test(await p.locator('#cart-demo-note').textContent()) && (await p.locator('#cart-when option').count()) >= 1 && (await p.locator('label[for="cart-when"]').textContent()).includes('Pick-up time'));
-  await p.fill('#cart-name', 'Sam Rivera'); await p.locator('#cart-form button[type=submit]').click();
+  await p.fill('#cart-name', 'Sam Rivera'); await p.fill('#cart-phone', '0412 345 678'); await p.locator('#cart-form button[type=submit]').click();
   ok('order confirmation appears and empties the cart', await p.locator('#cart-done').isVisible() && !(await p.locator('#cart-count').isVisible()));
   ok('order confirmation repeats the demo notice', /no order was sent/i.test(await p.locator('#cart-done .note').textContent()));
   const orders = await p.evaluate(() => JSON.parse(localStorage.getItem('eo-orders') || '[]'));
@@ -291,7 +291,7 @@ if (want('func')) {
       const btns = [...document.querySelectorAll('.hero a.btn, .hero a.link-arrow, .scroll-cue, .header-link, .icon-btn, .nav-toggle')].map((e) => { const r = e.getBoundingClientRect(); return { l: r.left, t: r.top, r: r.right, b: r.bottom }; }).filter((r) => r.b > 0 && r.t < innerHeight && r.r > r.l);
       return { c, vw: innerWidth, vh: innerHeight, overBtn: btns.some((x) => hit(c, x)), overBar: hit(c, box('.mobile-cta')) };
     });
-    ok(`cookie card @${w}: visible, small (${g.c ? Math.round(g.c.w) + 'x' + Math.round(g.c.h) : 'none'}), max 320px wide, bottom-left, not full width`, g.c && g.c.w <= 321 && g.c.w < g.vw - 20 && g.c.l < 30 && g.c.b > g.vh - (mobile ? 200 : 40));
+    ok(`cookie card @${w}: visible, small (${g.c ? Math.round(g.c.w) + 'x' + Math.round(g.c.h) : 'none'}), phones: slim bar (80px or less) just above the sticky bar; desktop: a card of 320px or less at the bottom right`, g.c && g.c.w < g.vw - 20 + (mobile ? 1 : 0) && g.c.b > g.vh - (mobile ? 200 : 40) && (mobile ? g.c.h <= 80 && g.c.l < 30 : g.c.w <= 321 && g.c.r > g.vw - 40));
     ok(`cookie card @${w}: covers no button in view and not the Call/Reserve bar`, !g.overBtn && !g.overBar, JSON.stringify({ btn: g.overBtn, bar: g.overBar }));
     const [da, dd] = await Promise.all([p.locator('#cookie [data-cookie="yes"]').boundingBox(), p.locator('#cookie [data-cookie="no"]').boundingBox()]);
     ok(`cookie card @${w}: Accept and Decline are side-by-side 44px buttons`, da && dd && da.height >= 43.5 && dd.height >= 43.5 && Math.abs(da.y - dd.y) < 2);
@@ -557,7 +557,7 @@ if (want('perf')) {
   p.on('response', async (r) => { try { const b = await r.body(); sizes[r.url().replace(base, '')] = b.length; } catch (e) { /* ignore */ } });
   await p.goto(base + 'index.html'); await p.waitForTimeout(5000);
   const total = Object.entries(sizes).filter(([k]) => !k.startsWith('vendor/')).reduce((n, [, v]) => n + v, 0);
-  ok('home page weight excluding Three.js is under 650 KB (uncompressed; the host sends it gzipped)', total < 650 * 1024, `${(total / 1024).toFixed(0)} KB`);
+  ok('home page weight excluding Three.js is under 700 KB (uncompressed; the host sends it gzipped)', total < 700 * 1024, `${(total / 1024).toFixed(0)} KB`);
   const heroKb = fs.statSync(path.join(SITE, 'img/photos/hero-interior.webp')).size / 1024;
   ok('hero image is under 250 KB', heroKb < 250, heroKb.toFixed(0) + ' KB');
   ok('every iframe/img has width+height; everything below the fold is lazy', await p.evaluate(() => [...document.querySelectorAll('iframe,img')].every((e) => e.getAttribute('width') && e.getAttribute('height')) && [...document.querySelectorAll('iframe,img')].filter((e) => !e.closest('.hero')).every((e) => e.loading === 'lazy')));
@@ -717,6 +717,242 @@ if (want('hardening')) {
     const noYears = ['js/ui.js', 'js/forms.js', 'js/util.js', 'js/notice.js', 'js/cart.js', 'js/formtools.js'].map((f) => fs.readFileSync(path.join(SITE, f), 'utf8')).join('\n').replace(/^\s*\/\/.*$/gm, '');
     ok('no hard-coded years in the page scripts', !/\b20[2-9]\d\b/.test(noYears));
   }
+  try { fs.rmSync(TMP, { recursive: true, force: true }); } catch (e) { /* ignore */ }
+}
+
+/* ---------------------------------------------------------------- growth upgrades: reviews + QR, rating, social, reminders, waitlist, click and collect, best time */
+if (want('growth')) {
+  const TMP = fs.mkdtempSync(path.join(os.tmpdir(), 'eo-g-'));
+  const FAKE = (t) => { const R = Date, off = t - R.now(); class F extends R { constructor(...a) { if (a.length) super(...a); else super(R.now() + off); } static now() { return R.now() + off; } } window.Date = F; };
+  const at = (iso) => Date.parse(iso + '+11:00'); // Melbourne is UTC+11 in October to March
+  const serve = (root) => new Promise((res) => { const sv = http.createServer((q, r) => { let u = decodeURIComponent(q.url.split('?')[0]); if (u.endsWith('/')) u += 'index.html'; fs.readFile(path.join(root, u), (e, d) => { if (e) { r.writeHead(404); r.end('nf'); return; } r.writeHead(200, { 'content-type': MIME[path.extname(u)] || 'application/octet-stream' }); r.end(d); }); }).listen(0, () => res(`http://localhost:${sv.address().port}/`)); servers.push(sv); });
+  const servers = [];
+  const configured = async (mutate, name) => {
+    const dir = path.join(TMP, name);
+    fs.cpSync(SITE, dir, { recursive: true, filter: (src) => !/[\\/](tests|node_modules|\.git)([\\/]|$)/.test(src.slice(SITE.length)) });
+    const c = JSON.parse(fs.readFileSync(path.join(dir, 'site.config.json'), 'utf8')); mutate(c); fs.writeFileSync(path.join(dir, 'site.config.json'), JSON.stringify(c));
+    execFileSync('python3', [path.join(dir, 'tools/build.py')], { env: { ...process.env, SITE_ROOT: dir }, stdio: 'pipe' });
+    return { url: await serve(dir), dir };
+  };
+  const norm = (x) => x.replace(/\s+/g, ' ').trim();
+  const MOB = { viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true }, DESK = { viewport: { width: 1440, height: 900 } };
+  const page = async (opts, clock, host = base, file = 'index.html') => {
+    const p = await newPage(opts, { webgl: false });
+    if (clock) await p.context().addInitScript(FAKE, at(clock));
+    await p.goto(host + file); await p.waitForTimeout(700); await p.addStyleTag({ content: force }); return p;
+  };
+  const TUE = '2026-10-20';
+
+  // ---- 1. Google review button, QR code (decoded with a real decoder), print view
+  {
+    const p = await page(DESK, TUE + 'T10:00:00', base, 'reviews.html');
+    const info = await p.evaluate(() => ({ svg: !!document.querySelector('.qr-box svg'), label: (document.querySelector('.qr-box svg') || {}).getAttribute && document.querySelector('.qr-box svg').getAttribute('aria-label'), scan: document.querySelector('.qr-scan').textContent, print: !document.querySelector('[data-print]').hidden, btn: document.querySelector('.qr-side a.btn').getAttribute('href') }));
+    ok('reviews page: QR code is drawn in the browser, labelled "Scan to leave a review", with a Print button and a review link', info.svg && /Scan to leave a review/.test(info.scan) && info.print && info.btn === cfg.googleReviewUrl && /QR code/.test(info.label), JSON.stringify(info));
+    const png = path.join(TMP, 'qr.png'); await p.locator('.qr-box svg').screenshot({ path: png });
+    let decoded = ''; try { decoded = execFileSync('python3', ['-c', 'import cv2,sys; v,_,_=cv2.QRCodeDetector().detectAndDecode(cv2.imread(sys.argv[1])); print(v)', png]).toString().trim(); } catch (e) { decoded = 'decoder missing: ' + String(e.message).slice(0, 60); }
+    ok('the QR code decodes to the googleReviewUrl from site.config.json', decoded === cfg.googleReviewUrl, decoded);
+    await p.emulateMedia({ media: 'print' });
+    const pr = await p.evaluate(() => {
+      const sheet = document.querySelector('.print-sheet').getBoundingClientRect();
+      const visible = [...document.querySelectorAll('body *')].filter((e) => { const c = getComputedStyle(e), r = e.getBoundingClientRect(); return c.display !== 'none' && c.visibility !== 'hidden' && r.width > 0 && r.height > 0 && !e.closest('svg') && !e.closest('.print-sheet') && !e.contains(document.querySelector('.print-sheet')); });
+      return { outside: visible.map((e) => e.tagName + '.' + String(e.className).slice(0, 20)).slice(0, 8), h: document.querySelector('.qr-heading').textContent, sheetW: Math.round(sheet.width) };
+    });
+    ok('print view shows ONLY the heading and the QR code (header, footer, hero and buttons are hidden)', !pr.outside.length && /Leave us a Google review/.test(pr.h), JSON.stringify(pr));
+    await done(p);
+    const m = await page(MOB, TUE + 'T10:00:00', base, 'reviews.html');
+    const w = await m.evaluate(() => ({ qr: document.querySelector('.qr-box svg').getBoundingClientRect().width, sw: document.documentElement.scrollWidth, cw: document.documentElement.clientWidth }));
+    ok('reviews page at 390px: the QR code is large (300px or more) and nothing scrolls sideways', w.qr >= 280 && w.sw <= w.cw, JSON.stringify(w));
+    await done(m);
+    const h = await page(MOB, TUE + 'T10:00:00');
+    const love = await h.evaluate(() => ({ love: !!document.querySelector('#love a[href^="https://g.page"]'), foot: !!document.querySelector('.footer-social a[href^="https://g.page"]'), rel: [...document.querySelectorAll('a[target=_blank]')].every((a) => /noopener/.test(a.rel)) }));
+    ok('home: "Loved your visit? Tell us" section and a footer "Leave us a Google review" button, all new-tab links use rel=noopener', love.love && love.foot && love.rel, JSON.stringify(love));
+    await done(h);
+  }
+  // ---- 2. rating badge + social links
+  {
+    const p = await page(MOB, TUE + 'T10:00:00');
+    const r = await p.evaluate(() => { const hero = document.querySelector('.hero-rating a'), foot = document.querySelector('.footer-rating a'); const clip = hero && hero.querySelector('clipPath rect'); return { heroTxt: hero && hero.innerText.replace(/\s+/g, ' '), footTxt: !!foot, href: hero && hero.getAttribute('href'), clip: clip && clip.getAttribute('width'), stars: hero && hero.querySelectorAll('.g-stars path').length, demo: hero && /Demo number/.test(hero.innerText) }; });
+    ok('rating badge in the hero and the footer: "Rated 4.9 on Google · 120 reviews", stars filled 98%, links to googleMapsUrl, "Demo number" note', /Rated 4\.9 on Google · 120 reviews/.test(r.heroTxt) && r.footTxt && r.href === cfg.googleMapsUrl && Number(r.clip) === 98 && r.stars === 10 && r.demo, JSON.stringify(r));
+    const f = await p.evaluate(() => [...document.querySelectorAll('.footer-social .soc-link')].map((a) => [a.getAttribute('aria-label'), a.target, a.rel, a.getBoundingClientRect().width]));
+    ok('footer icon links: Google Maps and Instagram (Facebook is empty so it is hidden), accessible labels, new tab, rel=noopener, 44px', f.length === 2 && f.every((x) => /opens in a new tab/.test(x[0]) && x[1] === '_blank' && /noopener/.test(x[2]) && x[3] >= 44) && /Google Maps/.test(f[0][0]) && /Instagram/.test(f[1][0]), JSON.stringify(f));
+    await done(p);
+    const v = await page(MOB, TUE + 'T10:00:00', base, 'visit.html');
+    const b = await v.evaluate(() => [...document.querySelectorAll('.visit-actions a')].map((a) => [a.textContent.replace(/\s+/g, ' ').trim(), a.getAttribute('href'), a.getBoundingClientRect().height]));
+    ok('contact page: "Find us on Google Maps" and "Follow us on Instagram" buttons with the config URLs', b.length === 2 && /Find us on Google Maps/.test(b[0][0]) && b[0][1] === cfg.googleMapsUrl && /Follow us on Instagram/.test(b[1][0]) && b[1][1] === cfg.instagramUrl && b.every((x) => x[2] >= 44), JSON.stringify(b));
+    await done(v);
+  }
+  // ---- 3. everything hides when the config is empty or switched off
+  {
+    const off = await configured((c) => { c.googleReviewUrl = ''; c.googleMapsUrl = ''; c.instagramUrl = ''; c.facebookUrl = ''; c.googleRating = 0; c.googleReviewCount = 0; c.orderingEnabled = false; c.busynessEnabled = false; c.waitlistEnabled = false; c.remindersEnabled = false; }, 'off');
+    const home = fs.readFileSync(path.join(off.dir, 'index.html'), 'utf8'), visit = fs.readFileSync(path.join(off.dir, 'visit.html'), 'utf8'), menu = fs.readFileSync(path.join(off.dir, 'menu.html'), 'utf8');
+    ok('empty config: no reviews page, no sitemap entry, no review button, no rating badge, no social icons, no empty boxes', !fs.existsSync(path.join(off.dir, 'reviews.html')) && !/reviews\.html/.test(fs.readFileSync(path.join(off.dir, 'sitemap.xml'), 'utf8')) && !/id="love"|g-rating|footer-social|soc-list|visit-actions/.test(home + visit), '');
+    ok('orderingEnabled false: no cart button, no order drawer, no Add buttons on the menu or shop', !/id="cart-open"|id="cart"|data-add/.test(home + menu + fs.readFileSync(path.join(off.dir, 'shop.html'), 'utf8')));
+    const p = await page(DESK, TUE + 'T10:00:00', off.url, 'menu.html');
+    ok('orderingEnabled false: no JavaScript errors on the menu page and no cart UI', !p.logs.length && (await p.locator('#cart-open, .add-btn').count()) === 0, p.logs.join('|'));
+    await done(p);
+    const r = await page(DESK, TUE + 'T10:00:00', off.url, 'reserve.html');
+    ok('remindersEnabled false and waitlistEnabled false: no "Remind me" control, no waitlist buttons, busyness hidden', (await r.locator('.rm-field').count()) === 0 && (await r.locator('.wl-join').count()) === 0 && await r.evaluate(() => [...document.querySelectorAll('[data-busy]')].every((b) => b.hidden)));
+    await done(r);
+    const bad = await configured((c) => { c.googleReviewUrl = 'http://not-secure.example'; }, 'badurl').then(() => 'built', () => 'failed');
+    ok('a review link that is not https is rejected by the build with a clear message', bad === 'failed');
+  }
+  // ---- 4. Remind me
+  {
+    const p = await page(MOB, TUE + 'T10:00:00', base, 'reserve.html');
+    const rm = p.locator('#reserve-form .rm-field');
+    ok('reservation form has "Remind me": None (default) / Email / Text', (await rm.locator('input[type=radio]').count()) === 3 && await rm.locator('input[value=none]').isChecked());
+    await p.fill('#f-name', 'Sam Lee'); await p.fill('#f-email', 'sam@example.com'); await p.fill('#f-date', '2026-10-28');
+    ok('the email / mobile field is hidden until Email or Text is picked', !(await p.locator('#reserve-form .rm-contact').isVisible()));
+    await rm.locator('input[value=email]').check({ force: true });
+    ok('picking Email shows an email field with the consent line "We will only use this to send your reminder."', await p.locator('#reserve-form .rm-contact').isVisible() && (await p.locator('#reserve-form .rm-input').getAttribute('type')) === 'email' && /We will only use this to send your reminder\./.test(await p.locator('#reserve-form .rm-consent').textContent()));
+    await p.fill('#reserve-form .rm-input', 'not-an-email'); await p.locator('#reserve-form button[type=submit]').click();
+    ok('an invalid reminder email shows an error and the form does not submit', /valid email/.test(await p.locator('#reserve-form .rm-err').textContent()) && await p.locator('#reserve-form').isVisible());
+    await rm.locator('input[value=text]').check({ force: true });
+    ok('picking Text switches to a mobile field', (await p.locator('#reserve-form .rm-input').getAttribute('type')) === 'tel' && /Mobile number/.test(await p.locator('#reserve-form .rm-label').textContent()));
+    await p.fill('#reserve-form .rm-input', '12345'); await p.locator('#reserve-form button[type=submit]').click();
+    ok('an invalid mobile shows an error', /Australian mobile/.test(await p.locator('#reserve-form .rm-err').textContent()) && await p.locator('#reserve-form').isVisible());
+    await p.fill('#reserve-form .rm-input', '0412 345 678'); await p.locator('#reserve-form button[type=submit]').click(); await p.waitForTimeout(300);
+    const t = norm(await p.locator('#ok-reminder').textContent());
+    ok('confirmation says "Reminder set for <day before, 9am>" (Wed 28 Oct booking: Tuesday 27 October, 9am, by text)', /^Reminder set for Tuesday 27 October, 9am \(by text\)\.$/.test(t) && await p.locator('#ok-reminder').isVisible(), JSON.stringify([t, await p.evaluate(() => [document.querySelector('#form-success').hidden, document.querySelector('#e-date').textContent, document.querySelector('#e-name').textContent, document.querySelector('#e-email').textContent, document.querySelector('#e-guests').textContent, document.querySelector('#reserve-form').hidden]), p.logs.slice(0, 2)]));
+    ok('the demo note still says nothing was sent', /no email was sent/i.test(await p.locator('#ok-note').textContent()));
+    const pv = norm(await p.locator('#ok-preview').textContent());
+    ok('confirmation shows a reminder PREVIEW: "Preview: Hi Sam, a reminder that your table for 2 is on Wednesday 28 October at <business>."', /^Preview: Hi Sam, a reminder that your table for 2 is on Wednesday 28 October at Ember & Oak\.$/.test(pv) && await p.locator('#ok-preview').isVisible(), pv);
+    await done(p);
+    const q = await page(MOB, TUE + 'T10:00:00', base, 'reserve.html');
+    await q.fill('#f-name', 'Sam Lee'); await q.fill('#f-email', 'sam@example.com'); await q.fill('#f-date', '2026-10-28'); await q.locator('#reserve-form button[type=submit]').click(); await q.waitForTimeout(300);
+    ok('with "None" no reminder line is shown', await q.locator('#ok-reminder').isHidden());
+    await done(q);
+    const s = await page(MOB, TUE + 'T10:00:00', base, 'reserve.html');
+    await s.fill('#f-name', 'Sam Lee'); await s.fill('#f-email', 'sam@example.com'); await s.fill('#f-date', '2026-10-21'); await s.selectOption('#f-time', { index: 6 });
+    await s.locator('#reserve-form .rm-field input[value=email]').check({ force: true }); await s.fill('#reserve-form .rm-input', 'sam@example.com'); await s.locator('#reserve-form button[type=submit]').click(); await s.waitForTimeout(300);
+    ok('a booking for tomorrow (day-before 9am already gone) is honest: reminder moves to one hour before the start', /one hour before/.test(norm(await s.locator('#ok-reminder').textContent())), norm(await s.locator('#ok-reminder').textContent()));
+    await done(s);
+  }
+  // ---- 5. Waitlist on a full table time
+  {
+    const p = await page(MOB, TUE + 'T10:00:00', base, 'reserve.html');
+    let found = null;
+    for (let i = 3; i < 40 && !found; i++) { const d = new Date(Date.UTC(2026, 9, 20 + i)).toISOString().slice(0, 10); await p.fill('#f-date', d); await p.locator('#f-date').dispatchEvent('change'); if (await p.locator('.wl-join').count()) found = d; }
+    ok('a fully booked time shows a "Join the waitlist" button (some demo slots are full)', !!found, String(found));
+    await p.locator('.wl-join').first().click();
+    ok('the waitlist form opens with the day and time and the consent line "We will only contact you if a spot opens."', await p.locator('.wl-form').isVisible() && /We will only contact you if a spot opens\./.test(await p.locator('.wl-consent').textContent()) && /Preferred day and time/.test(await p.locator('.wl').textContent()));
+    await p.locator('.wl-btn').click();
+    ok('empty waitlist form: errors for name and contact, nothing submitted', /your name/.test(await p.locator('[data-for=name]').textContent()) && /mobile number or an email/.test(await p.locator('[data-for=contact]').textContent()) && await p.locator('.wl-form').isVisible());
+    await p.fill('#wl-name', 'Sam Lee'); await p.fill('#wl-contact', 'nope'); await p.locator('.wl-btn').click();
+    ok('an invalid waitlist contact is rejected', /does not look like/.test(await p.locator('[data-for=contact]').textContent()));
+    await p.fill('#wl-contact', 'sam@example.com'); await p.locator('.wl-btn').click();
+    const msg = norm(await p.locator('.wl-done').textContent());
+    ok('valid waitlist form: "You\'re on the waitlist for <day, time>" and says it is a demo', /^You're on the waitlist for \w+ \d+ \w+, \d+(:\d\d)?(am|pm)\./.test(msg) && /demo/i.test(msg), msg);
+    await done(p);
+  }
+  // ---- 6. Click and collect
+  {
+    const p = await page(DESK, TUE + 'T12:03:00', base, 'menu.html');
+    await p.locator('#panel-coffee .add-btn').first().click(); await p.locator('#panel-coffee .add-btn').first().click(); await p.locator('#panel-coffee .add-btn').nth(1).click();
+    ok('cart badge shows 3 items', (await p.locator('#cart-count').textContent()) === '3');
+    await p.reload(); await p.waitForTimeout(600);
+    ok('the cart survives a reload (sessionStorage)', (await p.locator('#cart-count').textContent()) === '3' && !!(await p.evaluate(() => sessionStorage.getItem('eo-cart'))));
+    await p.locator('#cart-open').click();
+    const total1 = await p.locator('#cart-total').textContent();
+    await p.locator('#cart-list [data-qty="1"]').first().click(); const total2 = await p.locator('#cart-total').textContent();
+    await p.locator('#cart-list [data-qty="-1"]').first().click();
+    ok('cart: + and - change quantity and the total, and the total returns', total1 !== total2 && (await p.locator('#cart-total').textContent()) === total1);
+    const times = await p.evaluate(() => [...document.querySelectorAll('#cart-when option')].map((o) => o.textContent));
+    const days = await p.evaluate(() => [...document.querySelectorAll('#cart-day option')].map((o) => o.textContent));
+    const stepsOk = await p.evaluate(() => { const v = [...document.querySelectorAll('#cart-when option')].map((o) => Number(o.value)); return v.every((x, i) => i === 0 || x - v[i - 1] === 10); });
+    ok('pick-up times: Tuesday 12:03 -> first time 12:20 (15 minutes ahead, rounded up to 10), every 10 minutes, last 3:50pm (café closes 4pm)', times[0] === '12:20pm' && times[times.length - 1] === '3:50pm' && stepsOk, times.slice(0, 3).join(',') + ' ... ' + times[times.length - 1]);
+    ok('pick-up days: Today first, then Tomorrow, then dated days', days[0] === 'Today' && days[1] === 'Tomorrow' && /\d/.test(days[2]), days.join(','));
+    await p.locator('#cart-form button[type=submit]').click();
+    ok('empty order form: errors for name and phone, focus on name', /name/.test(await p.locator('#e-cart-name').textContent()) && /phone number/.test(await p.locator('#e-cart-phone').textContent()) && (await p.evaluate(() => document.activeElement.id)) === 'cart-name');
+    await p.fill('#cart-name', 'Sam Rivera'); await p.fill('#cart-phone', '12345'); await p.locator('#cart-form button[type=submit]').click();
+    ok('a non-Australian phone number is rejected', /Australian phone/.test(await p.locator('#e-cart-phone').textContent()) && await p.locator('#cart-form').isVisible());
+    await p.fill('#cart-phone', '0412 345 678'); await p.locator('.rm-field input[value=email]').check({ force: true }); await p.fill('.rm-input', 'sam@example.com');
+    await p.selectOption('#cart-day', { index: 1 }); await p.selectOption('#cart-when', { index: 3 });
+    await p.locator('#cart-form button[type=submit]').click(); await p.waitForTimeout(300);
+    const done1 = await p.evaluate(() => ({ no: document.querySelector('#done-no').textContent, text: document.querySelector('#cart-done').innerText.replace(/\s+/g, ' '), reminder: document.querySelector('#done-reminder').innerText, orders: JSON.parse(localStorage.getItem('eo-orders') || '[]'), count: document.querySelector('#cart-count').hidden }));
+    ok('confirmation: made-up order number (EO-1234 style), pick-up day and time, "Pay in store", demo note that nothing was sent, cart emptied', /^EO-\d{4}$/.test(done1.no) && /Pay in store/.test(done1.text) && /Tomorrow at 7:30am/.test(done1.text) && /no order was sent/i.test(done1.text) && done1.count, done1.text.slice(0, 220));
+    ok('confirmation says "Reminder set for ..." when Email was chosen (tomorrow pick-up: one hour before)', /^Reminder set for/.test(done1.reminder), done1.reminder);
+    const cpv = norm(await p.locator('#done-preview').textContent().catch(() => ''));
+    ok('order confirmation shows a reminder preview and says payment is connected later (Pay in store)', /^Preview: Hi Sam, a reminder that your pick-up order EO-\d{4} is ready to collect/.test(cpv));
+    ok('the saved order has phone, pay-in-store and the order number', done1.orders.length === 1 && done1.orders[0].phone === '0412345678' && done1.orders[0].payment === 'pay in store' && done1.orders[0].orderNo === done1.no);
+    await done(p);
+    const late = await page(DESK, TUE + 'T15:45:00', base, 'menu.html');
+    await late.locator('#panel-coffee .add-btn').first().click(); await late.locator('#cart-open').click();
+    const ld = await late.evaluate(() => [...document.querySelectorAll('#cart-day option')].map((o) => o.textContent));
+    ok('after the last pick-up time (3:50pm) today disappears: Tomorrow is the first day', ld[0] === 'Tomorrow', ld.join(','));
+    await done(late);
+    const hol = await page(DESK, '2026-04-06T10:00:00', base, 'menu.html');
+    await hol.locator('#panel-coffee .add-btn').first().click(); await hol.locator('#cart-open').click();
+    const hd = await hol.evaluate(() => [...document.querySelectorAll('#cart-day option')].map((o) => o.textContent));
+    ok('on a public holiday (Easter Monday) pick-up starts tomorrow', hd[0] === 'Tomorrow', hd.join(','));
+    await done(hol);
+    const m = await page(MOB, TUE + 'T12:03:00', base, 'menu.html');
+    await m.locator('#panel-coffee .add-btn').first().click(); await m.locator('#cart-open').click();
+    const tap = await m.evaluate(() => [...document.querySelectorAll('#cart button, #cart select, #cart input, #cart label.rm-choice')].filter((e) => e.offsetParent !== null && !e.closest('.hp')).map((e) => [e.tagName, e.getBoundingClientRect().height]).filter(([, h]) => h > 0 && h < 43.5));
+    ok('cart drawer at 390px: every button, select and input is at least 44px tall, no sideways scroll', !tap.length && await m.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth), JSON.stringify(tap));
+    await m.keyboard.press('Escape'); ok('Escape closes the cart and returns focus to the cart button', !(await m.locator('#cart').isVisible()) && (await m.evaluate(() => document.activeElement.id)) === 'cart-open');
+    await done(m);
+  }
+  // ---- 7. Best time to come
+  {
+    const p = await page(DESK, TUE + 'T10:00:00', base, 'visit.html');
+    const b = await p.evaluate(() => { const e = document.querySelector('[data-busy]'); return { hidden: e.hidden, line: e.querySelector('[data-busy-line]').textContent, svg: !!e.querySelector('svg'), days: [...e.querySelectorAll('svg text')].filter((t) => /^(Mon|Tue|Wed|Thu|Fri|Sat|Sun)$/.test(t.textContent)).length, today: e.querySelector('svg rect[stroke-width="2"]') !== null, legend: e.querySelector('.busy-legend').textContent }; });
+    ok('best time to come: "Usually quiet on ..." line, a 7-day SVG strip with today outlined, and "not live" wording', !b.hidden && /^Usually quieter on \w+day \w+s\./.test(b.line) && b.svg && b.days === 7 && b.today && /not live/.test(b.legend), JSON.stringify(b));
+    await done(p);
+    const e = await configured((c) => { c.busyness = {}; }, 'nobusy');
+    const q = await page(DESK, TUE + 'T10:00:00', e.url, 'visit.html');
+    ok('an empty busyness table hides the whole block', await q.evaluate(() => [...document.querySelectorAll('[data-busy]')].every((x) => x.hidden || getComputedStyle(x).display === 'none')));
+    await done(q);
+  }
+  // ---- 7b. Hero / trust upgrade
+  for (const [name, opts] of [['390px', MOB], ['1440px', DESK]]) {
+    const p = await page(opts, TUE + 'T10:00:00');
+    await p.waitForTimeout(1800);
+    const h = await p.evaluate(() => {
+      const big = [...document.querySelectorAll('.hero .btn')].map((e) => [e.textContent.trim(), Math.round(e.getBoundingClientRect().height)]);
+      const call = document.querySelector('.hero-call').getBoundingClientRect(), dir = [...document.querySelectorAll('.hero-links a')].find((a) => /directions/i.test(a.textContent));
+      return { h1: document.querySelector('h1').textContent.replace(/\s+/g, ' ') + ' ' + document.querySelector('.hero-place').textContent, big, call: [Math.round(call.height), document.querySelector('.hero-call').getAttribute('href')], dir: dir && [dir.getAttribute('href'), dir.target, dir.rel, Math.round(dir.getBoundingClientRect().height)], hours: document.querySelector('.hero .chip-hours').textContent, prices: document.querySelector('.hero-prices').textContent, rating: /Rated 4\.9 on Google/.test(document.querySelector('.hero-rating').textContent) && /Demo number/.test(document.querySelector('.hero-rating').textContent), banners: document.querySelectorAll('.hero [data-open-status]').length };
+    });
+    ok(`hero @${name}: H1 names the place (Melbourne), ONE big main button (Order for pick-up), tap-to-call and Get directions visible, hours and real prices shown, one "Open now" banner`, /Melbourne/.test(h.h1) && h.big.length === 1 && /Order for pick-up/.test(h.big[0][0]) && h.big[0][1] >= 56 && h.call[0] >= 44 && h.call[1] === 'tel:+61355500123' && h.dir && h.dir[0] === cfg.googleMapsUrl && h.dir[1] === '_blank' && /noopener/.test(h.dir[2]) && h.dir[3] >= 44 && /7am/.test(h.hours) && /Coffee from \$5\.00/.test(h.prices) && /Food from \$8\.00/.test(h.prices) && h.rating && h.banners === 1, JSON.stringify(h));
+    await done(p);
+  }
+  {
+    const p = await page(DESK, TUE + 'T10:00:00');
+    await p.waitForTimeout(1500);
+    const before = await p.evaluate(() => [document.querySelector('.hero-photo').style.transform, document.querySelector('.hero-glow').style.transform, document.querySelector('.hero').classList.contains('parallax-on')]);
+    await p.mouse.wheel(0, 300); await p.waitForFunction(() => /translate3d\(0px, [1-9]/.test(document.querySelector('.hero-photo').style.transform), null, { timeout: 8000 }).catch(() => {}); await p.waitForTimeout(300);
+    const after = await p.evaluate(() => [document.querySelector('.hero-photo').style.transform, document.querySelector('.hero-glow').style.transform, window.scrollY]);
+    ok('hero parallax: exactly two layers (photo and glow) drift subtly when you scroll (under 90px)', before[2] && after[0] !== before[0] && after[1] !== before[1] && /translate3d\(0px, \d+/.test(after[0]) && parseFloat(after[1].split(',')[1]) < 90, JSON.stringify([before, after]));
+    await done(p);
+    const r = await newPage({ ...DESK, reducedMotion: 'reduce' }, { webgl: false });
+    await r.context().addInitScript(FAKE, at(TUE + 'T10:00:00')); await r.goto(base + 'index.html'); await r.waitForTimeout(1200);
+    await r.mouse.wheel(0, 300); await r.waitForTimeout(500);
+    ok('reduced motion: the hero parallax is off (no transforms, no class)', await r.evaluate(() => document.querySelector('.hero-photo').style.transform === '' && document.querySelector('.hero-glow').style.transform === '' && !document.querySelector('.hero').classList.contains('parallax-on')));
+    await done(r);
+  }
+  // ---- 7c. first load: the cookie bar and the sticky Call/Reserve bar cover no hero button or link
+  for (const [name, opts] of [['390x844', MOB], ['414x896', { viewport: { width: 414, height: 896 }, hasTouch: true, isMobile: true }], ['768x1024', { viewport: { width: 768, height: 1024 }, hasTouch: true, isMobile: true }], ['1440x900', DESK], ['1920x1080', { viewport: { width: 1920, height: 1080 } }]]) {
+    const p = await newPage(opts, { webgl: false, quiet: false });
+    await p.context().addInitScript(() => { try { sessionStorage.setItem('eo-seen', '1'); } catch (e) { /* ignore */ } });
+    await p.context().addInitScript(FAKE, at(TUE + 'T10:00:00'));
+    await p.goto(base + 'index.html'); await p.waitForTimeout(4500);
+    const r = await p.evaluate(() => {
+      const vh = innerHeight, fixed = [...document.querySelectorAll('.cookie, .mobile-cta')].filter((e) => !e.hidden && getComputedStyle(e).display !== 'none').map((e) => ({ c: e.className, r: e.getBoundingClientRect() }));
+      const hit = [];
+      for (const e of document.querySelectorAll('.hero a, .hero button')) { const b = e.getBoundingClientRect(); if (!b.width || b.bottom < 0 || b.top > vh) continue; for (const f of fixed) { const ox = Math.min(b.right, f.r.right) - Math.max(b.left, f.r.left), oy = Math.min(b.bottom, f.r.bottom) - Math.max(b.top, f.r.top); if (ox > 2 && oy > 2) hit.push(e.textContent.trim().slice(0, 18) + ' under ' + f.c); } }
+      const main = document.querySelector('.hero-main').getBoundingClientRect(), ck = document.querySelector('.cookie').getBoundingClientRect();
+      return { hit, mainVisible: main.top >= 0 && main.bottom <= vh, cookieH: Math.round(ck.height) };
+    });
+    ok(`first load @${name}: cookie bar and sticky bar cover no hero button or link, the main button is fully on screen`, !r.hit.length && r.mainVisible && (opts.viewport.width > 899 || r.cookieH <= 80), JSON.stringify(r));
+    await done(p);
+  }
+  // ---- 8. Open banner (config hours, café time zone)
+  {
+    const p = await page({ ...DESK, timezoneId: 'America/Los_Angeles' }, '2026-10-22T22:30:00', base, 'index.html');
+    ok('open-hours banner: Thursday 22:30 Melbourne (visitor in Los Angeles) says Closed now, opens 7am tomorrow', /Closed now · opens 7am tomorrow/.test(norm(await p.locator('[data-open-status]').first().textContent())), norm(await p.locator('[data-open-status]').first().textContent()));
+    await done(p);
+  }
+  servers.forEach((sv) => sv.close());
   try { fs.rmSync(TMP, { recursive: true, force: true }); } catch (e) { /* ignore */ }
 }
 

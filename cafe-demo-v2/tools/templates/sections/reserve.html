@@ -10,6 +10,12 @@
             <li>High chairs, accessible seating and dog-friendly terrace tables</li>
             <li>Groups of 6+ get a dedicated host</li>
           </ul>
+          {{#if busyOn}}<div class="busy" data-busy hidden>
+            <h3 class="busy-h">Best time to come</h3>
+            <p class="busy-line" data-busy-line></p>
+            <div class="busy-chart" data-busy-chart></div>
+          </div>{{/if}}
+
         </div>
         <div class="form-card reveal">
           <form id="reserve-form" novalidate>
@@ -49,6 +55,7 @@
               <label for="f-time">Preferred time</label>
               <select id="f-time" name="time" aria-describedby="h-time">{{{timeOptions}}}</select>
               <p class="hint" id="h-time" aria-live="polite">Choose a date to see which times are open.</p>
+              <div class="wl-slots" id="wl-slots" aria-live="polite"></div>
             </div>
             <div class="field">
               <label for="f-message">Message <span class="optional">(optional)</span></label>
@@ -62,10 +69,13 @@
             -->
             <button class="btn btn-primary btn-block" type="submit">Send request</button>
           </form>
+          <div class="wl-host" id="wl-host" hidden></div>
           <div class="form-success" id="form-success" role="status" tabindex="-1" hidden>
             <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M7.500 12.500l3 3 6-7"/></svg>
             <h3>Thanks, <span id="ok-name">friend</span>!</h3>
             <p id="ok-detail"></p>
+            <p class="reminder-set" id="ok-reminder" hidden></p>
+            <p class="reminder-preview" id="ok-preview" hidden></p>
             <p class="note" id="ok-note">{{#if formsLive}}If you have not heard from us within a day, please call {{contact.phone}}.{{else}}Demo only: no email was sent. A copy of this request is saved in this browser only.{{/if}}</p>
             <button class="btn btn-secondary btn-on-light" type="button" id="form-reset">Make another request</button>
           </div>

@@ -3,6 +3,8 @@
 import { $, $$, site, toast, nowCafe, resolveDay, fmtHour, store } from './util.js';
 import { addDays, DAY_NAMES, dayLabel } from './clock.js';
 import { addHoneypot, tripped, guard, send, isLive, phoneFallback } from './formtools.js';
+import { mountReminder } from './reminder.js';
+import { waitlistForm } from './waitlist.js';
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 const NOUNS = { experience: 'experience booking', private: 'private dining enquiry', catering: 'catering request', other: 'question' };
@@ -43,11 +45,31 @@ const NOUNS = { experience: 'experience booking', private: 'private dining enqui
       if (!o.disabled) anyOpen++;
     });
     if (timeEl.selectedOptions[0] && timeEl.selectedOptions[0].disabled) timeEl.value = '';
+    renderWaitlist(v, [...timeEl.options].filter((o) => o.value && / \(fully booked\)$/.test(o.textContent)));
     hint.textContent = !hrs.closed
       ? `We are open ${fmtHour(hrs.open)} to ${fmtHour(hrs.close)} that day. ${anyOpen ? 'Some times may already be full.' : 'No times are left, so please try another date.'}`
       : `We are closed that day${hrs.name ? ' for ' + hrs.name : ''}. Please choose another date.`;
   }
   dateEl.addEventListener('change', updateTimes);
+
+  // Waitlist (config: waitlistEnabled): every fully booked time gets a "Join the waitlist" button that opens a small form. FRONT END ONLY.
+  const wlSlots = $('#wl-slots'), wlHost = $('#wl-host');
+  function renderWaitlist(day, booked) {
+    if (!wlSlots) return;
+    wlHost.hidden = true; wlHost.replaceChildren();
+    if (!site.waitlistEnabled || !booked.length) { wlSlots.replaceChildren(); return; }
+    wlSlots.innerHTML = '<p class="wl-lead">Fully booked, but you can join the waitlist:</p><ul class="wl-list" role="list">' + booked.map((o) => {
+      const t = o.textContent.replace(/ \(fully booked\)$/, '');
+      return `<li><span>${t}</span><button type="button" class="wl-join btn btn-secondary btn-sm" data-t="${o.value}">Join the waitlist<span class="sr-only"> for ${t}</span></button></li>`;
+    }).join('') + '</ul>';
+  }
+  wlSlots && wlSlots.addEventListener('click', (e) => {
+    const b = e.target.closest('.wl-join'); if (!b) return;
+    const [hh, mm] = b.dataset.t.split(':').map(Number);
+    const el = waitlistForm({ dayKey: dateEl.value, mins: hh * 60 + mm, what: field('type').selectedOptions[0].textContent.replace(/…|\.\.\./g, '').trim() });
+    wlHost.replaceChildren(el); wlHost.hidden = false;
+    el.scrollIntoView({ block: 'nearest' }); const first = el.querySelector('input'); if (first) first.focus();
+  });
 
   const rules = {
     name: (v) => (v.trim().length < 2 ? 'Please tell us your name so we can pop it on the booking.' : ''),
@@ -68,6 +90,7 @@ const NOUNS = { experience: 'experience booking', private: 'private dining enqui
     field(n).addEventListener('input', () => { if (field(n).getAttribute('aria-invalid') === 'true') check(n); });
   });
   addHoneypot(form);
+  const reminder = mountReminder($('button[type=submit]', form), site, 'rsv-rm'); // "Remind me" None / Email / Text (config: remindersEnabled)
   const busy = guard($('button[type=submit]', form));
   const failBox = document.createElement('div'); failBox.setAttribute('aria-live', 'assertive'); $('button[type=submit]', form).after(failBox);
   form.addEventListener('submit', async (e) => {
@@ -77,11 +100,15 @@ const NOUNS = { experience: 'experience booking', private: 'private dining enqui
       failBox.innerHTML = '';
       const bad = Object.keys(rules).map((n) => [n, check(n)]).find(([, ok]) => !ok);
       if (bad) { field(bad[0]).focus(); return; }
+      if (reminder) { const r = reminder.read(); if (!r.ok) { r.input.focus(); return; } }
       const guests = Number(field('guests').value);
       const email = field('email').value.trim();
       const kind = field('type').value;
       const rec = { id: 'ER-' + Date.now().toString(36).toUpperCase(), saved: new Date().toISOString(), type: kind, name: field('name').value.trim(), email, date: dateEl.value, time: timeEl.value || null, guests, message: field('message').value.trim() };
       if (!tripped(form)) { // a filled-in spam trap looks successful but sends nothing
+        // SENDING A REMINDER IS NOT CONNECTED: plug an email or SMS service in here, per customer, using rec.reminder.
+        const rm = reminder ? reminder.read() : { mode: 'none' };
+        rec.reminder = rm.mode === 'none' ? 'none' : { mode: rm.mode, contact: rm.contact, leadHours: site.reminderLeadHours || 24 };
         const res = await send({ _subject: `Website ${kind} request ${rec.id}`, formType: 'reservation', ...rec });
         if (!res.ok) { failBox.innerHTML = phoneFallback(); return; }
         try {
@@ -96,12 +123,20 @@ const NOUNS = { experience: 'experience booking', private: 'private dining enqui
       $('#ok-detail').textContent = kind === 'table'
         ? `We've noted a table for ${guests} ${guests === 1 ? 'guest' : 'guests'} on ${date}${at}. We'll email ${email} to confirm.`
         : `We've received your ${NOUNS[kind] || 'request'} for ${date}${at}. A team member will email ${email} within one business day.`;
-      form.hidden = true; success.hidden = false; success.focus();
+      const mins = timeEl.value ? Number(timeEl.value.split(':')[0]) * 60 + Number(timeEl.value.split(':')[1]) : undefined;
+      const rline = reminder ? reminder.confirmation(dateEl.value, { now: nowCafe(), startMins: mins }) : '';
+      const rEl = $('#ok-reminder'); if (rEl) { rEl.textContent = rline; rEl.hidden = !rline; }
+      // Preview of the reminder message (SENDING IS NOT CONNECTED: this only shows what it would say)
+      const what = kind === 'table' ? `your table for ${guests}` : `your ${NOUNS[kind] || 'request'}`;
+      const pv = reminder ? reminder.preview(`Hi ${field('name').value.trim().split(' ')[0]}, a reminder that ${what} is on ${date}${timeEl.value ? ' at ' + timeEl.selectedOptions[0].textContent.trim() : ''} at ${site.name}.`) : '';
+      const pEl = $('#ok-preview'); if (pEl) { pEl.textContent = pv; pEl.hidden = !pv; }
+      form.hidden = true; if (wlHost) wlHost.hidden = true; success.hidden = false; success.focus();
     } finally { busy.stop(); }
   });
   $('#form-reset').addEventListener('click', () => {
     form.reset();
     field('guests').value = 2;
+    if (reminder) reminder.reset();
     $$('[aria-invalid]', form).forEach((el) => el.setAttribute('aria-invalid', 'false'));
     updateTimes();
     success.hidden = true; form.hidden = false; field('name').focus();
@@ -124,6 +159,7 @@ $$('form[data-demo-form]').forEach((form) => {
   inputs.forEach((el) => { el.addEventListener('blur', () => check(el)); el.addEventListener('input', () => { if (el.getAttribute('aria-invalid') === 'true') check(el); }); });
   addHoneypot(form);
   const sub = $('button[type=submit]', form), busy = guard(sub);
+  const reminder = form.hasAttribute('data-reminder') ? mountReminder(sub, site, 'enq-rm') : null; // enquiries can ask to be reminded to look for our reply
   const failBox = document.createElement('div'); failBox.setAttribute('aria-live', 'assertive'); sub.after(failBox);
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -132,12 +168,15 @@ $$('form[data-demo-form]').forEach((form) => {
       failBox.innerHTML = '';
       const results = inputs.map(check); // check every field so all the messages show at once
       if (results.includes(false)) { inputs[results.indexOf(false)].focus(); return; }
+      if (reminder) { const r = reminder.read(); if (!r.ok) { r.input.focus(); return; } }
       if (!tripped(form)) {
         const data = Object.fromEntries(new FormData(form).entries()); delete data.website;
         const res = await send({ formType: location.pathname.split('/').pop().replace('.html', '') || 'form', _subject: 'Website enquiry', ...data });
         if (!res.ok) { failBox.innerHTML = phoneFallback(); return; }
       }
       const ok = $('.form-success', form);
+      const rl = $('[data-reminder-line]', ok);
+      if (rl && reminder) { const t = reminder.confirmation(addDays(nowCafe().key, 2), { now: nowCafe() }); rl.textContent = t; rl.hidden = !t; reminder.reset(); }
       const nm = form.elements.name;
       if (nm) $('[data-name]', ok).textContent = nm.value.trim().split(' ')[0];
       [...form.children].forEach((c) => { if (c !== ok) c.hidden = true; });

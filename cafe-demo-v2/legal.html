@@ -30,8 +30,8 @@
   <link rel="preload" href="fonts/montserrat-latin.woff2" as="font" type="font/woff2" crossorigin>
   
   <link rel="stylesheet" href="vendor/lenis-1.1.18.css?v=7720ea7b">
-  <link rel="stylesheet" href="styles.css?v=04bc79d0">
-  <script type="importmap">{"imports": {"./js/cart.js": "./js/cart.js?v=e461db35", "./js/clock.js": "./js/clock.js?v=0d812e35", "./js/forms.js": "./js/forms.js?v=8d2c498f", "./js/formtools.js": "./js/formtools.js?v=b497119e", "./js/hero.js": "./js/hero.js?v=53749c4a", "./js/motion.js": "./js/motion.js?v=60d20297", "./js/notice.js": "./js/notice.js?v=aea4bad6", "./js/search.js": "./js/search.js?v=1c9096f0", "./js/sound.js": "./js/sound.js?v=8f6d4c9c", "./js/ui.js": "./js/ui.js?v=6bb0b26f", "./js/util.js": "./js/util.js?v=897e59b5", "./scene.js": "./scene.js?v=713350ad", "./search-data.js": "./search-data.js?v=34efb359", "three": "./vendor/three.module.min.js", "three/addons/": "./vendor/addons/"}}</script>
+  <link rel="stylesheet" href="styles.css?v=c2e59f33">
+  <script type="importmap">{"imports": {"./js/busy.js": "./js/busy.js?v=195409ce", "./js/cart.js": "./js/cart.js?v=9b39fe5a", "./js/clock.js": "./js/clock.js?v=1052b6a5", "./js/dates.js": "./js/dates.js?v=8d4ea101", "./js/forms.js": "./js/forms.js?v=57641486", "./js/formtools.js": "./js/formtools.js?v=781e0556", "./js/growth.js": "./js/growth.js?v=d0933e84", "./js/hero.js": "./js/hero.js?v=53749c4a", "./js/motion.js": "./js/motion.js?v=60d20297", "./js/notice.js": "./js/notice.js?v=aea4bad6", "./js/parallax.js": "./js/parallax.js?v=ad12d1d8", "./js/qr.js": "./js/qr.js?v=66604d0d", "./js/reminder.js": "./js/reminder.js?v=491d3727", "./js/search.js": "./js/search.js?v=1c9096f0", "./js/sound.js": "./js/sound.js?v=8f6d4c9c", "./js/ui.js": "./js/ui.js?v=6bb0b26f", "./js/util.js": "./js/util.js?v=7d255d77", "./js/waitlist.js": "./js/waitlist.js?v=647acdc5", "./scene.js": "./scene.js?v=713350ad", "./search-data.js": "./search-data.js?v=88e6c64c", "three": "./vendor/three.module.min.js", "three/addons/": "./vendor/addons/"}}</script>
   <style>:root{--black:#0D0907;--wine:#E0782B;--wine-deep:#F29049;--wine-night:#1C1511;--gold-light:#E0782B;--gold-text:#E0782B;--cream:#120D0A;--tint:#17110D;--ink:#F3E9DA}</style>
   
   <noscript><style>
@@ -142,11 +142,12 @@
     </div>
   </div>
 
-  <!-- Order / cart drawer (demo) -->
+  
+  <!-- Click and collect: order / cart drawer (demo). Hidden completely when orderingEnabled is false in site.config.json. -->
   <div class="scrim" id="scrim" hidden></div>
   <aside class="cart" id="cart" role="dialog" aria-modal="true" aria-labelledby="cart-title" hidden>
     <div class="cart-head">
-      <h2 id="cart-title">Your order</h2>
+      <h2 id="cart-title">Your pick-up order</h2>
       <button class="icon-btn" type="button" id="cart-close" aria-label="Close your order">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg>
       </button>
@@ -157,28 +158,45 @@
     </div>
     <form class="cart-foot" id="cart-form" novalidate hidden>
       <div class="cart-total"><span>Total</span><strong id="cart-total">$0.00</strong></div>
+      <div class="field-row">
+        <div class="field">
+          <label for="cart-day">Pick-up day</label>
+          <select id="cart-day" name="day"></select>
+        </div>
+        <div class="field">
+          <label for="cart-when">Pick-up time</label>
+          <select id="cart-when" name="when" aria-describedby="h-cart-when"></select>
+        </div>
+      </div>
+      <p class="hint" id="h-cart-when" aria-live="polite"></p>
       <div class="field">
         <label for="cart-name">Name for the order</label>
         <input id="cart-name" name="name" type="text" autocomplete="name" aria-describedby="e-cart-name">
         <p class="error" id="e-cart-name" aria-live="polite"></p>
       </div>
       <div class="field">
-        <label for="cart-when">Pick-up time</label>
-        <select id="cart-when" name="when"></select>
+        <label for="cart-phone">Mobile or phone number</label>
+        <input id="cart-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="0412 345 678" aria-describedby="e-cart-phone">
+        <p class="error" id="e-cart-phone" aria-live="polite"></p>
       </div>
-      <p class="demo-note" id="cart-demo-note"><strong>Demo checkout.</strong> No payment is taken and no order is sent. Your order is only saved in this browser.</p>
-      <button class="btn btn-primary btn-block" type="submit">Place order (demo)</button>
+      <p class="demo-note" id="cart-demo-note"><strong>Pay in store.</strong> No payment is taken here; online payment is connected later. <strong>Demo:</strong> orders are not sent anywhere. Your order is only saved in this browser tab.</p>
+      <button class="btn btn-primary btn-block" type="submit">Place pickup order</button>
       <button class="cart-clear" type="button" id="cart-clear">Clear order</button>
-      <!-- DEMO ONLY: send the order to your ordering system or payment provider here (see main.js / cart.js). -->
+      <!-- DEMO ONLY: send the order to your ordering system here (see js/cart.js, the submit handler). Payment is in store. -->
     </form>
     <div class="cart-done" id="cart-done" role="status" tabindex="-1" hidden>
       <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M7.500 12.500l3 3 6-7"/></svg>
       <h3>Thanks, <span id="done-name">friend</span>!</h3>
+      <p class="order-no">Order number <strong id="done-no"></strong></p>
       <p id="done-detail"></p>
-      <p class="note">Demo only: no order was sent and nothing was charged. A copy is saved in this browser only.</p>
+      <p id="done-reminder" class="reminder-set" hidden></p>
+      <p id="done-preview" class="reminder-preview" hidden></p>
+      <p class="pay-note"><strong>Pay in store</strong> when you collect.</p>
+      <p class="note">Demo only: this order number is made up, no order was sent and nothing was charged. A copy is saved in this browser only.</p>
       <button class="btn btn-secondary" type="button" id="done-close">Close</button>
     </div>
   </aside>
+  
 
   <main id="main">
 
@@ -240,6 +258,7 @@
           <p>7 days, from 7am (Sundays 8am)<br>Closing 4pm Mon &ndash; Wed, 10pm Thu &ndash; Sat, 4pm Sun</p>
         </div>
       </div>
+      <div class="footer-social"><p class="footer-rating"><a class="g-rating" href="https://www.google.com/maps/search/?api=1&amp;query=Federation%20Square%2C%20Melbourne%20VIC" target="_blank" rel="noopener" ><svg class="g-stars" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 19" width="95" height="18" aria-hidden="true" focusable="false"><defs><clipPath id="gs2"><rect width="98.0" height="19"/></clipPath></defs><g fill="rgba(243,233,218,.28)"><path transform="translate(0 0)" d="M10 1.5l2.6 5.5 6 .8-4.4 4.1 1.1 5.9L10 15l-5.3 2.8 1.1-5.9L1.4 7.8l6-.8z"/><path transform="translate(20 0)" d="M10 1.5l2.6 5.5 6 .8-4.4 4.1 1.1 5.9L10 15l-5.3 2.8 1.1-5.9L1.4 7.8l6-.8z"/><path transform="translate(40 0)" d="M10 1.5l2.6 5.5 6 .8-4.4 4.1 1.1 5.9L10 15l-5.3 2.8 1.1-5.9L1.4 7.8l6-.8z"/><path transform="translate(60 0)" d="M10 1.5l2.6 5.5 6 .8-4.4 4.1 1.1 5.9L10 15l-5.3 2.8 1.1-5.9L1.4 7.8l6-.8z"/><path transform="translate(80 0)" d="M10 1.5l2.6 5.5 6 .8-4.4 4.1 1.1 5.9L10 15l-5.3 2.8 1.1-5.9L1.4 7.8l6-.8z"/></g><g fill="#F5B301" clip-path="url(#gs2)"><path transform="translate(0 0)" d="M10 1.5l2.6 5.5 6 .8-4.4 4.1 1.1 5.9L10 15l-5.3 2.8 1.1-5.9L1.4 7.8l6-.8z"/><path transform="translate(20 0)" d="M10 1.5l2.6 5.5 6 .8-4.4 4.1 1.1 5.9L10 15l-5.3 2.8 1.1-5.9L1.4 7.8l6-.8z"/><path transform="translate(40 0)" d="M10 1.5l2.6 5.5 6 .8-4.4 4.1 1.1 5.9L10 15l-5.3 2.8 1.1-5.9L1.4 7.8l6-.8z"/><path transform="translate(60 0)" d="M10 1.5l2.6 5.5 6 .8-4.4 4.1 1.1 5.9L10 15l-5.3 2.8 1.1-5.9L1.4 7.8l6-.8z"/><path transform="translate(80 0)" d="M10 1.5l2.6 5.5 6 .8-4.4 4.1 1.1 5.9L10 15l-5.3 2.8 1.1-5.9L1.4 7.8l6-.8z"/></g></svg><span class="g-rating-text">Rated 4.9 on Google · 120 reviews</span><span class="g-rating-demo">Demo number</span><span class="sr-only"> (opens Google Maps in a new tab)</span></a></p><a class="btn btn-secondary btn-sm" href="https://g.page/r/DEMO-ember-oak/review" target="_blank" rel="noopener">Leave us a Google review<span class="sr-only"> (opens in a new tab)</span></a><ul class="soc-list" aria-label="Find us online" role="list"><li><a class="soc-link" href="https://www.google.com/maps/search/?api=1&amp;query=Federation%20Square%2C%20Melbourne%20VIC" target="_blank" rel="noopener" aria-label="Find us on Google Maps (opens in a new tab)"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21z M12 7a2.500 2.500 0 1 0 0 5 2.500 2.500 0 0 0 0-5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/></svg></a></li><li><a class="soc-link" href="https://www.instagram.com/demo_ember_and_oak/" target="_blank" rel="noopener" aria-label="Follow us on Instagram (opens in a new tab)"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 3h10a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4z M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8z M17.500 6.500h.01" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/></svg></a></li></ul></div>
       <nav class="footer-legal" aria-label="Footer: more">
         <a href="sustainability.html">Sustainability</a>
         <a href="wholesale.html">Wholesale</a>
@@ -270,7 +289,7 @@
 
   <!-- Cookie preferences -->
   <div class="cookie" id="cookie" role="region" aria-label="Cookie preferences" hidden>
-    <p><strong>Cookies.</strong> None are set unless you accept analytics. <a href="privacy.html#cookies">Details</a></p>
+    <p><strong>Cookies.</strong> <span class="ck-long">None are set unless you accept analytics.</span><span class="ck-short">None unless you accept.</span> <a href="privacy.html#cookies">Details</a></p>
     <div class="cookie-actions">
       <button class="btn btn-primary btn-sm" type="button" data-cookie="yes">Accept</button>
       <button class="btn btn-secondary btn-sm" type="button" data-cookie="no">Decline</button>
@@ -278,8 +297,8 @@
   </div>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <script type="application/json" id="site-data">{"name": "Ember & Oak", "phone": "03 5550 0123", "phoneHref": "+61355500123", "email": "hello@example.com", "timezone": "Australia/Melbourne", "locale": "en-AU", "currency": "AUD", "city": "Melbourne", "hours": [{"day": 1, "name": "Monday", "open": 420, "close": 960}, {"day": 2, "name": "Tuesday", "open": 420, "close": 960}, {"day": 3, "name": "Wednesday", "open": 420, "close": 960}, {"day": 4, "name": "Thursday", "open": 420, "close": 1320}, {"day": 5, "name": "Friday", "open": 420, "close": 1320}, {"day": 6, "name": "Saturday", "open": 420, "close": 1320}, {"day": 0, "name": "Sunday", "open": 480, "close": 960}], "holidays": {"mode": "closed", "overrides": {}}, "closures": [], "notices": [], "booking": {"daysAhead": 90, "takenPercent": 20, "leadMinutes": 0}, "forms": {"endpoint": ""}, "announceEnd": "2026-12-31", "hoursPhrase": "7 days, from 7am (Sundays 8am)"}</script>
+  <script type="application/json" id="site-data">{"name": "Ember & Oak", "phone": "03 5550 0123", "phoneHref": "+61355500123", "email": "hello@example.com", "timezone": "Australia/Melbourne", "locale": "en-AU", "currency": "AUD", "city": "Melbourne", "hours": [{"day": 1, "name": "Monday", "open": 420, "close": 960}, {"day": 2, "name": "Tuesday", "open": 420, "close": 960}, {"day": 3, "name": "Wednesday", "open": 420, "close": 960}, {"day": 4, "name": "Thursday", "open": 420, "close": 1320}, {"day": 5, "name": "Friday", "open": 420, "close": 1320}, {"day": 6, "name": "Saturday", "open": 420, "close": 1320}, {"day": 0, "name": "Sunday", "open": 480, "close": 960}], "holidays": {"mode": "closed", "overrides": {}}, "closures": [], "notices": [], "booking": {"daysAhead": 90, "takenPercent": 20, "leadMinutes": 0}, "forms": {"endpoint": ""}, "announceEnd": "2026-12-31", "googleReviewUrl": "https://g.page/r/DEMO-ember-oak/review", "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Federation%20Square%2C%20Melbourne%20VIC", "instagramUrl": "https://www.instagram.com/demo_ember_and_oak/", "facebookUrl": "", "googleRating": 4.9, "googleReviewCount": 120, "remindersEnabled": true, "reminderLeadHours": 24, "waitlistEnabled": true, "orderingEnabled": true, "busynessEnabled": true, "busyness": {"blocks": [{"label": "Morning", "from": "07:00", "to": "11:00"}, {"label": "Lunch", "from": "11:00", "to": "14:00"}, {"label": "Afternoon", "from": "14:00", "to": "17:00"}, {"label": "Evening", "from": "17:00", "to": "22:00"}], "week": {"mon": ["quiet", "medium", "quiet", "closed"], "tue": ["quiet", "medium", "quiet", "closed"], "wed": ["quiet", "medium", "medium", "closed"], "thu": ["medium", "busy", "medium", "busy"], "fri": ["medium", "busy", "medium", "busy"], "sat": ["busy", "busy", "busy", "busy"], "sun": ["busy", "busy", "medium", "medium"]}}, "hoursPhrase": "7 days, from 7am (Sundays 8am)"}</script>
   <script defer src="vendor/lenis-1.1.18.min.js?v=42bf5944"></script>
-  <script type="module" src="main.js?v=4b44f9a9"></script>
+  <script type="module" src="main.js?v=968a9c5e"></script>
 </body>
 </html>

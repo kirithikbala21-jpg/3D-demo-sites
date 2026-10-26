@@ -50,4 +50,15 @@ eq('no banner for a holiday on a day already closed (Monday)', C.upcomingChanges
 eq('banner for a weekday holiday', C.upcomingChanges({ key: '2026-04-01', mins: 600 }, { ...cfg, closures: [] }, 7).map(C.changeText), ['Closed Friday for Good Friday.', 'Closed Saturday for Easter Saturday.', 'Closed Sunday for Easter Sunday.']);
 eq('notices expire', [C.liveNotices([{ text: 'x', start: '2026-10-01', end: '2026-10-31' }], '2026-10-31').length, C.liveNotices([{ text: 'x', start: '2026-10-01', end: '2026-10-31' }], '2026-11-01').length, C.liveNotices([{ text: 'x' }], '2026-10-01').length], [1, 0, 0]);
 eq('clock format', [C.fmtClock(540), C.fmtClock(570), C.fmtClock(1140), C.fmtClock(1560), C.fmtClock(1440), C.fmtClock(720), C.fmtClock(0)], ['9am', '9:30am', '7pm', '2am', 'midnight', '12pm', '12am']);
+// click and collect pick-up times
+const pcfg = { hours: [{ day: 2, open: 420, close: 960 }, { day: 3, open: 420, close: 960 }, { day: 1, open: null, close: null }], closures: [], holidays: false };
+const pt = (key, mins) => C.pickupTimes(key, { key: '2026-10-20', mins }, pcfg);
+eq('pickup: Tue 12:03 starts 12:20 (now + 15 min, rounded up to 10)', pt('2026-10-20', 723)[0], 740);
+eq('pickup: exactly 12:05 -> 12:20, 12:00 -> 12:20 (12:15 rounds to 12:20)', [pt('2026-10-20', 725)[0], pt('2026-10-20', 720)[0]], [740, 740]);
+eq('pickup: steps are 10 minutes and the last time is 10 minutes before close (3:50pm)', [pt('2026-10-20', 0).every((v, i, a) => i === 0 || v - a[i - 1] === 10), pt('2026-10-20', 0).at(-1)], [true, 950]);
+eq('pickup: before opening starts at opening time', pt('2026-10-20', 60)[0], 420);
+eq('pickup: after the last time today there is nothing today', pt('2026-10-20', 940).length, 0);
+eq('pickup: tomorrow starts at opening time', pt('2026-10-21', 900)[0], 420);
+eq('pickup: closed Monday has no times', C.pickupTimes('2026-10-26', { key: '2026-10-25', mins: 600 }, pcfg).length, 0);
+eq('pickup days: today is dropped after the last time, Monday skipped', C.pickupDays({ key: '2026-10-20', mins: 945 }, pcfg).slice(0, 2), ['2026-10-21', '2026-10-27']);
 console.log(`${n - bad}/${n} unit checks passed`); process.exit(bad ? 1 : 0);

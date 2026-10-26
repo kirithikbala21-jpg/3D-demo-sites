@@ -37,3 +37,11 @@ export async function send(payload) {
   }
 }
 export const phoneFallback = () => `<p class="form-fail" role="alert">Sorry, that did not send. Please call us on <a href="tel:${SITE.phoneHref}">${SITE.phone}</a> and we will sort it out.</p>`;
+
+/** Australian phone number (mobile, landline, 13/1300/1800), with spaces, dashes, brackets or +61 allowed. Returns the digits, or null. */
+export function auPhone(v) {
+  let d = String(v).replace(/[\s\-().]/g, '');
+  if (/^\+61/.test(d)) d = '0' + d.slice(3); else if (/^61\d{9}$/.test(d)) d = '0' + d.slice(2);
+  if (!/^\d+$/.test(d)) return null;
+  return (/^04\d{8}$/.test(d) || /^0[2378]\d{8}$/.test(d) || /^1[38]00\d{6}$/.test(d) || /^13\d{4}$/.test(d)) ? d : null;
+}

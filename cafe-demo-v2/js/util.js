@@ -19,6 +19,15 @@ export function store(key, value) {
   return null;
 }
 
+/** sessionStorage that never throws (survives a reload of this tab, forgotten when the tab closes). */
+export function sstore(key, value) {
+  try {
+    if (value === undefined) return sessionStorage.getItem(key);
+    if (value === null) sessionStorage.removeItem(key); else sessionStorage.setItem(key, value);
+  } catch (_) { /* blocked: carry on without it */ }
+  return null;
+}
+
 import * as clock from './clock.js';
 /** Opening hours, public holidays and closures, as clock.js needs them (times in minutes since midnight). */
 export const CLOCK_CFG = { hours: site.hours || [], closures: site.closures || [], holidays: site.holidays || { mode: 'closed' } };

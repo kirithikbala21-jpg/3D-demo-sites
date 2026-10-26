@@ -10,7 +10,13 @@
             <a href="tel:{{contact.phoneHref}}">{{contact.phone}}</a><br>
             <a href="mailto:{{contact.email}}">{{contact.email}}</a>
           </address>
+          {{#if hasSocial}}<p class="visit-actions">{{{socialButtons}}}</p>{{/if}}
           {{{hoursTable}}}
+          {{#if busyOn}}<div class="busy" data-busy hidden>
+            <h3 class="busy-h">Best time to come</h3>
+            <p class="busy-line" data-busy-line></p>
+            <div class="busy-chart" data-busy-chart></div>
+          </div>{{/if}}
         </div>
         <div class="visit-side reveal">
           {{> map}}

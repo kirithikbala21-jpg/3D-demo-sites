@@ -1,0 +1,17 @@
+{{#if googleReviewUrl}}
+    <!-- LOVED YOUR VISIT? (hidden when googleReviewUrl is empty in site.config.json) -->
+    <section class="section section-tint" id="love" aria-labelledby="love-title">
+      <div class="container love-inner reveal">
+        <div>
+          <p class="eyebrow">Loved your visit?</p>
+          <h2 id="love-title" data-split>Tell us, <em>and tell Google.</em></h2>
+          <p class="lead">A short review helps other people find a good coffee. It takes about a minute.</p>
+        </div>
+        <div class="love-actions">
+          <a class="btn btn-primary" href="{{googleReviewUrl}}" target="_blank" rel="noopener">Leave us a Google review<span class="sr-only"> (opens in a new tab)</span></a>
+          <a class="link-arrow" href="reviews.html">Show the QR code <span aria-hidden="true">&rarr;</span></a>
+          <p class="note">Demo: this is a placeholder review link.</p>
+        </div>
+      </div>
+    </section>
+{{/if}}

@@ -91,6 +91,28 @@ def prepare_config():
     a = cfg.get("announcement", {})
     if a and not re.fullmatch(r"\d{4}-\d{2}-\d{2}", a.get("end", "")):
         errs.append('announcement: add an "end" date like "2026-12-31" so the top bar hides itself when it is old.')
+    for key in ("googleReviewUrl", "googleMapsUrl", "instagramUrl", "facebookUrl"):
+        v = cfg.get(key, "")
+        if v and not re.fullmatch(r"https://\S+", v):
+            errs.append(f'{key}: "{v}" must start with https:// (or be empty "" to hide it).')
+    if cfg.get("googleRating") not in (None, "", 0):
+        if not isinstance(cfg["googleRating"], (int, float)) or not 0 < cfg["googleRating"] <= 5:
+            errs.append("googleRating: must be a number between 0 and 5, for example 4.8 (use the business's REAL rating).")
+        if not isinstance(cfg.get("googleReviewCount"), int) or cfg["googleReviewCount"] < 1:
+            errs.append("googleReviewCount: must be a whole number above 0 (use the business's REAL count).")
+    if not isinstance(cfg.get("reminderLeadHours", 24), int) or cfg.get("reminderLeadHours", 24) < 1:
+        errs.append("reminderLeadHours: must be a whole number of hours, 1 or more (24 = the day before).")
+    for flag in ("remindersEnabled", "waitlistEnabled", "orderingEnabled", "busynessEnabled"):
+        if flag in cfg and not isinstance(cfg[flag], bool):
+            errs.append(f"{flag}: must be true or false (no quote marks).")
+    bz = cfg.get("busyness") or {}
+    if bz:
+        n = len(bz.get("blocks", []))
+        for d, row in (bz.get("week") or {}).items():
+            if d not in ("mon", "tue", "wed", "thu", "fri", "sat", "sun"):
+                errs.append(f'busyness > week: "{d}" is not a day. Use mon, tue, wed, thu, fri, sat, sun.')
+            elif len(row) != n or any(x not in ("quiet", "medium", "busy", "closed", None) for x in row):
+                errs.append(f'busyness > week > {d}: needs exactly {n} entries, each "quiet", "medium", "busy" or "closed".')
     if errs:
         sys.exit("PROBLEMS in site.config.json (fix these and save again):\n - " + "\n - ".join(errs))
 
@@ -227,8 +249,9 @@ def menu_html():
                 f'            <article class="menu-item{" has-img" if thumb else ""}" id="{iid}">{thumb}\n'
                 f'              <div class="menu-line"><h3>{it["name"]}</h3><span class="leader" aria-hidden="true"></span>'
                 f'<span class="price">${it["price"]:.2f}</span>'
-                f'<button type="button" class="add-btn" data-add data-id="{iid}" data-name="{html.escape(plain(it["name"]))}" '
-                f'data-price="{it["price"]}" aria-label="Add {html.escape(plain(it["name"]))} to your order"><span aria-hidden="true">+</span></button></div>\n'
+                + (f'<button type="button" class="add-btn" data-add data-id="{iid}" data-name="{html.escape(plain(it["name"]))}" '
+                   f'data-price="{it["price"]}" aria-label="Add {html.escape(plain(it["name"]))} to your order"><span aria-hidden="true">+</span></button>' if cfg.get("orderingEnabled", True) else "")
+                + f'</div>\n'
                 f'              <p>{it["desc"]}</p>{tags}\n            </article>\n'
             )
         hid = "" if i == 0 else " hidden"
@@ -327,7 +350,7 @@ def jsonld(page):
 
 def search_data():
     pages = {p["file"]: p for p in cfg["pages"]}
-    entries = [{"title": p["title"], "text": p["description"], "url": p["file"], "type": "Page"} for p in cfg["pages"]]  # plain text (no entities)
+    entries = [{"title": p["title"], "text": p["description"], "url": p["file"], "type": "Page"} for p in cfg["pages"] if not (p.get("requires") and not cfg.get(p["requires"]))]  # plain text (no entities)
     for cat in DATA["menu"]:
         for it in cat["items"]:
             tag_words = ", ".join(TAGS[x] for x in it["tags"]) + (", signature, house favourite" if it["sig"] else "")
@@ -433,6 +456,68 @@ def write_manifest():
     print("wrote site.webmanifest")
 
 
+def hero_prices():
+    """Real prices straight from data/menu.json for the hero: 'Coffee from $5.00 · Food from $8.00'."""
+    out = []
+    for cid, label in (("coffee", "Coffee"), ("food", "Food")):
+        cat = next((c for c in DATA["menu"] if c["id"] == cid), None)
+        if cat and cat["items"]:
+            out.append(f'{label} from ${min(i["price"] for i in cat["items"]):.2f}')
+    return " \u00b7 ".join(out)
+
+
+_star_n = [0]
+
+
+def stars_svg(rating, size=18):
+    """Five SVG stars, filled to match the rating (a partly filled last star is clipped)."""
+    _star_n[0] += 1
+    cid = f"gs{_star_n[0]}"
+    star = lambda i: f'<path transform="translate({i * 20} 0)" d="M10 1.5l2.6 5.5 6 .8-4.4 4.1 1.1 5.9L10 15l-5.3 2.8 1.1-5.9L1.4 7.8l6-.8z"/>'
+    allp = "".join(star(i) for i in range(5))
+    pct = max(0.0, min(5.0, float(rating))) / 5 * 100
+    return (f'<svg class="g-stars" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 19" width="{round(size * 100 / 19)}" height="{size}" aria-hidden="true" focusable="false">'
+            f'<defs><clipPath id="{cid}"><rect width="{pct:.1f}" height="19"/></clipPath></defs><g fill="rgba(243,233,218,.28)">{allp}</g><g fill="#F5B301" clip-path="url(#{cid})">{allp}</g></svg>')
+
+
+def rating_html():
+    """The Google rating badge, or '' unless a rating, a review count and a Maps link are all set in site.config.json."""
+    r, n, url = cfg.get("googleRating"), cfg.get("googleReviewCount"), cfg.get("googleMapsUrl")
+    if not (r and n and url):
+        return ""
+    return (f'<a class="g-rating" href="{esc(url)}" target="_blank" rel="noopener" >'
+            f'{stars_svg(r)}<span class="g-rating-text">Rated {r} on Google \u00b7 {n} reviews</span><span class="g-rating-demo">Demo number</span><span class="sr-only"> (opens Google Maps in a new tab)</span></a>')
+
+
+ICON_PATHS = {
+    "google": "M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21z M12 7a2.500 2.500 0 1 0 0 5 2.500 2.500 0 0 0 0-5z",
+    "instagram": "M7 3h10a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4z M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8z M17.500 6.500h.01",
+    "facebook": "M14 8h3V4h-3a4 4 0 0 0-4 4v3H7v4h3v6h4v-6h3l1-4h-4V8.500a.5.5 0 0 1 .5-.5z",
+}
+
+
+def _icon(k):
+    return f'<svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="{ICON_PATHS[k]}" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/></svg>'
+
+
+def _social():
+    return [(k, label, cfg.get(key)) for k, label, key in (("google", "Find us on Google Maps", "googleMapsUrl"), ("instagram", "Follow us on Instagram", "instagramUrl"), ("facebook", "Find us on Facebook", "facebookUrl")) if cfg.get(key)]
+
+
+def social_items_html():
+    """Icon links (only those with a URL in the config). Opens in a new tab, with an accessible label."""
+    return "".join(f'<li><a class="soc-link" href="{esc(u)}" target="_blank" rel="noopener" aria-label="{l} (opens in a new tab)">{_icon(k)}</a></li>' for k, l, u in _social())
+
+
+def social_buttons_html():
+    """Text buttons for the contact page: Google Maps and Instagram (and Facebook when set)."""
+    return "".join(f'<a class="btn btn-secondary" href="{esc(u)}" target="_blank" rel="noopener">{_icon(k)} {l}<span class="sr-only"> (opens in a new tab)</span></a>' for k, l, u in _social())
+
+
+def esc(s):
+    return html.escape(str(s), quote=True)
+
+
 def build():
     for p in DATA["products"]:
         p["isBag"] = p["art"] == "bag"
@@ -450,6 +535,12 @@ def build():
         "closures": [{"date": k["date"], "name": k.get("name", ""), "status": k["status"], "open": k.get("openMin"), "close": k.get("closeMin")} for k in cfg.get("closures", [])],
         "notices": cfg.get("notices", []), "booking": cfg["booking"], "forms": {"endpoint": cfg["forms"].get("endpoint", "")},
         "announceEnd": cfg["announcement"].get("end", ""),
+        "googleReviewUrl": cfg.get("googleReviewUrl", ""), "googleMapsUrl": cfg.get("googleMapsUrl", ""),
+        "instagramUrl": cfg.get("instagramUrl", ""), "facebookUrl": cfg.get("facebookUrl", ""),
+        "googleRating": cfg.get("googleRating") or 0, "googleReviewCount": cfg.get("googleReviewCount") or 0,
+        "remindersEnabled": bool(cfg.get("remindersEnabled", False)), "reminderLeadHours": cfg.get("reminderLeadHours", 24),
+        "waitlistEnabled": bool(cfg.get("waitlistEnabled", False)), "orderingEnabled": bool(cfg.get("orderingEnabled", True)),
+        "busynessEnabled": bool(cfg.get("busynessEnabled", False)), "busyness": cfg.get("busyness") or {},
     }
     photo_map, photo_credits = photos_ctx()
     site_data["hoursPhrase"] = hours_phrase()
@@ -460,6 +551,14 @@ def build():
         "announce": cfg["announcement"],
         "year": datetime.date.today().year, "formsLive": bool(cfg["forms"].get("endpoint")), "assets": asset_versions(), "importMap": import_map(),
         "timeOptions": time_options(),
+        "heroPrices": hero_prices(),
+        "ratingOn": bool(cfg.get("googleRating") and cfg.get("googleReviewCount") and cfg.get("googleMapsUrl")),
+        "ratingText": f'Rated {cfg.get("googleRating")} on Google \u00b7 {cfg.get("googleReviewCount")} reviews',
+        "hasSocial": bool(cfg.get("googleMapsUrl") or cfg.get("instagramUrl") or cfg.get("facebookUrl")),
+        "busyOn": bool(cfg.get("busynessEnabled") and (cfg.get("busyness") or {}).get("blocks")),
+        "orderingEnabled": bool(cfg.get("orderingEnabled", True)),
+        "remindersEnabled": bool(cfg.get("remindersEnabled", False)),
+        "ratingHero": rating_html(), "ratingFooter": rating_html(), "socialItems": social_items_html(), "socialButtons": social_buttons_html(),
         "mapsUrl": "https://www.google.com/maps/search/?api=1&query=" + urllib.parse.quote(cfg["contact"]["mapsQuery"]),
         "googleEmbed": "https://maps.google.com/maps?q=" + urllib.parse.quote(cfg["contact"]["mapsQuery"], safe="") + "&output=embed",
         "osmEmbed": "https://www.openstreetmap.org/export/embed.html?bbox=%s%%2C%s%%2C%s%%2C%s&layer=mapnik&marker=%s%%2C%s" % (
@@ -467,6 +566,9 @@ def build():
     }
     layout = parse((TPL / "layout.html").read_text())
     for page in cfg["pages"] + [cfg["errorPage"]]:
+        if page.get("requires") and not cfg.get(page["requires"]):  # a feature switched off in config: no page at all
+            (ROOT / page["file"]).unlink(missing_ok=True)
+            continue
         is404 = page is cfg["errorPage"]
         ctx = {**base, "page": {**page, "isHome": page["file"] == "index.html", "is404": is404,
                                 "canonical": cfg["site"]["baseUrl"] + ("" if page["file"] == "index.html" else page["file"]),
@@ -480,7 +582,7 @@ def build():
         print("wrote", page["file"], len(out))
     write_manifest()
     (ROOT / "robots.txt").write_text("User-agent: *\nDisallow:\n\nSitemap: " + cfg["site"]["baseUrl"] + "sitemap.xml\n")
-    urls = "".join(f'  <url><loc>{cfg["site"]["baseUrl"]}{"" if p["file"] == "index.html" else p["file"]}</loc></url>\n' for p in cfg["pages"])
+    urls = "".join(f'  <url><loc>{cfg["site"]["baseUrl"]}{"" if p["file"] == "index.html" else p["file"]}</loc></url>\n' for p in cfg["pages"] if not (p.get("requires") and not cfg.get(p["requires"])))
     (ROOT / "sitemap.xml").write_text(f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{urls}</urlset>\n')
     print("wrote search-data.js, sitemap.xml, robots.txt")
 

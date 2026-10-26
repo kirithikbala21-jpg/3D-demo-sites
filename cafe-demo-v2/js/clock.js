@@ -151,3 +151,25 @@ export function changeText(c) {
 export function liveNotices(list, todayKey) {
   return (list || []).filter((n) => n && n.text && n.end && (!n.start || n.start <= todayKey) && n.end >= todayKey);
 }
+
+/* ------------------------------------------------------------------ click and collect pick-up times */
+export const PICKUP_STEP = 10;           // pick-up times every 10 minutes
+export const PICKUP_NOTICE = 15;         // at least 15 minutes' notice
+export const PICKUP_LAST_BEFORE_CLOSE = 10; // the last pick-up is 10 minutes before closing
+/** Pick-up times (minutes since midnight) on one day, inside that day's opening hours, holidays and closures included.
+ *  `now` is the café's { key, mins }. Today starts at now + 15 minutes rounded up to the next 10; other days start at opening time. */
+export function pickupTimes(dayKey, now, cfg) {
+  const day = resolveDay(dayKey, cfg);
+  if (day.closed) return [];
+  let start = day.open;
+  if (dayKey === now.key) start = Math.max(start, Math.ceil((now.mins + PICKUP_NOTICE) / PICKUP_STEP) * PICKUP_STEP);
+  const out = [];
+  for (let t = start; t <= day.close - PICKUP_LAST_BEFORE_CLOSE; t += PICKUP_STEP) out.push(t);
+  return out;
+}
+/** The days offered: today (while any time is left) and the next open days, up to 7. */
+export function pickupDays(now, cfg) {
+  const out = [];
+  for (let i = 0; i < 21 && out.length < 7; i++) { const k = addDays(now.key, i); if (pickupTimes(k, now, cfg).length) out.push(k); }
+  return out;
+}

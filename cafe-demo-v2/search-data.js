@@ -85,6 +85,12 @@ export default [
 "type": "Page"
 },
 {
+"title": "Leave a review",
+"text": "Loved your visit? Scan the code or tap the button to leave us a Google review. Concept demo with a placeholder link.",
+"url": "reviews.html",
+"type": "Page"
+},
+{
 "title": "Ember Flat White",
 "text": "Double ristretto, silky milk and a pinch of toasted cacao. Vegetarian, signature, house favourite. Coffee. $5.50",
 "url": "menu.html#m-ember-flat-white",

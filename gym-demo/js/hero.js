@@ -59,3 +59,21 @@ export function initHero() {
     })
     .catch((err) => { clearTimeout(timer); console.info('3D unavailable, showing illustration.', err && err.message); settled = false; useFallback(); });
 }
+
+/** Subtle parallax: three layers (photo, barbell stage, text) drift a few pixels as the page scrolls. Skipped entirely with reduced motion:
+ *  the hero then stays perfectly still (no class is added, so no transform is ever applied). */
+export function initParallax() {
+  const hero = $('.hero');
+  if (!hero || reduceMotion) return;
+  hero.classList.add('hero-px');
+  let ticking = false;
+  const update = () => {
+    ticking = false;
+    const y = Math.max(0, Math.min(window.scrollY, hero.offsetHeight));
+    hero.style.setProperty('--hp1', (y * 0.14).toFixed(1) + 'px');
+    hero.style.setProperty('--hp2', (y * 0.07).toFixed(1) + 'px');
+    hero.style.setProperty('--hp3', (y * -0.03).toFixed(1) + 'px');
+  };
+  window.addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
+  update();
+}

@@ -753,3 +753,99 @@ a, button, input, select, textarea, label, summary, [role="tab"] { touch-action:
 .form-fail { margin: 16px 0 0; padding: 12px 14px; border-radius: 12px; background: #2a1210; color: #ffd2c8; border: 1.5px solid #ff8a73; font-weight: 600; max-width: none; }
 .form-fail a { color: #fff; font-weight: 800; }
 .footer-copy { margin-top: 8px; }
+
+/* ---------- Growth upgrades: open-hours strip, Google rating, review button and QR, social links, reminders, waitlist, busy times ---------- */
+.open-bar { display: flex; justify-content: center; padding: 2px 20px; background: var(--tint); border-bottom: 1px solid var(--line); }
+.open-bar .open-banner { margin: 0; padding: 6px 0; border: 0; background: transparent; font-size: .9375rem; text-align: center; }
+.hero-rating, .footer-rating { margin: 16px 0 0; }
+.g-rating { display: inline-flex; align-items: center; flex-wrap: wrap; gap: 4px 10px; min-height: 44px; color: var(--ink); font-size: .9375rem; font-weight: 600; text-decoration: none; }
+.g-rating:hover .g-rating-text { text-decoration: underline; text-underline-offset: 4px; }
+.g-rating .stars { flex: none; }
+.g-rating-demo { padding: 2px 8px; border: 1px solid var(--line-strong); font-size: .75rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--body); }
+.footer-review { margin: 12px 0 0; }
+.soc { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 0; padding: 0; list-style: none; }
+.soc-link { display: inline-grid; place-items: center; width: 44px; height: 44px; border: 1px solid var(--line-strong); border-radius: 50%; color: var(--ink); }
+.soc-link:hover { color: var(--accent); border-color: var(--accent); }
+.social-btns { display: flex; flex-wrap: wrap; gap: 12px; margin: 16px 0 0; }
+.social-btns .btn { gap: 10px; }
+.review-cta { text-align: center; }
+.narrow-center { max-width: 720px; margin-inline: auto; text-align: center; }
+.narrow-center .lead { margin-inline: auto; }
+.review-actions, .qr-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin: 24px 0 16px; }
+.review-card { max-width: 420px; margin: 0 auto; padding: 32px 24px; background: #fff; color: #111; text-align: center; border-radius: 4px; }
+.review-card .print-title { color: #111; margin-bottom: 16px; }
+.qr-box svg { display: block; width: 100%; max-width: 320px; height: auto; margin: 0 auto; }
+.qr-cap { margin: 16px 0 0; color: #222; max-width: none; }
+/* Remind me */
+.rm-field { border: 0; margin: 24px 0 0; padding: 0; min-width: 0; }
+.rm-field legend { padding: 0; margin-bottom: 10px; font-weight: 600; font-size: .9375rem; color: var(--ink); }
+.rm-opt { font-weight: 400; color: var(--muted); }
+.rm-choices { display: flex; flex-wrap: wrap; gap: 8px; }
+.rm-choice { position: relative; margin: 0; }
+.rm-choice input { position: absolute; inset: 0; width: 100%; height: 100%; min-height: 0; margin: 0; padding: 0; border: 0; opacity: 0; cursor: pointer; }
+.rm-choice span { display: inline-flex; align-items: center; justify-content: center; min-width: 88px; min-height: 46px; padding: 0 18px; border: 1.5px solid var(--line-strong); font-weight: 600; color: var(--ink); background: var(--bg); }
+.rm-choice input:checked + span { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.rm-choice input:focus-visible + span { outline: 3px solid var(--accent); outline-offset: 3px; }
+.rm-label { margin-top: 14px; }
+.rm-err { margin: 8px 0 0; color: var(--error); font-size: .9375rem; font-weight: 500; }
+.rm-err[hidden] { display: none; }
+.rm-consent { margin: 8px 0 0; font-size: .9375rem; color: var(--muted); }
+/* Waitlist */
+.wl { margin: 18px 0 0; padding: 20px; background: var(--card-2); border: 1px solid var(--line-strong); text-align: left; }
+.class-row .wl { grid-column: 1 / -1; }
+.wl-title { margin: 0 0 8px; font-size: 1.375rem; }
+.wl-when { margin: 0 0 8px; color: var(--body); }
+.wl-label { margin-top: 14px; }
+.wl-err { margin: 8px 0 0; color: var(--error); font-size: .9375rem; font-weight: 500; }
+.wl-err[hidden], .wl-done[hidden] { display: none; }
+.wl-consent, .wl-demo { margin: 10px 0 0; font-size: .9375rem; color: var(--muted); max-width: none; }
+.wl-btn { margin-top: 16px; }
+.wl-done { outline: none; }
+.slot.is-full { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; min-height: 58px; padding: 6px; line-height: 1.15; color: #a8a298; text-decoration: line-through; background: transparent; }
+.slot.is-full .slot-wl { display: inline-block; font-size: .75rem; font-weight: 700; color: var(--accent); text-decoration: none; letter-spacing: .02em; }
+.slot.is-full:hover { border-color: var(--accent); }
+#wl-host:empty { display: none; }
+/* Best time to come */
+.busy { margin: 28px 0; color: var(--ink); }
+.busy[hidden] { display: none; }
+.busy-title { margin: 0 0 8px; font-size: 1.375rem; }
+.busy-line { margin: 0 0 12px; color: var(--body); max-width: none; }
+.busy-svg { display: block; width: 100%; max-width: 440px; min-width: 330px; height: auto; }
+.busy-legend { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; margin: 10px 0 0; font-size: .875rem; color: var(--muted); max-width: none; }
+.busy-key { display: inline-block; width: 14px; height: 14px; border-radius: 3px; background: currentColor; }
+.busy-key.k1 { opacity: .22; } .busy-key.k2 { opacity: .55; } .busy-key.k3 { opacity: .95; }
+.busy-legend .busy-key { color: var(--ink); }
+/* Print: the review page prints only its heading and the QR code */
+@media print {
+  body.page-reviews { background: #fff !important; color: #000 !important; }
+  body.page-reviews .announce, body.page-reviews .notice-bar, body.page-reviews .open-bar, body.page-reviews .site-header, body.page-reviews .mobile-nav, body.page-reviews .search,
+  body.page-reviews .site-footer, body.page-reviews .mobile-cta, body.page-reviews .cookie, body.page-reviews .toast, body.page-reviews .progress, body.page-reviews .skip-link,
+  body.page-reviews .nojs-banner, body.page-reviews .crumbs, body.page-reviews .page-hero .eyebrow, body.page-reviews .page-hero .lead, body.page-reviews .qr-actions, body.page-reviews .qr-demo-note { display: none !important; }
+  body.page-reviews .page-hero { padding: 24pt 0 0 !important; background: none !important; min-height: 0 !important; text-align: center; }
+  body.page-reviews .page-hero h1 { color: #000 !important; font-size: 34pt; text-align: center; margin: 0 0 12pt; }
+  body.page-reviews .review-card { box-shadow: none; border: 0; max-width: none; padding: 0; }
+  body.page-reviews .review-card .print-title { font-size: 24pt; color: #000 !important; }
+  body.page-reviews .qr-box svg { max-width: 420pt; }
+  body.page-reviews .qr-cap { color: #000 !important; font-size: 16pt; }
+}
+
+/* ---------- Hero / trust: factual H1 with the suburb, one big button, tap-to-call and directions, hours + prices, subtle parallax ---------- */
+.hero-h1 { max-width: 18ch; font-size: clamp(2.4rem, 1rem + 4.4vw, 5rem); }
+.btn-lg { min-height: 64px; padding: 0 48px; font-size: 1.0625rem; }
+.hero-cta { margin-top: 28px; }
+.hero-contact { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 28px; margin: 20px 0 0; }
+.hero-call, .hero-dir { display: inline-flex; align-items: center; gap: 10px; min-height: 48px; color: var(--ink); font-weight: 700; font-size: 1.0625rem; text-decoration: none; }
+.hero-call:hover span, .hero-dir:hover { text-decoration: underline; text-underline-offset: 4px; }
+.hero-dir { font-weight: 600; text-decoration: underline; text-underline-offset: 4px; }
+.hero-facts { margin: 8px 0 0; max-width: 52ch; color: var(--ink); font-size: .9375rem; line-height: 1.5; }
+.hero-px .hero-photo { top: -8%; bottom: -8%; transform: translate3d(0, var(--hp1, 0px), 0); will-change: transform; }
+.hero-px .hero-stage { transform: translate3d(0, var(--hp2, 0px), 0); }
+.hero-px .hero-main { transform: translate3d(0, var(--hp3, 0px), 0); }
+/* Reminder / waitlist previews */
+.ok-preview { margin: 12px 0 0; padding: 12px 16px; border-left: 3px solid var(--accent); background: var(--card-2); color: var(--ink); font-size: .9375rem; text-align: left; }
+.busy-legend { gap: 6px 18px; }
+.busy-k { display: inline-flex; align-items: center; gap: 6px; }
+.busy-note { margin: 4px 0 0; font-size: .875rem; color: var(--muted); max-width: none; }
+/* hero text sits on a darker wash so every line stays at 4.5:1 or better on the bright gym photo (measured on real pixels at 390 and 1440px) */
+.hero-bg::after { background: linear-gradient(180deg, rgba(11, 11, 12, .62), rgba(11, 11, 12, .45) 38%, rgba(11, 11, 12, .92)), linear-gradient(90deg, rgba(11, 11, 12, .82), rgba(11, 11, 12, .45) 55%, rgba(11, 11, 12, 0) 100%); }
+@media (max-width: 899px) { .hero-bg::after { background: linear-gradient(180deg, rgba(11, 11, 12, .72), rgba(11, 11, 12, .72) 35%, rgba(11, 11, 12, .94)); } }

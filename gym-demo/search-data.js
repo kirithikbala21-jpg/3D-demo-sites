@@ -49,6 +49,12 @@ export default [
 "type": "Page"
 },
 {
+"title": "Leave a review",
+"text": "Loved your visit? Scan the code or tap the button to leave us a Google review.",
+"url": "reviews.html",
+"type": "Page"
+},
+{
 "title": "Privacy, terms & cookies",
 "text": "Privacy policy, terms of use and cookie information for this demo site.",
 "url": "legal.html",

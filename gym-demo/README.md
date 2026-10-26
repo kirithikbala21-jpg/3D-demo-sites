@@ -20,6 +20,7 @@ Everything marked `site.config.json` is in the **one file** described in section
 - [ ] **FAQ, plan FAQ, journal, careers**: `data/faq.json`, `data/planfaq.json`, `data/journal.json`, `data/careers.json`.
 - [ ] **Photos**: replace the stock photos with your own (section 9) and update the credit line.
 - [ ] **Booking and enquiry forms**: paste a form address into `forms` > `endpoint` (section 8) so trial bookings, visit requests, gift vouchers, newsletter sign-ups and job applications reach you. Until then every form is a demo and says so.
+- [ ] **Google links, rating and QR**: set `googleReviewUrl`, `googleMapsUrl`, `instagramUrl` (and `facebookUrl` if you have one) to your real addresses, and `googleRating` / `googleReviewCount` to the REAL numbers from Google (then `googleRatingIsDemo` to `false`). Print the QR from `reviews.html`. Fill the `busyness` table with your real typical pattern (section 12).
 - [ ] **Remove the "concept demo" wording**: `brand` > `demoFooter`, the "Sample ..." notes in the templates, and "Demo website by KB Ventures" in `tools/templates/layout.html`.
 - [ ] **Let Google find the site**: `site` > `noindex` from `true` to `false` and `site` > `baseUrl` to your real address (ending in `/`).
 - [ ] **Privacy, terms and cookies**: `legal.html` (template in `tools/templates/pages/legal.html`) is a plain template. Have it checked for your business, add your ABN, health and injury waiver wording.
@@ -188,6 +189,28 @@ Only use photos you took or are licensed to use. Every photo needs `alt` text: o
 - The footer credits the photographer line from `data/photos.json`. `CREDITS-TODO.md` lists the photographer names still to record.
 - All demo wording ("Concept demo", "Sample ...") is deliberate until the real owner's details are filled in (checklist in section 0).
 
+## 12. Reviews, links, reminders, waitlist, busy times (feature list and how to fill site.config.json)
+
+All of these are switched on or off, and filled in, in `site.config.json`. **An empty value or a switched-off feature hides that feature completely** (no empty box, no broken link). Everything is a front-end demo: nothing is sent anywhere, and no live data is ever shown.
+
+| Feature | Where it shows | Config keys (top level of `site.config.json`) |
+| --- | --- | --- |
+| **Google review button + QR** | Footer button, a "Loved your visit? Tell us" section on the home page, and `reviews.html` with a large QR ("Scan to leave a review") and a **Print this** button (printing shows only the heading and the QR) | `googleReviewUrl` (your real Google review link; empty hides the page, the section and the button) |
+| **Google Maps / Instagram / Facebook links** | Icon links in the footer, "Get directions" in the hero, "Find us on Google Maps" and "Follow us on Instagram" buttons on the Visit page and the home Visit section | `googleMapsUrl`, `instagramUrl`, `facebookUrl` (empty hides each one) |
+| **Google rating badge** | "Rated 4.8 on Google · 120 reviews" with SVG stars, in the hero and the footer | `googleRating` (0 to 5), `googleReviewCount`, `googleMapsUrl`. **Use the business's REAL rating and review count. Never invent one.** The badge shows a "Demo number" note while `googleRatingIsDemo` is `true`; set it to `false` once the numbers are real. Missing rating, count or Maps link hides the badge. |
+| **Remind me** | Optional None / Email / Text choice on the free trial / class booking form and on "Schedule a visit". The confirmation says "Reminder set for the day before, 9am" and shows a **preview** of the message. | `remindersEnabled`, `reminderLeadHours` (24 = the day before at 9am) |
+| **Waitlist** | "Join waitlist" on full times in the trial/class booking calendar, and "Join the waitlist" on full classes in the timetable | `waitlistEnabled` |
+| **Best time to come** | A line such as "Usually quieter on Thursday at midday." and a 7-day chart (today outlined) on the Visit page, the home Visit section and the booking page | `busynessEnabled`, `busyness` (see below). Always worded "usually" / "typically": never live. |
+| **Open-hours strip** | "Open now, closes at 10pm" / "Closed now. Opens tomorrow at 5am" at the top of every page, in Brisbane time | `openBannerEnabled` (hours come from `hours`, `holidays`, `closures`) |
+
+**Busy times table.** `busyness.blocks` lists the time blocks (`label`, `from`, `to`); `busyness.week` has one line per day (`mon` ... `sun`) with one level per block: `"quiet"`, `"medium"`, `"busy"` or `"closed"`. Fill it from what you actually see on the floor. Empty table = the whole feature is hidden.
+
+**Sending is not connected.** The reminder choice, the waitlist and the call-back entries are only kept in this browser (`localStorage`: `vc-bookings`, `vc-visits`, `waitlist`). To make them real, plug an email or SMS service in where each form is handled: look for `reminder.read()` in `js/trial.js` and `js/forms.js` (send `{ mode, contact }` per customer), and `onJoin` in `js/waitlist.js` / `js/classes.js` / `js/trial.js`. Until then the confirmations say plainly that no reminder is actually sent.
+
+**QR code.** It is drawn in the browser by `js/qr.js` (no library, no network). To print for the counter: open `reviews.html`, press **Print this**.
+
+**Hero.** The headline is factual and names the suburb (`brand.city`). One big main button, a tap-to-call link and "Get directions", opening hours and the starting membership price (the cheapest plan's monthly price) are all in the hero and all come from `site.config.json`. The photo, barbell and text drift a few pixels on scroll; with "reduce motion" switched on the hero stays perfectly still.
+
 ---
 ---
 
@@ -213,7 +236,7 @@ Caching: `styles.css`, `vendor/lenis*`, `main.js` and every module under `js/` (
 cd gym-demo
 node tests/unit.mjs
 export CHROME_PATH=/path/to/chromium
-ROOT=$PWD node tests/run.mjs [--suite=overflow,axe,links,func,fallback,perf,hardening]
+ROOT=$PWD node tests/run.mjs [--suite=overflow,axe,links,func,fallback,perf,hardening,growth]
 ```
 The `hardening` suite covers visitor time zones, holidays and banners, expiring notices, config errors, the 90-day calendar, the visit form (required fields, Australian phones, on `index.html` and `visit.html`), endpoint failure and success, double submit, the honeypot, cache busting, the no-JavaScript banner and landscape phones.
 

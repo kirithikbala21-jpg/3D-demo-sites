@@ -118,7 +118,7 @@ import { $, $$, site, reduceMotion, finePointer, gymNow, clock, CLOCK_CFG, store
     let away = false;
     try { away = Intl.DateTimeFormat().resolvedOptions().timeZone !== site.timezone; } catch (_) { /* ignore */ }
     if (away) text += ` (${site.timezoneLabel} time)`;
-    ['#open-status', '#open-status-2', '#open-status-3'].forEach((sel) => {
+    ['#open-status', '#open-status-2', '#open-status-3', '#open-status-4'].forEach((sel) => {
       const el = $(sel); if (!el) return;
       el.textContent = text;
       el.closest('.chip').classList.toggle('is-closed', st.state !== 'open');

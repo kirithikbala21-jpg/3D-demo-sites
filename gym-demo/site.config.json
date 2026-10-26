@@ -73,6 +73,86 @@
   "endpoint": "",
   "note": "Paste your Formspree (or similar) address between the quote marks to make the trial, visit, gift, newsletter and careers forms send real emails. Leave empty to keep the demo behaviour."
  },
+ "googleReviewUrl": "https://g.page/r/DEMO-iron-ember/review",
+ "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Fortitude%20Valley%20QLD",
+ "instagramUrl": "https://www.instagram.com/demo_iron_ember/",
+ "facebookUrl": "",
+ "googleRating": 4.8,
+ "googleReviewCount": 120,
+ "googleRatingIsDemo": true,
+ "remindersEnabled": true,
+ "reminderLeadHours": 24,
+ "waitlistEnabled": true,
+ "busynessEnabled": true,
+ "openBannerEnabled": true,
+ "busyness": {
+  "blocks": [
+   {
+    "label": "Morning",
+    "from": "05:00",
+    "to": "11:00"
+   },
+   {
+    "label": "Midday",
+    "from": "11:00",
+    "to": "15:00"
+   },
+   {
+    "label": "Afternoon",
+    "from": "15:00",
+    "to": "17:00"
+   },
+   {
+    "label": "Evening",
+    "from": "17:00",
+    "to": "22:00"
+   }
+  ],
+  "week": {
+   "mon": [
+    "medium",
+    "quiet",
+    "quiet",
+    "busy"
+   ],
+   "tue": [
+    "medium",
+    "quiet",
+    "quiet",
+    "busy"
+   ],
+   "wed": [
+    "medium",
+    "quiet",
+    "medium",
+    "busy"
+   ],
+   "thu": [
+    "medium",
+    "quiet",
+    "quiet",
+    "busy"
+   ],
+   "fri": [
+    "medium",
+    "quiet",
+    "quiet",
+    "medium"
+   ],
+   "sat": [
+    "busy",
+    "medium",
+    "quiet",
+    "closed"
+   ],
+   "sun": [
+    "medium",
+    "quiet",
+    "quiet",
+    "closed"
+   ]
+  }
+ },
  "plans": [
   {"id": "offpeak", "name": "Off-Peak", "tag": "Quiet hours", "monthly": 89, "annual": 79, "features": ["Open gym weekdays 9am to 4pm, plus weekends", "Two classes a week", "Free 7-day trial first", "Locker and shower access"], "featured": false},
   {"id": "allaccess", "name": "All Access", "tag": "Gym plus classes", "monthly": 169, "annual": 145, "features": ["Open gym 5am to 10pm, 7 days", "Unlimited classes", "Recovery room: sauna and cold plunge", "Bring a friend once a month"], "featured": true},
@@ -139,6 +219,7 @@
   {"file": "journal.html", "template": "journal", "title": "Journal", "description": "Training, recovery and coaching notes from the floor at Iron & Ember Athletic Club.", "pageHero": true, "h1": "The journal", "kicker": "Notes from the floor", "lead": "Honest training advice from the people who coach it every day.", "crumb": "Journal"},
   {"file": "visit.html", "template": "visit", "title": "Visit & FAQ", "description": "Opening hours, address, getting here and answers to the questions we hear most.", "pageHero": true, "h1": "Find us", "kicker": "Fortitude Valley", "lead": "Hours, directions and answers to the questions we hear most.", "crumb": "Visit", "jsonld": true},
   {"file": "careers.html", "template": "careers", "title": "Careers", "description": "Join the team at Iron & Ember Athletic Club: coaches, front of house and class instructors.", "pageHero": true, "h1": "Join the team", "kicker": "Careers", "lead": "We hire for attitude and teach the rest. These roles are fictional.", "crumb": "Careers"},
+  {"file": "reviews.html", "template": "reviews", "title": "Leave a review", "description": "Loved your visit? Scan the code or tap the button to leave us a Google review.", "pageHero": true, "h1": "Loved your visit? Tell us.", "kicker": "Reviews", "lead": "A quick Google review helps other people find a gym they will love.", "crumb": "Leave a review", "requires": "googleReviewUrl"},
   {"file": "legal.html", "template": "legal", "title": "Privacy, terms & cookies", "description": "Privacy policy, terms of use and cookie information for this demo site.", "pageHero": true, "h1": "Privacy, terms & cookies", "kicker": "Legal", "lead": "A plain-language template. Replace with your own policy before going live.", "crumb": "Legal"},
   {"file": "404.html", "template": "notfound", "title": "Page not found", "description": "This page could not be found. Head back to the home page, the class timetable or the free trial page.", "pageHero": true, "h1": "Page not found", "kicker": "Error 404", "lead": "That page skipped leg day. Here are a few places to pick up the trail.", "crumb": "Page not found", "hidden": true}
  ],

@@ -1,5 +1,7 @@
 // Timetable: accessible day tabs (arrow keys, Home/End, roving tabindex, deep links) + class-type filter.
 import { $, $$, reduceMotion, gymNow } from './util.js';
+import { addDays } from './dates.js';
+import { waitlistForm } from './waitlist.js';
 
 (() => {
   const tabs = $$('[role="tab"]');
@@ -71,4 +73,22 @@ import { $, $$, reduceMotion, gymNow } from './util.js';
   }
   window.addEventListener('hashchange', goto);
   applyFilter();
+})();
+
+/* ---------- Full classes: "Join the waitlist" opens a small form under the class (demo: nothing is sent) ---------- */
+(() => {
+  const KEYS = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-waitlist-class]'); if (!btn) return;
+    const row = btn.closest('.class-row'), open = row.querySelector('.wl'), was = btn.getAttribute('aria-expanded') === 'true';
+    $$('.class-row .wl').forEach((w) => w.remove()); $$('[data-waitlist-class]').forEach((b) => b.setAttribute('aria-expanded', 'false'));
+    if (was && open) return; // second tap closes it
+    const t = gymNow(), diff = (KEYS.indexOf(btn.dataset.day) - t.day + 7) % 7;
+    const [h, m] = btn.dataset.start.split(':').map(Number), startMins = h * 60 + m;
+    const dayKey = addDays(t.key, diff === 0 && startMins <= t.mins ? 7 : diff); // the next time this class runs
+    const form = waitlistForm({ dayKey, mins: startMins, what: `${btn.dataset.name} with ${btn.dataset.coach}`, kind: 'waitlist' });
+    row.appendChild(form); btn.setAttribute('aria-expanded', 'true');
+    const f = $('#wl-name', form); if (f) f.focus({ preventScroll: true });
+    form.scrollIntoView({ block: 'center', behavior: reduceMotion ? 'auto' : 'smooth' });
+  });
 })();

@@ -1,6 +1,8 @@
 // Free trial / class booking (demo): session, coach, calendar, time grid, details, confirmation. Saved to localStorage "vc-bookings" only.
 import { $, $$, site, resolveDay, fmtClock, gymNow, pad, reduceMotion } from './util.js';
 import { phoneMessage, auPhone, prettyPhone, addHoneypot, tripped, guard, send, isLive, phoneFallback, failBox } from './formtools.js';
+import { mountReminder } from './reminder.js';
+import { waitlistForm } from './waitlist.js';
 
 (() => {
   const form = $('#trial-form');
@@ -82,8 +84,15 @@ import { phoneMessage, auPhone, prettyPhone, addHoneypot, tripped, guard, send, 
   /* ----- time grid: only times inside that weekday's opening hours and long enough for the session; a deterministic "fully booked" demo ----- */
   const full = (dateStr, t, who) => { let h = 7; for (const c of dateStr + t + who) h = (h * 31 + c.charCodeAt(0)) % 997; return h % 5 === 0; };
   const GROUPS = [['Morning', 0, 12], ['Afternoon', 12, 17], ['Evening', 17, 24]];
+  const waitlistOn = !!site.waitlistEnabled;
+  const wlHost = document.createElement('div'); wlHost.id = 'wl-host'; wlHost.setAttribute('aria-live', 'polite'); slotsEl.insertAdjacentElement('afterend', wlHost);
+  function openWaitlist(btn) {
+    const s = session();
+    wlHost.replaceChildren(waitlistForm({ dayKey: dateEl.value, mins: Number(btn.dataset.mins), what: `${s.label}${coachVal() === 'any' ? '' : ' with ' + coachName()}`, kind: 'waitlist' }));
+    const f = $('#wl-name', wlHost); if (f) { f.focus({ preventScroll: true }); wlHost.scrollIntoView({ block: 'center', behavior: reduceMotion ? 'auto' : 'smooth' }); }
+  }
   function drawSlots() {
-    slotsEl.textContent = '';
+    slotsEl.textContent = ''; wlHost.textContent = '';
     const v = dateEl.value, s = session();
     if (!v) { hint.textContent = 'Choose a date to see which times are open.'; return; }
     const dow = weekday(v), day = resolveDay(v), hrs = day.closed ? null : { open: day.open / 60, close: day.close / 60 }, gn = gymNow();
@@ -103,18 +112,23 @@ import { phoneMessage, auPhone, prettyPhone, addHoneypot, tripped, guard, send, 
         const val = `${pad(Math.floor(t))}:${pad(Math.round((t % 1) * 60))}`;
         const past = v === gn.date && t <= gn.hour, booked = !past && full(v, val, s.id + coachVal());
         const b = document.createElement('button'); b.type = 'button'; b.className = 'slot'; b.dataset.time = val; b.textContent = fmtClock(t);
-        if (past || booked) { b.disabled = true; if (booked) { b.classList.add('is-full'); b.title = 'Fully booked'; b.setAttribute('aria-label', fmtClock(t) + ', fully booked'); } }
+        if (booked && waitlistOn) { // a full time stays tappable: it opens the waitlist form instead of selecting the time
+          b.classList.add('is-full'); b.dataset.mins = String(Math.round(t * 60)); b.setAttribute('aria-label', fmtClock(t) + ', fully booked. Join the waitlist');
+          b.insertAdjacentHTML('beforeend', '<span class="slot-wl" aria-hidden="true">Join waitlist</span>');
+        } else if (past || booked) { b.disabled = true; if (booked) { b.classList.add('is-full'); b.title = 'Fully booked'; b.setAttribute('aria-label', fmtClock(t) + ', fully booked'); } }
         else open++;
-        b.setAttribute('aria-pressed', String(val === timeEl.value));
+        if (!(booked && waitlistOn)) b.setAttribute('aria-pressed', String(val === timeEl.value));
         row.appendChild(b);
       });
       g.append(lab, row); slotsEl.appendChild(g);
     });
     hint.textContent = !hrs ? (day.name ? `We are closed that day for ${day.name}. Please choose another date.` : 'We are closed that day. Please choose another date.')
-      : `We are open ${fmtClock(hrs.open)} to ${fmtClock(hrs.close)} that day (${site.timezoneLabel} time). ${open ? 'Crossed-out times are taken.' : 'No times are left, so please try another date.'}`;
+      : `We are open ${fmtClock(hrs.open)} to ${fmtClock(hrs.close)} that day (${site.timezoneLabel} time). ${open ? (waitlistOn ? 'Crossed-out times are full: tap one to join the waitlist.' : 'Crossed-out times are taken.') : (waitlistOn ? 'Every time is full. Tap one to join the waitlist, or try another date.' : 'No times are left, so please try another date.')}`;
   }
   slotsEl.addEventListener('click', (e) => {
     const b = e.target.closest('.slot'); if (!b || b.disabled) return;
+    if (b.classList.contains('is-full')) { openWaitlist(b); return; }
+    wlHost.textContent = '';
     timeEl.value = b.dataset.time; $('#e-time').textContent = '';
     $$('.slot', slotsEl).forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
   });
@@ -144,6 +158,8 @@ import { phoneMessage, auPhone, prettyPhone, addHoneypot, tripped, guard, send, 
   });
   addHoneypot(form);
   const submitBtn = $('button[type=submit]', form), busy = guard(submitBtn);
+  // "Remind me": optional email or text reminder. FRONT END ONLY: sending is not connected (see js/reminder.js).
+  const reminder = site.reminders && site.reminders.enabled ? mountReminder(submitBtn, { remindersEnabled: true, reminderLeadHours: site.reminders.leadHours }, 'rm-trial') : null;
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     if (!busy.start()) return; // a second click while the first is still being handled
@@ -152,6 +168,8 @@ import { phoneMessage, auPhone, prettyPhone, addHoneypot, tripped, guard, send, 
     const order = ['date', 'time', 'name', 'phone', 'message'];
     const bad = order.map((n) => [n, check(n)]).find(([, ok]) => !ok);
     if (bad) { const t = { date: $('.cal-day:not(:disabled)', grid), time: $('.slot:not(:disabled)', slotsEl) }[bad[0]]; (t || field(bad[0])).focus(); return; }
+    const rem = reminder ? reminder.read() : { ok: true, mode: 'none' };
+    if (!rem.ok) { rem.input.focus(); return; }
     // the clock keeps moving while the form is open: refuse a time that has passed in the meantime
     const gn = gymNow(), [h0, m0] = timeEl.value.split(':').map(Number);
     if (dateEl.value === gn.date && h0 * 60 + m0 <= gn.mins) { timeEl.value = ''; drawSlots(); $('#e-time').textContent = 'That time has just passed. Pick another time from the list.'; return; }
@@ -160,6 +178,7 @@ import { phoneMessage, auPhone, prettyPhone, addHoneypot, tripped, guard, send, 
     const ref = 'VC-' + Math.random().toString(36).slice(2, 7).toUpperCase();
     const isSpam = tripped(form);
     const record = { ref, kind: s.isClass ? 'class' : 'trial', session: s.id, sessionLabel: s.label, coach: coachName(), date: dateEl.value, time: timeEl.value, name: field('name').value.trim(), phone: field('phone').value.trim(), savedAt: new Date().toISOString() };
+    if (rem.mode !== 'none') record.reminder = { mode: rem.mode, contact: rem.contact }; // sending is not connected: plug an email or SMS service in here (see js/reminder.js)
     if (!isSpam) { // a filled-in spam trap looks successful but sends nothing
       const res = await send({ type: s.isClass ? 'class booking' : 'free trial', _subject: `Booking request ${ref}`, ...record });
       if (!res.ok) { failBox(form).innerHTML = phoneFallback(); return; }
@@ -170,6 +189,12 @@ import { phoneMessage, auPhone, prettyPhone, addHoneypot, tripped, guard, send, 
     $('#ok-detail').textContent = `Your ${s.isClass ? s.label : 'free trial session'} with ${who} is pencilled in for ${long(record.date)} at ${fmtClock(startT)}.`;
     const rows = [['Reference', ref], ['Session', `${s.label}${s.isClass ? '' : ' (45 min)'}`], ['Coach', coachName()], ['When', `${long(record.date)}, ${fmtClock(startT)} to ${fmtClock(startT + s.mins / 60)}`],
       ['Cost', s.isClass ? 'Members: included. Guests: $28 day pass at the desk.' : 'Free'], ['Name', record.name], ['Phone', record.phone]];
+    const remLine = reminder ? reminder.confirmation(record.date) : '';
+    let rp = $('#ok-reminder'); if (!rp) { rp = document.createElement('p'); rp.id = 'ok-reminder'; $('#ok-detail').after(rp); }
+    rp.textContent = remLine ? `${remLine} (Demo: no reminder is actually sent.)` : ''; rp.hidden = !remLine;
+    // a preview of what the reminder would say (sending is not connected: see js/reminder.js)
+    let pv = $('#ok-preview'); if (!pv) { pv = document.createElement('p'); pv.id = 'ok-preview'; pv.className = 'ok-preview'; rp.after(pv); }
+    pv.textContent = remLine ? `Preview: Hi ${record.name.split(' ')[0]}, a reminder about your ${s.isClass ? 'class' : 'free trial'} on ${long(record.date)} at ${fmtClock(startT)} at ${site.name}.` : ''; pv.hidden = !remLine;
     const dl = $('#ok-summary'); dl.textContent = '';
     rows.forEach(([k, v]) => { const dt = document.createElement('dt'), dd = document.createElement('dd'); dt.textContent = k; dd.textContent = v; dl.append(dt, dd); });
     form.hidden = true; success.hidden = false; success.focus();
@@ -179,6 +204,7 @@ import { phoneMessage, auPhone, prettyPhone, addHoneypot, tripped, guard, send, 
   $('#form-reset').addEventListener('click', () => {
     form.reset();
     $$('[aria-invalid]', form).forEach((el) => el.setAttribute('aria-invalid', 'false'));
+    if (reminder) reminder.reset();
     sessEl.value = 'trial'; syncSession(); reset();
     success.hidden = true; form.hidden = false; field('name').focus();
   });

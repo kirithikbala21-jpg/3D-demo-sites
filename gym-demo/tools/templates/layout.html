@@ -70,6 +70,7 @@
   </div>
 
   <div class="notice-bar" id="notice-bar" role="region" aria-label="Notices" hidden></div>
+  {{#if openBannerOn}}<div class="open-bar" role="status"><p class="chip chip-light open-banner"><span class="dot" aria-hidden="true"></span><span id="open-status-4">{{{hoursInline}}}</span></p></div>{{/if}}
 
   <header class="site-header" id="top">
     <div class="header-inner">
@@ -158,6 +159,9 @@
             <span class="script">{{{brand.wordmark}}}</span>
           </a>
           <p>Strength coaching, group classes and open gym in the heart of {{brand.city}}.</p>
+          {{#if ratingHtmlFooter}}<p class="footer-rating">{{{ratingHtmlFooter}}}</p>{{/if}}
+          {{#if reviewsOn}}<p class="footer-review"><a class="btn btn-secondary btn-sm" href="{{reviewHref}}" target="_blank" rel="noopener">Leave us a Google review<span class="sr-only"> (opens in a new tab)</span></a></p>{{/if}}
+          {{#if socialIcons}}<ul class="soc" role="list" aria-label="Find us online">{{{socialIcons}}}</ul>{{/if}}
         </div>
         <nav class="footer-col" aria-label="Footer: explore">
           <h2>Explore</h2>
@@ -179,6 +183,7 @@
       <nav class="footer-legal" aria-label="Footer: more">
         <a href="membership.html#day-pass">Day pass &amp; gifts</a>
         <a href="careers.html">Careers</a>
+        {{#if reviewsOn}}<a href="reviews.html">Review QR code</a>{{/if}}
         <a href="legal.html#privacy">Privacy</a>
         <a href="legal.html#terms">Terms</a>
         <a href="legal.html#cookies">Cookies</a>

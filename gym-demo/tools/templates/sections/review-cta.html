@@ -1,0 +1,15 @@
+    {{#if reviewsOn}}
+    <!-- LOVED YOUR VISIT? (Google review button; the QR code lives on reviews.html) -->
+    <section class="section section-dark review-cta" id="review" aria-labelledby="review-title">
+      <div class="container narrow-center reveal">
+        <p class="eyebrow">Reviews</p>
+        <h2 id="review-title">Loved your visit? Tell us.</h2>
+        <p class="lead">A quick Google review helps other people find a gym they will love. It takes under a minute.</p>
+        <p class="review-actions">
+          <a class="btn btn-primary" href="{{reviewHref}}" target="_blank" rel="noopener">Leave us a Google review<span class="sr-only"> (opens in a new tab)</span></a>
+          <a class="btn btn-secondary" href="reviews.html">Get the review QR code</a>
+        </p>
+        <p class="note">Demo link: the review address on this site is a placeholder.</p>
+      </div>
+    </section>
+    {{/if}}

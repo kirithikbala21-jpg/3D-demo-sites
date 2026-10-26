@@ -30,7 +30,7 @@
   <link rel="preload" href="fonts/barlow-condensed-700.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="fonts/montserrat-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="vendor/lenis-1.1.18.css?v=7720ea7b">
-  <link rel="stylesheet" href="styles.css?v=7cb23ccf">
+  <link rel="stylesheet" href="styles.css?v=b9e95a0f">
   
   <noscript><style>
     /* Without JavaScript: show the navigation and every timetable day as plain content. */
@@ -47,7 +47,7 @@
     setTimeout(function () { var d = document.documentElement; if (!d.classList.contains('is-ready')) d.classList.add('is-ready', 'is-failsafe'); }, 4500);
   </script>
   <!-- Import map: Three.js is self-hosted (exact version 0.160.0); every module also gets ?v=hash so an update is never served stale. -->
-  <script type="importmap">{"imports": {"three": "./vendor/three.module.min.js", "three/addons/": "./vendor/addons/", "./js/classes.js": "./js/classes.js?v=85c76944", "./js/clock.js": "./js/clock.js?v=c26c12fc", "./js/forms.js": "./js/forms.js?v=e379c82a", "./js/formtools.js": "./js/formtools.js?v=6b66cb93", "./js/hero.js": "./js/hero.js?v=904f658b", "./js/notice.js": "./js/notice.js?v=3c019d68", "./js/plans.js": "./js/plans.js?v=96db272d", "./js/search.js": "./js/search.js?v=6489c063", "./js/smooth.js": "./js/smooth.js?v=83ee1647", "./js/trial.js": "./js/trial.js?v=e95bd506", "./js/ui.js": "./js/ui.js?v=37a67fcf", "./js/util.js": "./js/util.js?v=f06e2c91", "./scene.js": "./scene.js?v=b0cc0edb", "./search-data.js": "./search-data.js?v=f9e0d97c"}}</script>
+  <script type="importmap">{"imports": {"three": "./vendor/three.module.min.js", "three/addons/": "./vendor/addons/", "./js/busy.js": "./js/busy.js?v=5e395cac", "./js/classes.js": "./js/classes.js?v=3a6611c5", "./js/clock.js": "./js/clock.js?v=c26c12fc", "./js/dates.js": "./js/dates.js?v=6923d2dc", "./js/forms.js": "./js/forms.js?v=bc0937d3", "./js/formtools.js": "./js/formtools.js?v=6b66cb93", "./js/growth.js": "./js/growth.js?v=547842ae", "./js/hero.js": "./js/hero.js?v=38dcc752", "./js/notice.js": "./js/notice.js?v=3c019d68", "./js/plans.js": "./js/plans.js?v=96db272d", "./js/qr.js": "./js/qr.js?v=66604d0d", "./js/reminder.js": "./js/reminder.js?v=8483d493", "./js/reviews.js": "./js/reviews.js?v=94304e21", "./js/search.js": "./js/search.js?v=6489c063", "./js/smooth.js": "./js/smooth.js?v=83ee1647", "./js/trial.js": "./js/trial.js?v=9f94a005", "./js/ui.js": "./js/ui.js?v=180da64d", "./js/util.js": "./js/util.js?v=f06e2c91", "./js/waitlist.js": "./js/waitlist.js?v=5dfa32cb", "./scene.js": "./scene.js?v=b0cc0edb", "./search-data.js": "./search-data.js?v=d2377336"}}</script>
 </head>
 <body class="page-legal">
   
@@ -68,6 +68,7 @@
   </div>
 
   <div class="notice-bar" id="notice-bar" role="region" aria-label="Notices" hidden></div>
+  <div class="open-bar" role="status"><p class="chip chip-light open-banner"><span class="dot" aria-hidden="true"></span><span id="open-status-4">Mon &ndash; Fri 5am &ndash; 10pm, Sat &ndash; Sun 7am &ndash; 6pm</span></p></div>
 
   <header class="site-header" id="top">
     <div class="header-inner">
@@ -150,6 +151,7 @@
           <h2>Privacy</h2>
           <p>This demo does not collect personal information. Forms (bookings, visit requests, newsletter, careers, vouchers) only check your input in your browser and then show a confirmation. Nothing is sent or stored on a server.</p>
           <p>If this site were live, we would collect only what we need to take a booking (name, email, phone, health notes you choose to share), use it for that purpose, keep it no longer than necessary and never sell it. You could ask us to see or delete your information at any time by emailing hello@example.com.</p>
+          <p>Optional reminders and the waitlist ask for an email address or mobile number. In this demo that contact detail stays in your browser and nothing is sent; if reminders and the waitlist are connected on a live site, we would use it only to send your reminder or to tell you a spot has opened.</p>
         </article>
         <article id="terms" class="reveal">
           <h2>Terms of use</h2>
@@ -175,6 +177,9 @@
             <span class="script">Iron &amp; Ember Athletic Club</span>
           </a>
           <p>Strength coaching, group classes and open gym in the heart of Fortitude Valley.</p>
+          <p class="footer-rating"><a class="g-rating" href="https://www.google.com/maps/search/?api=1&amp;query=Fortitude%20Valley%20QLD" target="_blank" rel="noopener"><svg class="stars" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 19" width="95" height="18" aria-hidden="true" focusable="false"><defs><clipPath id="rs-f"><rect width="96" height="19"/></clipPath></defs><g fill="rgba(245,241,234,.3)"><path transform="translate(0 0)" d="M10 1.5l2.6 5.5 6 .8-4.4 4.1 1.1 5.9L10 15l-5.3 2.8 1.1-5.9L1.4 7.8l6-.8z"/><path transform="translate(20 0)" d="M10 1.5l2.6 5.5 6 .8-4.4 4.1 1.1 5.9L10 15l-5.3 2.8 1.1-5.9L1.4 7.8l6-.8z"/><path transform="translate(40 0)" d="M10 1.5l2.6 5.5 6 .8-4.4 4.1 1.1 5.9L10 15l-5.3 2.8 1.1-5.9L1.4 7.8l6-.8z"/><path transform="translate(60 0)" d="M10 1.5l2.6 5.5 6 .8-4.4 4.1 1.1 5.9L10 15l-5.3 2.8 1.1-5.9L1.4 7.8l6-.8z"/><path transform="translate(80 0)" d="M10 1.5l2.6 5.5 6 .8-4.4 4.1 1.1 5.9L10 15l-5.3 2.8 1.1-5.9L1.4 7.8l6-.8z"/></g><g fill="#ffe000" clip-path="url(#rs-f)"><path transform="translate(0 0)" d="M10 1.5l2.6 5.5 6 .8-4.4 4.1 1.1 5.9L10 15l-5.3 2.8 1.1-5.9L1.4 7.8l6-.8z"/><path transform="translate(20 0)" d="M10 1.5l2.6 5.5 6 .8-4.4 4.1 1.1 5.9L10 15l-5.3 2.8 1.1-5.9L1.4 7.8l6-.8z"/><path transform="translate(40 0)" d="M10 1.5l2.6 5.5 6 .8-4.4 4.1 1.1 5.9L10 15l-5.3 2.8 1.1-5.9L1.4 7.8l6-.8z"/><path transform="translate(60 0)" d="M10 1.5l2.6 5.5 6 .8-4.4 4.1 1.1 5.9L10 15l-5.3 2.8 1.1-5.9L1.4 7.8l6-.8z"/><path transform="translate(80 0)" d="M10 1.5l2.6 5.5 6 .8-4.4 4.1 1.1 5.9L10 15l-5.3 2.8 1.1-5.9L1.4 7.8l6-.8z"/></g></svg><span class="g-rating-text">Rated 4.8 on Google &middot; 120 reviews</span><span class="g-rating-demo">Demo number</span><span class="sr-only"> (opens Google Maps in a new tab)</span></a></p>
+          <p class="footer-review"><a class="btn btn-secondary btn-sm" href="https://g.page/r/DEMO-iron-ember/review" target="_blank" rel="noopener">Leave us a Google review<span class="sr-only"> (opens in a new tab)</span></a></p>
+          <ul class="soc" role="list" aria-label="Find us online"><li><a class="soc-link" href="https://www.google.com/maps/search/?api=1&amp;query=Fortitude%20Valley%20QLD" target="_blank" rel="noopener" aria-label="Find us on Google Maps (opens in a new tab)"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21z M12 7a2.500 2.500 0 1 0 0 5 2.500 2.500 0 0 0 0-5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/></svg></a></li><li><a class="soc-link" href="https://www.instagram.com/demo_iron_ember/" target="_blank" rel="noopener" aria-label="Follow us on Instagram (opens in a new tab)"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 3h10a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4z M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8z M17.500 6.500h.01" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/></svg></a></li></ul>
         </div>
         <nav class="footer-col" aria-label="Footer: explore">
           <h2>Explore</h2>
@@ -196,6 +201,7 @@
       <nav class="footer-legal" aria-label="Footer: more">
         <a href="membership.html#day-pass">Day pass &amp; gifts</a>
         <a href="careers.html">Careers</a>
+        <a href="reviews.html">Review QR code</a>
         <a href="legal.html#privacy">Privacy</a>
         <a href="legal.html#terms">Terms</a>
         <a href="legal.html#cookies">Cookies</a>
@@ -227,8 +233,8 @@
 
   
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <script type="application/json" id="site-data">{"name": "Iron & Ember Athletic Club", "phone": "07 5550 0188", "phoneHref": "+61755500188", "email": "hello@example.com", "timezone": "Australia/Brisbane", "timezoneLabel": "Brisbane", "locale": "en-AU", "currency": "AUD", "hours": [{"day": 1, "name": "Monday", "open": 5, "close": 22}, {"day": 2, "name": "Tuesday", "open": 5, "close": 22}, {"day": 3, "name": "Wednesday", "open": 5, "close": 22}, {"day": 4, "name": "Thursday", "open": 5, "close": 22}, {"day": 5, "name": "Friday", "open": 5, "close": 22}, {"day": 6, "name": "Saturday", "open": 7, "close": 18}, {"day": 0, "name": "Sunday", "open": 7, "close": 18}], "holidays": {"region": "QLD", "mode": "normal", "overrides": {"Christmas Day": {"status": "closed", "open": null, "close": null}, "Good Friday": {"status": "open", "open": 420, "close": 780}, "New Year's Day": {"status": "open", "open": 480, "close": 840}}}, "closures": [], "notices": [], "booking": {"daysAhead": 90, "leadMinutes": 0}, "forms": {"endpoint": ""}, "coaches": {"marcus": "Marcus Quinn", "jonah": "Jonah Reyes", "dev": "Dev Nair", "dex": "Dex Holloway"}}</script>
+  <script type="application/json" id="site-data">{"name": "Iron & Ember Athletic Club", "phone": "07 5550 0188", "phoneHref": "+61755500188", "email": "hello@example.com", "timezone": "Australia/Brisbane", "timezoneLabel": "Brisbane", "locale": "en-AU", "currency": "AUD", "hours": [{"day": 1, "name": "Monday", "open": 5, "close": 22}, {"day": 2, "name": "Tuesday", "open": 5, "close": 22}, {"day": 3, "name": "Wednesday", "open": 5, "close": 22}, {"day": 4, "name": "Thursday", "open": 5, "close": 22}, {"day": 5, "name": "Friday", "open": 5, "close": 22}, {"day": 6, "name": "Saturday", "open": 7, "close": 18}, {"day": 0, "name": "Sunday", "open": 7, "close": 18}], "holidays": {"region": "QLD", "mode": "normal", "overrides": {"Christmas Day": {"status": "closed", "open": null, "close": null}, "Good Friday": {"status": "open", "open": 420, "close": 780}, "New Year's Day": {"status": "open", "open": 480, "close": 840}}}, "closures": [], "notices": [], "booking": {"daysAhead": 90, "leadMinutes": 0}, "forms": {"endpoint": ""}, "coaches": {"marcus": "Marcus Quinn", "jonah": "Jonah Reyes", "dev": "Dev Nair", "dex": "Dex Holloway"}, "reminders": {"enabled": true, "leadHours": 24}, "waitlistEnabled": true, "openBannerEnabled": true, "busyness": {"blocks": [{"label": "Morning", "from": "05:00", "to": "11:00"}, {"label": "Midday", "from": "11:00", "to": "15:00"}, {"label": "Afternoon", "from": "15:00", "to": "17:00"}, {"label": "Evening", "from": "17:00", "to": "22:00"}], "week": {"mon": ["medium", "quiet", "quiet", "busy"], "tue": ["medium", "quiet", "quiet", "busy"], "wed": ["medium", "quiet", "medium", "busy"], "thu": ["medium", "quiet", "quiet", "busy"], "fri": ["medium", "quiet", "quiet", "medium"], "sat": ["busy", "medium", "quiet", "closed"], "sun": ["medium", "quiet", "quiet", "closed"]}}}</script>
   <script defer src="vendor/lenis-1.1.18.min.js?v=42bf5944"></script><!-- Lenis 1.1.18 (MIT), self-hosted, pinned -->
-  <script type="module" src="main.js?v=59076242"></script>
+  <script type="module" src="main.js?v=cd727d76"></script>
 </body>
 </html>

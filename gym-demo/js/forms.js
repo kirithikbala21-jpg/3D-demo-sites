@@ -1,6 +1,8 @@
 // Site forms: they validate in the browser and show a confirmation. With no forms.endpoint in site.config.json they are demos and
 // send nothing; with one, the request is posted there, and a failure keeps the form and shows a phone fallback (see formtools.js).
-import { $, $$, toast, modal, site } from './util.js';
+import { $, $$, toast, modal, site, gymNow } from './util.js';
+import { addDays } from './dates.js';
+import { mountReminder } from './reminder.js';
 import { phoneMessage, addHoneypot, tripped, guard, send, isLive, phoneFallback, failBox } from './formtools.js';
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
@@ -93,7 +95,7 @@ $$('#news-form').forEach((form) => {
   const dlg = modal(root, { bodyClass: 'modal-open', initialFocus: '#v-name' });
   $$('[data-visit-open]').forEach((b) => b.addEventListener('click', (e) => dlg.open(e.currentTarget)));
   $('#visit-close').addEventListener('click', () => dlg.close());
-  $('#visit-ok').addEventListener('click', () => { form.reset(); form.hidden = false; done.hidden = true; dlg.close(); });
+  $('#visit-ok').addEventListener('click', () => { form.reset(); if (reminder) reminder.reset(); form.hidden = false; done.hidden = true; dlg.close(); });
   root.addEventListener('click', (e) => { if (e.target === root) dlg.close(); });
   const rules = {
     name: (v) => (v.trim().length < 2 ? 'Please tell us your name so we can put it on the list.' : ''),
@@ -107,6 +109,11 @@ $$('#news-form').forEach((form) => {
   Object.keys(rules).forEach((n) => { form.elements[n].addEventListener('blur', () => { if (form.elements[n].value.trim()) check(n); }); form.elements[n].addEventListener('input', () => { if (form.elements[n].getAttribute('aria-invalid') === 'true') check(n); }); form.elements[n].addEventListener('change', () => { if (form.elements[n].getAttribute('aria-invalid') === 'true') check(n); }); });
   addHoneypot(form);
   const busy = guard($('button[type=submit]', form));
+  // "Remind me": optional email or text reminder. FRONT END ONLY: sending is not connected (see js/reminder.js).
+  const reminder = site.reminders && site.reminders.enabled ? mountReminder($('button[type=submit]', form), { remindersEnabled: true, reminderLeadHours: site.reminders.leadHours }, 'rm-visit') : null;
+  const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  /** The next date (in the gym's time zone, today included) that falls on the chosen weekday. */
+  const nextDay = (name) => { const t = gymNow(); const diff = (DAYS.indexOf(name) - t.day + 7) % 7; return addDays(t.key, diff === 0 ? 7 : diff); };
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     if (!busy.start()) return;
@@ -114,14 +121,21 @@ $$('#news-form').forEach((form) => {
       failBox(form).innerHTML = '';
       const res = Object.keys(rules).map(check); // all four fields are required: show every message at once, focus the first problem
       if (res.includes(false)) { form.elements[Object.keys(rules)[res.indexOf(false)]].focus(); return; }
+      const rem = reminder ? reminder.read() : { ok: true, mode: 'none' };
+      if (!rem.ok) { rem.input.focus(); return; }
       const rec = { name: form.elements.name.value.trim(), phone: form.elements.phone.value.trim(), day: form.elements.day.value, time: form.elements.time.value, savedAt: new Date().toISOString() };
+      if (rem.mode !== 'none') rec.reminder = { mode: rem.mode, contact: rem.contact }; // sending is not connected: plug an email or SMS service in here (see js/reminder.js)
       if (!tripped(form)) {
         const sent = await send({ type: 'visit request', _subject: 'Visit request', ...rec });
         if (!sent.ok) { failBox(form).innerHTML = phoneFallback(); return; }
         try { const all = JSON.parse(localStorage.getItem('vc-visits') || '[]'); all.unshift(rec); localStorage.setItem('vc-visits', JSON.stringify(all.slice(0, 20))); } catch (_) { /* storage blocked: the confirmation still shows */ }
       }
       $('#visit-name').textContent = rec.name.split(' ')[0];
-      $('#visit-detail').textContent = `We would see you on ${rec.day}, ${rec.time.toLowerCase()}.`;
+      const remLine = reminder && rem.mode !== 'none' ? reminder.confirmation(nextDay(rec.day)) : '';
+      $('#visit-detail').textContent = `We would see you on ${rec.day}, ${rec.time.toLowerCase()}.${remLine ? ' ' + remLine + ' (Demo: no reminder is actually sent.)' : ''}`;
+      // a preview of what the reminder would say (sending is not connected: see js/reminder.js)
+      let pv = $('#visit-preview'); if (!pv) { pv = document.createElement('p'); pv.id = 'visit-preview'; pv.className = 'ok-preview'; $('#visit-detail').after(pv); }
+      pv.textContent = remLine ? `Preview: Hi ${rec.name.split(' ')[0]}, a reminder about your visit on ${rec.day}, ${rec.time.split(' (')[0].toLowerCase()}, at ${site.name}.` : ''; pv.hidden = !remLine;
       form.hidden = true; done.hidden = false; done.focus();
     } finally { busy.stop(); }
   });

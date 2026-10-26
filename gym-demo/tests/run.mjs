@@ -6,7 +6,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { createRequire } from 'node:module';
 import { chromium } from 'playwright-core';
 
@@ -182,9 +182,9 @@ if (want('func')) {
   // Desktop home
   let p = await newPage({ viewport: { width: 1440, height: 900 } });
   await p.goto(p.base + 'index.html'); await p.waitForTimeout(3500);
-  ok('home: exactly one h1, with the exact headline', (await p.locator('h1').count()) === 1 && (await p.locator('h1').textContent()).replace(/\u2019/g, "'") === "It's not just training. It's how you live.");
-  ok('home hero: "Start your free trial" goes to the trial form and "Book a visit" to the Visit section', (await p.locator('.hero-cta a').first().textContent()) === 'Start your free trial' && (await p.locator('.hero-cta a').first().getAttribute('href')) === 'trial.html' && (await p.locator('.hero-cta a').nth(1).textContent()) === 'Book a visit' && (await p.locator('.hero-cta a').nth(1).getAttribute('href')) === '#visit');
-  ok('home: sections appear in the requested order', JSON.stringify(await p.evaluate(() => [...document.querySelectorAll('main > section')].map((s) => s.id))) === JSON.stringify(['', 'offer', 'banner', 'facilities', 'timetable', 'coaches', 'results', 'plans', 'visit', 'join']), JSON.stringify(await p.evaluate(() => [...document.querySelectorAll('main > section')].map((s) => s.id))));
+  ok('home: exactly one h1, with the factual headline that names the suburb', (await p.locator('h1').count()) === 1 && (await p.locator('h1').textContent()).trim() === 'Strength coaching and group classes in Fortitude Valley');
+  ok('home hero: ONE big "Start your free trial" button goes to the trial form; the visit section is reached from the page itself', (await p.locator('.hero-cta a').count()) === 1 && (await p.locator('.hero-cta a').first().textContent()) === 'Start your free trial' && (await p.locator('.hero-cta a').first().getAttribute('href')) === 'trial.html');
+  ok('home: sections appear in the requested order', JSON.stringify(await p.evaluate(() => [...document.querySelectorAll('main > section')].map((s) => s.id))) === JSON.stringify(['', 'offer', 'banner', 'facilities', 'timetable', 'coaches', 'results', 'review', 'plans', 'visit', 'join']), JSON.stringify(await p.evaluate(() => [...document.querySelectorAll('main > section')].map((s) => s.id))));
   ok('home: announcement says "First week free. No lock-in."', (await p.locator('#announce').textContent()).includes('First week free. No lock-in.'));
   const sums = await p.locator('#offer details summary').allTextContents();
   ok('home offer: 7-day free trial with three accessible expanding items and a yellow button', (await p.locator('#offer h2').textContent()).includes('7 days free') && sums.length === 3 && /What.s included/.test(sums[0]) && /What happens next/.test(sums[1]) && sums[2] === 'Costs' && (await p.locator('#offer .btn-primary').textContent()) === 'Start your free trial');
@@ -248,10 +248,12 @@ if (want('func')) {
   const spots1 = await p.locator('.spots').allTextContents();
   await p.reload(); await p.waitForTimeout(500);
   ok('spots left are deterministic across reloads and some classes are full', JSON.stringify(spots1) === JSON.stringify(await p.locator('.spots').allTextContents()) && spots1.some((s) => /Full/.test(s)) && spots1.some((s) => /\d+ spots? left/.test(s)));
-  const hrefs = await p.locator('.class-row .btn').evaluateAll((as) => as.map((a) => a.getAttribute('href')));
-  ok('every class has a Book button linking to trial.html?class=<id>', hrefs.length === 32 && hrefs.every((h) => /^trial\.html\?class=[a-z0-9-]+$/.test(h)) && (await p.locator('.class-row .btn').evaluateAll((as) => as.filter((a) => /^Book|^Waitlist/.test(a.textContent)).length)) === 32);
-  await p.locator('#tab-tue').click(); await p.locator('#c-tue-1730-power-hour .btn').click(); await p.waitForURL(/trial\.html\?class=tue-1730-power-hour/);
-  ok('Book goes to the trial page with the class pre-selected', (await p.locator('#f-session').inputValue()) === 'tue-1730-power-hour');
+  const hrefs = await p.locator('.class-row a.btn').evaluateAll((as) => as.map((a) => a.getAttribute('href')));
+  const wl = await p.locator('.class-row button[data-waitlist-class]').count();
+  ok('every class has a Book link to trial.html?class=<id>, or (when full) a "Join the waitlist" button', hrefs.every((h) => /^trial\.html\?class=[a-z0-9-]+$/.test(h)) && hrefs.length + wl === 32 && wl >= 1, `${hrefs.length} links + ${wl} waitlist buttons`);
+  await p.locator('#tab-tue').click(); const bookHref = await p.locator('#day-tue .class-row a.btn').first().getAttribute('href'); const bookId = bookHref.split('class=')[1];
+  await p.locator('#day-tue .class-row a.btn').first().click(); await p.waitForURL(/trial\.html\?class=/);
+  ok('Book goes to the trial page with the class pre-selected', (await p.locator('#f-session').inputValue()) === bookId);
   await done(p);
 
   // Coaches
@@ -314,13 +316,13 @@ if (want('func')) {
   ok('trial: past days cannot be picked', (await p.locator('.cal-day:disabled').count()) > 0);
   const wk = await p.evaluate(() => { const b = [...document.querySelectorAll('.cal-day:not(:disabled)')].find((x, i) => i > 0 && ![0, 6].includes(new Date(x.dataset.date + 'T00:00:00Z').getUTCDay())); return b && b.dataset.date; });
   await p.locator(`.cal-day[data-date="${wk}"]`).click();
-  const labels = await p.locator('.slot').allTextContents(), open = await p.locator('.slot:not(:disabled)').count(), taken = await p.locator('.slot:disabled').count();
+  const labels = (await p.locator('.slot').allTextContents()).map((t) => t.replace('Join waitlist', '')), open = await p.locator('.slot:not(:disabled):not(.is-full)').count(), taken = await p.locator('.slot:disabled, .slot.is-full').count();
   ok('trial: weekday time grid follows 5am-10pm hours and a 45 min session (first 5:00am, last 9:00pm)', labels[0] === '5:00am' && labels[labels.length - 1] === '9:00pm', `${labels[0]}..${labels[labels.length - 1]}`);
   ok('trial: time grid is grouped (Morning, Afternoon, Evening) and shows taken slots', (await p.locator('.slot-group-label').allTextContents()).join(',') === 'Morning,Afternoon,Evening' && open > 3 && taken > 0, `${open} open, ${taken} unavailable; ${await p.locator('#h-time').textContent()}`);
   const sat = await p.evaluate(() => { const b = [...document.querySelectorAll('.cal-day:not(:disabled)')].find((x) => new Date(x.dataset.date + 'T00:00:00Z').getUTCDay() === 6); return b && b.dataset.date; });
-  if (sat) { await p.locator(`.cal-day[data-date="${sat}"]`).click(); const l2 = await p.locator('.slot').allTextContents(); ok('trial: weekend time grid follows 7am-6pm hours (first 7:00am, last 5:00pm for 45 min)', l2[0] === '7:00am' && l2[l2.length - 1] === '5:00pm', `${l2[0]}..${l2[l2.length - 1]}`); }
+  if (sat) { await p.locator(`.cal-day[data-date="${sat}"]`).click(); const l2 = (await p.locator('.slot').allTextContents()).map((t) => t.replace('Join waitlist', '')); ok('trial: weekend time grid follows 7am-6pm hours (first 7:00am, last 5:00pm for 45 min)', l2[0] === '7:00am' && l2[l2.length - 1] === '5:00pm', `${l2[0]}..${l2[l2.length - 1]}`); }
   await p.locator(`.cal-day[data-date="${wk}"]`).click();
-  await p.locator('.slot:not(:disabled)').nth(1).click();
+  await p.locator('.slot:not(:disabled):not(.is-full)').nth(1).click();
   ok('trial: chosen time is marked', (await p.locator('.slot[aria-pressed=true]').count()) === 1);
   await p.fill('#f-name', 'Sam Rivera'); await p.fill('#f-phone', 'abc'); await p.locator('#f-phone').blur();
   ok('trial: bad phone message', (await p.locator('#e-phone').textContent()).includes("doesn't look"));
@@ -747,6 +749,247 @@ if (want('hardening')) {
     const a = await l.evaluate(audit);
     ok('phone in landscape (844x390): no sideways scroll', a.scrollW <= a.W && !a.bad.length, JSON.stringify(a));
     await done(l);
+  }
+}
+
+/* ---------------------------------------------------------------- growth upgrades: review QR, rating badge, social links, reminders, waitlist, busy times, open banner */
+if (want('growth')) {
+  const norm = (t) => t.replace(/\s+/g, ' ').trim();
+  const configured = async (mutate, name) => {
+    const dir = path.join(TMP, 'g-' + name);
+    fs.cpSync(SITE, dir, { recursive: true, filter: (src) => !/[\\/](tests|node_modules|\.git)([\\/]|$)/.test(src.slice(SITE.length)) });
+    const c = JSON.parse(fs.readFileSync(path.join(dir, 'site.config.json'), 'utf8')); mutate(c); fs.writeFileSync(path.join(dir, 'site.config.json'), JSON.stringify(c));
+    execFileSync('python3', [path.join(dir, 'tools/build.py')], { env: { ...process.env, SITE_ROOT: dir }, stdio: 'pipe' });
+    const srv = await serve(dir); servers.push(srv);
+    return { base: `http://localhost:${srv.address().port}/`, dir };
+  };
+  const PH = { viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true }, DT = { viewport: { width: 1440, height: 900 } };
+  const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'], DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  const dayBefore = (key, n = 1) => { const [y, m, d] = key.split('-').map(Number), t = new Date(Date.UTC(y, m - 1, d - n, 12)); return `${DAYS[t.getUTCDay()]} ${t.getUTCDate()} ${MONTHS[t.getUTCMonth()]}`; };
+  const axeSrc = fs.readFileSync(require.resolve('axe-core/axe.min.js'), 'utf8');
+  const axeContrast = async (p) => { await p.evaluate(axeSrc); return p.evaluate(async () => (await window.axe.run(document, { runOnly: { type: 'rule', values: ['color-contrast', 'label', 'button-name', 'link-name'] } })).violations.map((v) => v.id + ' x' + v.nodes.length + ' ' + v.nodes[0].target.join(' '))); };
+
+  /* 1. Google review button + QR */
+  {
+    ok('reviews.html is built, listed in the sitemap, linked from the footer', fs.existsSync(path.join(SITE, 'reviews.html')) && /reviews\.html/.test(fs.readFileSync(path.join(SITE, 'sitemap.xml'), 'utf8')) && /href="reviews\.html"/.test(fs.readFileSync(path.join(SITE, 'index.html'), 'utf8')));
+    const p = await newPage(PH, { webgl: false }); await p.goto(p.base + 'index.html'); await p.waitForTimeout(600); await p.addStyleTag({ content: force });
+    const f = await p.evaluate(() => { const a = document.querySelector('.footer-review a'), s = document.querySelector('#review a.btn-primary'), q = document.querySelector('#review a[href="reviews.html"]'); return { f: a && [a.href, a.target, a.rel], s: s && [s.href, s.target, s.rel], q: !!q, h: document.querySelector('#review h2').textContent }; });
+    ok('footer "Leave us a Google review" and the home "Loved your visit? Tell us" section open googleReviewUrl in a new tab (noopener) and link to the QR page', f.f && f.f[0] === cfg.googleReviewUrl && f.f[1] === '_blank' && /noopener/.test(f.f[2]) && f.s && f.s[0] === cfg.googleReviewUrl && f.q && /Loved your visit/.test(f.h), JSON.stringify(f));
+    await done(p);
+    const q = await newPage(PH, { webgl: false }); await q.goto(q.base + 'reviews.html'); await q.waitForTimeout(600); await q.addStyleTag({ content: force });
+    const svg = await q.evaluate(() => { const b = document.querySelector('.qr-box'); const s = b && b.querySelector('svg'); return { shown: !!b && !b.hidden, svg: !!s, label: s && s.getAttribute('aria-label'), w: s && s.getBoundingClientRect().width, cap: document.querySelector('.qr-cap').textContent, scan: document.querySelector('.print-title').textContent }; });
+    ok('reviews page: large QR drawn in the browser (>= 240px on a phone), "Scan to leave a review" heading and caption', svg.shown && svg.svg && svg.w >= 240 && /Scan to leave a review/.test(svg.scan) && /Scan/.test(svg.cap) && /QR/.test(svg.label), JSON.stringify(svg));
+    const qrMod = await import(pathToFileURL(path.join(SITE, 'js/qr.js')).href);
+    const pageD = await q.evaluate(() => document.querySelector('.qr-box svg path').getAttribute('d'));
+    ok('the page draws exactly the QR that js/qr.js makes for googleReviewUrl', qrMod.qrSvg(cfg.googleReviewUrl).includes(`d="${pageD}"`));
+    let decoded = 'SKIP';
+    try {
+      const rows = qrMod.qrMatrix(cfg.googleReviewUrl).map((r) => r.map(Number)); const mf = path.join(TMP, 'qr.json'); fs.writeFileSync(mf, JSON.stringify(rows));
+      decoded = execFileSync('python3', ['-c', 'import cv2,sys,json,numpy as np\nm=np.array(json.load(open(sys.argv[1])),dtype=np.uint8)\nim=np.pad(1-m,4,constant_values=1)*255\nim=cv2.resize(im.astype(np.uint8),None,fx=8,fy=8,interpolation=cv2.INTER_NEAREST)\nv,_,_=cv2.QRCodeDetector().detectAndDecode(im)\nprint(v)', mf]).toString().trim();
+    } catch (e) { decoded = 'SKIP'; }
+    ok('the QR code really decodes to googleReviewUrl (OpenCV)' + (decoded === 'SKIP' ? ' [skipped: OpenCV not installed]' : ''), decoded === 'SKIP' || decoded === cfg.googleReviewUrl, decoded);
+    let printed = 0; await q.evaluate(() => { window.__printed = 0; window.print = () => { window.__printed++; }; }); await q.click('[data-print]'); printed = await q.evaluate(() => window.__printed);
+    ok('the "Print this" button calls the browser print dialog', printed === 1);
+    await q.emulateMedia({ media: 'print' });
+    const pr = await q.evaluate(() => {
+      const vis = (e) => { const c = getComputedStyle(e); return c.display !== 'none' && c.visibility !== 'hidden' && e.getBoundingClientRect().height > 0; };
+      const hidden = ['.site-header', '.site-footer', '.mobile-cta', '.announce', '.qr-actions', '.qr-demo-note', '.page-hero .lead', '.crumbs', '.open-bar', '.cookie'].filter((s) => { const e = document.querySelector(s); return e && vis(e); });
+      return { hidden, h1: vis(document.querySelector('h1')), qr: vis(document.querySelector('.qr-box svg')), title: vis(document.querySelector('.print-title')) };
+    });
+    ok('print view shows ONLY the heading and the QR (header, footer, buttons, notes, lead text all hidden)', !pr.hidden.length && pr.h1 && pr.qr && pr.title, JSON.stringify(pr));
+    await done(q);
+    const e = await configured((c) => { c.googleReviewUrl = ''; }, 'noreview');
+    const h = fs.readFileSync(path.join(e.dir, 'index.html'), 'utf8');
+    ok('googleReviewUrl empty: no reviews page, no footer button, no home section, no sitemap entry, no footer QR link', !fs.existsSync(path.join(e.dir, 'reviews.html')) && !/Leave us a Google review/.test(h) && !/id="review"/.test(h) && !/reviews\.html/.test(fs.readFileSync(path.join(e.dir, 'sitemap.xml'), 'utf8')) && !/reviews\.html/.test(h));
+  }
+
+  /* 3. Google + Instagram links, 5. rating badge */
+  {
+    const p = await newPage(PH, { webgl: false }); await p.goto(p.base + 'visit.html'); await p.waitForTimeout(600); await p.addStyleTag({ content: force });
+    const l = await p.evaluate(() => ({ foot: [...document.querySelectorAll('.soc a')].map((a) => [a.getAttribute('aria-label'), a.href, a.target, a.rel, Math.round(a.getBoundingClientRect().width), Math.round(a.getBoundingClientRect().height)]), btns: [...document.querySelectorAll('.social-btns a')].map((a) => [a.textContent.replace(/\s+/g, ' ').trim(), a.href, a.target, a.rel]) }));
+    ok('footer icon links: Google Maps + Instagram (Facebook is empty so hidden), accessible labels, new tab, noopener, 44px targets', l.foot.length === 2 && l.foot.every((f) => /opens in a new tab/.test(f[0]) && f[2] === '_blank' && /noopener/.test(f[3]) && f[4] >= 44 && f[5] >= 44) && l.foot[0][1] === cfg.googleMapsUrl && l.foot[1][1] === cfg.instagramUrl, JSON.stringify(l.foot));
+    ok('contact page (visit.html) has "Find us on Google Maps" and "Follow us on Instagram" buttons that open in a new tab', l.btns.length === 2 && /Find us on Google Maps/.test(l.btns[0][0]) && l.btns[0][1] === cfg.googleMapsUrl && /Follow us on Instagram/.test(l.btns[1][0]) && l.btns[1][1] === cfg.instagramUrl && l.btns.every((b) => b[2] === '_blank' && /noopener/.test(b[3])), JSON.stringify(l.btns));
+    await done(p);
+    const h = await newPage(PH, { webgl: false }); await h.goto(h.base + 'index.html'); await h.waitForTimeout(600); await h.addStyleTag({ content: force });
+    const r = await h.evaluate(() => [...document.querySelectorAll('.g-rating')].map((a) => ({ where: a.closest('.hero-rating') ? 'hero' : a.closest('.site-footer') ? 'footer' : '?', text: a.textContent.replace(/\s+/g, ' ').trim(), href: a.href, target: a.target, rel: a.rel, fill: a.querySelector('clipPath rect').getAttribute('width'), stars: a.querySelectorAll('svg g:first-of-type path').length, demo: !!a.querySelector('.g-rating-demo') })));
+    ok('rating badge in the hero area and the footer: "Rated 4.8 on Google · 120 reviews", 5 SVG stars filled to 96%, "Demo number" note, new tab to googleMapsUrl', r.length === 2 && r.map((x) => x.where).sort().join() === 'footer,hero' && r.every((x) => /Rated 4\.8 on Google · 120 reviews/.test(x.text) && x.href === cfg.googleMapsUrl && x.target === '_blank' && /noopener/.test(x.rel) && Number(x.fill) === 96 && x.stars === 5 && x.demo), JSON.stringify(r));
+    await done(h);
+    const e = await configured((c) => { c.googleRating = null; c.facebookUrl = ''; c.instagramUrl = ''; c.googleMapsUrl = ''; }, 'nolinks');
+    const hh = fs.readFileSync(path.join(e.dir, 'index.html'), 'utf8'), vv = fs.readFileSync(path.join(e.dir, 'visit.html'), 'utf8');
+    ok('rating missing or links empty: no badge, no icon list, no social buttons, no empty boxes', !/g-rating/.test(hh) && !/class="soc"/.test(hh) && !/social-btns/.test(vv) && !/instagram\.com/.test(hh));
+    const e2 = await configured((c) => { c.googleRatingIsDemo = false; }, 'realrating');
+    ok('googleRatingIsDemo false removes the "Demo number" note', !/Demo number/.test(fs.readFileSync(path.join(e2.dir, 'index.html'), 'utf8')) && /Rated 4\.8/.test(fs.readFileSync(path.join(e2.dir, 'index.html'), 'utf8')));
+  }
+
+  /* 2. Remind me */
+  {
+    const p = await newPage(PH, { webgl: false, clock: TUE + 'T10:00:00' }); await p.goto(p.base + 'trial.html'); await p.waitForTimeout(600); await p.addStyleTag({ content: force });
+    const pickDate = async (nth = 0) => { await p.locator('#cal-grid .cal-day:not(:disabled)').nth(nth).click(); return p.inputValue('#f-date'); };
+    const pickTime = async () => { await p.locator('#slots .slot:not(:disabled):not(.is-full)').first().click(); };
+    const date = await pickDate(2); await pickTime();
+    const rm = await p.evaluate(() => ({ present: !!document.querySelector('.rm-field'), radios: [...document.querySelectorAll('.rm-field input[type=radio]')].map((r) => r.value), contactHidden: document.querySelector('.rm-contact').hidden, consent: document.querySelector('.rm-consent').textContent, sizes: [...document.querySelectorAll('.rm-choice span')].map((s) => Math.round(s.getBoundingClientRect().height)) }));
+    ok('trial form: optional "Remind me" None / Email / Text, contact field hidden until picked, consent line, 44px+ choices', rm.present && rm.radios.join() === 'none,email,text' && rm.contactHidden && /We will only use this to send your reminder/.test(rm.consent) && rm.sizes.every((h) => h >= 44), JSON.stringify(rm));
+    await p.fill('#f-name', 'Sam Rivera'); await p.fill('#f-phone', '0412 345 678');
+    await p.locator('.rm-choice', { hasText: 'Email' }).click();
+    const em = await p.evaluate(() => ({ shown: !document.querySelector('.rm-contact').hidden, type: document.querySelector('.rm-input').type, label: document.querySelector('.rm-label').textContent }));
+    ok('choosing Email shows an email field only', em.shown && em.type === 'email' && /Email/.test(em.label), JSON.stringify(em));
+    await p.fill('.rm-input', 'not-an-email'); await p.click('#trial-form button[type=submit]');
+    const bad = await p.evaluate(() => ({ err: document.querySelector('.rm-err').textContent, shown: !document.querySelector('.rm-err').hidden, done: !document.querySelector('#form-success').hidden, focus: document.activeElement.className }));
+    ok('invalid email blocks the booking with a clear error and focus on the field', bad.shown && /valid email/.test(bad.err) && !bad.done && /rm-input/.test(bad.focus), JSON.stringify(bad));
+    await p.locator('.rm-choice', { hasText: 'Text' }).click(); await p.fill('.rm-input', '12345'); await p.click('#trial-form button[type=submit]');
+    const badT = await p.evaluate(() => ({ err: document.querySelector('.rm-err').textContent, type: document.querySelector('.rm-input').type, done: !document.querySelector('#form-success').hidden }));
+    ok('invalid mobile number blocks the booking (Text needs an Australian mobile)', /Australian mobile/.test(badT.err) && badT.type === 'tel' && !badT.done, JSON.stringify(badT));
+    ok('reminder state has no contrast or label problems (axe) on the phone', !(await axeContrast(p)).length, JSON.stringify(await axeContrast(p)));
+    await p.fill('.rm-input', '0412 345 678'); await p.click('#trial-form button[type=submit]'); await p.waitForSelector('#form-success:not([hidden])');
+    const conf = norm(await p.textContent('#ok-reminder'));
+    ok(`confirmation: "Reminder set for ${dayBefore(date)}, 9am (by text)." and says nothing is actually sent`, conf.startsWith(`Reminder set for ${dayBefore(date)}, 9am (by text).`) && /no reminder is actually sent/i.test(conf), conf);
+    const pv = norm(await p.textContent('#ok-preview'));
+    ok('confirmation also shows a reminder PREVIEW text in the planned wording (not sent)', new RegExp(`^Preview: Hi Sam, a reminder about your free trial on (Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday) \\d+ \\w+ at \\d+:\\d\\d(am|pm) at ${cfg.brand.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\.$`).test(pv), pv);
+    const saved = await p.evaluate(() => JSON.parse(localStorage.getItem('vc-bookings'))[0].reminder);
+    ok('the booking record keeps the reminder choice (ready for an SMS/email service to pick up)', saved && saved.mode === 'text' && saved.contact === '0412345678', JSON.stringify(saved));
+    await p.click('#form-reset'); await pickDate(3); await pickTime(); await p.fill('#f-name', 'Sam Rivera'); await p.fill('#f-phone', '0412 345 678'); await p.click('#trial-form button[type=submit]'); await p.waitForSelector('#form-success:not([hidden])', { timeout: 5000 }).catch(async () => { console.log('DEBUG', JSON.stringify(await p.evaluate(() => ({ date: document.querySelector('#f-date').value, time: document.querySelector('#f-time').value, errs: [...document.querySelectorAll('.error, .rm-err')].filter((e) => e.textContent && !e.hidden).map((e) => e.id + ':' + e.textContent), rm: document.querySelector('.rm-field input:checked').value, formHidden: document.querySelector('#trial-form').hidden })))); });
+    ok('with "None" chosen there is no reminder line in the confirmation', (await p.locator('#ok-reminder').count()) === 0 || await p.locator('#ok-reminder').isHidden());
+    await done(p);
+    // visit modal: weekday only, so the reminder is for the day before the NEXT such weekday
+    const v = await newPage(PH, { webgl: false, clock: TUE + 'T10:00:00' }); await v.goto(v.base + 'visit.html'); await v.waitForTimeout(600); await v.addStyleTag({ content: force });
+    await v.locator('[data-visit-open]').first().click();
+    ok('visit form: has the same Remind me control', (await v.locator('#visit-form .rm-field').count()) === 1);
+    await v.fill('#v-name', 'Sam Rivera'); await v.fill('#v-phone', '0412 345 678'); await v.selectOption('#v-day', 'Saturday'); await v.selectOption('#v-time', { index: 1 });
+    await v.locator('#visit-form .rm-choice', { hasText: 'Email' }).click(); await v.click('#visit-form button[type=submit]');
+    ok('visit form: empty email blocked', !(await v.locator('#visit-form .rm-err').isHidden()) && await v.locator('#visit-done').isHidden());
+    await v.fill('#visit-form .rm-input', 'sam@example.com'); await v.click('#visit-form button[type=submit]'); await v.waitForSelector('#visit-done:not([hidden])');
+    const vd = norm(await v.textContent('#visit-detail'));
+    ok('visit confirmation also shows the reminder preview text', /Preview: Hi Sam, a reminder about your visit on Saturday, morning, at /.test(norm(await v.textContent('#visit-preview'))), norm(await v.textContent('#visit-preview')));
+    ok('visit confirmation: "Reminder set for Friday 23 October, 9am (by email)." for a Saturday 24 Oct visit', /Reminder set for Friday 23 October, 9am \(by email\)\./.test(vd) && /no reminder is actually sent/i.test(vd), vd);
+    await done(v);
+    const e = await configured((c) => { c.remindersEnabled = false; c.waitlistEnabled = false; }, 'nofeat');
+    const o = await newPage(PH, { webgl: false, clock: TUE + 'T10:00:00', host: e.base }); await o.goto(e.base + 'trial.html'); await o.waitForTimeout(500); await o.addStyleTag({ content: force });
+    await o.locator('#cal-grid .cal-day:not(:disabled)').nth(2).click();
+    const off = await o.evaluate(() => ({ rm: document.querySelectorAll('.rm-field').length, wl: document.querySelectorAll('.slot-wl').length, fullDisabled: [...document.querySelectorAll('.slot.is-full')].every((s) => s.disabled) }));
+    ok('remindersEnabled false and waitlistEnabled false: no reminder control, no waitlist labels, full slots are plain disabled times', off.rm === 0 && off.wl === 0 && off.fullDisabled, JSON.stringify(off));
+    await done(o);
+  }
+
+  /* 6. Waitlist */
+  for (const [label, vp] of [['phone', PH], ['desktop', DT]]) {
+    const p = await newPage(vp, { webgl: false, clock: TUE + 'T10:00:00' }); await p.goto(p.base + 'trial.html'); await p.waitForTimeout(600); await p.addStyleTag({ content: force });
+    let found = null;
+    const days = await p.locator('#cal-grid .cal-day:not(:disabled)').count();
+    for (let i = 1; i < Math.min(days, 12) && !found; i++) { await p.locator('#cal-grid .cal-day:not(:disabled)').nth(i).click(); if (await p.locator('#slots .slot.is-full').count()) found = i; }
+    ok(`waitlist (${label}): some demo slots are full and offer "Join waitlist" so it can be seen working`, !!found && (await p.locator('#slots .slot.is-full .slot-wl').first().textContent()) === 'Join waitlist');
+    const full = p.locator('#slots .slot.is-full').first();
+    const meta = await full.evaluate((b) => ({ label: b.getAttribute('aria-label'), h: Math.round(b.getBoundingClientRect().height), fs: parseFloat(getComputedStyle(b.querySelector('.slot-wl')).fontSize) }));
+    ok(`full slot is a 44px+ button with an accessible name and 12px+ label (${label})`, /fully booked\. Join the waitlist/.test(meta.label) && meta.h >= 44 && meta.fs >= 12, JSON.stringify(meta));
+    const dateVal = await p.inputValue('#f-date');
+    await full.click();
+    ok(`clicking a full slot opens the waitlist form, not a selection (${label})`, (await p.locator('#wl-host .wl-form').isVisible()) && (await p.inputValue('#f-time')) === '');
+    await p.click('#wl-host .wl-btn');
+    const e1 = await p.evaluate(() => [...document.querySelectorAll('#wl-host .wl-err')].map((e) => e.hidden ? '' : e.textContent));
+    ok(`waitlist: empty name and contact show friendly errors (${label})`, /your name/.test(e1[0]) && /phone number or an email/.test(e1[1]), JSON.stringify(e1));
+    await p.fill('#wl-name', 'Alex Kim'); await p.fill('#wl-contact', 'abc'); await p.click('#wl-host .wl-btn');
+    const e2 = await p.evaluate(() => document.querySelector('#wl-host [data-for=contact]').textContent);
+    ok(`waitlist: an invalid phone or email is rejected (${label})`, /phone number or an email/.test(e2), e2);
+    ok(`open waitlist form passes contrast and label checks (axe) (${label})`, !(await axeContrast(p)).length, JSON.stringify(await axeContrast(p)));
+    const hp = await p.evaluate(() => { const i = document.querySelector('#wl-host input[name=website]'); return [i.tabIndex, i.closest('.hp').getAttribute('aria-hidden')]; });
+    ok(`waitlist form carries a hidden honeypot (${label})`, hp[0] === -1 && hp[1] === 'true');
+    await p.fill('#wl-contact', 'alex@example.com'); await p.click('#wl-host .wl-btn');
+    const msg = norm(await p.textContent('#wl-host .wl-done'));
+    const timeTxt = norm(await full.textContent()).replace('Join waitlist', '');
+    ok(`waitlist confirmation: "You're on the waitlist for <day>, <time>" and clearly a demo (${label})`, new RegExp(`You're on the waitlist for ${dayBefore(dateVal, 0)}, ${timeTxt}`).test(msg) && /demo/i.test(msg) && /nothing was sent/i.test(msg), msg);
+    const entry = await p.evaluate(() => JSON.parse(localStorage.getItem('waitlist'))[0]);
+    ok(`the entry is only kept in this browser (localStorage "waitlist") (${label})`, entry && entry.name === 'Alex Kim' && entry.contact === 'alex@example.com' && entry.day === dateVal, JSON.stringify(entry));
+    await done(p);
+  }
+  {
+    const p = await newPage(PH, { webgl: false, clock: TUE + 'T10:00:00' }); await p.goto(p.base + 'classes.html'); await p.waitForTimeout(600); await p.addStyleTag({ content: force });
+    const btn = p.locator('[data-waitlist-class]').first(); const n = await p.locator('[data-waitlist-class]').count();
+    ok('full classes in the timetable offer "Join the waitlist" instead of a booking link', n >= 3, String(n));
+    await btn.evaluate((b) => { for (const t of document.querySelectorAll('[role=tab]')) { if (document.getElementById(t.getAttribute('aria-controls')).contains(b)) t.click(); } }); await btn.scrollIntoViewIfNeeded();
+    await btn.click();
+    ok('class waitlist: form opens under the class and the button reports expanded', (await p.locator('.class-row .wl-form').isVisible()) && (await btn.getAttribute('aria-expanded')) === 'true');
+    await p.fill('#wl-name', 'Alex Kim'); await p.fill('#wl-contact', '0412 345 678'); await p.click('.class-row .wl-btn');
+    const msg = norm(await p.textContent('.class-row .wl-done'));
+    ok('class waitlist: valid values give the "on the waitlist" confirmation for the next date the class runs', /You're on the waitlist for (Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday) \d+ \w+, \d+(:\d\d)?(am|pm)/.test(msg), msg);
+    await done(p);
+  }
+
+  /* 7. Best time to come */
+  {
+    const [tue, sat] = await Promise.all([TUE, SAT].map(async (d) => { const p = await newPage(PH, { webgl: false, clock: d + 'T10:00:00' }); await p.goto(p.base + 'visit.html'); await p.waitForTimeout(600); await p.addStyleTag({ content: force });
+      const r = await p.evaluate(() => { const b = document.querySelector('.busy'); const hl = b.querySelector('svg rect[stroke-width="2"]'); const w = b.querySelector('svg').getBoundingClientRect().width, vb = b.querySelector('svg').viewBox.baseVal.width; return { shown: !b.hidden, text: b.innerText.replace(/\s+/g, ' '), hlx: hl && Number(hl.getAttribute('x')), title: b.querySelector('svg title').textContent, scale: w / vb, fonts: [...b.querySelectorAll('svg text')].map((t) => parseFloat(t.getAttribute('font-size'))), overflow: document.documentElement.scrollWidth > innerWidth }; });
+      await done(p); return r; }));
+    ok('busy times: a line and a 7-day SVG chart appear near the visit section, wording is "usually"/"typically" and "not live"', tue.shown && /(Usually|Typically)/.test(tue.text) && /not live/.test(tue.text) && !/right now|live data|real-time/i.test(tue.text.replace('not live', '')) && /Typical busy times/.test(tue.title), tue.text);
+    ok('busy times line reads "Usually quieter ..." and never claims to be live', /Usually quieter on \w+day (at \w+|\w+s)\./.test(tue.text), tue.text);
+    ok('busy times: today is highlighted and moves with the (Brisbane) day: Tuesday column differs from Saturday', tue.hlx !== sat.hlx && tue.hlx > 0 && sat.hlx > tue.hlx, `${tue.hlx} vs ${sat.hlx}`);
+    ok('busy times chart text stays 12px or more on a phone and the page does not scroll sideways', tue.fonts.every((f) => f * tue.scale >= 12) && !tue.overflow, `${tue.fonts[0]} x ${tue.scale}`);
+    const e = await configured((c) => { c.busyness = { blocks: [], week: {} }; }, 'nobusy');
+    ok('empty busyness table: no busy-times box anywhere (home, visit, trial)', ['index.html', 'visit.html', 'trial.html'].every((f) => !/data-busy/.test(fs.readFileSync(path.join(e.dir, f), 'utf8'))));
+    const e2 = await configured((c) => { c.busynessEnabled = false; }, 'busyoff');
+    ok('busynessEnabled false hides it too', !/data-busy/.test(fs.readFileSync(path.join(e2.dir, 'visit.html'), 'utf8')));
+  }
+
+  /* 8. Open-hours banner */
+  {
+    const cases = [[TUE + 'T12:00:00', /^Open now, closes at 10pm/], [TUE + 'T22:30:00', /^Closed now\. Opens tomorrow at 5am/], [TUE + 'T04:00:00', /^Opens today at 5am/], [SAT + 'T18:30:00', /^Closed now\. Opens tomorrow at 7am/]];
+    const bad = [];
+    for (const [t, re] of cases) {
+      const p = await newPage({ ...PH, timezoneId: 'America/Los_Angeles' }, { webgl: false, clock: t }); await p.goto(p.base + 'classes.html'); await p.waitForTimeout(500);
+      const txt = norm(await p.textContent('.open-bar')); if (!re.test(txt)) bad.push(`${t}: ${txt}`);
+      await done(p);
+    }
+    ok('open banner on every page follows the gym hours in Brisbane time (visitor in Los Angeles): open, closed, before opening, Saturday evening', !bad.length, bad.join(' | '));
+    const e = await configured((c) => { c.openBannerEnabled = false; }, 'nobanner');
+    ok('openBannerEnabled false removes the banner', !/open-bar/.test(fs.readFileSync(path.join(e.dir, 'classes.html'), 'utf8')));
+    const pages = PAGES.filter((f) => f !== '404.html');
+    ok('banner markup is on all pages', pages.every((f) => /open-bar/.test(fs.readFileSync(path.join(SITE, f), 'utf8'))));
+  }
+
+  /* hero / trust upgrade */
+  for (const [label, vp] of [['phone', PH], ['desktop', DT]]) {
+    const p = await newPage(vp, { webgl: false, clock: TUE + 'T12:00:00' }); await p.goto(p.base + 'index.html'); await p.waitForTimeout(1500); await p.addStyleTag({ content: force });
+    const h = await p.evaluate(() => {
+      const hero = document.querySelector('.hero'), vis = (e) => { const r = e.getBoundingClientRect(), c = getComputedStyle(e); return r.width > 0 && r.height > 0 && c.visibility !== 'hidden' && c.display !== 'none'; };
+      const call = hero.querySelector('.hero-call'), dir = hero.querySelector('.hero-dir'), btn = [...hero.querySelectorAll('.hero-cta .btn')];
+      return { h1: hero.querySelector('h1').textContent.trim(), btns: btn.map((b) => [b.textContent.trim(), Math.round(b.getBoundingClientRect().height)]), call: call && [call.getAttribute('href'), vis(call), call.textContent.trim(), Math.round(call.getBoundingClientRect().height)], dir: dir && [dir.href, dir.target, dir.rel, vis(dir)], facts: hero.querySelector('.hero-facts').textContent.trim(), rating: !!hero.querySelector('.g-rating'), img: !!hero.querySelector('.hero-photo img') && hero.querySelector('.hero-photo img').naturalWidth > 0, layers: ['.hero-photo', '.hero-stage', '.hero-main'].length };
+    });
+    ok(`hero (${label}): H1 states what and where, factually: "${cfg.brand.city}" is in it, nothing invented`, /Strength coaching and group classes in Fortitude Valley/.test(h.h1), h.h1);
+    ok(`hero (${label}): ONE big main button ("Start your free trial", 64px tall)`, h.btns.length === 1 && /free trial/i.test(h.btns[0][0]) && h.btns[0][1] >= 60, JSON.stringify(h.btns));
+    ok(`hero (${label}): tap-to-call link is visible, 44px+ tall, tel: with the number`, h.call && h.call[0] === 'tel:+61755500188' && h.call[1] && /07 5550 0188/.test(h.call[2]) && h.call[3] >= 44, JSON.stringify(h.call));
+    ok(`hero (${label}): "Get directions" opens googleMapsUrl in a new tab`, h.dir && h.dir[0] === cfg.googleMapsUrl && h.dir[1] === '_blank' && /noopener/.test(h.dir[2]) && h.dir[3], JSON.stringify(h.dir));
+    ok(`hero (${label}): opening hours and the starting price are visible, the real photo loaded, rating badge present (demo note stays)`, /Mon .* Fri 5am .* 10pm/.test(h.facts) && /Memberships from \$89 a month/.test(h.facts) && h.img && h.rating && /Demo number/.test(await p.textContent('.hero .g-rating')), h.facts);
+    const px = await p.evaluate(async () => { const hero = document.querySelector('.hero'); const on = hero.classList.contains('hero-px'); scrollTo(0, 300); for (let i = 0; i < 30 && !parseFloat(hero.style.getPropertyValue('--hp1')); i++) await new Promise((r) => setTimeout(r, 100)); return { on, p1: parseFloat(hero.style.getPropertyValue('--hp1')), p2: parseFloat(hero.style.getPropertyValue('--hp2')), p3: parseFloat(hero.style.getPropertyValue('--hp3')) }; });
+    ok(`hero (${label}): subtle parallax on three layers only (photo, barbell, text) that moves a few pixels on scroll`, px.on && px.p1 > 0 && px.p1 < 60 && px.p2 > 0 && px.p2 < px.p1 && px.p3 < 0 && Math.abs(px.p3) < 20, JSON.stringify(px));
+    await done(p);
+  }
+  {
+    const p = await newPage({ ...PH, reducedMotion: 'reduce' }, { webgl: false }); await p.goto(p.base + 'index.html'); await p.waitForTimeout(800);
+    await p.evaluate(() => scrollTo(0, 300)); await p.waitForTimeout(300);
+    const r = await p.evaluate(() => ({ on: document.querySelector('.hero').classList.contains('hero-px'), t: getComputedStyle(document.querySelector('.hero-photo')).transform, v: document.querySelector('.hero').style.getPropertyValue('--hp1') }));
+    ok('reduced motion: no parallax at all (static hero)', !r.on && (r.t === 'none' || /matrix\(1, 0, 0, 1, 0, 0\)/.test(r.t)) && r.v === '', JSON.stringify(r));
+    await done(p);
+    const q = await newPage(PH, { webgl: false }); await q.goto(q.base + 'index.html'); await q.waitForTimeout(800); await q.addStyleTag({ content: force });
+    ok('hero (390px): contrast of the hero text, call link, directions and facts on the photo passes (axe)', !(await axeContrast(q)).length, JSON.stringify(await axeContrast(q)));
+    const txt = await q.evaluate(() => document.body.innerText);
+    ok('no review text is presented as a Google review: the only Google rating is the config badge', !/google review[s]? from|verified google/i.test(txt.replace(/Leave us a Google review/g, '')) && (await q.locator('.g-rating').count()) === 2);
+    await done(q);
+  }
+
+  /* config checks */
+  {
+    let m1 = '', m2 = '', m3 = '', m4 = '';
+    try { await configured((c) => { c.googleRating = 7; }, 'badrate'); } catch (e) { m1 = String(e.stderr || e.message); }
+    try { await configured((c) => { c.googleReviewUrl = 'g.page/r/x'; }, 'badurl'); } catch (e) { m2 = String(e.stderr || e.message); }
+    try { await configured((c) => { c.busyness.week.mon = ['quiet']; }, 'badbusy'); } catch (e) { m3 = String(e.stderr || e.message); }
+    try { await configured((c) => { c.reminderLeadHours = 0; }, 'badlead'); } catch (e) { m4 = String(e.stderr || e.message); }
+    ok('bad rating, review URL, busyness table or reminder lead time stop the build with plain-English messages', /googleRating must be a number between 0 and 5/.test(m1) && /must start with https/.test(m2) && /give exactly 4 levels/.test(m3) && /reminderLeadHours/.test(m4), [m1, m2, m3, m4].map((x) => x.slice(-90)).join(' | '));
+  }
+
+  /* 390px and 1440px: new pages and states, no sideways scroll, no JS errors */
+  for (const [label, vp] of [['390px', PH], ['1440px', DT]]) {
+    const p = await newPage(vp, { webgl: false, clock: TUE + 'T10:00:00' }); const bad = [];
+    for (const f of ['index.html', 'reviews.html', 'visit.html', 'trial.html', 'classes.html']) { await p.goto(p.base + f); await p.waitForTimeout(500); await p.addStyleTag({ content: force }); const a = await p.evaluate(audit); if (a.scrollW > a.W || a.bad.length) bad.push(f + JSON.stringify(a)); }
+    ok(`growth pages @${label}: no sideways scroll and no JavaScript errors`, !bad.length && !p.logs.length, bad.join('|') + JSON.stringify(p.logs.slice(0, 2)));
+    await done(p);
   }
 }
 

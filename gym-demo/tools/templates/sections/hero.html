@@ -7,11 +7,13 @@
       <div class="hero-inner">
         <div class="hero-main">
           <p class="hero-kicker">{{brand.name}} &middot; {{brand.city}}</p>
-          <h1 id="hero-title" class="hero-h1">It&rsquo;s not just training. It&rsquo;s how you live.</h1>
+          <h1 id="hero-title" class="hero-h1">Strength coaching and group classes in {{brand.city}}</h1>
           <div class="hero-cta">
-            <a class="btn btn-primary" href="trial.html">Start your free trial</a>
-            <a class="btn btn-secondary" href="#visit">Book a visit</a>
+            <a class="btn btn-primary btn-lg" href="trial.html">Start your free trial</a>
           </div>
+          <p class="hero-contact"><a class="hero-call" href="tel:{{contact.phoneHref}}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 3.5h4l2 5-2.5 1.5a11 11 0 0 0 5 5l1.5-2.5 5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 5.5a2 2 0 0 1 2-2z"/></svg><span>Call {{contact.phone}}</span></a>{{#if googleMapsUrl}}<a class="hero-dir" href="{{googleMapsUrl}}" target="_blank" rel="noopener">Get directions<span class="sr-only"> (opens Google Maps in a new tab)</span></a>{{/if}}</p>
+          {{#if ratingHtml}}<p class="hero-rating">{{{ratingHtml}}}</p>{{/if}}
+          <p class="hero-facts">{{{hoursInline}}}{{#if fromPrice}} &middot; Memberships from ${{fromPrice}} a month{{/if}}</p>
           <p class="chip"><span class="dot" aria-hidden="true"></span><span id="open-status">Open 7 days</span></p>
         </div>
         <div class="hero-stage" id="stage">

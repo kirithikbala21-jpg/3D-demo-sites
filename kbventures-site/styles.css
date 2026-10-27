@@ -122,6 +122,13 @@ a { color: var(--ink); text-underline-offset: 4px; }
 .glass-a { left: 8%; top: 4%; transform: rotate(-7deg); animation: float 7s ease-in-out infinite; }
 .glass-b { right: 6%; bottom: 2%; transform: rotate(6deg); animation: float 8s ease-in-out -3s infinite; }
 @keyframes float { 50% { translate: 0 -14px; } }
+@media (max-width: 599px) {
+  .glass { width: 47%; padding: 16px; border-radius: 20px; }
+  .glass-a { left: 5%; top: 6%; }
+  .glass-b { right: 5%; bottom: 6%; }
+  .glass-icon { top: 16px; left: 16px; width: 44px; height: 44px; border-radius: 12px; }
+  .glass-name { font-size: 1.625rem; }
+}
 .glass-icon { position: absolute; top: 24px; left: 24px; display: grid; place-items: center; width: 52px; height: 52px; border-radius: 14px; background: rgba(34, 211, 238, .12); border: 1px solid rgba(34, 211, 238, .45); color: var(--accent); }
 .glass-icon svg, .biz-icon svg { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
 .glass-name { font: 700 clamp(1.75rem, 1.3rem + 1.4vw, 2.5rem)/1 var(--font-head); text-transform: uppercase; }
@@ -191,6 +198,7 @@ a { color: var(--ink); text-underline-offset: 4px; }
 .demo { display: grid; gap: 40px; align-items: center; }
 @media (min-width: 960px) {
   .demo { grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); gap: 72px; }
+  .demo:nth-child(even) { grid-template-columns: minmax(0, 1fr) minmax(0, 1.55fr); }
   .demo:nth-child(even) .demo-media { order: 2; }
 }
 .demo-media { position: relative; display: block; padding: 0 12% 12% 0; text-decoration: none; }

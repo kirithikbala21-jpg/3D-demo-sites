@@ -23,6 +23,15 @@ function roundedRect(w, h, r) {
 function labelTexture(t, maxAniso) {
   const c = document.createElement('canvas'); c.width = 640; c.height = 800;
   const g = c.getContext('2d');
+  // glass face: soft sheen from the top-left corner and a faint cyan tint toward the bottom
+  g.save(); g.beginPath(); g.roundRect(0, 0, 640, 800, 80); g.clip();
+  const face = g.createLinearGradient(0, 0, 640, 800);
+  face.addColorStop(0, 'rgba(255,255,255,.22)'); face.addColorStop(.38, 'rgba(255,255,255,.05)'); face.addColorStop(1, 'rgba(34,211,238,.14)');
+  g.fillStyle = face; g.fillRect(0, 0, 640, 800);
+  const streak = g.createLinearGradient(0, 0, 420, 300);
+  streak.addColorStop(0, 'rgba(255,255,255,0)'); streak.addColorStop(.55, 'rgba(255,255,255,.10)'); streak.addColorStop(.62, 'rgba(255,255,255,0)');
+  g.fillStyle = streak; g.fillRect(0, 0, 640, 800);
+  g.restore();
   // icon badge
   g.fillStyle = 'rgba(34,211,238,.14)'; g.strokeStyle = 'rgba(34,211,238,.6)'; g.lineWidth = 3;
   g.beginPath(); g.roundRect(56, 56, 132, 132, 34); g.fill(); g.stroke();
@@ -34,8 +43,8 @@ function labelTexture(t, maxAniso) {
   g.fillStyle = '#eef3f6'; g.textBaseline = 'alphabetic';
   let size = 128; g.font = `700 ${size}px "Barlow Condensed", "Arial Narrow", sans-serif`;
   while (g.measureText(t.name.toUpperCase()).width > 528 && size > 60) { size -= 4; g.font = `700 ${size}px "Barlow Condensed", "Arial Narrow", sans-serif`; }
-  g.fillText(t.name.toUpperCase(), 56, 680);
-  g.fillStyle = ACCENT; g.font = '600 34px Inter, system-ui, sans-serif';
+  g.fillText(t.name.toUpperCase(), 56, 668);
+  g.fillStyle = ACCENT; g.font = '600 40px Inter, system-ui, sans-serif';
   if ('letterSpacing' in g) g.letterSpacing = '5px';
   g.fillText(t.tag.toUpperCase(), 56, 744);
   const tex = new THREE.CanvasTexture(c);
@@ -74,16 +83,17 @@ export function initScene(canvas, { lowEnd = false, onLost = () => {} } = {}) {
   // glow cards behind the glass
   const gTex = glowTexture();
   const glows = [[-0.4, 0.2, -1.6, 4.2], [1.3, -0.8, -1.9, 3.2]].map(([x, y, z, s]) => {
-    const m = new THREE.Mesh(new THREE.PlaneGeometry(s, s), new THREE.MeshBasicMaterial({ map: gTex, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, opacity: 0.55 }));
+    const m = new THREE.Mesh(new THREE.PlaneGeometry(s, s), new THREE.MeshBasicMaterial({ map: gTex, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, opacity: 0.7 }));
     m.position.set(x, y, z); scene.add(m); return m;
   });
 
   const maxAniso = renderer.capabilities.getMaxAnisotropy();
   const geo = new THREE.ExtrudeGeometry(roundedRect(W, H, R), { depth: DEPTH, bevelEnabled: true, bevelThickness: 0.03, bevelSize: 0.03, bevelSegments: 4, curveSegments: 10 });
   geo.translate(0, 0, -DEPTH / 2);
-  const glassMat = new THREE.MeshPhysicalMaterial(lowEnd
-    ? { color: 0xa9e9f5, metalness: 0, roughness: 0.15, transparent: true, opacity: 0.22, clearcoat: 1, envMapIntensity: 1.4 }
-    : { color: 0xd6f6fc, metalness: 0, roughness: 0.14, transmission: 1, thickness: 0.5, ior: 1.45, clearcoat: 1, clearcoatRoughness: 0.08, iridescence: 0.35, envMapIntensity: 1.3, transparent: true, opacity: 1 });
+  // Tinted, reflective glass. (Real transmission only refracts opaque objects and everything behind these tiles is glow,
+  // so a see-through tint with strong clearcoat reflections reads better and costs far less.)
+  const glassMat = new THREE.MeshPhysicalMaterial({ color: 0x7fdcef, metalness: 0.1, roughness: 0.08, transparent: true, opacity: lowEnd ? 0.16 : 0.12,
+    clearcoat: 1, clearcoatRoughness: 0.05, iridescence: lowEnd ? 0 : 0.5, iridescenceIOR: 1.3, envMapIntensity: 1.15, side: THREE.DoubleSide, depthWrite: false });
   const edgeMat = new THREE.LineBasicMaterial({ color: ACCENT, transparent: true, opacity: 0.55 });
   const edgePts = roundedRect(W + 0.06, H + 0.06, R + 0.03).getPoints(48);
 
@@ -135,7 +145,7 @@ export function initScene(canvas, { lowEnd = false, onLost = () => {} } = {}) {
       g.rotation.y = Math.sin(time * 0.4 + phase) * 0.12 + pointer.x * 0.28;
       g.rotation.z = rot + Math.sin(time * 0.3 + phase) * 0.02;
     });
-    glows.forEach((m, i) => { m.material.opacity = 0.5 + Math.sin(time * 0.6 + i * 2) * 0.08; });
+    glows.forEach((m, i) => { m.material.opacity = 0.65 + Math.sin(time * 0.6 + i * 2) * 0.08; });
     renderer.render(scene, camera);
   }
   function loop(now) {

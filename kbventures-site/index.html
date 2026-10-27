@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>KB Ventures: study guides and websites, made in Melbourne</title>
 <meta name="description" content="KB Ventures is two small businesses run from Melbourne: AceGuides makes revision guides for Year 10 and VCE students, and KB Websites builds websites for local businesses.">
-<meta name="theme-color" content="#F1ECE2">
-<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#0D0E12">
+<meta name="color-scheme" content="dark">
 <link rel="canonical" href="https://kirithikbala21-jpg.github.io/3D-demo-sites/kbventures-site/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="KB Ventures">
@@ -21,8 +21,7 @@
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<link rel="preload" href="fonts/instrument-serif-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="fonts/schibsted-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="vendor/lenis-1.1.18.css">
 <link rel="stylesheet" href="styles.css">
 <script>document.documentElement.classList.add('js');</script>
@@ -30,98 +29,134 @@
 <body>
 <a class="skip" href="#main">Skip to content</a>
 
-<header class="masthead">
-  <a class="wordmark" href="#top">KB Ventures</a>
-  <nav class="nav" aria-label="Main">
-    <a href="#businesses">What we run</a>
-    <a href="#work">Demos</a>
-    <a href="#contact">Contact</a>
-  </nav>
+<header class="nav" id="nav">
+  <div class="nav-inner">
+    <a class="wordmark" href="#top">KB Ventures</a>
+    <nav class="nav-links" aria-label="Main">
+      <a href="#businesses">Businesses</a>
+      <a href="#websites">Websites</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <a class="pill pill-primary pill-sm" href="#contact">Get in touch</a>
+  </div>
 </header>
 
 <main id="main">
-  <section class="hero grid" id="top" aria-labelledby="hero-title">
-    <p class="dateline"><span id="dateline">Melbourne, Australia</span></p>
-    <h1 class="hero-title" id="hero-title">We write study guides for students, and build websites for the shop <span class="marked">down the road.<svg class="pencil" viewBox="0 0 600 40" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M4 26c80-9 170-15 290-12 110 3 210 1 302-8"/><path pathLength="1" d="M120 34c90-6 220-8 330-4"/></svg></span></h1>
-    <p class="hero-intro">KB Ventures is two small businesses, run from Melbourne. <strong>AceGuides</strong> makes revision guides for Year 10 and VCE students. <strong>KB Websites</strong> builds websites for local businesses, with online booking, reviews and maps.</p>
-
-    <figure class="proof">
-      <a class="proof-sheet" href="#work" aria-label="See the website demos">
-        <img src="img/gym-desktop.webp" alt="" width="1200" height="750" fetchpriority="high" decoding="async">
-        <span class="crop crop-tl" aria-hidden="true"></span><span class="crop crop-tr" aria-hidden="true"></span>
-        <span class="crop crop-bl" aria-hidden="true"></span><span class="crop crop-br" aria-hidden="true"></span>
-      </a>
-      <figcaption><span class="proof-tag">Proof</span> Iron &amp; Ember, one of our concept websites. <a href="#work">See all of them</a></figcaption>
-    </figure>
-  </section>
-
-  <section class="businesses grid" id="businesses" aria-labelledby="biz-title">
-    <h2 class="label" id="biz-title">What we run</h2>
-    <article class="biz biz-ace">
-      <h3 class="biz-name">AceGuides</h3>
-      <p class="biz-status"><span class="dot dot-live" aria-hidden="true"></span>Live</p>
-      <p class="biz-text">Revision guides for Year 10 and VCE students, with bundles for each year level.</p>
-      <p class="biz-links" id="ace-actions"></p>
-    </article>
-    <article class="biz biz-web">
-      <h3 class="biz-name">KB Websites</h3>
-      <p class="biz-status"><span class="dot" aria-hidden="true"></span>Starting</p>
-      <p class="biz-text">Fast, good-looking websites for local businesses, with online booking, reviews and maps.</p>
-      <p class="biz-links"><a class="link" href="#work">See the website demos</a></p>
-    </article>
-  </section>
-
-  <section class="process grid" id="how" aria-labelledby="how-title">
-    <h2 class="label" id="how-title">How KB Websites works</h2>
-    <p class="process-text">First we build a free preview of your new website. You look through it and tell us what to keep, change or leave out. <em>When you are happy with it, we put it live.</em></p>
-  </section>
-
-  <section class="work" id="work" aria-labelledby="work-title">
-    <div class="grid work-head">
-      <h2 class="label label-on-ink">Website demos</h2>
-      <p class="work-title" id="work-title">Websites for businesses that don&rsquo;t exist.</p>
-      <p class="work-note" id="demos-note">These are concept demos for made-up businesses. Names, prices and reviews are examples only.</p>
+  <section class="hero" id="top" aria-labelledby="hero-title">
+    <div class="wrap hero-text">
+      <p class="label hero-label">KB Ventures &middot; Melbourne</p>
+      <h1 class="hero-title" id="hero-title">We write study guides for students, and build websites for the shop down the road.</h1>
+      <p class="hero-lead">KB Ventures is two small businesses, run from Melbourne.</p>
+      <div class="hero-actions">
+        <a class="pill pill-primary" href="#websites">See the websites</a>
+        <a class="pill pill-secondary" href="#contact">Get in touch</a>
+      </div>
     </div>
-    <!-- main.js rebuilds this list from site.config.json; this copy shows when the config cannot load -->
-    <ol class="work-list" id="demo-list">
-      <li class="piece grid">
-        <a class="piece-image" href="https://kirithikbala21-jpg.github.io/3D-demo-sites/gym-demo/" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true"><img src="img/gym-desktop.webp" alt="" width="1200" height="750" loading="lazy" decoding="async"></a>
-        <div class="piece-text"><p class="piece-type">Gym</p><h3 class="piece-name">Iron &amp; Ember Athletic Club</h3><p class="piece-line">Strength coaching, group classes and open gym, with a slowly rotating 3D barbell.</p><a class="link link-on-ink" href="https://kirithikbala21-jpg.github.io/3D-demo-sites/gym-demo/" target="_blank" rel="noopener">Open the demo<span class="sr-only"> (opens in a new tab)</span></a></div>
-      </li>
-      <li class="piece grid">
-        <a class="piece-image" href="https://kirithikbala21-jpg.github.io/3D-demo-sites/barber-demo/" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true"><img src="img/barber-desktop.webp" alt="" width="1200" height="750" loading="lazy" decoding="async"></a>
-        <div class="piece-text"><p class="piece-type">Barbershop</p><h3 class="piece-name">Brass &amp; Blade</h3><p class="piece-line">Classic cuts, skin fades and hot towel shaves, with a spinning 3D barber pole.</p><a class="link link-on-ink" href="https://kirithikbala21-jpg.github.io/3D-demo-sites/barber-demo/" target="_blank" rel="noopener">Open the demo<span class="sr-only"> (opens in a new tab)</span></a></div>
-      </li>
-      <li class="piece grid">
-        <a class="piece-image" href="https://kirithikbala21-jpg.github.io/3D-demo-sites/cafe-demo-v2/" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true"><img src="img/cafe-desktop.webp" alt="" width="1200" height="750" loading="lazy" decoding="async"></a>
-        <div class="piece-text"><p class="piece-type">Cafe</p><h3 class="piece-name">Ember &amp; Oak</h3><p class="piece-line">Small-batch coffee, all-day dining and long tables, with a cinematic 3D hero.</p><a class="link link-on-ink" href="https://kirithikbala21-jpg.github.io/3D-demo-sites/cafe-demo-v2/" target="_blank" rel="noopener">Open the demo<span class="sr-only"> (opens in a new tab)</span></a></div>
-      </li>
-      <li class="piece grid has-phone">
-        <a class="piece-image" href="https://kirithikbala21-jpg.github.io/3D-demo-sites/plumber-demo/" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true"><img src="img/plumber-desktop.webp" alt="" width="1200" height="750" loading="lazy" decoding="async"><span class="phone"><img src="img/plumber-mobile.webp" alt="" width="600" height="1299" loading="lazy" decoding="async"></span></a>
-        <div class="piece-text"><p class="piece-type">Plumber</p><h3 class="piece-name">Waverley Plumbing &amp; Gas</h3><p class="piece-line">Licensed family plumbers and gas fitters with an emergency line and upfront prices.</p><p class="piece-aside">Built for the phone first, with the call button always in reach.</p><a class="link link-on-ink" href="https://kirithikbala21-jpg.github.io/3D-demo-sites/plumber-demo/" target="_blank" rel="noopener">Open the demo<span class="sr-only"> (opens in a new tab)</span></a></div>
-      </li>
-      <li class="piece grid">
-        <a class="piece-image" href="https://kirithikbala21-jpg.github.io/3D-demo-sites/salon-demo/" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true"><img src="img/salon-desktop.webp" alt="" width="1200" height="750" loading="lazy" decoding="async"></a>
-        <div class="piece-text"><p class="piece-type">Hair salon</p><h3 class="piece-name">Maison Lune</h3><p class="piece-line">Cuts, colour, treatments and beauty with clear prices and online booking.</p><a class="link link-on-ink" href="https://kirithikbala21-jpg.github.io/3D-demo-sites/salon-demo/" target="_blank" rel="noopener">Open the demo<span class="sr-only"> (opens in a new tab)</span></a></div>
-      </li>
-    </ol>
+    <div class="hero-stage" aria-hidden="false">
+      <div class="spotlight" aria-hidden="true"></div>
+      <figure class="hero-frame" id="hero-frame">
+        <div class="browser">
+          <div class="browser-bar" aria-hidden="true"><i></i><i></i><i></i></div>
+          <img src="img/gym-desktop.webp" width="1280" height="800" alt="Front page of Iron &amp; Ember Athletic Club, a concept gym website by KB Websites" fetchpriority="high" decoding="async">
+        </div>
+      </figure>
+    </div>
   </section>
 
-  <section class="contact grid" id="contact" aria-labelledby="contact-title">
-    <h2 class="label" id="contact-title">Contact</h2>
-    <p class="contact-text">Questions about AceGuides, or want a free preview for your business? Send us an email.</p>
-    <a class="email" id="mail" href="mailto:kb.ventures@outlook.com"><span id="mail-text">kb.ventures@outlook.com</span></a>
+  <section class="section" id="businesses" aria-labelledby="biz-title">
+    <div class="wrap center">
+      <p class="label">What we run</p>
+      <h2 class="h2" id="biz-title">Two businesses. One standard.</h2>
+      <p class="lead">One makes revision guides for students. The other builds websites for local businesses.</p>
+      <a class="pill pill-secondary" href="#how">How KB Websites works</a>
+    </div>
+    <div class="wrap biz-grid">
+      <article class="card biz">
+        <p class="status"><span class="dot dot-live" aria-hidden="true"></span>Live</p>
+        <h3 class="biz-name">AceGuides</h3>
+        <p class="dim">Revision guides for Year 10 and VCE students, with bundles for each year level.</p>
+        <p class="card-actions" id="ace-actions"></p>
+      </article>
+      <article class="card biz">
+        <p class="status"><span class="dot dot-start" aria-hidden="true"></span>Starting</p>
+        <h3 class="biz-name">KB Websites</h3>
+        <p class="dim">Fast, good-looking websites for local businesses, with online booking, reviews and maps.</p>
+        <p class="card-actions"><a class="pill pill-secondary pill-sm" href="#websites">See the websites</a></p>
+      </article>
+    </div>
+  </section>
+
+  <section class="section" id="how" aria-labelledby="how-title">
+    <div class="wrap center">
+      <p class="label">How KB Websites works</p>
+      <h2 class="h2" id="how-title">A free preview first.</h2>
+      <p class="lead lead-wide">First we build a free preview of your new website. You look through it and tell us what to keep, change or leave out. When you are happy with it, we put it live.</p>
+      <a class="pill pill-primary" href="#contact">Get in touch</a>
+    </div>
+  </section>
+
+  <section class="section section-websites" id="websites" aria-labelledby="websites-title">
+    <div class="wrap center">
+      <p class="label">Concept websites</p>
+      <h2 class="h2" id="websites-title">Concept websites we built to show what&rsquo;s possible.</h2>
+      <p class="lead" id="demos-note">These are concept demos for made-up businesses. Names, prices and reviews are examples only.</p>
+    </div>
+
+    <div class="carousel" id="carousel">
+      <!-- main.js rebuilds these cards from site.config.json; this copy shows when the config cannot load -->
+      <ol class="track" id="track" tabindex="0" role="region" aria-roledescription="carousel" aria-label="Concept websites. Use the left and right arrow keys to move between them.">
+        <li class="slide card" aria-roledescription="slide" aria-label="1 of 5: Iron &amp; Ember Athletic Club">
+          <div class="shot"><div class="browser"><div class="browser-bar" aria-hidden="true"><i></i><i></i><i></i></div><img src="img/gym-desktop.webp" width="1280" height="800" loading="lazy" decoding="async" alt="Front page of Iron &amp; Ember Athletic Club, a concept gym website"></div><div class="phone"><img src="img/gym-mobile.webp" width="480" height="1039" loading="lazy" decoding="async" alt="The same page on a phone"></div></div>
+          <div class="slide-text"><p class="label">Gym</p><h3 class="slide-name">Iron &amp; Ember Athletic Club</h3><p class="dim">Strength coaching, group classes and open gym, with a slowly rotating 3D barbell.</p><a class="pill pill-secondary pill-sm" href="https://kirithikbala21-jpg.github.io/3D-demo-sites/gym-demo/" target="_blank" rel="noopener">Open demo<span class="sr-only">: Iron &amp; Ember Athletic Club (opens in a new tab)</span></a></div>
+        </li>
+        <li class="slide card" aria-roledescription="slide" aria-label="2 of 5: Brass &amp; Blade">
+          <div class="shot"><div class="browser"><div class="browser-bar" aria-hidden="true"><i></i><i></i><i></i></div><img src="img/barber-desktop.webp" width="1280" height="800" loading="lazy" decoding="async" alt="Front page of Brass &amp; Blade, a concept barbershop website"></div><div class="phone"><img src="img/barber-mobile.webp" width="480" height="1039" loading="lazy" decoding="async" alt="The same page on a phone"></div></div>
+          <div class="slide-text"><p class="label">Barbershop</p><h3 class="slide-name">Brass &amp; Blade</h3><p class="dim">Classic cuts, skin fades and hot towel shaves, with a spinning 3D barber pole.</p><a class="pill pill-secondary pill-sm" href="https://kirithikbala21-jpg.github.io/3D-demo-sites/barber-demo/" target="_blank" rel="noopener">Open demo<span class="sr-only">: Brass &amp; Blade (opens in a new tab)</span></a></div>
+        </li>
+        <li class="slide card" aria-roledescription="slide" aria-label="3 of 5: Ember &amp; Oak">
+          <div class="shot"><div class="browser"><div class="browser-bar" aria-hidden="true"><i></i><i></i><i></i></div><img src="img/cafe-desktop.webp" width="1280" height="800" loading="lazy" decoding="async" alt="Front page of Ember &amp; Oak, a concept cafe website"></div><div class="phone"><img src="img/cafe-mobile.webp" width="480" height="1039" loading="lazy" decoding="async" alt="The same page on a phone"></div></div>
+          <div class="slide-text"><p class="label">Cafe</p><h3 class="slide-name">Ember &amp; Oak</h3><p class="dim">Small-batch coffee, all-day dining and long tables, with a cinematic 3D hero.</p><a class="pill pill-secondary pill-sm" href="https://kirithikbala21-jpg.github.io/3D-demo-sites/cafe-demo-v2/" target="_blank" rel="noopener">Open demo<span class="sr-only">: Ember &amp; Oak (opens in a new tab)</span></a></div>
+        </li>
+        <li class="slide card" aria-roledescription="slide" aria-label="4 of 5: Waverley Plumbing &amp; Gas">
+          <div class="shot"><div class="browser"><div class="browser-bar" aria-hidden="true"><i></i><i></i><i></i></div><img src="img/plumber-desktop.webp" width="1280" height="800" loading="lazy" decoding="async" alt="Front page of Waverley Plumbing &amp; Gas, a concept plumber website"></div><div class="phone"><img src="img/plumber-mobile.webp" width="480" height="1039" loading="lazy" decoding="async" alt="The same page on a phone"></div></div>
+          <div class="slide-text"><p class="label">Plumber</p><h3 class="slide-name">Waverley Plumbing &amp; Gas</h3><p class="dim">Licensed family plumbers and gas fitters with an emergency line and upfront prices.</p><a class="pill pill-secondary pill-sm" href="https://kirithikbala21-jpg.github.io/3D-demo-sites/plumber-demo/" target="_blank" rel="noopener">Open demo<span class="sr-only">: Waverley Plumbing &amp; Gas (opens in a new tab)</span></a></div>
+        </li>
+        <li class="slide card" aria-roledescription="slide" aria-label="5 of 5: Maison Lune">
+          <div class="shot"><div class="browser"><div class="browser-bar" aria-hidden="true"><i></i><i></i><i></i></div><img src="img/salon-desktop.webp" width="1280" height="800" loading="lazy" decoding="async" alt="Front page of Maison Lune, a concept hair salon website"></div><div class="phone"><img src="img/salon-mobile.webp" width="480" height="1039" loading="lazy" decoding="async" alt="The same page on a phone"></div></div>
+          <div class="slide-text"><p class="label">Hair salon</p><h3 class="slide-name">Maison Lune</h3><p class="dim">Cuts, colour, treatments and beauty with clear prices and online booking.</p><a class="pill pill-secondary pill-sm" href="https://kirithikbala21-jpg.github.io/3D-demo-sites/salon-demo/" target="_blank" rel="noopener">Open demo<span class="sr-only">: Maison Lune (opens in a new tab)</span></a></div>
+        </li>
+      </ol>
+      <div class="carousel-controls" id="carousel-controls" hidden>
+        <button class="round" type="button" id="prev" aria-label="Previous website" aria-controls="track"><span aria-hidden="true">&larr;</span></button>
+        <div class="dots" id="dots" role="group" aria-label="Choose a website"></div>
+        <button class="round" type="button" id="next" aria-label="Next website" aria-controls="track"><span aria-hidden="true">&rarr;</span></button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-contact" id="contact" aria-labelledby="contact-title">
+    <div class="wrap center">
+      <p class="label">Contact</p>
+      <h2 class="h2 contact-title" id="contact-title">Questions about AceGuides, or want a free preview for your business?</h2>
+      <p class="lead">Send us an email. We&rsquo;re in <span id="location">Melbourne, Australia</span>.</p>
+      <a class="pill pill-primary pill-lg" id="mail" href="mailto:kb.ventures@outlook.com">kb.ventures@outlook.com</a>
+    </div>
   </section>
 </main>
 
 <footer class="footer">
-  <div class="footer-cols grid">
-    <div class="footer-col"><p class="footer-head">Email</p><a class="link link-on-ink" id="mail-foot" href="mailto:kb.ventures@outlook.com">kb.ventures@outlook.com</a></div>
-    <div class="footer-col"><p class="footer-head">Where</p><p id="location">Melbourne, Australia</p></div>
-    <div class="footer-col"><p class="footer-head">This page</p><a class="link link-on-ink" href="#top">Back to the top</a></div>
-    <p class="footer-small">&copy; <span id="year">2026</span> KB Ventures. The website demos are concepts for made-up businesses.</p>
+  <div class="wrap">
+    <p class="footer-mark">KB Ventures</p>
+    <div class="footer-row">
+      <nav class="footer-links" aria-label="Footer">
+        <a href="#businesses">Businesses</a>
+        <a href="#websites">Websites</a>
+        <a href="#contact">Contact</a>
+        <a id="mail-foot" href="mailto:kb.ventures@outlook.com">kb.ventures@outlook.com</a>
+      </nav>
+      <p class="footer-small">&copy; <span id="year">2026</span> KB Ventures. The website demos are concepts for made-up businesses.</p>
+    </div>
   </div>
-  <p class="footer-mark" aria-hidden="true">KB Ventures</p>
 </footer>
 
 <script src="vendor/lenis-1.1.18.min.js" defer></script>

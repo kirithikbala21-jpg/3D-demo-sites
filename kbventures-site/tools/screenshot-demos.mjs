@@ -1,4 +1,5 @@
-// Rebuilds the demo previews in ../img/: each demo's front page at 1440px (desktop) and 390px (phone),
+// Rebuilds the demo previews in ../img/ as one matching set: each demo's front page at 1440x900 (saved 1280x800)
+// and 390x844 (saved 480x1039),
 // with the clock frozen at Tuesday 27 October 2026, 12:00 Melbourne time and the live banners hidden.
 // Run from the repo root while a static server is up:
 //   python3 -m http.server 8123 --bind 127.0.0.1 &
@@ -27,7 +28,10 @@ for (const [slug, dir] of Object.entries(DEMOS)) {
     await page.addInitScript(() => { try { sessionStorage.setItem('vc-seen', '1'); localStorage.setItem('vc-announce', 'off'); } catch (_) {} });
     await page.goto(`${BASE}${dir}/index.html${tag === 'desktop' ? '?3d=on' : ''}`, { waitUntil: 'load' });
     await page.addStyleTag({ content: HIDE });
-    await page.waitForTimeout(6000);
+    await page.evaluate(() => document.fonts && document.fonts.ready);
+    await page.waitForTimeout(8000); // 3D heroes, reveals and lazy images settle
+    await page.evaluate(() => window.scrollTo(0, 0));
+    await page.waitForTimeout(400);
     await page.screenshot({ path: path.join(TMP, `${slug}-${tag}.png`) });
     await ctx.close();
     console.log('captured', slug, tag);
@@ -40,7 +44,7 @@ import sys
 from PIL import Image
 tmp, out = sys.argv[1], sys.argv[2]
 for slug in sys.argv[3:]:
-    Image.open(f'{tmp}/{slug}-desktop.png').convert('RGB').resize((1200, 750), Image.LANCZOS).save(f'{out}/{slug}-desktop.webp', 'WEBP', quality=74, method=6)
-    Image.open(f'{tmp}/{slug}-mobile.png').convert('RGB').resize((600, 1299), Image.LANCZOS).save(f'{out}/{slug}-mobile.webp', 'WEBP', quality=72, method=6)
+    Image.open(f'{tmp}/{slug}-desktop.png').convert('RGB').resize((1280, 800), Image.LANCZOS).save(f'{out}/{slug}-desktop.webp', 'WEBP', quality=76, method=6)
+    Image.open(f'{tmp}/{slug}-mobile.png').convert('RGB').resize((480, 1039), Image.LANCZOS).save(f'{out}/{slug}-mobile.webp', 'WEBP', quality=74, method=6)
 `, TMP, IMG, ...Object.keys(DEMOS)], { stdio: 'inherit' });
 console.log('saved to', IMG);

@@ -1,27 +1,29 @@
-# Changes: KB Ventures redesign (27 October 2026)
+# Changes: KB Ventures redesign, "printer's proof sheet" (27 October 2026)
+
+This replaces the dark cyan version from earlier the same day. The brief is in `brand.md`.
+
+## The idea
+The page reads like a proof from a small print shop: ink on warm paper, big confident type, the demo work laid out as pinned proofs, and a few marks in proof red. Palette: press ink `#1C1A17`, proof red `#B83418` and paper `#F1ECE2`. Type: Instrument Serif for headlines and Schibsted Grotesk for text, both self-hosted under the SIL Open Font License.
 
 ## What changed
-- **New look:** dark theme (ink-black page, cool off-white text) with one cyan accent, Barlow Condensed headlines and Inter body text, both self-hosted. Replaces the plain light/dark system-font page.
-- **Full-screen hero in three layers:** a cyan glow and grid background, a 3D stage and the text drift at different speeds on scroll (about 30px at most). Headline words rise in one by one.
-- **3D glass tiles, one per business** (AceGuides and KB Websites), built with Three.js. They float and lean toward the pointer, pause when off screen, and load only after the page is idle.
-- **Static fallback:** the same two tiles in CSS glass are in the HTML and show with JavaScript off, without WebGL, on Data Saver, on low-powered phones, if the 3D fails or the context is lost, and with `prefers-reduced-motion` (no floating then either).
-- **Header** starts transparent and becomes a blurred bar with a hairline border once you scroll. A thin cyan scroll-progress line runs along the top.
-- **Lenis smooth scroll** for wheel scrolling and in-page links; off for reduced motion.
-- **Subtle scroll reveals** (opacity plus a 24px lift, staggered) that run once; everything is visible without JavaScript or with reduced motion.
-- **Our businesses:** two large cards with icons and status (AceGuides: Live, KB Websites: Starting). The AceGuides shop button still appears only when `aceguidesShopUrl` is filled in.
-- **New "How it works" strip** for KB Websites: we build a free preview, you pick what you like, we launch it. No prices, timings or promises.
-- **Big demo gallery** with real screenshots in a browser frame and a phone frame, in this order: gym, barber, cafe, plumber, salon. The rows are still built from `site.config.json` (which now also holds each demo's image paths), with the same rows in the HTML as a fallback.
-- **Real previews:** each demo's front page captured with Playwright at 1440px and 390px, clock frozen at Tuesday 27 October 2026, 12:00 Melbourne time, with the announcement, notice, opening-hours and cookie banners hidden. Saved as WebP in `img/` (28 to 53 KB each). `tools/screenshot-demos.mjs` rebuilds them.
-- **Contact:** a large "Get in touch" section with the email as one big button.
-- The note "These are concept demos for made-up businesses. Names, prices and reviews are examples only." stays, beside the gallery heading.
-- `brand.md` added (8 lines on what makes the demos feel premium and what this site reuses). README updated.
+- **Removed the AI tells:** no glow, no glass tiles, no 3D, no gradient text, no icon cards, no "01 ·" labels, no three equal process cards, nothing centred by default.
+- **Hero:** one statement in very large type ("We write study guides for students, and build websites for the shop down the road."), with "down the road" underlined in red pencil. A real screenshot of the gym demo sits under it like a pinned proof, at a slight angle, with printer's crop marks, cropped by the edge of the page. The dateline shows today's date in Melbourne.
+- **Copy:** rewritten in plain words. Facts unchanged (what AceGuides and KB Websites do, Live/Starting, the email address, Melbourne). No prices, results or guarantees. "Modern" and similar words are gone.
+- **What we run:** two ledger rows with the business names set huge and the details in a narrow column, instead of two cards.
+- **How it works:** one paragraph of plain sentences instead of three numbered cards.
+- **Demos:** the background changes to ink. Five large cropped screenshots alternate left and right at different widths and crops, with the type and name in small, clean type and an "Open the demo" link. Images zoom slowly on hover. The phone frame is kept only for the plumber demo, which was built phone-first. The concept-demo note stays, as a footnote under the heading.
+- **Contact:** the email address itself is the big link, set in display type.
+- **Footer:** ink, with small link columns and a huge "KB Ventures" cropped by the bottom of the page.
+- **Grid:** asymmetric 12 columns (6 on phones), with a narrow label column on the left.
+- **Motion:** one load sequence (headline words rise, the proof settles, the pencil line draws), small reveals as sections come into view, and hover states on every link and image. All of it switches off for `prefers-reduced-motion`. Lenis smooth scroll stays.
+- **New:** favicon (`favicon.ico`, `favicon-32.png`, `apple-touch-icon.png`), a 1200 x 630 share image (`og.jpg`) with Open Graph and Twitter tags, and `404.html`.
+- `site.config.json`: same demo list and order; the plumber entry gains `"phone": true` and a one-line `"aside"`.
 
 ## Checked
-At 1440px and 390px, with 3D and with the still fallback, and with reduced motion: no horizontal scroll, no overlapping text, no text under 12px, no broken images, no console errors, no requests outside the site. Compared side by side with the gym demo's front page.
+At 390px, 768px and 1440px, plus reduced motion: no sideways scrolling, no overlapping text, no text under 12px, every tap target at least 44px tall, every text colour at least 4.5:1 against its own background (3:1 for large type), no broken images, no console errors, no requests outside the site. The page weighs about 120–175 KB in total and loaded in about 0.1 seconds from a local server. It was compared side by side with locomotive.ca, basement.studio and pentagram.com.
 
-## Placeholders and uncertain points
-- AceGuides shop link is still blank, so no shop button shows (as before).
-- The previews are frozen pictures: if a demo's front page changes, rerun `tools/screenshot-demos.mjs`.
-- The 3D was checked in headless Chromium with software WebGL; real phones and laptops should look the same or smoother, but were not tested by hand.
-- Demo screenshots show each demo's own example ratings and prices; those demos label them as demo numbers, and the gallery note says they are examples.
-- Not included on purpose: parts-store-demo and The One Barber.
+## Left as they were, and uncertain points
+- `hero.js`, `scene.js`, `vendor/three.module.min.js`, `vendor/addons/` and the Barlow Condensed and Inter fonts from the previous version are no longer used by any page. They were not deleted because this session was asked not to run `rm`. They are not loaded, so they do not slow the page down; delete them whenever convenient.
+- The repo's top-level `404.html` (outside this folder) is still empty. GitHub Pages only serves the top-level one, so this site's `404.html` takes effect once the site moves to its own repo, or if it is copied to the top level.
+- The AceGuides shop link is still blank, so it stays hidden.
+- No price or "you only pay if..." line has been used; that wording is waiting for the owner's approval.

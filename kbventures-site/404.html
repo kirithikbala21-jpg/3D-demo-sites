@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Page not found: KB Ventures</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#F1ECE2">
+<script>
+  // A 404 page can be shown at any address, so point relative links back at the site folder:
+  // .../kbventures-site/ while the site lives in the 3D-demo-sites repo, or / once it has its own repo.
+  (function () {
+    var m = location.pathname.match(/^(.*\/kbventures-site\/)/);
+    document.write('<base href="' + (m ? m[1] : '/') + '">');
+  })();
+</script>
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body class="page-404">
+<header class="masthead">
+  <a class="wordmark" href="./">KB Ventures</a>
+  <nav class="nav" aria-label="Main">
+    <a href="./#businesses">What we run</a>
+    <a href="./#work">Demos</a>
+    <a href="./#contact">Contact</a>
+  </nav>
+</header>
+<main class="missing grid">
+  <p class="dateline">Error 404</p>
+  <h1 class="missing-title">This page didn&rsquo;t make it to <em>print.</em></h1>
+  <p class="missing-text">The address may have a typo, or the page has moved. Everything we have is on the home page.</p>
+  <p class="missing-links"><a class="link" href="./">Go to the home page</a> <a class="link" href="mailto:kb.ventures@outlook.com">Email us</a></p>
+</main>
+</body>
+</html>

@@ -1,4 +1,4 @@
-// Page behaviour: smooth scroll (Lenis), sticky-nav hairline, hero frame parallax, slow fade-ups, the concept-websites
+// Page behaviour: smooth scroll (Lenis), sticky-nav hairline, hero object parallax, slow fade-ups, the concept-websites
 // carousel (dots, arrow buttons, arrow keys, swipe), and the content that comes from site.config.json. The HTML already
 // holds the same content, so the page still works when this file or the config cannot load.
 (() => {
@@ -28,17 +28,16 @@
     target.focus({ preventScroll: true });
   });
 
-  /* ---------- Nav hairline once scrolled, and the hero frame's slow parallax ---------- */
-  const nav = $('#nav'), frame = $('#hero-frame');
+  /* ---------- Nav hairline once scrolled, and the hero object's slow parallax ---------- */
+  const nav = $('#nav'), stage = $('#stage');
   let ticking = false;
   const onScroll = () => {
     ticking = false;
     const y = window.scrollY;
     if (nav) nav.classList.toggle('is-scrolled', y > 8);
-    if (frame && !reduceMotion) {
+    if (stage && !reduceMotion) {
       const p = Math.min(1, y / Math.max(1, window.innerHeight)); // 0 at the top, 1 one screen down
-      frame.style.setProperty('--py', (p * -36).toFixed(1) + 'px'); // drifts up a little slower than the page
-      frame.style.setProperty('--tilt', ((window.innerWidth < 720 ? 4 : 7) * (1 - p)).toFixed(2) + 'deg'); // and straightens
+      stage.style.setProperty('--py', (p * 48).toFixed(1) + 'px'); // the object lags a little behind the page
     }
   };
   window.addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(onScroll); } }, { passive: true });

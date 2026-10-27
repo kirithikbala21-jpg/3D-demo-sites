@@ -1,36 +1,49 @@
-# Changes: KB Ventures redesign, dark and premium (27 October 2026)
+# Changes: KB Ventures, brushed metal and piano-black glass (27 October 2026)
 
-This replaces the paper-and-ink "proof sheet" version. The design system and the eight notes from the reference page (Revolut's Ultra plan page, used for mood only) are in `brand.md`. Nothing was copied from Revolut or any other company: no layout, text, logo, icon, font or image.
+This builds on the dark redesign from earlier the same day. The palette, copy, demo list and section order are unchanged. The owner replaced the earlier "no glow, no shiny metallic fills" rule with a shine brief; the new rules are in `brand.md` under "Light and shine".
 
 ## What changed
-- **Look:** a near-black page (`#0D0E12`), graphite cards (`#1A1C23`), platinum text, brushed-silver secondary text and a champagne-gold accent kept under 5% of the page. Gold is used only for the short line under the hero label, the Live/Starting dots, secondary-button borders on hover and links on hover.
-- **Type:** Geist (SIL Open Font License, self-hosted) at weight 500, tight line height and slight negative tracking. Hero headline `clamp(44px, 8vw, 96px)`, section headlines `clamp(34px, 6vw, 80px)`, 17–18px body text.
-- **Nav:** slim and sticky, with the KB Ventures wordmark and links to Businesses, Websites and Contact, plus a small "Get in touch" pill. On phones the text links fold away and the pill stays. A hairline appears under it once you scroll.
-- **Hero:** left-aligned label with a short gold line, the headline "We write study guides for students, and build websites for the shop down the road.", one line of copy, and a "See the websites" pill with a "Get in touch" outline pill. Below it, a large framed screenshot of the Iron & Ember gym demo is tilted back slightly and lit by one soft, wide, cool spotlight. A hairline catches the light on the frame's top edge. As you scroll, the frame drifts and straightens slowly. Nothing else on the page glows.
-- **What we run:** a centred "Two businesses. One standard." and two graphite cards (AceGuides: Live, KB Websites: Starting). Card text starts silver and brightens to platinum on hover or keyboard focus. The AceGuides link still only appears when `aceguidesShopUrl` is filled in.
-- **How KB Websites works:** a centred headline and the same short paragraph as before (free preview, you choose, we put it live).
-- **Concept websites:** a centred heading "Concept websites we built to show what's possible." with the concept-demo note under it. Then a sideways scroll-snap row of five cards (gym, barber, cafe, plumber, salon), each with the framed desktop screenshot, a phone frame over the bottom-right, the type, name, one line and an "Open demo" pill. Dots and previous/next buttons sit under the row. Swipe, trackpad, the arrow keys (with the row focused), Home/End, the dots and the buttons all work, and tabbing to each card's link brings it into view.
-- **Contact:** a centred large line and the email address as the main pill.
-- **Footer:** the "KB Ventures" wordmark is shown in full at every width (sized with `clamp()`, with enough line height and padding), with a small row of links below.
-- **Screenshots:** all ten retaken as one matching set: 1440x900 and 390x844, the clock frozen at Tuesday 27 October 2026 12:00 Melbourne time, banners hidden, saved as WebP at 1280x800 and 480x1039 (22–58 KB each). The browser and phone frames are drawn in CSS, so they are identical for all five. Every image has width, height and alt text.
-- **Motion:** slow fade-ups on scroll, the hero frame's parallax and Lenis smooth scrolling. All of it is off with reduced motion.
-- **New dark favicon, home-screen icon and share image (`og.jpg`)**, and the 404 page restyled to match.
-- `site.config.json`: same demos in the same order. The plumber-only `phone` and `aside` fields are gone, because every card now shows a phone frame.
+- **Background:** the flat black is now a layered surface:
+  - a deep blue-black base (`#090B11`);
+  - a soft cool silver-blue light pool behind the hero object, and a fainter one behind the demo row;
+  - a vignette toward the screen edges;
+  - a very fine film grain (a 96px tile, 3.5% opacity) laid over the page.
 
-## One change to the brief
-The brief asked for card text dimmed to silver at about 60% opacity. That measures 2.75:1 on graphite, under the 4.5:1 minimum the same brief sets. The dimmed state is therefore full silver (5.3:1), brightening to platinum (13.6:1) on hover or focus. It gives the same effect and stays readable.
+  With the contrast stretched 10x there is no visible banding; the grain breaks the gradient steps up.
+- **Hero, two columns on desktop:** the headline, line and buttons sit on the left (about 57%). On the right is a large 3D object that overlaps the column edge slightly, under the spotlight. On phones the text comes first and the object below it.
+- **Headline size:** your `clamp(40px, 6vw, 84px)` still wrapped to five or six lines beside the object at 1024–1440px, because four lines at 84px need an 840px column. So it is `clamp(40px, 5.2vw, 76px)`, which gives four lines at 1024, 1280, 1440 and 1920px and the same 40px on phones.
+- **The 3D object** (Three.js r160, self-hosted and pinned):
+  - a thin slab of brushed metal (anisotropic, clear-coated, high metalness, low roughness) with a piano-black glass face, a thin brushed-gold edge and the KB Ventures mark set into the glass;
+  - lit by a studio environment (soft light strips) plus a key and a cool rim light, with a soft shadow beneath;
+  - it turns and tilts slowly, leans gently toward the mouse or the phone's tilt, and a soft reflection sweeps across the glass every 9 seconds;
+  - the pixel ratio is capped at 2, and it pauses when off screen.
+- **Hero fallback:** a still render of the same object (`img/hero-object.webp`, 38 KB, transparent background, made with Playwright by `tools/render-hero-still.mjs`). It shows while the 3D loads, and instead of it without WebGL, on Data Saver, on low-powered phones and with reduced motion.
+- **No demo screenshot on the object:** the Iron & Ember screenshot left the hero as asked, and now appears only in the first card of the demo row. The object's face is plain piano-black glass with the mark, instead of carrying a screenshot.
+- **Shine level, compared:** I rendered two shine levels side by side. "More" pushed the metal edge to near-white chrome and started to look like a toy, so the quieter "less" version ships. `?shine=more` still shows the other one.
+- **Cards (What we run and the demo cards):** dark glossy panels with:
+  - a 1px bright top edge fading to the sides;
+  - a faint diagonal sheen;
+  - a slightly lighter inner border and a soft drop shadow;
+  - one slow light sweep across the card on hover. It does not repeat or pulse.
+
+  Card text still brightens from silver to platinum on hover or focus.
+- **Screenshot frames:** polished dark-metal bezels with a bright top edge, metal window dots and a soft reflection across the glass, the same for the browser and the phone frames.
+- **Headlines:** platinum with a light-to-silver vertical fall-off of about 10%, repeated on every line. No coloured gradients.
+- **Primary pills:** polished platinum with a fine top highlight and a highlight that slides across once on hover. Secondary pills and the carousel arrows are dark glass with a faint highlight; their borders still turn gold on hover.
+- **Gold** stays rare: the hairline under the hero label, the Live/Starting dots (now with a slight polished-metal look), hover borders and links, and the thin edge and hairline on the 3D object.
+- **Nav:** smoked glass (dark and slightly blurred) instead of flat black. On desktop the nav, hero and footer now share one grid, so their left edges line up.
 
 ## Checked
-- At 360, 390, 768, 1024 and 1440px, at 125% zoom and with reduced motion: no sideways scrolling, no overlapping text, no text under 12px, every tap target at least 44px, every text colour at least 4.5:1 (3:1 for large text), no broken images, every in-page link has a target, no console errors, no requests outside the site.
-- The footer wordmark fits inside its box at every one of those widths.
-- Page weight is about 80–175 KB depending on width; it loads in under 0.1 s from a local server.
-- Carousel tested with the arrow keys, Home/End, dots, buttons and Tab, plus hover states on cards and pills.
-- Two bugs found and fixed during the checks:
-  - Screen-reader text inside the carousel's links was positioned against the page, so the whole page scrolled sideways by several thousand pixels.
-  - The spotlight stuck out 30px past the screen edge.
+- At 360, 390, 768, 1024 and 1440px, at 125% zoom and with reduced motion: no sideways scrolling, no overlapping text, no text under 12px, all tap targets at least 44px, and every text colour at least 4.5:1.
+  - Gradient headlines were checked at their darkest stop, `#C3C7D0`.
+  - Primary pill text was checked against the pill's darkest platinum, `#CBCED6`.
+- No broken images, every in-page link has a target, no console errors, and no requests outside the site.
+- The footer wordmark fits in full at every one of those widths.
+- One bug found and fixed: the second light pool made the page scroll sideways by up to 388px.
+- Weight: about 50–190 KB without the 3D. With it, about 760–790 KB from the local server, mostly Three.js, which GitHub Pages compresses. The 3D only loads after the page has finished loading and the browser is idle, so the text and still image appear first.
 
 ## Left as they were, and uncertain points
-- Files from earlier versions that no page uses any more: `hero.js`, `scene.js`, `vendor/three.module.min.js`, `vendor/addons/`, and the Barlow Condensed, Inter, Instrument Serif and Schibsted Grotesk fonts. They were not deleted because this session was asked not to run `rm`. They are never loaded, so they do not slow the page.
-- The repo's top-level `404.html` (outside this folder) is still empty; this site's `404.html` takes effect once the site has its own repo.
-- The AceGuides shop link is still blank, so the AceGuides card has no link.
-- The live demo links could not be opened from this environment, so they were checked against the demo folders in the repo instead.
+- The 3D was checked in headless Chromium with software rendering. Real GPUs render it more smoothly, but it has not been looked at on a physical phone.
+- Phone tilt works on Android. iPhones ask for permission before a site can read motion, so on an iPhone the object only does its idle movement.
+- Files no page uses any more were not deleted, because this session was asked not to run `rm`: the Barlow Condensed, Inter, Instrument Serif and Schibsted Grotesk fonts. (`hero.js`, `scene.js`, Three.js and `RoomEnvironment` are in use again.)
+- The repo's top-level `404.html` is still empty, and the AceGuides shop link is still blank.

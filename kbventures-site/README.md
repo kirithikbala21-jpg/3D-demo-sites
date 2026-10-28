@@ -11,8 +11,9 @@ Live: https://kirithikbala21-jpg.github.io/3D-demo-sites/kbventures-site/
 - `img/hero-object.webp`: the still of the same object, used while the 3D loads and whenever it can't run. Rebuild it with `tools/render-hero-still.mjs` after changing `scene.js`.
 - `img/grain.png`: the film-grain tile laid over the page at 3.5%
 - `404.html`: page-not-found page (works both in this folder and at the root of its own repo)
-- `img/`: demo screenshots as one matching set (`<demo>-desktop.webp` 1280x800 from a 1440x900 window, `<demo>-mobile.webp` 480x1039 from a 390x844 phone). The browser and phone frames are drawn in CSS so they are identical for every demo.
-- `tools/screenshot-demos.mjs`: rebuilds those screenshots; `tools/render-hero-still.mjs`: rebuilds the hero still (instructions at the top of each file)
+- `img/`: demo screenshots as one matching set (`<demo>-desktop.webp` 1280x800 from a 1440x900 window, `<demo>-tall.webp` 1280x1956 from the top 1440x2200 of the page, which scrolls slowly inside the browser frame on hover or keyboard focus, and `<demo>-mobile.webp` 480x1039 from a 390x844 phone). The browser and phone frames are drawn in CSS so they are identical for every demo.
+- `img/aceguides/`: AceGuides study-guide covers (720x960 WebP, 21 of them: Year 10, VCE Units 1 & 2 and Units 3 & 4). The AceGuides card shows the five listed in `businesses.aceguides.covers`.
+- `tools/screenshot-demos.mjs`: rebuilds the demo screenshots; `tools/render-hero-still.mjs`: rebuilds the hero still; `tools/make-covers.py`: rebuilds the covers in the site font (needs Python with `playwright` and `pillow`; only WebP files are saved, never PNGs). Instructions are at the top of each file.
 - Logo files in `img/` (use these as given; don't redraw them):
   - `kb-wordmark.svg`: the full KB Ventures logo (silver KB, gold line, VENTURES). Used in the footer and the share image. The artwork sits in the middle third of the file, so give it room.
   - `kb-wordmark-white.svg` and `kb-wordmark-black.svg`: one-colour versions for print or light backgrounds.
@@ -24,8 +25,8 @@ Live: https://kirithikbala21-jpg.github.io/3D-demo-sites/kbventures-site/
 
 ## Add a website demo
 1. Open `site.config.json` and add one entry to `demos`:
-   `{ "type": "Dentist", "name": "Real name from that demo's site.config.json", "line": "One line from its brand.md or config", "url": "https://.../the-demo/", "desktop": "img/dentist-desktop.webp", "mobile": "img/dentist-mobile.webp" }`
-2. Add the demo to `DEMOS` in `tools/screenshot-demos.mjs` and run it to make the two images.
+   `{ "type": "Dentist", "name": "Real name from that demo's site.config.json", "line": "One line from its brand.md or config", "url": "https://.../the-demo/", "desktop": "img/dentist-desktop.webp", "mobile": "img/dentist-mobile.webp", "tall": "img/dentist-tall.webp" }`
+2. Add the demo to `DEMOS` in `tools/screenshot-demos.mjs` and run it to make the three images.
 3. Do not invent names or descriptions: copy them from the demo itself. Leave out real businesses and unfinished sites (parts-store-demo and the-one-barber-demo are left out on purpose).
 4. Also add the same card to the `track` list in `index.html`. `main.js` rebuilds the list from the config, but the HTML copy is what shows when the config cannot load (for example if you open the file straight from disk).
 
@@ -36,6 +37,12 @@ The carousel builds its dots from however many cards there are, so nothing else 
 - `instagram`, `linkedin`: full `https://` addresses; each adds a footer link (and a `sameAs` entry in the structured data).
 - `abn`: shown in the footer as "ABN …".
 - `testimonials`: a list of `{ "quote": "...", "name": "...", "business": "..." }`. Only real quotes, word for word, with the person's real name. The section stays hidden while the list is empty, and any entry without a quote or a name is skipped.
+
+## Other config fields
+- `how.steps`: the three steps of "How it works" (title and one line each). Keep them to three; each has its own line icon in `index.html`.
+- `businesses.aceguides.covers`: up to five `{ "src": "img/aceguides/....webp", "alt": "..." }` covers for the fanned stack. No prices, ratings or labels on them.
+- `businesses.kbwebsites.preview`: the screenshot in the KB Websites card (`src` and `alt`).
+- `footer.vceTrademark`: the VCE trademark line. Keep it while the covers mention VCE.
 
 Never put invented facts, reviews, prices or numbers in the config.
 

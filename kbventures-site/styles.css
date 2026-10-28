@@ -202,18 +202,19 @@ main { overflow-x: clip; }
 .biz-content { flex: 1; display: flex; flex-direction: column; justify-content: space-between; gap: 24px; padding: 24px 24px 20px; }
 @media (min-width: 1024px) { .biz-content { padding: 28px 36px 24px; } }
 /* AceGuides: five covers fanned like a hand of cards, lit from above */
-.cover-stack { position: absolute; left: 50%; bottom: -34px; width: 0; height: 0; transform: translate3d(0, var(--px, 0px), 0) rotateX(10deg); transform-style: preserve-3d; }
-.cover { position: absolute; left: 0; bottom: 0; width: clamp(104px, 11vw, 138px); height: auto; aspect-ratio: 3 / 4; border-radius: 8px; border: 1px solid rgba(255, 255, 255, .14); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .35), 0 2px 4px rgba(0, 0, 0, .4), 0 22px 40px -14px rgba(0, 0, 0, .9); transform-origin: 50% 120%; transform: translateX(-50%) translateX(var(--x)) rotate(var(--r)) translateY(var(--y)); transition: transform var(--slow) var(--ease); background: #101217; }
-.cover:nth-child(1) { --x: -132%; --r: -14deg; --y: 22px; z-index: 1; }
-.cover:nth-child(2) { --x: -68%; --r: -7deg; --y: 6px; z-index: 2; }
+.cover-stack { position: absolute; left: 50%; bottom: 30px; width: 0; height: 0; transform: translate3d(0, var(--px, 0px), 0) rotateX(10deg); transform-style: preserve-3d; }
+.cover { position: absolute; left: 0; bottom: 0; max-width: none; width: clamp(78px, 7.6vw, 108px); height: auto; aspect-ratio: 3 / 4; border-radius: 8px; border: 1px solid rgba(255, 255, 255, .14); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .35), 0 2px 4px rgba(0, 0, 0, .4), 0 22px 40px -14px rgba(0, 0, 0, .9); transform-origin: 50% 120%; transform: translateX(-50%) translateX(var(--x)) rotate(var(--r)) translateY(var(--y)); transition: transform var(--slow) var(--ease); background: #101217; }
+.cover:nth-child(1) { --x: -150%; --r: -13deg; --y: 18px; z-index: 1; }
+.cover:nth-child(2) { --x: -76%; --r: -6.5deg; --y: 5px; z-index: 2; }
 .cover:nth-child(3) { --x: 0%; --r: 0deg; --y: 0px; z-index: 5; }
-.cover:nth-child(4) { --x: 68%; --r: 7deg; --y: 6px; z-index: 4; }
-.cover:nth-child(5) { --x: 132%; --r: 14deg; --y: 22px; z-index: 3; }
+.cover:nth-child(4) { --x: 76%; --r: 6.5deg; --y: 5px; z-index: 4; }
+.cover:nth-child(5) { --x: 150%; --r: 13deg; --y: 18px; z-index: 3; }
 .cover:nth-child(n+6) { display: none; }
-.biz:hover .cover:nth-child(1) { --x: -150%; --r: -17deg; }
-.biz:hover .cover:nth-child(2) { --x: -78%; --r: -8.5deg; }
-.biz:hover .cover:nth-child(4) { --x: 78%; --r: 8.5deg; }
-.biz:hover .cover:nth-child(5) { --x: 150%; --r: 17deg; }
+@media (max-width: 599px) { .cover { width: 64px; } .cover-stack { bottom: 36px; } }
+.biz:hover .cover:nth-child(1) { --x: -164%; --r: -15deg; }
+.biz:hover .cover:nth-child(2) { --x: -84%; --r: -7.5deg; }
+.biz:hover .cover:nth-child(4) { --x: 84%; --r: 7.5deg; }
+.biz:hover .cover:nth-child(5) { --x: 164%; --r: 15deg; }
 /* KB Websites: one framed site floating in the panel */
 .float-shot { position: absolute; left: 50%; bottom: -40px; width: min(84%, 420px); transform: translate3d(-50%, var(--px, 0px), 0) rotateX(12deg) rotateZ(-2deg); transform-origin: 50% 100%; transition: transform var(--slow) var(--ease); }
 .biz:hover .float-shot { transform: translate3d(-50%, calc(var(--px, 0px) - 8px), 0) rotateX(8deg) rotateZ(-1deg); }

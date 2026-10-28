@@ -1,4 +1,54 @@
-# Changes: KB Ventures logo (28 October 2026)
+# Changes: richer without clutter (28 October 2026)
+
+The logo work (nav mark, footer logo, favicons, share image) is untouched. No facts, prices, reviews or numbers were invented.
+
+## AceGuides covers
+- New `tools/make-covers.py` (the supplied script) makes 21 study-guide covers in `img/aceguides/`: Year 10, VCE Units 1 & 2 and VCE Units 3 & 4. Each is 720x960 WebP at quality 82, 256 KB for all 21. The full-size PNGs go to a temporary folder and are never saved in the repo.
+- The covers use the site's own font (Geist, embedded in the script) instead of Inter, so they match the page.
+- The footer now says: "VCE® is a registered trademark of the VCAA."
+
+## Easier to read
+- Lead paragraphs and card text are now `#B3B8C4`; small labels are `#9CA2B0`.
+- The contact paragraph and the email button are always fully visible.
+- Fade-ins are fail-safe: everything shows without JavaScript, every fade ends fully visible, each plays only once, and anything still hidden after 2.5 seconds is shown anyway.
+
+## Visuals
+- **What we run:** each card has a picture panel above its text.
+  - AceGuides: a fanned 3D stack of five covers (Year 10 Maths, Year 10 Science, VCE Biology 3&4, VCE English 3&4, VCE Maths Methods 3&4). They spread a little on hover and move slightly as you scroll. The alt text says what each cover is.
+  - KB Websites: a floating framed screenshot of the Brass & Blade concept site.
+  - No prices, ratings or labels are added to either.
+- **How it works:** three steps (Preview, Feedback, Go live), each with a thin line icon and the existing wording. A hairline joins them and draws itself as you scroll (side by side on desktop, top to bottom on phones).
+- **Concept websites:** the browser frame is about 30% bigger. All screenshots were retaken with the clock frozen, plus a new tall 1440x2200 shot of each demo. When you hover over a card or tab to it, the tall shot scrolls slowly down inside the frame, then back again.
+
+## Depth
+- Section padding is 96px on desktop and 56px on phones.
+- Between sections there is a faint light band and a hairline with a small gold diamond in the middle.
+- A huge outlined "KB" at about 3.5% opacity sits behind What we run and Contact, and drifts slightly with scroll.
+- Sections rise 16px over 700ms as they appear. The nav hairline appears once you scroll. One easing curve is used everywhere.
+
+## Hero
+- The 3D card is about 15% bigger and tilts gently as you scroll down. VENTURES is bigger and brighter. The still image was re-rendered to match.
+- Two or three slow light specks drift near the card.
+
+## Contact finale
+- A larger centred heading, a bigger email button with a slow light sweep, and a faint spotlight behind them.
+
+## Reduced motion
+- Parallax, the light specks, the slow screenshot scroll and the line drawing are all off; the line simply shows in full.
+
+## Checked
+- **Full page** at 360, 390, 768, 1024, 1280, 1440 and 1920px, at 125% zoom, with reduced motion and with WebGL off:
+  - no sideways scroll, overlaps or text under 11px;
+  - contrast at least 4.5:1 and tap targets at least 44px;
+  - no broken images, layout shift 0, no errors and no outside requests.
+- **Keyboard only:** every link and button can be reached in order with a visible focus ring, the phone menu traps focus and closes on Escape, and focusing a demo card starts its slow scroll.
+- **JavaScript off:** everything is visible; the covers have width, height, alt text and lazy loading.
+- **Screenshots** of every section at 1440 and 390px were looked at. The cover fan was too small at first and was clipped at 360px; both are fixed.
+- **Lighthouse:** desktop 100 / 100 / 100 / 100, mobile 97 / 100 / 100 / 100.
+
+---
+
+# Earlier: KB Ventures logo (28 October 2026)
 
 Everything else is unchanged.
 

@@ -17,7 +17,9 @@ Inspired by the *feel* of a premium dark product page (Revolut's Ultra plan page
 --bg-obsidian:    #0D0E12   page
 --bg-graphite:    #1A1C23   cards, frames
 --text-platinum:  #E4E6ED   headings, primary pill (13.6:1 on graphite)
---silver-brushed: #8A8F9E   labels, secondary text (6.0:1 on obsidian, 5.3:1 on graphite)
+--silver-brushed: #8A8F9E   borders, quiet details
+--text-2:         #B3B8C4   leads, card text, footer text
+--label:          #9CA2B0   small uppercase labels, nav and footer links
 --gold-champagne: #D4AF37   accent, under 5% of the page
 --border-premium: 1px solid rgba(138,143,158,.2)
 --radius-card:    20px
@@ -33,8 +35,16 @@ Inspired by the *feel* of a premium dark product page (Revolut's Ultra plan page
 - **Buttons:** small pills, 40px to the eye and 44px to the finger (a 2px transparent border), 14px text, 200ms hover, platinum focus ring. Primary is polished platinum with obsidian text; secondary is dark glass with a silver outline that turns gold on hover.
 - **Gold, used only for:** the short hairline under the hero label, secondary-button borders on hover, links on hover, the Live/Starting dots, and the single fine brushed-gold line on the hero card's outer bevel.
 - **Cards:** glossy graphite panels (see Light and shine), 1px silver border, 20px radius. Secondary text starts dimmed and brightens to platinum on hover or focus. (The brief asked for silver at about 60% opacity, but that measures 2.75:1 on graphite, under the 4.5:1 minimum. So the dimmed state is full silver at 5.3:1 and the hover state is platinum: the same effect, still readable.)
-- **Layout:** one container (1120px, 24px gutters on phones, 32px from 720px) for nav, hero, cards and footer. Sections 112px apart on desktop, 64px on phones. The hero is about 88vh with the text (about two-thirds wide, so the headline fits in 3 lines) and the 3D card on one centreline; they stack on phones. Every later section is centred. One call to action per area: "See the websites" in the hero, "Get in touch" in the nav and the contact section.
+- **Layout:** one container (1120px, 24px gutters on phones, 32px from 720px) for nav, hero, cards and footer. Section padding 96px on desktop and 56px on phones. The hero is about 88vh with the text (about two-thirds wide, so the headline fits in 3 lines) and the 3D card on one centreline; they stack on phones. Every later section is centred. One call to action per area: "See the websites" in the hero, "Get in touch" in the nav and the contact section.
 - **Nav:** 64px, sticky, smoked glass (solid fallback without backdrop-filter), hairline once scrolled, the active section's link underlined. On phones: a menu button and a full-screen menu with large links that closes on link tap and Escape.
 - **Motion:** one easing curve (`cubic-bezier(.22, .61, .36, 1)`) everywhere. Fade-ups 700ms with a 16px rise; the card drifts slowly, follows the pointer gently, and a narrow light streak crosses its face every 7 seconds. All off with `prefers-reduced-motion`.
 - **Contrast:** at least 4.5:1 for all text.
 - **Logo (added 28 October 2026):** `img/kb-wordmark.svg` (silver KB, a fine gold line, VENTURES in silver) and `img/kb-favicon.svg` (the KB mark in a rounded dark square with a thin gold edge). They are used exactly as supplied, never redrawn or recoloured, apart from the supplied one-colour white and black versions. The nav uses the 32px mark next to the name; the footer uses the full wordmark above a hairline, replacing the big text wordmark.
+- **Richness without clutter (28 October 2026):** depth comes from real things, never invented content.
+  - Each "What we run" card has a visual panel: the AceGuides card shows a fanned 3D stack of five real cover designs; the KB Websites card shows a floating framed screenshot of a concept site. Both move a little with scroll (parallax). No prices, ratings or badges on them.
+  - "How it works" is three steps, each with a thin line icon, joined by a hairline that draws as you scroll.
+  - Concept-website frames are about 30% larger, and a tall screenshot scrolls slowly inside the frame on hover or keyboard focus.
+  - Between sections: a faint light band and a hairline with a small gold diamond in the middle. Behind What we run and Contact: a huge outlined "KB" at about 3.5% opacity that drifts slightly with scroll.
+  - Hero: the card is about 15% bigger and tilts gently as you scroll; VENTURES is bigger and brighter; two or three slow light specks drift nearby.
+  - Contact is the finale: a large centred line, a larger email pill with a slow light sweep, and a faint spotlight.
+  - Reveals are fail-safe: everything is visible without JavaScript, every reveal ends at full opacity and plays once. With reduced motion, the parallax, specks, slow scroll and line drawing are all off.

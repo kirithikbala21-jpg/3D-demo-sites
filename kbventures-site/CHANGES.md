@@ -1,4 +1,17 @@
-# Changes: the 1:13 pm hero card is back (28 October 2026)
+# Changes: the website business is now Shopfront (29 October 2026)
+
+- **New name:** the website-building business is renamed "Shopfront" everywhere in this folder. That covers the config, the Home and Businesses cards, the Businesses dropdown, the footer list, the FAQ answers (and their structured data), the contact form's "What's it about?" list, the meta descriptions, the legal pages, the README, the brand notes, code comments and earlier entries in this file.
+- **Kept the same:** its description, "coming-soon" status, empty URL and "See demos" label. AceGuides is untouched. KB Ventures stays the trading name on the legal pages.
+- **Legal pages:** the terms' "Website services (Shopfront)" section, the brand list and descriptions are updated. "Last updated" is now 29 October 2026, and the sitemap dates for the changed pages match.
+- **Contact form:** `contact.html?topic=shopfront` now preselects Shopfront.
+- **No URLs changed:** no file or link used the old name, so nothing else needed updating.
+- **Checked:**
+  - a search for the old name in any spelling finds nothing in `kbventures-site/`;
+  - Playwright at 1440, 768 and 390 on every page: no console errors and no broken links. The dropdown, footer and contact topics show Shopfront, and the old name appears in no rendered page.
+
+---
+
+# Earlier: the 1:13 pm hero card is back (28 October 2026)
 
 - **Restored from commit dcec837** (11:49 am Melbourne time on 28 Oct, the card that was live at about 1:13 pm; the next card change, 1397f4a, came at 1:28 pm): `scene.js` and the still image. That is the slim dark glass card with a slim bevelled metal edge, one fine brushed-gold line, the studio lighting and environment map, the soft light in the upper right of the face, the raised polished KB and VENTURES under it, and the idle light sweep that crosses the face every few seconds on its own (it was never hover-only).
 - **Undone:** every later card version: the 7:47 pm silver card, the sleek hairline card, the 10:04 pm purple card with the chip, and the brushed metal membership card.
@@ -150,7 +163,7 @@ Also checked:
 - every internal link works;
 - the accordions work by mouse and keyboard;
 - the FAQ structured data matches the visible text;
-- `?topic=partnership`, `aceguides`, `kb-websites` and no topic all preselect correctly;
+- `?topic=partnership`, `aceguides`, `shopfront` and no topic all preselect correctly;
 - the dropdown works, and the Businesses label is a link;
 - the phone menu works, including focus and Escape;
 - the bar hides and returns on scroll;
@@ -239,7 +252,7 @@ Also checked:
   - **Refunds:** instant digital delivery; a fix or full refund for faulty, won't-open or not-as-described files; a reply within 3 business days; no change-of-mind refunds after download; Australian Consumer Law rights; how to ask.
 
 ## Config
-- New `legal` block (exactly as given), plus `legalBaseUrl` so the AceGuides and KB Websites sites can link to these same pages. The labels (Privacy, Terms, Refunds, Last updated, In plain English) are in `footer`.
+- New `legal` block (exactly as given), plus `legalBaseUrl` so the AceGuides and Shopfront sites can link to these same pages. The labels (Privacy, Terms, Refunds, Last updated, In plain English) are in `footer`.
 - The ABN now lives in `legal.abn` (the old top-level `abn` field is gone). While it is empty, no ABN line appears anywhere.
 - `legal/legal.js` fills the trading name, brands, email, state, ABN and date from the config.
 
@@ -271,7 +284,7 @@ The logo work (nav mark, footer logo, favicons, share image) is untouched. No fa
 ## Visuals
 - **What we run:** each card has a picture panel above its text.
   - AceGuides: a fanned 3D stack of five covers (Year 10 Maths, Year 10 Science, VCE Biology 3&4, VCE English 3&4, VCE Maths Methods 3&4). They spread a little on hover and move slightly as you scroll. The alt text says what each cover is.
-  - KB Websites: a floating framed screenshot of the Brass & Blade concept site.
+  - Shopfront: a floating framed screenshot of the Brass & Blade concept site.
   - No prices, ratings or labels are added to either.
 - **How it works:** three steps (Preview, Feedback, Go live), each with a thin line icon and the existing wording. A hairline joins them and draws itself as you scroll (side by side on desktop, top to bottom on phones).
 - **Concept websites:** the browser frame is about 30% bigger. All screenshots were retaken with the clock frozen, plus a new tall 1440x2200 shot of each demo. When you hover over a card or tab to it, the tall shot scrolls slowly down inside the frame, then back again.

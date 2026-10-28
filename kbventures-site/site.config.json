@@ -38,7 +38,7 @@
       ]
     },
     {
-      "name": "KB Websites",
+      "name": "Shopfront",
       "description": "Fast, good-looking websites for local businesses, with online booking, reviews and maps.",
       "status": "coming-soon",
       "url": "",
@@ -61,11 +61,11 @@
     "tradingName": "KB Ventures",
     "brands": [
       "AceGuides",
-      "KB Websites"
+      "Shopfront"
     ],
     "contactEmail": "kb.ventures@outlook.com",
     "state": "Victoria, Australia",
-    "lastUpdated": "28 October 2026"
+    "lastUpdated": "29 October 2026"
   },
   "nav": {
     "businesses": "Businesses",
@@ -165,7 +165,7 @@
     "topics": [
       "General question",
       "AceGuides",
-      "KB Websites",
+      "Shopfront",
       "Partnership",
       "Other"
     ],
@@ -242,7 +242,7 @@
     },
     {
       "q": "Which business should I contact about what?",
-      "a": "AceGuides is for study guides for Year 10 and VCE students. KB Websites is for websites for local businesses. If you are not sure, choose General question on the contact form and we will point you the right way.",
+      "a": "AceGuides is for study guides for Year 10 and VCE students. Shopfront is for websites for local businesses. If you are not sure, choose General question on the contact form and we will point you the right way.",
       "links": [
         {
           "text": "contact form",

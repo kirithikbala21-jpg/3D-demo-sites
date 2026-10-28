@@ -1,4 +1,46 @@
-# Changes: KB Ventures, brushed metal and piano-black glass (27 October 2026)
+# Changes: KB Ventures, a real metal-and-glass card (28 October 2026)
+
+The layout, copy, footer, buttons and demo row are unchanged. This round fixes the three things that still looked flat.
+
+## 1. Hero object: a card, not a framed screen
+- **Shape:** rebuilt as a thin card with corners rounded to 6% of its width. The front is deep black glass all the way to a slim bevelled metal edge, so the thick silver border and the gold inner outline are gone.
+- **Edge lighting:** the bevel catches a bright highlight along the top and falls darker at the bottom. One fine brushed-gold line runs around the outer bevel only.
+- **Face:** deep black glass with a subtle vertical gradient over fine horizontal brushing, under a clear coat. A wide, soft reflection band sweeps across it every 7 seconds.
+- **Mark:** "KB" is raised polished metal, built as real 3D letters with a bevelled top edge that catches the light and a soft shadow in the glass beneath. "VENTURES" sits below in metallic foil.
+- **Lighting:** a small studio built into the environment map, with three bright light strips (overhead, left, back-right) and a soft panel above the viewer. The glass and bevels show real specular highlights instead of plain grey.
+- **Pose and motion:** tilted about 15 degrees back and 16 degrees sideways, in real perspective. It drifts slowly, leans gently toward the mouse (or the phone's tilt on Android), and has a soft contact shadow and a faint mirror image beneath it that fades into the page.
+- **Still fallback:** `img/hero-object.webp` was re-rendered from the same scene, so it matches the live 3D. It shows while the 3D loads, without WebGL, on Data Saver, on low-powered phones and with reduced motion.
+- **Compared with the old object:** side by side, the old one read as a TV in a silver frame and the new one as a real metal card, so the new one ships. It took three lighting passes before the raised mark read as polished metal rather than dark grey.
+
+## 2. Background with depth
+- A deep blue-black base with a faint light from the top of the screen.
+- Three soft cool light pools, behind the hero object, behind the demo row and behind the contact section.
+- A slightly lighter band at the horizon of each section. It straddles the section edge and fades out on both sides, so there is no seam.
+- A vignette at the screen edges and a 3.5% film grain over everything.
+
+## 3. Glossier cards
+The "What we run" and demo cards now have a brighter 1px top edge fading to the sides, a stronger diagonal sheen, a lighter inner border and a soft shadow underneath. On hover, one slow light sweep passes across once, with no pulsing or blinking.
+
+## Checked
+- At 360, 390, 768, 1024 and 1440px, at 125% zoom and with reduced motion: no sideways scrolling, no overlapping text, no text under 12px, all tap targets at least 44px, all text at least 4.5:1, no broken images, no console errors, and no requests outside the site.
+- The footer wordmark fits in full at every one of those widths.
+- Carousel keys, dots and buttons, card brightening on hover and gold pill borders all still work.
+- Fixed along the way:
+  - a dark "floor" rectangle that showed under the object (replaced by a soft CSS fade);
+  - a hard seam where each section's horizon band ended;
+  - a syntax slip that briefly broke the 3D before release.
+- **Banding:** with the contrast stretched 14x, the darkest gradients show faint contour steps under the grain. At normal brightness, or on a bright phone, they are far below visible.
+- **Weight:** about 40–110 KB without the 3D, and about 0.7–0.8 MB with it from the local server (mostly Three.js, which GitHub Pages compresses). The 3D loads only after the page is ready.
+
+## Left as they were
+- The 3D was checked in headless Chromium with software rendering, not on a physical phone or GPU.
+- iPhones need a permission prompt for tilt, so there the card only drifts.
+- Unused files still in the folder, because this session may not run `rm`: the Barlow Condensed, Inter, Instrument Serif and Schibsted Grotesk fonts, and `vendor/addons/` (RoomEnvironment, replaced by the custom studio).
+- The repo's top-level `404.html` is still empty, and the AceGuides shop link is still blank.
+
+---
+
+# Earlier: brushed metal and piano-black glass (27 October 2026)
 
 This builds on the dark redesign from earlier the same day. The palette, copy, demo list and section order are unchanged. The owner replaced the earlier "no glow, no shiny metallic fills" rule with a shine brief; the new rules are in `brand.md` under "Light and shine".
 

@@ -1,6 +1,6 @@
 // Hero object: a pre-rendered still (img/hero-object.webp) is in the page from the start. The live Three.js version
 // fades in over it once loaded, but only when WebGL works, the visitor hasn't asked for reduced motion, Data Saver is off
-// and the device isn't a low-powered phone. Testing aids: ?3d=on forces 3D, ?3d=off keeps the still, ?shine=more|less.
+// and the device isn't a low-powered phone. Testing aids: ?3d=on forces 3D, ?3d=off keeps the still.
 const stage = document.getElementById('stage'), canvas = document.getElementById('scene');
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const q = new URLSearchParams(location.search);
@@ -27,7 +27,7 @@ if (stage && canvas) {
     loaded.then(idle)
       .then(() => (document.fonts ? document.fonts.ready : null)) // the mark on the glass uses Geist
       .then(() => import('./scene.js'))
-      .then((m) => m.initScene(canvas, { lowEnd, shine: q.get('shine') || 'less', onLost: () => fail(new Error('context lost')) }))
+      .then((m) => m.initScene(canvas, { lowEnd, onLost: () => fail(new Error('context lost')) }))
       .then((h) => {
         clearTimeout(timer);
         if (done) { h.dispose(); return; }

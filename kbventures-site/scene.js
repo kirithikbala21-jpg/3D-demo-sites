@@ -2,7 +2,8 @@
 // one fine brushed-gold line around the outer bevel and a raised, polished-metal KB mark. Lit by a small studio
 // (three bright light strips baked into the environment map) so the glass and bevels carry real specular highlights.
 // It floats in perspective with a slow drift, leans toward the pointer or the phone's tilt, and a wide soft reflection
-// sweeps across the face every few seconds. A contact shadow and a faint mirror image sit beneath it. Three.js r160.
+// sweeps across the face every few seconds. A contact shadow and a faint mirror image sit beneath it; the canvas fades
+// out at the bottom with a CSS mask so the mirror image dissolves into the page. Three.js r160.
 import * as THREE from 'three';
 
 const W = 3.2, H = 2.02, D = 0.05;   // a card's proportions, thin
@@ -166,15 +167,9 @@ export function initScene(canvas, { lowEnd = false, onLost = () => {} } = {}) {
   scene.add(shadow);
   const mirror = card.clone(true);
   mirror.traverse((o) => { if (o.material) { o.material = Array.isArray(o.material) ? o.material.map((m) => fade(m)) : fade(o.material); } });
-  function fade(m) { const c = m.clone(); c.transparent = true; c.opacity = (m.opacity ?? 1) * 0.1; c.depthWrite = false; return c; }
+  // faint; the canvas itself fades out at the bottom (CSS mask)
+  function fade(m) { const c = m.clone(); c.transparent = true; c.opacity = (m.opacity ?? 1) * 0.09; c.depthWrite = false; return c; }
   scene.add(mirror);
-  // a floor-coloured veil in front of the mirror image, so it fades out downward
-  const veil = new THREE.Mesh(new THREE.PlaneGeometry(9, 3.4), new THREE.MeshBasicMaterial({
-    map: canvasTexture(8, 256, (g, w, h) => { const grd = g.createLinearGradient(0, 0, 0, h); grd.addColorStop(0, 'rgba(9,11,17,0)'); grd.addColorStop(0.35, 'rgba(9,11,17,.75)'); grd.addColorStop(1, 'rgba(9,11,17,1)'); g.fillStyle = grd; g.fillRect(0, 0, w, h); }),
-    transparent: true, depthWrite: false, toneMapped: false,
-  }));
-  veil.position.set(0, FLOOR - 1.7, 1.4);
-  scene.add(veil);
 
   // Rest pose: tilted about 15 degrees back and 16 degrees sideways (also the pose of img/hero-object.webp)
   const REST = { x: -0.27, y: -0.28, z: 0.06 };

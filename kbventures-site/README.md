@@ -1,64 +1,63 @@
 # KB Ventures main site
 
-One page (`index.html`) plus a 404 page, in plain HTML, CSS and JS. No build step, no trackers, no CDNs: the fonts and Lenis smooth scroll are copied into this folder. The design system (colours, type, spacing, rules) and the notes from the reference page are in `brand.md`.
+The company "lobby": Home, About, Contact, legal pages and a 404 page, in plain HTML, CSS and JS. No build step, no trackers, no CDNs: the fonts and Lenis smooth scroll are copied into this folder. The design system (colours, type, spacing, rules) and the notes from the reference page are in `brand.md`.
 
 Live: https://kirithikbala21-jpg.github.io/3D-demo-sites/kbventures-site/
 
+## Pages
+- `index.html`: Home (hero, business cards, About, a short contact section)
+- `about.html`, `contact.html` (the contact form), `404.html`
+- `legal/privacy.html`, `legal/terms.html`, `legal/refunds.html`
+
 ## Files
-- `site.config.json`: the one file to edit. It holds **all the page text** (hero, labels, cards, contact, footer, page title and description), the email and location, the demo list and note, and optional fields (see below).
-- `index.html`, `styles.css`, `main.js` (smooth scroll that stops below the sticky nav, active nav link, phone menu, the hero card's parallax, slow fade-ups, the concept-websites carousel, missing-image handling, and all text from the config; every text element is marked `data-c="path.in.config"`)
-- `hero.js` and `scene.js`: the 3D metal-and-glass card in the hero (Three.js). It only runs with a real graphics card; reduced motion, Data Saver, low-powered phones and software WebGL get the still image. `?3d=off` shows the still image, `?3d=on` forces 3D.
-- `img/hero-object.webp`: the still of the same object, used while the 3D loads and whenever it can't run. Rebuild it with `tools/render-hero-still.mjs` after changing `scene.js`.
-- `img/grain.png`: the film-grain tile laid over the page at 3.5%
-- `legal/privacy.html`, `legal/terms.html`, `legal/refunds.html` and `legal/legal.js`: the legal pages (see Legal pages below)
-- `404.html`: page-not-found page (works both in this folder and at the root of its own repo)
-- `img/`: demo screenshots as one matching set (`<demo>-desktop.webp` 1280x800 from a 1440x900 window, `<demo>-tall.webp` 1280x1956 from the top 1440x2200 of the page, which scrolls slowly inside the browser frame on hover or keyboard focus, and `<demo>-mobile.webp` 480x1039 from a 390x844 phone). The browser and phone frames are drawn in CSS so they are identical for every demo.
-- `img/aceguides/`: AceGuides study-guide covers (720x960 WebP, 21 of them: Year 10, VCE Units 1 & 2 and Units 3 & 4). The AceGuides card shows the five listed in `businesses.aceguides.covers`.
-- `tools/screenshot-demos.mjs`: rebuilds the demo screenshots; `tools/render-hero-still.mjs`: rebuilds the hero still; `tools/make-covers.py`: rebuilds the covers in the site font (needs Python with `playwright` and `pillow`; only WebP files are saved, never PNGs). Instructions are at the top of each file.
-- Logo files in `img/` (use these as given; don't redraw them):
-  - `kb-wordmark.svg`: the full KB Ventures logo (silver KB, gold line, VENTURES). Used in the footer and the share image. The artwork sits in the middle third of the file, so give it room.
-  - `kb-wordmark-white.svg` and `kb-wordmark-black.svg`: one-colour versions for print or light backgrounds.
-  - `kb-favicon.svg`: the square KB mark. Used in the nav and as the browser-tab icon.
-- Icons made from `kb-favicon.svg`: `favicon.ico` (16/32/48), `favicon-32.png`, `apple-touch-icon.png` (180), `img/icon-192.png`, `img/icon-512.png`
-- `og.jpg`: the 1200 x 630 share image (the full wordmark on the dark lit background, with "Study guides and websites, made in Melbourne")
-- `fonts/geist-latin.woff2`: Geist variable font (all weights in one file; the page uses 300, 400 and 500), SIL Open Font License (`geist-OFL.txt`)
-- `vendor/`: Lenis 1.1.18 (its small CSS is folded into `styles.css`) and Three.js r160 (`three.module.min.js`). `RoomEnvironment` and `lenis-1.1.18.css` are no longer loaded.
+- `site.config.json`: the one file to edit. It holds the company details, social links, the list of businesses, the form key and **all the page text**. Every text element in the pages is marked `data-c="path.in.config"`.
+- `site.js`: shared by every page. It draws the **top bar, phone menu and footer** from the config, so they change in one place. It also runs smooth scrolling (Lenis, on Home, About and Contact), the bar's hide-on-scroll, the Businesses dropdown, and fills in page text, email links and social icons. Each page holds a small plain copy of the bar and footer that shows only without JavaScript.
+- `main.js`: Home only (the business cards from the config, parallax, fade-ups). `contact.js`: the contact form. `legal/legal.js`: the brand list and ABN line on the legal pages.
+- `styles.css`: all styles. `brand.md`: the design system.
+- `hero.js` and `scene.js`: the 3D metal-and-glass card in the hero (Three.js). It only runs with a real graphics card; reduced motion, Data Saver, low-powered phones and software WebGL get the still image `img/hero-object.webp`. `?3d=off` shows the still image, `?3d=on` forces 3D.
+- `404.html`: works at any address. It reads the site folder from the address, or falls back to `BASE` at its top (keep that equal to `basePath` in the config). A byte-for-byte copy sits at the repo root (`/404.html`), because GitHub Pages only uses the root one for this project site. If you change one, copy it over the other.
+- `sitemap.xml` and `robots.txt`: all public pages. (The repo-root `robots.txt` also points at this sitemap.)
+- `img/aceguides/`: AceGuides covers (720x960 WebP), made by `tools/make-covers.py`. `img/<demo>-*.webp`: demo screenshots, made by `tools/screenshot-demos.mjs` (one is used on the KB Websites card).
+- Logo files in `img/`, used exactly as supplied: `kb-wordmark.svg` (the top bar from 720px wide, and the footer), `kb-favicon.svg` (the top bar on phones, the About section and the browser-tab icon), and the white and black one-colour versions. Icons made from the mark: `favicon.ico`, `favicon-32.png`, `apple-touch-icon.png`, `img/icon-192.png`, `img/icon-512.png`. `og.jpg` is the share image.
+- `fonts/geist-latin.woff2` (SIL Open Font License, `geist-OFL.txt`); `vendor/`: Lenis 1.1.18 and Three.js r160.
 
-## Add a website demo
-1. Open `site.config.json` and add one entry to `demos`:
-   `{ "type": "Dentist", "name": "Real name from that demo's site.config.json", "line": "One line from its brand.md or config", "url": "https://.../the-demo/", "desktop": "img/dentist-desktop.webp", "mobile": "img/dentist-mobile.webp", "tall": "img/dentist-tall.webp" }`
-2. Add the demo to `DEMOS` in `tools/screenshot-demos.mjs` and run it to make the three images.
-3. Do not invent names or descriptions: copy them from the demo itself. Leave out real businesses and unfinished sites (parts-store-demo and the-one-barber-demo are left out on purpose).
-4. Also add the same card to the `track` list in `index.html`. `main.js` rebuilds the list from the config, but the HTML copy is what shows when the config cannot load (for example if you open the file straight from disk).
+## Add a business
+Add one entry to `businesses` in `site.config.json`. Nothing else needs changing: the Home card, the footer list and the Businesses dropdown are all built from this list.
+```json
+{ "name": "New business", "description": "One line about it.", "status": "coming-soon", "url": "", "ctaLabel": "Visit",
+  "image": "img/new-business.webp", "imageAlt": "What the picture shows", "imageSize": [1280, 800] }
+```
+- `status`: `"coming-soon"` or `"live"`. A business counts as live only when the status is `"live"` **and** `url` is a full `https://` address. Then its card becomes one big link with a LIVE badge and `ctaLabel` with an arrow, and its footer and dropdown entries become links. While coming soon, the card is not a link, has no hover lift, and says "Coming soon".
+- `image`: one picture (shown filling the card's picture area; add `"imageFrame": "browser"` to show it in a browser frame), or a list of up to five (shown as a fanned stack, like AceGuides), with `imageAlt` as one text or a matching list. Images must be in `img/`. Use WebP and give `imageSize` as `[width, height]`.
+- `showMoreComingCard: true` adds a faded "More coming" card after the businesses.
+- Keep `description` to one short line: the main site carries only these. Everything else about a business goes on its own site.
 
-The carousel builds its dots from however many cards there are, so nothing else needs changing.
+## Contact form (Web3Forms)
+1. Get a free access key at https://web3forms.com (enter kb.ventures@outlook.com; the key arrives by email).
+2. Put it in `site.config.json` as `"formAccessKey": "your-key"`, commit and push.
 
-## Optional fields (empty = not shown)
-- `aceguidesShopUrl`: the AceGuides shop address (must start with `https://`). While it is blank, the AceGuides card shows the quiet line "Guides launching soon" (`businesses.aceguides.noShopLine`); once filled in it shows a "See the guides" button instead.
-- `instagram`, `linkedin`: full `https://` addresses; each adds a footer link (and a `sameAs` entry in the structured data).
-- `legal.abn`: shown in the footer and on the legal pages as "ABN …" (see Legal pages below).
-- `testimonials`: a list of `{ "quote": "...", "name": "...", "business": "..." }`. Only real quotes, word for word, with the person's real name. The section stays hidden while the list is empty, and any entry without a quote or a name is skipped.
+While `formAccessKey` is empty, Send opens the visitor's email app with the message filled in (and says so on the page), so no message is lost. Messages arrive with the subject "New message from KB Ventures website". A hidden box catches simple spam bots.
 
-## Other config fields
-- `how.steps`: the three steps of "How it works" (title and one line each). Keep them to three; each has its own line icon in `index.html`.
-- `businesses.aceguides.covers`: up to five `{ "src": "img/aceguides/....webp", "alt": "..." }` covers for the fanned stack. No prices, ratings or labels on them.
-- `businesses.kbwebsites.preview`: the screenshot in the KB Websites card (`src` and `alt`).
-- `footer.vceTrademark`: the VCE trademark line. Keep it while the covers mention VCE.
+## Company details, ABN and social links
+- `company`: name, tagline (the Home headline), location, email. The email is used everywhere on the site.
+- **ABN:** put it in `company.abn` (for example `"12 345 678 901"`). It then shows as "ABN …" in the footer of every page and in the Contact section of each legal page. While it is empty, no ABN line appears anywhere.
+- **Social links:** change the addresses in `socials` (`instagram`, `tiktok`, `x`). Each must be a full `https://` address; an empty one hides its icon. They appear in the footer, on the Contact page and in the structured data (`sameAs`).
+- `basePath` is the site's folder on its web address (`/3D-demo-sites/kbventures-site/` now, `/` on its own domain). `siteUrl` is the full address.
 
-Never put invented facts, reviews, prices or numbers in the config.
+Never put personal names, ages, photos, addresses or phone numbers in the config, and no invented facts, counts, results, reviews or "trusted by" lines.
 
 ## Legal pages
-The privacy, terms and refunds pages live in `legal/`. Their names, email, state, ABN and date come from the `legal` block in `site.config.json`, filled in by `legal/legal.js`. The HTML holds the same text, so the pages still read correctly if JavaScript is off; if you change a value in the config, change it in the three HTML files too so both copies match.
+The privacy, terms and refunds pages live in `legal/`. Their names, email, state and date come from the `legal` block in `site.config.json`, and the ABN from `company.abn`. The HTML holds the same text, so the pages still read correctly if JavaScript is off; if you change a value in the config, change it in the three HTML files too so both copies match.
 - **Update the date:** whenever you change the wording of any legal page, set `legal.lastUpdated` (for example `"12 March 2027"`). It appears under each page title.
-- **Add an ABN:** put it in `legal.abn` (for example `"12 345 678 901"`). It then appears in the footer of every page and in the Contact section of each legal page. While it is empty, no ABN line is shown at all.
+- **ABN:** see Company details above (`company.abn`).
 - `legal.tradingName`, `legal.brands`, `legal.contactEmail` and `legal.state` fill the matching words in the pages. Never add a personal name, age, home address or phone number.
 - `legalBaseUrl` is the public address of the `legal/` folder. The AceGuides and KB Websites sites should link their footers to `legalBaseUrl + "privacy.html"`, `"terms.html"` and `"refunds.html"`, so every brand uses these same pages.
-- The footer of every page links Privacy · Terms · Refunds; the labels are `footer.privacy`, `footer.terms` and `footer.refunds`.
+- The footer's Company column on every page links Privacy, Terms and Refunds; the labels are `footer.privacy`, `footer.terms` and `footer.refunds`. The page labels "Last updated" and "In plain English" are in `legalText`.
 - The pages are plain English and are not legal advice. Have them checked before relying on them for a large business.
 
 ## Move to its own repo (kbventures.github.io)
 1. Create an empty repo called `kbventures.github.io` under the `kbventures` GitHub account or organisation.
 2. Copy the contents of this folder (not the folder itself) into the repo root and commit to `main`.
 3. In the repo's Settings > Pages, choose "Deploy from a branch", `main`, `/ (root)`. The site appears at https://kbventures.github.io/, and `404.html` is used for missing pages.
-4. Update the `canonical`, `og:url` and `og:image` addresses at the top of `index.html` to the new address.
+4. Set `basePath` to `/` and `siteUrl` to the new address in `site.config.json`, set `BASE` at the top of `404.html` to `/`, and update the `canonical`, `og:url` and `og:image` addresses at the top of each page and in `sitemap.xml` and `robots.txt`.
 5. Remove `kbventures-site/` from the 3D-demo-sites repo if you no longer want the old address.

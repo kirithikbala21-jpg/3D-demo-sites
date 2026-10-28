@@ -1,29 +1,20 @@
-// Legal pages: fills names, email, state, ABN and the date from ../site.config.json.
-// The HTML already holds the same text, so the pages still read correctly without JavaScript.
-(function () {
+// Legal pages: site.js fills names, email, state and the date from site.config.json; this adds the two legal-only
+// pieces: the list of brands ("AceGuides and KB Websites") and the ABN line in the Contact section (shown only when
+// company.abn is filled in). The HTML already holds the same text, so the pages still read correctly without JavaScript.
+(() => {
   'use strict';
-  const filled = (v) => typeof v === 'string' && v.trim() !== '';
-  const get = (obj, path) => path.split('.').reduce((o, k) => (o == null ? undefined : o[k]), obj);
-  // ["AceGuides", "KB Websites"] -> "AceGuides and KB Websites"
-  const list = (a) => { a = a.filter(filled); return a.length < 2 ? a.join('') : `${a.slice(0, -1).join(', ')} and ${a[a.length - 1]}`; };
-
-  function apply(cfg) {
+  const KB = window.KB;
+  if (!KB) return;
+  const list = (a) => { a = a.filter(KB.filled); return a.length < 2 ? a.join('') : `${a.slice(0, -1).join(', ')} and ${a[a.length - 1]}`; };
+  KB.config.then((cfg) => {
+    if (!cfg) return;
     document.querySelectorAll('[data-c]').forEach((node) => {
-      let v = get(cfg, node.dataset.c);
-      if (Array.isArray(v)) v = list(v);
-      if (filled(v)) node.textContent = v;
+      const v = KB.get(cfg, node.dataset.c);
+      if (Array.isArray(v) && v.some(KB.filled)) node.textContent = list(v);
     });
-    const email = get(cfg, 'legal.contactEmail');
-    if (filled(email) && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      document.querySelectorAll('[data-email]').forEach((a) => { a.href = 'mailto:' + email.trim(); a.textContent = email.trim(); });
-    }
-    // the ABN line only appears once an ABN is filled in: no placeholder
-    const abn = get(cfg, 'legal.abn');
+    const abn = KB.get(cfg, 'company.abn');
     document.querySelectorAll('[data-abn]').forEach((p) => {
-      if (filled(abn)) { p.textContent = `${get(cfg, 'footer.abnLabel') || 'ABN'} ${abn.trim()}`; p.hidden = false; } else p.hidden = true;
+      if (KB.filled(abn)) { p.textContent = `${KB.get(cfg, 'footer.abnLabel') || 'ABN'} ${abn.trim()}`; p.hidden = false; } else p.hidden = true;
     });
-  }
-
-  fetch('../site.config.json', { cache: 'no-cache' }).then((r) => (r.ok ? r.json() : null)).then((cfg) => { if (cfg) apply(cfg); }).catch(() => { /* keep the HTML copy */ });
-  const year = document.getElementById('year'); if (year) year.textContent = String(Math.max(2026, new Date().getFullYear()));
+  });
 })();

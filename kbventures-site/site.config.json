@@ -1,132 +1,188 @@
 {
-  "name": "KB Ventures",
-  "email": "kb.ventures@outlook.com",
-  "location": "Melbourne, Australia",
-  "year": 2026,
-  "aceguidesShopUrl": "",
-  "instagram": "",
-  "linkedin": "",
-  "testimonials": [],
+  "company": {
+    "name": "KB Ventures",
+    "tagline": "Many businesses. One standard.",
+    "location": "Melbourne, Australia",
+    "email": "kb.ventures@outlook.com",
+    "abn": ""
+  },
+  "socials": {
+    "instagram": "https://www.instagram.com/kb.ventures_au/",
+    "tiktok": "https://www.tiktok.com/@kbventures_au",
+    "x": "https://x.com/kbventures_au"
+  },
+  "businesses": [
+    {
+      "name": "AceGuides",
+      "description": "Revision guides for Year 10 and VCE students, with bundles for each year level.",
+      "status": "coming-soon",
+      "url": "",
+      "ctaLabel": "Browse guides",
+      "image": [
+        "img/aceguides/year10-maths.webp",
+        "img/aceguides/year10-science.webp",
+        "img/aceguides/vce34-biology.webp",
+        "img/aceguides/vce34-english.webp",
+        "img/aceguides/vce34-maths-methods.webp"
+      ],
+      "imageAlt": [
+        "AceGuides Year 10 Maths study guide cover",
+        "AceGuides Year 10 Science study guide cover",
+        "AceGuides VCE Biology Units 3 & 4 study guide cover",
+        "AceGuides VCE English Units 3 & 4 study guide cover",
+        "AceGuides VCE Maths Methods Units 3 & 4 study guide cover"
+      ],
+      "imageSize": [
+        720,
+        960
+      ]
+    },
+    {
+      "name": "KB Websites",
+      "description": "Fast, good-looking websites for local businesses, with online booking, reviews and maps.",
+      "status": "coming-soon",
+      "url": "",
+      "ctaLabel": "See demos",
+      "image": "img/barber-desktop.webp",
+      "imageAlt": "Front page of Brass & Blade, a concept barbershop website",
+      "imageSize": [
+        1280,
+        800
+      ],
+      "imageFrame": "browser"
+    }
+  ],
+  "showMoreComingCard": false,
+  "formAccessKey": "",
+  "basePath": "/3D-demo-sites/kbventures-site/",
+  "siteUrl": "https://kirithikbala21-jpg.github.io/3D-demo-sites/kbventures-site/",
   "legalBaseUrl": "https://kirithikbala21-jpg.github.io/3D-demo-sites/kbventures-site/legal/",
   "legal": {
     "tradingName": "KB Ventures",
-    "brands": ["AceGuides", "KB Websites"],
+    "brands": [
+      "AceGuides",
+      "KB Websites"
+    ],
     "contactEmail": "kb.ventures@outlook.com",
-    "abn": "",
     "state": "Victoria, Australia",
     "lastUpdated": "28 October 2026"
   },
-  "meta": {
-    "title": "KB Ventures: study guides and websites, made in Melbourne",
-    "description": "KB Ventures is two small businesses run from Melbourne: AceGuides makes revision guides for Year 10 and VCE students, and KB Websites builds websites for local businesses."
-  },
   "nav": {
     "businesses": "Businesses",
-    "websites": "Websites",
+    "about": "About",
     "contact": "Contact",
     "cta": "Get in touch",
     "menu": "Menu",
-    "close": "Close"
-  },
-  "hero": {
-    "label": "KB Ventures · Melbourne",
-    "title": "We write study guides for students, and build websites for the shop down the road.",
-    "lead": "KB Ventures is two small businesses, run from Melbourne.",
-    "cta": "See the websites"
-  },
-  "businesses": {
-    "label": "What we run",
-    "title": "Two businesses. One standard.",
-    "lead": "One makes revision guides for students. The other builds websites for local businesses.",
-    "aceguides": {
-      "status": "Live",
-      "name": "AceGuides",
-      "text": "Revision guides for Year 10 and VCE students, with bundles for each year level.",
-      "noShopLine": "Guides launching soon",
-      "shopButton": "See the guides",
-      "covers": [
-        {
-          "src": "img/aceguides/year10-maths.webp",
-          "alt": "AceGuides Year 10 Maths study guide cover"
-        },
-        {
-          "src": "img/aceguides/year10-science.webp",
-          "alt": "AceGuides Year 10 Science study guide cover"
-        },
-        {
-          "src": "img/aceguides/vce34-biology.webp",
-          "alt": "AceGuides VCE Biology Units 3 & 4 study guide cover"
-        },
-        {
-          "src": "img/aceguides/vce34-english.webp",
-          "alt": "AceGuides VCE English Units 3 & 4 study guide cover"
-        },
-        {
-          "src": "img/aceguides/vce34-maths-methods.webp",
-          "alt": "AceGuides VCE Maths Methods Units 3 & 4 study guide cover"
-        }
-      ]
-    },
-    "kbwebsites": {
-      "status": "Starting",
-      "name": "KB Websites",
-      "text": "Fast, good-looking websites for local businesses, with online booking, reviews and maps.",
-      "link": "How it works",
-      "preview": {
-        "src": "img/barber-desktop.webp",
-        "alt": "Front page of Brass & Blade, a concept barbershop website"
-      }
-    }
-  },
-  "how": {
-    "label": "How KB Websites works",
-    "title": "A free preview first.",
-    "steps": [
-      {
-        "title": "Preview",
-        "text": "First we build a free preview of your new website."
-      },
-      {
-        "title": "Feedback",
-        "text": "You look through it and tell us what to keep, change or leave out."
-      },
-      {
-        "title": "Go live",
-        "text": "When you are happy with it, we put it live."
-      }
-    ]
-  },
-  "websites": {
-    "label": "Concept websites",
-    "title": "Concept websites we built to show what’s possible.",
-    "openDemo": "Open demo"
-  },
-  "demosNote": "These are concept demos for made-up businesses. Names, prices and reviews are examples only.",
-  "testimonialsSection": {
-    "label": "Kind words",
-    "title": "What people say."
-  },
-  "contact": {
-    "label": "Contact",
-    "title": "Questions about AceGuides, or want a free preview for your business?",
-    "lead": "Send us an email. We’re in {location}."
+    "close": "Close",
+    "home": "{name} home",
+    "comingSoon": "Coming soon",
+    "live": "Live"
   },
   "footer": {
-    "concept": "The website demos are concepts for made-up businesses.",
-    "backToTop": "Back to top",
-    "abnLabel": "ABN",
+    "businesses": "Businesses",
+    "company": "Company",
+    "about": "About",
+    "contact": "Contact",
     "privacy": "Privacy",
     "terms": "Terms",
     "refunds": "Refunds",
-    "lastUpdatedLabel": "Last updated",
-    "summaryLabel": "In plain English",
-    "vceTrademark": "VCE® is a registered trademark of the VCAA."
+    "copyright": "© {year} {name}. Based in {location}.",
+    "abnLabel": "ABN",
+    "vceTrademark": "VCE® is a registered trademark of the VCAA.",
+    "socialLabel": "{name} on {network}"
   },
-  "demos": [
-    { "type": "Gym", "name": "Iron & Ember Athletic Club", "line": "Strength coaching, group classes and open gym, with a slowly rotating 3D barbell.", "url": "https://kirithikbala21-jpg.github.io/3D-demo-sites/gym-demo/", "desktop": "img/gym-desktop.webp", "mobile": "img/gym-mobile.webp", "tall": "img/gym-tall.webp" },
-    { "type": "Barbershop", "name": "Brass & Blade", "line": "Classic cuts, skin fades and hot towel shaves, with a spinning 3D barber pole.", "url": "https://kirithikbala21-jpg.github.io/3D-demo-sites/barber-demo/", "desktop": "img/barber-desktop.webp", "mobile": "img/barber-mobile.webp", "tall": "img/barber-tall.webp" },
-    { "type": "Cafe", "name": "Ember & Oak", "line": "Small-batch coffee, all-day dining and long tables, with a cinematic 3D hero.", "url": "https://kirithikbala21-jpg.github.io/3D-demo-sites/cafe-demo-v2/", "desktop": "img/cafe-desktop.webp", "mobile": "img/cafe-mobile.webp", "tall": "img/cafe-tall.webp" },
-    { "type": "Plumber", "name": "Waverley Plumbing & Gas", "line": "Licensed family plumbers and gas fitters with an emergency line and upfront prices.", "url": "https://kirithikbala21-jpg.github.io/3D-demo-sites/plumber-demo/", "desktop": "img/plumber-desktop.webp", "mobile": "img/plumber-mobile.webp", "tall": "img/plumber-tall.webp" },
-    { "type": "Hair salon", "name": "Maison Lune", "line": "Cuts, colour, treatments and beauty with clear prices and online booking.", "url": "https://kirithikbala21-jpg.github.io/3D-demo-sites/salon-demo/", "desktop": "img/salon-desktop.webp", "mobile": "img/salon-mobile.webp", "tall": "img/salon-tall.webp" }
-  ]
+  "home": {
+    "hero": {
+      "line": "Based in {location}.",
+      "primary": "Our businesses",
+      "secondary": "Get in touch"
+    },
+    "businesses": {
+      "title": "Our businesses.",
+      "moreComing": "More coming",
+      "moreComingText": ""
+    },
+    "about": {
+      "title": "About KB Ventures",
+      "text": "KB Ventures is a Melbourne company that starts and runs businesses. Each one has its own website, and all of them follow the same standard.",
+      "values": "Clear. Fair. Well made.",
+      "link": "More about us"
+    },
+    "contact": {
+      "title": "Get in touch.",
+      "lead": "Questions, orders or ideas? We read every message.",
+      "button": "Contact us"
+    }
+  },
+  "about": {
+    "title": "About KB Ventures",
+    "text": "KB Ventures is a Melbourne company that starts and runs businesses. Each one has its own website, and all of them follow the same standard.",
+    "lines": [
+      {
+        "title": "Clear",
+        "text": "plain words, honest prices."
+      },
+      {
+        "title": "Fair",
+        "text": "straight dealing, and refunds when something is wrong."
+      },
+      {
+        "title": "Well made",
+        "text": "products and sites built carefully."
+      }
+    ],
+    "button": "Get in touch"
+  },
+  "contactPage": {
+    "title": "Get in touch.",
+    "lead": "Questions, orders or ideas? We read every message.",
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone",
+    "business": "Business name",
+    "optional": "(optional)",
+    "topic": "What’s it about?",
+    "topics": [
+      "General question",
+      "AceGuides",
+      "KB Websites",
+      "Partnership",
+      "Other"
+    ],
+    "message": "Message",
+    "agreeBefore": "I agree to the",
+    "agreeLink": "Privacy Policy",
+    "send": "Send",
+    "sending": "Sending…",
+    "errors": {
+      "name": "Please enter your name.",
+      "email": "Please enter your email address.",
+      "emailFormat": "Please enter a valid email address, like name@example.com.",
+      "message": "Please write a message.",
+      "messageShort": "Please write at least 10 characters.",
+      "agree": "Please tick the box to agree to the Privacy Policy.",
+      "summary": "Please fix the highlighted fields."
+    },
+    "success": "Thanks, we’ll reply soon.",
+    "successText": "Your message has been sent.",
+    "error": "Sorry, your message didn’t send. Please try again, or email us at {email}.",
+    "fallback": "Your email app should open with your message ready to send. If it didn’t, email us at {email}.",
+    "fallbackLink": "Open the email again",
+    "emailLabel": "Email",
+    "socialLabel": "Follow",
+    "replyNote": "We usually reply within 2 business days.",
+    "subject": "New message from KB Ventures website",
+    "fromName": "KB Ventures site"
+  },
+  "notFound": {
+    "code": "404",
+    "title": "This page doesn’t exist.",
+    "text": "It may have moved, or the link may be wrong.",
+    "home": "Back to home",
+    "contact": "Get in touch"
+  },
+  "legalText": {
+    "lastUpdatedLabel": "Last updated",
+    "summaryLabel": "In plain English"
+  }
 }

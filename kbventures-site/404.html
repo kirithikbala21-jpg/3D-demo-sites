@@ -3,51 +3,67 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Page not found: KB Ventures</title>
-<meta name="robots" content="noindex">
-<meta name="theme-color" content="#0A0C12">
 <script>
-  // A 404 page can be shown at any address, so point relative links back at the site folder:
-  // .../kbventures-site/ while the site lives in the 3D-demo-sites repo, or / once it has its own repo.
+  // A 404 page can be shown at any address, so every link and file below is loaded from the site's own folder.
+  // On the live site that is basePath in site.config.json; keep BASE equal to it (it becomes "/" on a custom domain).
   (function () {
+    var BASE = '/3D-demo-sites/kbventures-site/';
     var m = location.pathname.match(/^(.*\/kbventures-site\/)/);
-    document.write('<base href="' + (m ? m[1] : '/') + '">');
+    document.write('<base href="' + (m ? m[1] : BASE) + '">');
+    document.write('<link rel="icon" href="img/kb-favicon.svg" type="image/svg+xml">');
+    document.write('<link rel="icon" href="favicon.ico" sizes="32x32">');
+    document.write('<link rel="icon" href="img/icon-192.png" type="image/png" sizes="192x192">');
+    document.write('<link rel="icon" href="img/icon-512.png" type="image/png" sizes="512x512">');
+    document.write('<link rel="apple-touch-icon" href="apple-touch-icon.png" sizes="180x180">');
+    document.write('<link rel="preload" href="fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>');
+    document.write('<link rel="stylesheet" href="styles.css">');
   })();
 </script>
-<link rel="icon" href="img/kb-favicon.svg" type="image/svg+xml">
-<link rel="icon" href="favicon.ico" sizes="32x32">
-<link rel="icon" href="img/icon-192.png" type="image/png" sizes="192x192">
-<link rel="icon" href="img/icon-512.png" type="image/png" sizes="512x512">
-<link rel="apple-touch-icon" href="apple-touch-icon.png" sizes="180x180">
-<link rel="stylesheet" href="styles.css">
+<title>Page not found: KB Ventures</title>
+<meta name="description" content="This page doesn’t exist. It may have moved, or the link may be wrong.">
+<meta name="theme-color" content="#0D0E12">
+<meta name="color-scheme" content="dark">
+<meta name="robots" content="noindex">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="KB Ventures">
+<meta property="og:locale" content="en_AU">
+<meta property="og:title" content="Page not found: KB Ventures">
+<meta property="og:description" content="This page doesn’t exist. It may have moved, or the link may be wrong.">
+<meta property="og:url" content="https://kirithikbala21-jpg.github.io/3D-demo-sites/kbventures-site/404.html">
+<meta property="og:image" content="https://kirithikbala21-jpg.github.io/3D-demo-sites/kbventures-site/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:alt" content="KB Ventures logo. Study guides and websites, made in Melbourne.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Page not found: KB Ventures">
+<meta name="twitter:description" content="This page doesn’t exist. It may have moved, or the link may be wrong.">
+<meta name="twitter:image" content="https://kirithikbala21-jpg.github.io/3D-demo-sites/kbventures-site/og.jpg">
+<meta name="twitter:image:alt" content="KB Ventures logo. Study guides and websites, made in Melbourne.">
+<script>document.documentElement.classList.add('js');</script>
 </head>
-<body>
-<header class="nav is-scrolled">
-  <div class="container nav-inner">
-    <a class="wordmark" href="./"><img class="wordmark-mark" src="img/kb-favicon.svg" width="32" height="32" alt=""><span class="wordmark-text">KB Ventures</span></a>
-    <nav class="nav-links" aria-label="Main">
-      <a href="./#businesses">Businesses</a>
-      <a href="./#websites">Websites</a>
-      <a href="./#contact">Contact</a>
-    </nav>
-    <a class="pill pill-primary nav-cta" href="./#contact">Get in touch</a>
-  </div>
-</header>
-<main class="missing">
+<body data-page="notfound">
+<a class="skip" href="#main">Skip to content</a>
+<header class="nav" id="site-header"><div class="container nav-inner"><a class="brand nav-link" href="./">KB Ventures</a></div></header>
+
+<main id="main" class="nf">
   <div class="container center">
-    <p class="label">Error 404</p>
-    <h1 class="h2">This page isn&rsquo;t here.</h1>
-    <p class="lead">The address may have a typo, or the page has moved. Everything we have is on the home page.</p>
-    <a class="pill pill-primary" href="./">Go to the home page</a>
-  </div>
-</main>
-<footer class="footer">
-  <div class="container">
-    <div class="footer-small">
-      <nav class="legal-links" aria-label="Legal"><a href="legal/privacy.html">Privacy</a><span aria-hidden="true">&middot;</span><a href="legal/terms.html">Terms</a><span aria-hidden="true">&middot;</span><a href="legal/refunds.html">Refunds</a></nav>
-      <p>&copy; 2026 KB Ventures &middot; Melbourne, Australia</p>
+    <p class="nf-code" data-c="notFound.code">404</p>
+    <h1 class="h2 nf-title" data-c="notFound.title">This page doesn&rsquo;t exist.</h1>
+    <p class="lead" data-c="notFound.text">It may have moved, or the link may be wrong.</p>
+    <div class="nf-actions">
+      <a class="pill pill-primary" href="./" data-c="notFound.home">Back to home</a>
+      <a class="pill pill-secondary" href="contact.html" data-c="notFound.contact">Get in touch</a>
     </div>
   </div>
-</footer>
+</main>
+
+<!-- site.js replaces this with the full footer from site.config.json -->
+<footer class="footer" id="site-footer"><div class="container"><div class="footer-bottom">
+  <p><a href="about.html">About</a> &middot; <a href="contact.html">Contact</a> &middot; <a href="legal/privacy.html">Privacy</a> &middot; <a href="legal/terms.html">Terms</a> &middot; <a href="legal/refunds.html">Refunds</a> &middot; <a href="mailto:kb.ventures@outlook.com">kb.ventures@outlook.com</a></p>
+  <p>&copy; 2026 KB Ventures. Based in Melbourne, Australia.</p>
+  <p>VCE&reg; is a registered trademark of the VCAA.</p>
+</div></div></footer>
+<script>(function () { var s = document.createElement('script'); s.src = 'site.js'; document.body.appendChild(s); })();</script>
 </body>
 </html>

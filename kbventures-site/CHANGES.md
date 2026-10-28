@@ -1,4 +1,70 @@
-# Changes: legal pages (28 October 2026)
+# Changes: the company lobby (28 October 2026)
+
+The site is now a clean "lobby" for a company with several businesses. The look is unchanged: the same colours, type, 20px cards, pill buttons, Lenis smooth scrolling and 3D hero with its still fallback. The logo files are used as supplied.
+
+## Pages
+- **Home:**
+  - hero: "Many businesses. One standard.", "Based in Melbourne, Australia.", and the buttons "Our businesses" and "Get in touch". The 3D card is smaller and sits to the right on desktop, above the text on phones. The empty space under the buttons is gone;
+  - a business card for each business in the config;
+  - a short About section with the KB mark;
+  - a "Get in touch." section with the email shown large.
+  - The concept-website slider, "How it works", "Guides launching soon" and the stats or testimonials areas are gone.
+- **About** (`about.html`): the company text, then Clear, Fair and Well made, then a Get in touch button.
+- **Contact** (`contact.html`): a form on the left; on the right, the email, social icons and "We usually reply within 2 business days." Stacked on phones.
+- **404:** a big 404, "This page doesn't exist.", and the buttons Back to home and Get in touch. It works at any address depth. A copy is at the repo root, because GitHub Pages uses that one for missing addresses on this project site. Before, the root file was empty.
+- The **legal pages** now use the shared top bar and footer.
+
+## One header and footer
+- `site.js` draws the top bar, the phone menu and the footer on every page from `site.config.json`.
+- **Top bar:**
+  - the wordmark on desktop and the KB mark on phones;
+  - Businesses (a dropdown with each business, its one-line description and "Coming soon"), About, Contact, and Get in touch;
+  - see-through at the top, frosted glass with a hairline once you scroll;
+  - hides as you scroll down and comes back as you scroll up.
+- **Phone menu:** full screen, with big links and the pill at the bottom. Escape closes it and focus stays inside while it's open.
+- **Footer:**
+  - three columns: the wordmark, email and social icons; Businesses; and Company (About, Contact, Privacy, Terms, Refunds);
+  - a bottom row with © year, ABN (only when filled in) and the VCE trademark line.
+
+## Config
+- New: `company`, `socials`, `businesses` (a list), `showMoreComingCard`, `formAccessKey`, `basePath` and `siteUrl`, plus the text for every page.
+- A business becomes live when it has a `url` and `status: "live"`. Its card then becomes one big link with a LIVE badge and its `ctaLabel`, and its footer and dropdown entries become links.
+- The ABN moved to `company.abn`.
+- Removed with the old sections: `demos`, `how`, `testimonials`, `aceguidesShopUrl`, `instagram` and `linkedin`.
+
+## Contact form
+- The fields are Name, Email, Phone (optional), Business name (optional), "What's it about?", Message, and a required Privacy Policy tick box. A hidden spam trap catches simple bots.
+- The form checks each field with inline messages and moves to the first problem. While sending, the button shows "Sending…". On success, "Thanks, we'll reply soon." replaces the form. If sending fails, an error message gives the email address as a backup. The page never reloads.
+- Messages go to Web3Forms with the key from `formAccessKey`. While the key is empty, Send opens the visitor's email app with the message filled in, and the page says so.
+
+## SEO
+- Every page has its own title, description, canonical address, Open Graph and Twitter tags (using `og.jpg`), favicon and theme colour `#0D0E12`.
+- Home has Organization structured data: name, url, email, logo and `sameAs` with the three social links.
+- New `sitemap.xml` and `robots.txt` list every page.
+
+## Checked
+At 1440, 768 and 390px on every page:
+- one H1;
+- no sideways scroll;
+- no console errors or failed requests;
+- contrast at least 4.5:1;
+- every image has alt text and a size.
+
+Also checked:
+- every internal link and anchor works;
+- the dropdown works by keyboard and mouse;
+- the phone menu works, including keeping focus inside and closing on Escape;
+- the bar hides and returns on scroll;
+- coming-soon cards are not links and don't lift;
+- a live business, tried with a test config, becomes a link everywhere;
+- the form: validation, loading, success, error, the email fallback and the spam trap, with the sending step faked;
+- the 404 page at deep wrong addresses, both the folder copy and the root copy;
+- reduced motion;
+- JavaScript off.
+
+---
+
+# Earlier: legal pages (28 October 2026)
 
 ## New pages
 - `legal/privacy.html`, `legal/terms.html` and `legal/refunds.html`, in the same dark style. Each has the same nav and footer, a 720px reading column, a title, a "Last updated" date, a short "In plain English" box, numbered sections, and a Contact section. They have no smooth scrolling and no 3D, so they stay fast. Gold appears only in the thin divider above Contact.

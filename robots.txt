@@ -6,3 +6,4 @@ Sitemap: https://kirithikbala21-jpg.github.io/3D-demo-sites/barber-demo/sitemap.
 Sitemap: https://kirithikbala21-jpg.github.io/3D-demo-sites/gym-demo/sitemap.xml
 Sitemap: https://kirithikbala21-jpg.github.io/3D-demo-sites/plumber-demo/sitemap.xml
 Sitemap: https://kirithikbala21-jpg.github.io/3D-demo-sites/salon-demo/sitemap.xml
+Sitemap: https://kirithikbala21-jpg.github.io/3D-demo-sites/kbventures-site/sitemap.xml

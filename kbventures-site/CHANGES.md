@@ -1,4 +1,24 @@
-# Changes: a colourful, Revolut-style hero card (28 October 2026)
+# Changes: a brushed black metal membership card (28 October 2026)
+
+The purple/blue gradient card with a chip is gone. The hero card is now a thin metal membership-style card in the site's own palette. It keeps the same size, position, tilt, clean dark background, still-image fallback and reduced-motion behaviour.
+
+- **Not a payment card:** the chip is removed, as are all purple, blue and teal. There's no contactless symbol, card number or network logo. Only the logo is on the face.
+- **Body:** brushed obsidian and graphite metal, going from #1A1C23 at the top-left to #0D0E12 at the bottom-right. A fine horizontal brushed grain is drawn into the colour and drives the roughness: metalness 0.9, roughness about 0.35 to 0.45. On top is a soft, low clearcoat sheen (no plastic gloss), and the faint reflection still sweeps slowly across.
+- **Shape and edge:** real card proportions (1.584:1), corners at 4.5% of the width, very thin. The hairline polished-silver edge catches the light along the top only.
+- **Gold:** #D4AF37 only as a very fine see-through hairline around the edge, plus the logo's own thin gold rule. That's well under 5% of the card.
+- **Mark:** the real logo, `img/kb-wordmark.svg`, is now centred and larger: the KB is 28% of the card's width, where before the whole logo was small at the top-left. It keeps the silver gradient and gets a soft etched shadow.
+- **Lighting and motion:** unchanged from the sleek version. One large soft box, a gentle rim, low exposure, a soft contact shadow and a faint reflection below. The tilt is a few degrees, slow and eased.
+- **Still image:** `img/hero-object.webp` was re-rendered from the new card, with new alt text.
+- **Performance:** a bump map and anisotropic highlight were tried and dropped, because they cost about 20% of the frame rate for almost no visible difference. The final card runs at the same frame rate as the previous one in the same software-rendering browser.
+- **Checked:**
+  - screenshots at 1440 (3D and still) and 390, compared with the previous version: no chip, no purple, no grid, and the silver KB is clearly readable;
+  - no console errors;
+  - the full test suite passed at 1440, 768 and 390;
+  - Lighthouse: desktop 100 / 100 / 100 / 100, mobile 96 / 100 / 100 / 100, layout shift 0.
+
+---
+
+# Earlier: a colourful, Revolut-style hero card (28 October 2026)
 
 - **Colours:** the face is now a smooth blend instead of plain black. Midnight navy, with indigo top-left melting through blue and a faint teal into violet bottom-right, plus a warm champagne glow at the bottom-left. A soft fall-off keeps it deep rather than loud, and fine noise stops the blends from banding.
 - **Finish:** a glossy clearcoat with a faint pearly (iridescent) shift as the card tilts, like a premium bank card. The visible brushed lines are gone, so the face is smooth, and the slow reflection is a little brighter.

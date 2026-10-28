@@ -1,4 +1,38 @@
-# Changes: KB Ventures, final polish (28 October 2026)
+# Changes: KB Ventures logo (28 October 2026)
+
+Everything else is unchanged.
+
+## Logo files (in `img/`)
+- `kb-wordmark.svg` and `kb-favicon.svg` were created exactly as supplied.
+- `kb-wordmark-white.svg` and `kb-wordmark-black.svg` were made from `kb-wordmark.svg` by a script that only removes the gradients and sets every fill to `#FFFFFF` or `#0D0E12`. The script confirmed that the shape data is byte-for-byte identical to the original.
+
+## Where the logo is used
+- **Nav:** the 32px KB mark (already rounded in the file) followed by "KB Ventures" in the nav type, on every page including the 404. At the narrowest width tested (360px) the full name still fits with 147px to spare, so it is never shortened.
+  - The mark's alt text is empty because the name sits right beside it. Otherwise screen readers would say "KB Ventures KB Ventures".
+- **Footer:** `kb-wordmark.svg`, centred above the footer links and the existing hairline. The big "KB Ventures" text wordmark was removed, because next to the logo it read as a duplicate.
+  - The logo's artwork fills only the middle third of its file. So the image is up to 440px wide, which makes the letters themselves about 160px wide. At an image width of 160px, VENTURES was unreadable.
+  - Alt text is "KB Ventures", and width and height are set.
+- **Browser tab:** `kb-favicon.svg` is the main icon (`type="image/svg+xml"`). Playwright rendered it straight from the SVG, with transparent corners, to make:
+  - `favicon.ico` (16, 32 and 48px);
+  - `favicon-32.png`;
+  - `apple-touch-icon.png` (180px);
+  - `img/icon-192.png` and `img/icon-512.png`.
+
+  These are all linked in the head of the home page and the 404 page. The Organization data's logo now points to `icon-512.png`.
+- **Share image:** `og.jpg` was regenerated at 1200 x 630 (26 KB): the dark lit background, the full wordmark centred and large, and "Study guides and websites, made in Melbourne" in small spaced capitals below. The Open Graph and Twitter tags now include the image type, width, height, alt text, title, description and image.
+
+## Checked
+- **Nav and footer** at 360, 390, 768, 1024 and 1440px:
+  - the mark is always 32x32;
+  - the name stays on one line and is never cut off;
+  - the menu button and links never collide with it;
+  - the footer logo is fully visible.
+- **Full page** at 360, 390, 768, 1024, 1280, 1440 and 1920px, at 125% zoom, with reduced motion and with WebGL off: no sideways scroll, no overlaps, contrast at least 4.5:1, tap targets at least 44px, layout shift 0, and no errors.
+- **Lighthouse:** desktop 100 / 100 / 100 / 100, mobile 97 / 100 / 100 / 100.
+
+---
+
+# Earlier: final polish (28 October 2026)
 
 Structure, copy, colours, the 3D hero card, the glossy cards and the demo row are unchanged. Everything is calmer, lighter and tighter.
 

@@ -13,7 +13,12 @@ Live: https://kirithikbala21-jpg.github.io/3D-demo-sites/kbventures-site/
 - `404.html`: page-not-found page (works both in this folder and at the root of its own repo)
 - `img/`: demo screenshots as one matching set (`<demo>-desktop.webp` 1280x800 from a 1440x900 window, `<demo>-mobile.webp` 480x1039 from a 390x844 phone). The browser and phone frames are drawn in CSS so they are identical for every demo.
 - `tools/screenshot-demos.mjs`: rebuilds those screenshots; `tools/render-hero-still.mjs`: rebuilds the hero still (instructions at the top of each file)
-- `og.jpg` (1200 x 630 share image), `favicon.ico`, `favicon-32.png`, `apple-touch-icon.png`
+- Logo files in `img/` (use these as given; don't redraw them):
+  - `kb-wordmark.svg`: the full KB Ventures logo (silver KB, gold line, VENTURES). Used in the footer and the share image. The artwork sits in the middle third of the file, so give it room.
+  - `kb-wordmark-white.svg` and `kb-wordmark-black.svg`: one-colour versions for print or light backgrounds.
+  - `kb-favicon.svg`: the square KB mark. Used in the nav and as the browser-tab icon.
+- Icons made from `kb-favicon.svg`: `favicon.ico` (16/32/48), `favicon-32.png`, `apple-touch-icon.png` (180), `img/icon-192.png`, `img/icon-512.png`
+- `og.jpg`: the 1200 x 630 share image (the full wordmark on the dark lit background, with "Study guides and websites, made in Melbourne")
 - `fonts/geist-latin.woff2`: Geist variable font (all weights in one file; the page uses 300, 400 and 500), SIL Open Font License (`geist-OFL.txt`)
 - `vendor/`: Lenis 1.1.18 (its small CSS is folded into `styles.css`) and Three.js r160 (`three.module.min.js`). `RoomEnvironment` and `lenis-1.1.18.css` are no longer loaded.
 

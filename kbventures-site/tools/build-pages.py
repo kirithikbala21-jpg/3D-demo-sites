@@ -247,7 +247,7 @@ home_body = f'''<main id="main">
       </div>
       <div class="hero-stage" id="stage">
         <div class="spotlight" aria-hidden="true"></div>
-        <img class="hero-still" src="img/hero-object.webp" width="1200" height="958" alt="A thin black metal and glass card carrying the KB Ventures logo" fetchpriority="high" decoding="async">
+        <img class="hero-still" src="img/hero-object.webp" width="1200" height="958" alt="A glossy KB Ventures card in blended indigo and violet, with the logo and a chip" fetchpriority="high" decoding="async">
         <canvas id="scene" aria-hidden="true"></canvas>
       </div>
     </div>

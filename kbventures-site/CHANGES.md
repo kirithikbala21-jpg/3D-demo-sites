@@ -1,4 +1,19 @@
-# Changes: a sleeker hero card (28 October 2026)
+# Changes: a colourful, Revolut-style hero card (28 October 2026)
+
+- **Colours:** the face is now a smooth blend instead of plain black. Midnight navy, with indigo top-left melting through blue and a faint teal into violet bottom-right, plus a warm champagne glow at the bottom-left. A soft fall-off keeps it deep rather than loud, and fine noise stops the blends from banding.
+- **Finish:** a glossy clearcoat with a faint pearly (iridescent) shift as the card tilts, like a premium bank card. The visible brushed lines are gone, so the face is smooth, and the slow reflection is a little brighter.
+- **Layout:** like a bank card. The KB Ventures logo sits top-left, with a soft champagne chip below it (decorative). No Revolut name or marks are used.
+- **Unchanged:** the hairline edge and champagne line, the size, position and motion, the clean background, reduced motion and the still-image fallback.
+- **Still image:** `img/hero-object.webp` was re-rendered to match, with a new alt text.
+- **Checked:**
+  - screenshots at 1440 (3D and still) and 390;
+  - no console errors;
+  - the full test suite passed at 1440, 768 and 390;
+  - Lighthouse: desktop 100 / 100 / 100 / 100, mobile 95 / 100 / 100 / 100, layout shift 0.
+
+---
+
+# Earlier: a sleeker hero card (28 October 2026)
 
 Only the card's look changed. It is still the dark glass KB card, at the same size and position, on the clean dark background, with the same still-image fallback and reduced-motion behaviour.
 

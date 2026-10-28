@@ -101,19 +101,30 @@ export async function initScene(canvas, { lowEnd = false, onLost = () => {} } = 
   scene.add(card);
   const rnd = rand(11);
 
-  // Face: deep black, slightly lighter top-left falling to darker bottom-right, with very fine brushing and micro-noise
+  // Face: colours blended like a premium bank card. Midnight navy, with soft pools of indigo (top-left), violet
+  // (bottom-right), a faint teal and a warm champagne glow, all melted together, then fine grain so nothing is flat.
   const face = canvasTexture(1024, 646, (g, w, h) => {
-    const grd = g.createLinearGradient(0, 0, w, h);
-    grd.addColorStop(0, '#1b1e25'); grd.addColorStop(0.45, '#0d0f13'); grd.addColorStop(1, '#050608');
-    g.fillStyle = grd; g.fillRect(0, 0, w, h);
-    g.globalAlpha = 0.035;
-    for (let y = 0; y < h; y++) { const v = 80 + Math.floor(rnd() * 130); g.fillStyle = `rgb(${v},${v},${v + 6})`; g.fillRect(0, y, w, 1); }
-    const n = g.getImageData(0, 0, w, h), d = n.data;       // micro-noise, so the face is never one flat colour
-    for (let i = 0; i < d.length; i += 4) { const k = (rnd() - 0.5) * 7; d[i] += k; d[i + 1] += k; d[i + 2] += k; }
+    g.fillStyle = '#0a0c16'; g.fillRect(0, 0, w, h);
+    const pool = (x, y, r, rgb, a) => {
+      const gr = g.createRadialGradient(x * w, y * h, 0, x * w, y * h, r * w);
+      gr.addColorStop(0, `rgba(${rgb},${a})`); gr.addColorStop(0.55, `rgba(${rgb},${a * 0.35})`); gr.addColorStop(1, `rgba(${rgb},0)`);
+      g.fillStyle = gr; g.fillRect(0, 0, w, h);
+    };
+    g.globalCompositeOperation = 'screen';
+    pool(0.12, 0.05, 0.85, '74,86,190', 0.7);    // indigo
+    pool(0.88, 0.92, 0.95, '138,74,176', 0.72);  // violet
+    pool(0.6, 0.32, 0.55, '40,132,176', 0.42);   // teal-blue, through the middle
+    pool(0.08, 1.05, 0.55, '214,170,104', 0.22); // warm champagne glow, bottom-left
+    g.globalCompositeOperation = 'source-over';
+    const fade = g.createLinearGradient(0, 0, w, h); // a soft fall-off toward the lower right keeps it deep, not loud
+    fade.addColorStop(0, 'rgba(0,0,0,0)'); fade.addColorStop(1, 'rgba(4,5,10,.35)');
+    g.fillStyle = fade; g.fillRect(0, 0, w, h);
+    const n = g.getImageData(0, 0, w, h), d = n.data;       // micro-noise, so the blends never band
+    for (let i = 0; i < d.length; i += 4) { const k = (rnd() - 0.5) * 6; d[i] += k; d[i + 1] += k; d[i + 2] += k; }
     g.putImageData(n, 0, 0);
   });
   const grain = canvasTexture(1024, 646, (g, w, h) => {
-    for (let y = 0; y < h; y++) { const v = 170 + Math.floor(rnd() * 50); g.fillStyle = `rgb(${v},${v},${v})`; g.fillRect(0, y, w, 1); }
+    for (let y = 0; y < h; y++) { const v = 196 + Math.floor(rnd() * 14); g.fillStyle = `rgb(${v},${v},${v})`; g.fillRect(0, y, w, 1); } // barely-there grain
   }, false);
   for (const t of [face, grain]) { t.repeat.set(1 / W, 1 / H); t.offset.set(0.5, 0.5); t.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy()); }
 
@@ -123,8 +134,10 @@ export async function initScene(canvas, { lowEnd = false, onLost = () => {} } = 
   });
   bodyGeo.translate(0, 0, -D / 2);
   const glass = new THREE.MeshPhysicalMaterial({
-    map: face, roughnessMap: grain, color: 0xffffff, metalness: 0.5, roughness: 0.55,   // matte anodised metal...
-    clearcoat: 0.8, clearcoatRoughness: 0.1, envMapIntensity: 0.8,                   // ...under a gentle clearcoat
+    map: face, roughnessMap: grain, color: 0xffffff, metalness: 0.25, roughness: 0.4,
+    emissive: 0xffffff, emissiveMap: face, emissiveIntensity: 0.55,              // the colours glow through like printed ink
+    clearcoat: 1, clearcoatRoughness: 0.06, envMapIntensity: 0.9,               // a glossy top coat...
+    iridescence: 0.35, iridescenceIOR: 1.3, iridescenceThicknessRange: [180, 420], // ...with a faint pearly shift at an angle
   });
   const edge = new THREE.MeshPhysicalMaterial({
     color: 0xb9bec7, metalness: 1, roughness: 0.18, anisotropy: 0.5, envMapIntensity: 1.3,   // polished: lit along the top-left, dark below
@@ -144,13 +157,31 @@ export async function initScene(canvas, { lowEnd = false, onLost = () => {} } = 
   // The logo, set into the face: thin silver letters, the gold rule and VENTURES, exactly as in kb-wordmark.svg
   const logoTex = logoTexture(logoImg);
   logoTex.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
-  const lw = 1.18, lh = lw * logoTex.image.height / logoTex.image.width;
+  const lw = 0.86, lh = lw * logoTex.image.height / logoTex.image.width;
   const logo = new THREE.Mesh(new THREE.PlaneGeometry(lw, lh), new THREE.MeshPhysicalMaterial({
     map: logoTex, transparent: true, depthWrite: false, metalness: 0.55, roughness: 0.3, envMapIntensity: 1,
     emissive: 0xffffff, emissiveMap: logoTex, emissiveIntensity: 0.62,   // reads clearly without a bright flat block
   }));
-  logo.position.set(-0.02, 0.06, front + 0.0008);
+  logo.position.set(-W / 2 + 0.24 + lw / 2, H / 2 - 0.2 - lh / 2, front + 0.0008); // top-left, like a bank card
   card.add(logo);
+
+  // A soft champagne chip on the left, with fine contact lines (decorative)
+  const chipTex = canvasTexture(256, 196, (g, w, h) => {
+    const r = 30, grd = g.createLinearGradient(0, 0, w, h);
+    grd.addColorStop(0, '#e9d9b0'); grd.addColorStop(0.5, '#bfa877'); grd.addColorStop(1, '#8f7a4f');
+    g.fillStyle = grd; g.beginPath(); g.roundRect(4, 4, w - 8, h - 8, r); g.fill();
+    g.strokeStyle = 'rgba(70,56,30,.55)'; g.lineWidth = 3;
+    g.beginPath();
+    g.moveTo(w * 0.36, 4); g.lineTo(w * 0.36, h - 4); g.moveTo(w * 0.64, 4); g.lineTo(w * 0.64, h - 4);
+    g.moveTo(4, h * 0.36); g.lineTo(w * 0.36, h * 0.36); g.moveTo(4, h * 0.64); g.lineTo(w * 0.36, h * 0.64);
+    g.moveTo(w * 0.64, h * 0.36); g.lineTo(w - 4, h * 0.36); g.moveTo(w * 0.64, h * 0.64); g.lineTo(w - 4, h * 0.64);
+    g.stroke();
+  });
+  const chip = new THREE.Mesh(new THREE.PlaneGeometry(0.42, 0.32), new THREE.MeshPhysicalMaterial({
+    map: chipTex, transparent: true, depthWrite: false, metalness: 0.9, roughness: 0.32, envMapIntensity: 1.1, emissive: 0xffffff, emissiveMap: chipTex, emissiveIntensity: 0.2,
+  }));
+  chip.position.set(-W / 2 + 0.24 + 0.21, -0.12, front + 0.0008);
+  card.add(chip);
 
   // A wide, faint clearcoat reflection that crosses the face slowly now and then
   const sweepTex = canvasTexture(2048, 32, (g, w) => {
@@ -162,7 +193,7 @@ export async function initScene(canvas, { lowEnd = false, onLost = () => {} } = 
   sweepTex.center.set(0.5, 0.5); sweepTex.rotation = -0.55; sweepTex.repeat.set(0.8, 1);
   const sweepGeo = new THREE.ShapeGeometry(roundedShape(W - BEVEL * 2, H - BEVEL * 2, R - BEVEL), 24);
   { const p = sweepGeo.attributes.position, uv = sweepGeo.attributes.uv; for (let i = 0; i < p.count; i++) uv.setXY(i, p.getX(i) / W + 0.5, p.getY(i) / H + 0.5); }
-  const sweep = new THREE.Mesh(sweepGeo, new THREE.MeshBasicMaterial({ map: sweepTex, transparent: true, opacity: 0.09, depthWrite: false, blending: THREE.AdditiveBlending, toneMapped: false }));
+  const sweep = new THREE.Mesh(sweepGeo, new THREE.MeshBasicMaterial({ map: sweepTex, transparent: true, opacity: 0.12, depthWrite: false, blending: THREE.AdditiveBlending, toneMapped: false }));
   sweep.position.z = front + 0.0012;
   card.add(sweep);
 

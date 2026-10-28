@@ -143,17 +143,18 @@ export function initScene(canvas, { lowEnd = false, onLost = () => {} } = {}) {
   markGroup.position.set(-0.02, 0.1, 0);
   card.add(markGroup);
 
-  // A wide soft reflection that sweeps across the face
-  const sweepTex = canvasTexture(1024, 32, (g, w) => {
+  // A narrow, bright, soft-edged light streak that crosses the face diagonally, with a glass-like falloff
+  // (a bright core, a soft shoulder either side, and a faint wide halo)
+  const sweepTex = canvasTexture(2048, 32, (g, w) => {
     const grd = g.createLinearGradient(0, 0, w, 0);
-    grd.addColorStop(0, 'rgba(255,255,255,0)'); grd.addColorStop(0.34, 'rgba(230,236,255,0)');
-    grd.addColorStop(0.5, 'rgba(230,236,255,1)'); grd.addColorStop(0.66, 'rgba(230,236,255,0)'); grd.addColorStop(1, 'rgba(255,255,255,0)');
+    const stops = [[0, 0], [0.4, 0], [0.455, 0.06], [0.48, 0.28], [0.495, 0.85], [0.5, 1], [0.505, 0.85], [0.52, 0.28], [0.545, 0.06], [0.6, 0], [1, 0]];
+    for (const [o, a] of stops) grd.addColorStop(o, `rgba(238,242,255,${a})`);
     g.fillStyle = grd; g.fillRect(0, 0, w, 32);
   });
-  sweepTex.center.set(0.5, 0.5); sweepTex.rotation = -0.62; sweepTex.repeat.set(0.7, 1);
+  sweepTex.center.set(0.5, 0.5); sweepTex.rotation = -0.7; sweepTex.repeat.set(0.85, 1);
   const sweepGeo = new THREE.ShapeGeometry(roundedShape(W - BEVEL * 2, H - BEVEL * 2, R - BEVEL), 24);
   { const p = sweepGeo.attributes.position, uv = sweepGeo.attributes.uv; for (let i = 0; i < p.count; i++) uv.setXY(i, p.getX(i) / W + 0.5, p.getY(i) / H + 0.5); }
-  const sweep = new THREE.Mesh(sweepGeo, new THREE.MeshBasicMaterial({ map: sweepTex, transparent: true, opacity: 0.085, depthWrite: false, blending: THREE.AdditiveBlending, toneMapped: false }));
+  const sweep = new THREE.Mesh(sweepGeo, new THREE.MeshBasicMaterial({ map: sweepTex, transparent: true, opacity: 0.2, depthWrite: false, blending: THREE.AdditiveBlending, toneMapped: false }));
   sweep.position.z = front + 0.0004;
   card.add(sweep);
 
@@ -168,7 +169,7 @@ export function initScene(canvas, { lowEnd = false, onLost = () => {} } = {}) {
   const mirror = card.clone(true);
   mirror.traverse((o) => { if (o.material) { o.material = Array.isArray(o.material) ? o.material.map((m) => fade(m)) : fade(o.material); } });
   // faint; the canvas itself fades out at the bottom (CSS mask)
-  function fade(m) { const c = m.clone(); c.transparent = true; c.opacity = (m.opacity ?? 1) * 0.09; c.depthWrite = false; return c; }
+  function fade(m) { const c = m.clone(); c.transparent = true; c.opacity = (m.opacity ?? 1) * 0.06; c.depthWrite = false; return c; }
   scene.add(mirror);
 
   // Rest pose: tilted about 15 degrees back and 16 degrees sideways (also the pose of img/hero-object.webp)
@@ -180,7 +181,8 @@ export function initScene(canvas, { lowEnd = false, onLost = () => {} } = {}) {
     const w = canvas.clientWidth || 1, h = canvas.clientHeight || 1;
     renderer.setSize(w, h, false);
     camera.aspect = w / h;
-    const needW = 3.9, needH = 3.4, v = THREE.MathUtils.degToRad(camera.fov);
+    const needW = 4.33, needH = 3.78, // framing that draws the card about 10% smaller than before
+      v = THREE.MathUtils.degToRad(camera.fov);
     const dist = Math.max(needH / 2 / Math.tan(v / 2), needW / 2 / (Math.tan(v / 2) * camera.aspect));
     camera.position.set(0, dist * 0.16, dist); // a little above, looking slightly down
     camera.lookAt(0, -0.32, 0);
@@ -215,8 +217,8 @@ export function initScene(canvas, { lowEnd = false, onLost = () => {} } = {}) {
       REST.y + Math.sin(t * 0.17) * 0.09 + aim.x * 0.14,
       REST.z + Math.sin(t * 0.13) * 0.01,
     );
-    // the reflection crosses the face every 7 seconds, taking about 3.5 of them
-    const c = (t % 7) / 3.5;
+    // the streak crosses the face every 7 seconds, taking about 2.6 of them
+    const c = (t % 7) / 2.6;
     sweepTex.offset.x = c <= 1 ? 1.1 - c * 2.2 : -1.1;
     renderer.render(scene, camera);
   }
@@ -236,7 +238,7 @@ export function initScene(canvas, { lowEnd = false, onLost = () => {} } = {}) {
 
   return {
     /** Draw the rest pose once, with the reflection band part-way across (used to make the still image). */
-    still(sweepAt = 0.35) { cancelAnimationFrame(raf); raf = 0; visible = false; pose(0, REST.x, REST.y, REST.z); sweepTex.offset.x = sweepAt; renderer.render(scene, camera); },
+    still(sweepAt = 0.3) { cancelAnimationFrame(raf); raf = 0; visible = false; pose(0, REST.x, REST.y, REST.z); sweepTex.offset.x = sweepAt; renderer.render(scene, camera); },
     dispose() {
       cancelAnimationFrame(raf); raf = 0; ro.disconnect(); io.disconnect();
       window.removeEventListener('pointermove', onPointer); window.removeEventListener('deviceorientation', onTilt);

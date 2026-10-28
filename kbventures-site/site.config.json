@@ -1,10 +1,75 @@
 {
   "name": "KB Ventures",
   "email": "kb.ventures@outlook.com",
-  "year": 2026,
   "location": "Melbourne, Australia",
+  "year": 2026,
+
   "aceguidesShopUrl": "",
+  "instagram": "",
+  "linkedin": "",
+  "abn": "",
+  "testimonials": [],
+
+  "meta": {
+    "title": "KB Ventures: study guides and websites, made in Melbourne",
+    "description": "KB Ventures is two small businesses run from Melbourne: AceGuides makes revision guides for Year 10 and VCE students, and KB Websites builds websites for local businesses."
+  },
+
+  "nav": { "businesses": "Businesses", "websites": "Websites", "contact": "Contact", "cta": "Get in touch", "menu": "Menu", "close": "Close" },
+
+  "hero": {
+    "label": "KB Ventures · Melbourne",
+    "title": "We write study guides for students, and build websites for the shop down the road.",
+    "lead": "KB Ventures is two small businesses, run from Melbourne.",
+    "cta": "See the websites"
+  },
+
+  "businesses": {
+    "label": "What we run",
+    "title": "Two businesses. One standard.",
+    "lead": "One makes revision guides for students. The other builds websites for local businesses.",
+    "aceguides": {
+      "status": "Live",
+      "name": "AceGuides",
+      "text": "Revision guides for Year 10 and VCE students, with bundles for each year level.",
+      "noShopLine": "Guides launching soon",
+      "shopButton": "See the guides"
+    },
+    "kbwebsites": {
+      "status": "Starting",
+      "name": "KB Websites",
+      "text": "Fast, good-looking websites for local businesses, with online booking, reviews and maps.",
+      "link": "How it works"
+    }
+  },
+
+  "how": {
+    "label": "How KB Websites works",
+    "title": "A free preview first.",
+    "text": "First we build a free preview of your new website. You look through it and tell us what to keep, change or leave out. When you are happy with it, we put it live."
+  },
+
+  "websites": {
+    "label": "Concept websites",
+    "title": "Concept websites we built to show what’s possible.",
+    "openDemo": "Open demo"
+  },
   "demosNote": "These are concept demos for made-up businesses. Names, prices and reviews are examples only.",
+
+  "testimonialsSection": { "label": "Kind words", "title": "What people say." },
+
+  "contact": {
+    "label": "Contact",
+    "title": "Questions about AceGuides, or want a free preview for your business?",
+    "lead": "Send us an email. We’re in {location}."
+  },
+
+  "footer": {
+    "concept": "The website demos are concepts for made-up businesses.",
+    "backToTop": "Back to top",
+    "abnLabel": "ABN"
+  },
+
   "demos": [
     { "type": "Gym", "name": "Iron & Ember Athletic Club", "line": "Strength coaching, group classes and open gym, with a slowly rotating 3D barbell.", "url": "https://kirithikbala21-jpg.github.io/3D-demo-sites/gym-demo/", "desktop": "img/gym-desktop.webp", "mobile": "img/gym-mobile.webp" },
     { "type": "Barbershop", "name": "Brass & Blade", "line": "Classic cuts, skin fades and hot towel shaves, with a spinning 3D barber pole.", "url": "https://kirithikbala21-jpg.github.io/3D-demo-sites/barber-demo/", "desktop": "img/barber-desktop.webp", "mobile": "img/barber-mobile.webp" },

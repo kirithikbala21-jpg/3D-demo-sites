@@ -236,7 +236,6 @@ ld = {"@context": "https://schema.org", "@type": "Organization", "name": C['name
 
 home_body = f'''<main id="main">
   <section class="hero" id="top" aria-labelledby="hero-title">
-    <div class="hero-glow" aria-hidden="true"></div>
     <div class="container hero-grid">
       <div class="hero-text">
         <h1 class="hero-title" id="hero-title" data-c="company.tagline">{E(C['tagline'])}</h1>
@@ -248,7 +247,6 @@ home_body = f'''<main id="main">
       </div>
       <div class="hero-stage" id="stage">
         <div class="spotlight" aria-hidden="true"></div>
-        <span class="speck speck-1" aria-hidden="true"></span><span class="speck speck-2" aria-hidden="true"></span><span class="speck speck-3" aria-hidden="true"></span>
         <img class="hero-still" src="img/hero-object.webp" width="1200" height="961" alt="A black glass and metal card carrying the raised KB mark" fetchpriority="high" decoding="async">
         <canvas id="scene" aria-hidden="true"></canvas>
       </div>
@@ -331,7 +329,7 @@ home_body = f'''<main id="main">
 pages = {}
 pages['index.html'] = page('index.html', 'KB Ventures: many businesses, one standard',
                            'KB Ventures is a Melbourne company that starts and runs businesses, including AceGuides and KB Websites.', home_body, 'home',
-                           extra='<link rel="preload" href="img/hero-object.webp" as="image" type="image/webp" fetchpriority="high">\n<script type="importmap">{"imports": {"three": "./vendor/three.module.min.js", "three/addons/": "./vendor/addons/"}}</script>\n'
+                           extra='<link rel="preload" href="img/hero-object.webp" as="image" type="image/webp" fetchpriority="high">\n<script type="importmap">{"imports": {"three": "./vendor/three.module.min.js"}}</script>\n'
                                  '<script type="application/ld+json" id="org-data">' + json.dumps(ld, separators=(',', ':')) + '</script>',
                            scripts=['<script src="main.js" defer></script>', '<script type="module" src="hero.js"></script>'])
 

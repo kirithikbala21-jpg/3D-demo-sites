@@ -1,4 +1,21 @@
-# Changes: the 27 October hero card is back (28 October 2026)
+# Changes: dark glass card back, clean hero background (28 October 2026)
+
+- **Card:** the 27 October silver card is undone. `scene.js` and `img/hero-object.webp` are back to the dark glass KB card used right before round 2 (byte-for-byte the files from commit c86a926). The import map and the soft fade at the foot of the card area are back to how they were then too.
+- **Removed from the hero:** the round 2 glowing grid lines, the extra glow layer behind the card, and the three small sparkle dots, along with their styles and animations. One of the dots was also baked into the still image under the card; just that dot was cleared out of the image, with the card and its shadow untouched.
+- **What's left:** the plain dark page background with the original soft light (`.spotlight`) behind the card.
+- **Kept:**
+  - the taller hero and the smaller card;
+  - every round 2 section, its spacing and fade-ins;
+  - the new pages;
+  - reduced motion and the still-image fallback.
+- **Checked:**
+  - the hero at 1440 (3D and still image) and 390 shows the dark glass card on a clean dark background, with no grid, glow layer or dots;
+  - no console errors;
+  - the full test suite passed at 1440, 768 and 390.
+
+---
+
+# Earlier: the 27 October hero card is back (28 October 2026)
 
 - **Why:** round 2 did not change the hero card. Its code, materials, lights and still image were byte-for-byte the same as before round 2, and screenshots matched. The brighter look you remembered is the first metal-and-glass card from 27 October (commit 305977f). It was replaced on 28 October by the darker "piano-black glass" card.
 - **Restored from 305977f, unchanged:**

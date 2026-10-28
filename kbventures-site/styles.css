@@ -171,17 +171,11 @@ body.menu-open { overflow: hidden; }
 .hero-stage { position: relative; z-index: 1; order: -1; width: min(82%, 340px); aspect-ratio: 5 / 4; margin: 0 auto 4px; transform: translate3d(0, var(--py, 0px), 0); }
 @media (min-width: 600px) and (max-width: 1023px) { .hero-stage { width: 380px; } }
 @media (min-width: 1024px) { .hero-stage { order: 0; width: 100%; max-width: 500px; margin: 40px 0 0 auto; } }
-.hero-still, .hero-stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.hero-still, .hero-stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; -webkit-mask-image: linear-gradient(180deg, #000 72%, rgba(0, 0, 0, 0) 97%); mask-image: linear-gradient(180deg, #000 72%, rgba(0, 0, 0, 0) 97%); }
 .hero-still { object-fit: contain; transition: opacity 1.2s var(--ease); }
 .hero-stage canvas { display: block; opacity: 0; transition: opacity 1.2s var(--ease); touch-action: pan-y; }
 .hero-stage.has-3d canvas { opacity: 1; }
 .hero-stage.has-3d .hero-still { opacity: 0; }
-.speck { position: absolute; z-index: 0; width: 5px; height: 5px; border-radius: 50%; background: radial-gradient(circle, rgba(232, 238, 255, .9), rgba(200, 214, 245, .25) 45%, rgba(200, 214, 245, 0) 70%); box-shadow: 0 0 12px 3px rgba(200, 214, 245, .18); pointer-events: none; will-change: transform; }
-.speck-1 { left: 16%; top: 22%; animation: drift-a 26s ease-in-out infinite alternate; }
-.speck-2 { left: 78%; top: 16%; width: 4px; height: 4px; animation: drift-b 32s ease-in-out infinite alternate; }
-.speck-3 { left: 70%; top: 74%; width: 3px; height: 3px; animation: drift-a 38s ease-in-out -12s infinite alternate-reverse; }
-@keyframes drift-a { to { transform: translate3d(34px, -26px, 0); } }
-@keyframes drift-b { to { transform: translate3d(-28px, 22px, 0); } }
 .spotlight { position: absolute; z-index: -1; left: 50%; top: 46%; width: 170%; aspect-ratio: 1.5 / 1; transform: translate(-50%, -50%); pointer-events: none; background: radial-gradient(30% 26% at 50% 44%, rgba(var(--light), .2), rgba(var(--light), 0) 100%), radial-gradient(closest-side, rgba(var(--light), .16), rgba(var(--light), .06) 52%, rgba(var(--light), 0) 100%); }
 
 /* ---------- Sections ---------- */
@@ -323,7 +317,6 @@ img.is-missing { visibility: hidden; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; animation: none !important; }
   .js .reveal, .js .reveal:not(.is-visible), .js .hero-text > * { opacity: 1; transform: none; }
-  .speck { display: none; }
   .cover-stack, .float-shot, .watermark { --px: 0px; --wy: 0px; }
   .hero-stage { transform: none; }
   .pill:hover::after, .card:hover::after { transform: translateX(-130%); }
@@ -436,14 +429,6 @@ select.input option { background: #1A1C23; color: var(--text-platinum); }
 .legal-contact .pill { margin-top: 20px; }
 @media (min-width: 1024px) { .legal { padding-top: calc(var(--nav-h) + 72px); } }
 @media print { .nav, .footer, .legal-back, .menu { display: none; } main { padding-top: 0; } .legal-section p, .legal-section li, .legal-summary li { color: #000; } }
-
-/* ---------- Hero: a soft glowing grid and light behind the card (CSS only; still with reduced motion) ---------- */
-.hero-glow { position: absolute; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
-.hero-glow::before { content: ""; position: absolute; left: 50%; top: 22%; width: min(1200px, 220vw); aspect-ratio: 1.5 / 1; transform: translate(-50%, -50%); background-image: linear-gradient(rgba(var(--light), .11) 1px, transparent 1px), linear-gradient(90deg, rgba(var(--light), .11) 1px, transparent 1px); background-size: 56px 56px; background-position: center; -webkit-mask-image: radial-gradient(closest-side, #000 0%, rgba(0, 0, 0, .55) 45%, transparent 100%); mask-image: radial-gradient(closest-side, #000 0%, rgba(0, 0, 0, .55) 45%, transparent 100%); animation: grid-drift 48s linear infinite; }
-.hero-glow::after { content: ""; position: absolute; left: 50%; top: 22%; width: min(760px, 150vw); aspect-ratio: 1.3 / 1; transform: translate(-50%, -50%); background: radial-gradient(closest-side, rgba(var(--light), .16), rgba(var(--light), .05) 50%, rgba(var(--light), 0) 100%); animation: glow-breathe 9s ease-in-out infinite alternate; }
-@media (min-width: 1024px) { .hero-glow::before, .hero-glow::after { left: 74%; top: 50%; } }
-@keyframes grid-drift { to { background-position: calc(50% + 56px) calc(50% + 56px); } }
-@keyframes glow-breathe { from { opacity: .75; } to { opacity: 1; } }
 
 /* ---------- Section links and narrow columns ---------- */
 .section-foot { display: flex; justify-content: center; margin-top: 28px; }

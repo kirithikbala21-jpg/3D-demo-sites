@@ -20,7 +20,7 @@ const browser = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=sw
 const page = await browser.newPage({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 2 });
 await page.goto(`${BASE}kbventures-site/index.html?3d=on&capture`, { waitUntil: 'load' });
 await page.waitForFunction(() => window.__hero, null, { timeout: 30000 });
-await page.addStyleTag({ content: '.hero-stage{transform:none!important} .hero-still{display:none!important} .spotlight,.hero-glow,.speck{display:none!important} #scene{opacity:1!important;animation:none!important} html,body{background:transparent!important} body::before,body::after{display:none!important} .hero-text,.nav{visibility:hidden!important}' });
+await page.addStyleTag({ content: '.hero-stage{transform:none!important} .hero-still{display:none!important} .spotlight{display:none!important} #scene{opacity:1!important;animation:none!important} html,body{background:transparent!important} body::before,body::after{display:none!important} .hero-text,.nav{visibility:hidden!important}' });
 await page.evaluate(() => window.__hero.still());
 await page.waitForTimeout(300);
 await page.locator('#scene').screenshot({ path: png, omitBackground: true });

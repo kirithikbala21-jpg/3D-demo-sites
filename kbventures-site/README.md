@@ -48,10 +48,13 @@ The questions live in one place, `faq` in `site.config.json`. Home and the Conta
 The four steps (How we build / How we work) are in `process`, and the three standards (Clear, Fair, Well made) in `standards`. Each has a short `line` for Home and a longer `detail` for How we work.
 
 ## Contact form (Web3Forms)
-1. Get a free access key at https://web3forms.com (enter kb.ventures@outlook.com; the key arrives by email).
-2. Put it in `site.config.json` as `"formAccessKey": "your-key"`, commit and push.
-
-While `formAccessKey` is empty, Send opens the visitor's email app with the message filled in (and says so on the page), so no message is lost. Messages arrive with the subject "New message from KB Ventures website". A hidden box catches simple spam bots. A link to `contact.html?topic=partnership` (or `aceguides`, `shopfront`, `general`, `other`) preselects that choice in "What's it about?"; the choices are `contactPage.topics`.
+The form is connected: `formAccessKey` in `site.config.json` holds the site's Web3Forms access key. This key is public by design (Web3Forms keys are meant to sit in the page's code), so it is fine in this repo. Messages are emailed to the address the key was created with.
+- Each message is sent as JSON to `https://api.web3forms.com/submit` with the subject "New message from KB Ventures website", from "KB Ventures site", and the fields name, email, phone, business, topic and message.
+- **To change the key** (for example if you make a new one at https://web3forms.com, or want messages sent to a different inbox), replace the value of `formAccessKey`, commit and push.
+- **If `formAccessKey` is empty,** Send opens the visitor's email app with the message filled in instead (and says so on the page), so no message is lost.
+- A hidden `botcheck` box catches simple spam bots: if it is ticked, nothing is sent. The Privacy Policy tick box must be ticked before anything is sent.
+- A link to `contact.html?topic=partnership` (or `aceguides`, `shopfront`, `general`, `other`) preselects that choice in "What's it about?"; the choices are `contactPage.topics`.
+- To test without sending real messages, mock the request (as in a Playwright route) rather than submitting the live form.
 
 ## Company details, ABN and social links
 - `company`: name, tagline (the Home headline), location, email. The email is used everywhere on the site.

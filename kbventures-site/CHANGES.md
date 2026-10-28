@@ -1,4 +1,13 @@
-# Changes: the website business is now Shopfront (29 October 2026)
+# Changes: the contact form is connected to Web3Forms (29 October 2026)
+
+- `formAccessKey` in `site.config.json` now holds the site's public Web3Forms key. Messages are posted as JSON to `https://api.web3forms.com/submit` with the subject "New message from KB Ventures website", from_name "KB Ventures site", and name, email, phone, business, topic and message.
+- Send now waits for the config before choosing between sending and the email fallback, so a very fast click can't fall back by mistake. The email fallback is used only when the key is empty.
+- The `botcheck` honeypot and the Privacy Policy tick box work as before.
+- **Checked:** with a mocked endpoint at 1440 and 390, using the real config and key, and no real message sent. Covered: validation messages, the loading state, the success message, the error message with the email as a backup, the honeypot blocking a send, the exact payload, and no console errors.
+
+---
+
+# Earlier: the website business is now Shopfront (29 October 2026)
 
 - **New name:** the website-building business is renamed "Shopfront" everywhere in this folder. That covers the config, the Home and Businesses cards, the Businesses dropdown, the footer list, the FAQ answers (and their structured data), the contact form's "What's it about?" list, the meta descriptions, the legal pages, the README, the brand notes, code comments and earlier entries in this file.
 - **Kept the same:** its description, "coming-soon" status, empty URL and "See demos" label. AceGuides is untouched. KB Ventures stays the trading name on the legal pages.

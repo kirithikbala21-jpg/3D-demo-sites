@@ -120,6 +120,7 @@
     // the hidden spam trap: people never tick it, bots often do. Pretend it worked and send nothing.
     if ($('#f-botcheck').checked) { success(); return; }
     const v = values();
+    if (KB.config) await KB.config; // the key comes from the config: never fall back just because it is still loading
     if (!accessKey) { mailtoFallback(v); return; }
     busy(true); setStatus('');
     const ctl = 'AbortController' in window ? new AbortController() : null;

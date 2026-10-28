@@ -1,4 +1,56 @@
-# Changes: the company lobby (28 October 2026)
+# Changes: round 2, a fuller home page and four new pages (28 October 2026)
+
+## Home
+- **Hero:** almost a full screen tall on desktop, with the text and the smaller 3D card on one centreline. A faint glowing grid and a soft light sit behind the card. They're CSS only, drift very slowly and stay still with reduced motion.
+- **New order:** Our businesses (the same two coming-soon cards, plus "View all businesses"), How we build (four steps), Our standard (three cards), About, Quick questions (the first three FAQ items), Get in touch, footer.
+- **How we build:** Idea, Build, Launch and Run, each with a number, a thin line icon, a title and one line. Four in a row on desktop, 2 x 2 on phones, with a "How we work" link.
+- **Our standard:** Clear, Fair and Well made cards. Only these tilt slightly and catch a soft light under the pointer; the business cards do not.
+- **Spacing:** one scale. The gap between sections is about 105px on desktop, 81px on tablets and 65px on phones, with the gold-dot dividers kept. Sections and cards rise in once as they appear (not with reduced motion).
+
+## New pages
+- **Businesses** (`businesses.html`): "Our businesses.", "Each business has its own website.", the cards from the config, and always the faded "More coming" card. A live business becomes a link automatically.
+- **How we work** (`how-we-work.html`): the four steps, each in two or three plain sentences, then the three standards with a short paragraph each, then Get in touch.
+- **FAQ** (`faq.html`): the six questions as an accordion. It works by mouse and keyboard (Enter, Space, and the arrow keys between questions), opens and closes smoothly, and opens instantly with reduced motion. The answers stay open without JavaScript. It includes FAQPage structured data that matches the visible text word for word.
+- **Partner with us** (`partner.html`): the intro, the three points, and "Tell us about it", which opens the contact form with Partnership chosen.
+- **Contact:** `?topic=` preselects "What's it about?". Quick answers (the first three FAQ items) sit under the form.
+
+## Header, menu and footer
+- **Top bar:** "Businesses" is now a link to the Businesses page, with a small arrow button beside it for the dropdown (which still opens on hover too).
+- **Phone menu:** Businesses, About, How we work, FAQ, Partner with us, Contact, and the pill.
+- **Footer:** the logo, email and social icons, then three link columns. Businesses (from the config); Company: About, How we work, FAQ, Partner with us, Contact; Legal: Privacy, Terms, Refunds. The bottom row is unchanged.
+
+## Under the hood
+- **One FAQ source:** the questions live in one list, `faq` in `site.config.json`, used by Home, Contact and the FAQ page. The steps are in `process`, the standards in `standards`, and the new page text is in the config too.
+- **New `tools/build-pages.py`:** it rebuilds the HTML copy of every page except the legal pages from the config, including the FAQ structured data and the root 404 copy.
+- **Page structure:** card titles and questions are H2 on pages where they come straight after the H1, so headings stay in order.
+- **Spacing fix:** the legal pages now leave room under the fixed top bar.
+- `sitemap.xml` lists all 10 pages.
+
+## Checked
+At 1440, 768 and 390px on all 11 pages:
+- one H1;
+- no sideways scroll;
+- no console errors or failed requests;
+- contrast at least 4.5:1.
+
+Also checked:
+- every internal link works;
+- the accordions work by mouse and keyboard;
+- the FAQ structured data matches the visible text;
+- `?topic=partnership`, `aceguides`, `kb-websites` and no topic all preselect correctly;
+- the dropdown works, and the Businesses label is a link;
+- the phone menu works, including focus and Escape;
+- the bar hides and returns on scroll;
+- coming-soon cards are not links, and live ones become links;
+- the form works (with the sending step faked);
+- the 404 works at deep addresses;
+- reduced motion and JavaScript-off both work.
+
+Lighthouse scored 95–100 for performance and 100 for accessibility, best practices and SEO, with layout shift 0 to 0.002.
+
+---
+
+# Earlier: the company lobby (28 October 2026)
 
 The site is now a clean "lobby" for a company with several businesses. The look is unchanged: the same colours, type, 20px cards, pill buttons, Lenis smooth scrolling and 3D hero with its still fallback. The logo files are used as supplied.
 

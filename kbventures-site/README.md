@@ -5,14 +5,18 @@ The company "lobby": Home, About, Contact, legal pages and a 404 page, in plain 
 Live: https://kirithikbala21-jpg.github.io/3D-demo-sites/kbventures-site/
 
 ## Pages
-- `index.html`: Home (hero, business cards, About, a short contact section)
-- `about.html`, `contact.html` (the contact form), `404.html`
+- `index.html`: Home (hero, Our businesses, How we build, Our standard, About, Quick questions, Get in touch)
+- `businesses.html`, `how-we-work.html`, `faq.html`, `partner.html`, `about.html`, `contact.html` (the contact form), `404.html`
 - `legal/privacy.html`, `legal/terms.html`, `legal/refunds.html`
+
+## After editing the config
+The pages read `site.config.json` in the browser, so a change shows up as soon as it is pushed. Then run
+`python3 kbventures-site/tools/build-pages.py` and commit the result: it rewrites the HTML copy of every page except the legal pages from the config, so search engines, share previews, visitors without JavaScript and the FAQ structured data match it. It also refreshes the 404 copy at the repo root.
 
 ## Files
 - `site.config.json`: the one file to edit. It holds the company details, social links, the list of businesses, the form key and **all the page text**. Every text element in the pages is marked `data-c="path.in.config"`.
 - `site.js`: shared by every page. It draws the **top bar, phone menu and footer** from the config, so they change in one place. It also runs smooth scrolling (Lenis, on Home, About and Contact), the bar's hide-on-scroll, the Businesses dropdown, and fills in page text, email links and social icons. Each page holds a small plain copy of the bar and footer that shows only without JavaScript.
-- `main.js`: Home only (the business cards from the config, parallax, fade-ups). `contact.js`: the contact form. `legal/legal.js`: the brand list and ABN line on the legal pages.
+- `main.js`: page effects for Home and the inner pages (business cards and FAQ accordions from the config, the tilt on the standard cards, parallax, fade-ups). `tools/build-pages.py`: rebuilds the pages from the config (see above). `contact.js`: the contact form. `legal/legal.js`: the brand list and ABN line on the legal pages.
 - `styles.css`: all styles. `brand.md`: the design system.
 - `hero.js` and `scene.js`: the 3D metal-and-glass card in the hero (Three.js). It only runs with a real graphics card; reduced motion, Data Saver, low-powered phones and software WebGL get the still image `img/hero-object.webp`. `?3d=off` shows the still image, `?3d=on` forces 3D.
 - `404.html`: works at any address. It reads the site folder from the address, or falls back to `BASE` at its top (keep that equal to `basePath` in the config). A byte-for-byte copy sits at the repo root (`/404.html`), because GitHub Pages only uses the root one for this project site. If you change one, copy it over the other.
@@ -29,14 +33,25 @@ Add one entry to `businesses` in `site.config.json`. Nothing else needs changing
 ```
 - `status`: `"coming-soon"` or `"live"`. A business counts as live only when the status is `"live"` **and** `url` is a full `https://` address. Then its card becomes one big link with a LIVE badge and `ctaLabel` with an arrow, and its footer and dropdown entries become links. While coming soon, the card is not a link, has no hover lift, and says "Coming soon".
 - `image`: one picture (shown filling the card's picture area; add `"imageFrame": "browser"` to show it in a browser frame), or a list of up to five (shown as a fanned stack, like AceGuides), with `imageAlt` as one text or a matching list. Images must be in `img/`. Use WebP and give `imageSize` as `[width, height]`.
-- `showMoreComingCard: true` adds a faded "More coming" card after the businesses.
+- **The "More coming" card:** it always shows on the Businesses page. On Home it shows only when `"showMoreComingCard": true`; set it to `false` to hide it there. Its title is `home.businesses.moreComing`.
 - Keep `description` to one short line: the main site carries only these. Everything else about a business goes on its own site.
+
+## FAQ questions
+The questions live in one place, `faq` in `site.config.json`. Home and the Contact page show the first three, and the FAQ page shows all of them, with matching FAQPage structured data.
+```json
+{ "q": "The question?", "a": "The answer. Read more on the Refunds page.", "links": [{ "text": "Refunds page", "href": "legal/refunds.html" }] }
+```
+- `links` is optional: each `text` must appear word for word in the answer, and that part becomes the link (`href` is a page in this site, a `mailto:` or an `https://` address).
+- The order in the list is the order on the page, so the first three are the ones on Home and Contact.
+- After editing, run `tools/build-pages.py` (see above) so the structured data and the plain HTML copy match.
+
+The four steps (How we build / How we work) are in `process`, and the three standards (Clear, Fair, Well made) in `standards`. Each has a short `line` for Home and a longer `detail` for How we work.
 
 ## Contact form (Web3Forms)
 1. Get a free access key at https://web3forms.com (enter kb.ventures@outlook.com; the key arrives by email).
 2. Put it in `site.config.json` as `"formAccessKey": "your-key"`, commit and push.
 
-While `formAccessKey` is empty, Send opens the visitor's email app with the message filled in (and says so on the page), so no message is lost. Messages arrive with the subject "New message from KB Ventures website". A hidden box catches simple spam bots.
+While `formAccessKey` is empty, Send opens the visitor's email app with the message filled in (and says so on the page), so no message is lost. Messages arrive with the subject "New message from KB Ventures website". A hidden box catches simple spam bots. A link to `contact.html?topic=partnership` (or `aceguides`, `kb-websites`, `general`, `other`) preselects that choice in "What's it about?"; the choices are `contactPage.topics`.
 
 ## Company details, ABN and social links
 - `company`: name, tagline (the Home headline), location, email. The email is used everywhere on the site.

@@ -76,7 +76,11 @@
     "close": "Close",
     "home": "{name} home",
     "comingSoon": "Coming soon",
-    "live": "Live"
+    "live": "Live",
+    "businessesShow": "Show businesses",
+    "howWeWork": "How we work",
+    "faq": "FAQ",
+    "partner": "Partner with us"
   },
   "footer": {
     "businesses": "Businesses",
@@ -89,7 +93,11 @@
     "copyright": "© {year} {name}. Based in {location}.",
     "abnLabel": "ABN",
     "vceTrademark": "VCE® is a registered trademark of the VCAA.",
-    "socialLabel": "{name} on {network}"
+    "socialLabel": "{name} on {network}",
+    "legal": "Legal",
+    "howWeWork": "How we work",
+    "faq": "FAQ",
+    "partner": "Partner with us"
   },
   "home": {
     "hero": {
@@ -100,7 +108,8 @@
     "businesses": {
       "title": "Our businesses.",
       "moreComing": "More coming",
-      "moreComingText": ""
+      "moreComingText": "",
+      "viewAll": "View all businesses"
     },
     "about": {
       "title": "About KB Ventures",
@@ -112,6 +121,17 @@
       "title": "Get in touch.",
       "lead": "Questions, orders or ideas? We read every message.",
       "button": "Contact us"
+    },
+    "build": {
+      "title": "How we build.",
+      "link": "How we work"
+    },
+    "standard": {
+      "title": "Our standard."
+    },
+    "faq": {
+      "title": "Quick questions.",
+      "link": "See all questions"
     }
   },
   "about": {
@@ -172,7 +192,143 @@
     "socialLabel": "Follow",
     "replyNote": "We usually reply within 2 business days.",
     "subject": "New message from KB Ventures website",
-    "fromName": "KB Ventures site"
+    "fromName": "KB Ventures site",
+    "quickTitle": "Quick answers",
+    "quickLink": "See all questions"
+  },
+  "process": [
+    {
+      "title": "Idea",
+      "line": "We start with a real need and check it makes sense.",
+      "detail": "Before anything is built, we look at who it is for and what they actually need. If the idea does not hold up, we do not go ahead."
+    },
+    {
+      "title": "Build",
+      "line": "We build it carefully, with its own website and clear prices.",
+      "detail": "Each business gets its own name, its own website and prices that are easy to understand. We take the time to get the details right before anything opens."
+    },
+    {
+      "title": "Launch",
+      "line": "We open it up, check it works and fix problems fast.",
+      "detail": "When a business opens, we test it ourselves and listen to the first people who use it. Anything that goes wrong is fixed as quickly as we can."
+    },
+    {
+      "title": "Run",
+      "line": "We keep it running, with support and fair dealing.",
+      "detail": "After launch, we keep looking after it and answer questions. If something goes wrong with a purchase, we put it right."
+    }
+  ],
+  "standards": [
+    {
+      "title": "Clear",
+      "line": "Plain words and honest prices.",
+      "detail": "We say what you get and what it costs in plain words, so there are no surprises."
+    },
+    {
+      "title": "Fair",
+      "line": "Straight dealing, and refunds when something is wrong.",
+      "detail": "We deal with people the way we would want to be dealt with. If something you bought is faulty or not as described, we fix it or refund you."
+    },
+    {
+      "title": "Well made",
+      "line": "Products and sites built carefully.",
+      "detail": "We take care over the details and check our work before it goes out, then keep improving it."
+    }
+  ],
+  "faq": [
+    {
+      "q": "What is KB Ventures?",
+      "a": "KB Ventures is a Melbourne company that starts and runs businesses. Each business has its own website, and all of them follow the same standard: clear, fair and well made."
+    },
+    {
+      "q": "Which business should I contact about what?",
+      "a": "AceGuides is for study guides for Year 10 and VCE students. KB Websites is for websites for local businesses. If you are not sure, choose General question on the contact form and we will point you the right way.",
+      "links": [
+        {
+          "text": "contact form",
+          "href": "contact.html"
+        }
+      ]
+    },
+    {
+      "q": "How fast do you reply?",
+      "a": "We usually reply within 2 business days. You can use the form on the contact page or email kb.ventures@outlook.com.",
+      "links": [
+        {
+          "text": "contact page",
+          "href": "contact.html"
+        },
+        {
+          "text": "kb.ventures@outlook.com",
+          "href": "mailto:kb.ventures@outlook.com"
+        }
+      ]
+    },
+    {
+      "q": "What if something I bought is faulty?",
+      "a": "If a digital product is faulty, will not open or is not what was described, tell us and we will fix it or give you a full refund. Read the full details on the Refunds page.",
+      "links": [
+        {
+          "text": "Refunds page",
+          "href": "legal/refunds.html"
+        }
+      ]
+    },
+    {
+      "q": "How do you use my information?",
+      "a": "We only collect what we need to deliver your purchase, answer your messages and keep our records. We do not sell personal information. Read the full details in our Privacy Policy.",
+      "links": [
+        {
+          "text": "Privacy Policy",
+          "href": "legal/privacy.html"
+        }
+      ]
+    },
+    {
+      "q": "Can I work with you?",
+      "a": "Yes. If you would like to partner with us, tell us about it on the Partner with us page.",
+      "links": [
+        {
+          "text": "Partner with us page",
+          "href": "partner.html"
+        }
+      ]
+    }
+  ],
+  "businessesPage": {
+    "title": "Our businesses.",
+    "lead": "Each business has its own website.",
+    "button": "Get in touch"
+  },
+  "howWeWork": {
+    "title": "How we work.",
+    "lead": "Every KB Ventures business is started and run the same way.",
+    "standardsTitle": "Our standard.",
+    "button": "Get in touch"
+  },
+  "faqPage": {
+    "title": "Questions.",
+    "more": "Still have a question?",
+    "button": "Get in touch"
+  },
+  "partner": {
+    "title": "Partner with us.",
+    "lead": "We are open to working with people who share our standard.",
+    "points": [
+      {
+        "title": "Clear",
+        "text": "a plain idea and honest terms."
+      },
+      {
+        "title": "Fair",
+        "text": "it works for both sides."
+      },
+      {
+        "title": "Well made",
+        "text": "done carefully."
+      }
+    ],
+    "button": "Tell us about it"
   },
   "notFound": {
     "code": "404",

@@ -22,6 +22,18 @@
   };
   let accessKey = '', email = 'kb.ventures@outlook.com', cfg = null;
 
+  // contact.html?topic=partnership preselects "Partnership" (letters and digits are compared, so "kb-websites" finds
+  // "KB Websites" and "general" finds "General question")
+  const norm = (t) => String(t).toLowerCase().replace(/[^a-z0-9]/g, '');
+  function preselect() {
+    const want = norm(new URLSearchParams(location.search).get('topic') || '');
+    if (!want) return;
+    const sel = $('#f-topic'), opts = [...sel.options];
+    const hit = opts.find((o) => norm(o.value) === want) || opts.find((o) => norm(o.value).startsWith(want));
+    if (hit) sel.value = hit.value;
+  }
+  preselect();
+
   if (KB.config) KB.config.then((c) => {
     if (!c) return;
     cfg = c;
@@ -35,6 +47,7 @@
       const keep = sel.value;
       sel.replaceChildren(...p.topics.filter(filled).map((t) => { const o = document.createElement('option'); o.value = o.textContent = t; return o; }));
       if (p.topics.includes(keep)) sel.value = keep;
+      preselect();
     }
     if (!send.disabled) sendLabel.textContent = T.send;
   });

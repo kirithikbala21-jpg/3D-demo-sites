@@ -30,10 +30,10 @@
 <link rel="icon" href="img/icon-512.png" type="image/png" sizes="512x512">
 <link rel="apple-touch-icon" href="apple-touch-icon.png" sizes="180x180">
 <link rel="preload" href="fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="styles.css">
 <link rel="preload" href="img/hero-object.webp" as="image" type="image/webp" fetchpriority="high">
 <script type="importmap">{"imports": {"three": "./vendor/three.module.min.js"}}</script>
 <script type="application/ld+json" id="org-data">{"@context":"https://schema.org","@type":"Organization","name":"KB Ventures","url":"https://kirithikbala21-jpg.github.io/3D-demo-sites/kbventures-site/","email":"kb.ventures@outlook.com","logo":"https://kirithikbala21-jpg.github.io/3D-demo-sites/kbventures-site/img/icon-512.png","description":"KB Ventures is a Melbourne company that starts and runs businesses.","sameAs":["https://www.instagram.com/kb.ventures_au/","https://www.tiktok.com/@kbventures_au","https://x.com/kbventures_au"]}</script>
-<link rel="stylesheet" href="styles.css">
 <script>document.documentElement.classList.add('js');</script>
 <script src="vendor/lenis-1.1.18.min.js" defer></script>
 <script src="site.js" defer></script>
@@ -47,6 +47,7 @@
 
 <main id="main">
   <section class="hero" id="top" aria-labelledby="hero-title">
+    <div class="hero-glow" aria-hidden="true"></div>
     <div class="container hero-grid">
       <div class="hero-text">
         <h1 class="hero-title" id="hero-title" data-c="company.tagline">Many businesses. One standard.</h1>
@@ -109,6 +110,71 @@
         </div>
       </article>
     </div>
+    <div class="container section-foot"><a class="text-link" href="businesses.html"><span data-c="home.businesses.viewAll">View all businesses</span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a></div>
+  </section>
+
+  <div class="divider" aria-hidden="true"><span></span></div>
+
+  <section class="section" id="how" aria-labelledby="build-title">
+    <div class="container center">
+      <h2 class="h2" id="build-title" data-c="home.build.title">How we build.</h2>
+    </div>
+    <div class="container">
+      <ol class="steps4">
+        <li class="card step-card">
+          <span class="step-num" aria-hidden="true">01</span>
+          <span class="step-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.6 10.8c.6.5 1 1.2 1 2v.2h5.2v-.2c0-.8.4-1.5 1-2A6 6 0 0 0 12 3Z"/></svg></span>
+          <h3 class="step-title" data-c="process.0.title">Idea</h3>
+          <p class="dim" data-c="process.0.line">We start with a real need and check it makes sense.</p>
+        </li>
+        <li class="card step-card">
+          <span class="step-num" aria-hidden="true">02</span>
+          <span class="step-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 3 8l9 5 9-5-9-5Z"/><path d="m3 12.5 9 5 9-5"/><path d="m3 16.5 9 5 9-5"/></svg></span>
+          <h3 class="step-title" data-c="process.1.title">Build</h3>
+          <p class="dim" data-c="process.1.line">We build it carefully, with its own website and clear prices.</p>
+        </li>
+        <li class="card step-card">
+          <span class="step-num" aria-hidden="true">03</span>
+          <span class="step-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 18 18 6"/><path d="M9 6h9v9"/></svg></span>
+          <h3 class="step-title" data-c="process.2.title">Launch</h3>
+          <p class="dim" data-c="process.2.line">We open it up, check it works and fix problems fast.</p>
+        </li>
+        <li class="card step-card">
+          <span class="step-num" aria-hidden="true">04</span>
+          <span class="step-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 0 1-13.7 5.7"/><path d="M4 12a8 8 0 0 1 13.7-5.7"/><path d="M18 2.5v4h-4"/><path d="M6 21.5v-4h4"/></svg></span>
+          <h3 class="step-title" data-c="process.3.title">Run</h3>
+          <p class="dim" data-c="process.3.line">We keep it running, with support and fair dealing.</p>
+        </li>
+      </ol>
+      <div class="section-foot"><a class="text-link" href="how-we-work.html"><span data-c="home.build.link">How we work</span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a></div>
+    </div>
+  </section>
+
+  <div class="divider" aria-hidden="true"><span></span></div>
+
+  <section class="section section-standard" id="standard" aria-labelledby="std-title">
+    <div class="container center">
+      <h2 class="h2" id="std-title" data-c="home.standard.title">Our standard.</h2>
+    </div>
+    <div class="container">
+      <div class="std-grid">
+        <article class="card std-card">
+          <span class="std-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12Z"/><circle cx="12" cy="12" r="3"/></svg></span>
+          <h3 class="card-title" data-c="standards.0.title">Clear</h3>
+          <p class="dim" data-c="standards.0.line">Plain words and honest prices.</p>
+        </article>
+        <article class="card std-card">
+          <span class="std-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v16M8 20h8M5 7h14"/><path d="m5 7-3 6a3 3 0 0 0 6 0L5 7Z"/><path d="m19 7-3 6a3 3 0 0 0 6 0l-3-6Z"/></svg></span>
+          <h3 class="card-title" data-c="standards.1.title">Fair</h3>
+          <p class="dim" data-c="standards.1.line">Straight dealing, and refunds when something is wrong.</p>
+        </article>
+        <article class="card std-card">
+          <span class="std-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4 6.5V12c0 4.4 3.4 8.1 8 9 4.6-.9 8-4.6 8-9V6.5L12 3Z"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg></span>
+          <h3 class="card-title" data-c="standards.2.title">Well made</h3>
+          <p class="dim" data-c="standards.2.line">Products and sites built carefully.</p>
+        </article>
+      </div>
+    </div>
   </section>
 
   <div class="divider" aria-hidden="true"><span></span></div>
@@ -127,6 +193,31 @@
 
   <div class="divider" aria-hidden="true"><span></span></div>
 
+  <section class="section" id="questions" aria-labelledby="faq-title">
+    <div class="container center">
+      <h2 class="h2" id="faq-title" data-c="home.faq.title">Quick questions.</h2>
+    </div>
+    <div class="container narrow">
+      <div class="faq" data-faq="3">
+        <div class="faq-item">
+          <h3 class="faq-h"><button class="faq-q" type="button" id="faq-q-h1"><span>What is KB Ventures?</span><span class="faq-icon" aria-hidden="true"></span></button></h3>
+          <div class="faq-a" id="faq-a-h1" role="region" aria-labelledby="faq-q-h1"><div class="faq-a-inner"><p>KB Ventures is a Melbourne company that starts and runs businesses. Each business has its own website, and all of them follow the same standard: clear, fair and well made.</p></div></div>
+        </div>
+        <div class="faq-item">
+          <h3 class="faq-h"><button class="faq-q" type="button" id="faq-q-h2"><span>Which business should I contact about what?</span><span class="faq-icon" aria-hidden="true"></span></button></h3>
+          <div class="faq-a" id="faq-a-h2" role="region" aria-labelledby="faq-q-h2"><div class="faq-a-inner"><p>AceGuides is for study guides for Year 10 and VCE students. KB Websites is for websites for local businesses. If you are not sure, choose General question on the <a href="contact.html">contact form</a> and we will point you the right way.</p></div></div>
+        </div>
+        <div class="faq-item">
+          <h3 class="faq-h"><button class="faq-q" type="button" id="faq-q-h3"><span>How fast do you reply?</span><span class="faq-icon" aria-hidden="true"></span></button></h3>
+          <div class="faq-a" id="faq-a-h3" role="region" aria-labelledby="faq-q-h3"><div class="faq-a-inner"><p>We usually reply within 2 business days. You can use the form on the <a href="contact.html">contact page</a> or email <a href="mailto:kb.ventures@outlook.com">kb.ventures@outlook.com</a>.</p></div></div>
+        </div>
+      </div>
+      <div class="section-foot"><a class="text-link" href="faq.html"><span data-c="home.faq.link">See all questions</span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a></div>
+    </div>
+  </section>
+
+  <div class="divider" aria-hidden="true"><span></span></div>
+
   <section class="section section-contact" id="contact" aria-labelledby="contact-title">
     <div class="watermark" aria-hidden="true">KB</div>
     <div class="container center contact-finale">
@@ -140,9 +231,9 @@
 
 <!-- site.js replaces this with the full footer from site.config.json -->
 <footer class="footer" id="site-footer"><div class="container"><div class="footer-bottom">
-  <p><a href="about.html">About</a> &middot; <a href="contact.html">Contact</a> &middot; <a href="legal/privacy.html">Privacy</a> &middot; <a href="legal/terms.html">Terms</a> &middot; <a href="legal/refunds.html">Refunds</a> &middot; <a href="mailto:kb.ventures@outlook.com">kb.ventures@outlook.com</a></p>
-  <p>&copy; 2026 KB Ventures. Based in Melbourne, Australia.</p>
-  <p>VCE&reg; is a registered trademark of the VCAA.</p>
+  <p><a href="businesses.html">Businesses</a> &middot; <a href="about.html">About</a> &middot; <a href="how-we-work.html">How we work</a> &middot; <a href="faq.html">FAQ</a> &middot; <a href="partner.html">Partner with us</a> &middot; <a href="contact.html">Contact</a> &middot; <a href="legal/privacy.html">Privacy</a> &middot; <a href="legal/terms.html">Terms</a> &middot; <a href="legal/refunds.html">Refunds</a> &middot; <a href="mailto:kb.ventures@outlook.com">kb.ventures@outlook.com</a></p>
+  <p>© 2026 KB Ventures. Based in Melbourne, Australia.</p>
+  <p>VCE® is a registered trademark of the VCAA.</p>
 </div></div></footer>
 </body>
 </html>

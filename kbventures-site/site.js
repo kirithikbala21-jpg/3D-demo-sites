@@ -48,7 +48,7 @@
     <a class="brand" href="${BASE}" aria-label="${esc(fill(t.home || '{name} home', cfg, { name }))}">${wordmark('brand-word')}<img class="brand-mark" src="${BASE}img/kb-favicon.svg" width="32" height="32" alt=""></a>
     <nav class="nav-links" aria-label="Main">
       <div class="dd" id="dd">
-        <button class="nav-link dd-btn" type="button" aria-expanded="false" aria-controls="dd-panel">${esc(t.businesses)}${ICON.chevron}</button>
+        <a class="nav-link dd-link" href="${BASE}businesses.html"${cur('businesses')}>${esc(t.businesses)}</a><button class="dd-btn" type="button" aria-expanded="false" aria-controls="dd-panel" aria-label="${esc(t.businessesShow)}">${ICON.chevron}</button>
         <div class="dd-panel" id="dd-panel" data-lenis-prevent hidden><ul class="dd-list" id="dd-list"></ul></div>
       </div>
       <a class="nav-link" href="${BASE}about.html"${cur('about')}>${esc(t.about)}</a>
@@ -60,18 +60,21 @@
 </header>
 <div class="menu" id="menu" data-lenis-prevent hidden>
   <nav aria-label="Menu">
-    <a href="${BASE}#businesses">${esc(t.businesses)}</a>
+    <a href="${BASE}businesses.html"${cur('businesses')}>${esc(t.businesses)}</a>
     <a href="${BASE}about.html"${cur('about')}>${esc(t.about)}</a>
+    <a href="${BASE}how-we-work.html"${cur('how')}>${esc(t.howWeWork)}</a>
+    <a href="${BASE}faq.html"${cur('faq')}>${esc(t.faq)}</a>
+    <a href="${BASE}partner.html"${cur('partner')}>${esc(t.partner)}</a>
     <a href="${BASE}contact.html"${cur('contact')}>${esc(t.contact)}</a>
   </nav>
   <a class="pill pill-primary menu-cta" href="${BASE}contact.html">${esc(t.cta)}</a>
 </div>`;
   }
-  const DEFAULT_NAV = { businesses: 'Businesses', about: 'About', contact: 'Contact', cta: 'Get in touch', menu: 'Menu', close: 'Close', home: '{name} home', comingSoon: 'Coming soon' };
+  const DEFAULT_NAV = { businesses: 'Businesses', businessesShow: 'Show businesses', about: 'About', contact: 'Contact', howWeWork: 'How we work', faq: 'FAQ', partner: 'Partner with us', cta: 'Get in touch', menu: 'Menu', close: 'Close', home: '{name} home', comingSoon: 'Coming soon' };
   let navText = DEFAULT_NAV;
   const slot = $('#site-header');
   if (slot) slot.outerHTML = headerHTML(navText, null);
-  const nav = $('#nav'), menu = $('#menu'), btn = $('.menu-btn'), dd = $('#dd'), ddBtn = $('.dd-btn'), ddPanel = $('#dd-panel');
+  const nav = $('#nav'), menu = $('#menu'), btn = $('.menu-btn'), dd = $('#dd'), ddBtn = $('.dd-btn'), ddLink = $('.dd-link'), ddPanel = $('#dd-panel');
   const navH = () => (nav ? nav.offsetHeight : 64);
 
   // the Businesses dropdown: one row per business with its one-line description; a link only once the business is live
@@ -89,7 +92,7 @@
   let ddOpenedAt = 0;
   function setDropdown(open, restoreFocus = false) {
     if (!ddBtn) return;
-    if (open && !ddFilled) { location.href = BASE + '#businesses'; return; } // no config: go to the cards instead
+    if (open && !ddFilled) return; // nothing to list until the config arrives
     if (open && !ddOpen()) ddOpenedAt = Date.now();
     ddBtn.setAttribute('aria-expanded', String(open));
     ddPanel.hidden = !open;
@@ -211,7 +214,14 @@
       <nav class="footer-col" aria-labelledby="footer-company"><h2 class="footer-h" id="footer-company">${esc(f.company || 'Company')}</h2>
         <ul class="footer-list">
           <li><a href="${BASE}about.html"${cur('about')}>${esc(f.about || 'About')}</a></li>
+          <li><a href="${BASE}how-we-work.html"${cur('how')}>${esc(f.howWeWork || 'How we work')}</a></li>
+          <li><a href="${BASE}faq.html"${cur('faq')}>${esc(f.faq || 'FAQ')}</a></li>
+          <li><a href="${BASE}partner.html"${cur('partner')}>${esc(f.partner || 'Partner with us')}</a></li>
           <li><a href="${BASE}contact.html"${cur('contact')}>${esc(f.contact || 'Contact')}</a></li>
+        </ul>
+      </nav>
+      <nav class="footer-col" aria-labelledby="footer-legal"><h2 class="footer-h" id="footer-legal">${esc(f.legal || 'Legal')}</h2>
+        <ul class="footer-list">
           <li><a href="${BASE}legal/privacy.html"${cur('privacy')}>${esc(f.privacy || 'Privacy')}</a></li>
           <li><a href="${BASE}legal/terms.html"${cur('terms')}>${esc(f.terms || 'Terms')}</a></li>
           <li><a href="${BASE}legal/refunds.html"${cur('refunds')}>${esc(f.refunds || 'Refunds')}</a></li>
@@ -231,10 +241,11 @@
   function apply(cfg) {
     navText = Object.assign({}, DEFAULT_NAV, cfg.nav || {});
     // labels in the bar and menu
-    if (ddBtn) ddBtn.firstChild.textContent = navText.businesses;
+    if (ddLink) ddLink.textContent = navText.businesses;
+    if (ddBtn) ddBtn.setAttribute('aria-label', navText.businessesShow);
     const links = $$('.nav-links > a', nav), mlinks = $$('nav a', menu);
-    [navText.about, navText.contact].forEach((t, i) => { if (links[i]) links[i].textContent = t; if (mlinks[i + 1]) mlinks[i + 1].textContent = t; });
-    if (mlinks[0]) mlinks[0].textContent = navText.businesses;
+    [navText.about, navText.contact].forEach((t, i) => { if (links[i]) links[i].textContent = t; });
+    [navText.businesses, navText.about, navText.howWeWork, navText.faq, navText.partner, navText.contact].forEach((t, i) => { if (mlinks[i]) mlinks[i].textContent = t; });
     $$('.nav-cta, .menu-cta').forEach((a) => { a.textContent = navText.cta; });
     $('.sr-only', btn).textContent = menuOpen() ? navText.close : navText.menu;
     $('.brand').setAttribute('aria-label', fill(navText.home, cfg));

@@ -17,7 +17,7 @@
     send: 'Send', sending: 'Sending…', success: 'Thanks, we’ll reply soon.', successText: 'Your message has been sent.',
     error: 'Sorry, your message didn’t send. Please try again, or email us at {email}.',
     fallback: 'Your email app should open with your message ready to send. If it didn’t, email us at {email}.',
-    fallbackLink: 'Open the email again', subject: 'New message from KB Ventures website', fromName: 'KB Ventures site',
+    fallbackLink: 'Open the email again', subject: 'New message from KB Ventures website', fromName: 'KB Ventures Website',
     errors: { name: 'Please enter your name.', email: 'Please enter your email address.', emailFormat: 'Please enter a valid email address, like name@example.com.', message: 'Please write a message.', messageShort: 'Please write at least 10 characters.', agree: 'Please tick the box to agree to the Privacy Policy.', summary: 'Please fix the highlighted fields.' }
   };
   let accessKey = '', email = 'kb.ventures@outlook.com', cfg = null;
@@ -129,7 +129,7 @@
       const res = await fetch(ENDPOINT, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify({ access_key: accessKey, subject: T.subject, from_name: T.fromName, name: v.name, email: v.email, phone: v.phone, business: v.business, topic: v.topic, message: v.message }),
+        body: JSON.stringify({ access_key: accessKey, subject: T.subject, from_name: T.fromName, name: v.name, email: v.email, phone: v.phone, business: v.business, topic: v.topic, message: v.message, botcheck: $('#f-botcheck').checked }), // Web3Forms' honeypot field (always false here: a ticked box never gets this far)
         signal: ctl ? ctl.signal : undefined
       });
       const data = await res.json().catch(() => ({}));

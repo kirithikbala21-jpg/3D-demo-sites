@@ -50,7 +50,7 @@ The four steps (How we build / How we work) are in `process`, and the three stan
 
 ## Contact form (Web3Forms)
 The form is connected: `formAccessKey` in `site.config.json` holds the site's Web3Forms access key. This key is public by design (Web3Forms keys are meant to sit in the page's code), so it is fine in this repo. Messages are emailed to the address the key was created with.
-- Each message is sent as JSON to `https://api.web3forms.com/submit` with the subject "New message from KB Ventures website", from "KB Ventures site", and the fields name, email, phone, business, topic and message.
+- Each message is sent as JSON to `https://api.web3forms.com/submit` with the subject "New message from KB Ventures website", from "KB Ventures Website", and the fields name, email, phone, business, topic and message, plus the `botcheck` honeypot field.
 - **To change the key** (for example if you make a new one at https://web3forms.com, or want messages sent to a different inbox), replace the value of `formAccessKey`, commit and push.
 - **If `formAccessKey` is empty,** Send opens the visitor's email app with the message filled in instead (and says so on the page), so no message is lost.
 - A hidden `botcheck` box catches simple spam bots: if it is ticked, nothing is sent. The Privacy Policy tick box must be ticked before anything is sent.

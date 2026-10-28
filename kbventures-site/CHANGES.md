@@ -1,4 +1,13 @@
-# Changes: the website business is now Black Crest Web Designs (29 October 2026)
+# Changes: contact form details for Web3Forms (29 October 2026)
+
+- The "from name" on form emails is now "KB Ventures Website" (`contactPage.fromName`).
+- The JSON sent to `https://api.web3forms.com/submit` now also carries Web3Forms' `botcheck` honeypot field (false for real visitors; if the hidden box is ticked, nothing is sent).
+- The access key, the subject "New message from KB Ventures website", the success message and the error message with the fallback email link were already in place and are unchanged.
+- **Checked:** the mocked form tests at 1440 and 390 (no real message sent) and the full site suite.
+
+---
+
+# Earlier: the website business is now Black Crest Web Designs (29 October 2026)
 
 - **New name:** the website-building business is now "Black Crest Web Designs" everywhere in this folder. That covers the config, the Home and Businesses cards, the Businesses dropdown, the footer, FAQ answer 2 and its structured data, the contact form's "What's it about?" list, the meta descriptions, the legal pages (including the terms' "Website services (Black Crest Web Designs)" section and the brand list), the README, the brand notes, code comments and earlier entries in this file.
 - **Unchanged:** its one-line description, "coming-soon" status, empty URL, "See demos" label and card format. AceGuides, the hero card, colours and layout are untouched. The legal pages' "Last updated" was already today (29 October 2026).

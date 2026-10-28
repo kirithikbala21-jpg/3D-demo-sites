@@ -1,4 +1,20 @@
-# Changes: a brushed black metal membership card (28 October 2026)
+# Changes: the 1:13 pm hero card is back (28 October 2026)
+
+- **Restored from commit dcec837** (11:49 am Melbourne time on 28 Oct, the card that was live at about 1:13 pm; the next card change, 1397f4a, came at 1:28 pm): `scene.js` and the still image. That is the slim dark glass card with a slim bevelled metal edge, one fine brushed-gold line, the studio lighting and environment map, the soft light in the upper right of the face, the raised polished KB and VENTURES under it, and the idle light sweep that crosses the face every few seconds on its own (it was never hover-only).
+- **Undone:** every later card version: the 7:47 pm silver card, the sleek hairline card, the 10:04 pm purple card with the chip, and the brushed metal membership card.
+- **One small change to the restored card:** in that exact version the KB rendered mid-grey and VENTURES was barely visible. Their two materials now have a soft self-glow and a stronger reflection, so the KB reads bright white/silver and VENTURES is readable. Nothing else about the card differs from dcec837.
+- **Still image:** `img/hero-object.webp` was re-rendered from the restored card (with the brighter mark) at full size, so the fallback matches.
+- **Hero background:** still clean: no grid, glow layer or sparkle dots, only the soft spotlight behind the card.
+- **Kept from round 2:** the taller hero, text, buttons, smaller card, all sections, pages, spacing and fade-ins. Reduced motion and the still-image fallback still work.
+- **Checked:**
+  - screenshots at 1440 (3D and still) and 390, side by side with the actual 1:13 pm site exported from dcec837;
+  - no console errors;
+  - the full test suite passed at 1440, 768 and 390;
+  - Lighthouse: desktop 100 / 100 / 100 / 100, mobile 95 / 100 / 100 / 100, layout shift 0.
+
+---
+
+# Earlier: a brushed black metal membership card (28 October 2026)
 
 The purple/blue gradient card with a chip is gone. The hero card is now a thin metal membership-style card in the site's own palette. It keeps the same size, position, tilt, clean dark background, still-image fallback and reduced-motion behaviour.
 

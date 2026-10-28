@@ -3,27 +3,29 @@
   "email": "kb.ventures@outlook.com",
   "location": "Melbourne, Australia",
   "year": 2026,
-
   "aceguidesShopUrl": "",
   "instagram": "",
   "linkedin": "",
   "abn": "",
   "testimonials": [],
-
   "meta": {
     "title": "KB Ventures: study guides and websites, made in Melbourne",
     "description": "KB Ventures is two small businesses run from Melbourne: AceGuides makes revision guides for Year 10 and VCE students, and KB Websites builds websites for local businesses."
   },
-
-  "nav": { "businesses": "Businesses", "websites": "Websites", "contact": "Contact", "cta": "Get in touch", "menu": "Menu", "close": "Close" },
-
+  "nav": {
+    "businesses": "Businesses",
+    "websites": "Websites",
+    "contact": "Contact",
+    "cta": "Get in touch",
+    "menu": "Menu",
+    "close": "Close"
+  },
   "hero": {
     "label": "KB Ventures · Melbourne",
     "title": "We write study guides for students, and build websites for the shop down the road.",
     "lead": "KB Ventures is two small businesses, run from Melbourne.",
     "cta": "See the websites"
   },
-
   "businesses": {
     "label": "What we run",
     "title": "Two businesses. One standard.",
@@ -33,48 +35,85 @@
       "name": "AceGuides",
       "text": "Revision guides for Year 10 and VCE students, with bundles for each year level.",
       "noShopLine": "Guides launching soon",
-      "shopButton": "See the guides"
+      "shopButton": "See the guides",
+      "covers": [
+        {
+          "src": "img/aceguides/year10-maths.webp",
+          "alt": "AceGuides Year 10 Maths study guide cover"
+        },
+        {
+          "src": "img/aceguides/year10-science.webp",
+          "alt": "AceGuides Year 10 Science study guide cover"
+        },
+        {
+          "src": "img/aceguides/vce34-biology.webp",
+          "alt": "AceGuides VCE Biology Units 3 & 4 study guide cover"
+        },
+        {
+          "src": "img/aceguides/vce34-english.webp",
+          "alt": "AceGuides VCE English Units 3 & 4 study guide cover"
+        },
+        {
+          "src": "img/aceguides/vce34-maths-methods.webp",
+          "alt": "AceGuides VCE Maths Methods Units 3 & 4 study guide cover"
+        }
+      ]
     },
     "kbwebsites": {
       "status": "Starting",
       "name": "KB Websites",
       "text": "Fast, good-looking websites for local businesses, with online booking, reviews and maps.",
-      "link": "How it works"
+      "link": "How it works",
+      "preview": {
+        "src": "img/barber-desktop.webp",
+        "alt": "Front page of Brass & Blade, a concept barbershop website"
+      }
     }
   },
-
   "how": {
     "label": "How KB Websites works",
     "title": "A free preview first.",
-    "text": "First we build a free preview of your new website. You look through it and tell us what to keep, change or leave out. When you are happy with it, we put it live."
+    "steps": [
+      {
+        "title": "Preview",
+        "text": "First we build a free preview of your new website."
+      },
+      {
+        "title": "Feedback",
+        "text": "You look through it and tell us what to keep, change or leave out."
+      },
+      {
+        "title": "Go live",
+        "text": "When you are happy with it, we put it live."
+      }
+    ]
   },
-
   "websites": {
     "label": "Concept websites",
     "title": "Concept websites we built to show what’s possible.",
     "openDemo": "Open demo"
   },
   "demosNote": "These are concept demos for made-up businesses. Names, prices and reviews are examples only.",
-
-  "testimonialsSection": { "label": "Kind words", "title": "What people say." },
-
+  "testimonialsSection": {
+    "label": "Kind words",
+    "title": "What people say."
+  },
   "contact": {
     "label": "Contact",
     "title": "Questions about AceGuides, or want a free preview for your business?",
     "lead": "Send us an email. We’re in {location}."
   },
-
   "footer": {
     "concept": "The website demos are concepts for made-up businesses.",
     "backToTop": "Back to top",
-    "abnLabel": "ABN"
+    "abnLabel": "ABN",
+    "vceTrademark": "VCE® is a registered trademark of the VCAA."
   },
-
   "demos": [
-    { "type": "Gym", "name": "Iron & Ember Athletic Club", "line": "Strength coaching, group classes and open gym, with a slowly rotating 3D barbell.", "url": "https://kirithikbala21-jpg.github.io/3D-demo-sites/gym-demo/", "desktop": "img/gym-desktop.webp", "mobile": "img/gym-mobile.webp" },
-    { "type": "Barbershop", "name": "Brass & Blade", "line": "Classic cuts, skin fades and hot towel shaves, with a spinning 3D barber pole.", "url": "https://kirithikbala21-jpg.github.io/3D-demo-sites/barber-demo/", "desktop": "img/barber-desktop.webp", "mobile": "img/barber-mobile.webp" },
-    { "type": "Cafe", "name": "Ember & Oak", "line": "Small-batch coffee, all-day dining and long tables, with a cinematic 3D hero.", "url": "https://kirithikbala21-jpg.github.io/3D-demo-sites/cafe-demo-v2/", "desktop": "img/cafe-desktop.webp", "mobile": "img/cafe-mobile.webp" },
-    { "type": "Plumber", "name": "Waverley Plumbing & Gas", "line": "Licensed family plumbers and gas fitters with an emergency line and upfront prices.", "url": "https://kirithikbala21-jpg.github.io/3D-demo-sites/plumber-demo/", "desktop": "img/plumber-desktop.webp", "mobile": "img/plumber-mobile.webp" },
-    { "type": "Hair salon", "name": "Maison Lune", "line": "Cuts, colour, treatments and beauty with clear prices and online booking.", "url": "https://kirithikbala21-jpg.github.io/3D-demo-sites/salon-demo/", "desktop": "img/salon-desktop.webp", "mobile": "img/salon-mobile.webp" }
+    { "type": "Gym", "name": "Iron & Ember Athletic Club", "line": "Strength coaching, group classes and open gym, with a slowly rotating 3D barbell.", "url": "https://kirithikbala21-jpg.github.io/3D-demo-sites/gym-demo/", "desktop": "img/gym-desktop.webp", "mobile": "img/gym-mobile.webp", "tall": "img/gym-tall.webp" },
+    { "type": "Barbershop", "name": "Brass & Blade", "line": "Classic cuts, skin fades and hot towel shaves, with a spinning 3D barber pole.", "url": "https://kirithikbala21-jpg.github.io/3D-demo-sites/barber-demo/", "desktop": "img/barber-desktop.webp", "mobile": "img/barber-mobile.webp", "tall": "img/barber-tall.webp" },
+    { "type": "Cafe", "name": "Ember & Oak", "line": "Small-batch coffee, all-day dining and long tables, with a cinematic 3D hero.", "url": "https://kirithikbala21-jpg.github.io/3D-demo-sites/cafe-demo-v2/", "desktop": "img/cafe-desktop.webp", "mobile": "img/cafe-mobile.webp", "tall": "img/cafe-tall.webp" },
+    { "type": "Plumber", "name": "Waverley Plumbing & Gas", "line": "Licensed family plumbers and gas fitters with an emergency line and upfront prices.", "url": "https://kirithikbala21-jpg.github.io/3D-demo-sites/plumber-demo/", "desktop": "img/plumber-desktop.webp", "mobile": "img/plumber-mobile.webp", "tall": "img/plumber-tall.webp" },
+    { "type": "Hair salon", "name": "Maison Lune", "line": "Cuts, colour, treatments and beauty with clear prices and online booking.", "url": "https://kirithikbala21-jpg.github.io/3D-demo-sites/salon-demo/", "desktop": "img/salon-desktop.webp", "mobile": "img/salon-mobile.webp", "tall": "img/salon-tall.webp" }
   ]
 }

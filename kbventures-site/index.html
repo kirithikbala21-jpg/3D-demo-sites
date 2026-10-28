@@ -72,13 +72,17 @@
       </div>
       <div class="hero-stage" id="stage">
         <div class="spotlight" aria-hidden="true"></div>
+        <span class="speck speck-1" aria-hidden="true"></span><span class="speck speck-2" aria-hidden="true"></span><span class="speck speck-3" aria-hidden="true"></span>
         <img class="hero-still" src="img/hero-object.webp" width="1200" height="961" alt="A black glass and metal card carrying the raised KB mark" fetchpriority="high" decoding="async">
         <canvas id="scene" aria-hidden="true"></canvas>
       </div>
     </div>
   </section>
 
-  <section class="section" id="businesses" aria-labelledby="biz-title">
+  <div class="divider divider-hero" aria-hidden="true"><span></span></div>
+
+  <section class="section section-businesses" id="businesses" aria-labelledby="biz-title">
+    <div class="watermark" aria-hidden="true">KB</div>
     <div class="container center">
       <p class="label" data-c="businesses.label">What we run</p>
       <h2 class="h2" id="biz-title" data-c="businesses.title">Two businesses. One standard.</h2>
@@ -86,31 +90,71 @@
     </div>
     <div class="container biz-grid">
       <article class="card biz">
-        <p class="status"><span class="dot dot-live" aria-hidden="true"></span><span data-c="businesses.aceguides.status">Live</span></p>
-        <div class="biz-body">
-          <h3 class="card-title" data-c="businesses.aceguides.name">AceGuides</h3>
-          <p class="dim" data-c="businesses.aceguides.text">Revision guides for Year 10 and VCE students, with bundles for each year level.</p>
+        <div class="biz-visual">
+          <div class="cover-stack" id="cover-stack" data-parallax="14">
+            <img class="cover" src="img/aceguides/year10-maths.webp" width="720" height="960" loading="lazy" decoding="async" alt="AceGuides Year 10 Maths study guide cover">
+            <img class="cover" src="img/aceguides/year10-science.webp" width="720" height="960" loading="lazy" decoding="async" alt="AceGuides Year 10 Science study guide cover">
+            <img class="cover" src="img/aceguides/vce34-biology.webp" width="720" height="960" loading="lazy" decoding="async" alt="AceGuides VCE Biology Units 3 &amp; 4 study guide cover">
+            <img class="cover" src="img/aceguides/vce34-english.webp" width="720" height="960" loading="lazy" decoding="async" alt="AceGuides VCE English Units 3 &amp; 4 study guide cover">
+            <img class="cover" src="img/aceguides/vce34-maths-methods.webp" width="720" height="960" loading="lazy" decoding="async" alt="AceGuides VCE Maths Methods Units 3 &amp; 4 study guide cover">
+          </div>
         </div>
-        <div class="biz-foot" id="ace-foot"><p class="quiet" data-c="businesses.aceguides.noShopLine">Guides launching soon</p></div>
+        <div class="biz-content">
+          <p class="status"><span class="dot dot-live" aria-hidden="true"></span><span data-c="businesses.aceguides.status">Live</span></p>
+          <div class="biz-body">
+            <h3 class="card-title" data-c="businesses.aceguides.name">AceGuides</h3>
+            <p class="dim" data-c="businesses.aceguides.text">Revision guides for Year 10 and VCE students, with bundles for each year level.</p>
+          </div>
+          <div class="biz-foot" id="ace-foot"><p class="quiet" data-c="businesses.aceguides.noShopLine">Guides launching soon</p></div>
+        </div>
       </article>
       <article class="card biz">
-        <p class="status"><span class="dot dot-start" aria-hidden="true"></span><span data-c="businesses.kbwebsites.status">Starting</span></p>
-        <div class="biz-body">
-          <h3 class="card-title" data-c="businesses.kbwebsites.name">KB Websites</h3>
-          <p class="dim" data-c="businesses.kbwebsites.text">Fast, good-looking websites for local businesses, with online booking, reviews and maps.</p>
+        <div class="biz-visual">
+          <div class="float-shot" data-parallax="18">
+            <div class="browser"><div class="browser-bar" aria-hidden="true"><i></i><i></i><i></i></div><img id="kb-preview" src="img/barber-desktop.webp" width="1280" height="800" loading="lazy" decoding="async" alt="Front page of Brass &amp; Blade, a concept barbershop website"></div>
+          </div>
         </div>
-        <div class="biz-foot"><a class="text-link" href="#how" data-c="businesses.kbwebsites.link">How it works</a></div>
+        <div class="biz-content">
+          <p class="status"><span class="dot dot-start" aria-hidden="true"></span><span data-c="businesses.kbwebsites.status">Starting</span></p>
+          <div class="biz-body">
+            <h3 class="card-title" data-c="businesses.kbwebsites.name">KB Websites</h3>
+            <p class="dim" data-c="businesses.kbwebsites.text">Fast, good-looking websites for local businesses, with online booking, reviews and maps.</p>
+          </div>
+          <div class="biz-foot"><a class="text-link" href="#how" data-c="businesses.kbwebsites.link">How it works</a></div>
+        </div>
       </article>
     </div>
   </section>
+
+  <div class="divider" aria-hidden="true"><span></span></div>
 
   <section class="section" id="how" aria-labelledby="how-title">
     <div class="container center">
       <p class="label" data-c="how.label">How KB Websites works</p>
       <h2 class="h2" id="how-title" data-c="how.title">A free preview first.</h2>
-      <p class="lead" data-c="how.text">First we build a free preview of your new website. You look through it and tell us what to keep, change or leave out. When you are happy with it, we put it live.</p>
+    </div>
+    <div class="container">
+      <ol class="steps" id="steps">
+        <li class="step">
+          <span class="step-icon" aria-hidden="true"><svg viewBox="0 0 32 32"><rect x="4" y="7" width="24" height="18" rx="2.5"/><path d="M4 11.5h24M7.5 9.2h.01M10 9.2h.01M9 16h9M9 19.5h14"/></svg></span>
+          <h3 class="step-title" data-c="how.steps.0.title">Preview</h3>
+          <p class="dim" data-c="how.steps.0.text">First we build a free preview of your new website.</p>
+        </li>
+        <li class="step">
+          <span class="step-icon" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M6 8.5A2.5 2.5 0 0 1 8.5 6h15A2.5 2.5 0 0 1 26 8.5v10a2.5 2.5 0 0 1-2.5 2.5H14l-5.5 5v-5h0A2.5 2.5 0 0 1 6 18.5z"/><path d="M11 12h10M11 15.5h6"/></svg></span>
+          <h3 class="step-title" data-c="how.steps.1.title">Feedback</h3>
+          <p class="dim" data-c="how.steps.1.text">You look through it and tell us what to keep, change or leave out.</p>
+        </li>
+        <li class="step">
+          <span class="step-icon" aria-hidden="true"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="11"/><path d="M5 16h22M16 5c3 3.2 4.5 6.9 4.5 11S19 23.8 16 27M16 5c-3 3.2-4.5 6.9-4.5 11S13 23.8 16 27"/></svg></span>
+          <h3 class="step-title" data-c="how.steps.2.title">Go live</h3>
+          <p class="dim" data-c="how.steps.2.text">When you are happy with it, we put it live.</p>
+        </li>
+      </ol>
     </div>
   </section>
+
+  <div class="divider" aria-hidden="true"><span></span></div>
 
   <section class="section section-websites" id="websites" aria-labelledby="websites-title">
     <div class="container center">
@@ -123,23 +167,23 @@
       <!-- main.js rebuilds these cards from site.config.json; this copy shows when the config cannot load -->
       <ol class="track" id="track" tabindex="0" aria-label="Concept websites. Use the left and right arrow keys to move between them.">
         <li class="slide card" aria-roledescription="slide" aria-label="1 of 5: Iron &amp; Ember Athletic Club">
-          <div class="shot"><div class="browser"><div class="browser-bar" aria-hidden="true"><i></i><i></i><i></i></div><img src="img/gym-desktop.webp" width="1280" height="800" loading="lazy" decoding="async" alt="Front page of Iron &amp; Ember Athletic Club, a concept gym website"></div><div class="phone"><img src="img/gym-mobile.webp" width="480" height="1039" loading="lazy" decoding="async" alt="The same page on a phone"></div></div>
+          <div class="shot"><div class="browser"><div class="browser-bar" aria-hidden="true"><i></i><i></i><i></i></div><img class="scroll-shot" src="img/gym-tall.webp" width="1280" height="1956" loading="lazy" decoding="async" alt="Front page of Iron &amp; Ember Athletic Club, a concept gym website"></div><div class="phone"><img src="img/gym-mobile.webp" width="480" height="1039" loading="lazy" decoding="async" alt="The same page on a phone"></div></div>
           <div class="slide-text"><p class="label">Gym</p><h3 class="card-title">Iron &amp; Ember Athletic Club</h3><p class="dim">Strength coaching, group classes and open gym, with a slowly rotating 3D barbell.</p><a class="pill pill-secondary" href="https://kirithikbala21-jpg.github.io/3D-demo-sites/gym-demo/" target="_blank" rel="noopener">Open demo<span class="sr-only">: Iron &amp; Ember Athletic Club (opens in a new tab)</span></a></div>
         </li>
         <li class="slide card" aria-roledescription="slide" aria-label="2 of 5: Brass &amp; Blade">
-          <div class="shot"><div class="browser"><div class="browser-bar" aria-hidden="true"><i></i><i></i><i></i></div><img src="img/barber-desktop.webp" width="1280" height="800" loading="lazy" decoding="async" alt="Front page of Brass &amp; Blade, a concept barbershop website"></div><div class="phone"><img src="img/barber-mobile.webp" width="480" height="1039" loading="lazy" decoding="async" alt="The same page on a phone"></div></div>
+          <div class="shot"><div class="browser"><div class="browser-bar" aria-hidden="true"><i></i><i></i><i></i></div><img class="scroll-shot" src="img/barber-tall.webp" width="1280" height="1956" loading="lazy" decoding="async" alt="Front page of Brass &amp; Blade, a concept barbershop website"></div><div class="phone"><img src="img/barber-mobile.webp" width="480" height="1039" loading="lazy" decoding="async" alt="The same page on a phone"></div></div>
           <div class="slide-text"><p class="label">Barbershop</p><h3 class="card-title">Brass &amp; Blade</h3><p class="dim">Classic cuts, skin fades and hot towel shaves, with a spinning 3D barber pole.</p><a class="pill pill-secondary" href="https://kirithikbala21-jpg.github.io/3D-demo-sites/barber-demo/" target="_blank" rel="noopener">Open demo<span class="sr-only">: Brass &amp; Blade (opens in a new tab)</span></a></div>
         </li>
         <li class="slide card" aria-roledescription="slide" aria-label="3 of 5: Ember &amp; Oak">
-          <div class="shot"><div class="browser"><div class="browser-bar" aria-hidden="true"><i></i><i></i><i></i></div><img src="img/cafe-desktop.webp" width="1280" height="800" loading="lazy" decoding="async" alt="Front page of Ember &amp; Oak, a concept cafe website"></div><div class="phone"><img src="img/cafe-mobile.webp" width="480" height="1039" loading="lazy" decoding="async" alt="The same page on a phone"></div></div>
+          <div class="shot"><div class="browser"><div class="browser-bar" aria-hidden="true"><i></i><i></i><i></i></div><img class="scroll-shot" src="img/cafe-tall.webp" width="1280" height="1956" loading="lazy" decoding="async" alt="Front page of Ember &amp; Oak, a concept cafe website"></div><div class="phone"><img src="img/cafe-mobile.webp" width="480" height="1039" loading="lazy" decoding="async" alt="The same page on a phone"></div></div>
           <div class="slide-text"><p class="label">Cafe</p><h3 class="card-title">Ember &amp; Oak</h3><p class="dim">Small-batch coffee, all-day dining and long tables, with a cinematic 3D hero.</p><a class="pill pill-secondary" href="https://kirithikbala21-jpg.github.io/3D-demo-sites/cafe-demo-v2/" target="_blank" rel="noopener">Open demo<span class="sr-only">: Ember &amp; Oak (opens in a new tab)</span></a></div>
         </li>
         <li class="slide card" aria-roledescription="slide" aria-label="4 of 5: Waverley Plumbing &amp; Gas">
-          <div class="shot"><div class="browser"><div class="browser-bar" aria-hidden="true"><i></i><i></i><i></i></div><img src="img/plumber-desktop.webp" width="1280" height="800" loading="lazy" decoding="async" alt="Front page of Waverley Plumbing &amp; Gas, a concept plumber website"></div><div class="phone"><img src="img/plumber-mobile.webp" width="480" height="1039" loading="lazy" decoding="async" alt="The same page on a phone"></div></div>
+          <div class="shot"><div class="browser"><div class="browser-bar" aria-hidden="true"><i></i><i></i><i></i></div><img class="scroll-shot" src="img/plumber-tall.webp" width="1280" height="1956" loading="lazy" decoding="async" alt="Front page of Waverley Plumbing &amp; Gas, a concept plumber website"></div><div class="phone"><img src="img/plumber-mobile.webp" width="480" height="1039" loading="lazy" decoding="async" alt="The same page on a phone"></div></div>
           <div class="slide-text"><p class="label">Plumber</p><h3 class="card-title">Waverley Plumbing &amp; Gas</h3><p class="dim">Licensed family plumbers and gas fitters with an emergency line and upfront prices.</p><a class="pill pill-secondary" href="https://kirithikbala21-jpg.github.io/3D-demo-sites/plumber-demo/" target="_blank" rel="noopener">Open demo<span class="sr-only">: Waverley Plumbing &amp; Gas (opens in a new tab)</span></a></div>
         </li>
         <li class="slide card" aria-roledescription="slide" aria-label="5 of 5: Maison Lune">
-          <div class="shot"><div class="browser"><div class="browser-bar" aria-hidden="true"><i></i><i></i><i></i></div><img src="img/salon-desktop.webp" width="1280" height="800" loading="lazy" decoding="async" alt="Front page of Maison Lune, a concept hair salon website"></div><div class="phone"><img src="img/salon-mobile.webp" width="480" height="1039" loading="lazy" decoding="async" alt="The same page on a phone"></div></div>
+          <div class="shot"><div class="browser"><div class="browser-bar" aria-hidden="true"><i></i><i></i><i></i></div><img class="scroll-shot" src="img/salon-tall.webp" width="1280" height="1956" loading="lazy" decoding="async" alt="Front page of Maison Lune, a concept hair salon website"></div><div class="phone"><img src="img/salon-mobile.webp" width="480" height="1039" loading="lazy" decoding="async" alt="The same page on a phone"></div></div>
           <div class="slide-text"><p class="label">Hair salon</p><h3 class="card-title">Maison Lune</h3><p class="dim">Cuts, colour, treatments and beauty with clear prices and online booking.</p><a class="pill pill-secondary" href="https://kirithikbala21-jpg.github.io/3D-demo-sites/salon-demo/" target="_blank" rel="noopener">Open demo<span class="sr-only">: Maison Lune (opens in a new tab)</span></a></div>
         </li>
       </ol>
@@ -152,7 +196,8 @@
   </section>
 
   <!-- Only shown when site.config.json has real testimonials (word for word, with a real name) -->
-  <section class="section" id="testimonials" aria-labelledby="testimonials-title" hidden>
+  <section class="section section-testimonials" id="testimonials" aria-labelledby="testimonials-title" hidden>
+    <div class="divider divider-inner" aria-hidden="true"><span></span></div>
     <div class="container center">
       <p class="label" data-c="testimonialsSection.label">Kind words</p>
       <h2 class="h2" id="testimonials-title" data-c="testimonialsSection.title">What people say.</h2>
@@ -160,8 +205,11 @@
     <div class="container quotes" id="quotes"></div>
   </section>
 
+  <div class="divider" aria-hidden="true"><span></span></div>
+
   <section class="section section-contact" id="contact" aria-labelledby="contact-title">
-    <div class="container center">
+    <div class="watermark" aria-hidden="true">KB</div>
+    <div class="container center contact-finale">
       <p class="label" data-c="contact.label">Contact</p>
       <h2 class="h2" id="contact-title" data-c="contact.title">Questions about AceGuides, or want a free preview for your business?</h2>
       <p class="lead" id="contact-lead" data-c="contact.lead">Send us an email. We&rsquo;re in Melbourne, Australia.</p>
@@ -187,6 +235,7 @@
     <div class="footer-small">
       <p>&copy; <span id="year">2026</span> <span data-c="name">KB Ventures</span> &middot; <span data-c="location">Melbourne, Australia</span></p>
       <p data-c="footer.concept">The website demos are concepts for made-up businesses.</p>
+      <p data-c="footer.vceTrademark">VCE&reg; is a registered trademark of the VCAA.</p>
       <p id="abn" hidden></p>
     </div>
   </div>

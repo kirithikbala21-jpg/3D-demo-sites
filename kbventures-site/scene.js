@@ -134,11 +134,11 @@ export function initScene(canvas, { lowEnd = false, onLost = () => {} } = {}) {
   }));
   markShadow.position.set(0.012, -0.03, front + 0.0005);
   // VENTURES in metallic foil, set below the letters
-  const foil = new THREE.Mesh(new THREE.PlaneGeometry(1.4, 0.14), new THREE.MeshPhysicalMaterial({
-    color: 0xd8dbe2, metalness: 1, roughness: 0.22, transparent: true, depthWrite: false, envMapIntensity: 1.2,
-    alphaMap: canvasTexture(1400, 140, (g, w, h) => { g.fillStyle = '#000'; g.fillRect(0, 0, w, h); g.fillStyle = '#fff'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.font = '500 62px Geist, "Helvetica Neue", Arial, sans-serif'; if ('letterSpacing' in g) g.letterSpacing = '26px'; g.fillText('VENTURES', w / 2 + 13, h / 2 + 2); }, false),
+  const foil = new THREE.Mesh(new THREE.PlaneGeometry(1.9, 0.2), new THREE.MeshPhysicalMaterial({
+    color: 0xf2f4f8, metalness: 0.85, roughness: 0.16, transparent: true, depthWrite: false, envMapIntensity: 1.6, emissive: 0x9aa0ae, emissiveIntensity: 0.18,
+    alphaMap: canvasTexture(1900, 200, (g, w, h) => { g.fillStyle = '#000'; g.fillRect(0, 0, w, h); g.fillStyle = '#fff'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.font = '500 92px Geist, "Helvetica Neue", Arial, sans-serif'; if ('letterSpacing' in g) g.letterSpacing = '34px'; g.fillText('VENTURES', w / 2 + 17, h / 2 + 3); }, false),
   }));
-  foil.position.set(0, -0.36, front + 0.001);
+  foil.position.set(0, -0.4, front + 0.001);
   markGroup.add(markShadow, markMesh, foil);
   markGroup.position.set(-0.02, 0.1, 0);
   card.add(markGroup);
@@ -181,7 +181,7 @@ export function initScene(canvas, { lowEnd = false, onLost = () => {} } = {}) {
     const w = canvas.clientWidth || 1, h = canvas.clientHeight || 1;
     renderer.setSize(w, h, false);
     camera.aspect = w / h;
-    const needW = 4.33, needH = 3.78, // framing that draws the card about 10% smaller than before
+    const needW = 3.77, needH = 3.29, // framing that draws the card about 15% bigger than the last version
       v = THREE.MathUtils.degToRad(camera.fov);
     const dist = Math.max(needH / 2 / Math.tan(v / 2), needW / 2 / (Math.tan(v / 2) * camera.aspect));
     camera.position.set(0, dist * 0.16, dist); // a little above, looking slightly down
@@ -208,13 +208,17 @@ export function initScene(canvas, { lowEnd = false, onLost = () => {} } = {}) {
     mirror.position.y = 2 * FLOOR - lift; mirror.rotation.set(-rx, ry, -rz); mirror.scale.set(1, -1, 1);
     shadow.material.opacity = 0.9 - lift * 1.5;
   }
+  // the card tilts back a little as the page scrolls down (0 at the top, full tilt one screen down)
+  let scrollTilt = 0;
+  const onScrollTilt = () => { scrollTilt = Math.min(1, window.scrollY / Math.max(1, window.innerHeight)); };
+  window.addEventListener('scroll', onScrollTilt, { passive: true }); onScrollTilt();
   function frame(dt) {
     t += dt;
     aim.x += (aim.tx - aim.x) * Math.min(1, dt * 1.8); aim.y += (aim.ty - aim.y) * Math.min(1, dt * 1.8);
     pose(
       Math.sin(t * 0.45) * 0.05,
-      REST.x + Math.sin(t * 0.21 + 1) * 0.035 + aim.y * 0.07,
-      REST.y + Math.sin(t * 0.17) * 0.09 + aim.x * 0.14,
+      REST.x + Math.sin(t * 0.21 + 1) * 0.035 + aim.y * 0.07 - scrollTilt * 0.32,
+      REST.y + Math.sin(t * 0.17) * 0.09 + aim.x * 0.14 + scrollTilt * 0.18,
       REST.z + Math.sin(t * 0.13) * 0.01,
     );
     // the streak crosses the face every 7 seconds, taking about 2.6 of them
@@ -241,7 +245,7 @@ export function initScene(canvas, { lowEnd = false, onLost = () => {} } = {}) {
     still(sweepAt = 0.3) { cancelAnimationFrame(raf); raf = 0; visible = false; pose(0, REST.x, REST.y, REST.z); sweepTex.offset.x = sweepAt; renderer.render(scene, camera); },
     dispose() {
       cancelAnimationFrame(raf); raf = 0; ro.disconnect(); io.disconnect();
-      window.removeEventListener('pointermove', onPointer); window.removeEventListener('deviceorientation', onTilt);
+      window.removeEventListener('pointermove', onPointer); window.removeEventListener('deviceorientation', onTilt); window.removeEventListener('scroll', onScrollTilt);
       document.removeEventListener('visibilitychange', onVis); canvas.removeEventListener('webglcontextlost', lost);
       const seen = new Set();
       scene.traverse((o) => {

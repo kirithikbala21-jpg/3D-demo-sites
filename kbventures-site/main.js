@@ -71,6 +71,7 @@
 
   /* ---------- Nav hairline, active section, hero parallax ---------- */
   const stage = $('#stage');
+  const parallax = $$('[data-parallax]'), watermarks = $$('.watermark'), steps = $('#steps');
   const navLinks = $$('.nav-links a');
   const sectionFor = { businesses: 'businesses', how: 'businesses', websites: 'websites', testimonials: 'websites', contact: 'contact' };
   const sections = Object.keys(sectionFor).map((id) => document.getElementById(id)).filter(Boolean);
@@ -89,17 +90,42 @@
       const p = Math.min(1, y / Math.max(1, window.innerHeight));
       stage.style.setProperty('--py', (p * 40).toFixed(1) + 'px'); // the card lags a little behind the page
     }
+    if (!reduceMotion) {
+      const vh = window.innerHeight, mid = vh / 2;
+      // gentle parallax for the card visuals (data-parallax = how many px they travel either way)
+      parallax.forEach((el) => { const r = el.getBoundingClientRect(); if (r.bottom < -200 || r.top > vh + 200) return; const t = Math.max(-1, Math.min(1, (r.top + r.height / 2 - mid) / vh)); el.style.setProperty('--px', (t * +el.dataset.parallax).toFixed(1) + 'px'); });
+      // the faint KB watermarks drift slower than the page
+      watermarks.forEach((el) => { const r = el.parentElement.getBoundingClientRect(); if (r.bottom < 0 || r.top > vh) return; el.style.setProperty('--wy', ((r.top + r.height / 2 - mid) * -0.12).toFixed(1) + 'px'); });
+      // the steps' connecting line draws itself between 85% and 45% of the screen
+      if (steps) { const r = steps.getBoundingClientRect(); steps.style.setProperty('--draw', Math.max(0, Math.min(1, (vh * 0.85 - r.top) / (vh * 0.4))).toFixed(3)); }
+    }
+    flushIfBottom();
   }
   window.addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(onScroll); } }, { passive: true });
-  onScroll();
 
   /* ---------- Slow fade-ups as things come into view (once) ---------- */
-  const io = !reduceMotion && 'IntersectionObserver' in window
-    ? new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('is-visible'); io.unobserve(e.target); } }), { threshold: 0.15, rootMargin: '0px 0px -6% 0px' })
-    : null;
-  const reveal = (els, step = 0.07) => els.forEach((el, i) => { el.classList.add('reveal'); el.style.setProperty('--d', (i * step).toFixed(2) + 's'); if (io) io.observe(el); else el.classList.add('is-visible'); });
+  // Fail-safe: content is visible unless this script has marked it as waiting; a reveal plays once and always ends at
+  // full opacity. Without IntersectionObserver (or with reduced motion) nothing is ever hidden.
+  let io = null;
+  try {
+    if (!reduceMotion && 'IntersectionObserver' in window) {
+      io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('is-visible'); io.unobserve(e.target); } }), { threshold: 0.01, rootMargin: '0px 0px -4% 0px' });
+    }
+  } catch (_) { io = null; }
+  const waiting = new Set();
+  const show = (el) => { el.classList.add('is-visible'); waiting.delete(el); if (io) io.unobserve(el); };
+  const reveal = (els, step = 0.07) => els.forEach((el, i) => {
+    el.style.setProperty('--d', (i * step).toFixed(2) + 's');
+    if (!io) return; // never hide anything we can't reliably reveal
+    el.classList.add('reveal'); waiting.add(el); io.observe(el);
+  });
+  // safety nets: at the bottom of the page everything shows, and nothing above the fold waits longer than 2.5s
+  const flushIfBottom = () => { if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 40) waiting.forEach(show); };
+  setTimeout(() => waiting.forEach((el) => { if (el.getBoundingClientRect().top < window.innerHeight) show(el); }), 2500);
   $$('.section .center').forEach((c) => reveal([...c.children]));
   reveal($$('.biz'), 0.1);
+  reveal($$('.step'), 0.12);
+  onScroll();
   reveal([$('#carousel'), $('.footer-logo')].filter(Boolean));
 
   /* ---------- Concept websites carousel: start-aligned, next card peeking ---------- */
@@ -153,7 +179,7 @@
   const el = (t, c, x) => { const e = document.createElement(t); if (c) e.className = c; if (x != null) e.textContent = x; return e; };
   const filled = (v) => typeof v === 'string' && v.trim() !== '';
   const safeUrl = (u) => filled(u) && /^https:\/\//.test(u.trim());
-  const local = (u) => typeof u === 'string' && /^img\/[\w.-]+\.webp$/.test(u);
+  const local = (u) => typeof u === 'string' && /^img\/(?:[\w-]+\/)*[\w-]+(?:\.[\w-]+)*\.webp$/.test(u); // images inside img/ (subfolders allowed, no ..)
   const get = (obj, path) => path.split('.').reduce((o, k) => (o == null ? undefined : o[k]), obj);
   const img = (src, w, h, alt) => { const i = el('img'); i.src = src; i.width = w; i.height = h; i.alt = alt; i.loading = 'lazy'; i.decoding = 'async'; return i; };
 
@@ -164,7 +190,10 @@
     if (local(d.desktop)) {
       const shot = el('div', 'shot'), browser = el('div', 'browser'), bar = el('div', 'browser-bar');
       bar.setAttribute('aria-hidden', 'true'); bar.append(el('i'), el('i'), el('i'));
-      browser.append(bar, img(d.desktop, 1280, 800, `Front page of ${d.name}, a concept ${String(d.type).toLowerCase()} website`));
+      const tall = local(d.tall);
+      const shotImg = img(tall ? d.tall : d.desktop, 1280, tall ? 1956 : 800, `Front page of ${d.name}, a concept ${String(d.type).toLowerCase()} website`);
+      if (tall) shotImg.className = 'scroll-shot';
+      browser.append(bar, shotImg);
       shot.append(browser);
       if (local(d.mobile)) { const ph = el('div', 'phone'); ph.append(img(d.mobile, 480, 1039, 'The same page on a phone')); shot.append(ph); }
       li.append(shot);
@@ -203,6 +232,12 @@
       } else if (filled(ace.noShopLine)) foot.replaceChildren(el('p', 'quiet', ace.noShopLine));
       else foot.hidden = true;
     }
+    // AceGuides covers and the KB Websites preview, from the config
+    const covers = Array.isArray(ace.covers) ? ace.covers.filter((c) => c && local(c.src) && filled(c.alt)) : [];
+    const stack = $('#cover-stack');
+    if (stack && covers.length) stack.replaceChildren(...covers.slice(0, 5).map((c) => { const i = img(c.src, 720, 960, c.alt); i.className = 'cover'; return i; }));
+    const pv = get(cfg, 'businesses.kbwebsites.preview'), pvImg = $('#kb-preview');
+    if (pvImg && pv && local(pv.src)) { pvImg.src = pv.src; if (filled(pv.alt)) pvImg.alt = pv.alt; }
     // optional links and ABN: shown only when filled in
     for (const key of ['instagram', 'linkedin']) { const a = document.getElementById(key); if (a) { if (safeUrl(cfg[key])) { a.href = cfg[key].trim(); a.hidden = false; } else a.hidden = true; } }
     const abn = $('#abn');

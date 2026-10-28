@@ -24,7 +24,6 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preload" href="fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="img/hero-object.webp" as="image" type="image/webp" fetchpriority="high">
-<link rel="stylesheet" href="vendor/lenis-1.1.18.css">
 <link rel="stylesheet" href="styles.css">
 <script>document.documentElement.classList.add('js');</script>
 <script type="importmap">{"imports": {"three": "./vendor/three.module.min.js"}}</script>
@@ -113,9 +112,9 @@
       <p class="lead" id="demos-note" data-c="demosNote">These are concept demos for made-up businesses. Names, prices and reviews are examples only.</p>
     </div>
 
-    <div class="container carousel" id="carousel">
+    <div class="container carousel" id="carousel" role="region" aria-roledescription="carousel" aria-label="Concept websites">
       <!-- main.js rebuilds these cards from site.config.json; this copy shows when the config cannot load -->
-      <ol class="track" id="track" tabindex="0" role="region" aria-roledescription="carousel" aria-label="Concept websites. Use the left and right arrow keys to move between them.">
+      <ol class="track" id="track" tabindex="0" aria-label="Concept websites. Use the left and right arrow keys to move between them.">
         <li class="slide card" aria-roledescription="slide" aria-label="1 of 5: Iron &amp; Ember Athletic Club">
           <div class="shot"><div class="browser"><div class="browser-bar" aria-hidden="true"><i></i><i></i><i></i></div><img src="img/gym-desktop.webp" width="1280" height="800" loading="lazy" decoding="async" alt="Front page of Iron &amp; Ember Athletic Club, a concept gym website"></div><div class="phone"><img src="img/gym-mobile.webp" width="480" height="1039" loading="lazy" decoding="async" alt="The same page on a phone"></div></div>
           <div class="slide-text"><p class="label">Gym</p><h3 class="card-title">Iron &amp; Ember Athletic Club</h3><p class="dim">Strength coaching, group classes and open gym, with a slowly rotating 3D barbell.</p><a class="pill pill-secondary" href="https://kirithikbala21-jpg.github.io/3D-demo-sites/gym-demo/" target="_blank" rel="noopener">Open demo<span class="sr-only">: Iron &amp; Ember Athletic Club (opens in a new tab)</span></a></div>

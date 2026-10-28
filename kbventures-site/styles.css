@@ -47,6 +47,9 @@
 @media (min-width: 720px) { :root { --gutter: 32px; } }
 @media (min-width: 1024px) { :root { --section: 112px; } }
 
+/* Lenis 1.1.18 base styles (folded in here to save a request) */
+html.lenis,html.lenis body{height:auto}.lenis.lenis-smooth{scroll-behavior:auto!important}.lenis.lenis-smooth [data-lenis-prevent]{overscroll-behavior:contain}.lenis.lenis-stopped{overflow:clip}.lenis.lenis-smooth iframe{pointer-events:none}
+
 *, *::before, *::after { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; background: var(--bg-deep); color-scheme: dark; scroll-padding-top: calc(var(--nav-h) + 8px); }
 body { position: relative; margin: 0; background: transparent; color: var(--text-platinum); font: 400 16px/1.65 var(--font); font-variant-numeric: tabular-nums; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; overflow-x: clip; }
@@ -174,7 +177,7 @@ body.menu-open { overflow: hidden; }
 .biz { display: flex; flex-direction: column; justify-content: space-between; gap: 32px; min-height: 280px; padding: 28px 24px; }
 @media (min-width: 1024px) { .biz { min-height: 320px; padding: 36px 36px 28px; } }
 .biz-body .dim { margin-top: 12px; max-width: 38ch; font-size: 15px; line-height: 1.65; }
-.biz-foot { display: flex; align-items: center; min-height: 44px; padding-top: 16px; border-top: 1px solid rgba(138, 143, 158, .14); }
+.biz-foot { display: flex; align-items: center; height: 60px; padding-top: 16px; border-top: 1px solid rgba(138, 143, 158, .14); }
 .status { display: inline-flex; align-items: center; gap: 10px; font-size: 11px; font-weight: 500; letter-spacing: .22em; text-transform: uppercase; color: var(--silver-brushed); }
 .dot { width: 7px; height: 7px; border-radius: 50%; }
 .dot-live { background: radial-gradient(circle at 35% 30%, #F3DA86, var(--gold-champagne) 55%, #9C7E22); }
@@ -211,7 +214,7 @@ img.is-missing { visibility: hidden; }
 
 .carousel-controls { display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 4px; }
 .carousel-controls[hidden] { display: none; }
-.round { display: inline-grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 2px solid transparent; background-clip: padding-box; border-radius: 50%; background-image: linear-gradient(180deg, rgba(255, 255, 255, .06), rgba(255, 255, 255, .01)); box-shadow: inset 0 0 0 1px rgba(138, 143, 158, .75); color: var(--text-platinum); cursor: pointer; transition: box-shadow var(--fast) var(--ease), opacity var(--fast) var(--ease); }
+.round { display: inline-grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 2px solid transparent; background-clip: padding-box; border-radius: 50%; background-color: transparent; background-image: linear-gradient(180deg, rgba(255, 255, 255, .06), rgba(255, 255, 255, .01)); box-shadow: inset 0 0 0 1px rgba(138, 143, 158, .75); color: var(--text-platinum); cursor: pointer; transition: box-shadow var(--fast) var(--ease), opacity var(--fast) var(--ease); }
 .round svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
 .round:hover { box-shadow: inset 0 0 0 1px var(--gold-champagne); }
 .round:disabled { opacity: .35; cursor: default; box-shadow: inset 0 0 0 1px var(--silver-brushed); }
@@ -249,6 +252,8 @@ img.is-missing { visibility: hidden; }
 .js .reveal { opacity: 0; transform: translateY(16px); transition: opacity var(--slow) var(--ease), transform var(--slow) var(--ease); transition-delay: var(--d, 0s); }
 .js .reveal.is-visible { opacity: 1; transform: none; }
 .js .hero-text > * { opacity: 0; transform: translateY(16px); animation: rise var(--slow) var(--ease) forwards; }
+.js .hero-text > .hero-title { opacity: 1; animation-name: rise-only; } /* paints at once (it is the largest element) */
+@keyframes rise-only { from { transform: translateY(16px); } to { transform: none; } }
 .js .hero-text > :nth-child(2) { animation-delay: 80ms; }
 .js .hero-text > :nth-child(3) { animation-delay: 160ms; }
 .js .hero-text > :nth-child(4) { animation-delay: 240ms; }

@@ -1,6 +1,6 @@
 // Hero object: a pre-rendered still (img/hero-object.webp) is in the page from the start. The live Three.js version
 // fades in over it once loaded, but only when WebGL works, the visitor hasn't asked for reduced motion, Data Saver is off
-// and the device isn't a low-powered phone. Testing aids: ?3d=on forces 3D, ?3d=off keeps the still.
+// the device isn't a low-powered phone and WebGL isn't running in software. Testing aids: ?3d=on forces 3D, ?3d=off keeps the still.
 const stage = document.getElementById('stage'), canvas = document.getElementById('scene');
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const q = new URLSearchParams(location.search);
@@ -9,13 +9,22 @@ function keepStill() { if (canvas && canvas.isConnected) canvas.remove(); stage.
 function webglOK() {
   try { const c = document.createElement('canvas'); return !!(window.WebGLRenderingContext && (c.getContext('webgl2') || c.getContext('webgl'))); } catch (_) { return false; }
 }
+/** True when WebGL runs on the CPU (no graphics card): the 3D would be slow there, so the still image is shown instead. */
+function softwareGL() {
+  try {
+    const gl = document.createElement('canvas').getContext('webgl');
+    const info = gl && gl.getExtension('WEBGL_debug_renderer_info');
+    const name = info ? String(gl.getParameter(info.UNMASKED_RENDERER_WEBGL)) : '';
+    return /swiftshader|llvmpipe|softpipe|software|basic render/i.test(name);
+  } catch (_) { return false; }
+}
 
 if (stage && canvas) {
   const conn = navigator.connection;
   const small = Math.min(screen.width || 9999, screen.height || 9999) <= 480 || window.innerWidth <= 480;
   const weak = (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4) || (navigator.deviceMemory && navigator.deviceMemory <= 4);
   const forced = q.get('3d') === 'on';
-  if (q.get('3d') === 'off' || (!forced && (reduceMotion || (conn && conn.saveData) || (small && weak))) || !webglOK()) {
+  if (q.get('3d') === 'off' || (!forced && (reduceMotion || (conn && conn.saveData) || (small && weak) || softwareGL())) || !webglOK()) {
     keepStill();
   } else {
     let done = false, handle = null;

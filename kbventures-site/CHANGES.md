@@ -1,4 +1,79 @@
-# Changes: KB Ventures, a real metal-and-glass card (28 October 2026)
+# Changes: KB Ventures, final polish (28 October 2026)
+
+Structure, copy, colours, the 3D hero card, the glossy cards and the demo row are unchanged. Everything is calmer, lighter and tighter.
+
+## Type: smaller and lighter
+- **Headings:** weight 300 (Geist), letter-spacing -0.025em, line-height 1.08–1.12. I checked that 300 is a real weight in the font file (300, 400 and 500 measure differently with faux styles turned off), and that it stays crisp on a standard (1x) screen.
+- **Hero headline:** `clamp(32px, 4.2vw, 60px)`, 3 lines at 1024–1920px (4 on phones).
+- **Section headlines:** `clamp(26px, 3.2vw, 46px)`.
+- **Card titles:** `clamp(22px, 2.2vw, 32px)` at weight 400.
+- **Labels:** 11px, uppercase, 0.22em tracking, weight 500.
+- **Lead paragraphs:** 16–17px, line-height 1.65, at most 56 characters wide. They stay full silver: 85% silver measured under 4.5:1 where the light pools brighten the page.
+- **Headline gradient:** about 6% light-to-silver now, instead of 10%.
+- **Footer wordmark:** weight 300, `clamp(48px, 11vw, 168px)`, a very soft silver gradient, and still shown in full at every width.
+- **Font loading:** one variable font file, preloaded, with `font-display: swap`. Numbers use tabular figures.
+
+## Spacing and rhythm
+- **One container everywhere:** 1120px of content, 24px gutters on phones and 32px from 720px. The nav, hero, cards and footer share the same edges.
+- **Section spacing:** 112px between sections on desktop, 64px on phones.
+- **Hero:** about 88% of the screen height. The text block and the 3D card sit on one centreline, and the dead space under the button is gone.
+  - Fitting the headline into 3 lines at 1440 needs about 740px. So the text column is about two-thirds wide, and the card's stage overlaps back toward it without touching the words.
+- **"What we run" cards:** equal height, with the status at the top, name and text in the middle, and one quiet line at the bottom. The AceGuides card shows "Guides launching soon" while `aceguidesShopUrl` is empty, and a "See the guides" button once it is filled in.
+
+## Hero card
+- **Light streak:** a narrow, bright, soft-edged streak (bright core, soft shoulders, faint halo) now crosses the face diagonally every 7 seconds, replacing the grey patch.
+- **Size:** the card is drawn about 10% smaller. Its floor reflection is fainter. The slow drift and the mouse response are unchanged.
+- **Still image:** re-rendered to match.
+- **Software WebGL:** devices running WebGL in software (no graphics card, e.g. SwiftShader or llvmpipe) now get the still image. There the 3D would be slow, and it was costing Lighthouse 27 seconds of blocking time.
+
+## Nav and buttons
+- **Nav:** 64px, smoked glass (with a solid fallback where `backdrop-filter` isn't supported), a hairline once you scroll, and the current section's link underlined.
+- **Phone menu:** a menu button opens a full-screen menu with large links. It closes on link tap and Escape, and keeps keyboard focus inside while open.
+- **Fewer repeated buttons:** "See the websites" in the hero, and "Get in touch" in the nav and the contact section. The extra pills in the middle sections are gone.
+- **Pills:** 40px to the eye with a 44px tap area, 14px text, a 200ms hover, and a platinum focus ring.
+
+## Cards and demo row
+- All cards share the same radius, border, top highlight, sheen and shadow.
+- **Demo cards:** smaller titles, identical browser and phone frames, and text that wraps instead of overflowing.
+- **Scrolling:** the row now aligns cards to the left, with the next card peeking about 40px.
+- **Controls:** arrows and dots are aligned at the same 44px height. The arrows' stray default grey background is fixed. Keyboard, swipe and the dots all work and stay in sync.
+
+## Background and motion
+- The same lit blue-black background, vignette and light pools, with the grain at 4% to keep gradients from banding.
+- One easing curve everywhere. Scroll reveals are 700ms with a 16px rise. The headline rises without fading, so it paints at once.
+
+## Details
+- Anchor links stop just below the sticky nav (`scroll-margin-top` plus the smooth-scroll offset).
+- **New favicon set and share image** (`og.jpg`): dark, with the metal KB mark and the KB Ventures wordmark.
+- **Head tags:** title, description, theme-color, a commented canonical, and Organization structured data using only facts on the page (name, email, Melbourne/AU, description, logo). `main.js` keeps the structured data in step with the config.
+- **Footer:** links, a quiet "Back to top", "© 2026 KB Ventures · Melbourne, Australia" (the year updates itself), and the concept-demo line.
+- **Missing images** leave a quiet empty frame instead of a broken-image icon. Every image has a width and height, and layout shift measured 0.
+- **All page text now lives in `site.config.json`,** including optional `aceguidesShopUrl`, `instagram`, `linkedin`, `abn` and `testimonials` fields. Every optional field is empty and hidden. Nothing was invented. I tested this by feeding the page a filled-in config: every optional field appeared, and an entry without a quote was skipped.
+- Lenis' tiny stylesheet is folded into `styles.css` (one fewer request). The carousel's ARIA was corrected: the region role is now on its wrapper, so the list stays a list.
+
+## Tested
+- 360, 390, 768, 1024, 1280, 1440 and 1920px, 125% zoom, reduced motion, and WebGL fully disabled: no sideways scroll, no overlaps, all text at least 4.5:1, all tap targets at least 44px, layout shift 0, no console errors, no outside requests, and the footer wordmark always in full.
+- **Keyboard only:** a visible platinum ring on every stop in a logical order. Anchors land below the nav, and the phone menu traps focus and closes on Escape.
+- **Lighthouse** (local server, uncompressed):
+
+  | | Performance | Accessibility | Best practices | SEO |
+  |---|---|---|---|---|
+  | Mobile | 97–98 (varies run to run) | 100 | 100 | 100 |
+  | Desktop | 100 | 100 | 100 | 100 |
+
+  The first desktop run scored 60 for performance (software 3D) and the robots.txt check failed. The robots.txt check came from the repo's top-level file on the local server, which GitHub Pages doesn't use for this site.
+
+## Still open
+- The 3D card was only seen in headless Chromium, not on a physical phone or GPU.
+- Unused files remain because this session may not run `rm`:
+  - the Barlow Condensed, Inter, Instrument Serif and Schibsted Grotesk fonts;
+  - `vendor/addons/`;
+  - `vendor/lenis-1.1.18.css`.
+- The repo's top-level `404.html` is still empty.
+
+---
+
+# Earlier: a real metal-and-glass card (28 October 2026)
 
 The layout, copy, footer, buttons and demo row are unchanged. This round fixes the three things that still looked flat.
 

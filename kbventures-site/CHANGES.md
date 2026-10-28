@@ -1,4 +1,17 @@
-# Changes: the contact form is connected to Web3Forms (29 October 2026)
+# Changes: the website business is now Black Crest Web Designs (29 October 2026)
+
+- **New name:** the website-building business is now "Black Crest Web Designs" everywhere in this folder. That covers the config, the Home and Businesses cards, the Businesses dropdown, the footer, FAQ answer 2 and its structured data, the contact form's "What's it about?" list, the meta descriptions, the legal pages (including the terms' "Website services (Black Crest Web Designs)" section and the brand list), the README, the brand notes, code comments and earlier entries in this file.
+- **Unchanged:** its one-line description, "coming-soon" status, empty URL, "See demos" label and card format. AceGuides, the hero card, colours and layout are untouched. The legal pages' "Last updated" was already today (29 October 2026).
+- **Short form:** a new optional `shortName` field. Black Crest Web Designs has `"shortName": "Black Crest"`, used only in the footer's narrow Businesses column so the name fits on one line. Everywhere else shows the full name.
+- **Contact link:** `contact.html?topic=black-crest` preselects Black Crest Web Designs.
+- **Checked:**
+  - a search of this folder for the previous names, in any capitalisation, finds nothing;
+  - the full Playwright suite passed at 1440, 768 and 390 on every page: no console errors, no broken links, and the dropdown, footer and contact topics show the new name;
+  - the mocked contact form tests passed at 1440 and 390.
+
+---
+
+# Earlier: the contact form is connected to Web3Forms (29 October 2026)
 
 - `formAccessKey` in `site.config.json` now holds the site's public Web3Forms key. Messages are posted as JSON to `https://api.web3forms.com/submit` with the subject "New message from KB Ventures website", from_name "KB Ventures site", and name, email, phone, business, topic and message.
 - Send now waits for the config before choosing between sending and the email fallback, so a very fast click can't fall back by mistake. The email fallback is used only when the key is empty.
@@ -7,16 +20,16 @@
 
 ---
 
-# Earlier: the website business is now Shopfront (29 October 2026)
+# Earlier: the website business is now Black Crest Web Designs (29 October 2026)
 
-- **New name:** the website-building business is renamed "Shopfront" everywhere in this folder. That covers the config, the Home and Businesses cards, the Businesses dropdown, the footer list, the FAQ answers (and their structured data), the contact form's "What's it about?" list, the meta descriptions, the legal pages, the README, the brand notes, code comments and earlier entries in this file.
+- **New name:** the website-building business is renamed "Black Crest Web Designs" everywhere in this folder. That covers the config, the Home and Businesses cards, the Businesses dropdown, the footer list, the FAQ answers (and their structured data), the contact form's "What's it about?" list, the meta descriptions, the legal pages, the README, the brand notes, code comments and earlier entries in this file.
 - **Kept the same:** its description, "coming-soon" status, empty URL and "See demos" label. AceGuides is untouched. KB Ventures stays the trading name on the legal pages.
-- **Legal pages:** the terms' "Website services (Shopfront)" section, the brand list and descriptions are updated. "Last updated" is now 29 October 2026, and the sitemap dates for the changed pages match.
-- **Contact form:** `contact.html?topic=shopfront` now preselects Shopfront.
+- **Legal pages:** the terms' "Website services (Black Crest Web Designs)" section, the brand list and descriptions are updated. "Last updated" is now 29 October 2026, and the sitemap dates for the changed pages match.
+- **Contact form:** `contact.html?topic=black-crest` now preselects Black Crest Web Designs.
 - **No URLs changed:** no file or link used the old name, so nothing else needed updating.
 - **Checked:**
   - a search for the old name in any spelling finds nothing in `kbventures-site/`;
-  - Playwright at 1440, 768 and 390 on every page: no console errors and no broken links. The dropdown, footer and contact topics show Shopfront, and the old name appears in no rendered page.
+  - Playwright at 1440, 768 and 390 on every page: no console errors and no broken links. The dropdown, footer and contact topics show Black Crest Web Designs, and the old name appears in no rendered page.
 
 ---
 
@@ -172,7 +185,7 @@ Also checked:
 - every internal link works;
 - the accordions work by mouse and keyboard;
 - the FAQ structured data matches the visible text;
-- `?topic=partnership`, `aceguides`, `shopfront` and no topic all preselect correctly;
+- `?topic=partnership`, `aceguides`, `black-crest` and no topic all preselect correctly;
 - the dropdown works, and the Businesses label is a link;
 - the phone menu works, including focus and Escape;
 - the bar hides and returns on scroll;
@@ -261,7 +274,7 @@ Also checked:
   - **Refunds:** instant digital delivery; a fix or full refund for faulty, won't-open or not-as-described files; a reply within 3 business days; no change-of-mind refunds after download; Australian Consumer Law rights; how to ask.
 
 ## Config
-- New `legal` block (exactly as given), plus `legalBaseUrl` so the AceGuides and Shopfront sites can link to these same pages. The labels (Privacy, Terms, Refunds, Last updated, In plain English) are in `footer`.
+- New `legal` block (exactly as given), plus `legalBaseUrl` so the AceGuides and Black Crest Web Designs sites can link to these same pages. The labels (Privacy, Terms, Refunds, Last updated, In plain English) are in `footer`.
 - The ABN now lives in `legal.abn` (the old top-level `abn` field is gone). While it is empty, no ABN line appears anywhere.
 - `legal/legal.js` fills the trading name, brands, email, state, ABN and date from the config.
 
@@ -293,7 +306,7 @@ The logo work (nav mark, footer logo, favicons, share image) is untouched. No fa
 ## Visuals
 - **What we run:** each card has a picture panel above its text.
   - AceGuides: a fanned 3D stack of five covers (Year 10 Maths, Year 10 Science, VCE Biology 3&4, VCE English 3&4, VCE Maths Methods 3&4). They spread a little on hover and move slightly as you scroll. The alt text says what each cover is.
-  - Shopfront: a floating framed screenshot of the Brass & Blade concept site.
+  - Black Crest Web Designs: a floating framed screenshot of the Brass & Blade concept site.
   - No prices, ratings or labels are added to either.
 - **How it works:** three steps (Preview, Feedback, Go live), each with a thin line icon and the existing wording. A hairline joins them and draws itself as you scroll (side by side on desktop, top to bottom on phones).
 - **Concept websites:** the browser frame is about 30% bigger. All screenshots were retaken with the clock frozen, plus a new tall 1440x2200 shot of each demo. When you hover over a card or tab to it, the tall shot scrolls slowly down inside the frame, then back again.

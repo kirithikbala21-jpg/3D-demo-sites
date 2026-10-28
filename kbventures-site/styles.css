@@ -239,7 +239,7 @@ a.biz:hover .cover:nth-child(1) { --x: -164%; --r: -15deg; }
 a.biz:hover .cover:nth-child(2) { --x: -84%; --r: -7.5deg; }
 a.biz:hover .cover:nth-child(4) { --x: 84%; --r: 7.5deg; }
 a.biz:hover .cover:nth-child(5) { --x: 164%; --r: 15deg; }
-/* Shopfront: one framed site floating in the panel */
+/* Black Crest Web Designs: one framed site floating in the panel */
 .float-shot { position: absolute; left: 50%; bottom: -40px; width: min(84%, 420px); transform: translate3d(-50%, var(--px, 0px), 0) rotateX(12deg) rotateZ(-2deg); transform-origin: 50% 100%; transition: transform var(--slow) var(--ease); }
 a.biz:hover .float-shot { transform: translate3d(-50%, calc(var(--px, 0px) - 8px), 0) rotateX(8deg) rotateZ(-1deg); }
 .biz-body .dim { margin-top: 12px; max-width: 38ch; font-size: 15px; line-height: 1.65; }

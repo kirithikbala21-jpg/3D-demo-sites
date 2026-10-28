@@ -1,5 +1,5 @@
 // Legal pages: site.js fills names, email, state and the date from site.config.json; this adds the two legal-only
-// pieces: the list of brands ("AceGuides and Shopfront") and the ABN line in the Contact section (shown only when
+// pieces: the list of brands ("AceGuides and Black Crest Web Designs") and the ABN line in the Contact section (shown only when
 // company.abn is filled in). The HTML already holds the same text, so the pages still read correctly without JavaScript.
 (() => {
   'use strict';

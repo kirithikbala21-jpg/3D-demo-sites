@@ -41,7 +41,7 @@ Inspired by the *feel* of a premium dark product page (Revolut's Ultra plan page
 - **Contrast:** at least 4.5:1 for all text.
 - **Logo (added 28 October 2026):** `img/kb-wordmark.svg` (silver KB, a fine gold line, VENTURES in silver) and `img/kb-favicon.svg` (the KB mark in a rounded dark square with a thin gold edge). They are used exactly as supplied, never redrawn or recoloured, apart from the supplied one-colour white and black versions. The nav uses the 32px mark next to the name; the footer uses the full wordmark above a hairline, replacing the big text wordmark.
 - **Richness without clutter (28 October 2026):** depth comes from real things, never invented content.
-  - Each "What we run" card has a visual panel: the AceGuides card shows a fanned 3D stack of five real cover designs; the Shopfront card shows a floating framed screenshot of a concept site. Both move a little with scroll (parallax). No prices, ratings or badges on them.
+  - Each "What we run" card has a visual panel: the AceGuides card shows a fanned 3D stack of five real cover designs; the Black Crest Web Designs card shows a floating framed screenshot of a concept site. Both move a little with scroll (parallax). No prices, ratings or badges on them.
   - "How it works" is three steps, each with a thin line icon, joined by a hairline that draws as you scroll.
   - Concept-website frames are about 30% larger, and a tall screenshot scrolls slowly inside the frame on hover or keyboard focus.
   - Between sections: a faint light band and a hairline with a small gold diamond in the middle. Behind What we run and Contact: a huge outlined "KB" at about 3.5% opacity that drifts slightly with scroll.

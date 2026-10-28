@@ -196,9 +196,11 @@
   function footerHTML(cfg) {
     const f = cfg.footer || {}, email = get(cfg, 'company.email'), abn = get(cfg, 'company.abn');
     const list = businesses(cfg);
+    // the footer column is narrow, so a business can give a shorter name for it ("shortName")
+    const footName = (b) => (filled(b.shortName) ? b.shortName : b.name);
     const bizItems = list.map((b) => (isLive(b)
-      ? `<li><a href="${esc(b.url.trim())}">${esc(b.name)}</a></li>`
-      : `<li><span class="footer-soon">${esc(b.name)}</span> <span class="tag">${esc(navText.comingSoon)}</span></li>`)).join('');
+      ? `<li><a href="${esc(b.url.trim())}">${esc(footName(b))}</a></li>`
+      : `<li><span class="footer-soon">${esc(footName(b))}</span> <span class="tag">${esc(navText.comingSoon)}</span></li>`)).join('');
     // the VCAA line goes wherever the footer mentions AceGuides or VCE
     const vce = list.some((b) => /aceguides|\bvce\b/i.test(b.name)) && filled(f.vceTrademark);
     const cur = (p) => (page === p ? ' aria-current="page"' : '');

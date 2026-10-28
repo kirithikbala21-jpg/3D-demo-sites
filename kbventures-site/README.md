@@ -21,7 +21,7 @@ The pages read `site.config.json` in the browser, so a change shows up as soon a
 - `hero.js` and `scene.js`: the 3D metal-and-glass card in the hero (Three.js). It only runs with a real graphics card; reduced motion, Data Saver, low-powered phones and software WebGL get the still image `img/hero-object.webp`. `?3d=off` shows the still image, `?3d=on` forces 3D.
 - `404.html`: works at any address. It reads the site folder from the address, or falls back to `BASE` at its top (keep that equal to `basePath` in the config). A byte-for-byte copy sits at the repo root (`/404.html`), because GitHub Pages only uses the root one for this project site. If you change one, copy it over the other.
 - `sitemap.xml` and `robots.txt`: all public pages. (The repo-root `robots.txt` also points at this sitemap.)
-- `img/aceguides/`: AceGuides covers (720x960 WebP), made by `tools/make-covers.py`. `img/<demo>-*.webp`: demo screenshots, made by `tools/screenshot-demos.mjs` (one is used on the Shopfront card).
+- `img/aceguides/`: AceGuides covers (720x960 WebP), made by `tools/make-covers.py`. `img/<demo>-*.webp`: demo screenshots, made by `tools/screenshot-demos.mjs` (one is used on the Black Crest Web Designs card).
 - Logo files in `img/`, used exactly as supplied: `kb-wordmark.svg` (the top bar from 720px wide, and the footer), `kb-favicon.svg` (the top bar on phones, the About section and the browser-tab icon), and the white and black one-colour versions. Icons made from the mark: `favicon.ico`, `favicon-32.png`, `apple-touch-icon.png`, `img/icon-192.png`, `img/icon-512.png`. `og.jpg` is the share image.
 - `fonts/geist-latin.woff2` (SIL Open Font License, `geist-OFL.txt`); `vendor/`: Lenis 1.1.18 and Three.js r160.
 
@@ -31,6 +31,7 @@ Add one entry to `businesses` in `site.config.json`. Nothing else needs changing
 { "name": "New business", "description": "One line about it.", "status": "coming-soon", "url": "", "ctaLabel": "Visit",
   "image": "img/new-business.webp", "imageAlt": "What the picture shows", "imageSize": [1280, 800] }
 ```
+- `shortName` (optional): a shorter name used only in the footer's narrow Businesses column (for example "Black Crest" for Black Crest Web Designs). Everywhere else shows `name`.
 - `status`: `"coming-soon"` or `"live"`. A business counts as live only when the status is `"live"` **and** `url` is a full `https://` address. Then its card becomes one big link with a LIVE badge and `ctaLabel` with an arrow, and its footer and dropdown entries become links. While coming soon, the card is not a link, has no hover lift, and says "Coming soon".
 - `image`: one picture (shown filling the card's picture area; add `"imageFrame": "browser"` to show it in a browser frame), or a list of up to five (shown as a fanned stack, like AceGuides), with `imageAlt` as one text or a matching list. Images must be in `img/`. Use WebP and give `imageSize` as `[width, height]`.
 - **The "More coming" card:** it always shows on the Businesses page. On Home it shows only when `"showMoreComingCard": true`; set it to `false` to hide it there. Its title is `home.businesses.moreComing`.
@@ -53,7 +54,7 @@ The form is connected: `formAccessKey` in `site.config.json` holds the site's We
 - **To change the key** (for example if you make a new one at https://web3forms.com, or want messages sent to a different inbox), replace the value of `formAccessKey`, commit and push.
 - **If `formAccessKey` is empty,** Send opens the visitor's email app with the message filled in instead (and says so on the page), so no message is lost.
 - A hidden `botcheck` box catches simple spam bots: if it is ticked, nothing is sent. The Privacy Policy tick box must be ticked before anything is sent.
-- A link to `contact.html?topic=partnership` (or `aceguides`, `shopfront`, `general`, `other`) preselects that choice in "What's it about?"; the choices are `contactPage.topics`.
+- A link to `contact.html?topic=partnership` (or `aceguides`, `black-crest`, `general`, `other`) preselects that choice in "What's it about?"; the choices are `contactPage.topics`.
 - To test without sending real messages, mock the request (as in a Playwright route) rather than submitting the live form.
 
 ## Company details, ABN and social links
@@ -69,7 +70,7 @@ The privacy, terms and refunds pages live in `legal/`. Their names, email, state
 - **Update the date:** whenever you change the wording of any legal page, set `legal.lastUpdated` (for example `"12 March 2027"`). It appears under each page title.
 - **ABN:** see Company details above (`company.abn`).
 - `legal.tradingName`, `legal.brands`, `legal.contactEmail` and `legal.state` fill the matching words in the pages. Never add a personal name, age, home address or phone number.
-- `legalBaseUrl` is the public address of the `legal/` folder. The AceGuides and Shopfront sites should link their footers to `legalBaseUrl + "privacy.html"`, `"terms.html"` and `"refunds.html"`, so every brand uses these same pages.
+- `legalBaseUrl` is the public address of the `legal/` folder. The AceGuides and Black Crest Web Designs sites should link their footers to `legalBaseUrl + "privacy.html"`, `"terms.html"` and `"refunds.html"`, so every brand uses these same pages.
 - The footer's Company column on every page links Privacy, Terms and Refunds; the labels are `footer.privacy`, `footer.terms` and `footer.refunds`. The page labels "Last updated" and "In plain English" are in `legalText`.
 - The pages are plain English and are not legal advice. Have them checked before relying on them for a large business.
 

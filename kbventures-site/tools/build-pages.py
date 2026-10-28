@@ -328,7 +328,7 @@ home_body = f'''<main id="main">
 
 pages = {}
 pages['index.html'] = page('index.html', 'KB Ventures: many businesses, one standard',
-                           'KB Ventures is a Melbourne company that starts and runs businesses, including AceGuides and Shopfront.', home_body, 'home',
+                           'KB Ventures is a Melbourne company that starts and runs businesses, including AceGuides and Black Crest Web Designs.', home_body, 'home',
                            extra='<link rel="preload" href="img/hero-object.webp" as="image" type="image/webp" fetchpriority="high">\n<script type="importmap">{"imports": {"three": "./vendor/three.module.min.js"}}</script>\n'
                                  '<script type="application/ld+json" id="org-data">' + json.dumps(ld, separators=(',', ':')) + '</script>',
                            scripts=['<script src="main.js" defer></script>', '<script type="module" src="hero.js"></script>'])

@@ -22,8 +22,8 @@
   };
   let accessKey = '', email = 'kb.ventures@outlook.com', cfg = null;
 
-  // contact.html?topic=partnership preselects "Partnership" (letters and digits are compared, so "shopfront" finds
-  // "Shopfront" and "general" finds "General question")
+  // contact.html?topic=partnership preselects "Partnership" (letters and digits are compared, so "black-crest" finds
+  // "Black Crest Web Designs" and "general" finds "General question")
   const norm = (t) => String(t).toLowerCase().replace(/[^a-z0-9]/g, '');
   function preselect() {
     const want = norm(new URLSearchParams(location.search).get('topic') || '');

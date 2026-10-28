@@ -100,7 +100,7 @@
   const reveal = (els, step = 0.07) => els.forEach((el, i) => { el.classList.add('reveal'); el.style.setProperty('--d', (i * step).toFixed(2) + 's'); if (io) io.observe(el); else el.classList.add('is-visible'); });
   $$('.section .center').forEach((c) => reveal([...c.children]));
   reveal($$('.biz'), 0.1);
-  reveal([$('#carousel'), $('.footer-mark')].filter(Boolean));
+  reveal([$('#carousel'), $('.footer-logo')].filter(Boolean));
 
   /* ---------- Concept websites carousel: start-aligned, next card peeking ---------- */
   const controls = $('#carousel-controls'), dotsBox = $('#dots'), prev = $('#prev'), next = $('#next');

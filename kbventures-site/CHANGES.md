@@ -1,4 +1,29 @@
-# Changes: richer without clutter (28 October 2026)
+# Changes: legal pages (28 October 2026)
+
+## New pages
+- `legal/privacy.html`, `legal/terms.html` and `legal/refunds.html`, in the same dark style. Each has the same nav and footer, a 720px reading column, a title, a "Last updated" date, a short "In plain English" box, numbered sections, and a Contact section. They have no smooth scrolling and no 3D, so they stay fast. Gold appears only in the thin divider above Contact.
+- The wording follows your brief and adds no extra facts or claims:
+  - **Privacy:** what we collect (name and email at checkout, messages); Stripe handles payments; no selling; GitHub Pages hosting logs; access, correction or deletion by email with a reply within 30 days; a light mention of the Australian Privacy Principles (no claim of formal compliance); complaints go to oaic.gov.au.
+  - **Terms:** personal study use only; no guarantee of marks; not a replacement for school; the VCE trademark and that we are not affiliated with the VCAA or any school; original work; prices in AUD; a website services section; Australian Consumer Law; Victorian law; the update date.
+  - **Refunds:** instant digital delivery; a fix or full refund for faulty, won't-open or not-as-described files; a reply within 3 business days; no change-of-mind refunds after download; Australian Consumer Law rights; how to ask.
+
+## Config
+- New `legal` block (exactly as given), plus `legalBaseUrl` so the AceGuides and KB Websites sites can link to these same pages. The labels (Privacy, Terms, Refunds, Last updated, In plain English) are in `footer`.
+- The ABN now lives in `legal.abn` (the old top-level `abn` field is gone). While it is empty, no ABN line appears anywhere.
+- `legal/legal.js` fills the trading name, brands, email, state, ABN and date from the config.
+
+## Footer
+- Every page (home, the three legal pages and the 404) now has Privacy · Terms · Refunds and © year KB Ventures. The VCE trademark line is on every footer that mentions VCE: home and the legal pages.
+- There is no sitemap.xml, so none was added.
+
+## Checked
+- At 1440 and 390px on all five pages: no sideways scroll, no console errors, no failed requests, and all body text at least 4.5:1.
+- Every internal link and in-page anchor works. The Stripe, GitHub and OAIC links all return 200.
+- A test with a filled-in ABN shows it; with the ABN empty, nothing is shown.
+
+---
+
+# Earlier: richer without clutter (28 October 2026)
 
 The logo work (nav mark, footer logo, favicons, share image) is untouched. No facts, prices, reviews or numbers were invented.
 

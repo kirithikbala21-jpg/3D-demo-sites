@@ -240,8 +240,8 @@
     if (pvImg && pv && local(pv.src)) { pvImg.src = pv.src; if (filled(pv.alt)) pvImg.alt = pv.alt; }
     // optional links and ABN: shown only when filled in
     for (const key of ['instagram', 'linkedin']) { const a = document.getElementById(key); if (a) { if (safeUrl(cfg[key])) { a.href = cfg[key].trim(); a.hidden = false; } else a.hidden = true; } }
-    const abn = $('#abn');
-    if (abn) { if (filled(cfg.abn)) { abn.textContent = `${get(cfg, 'footer.abnLabel') || 'ABN'} ${cfg.abn.trim()}`; abn.hidden = false; } else abn.hidden = true; }
+    const abn = $('#abn'), abnValue = get(cfg, 'legal.abn');
+    if (abn) { if (filled(abnValue)) { abn.textContent = `${get(cfg, 'footer.abnLabel') || 'ABN'} ${abnValue.trim()}`; abn.hidden = false; } else abn.hidden = true; }
     // testimonials: only real ones with a quote and a name
     const quotes = Array.isArray(cfg.testimonials) ? cfg.testimonials.filter((q) => q && filled(q.quote) && filled(q.name)) : [];
     const tSection = $('#testimonials');

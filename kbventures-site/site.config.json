@@ -6,8 +6,16 @@
   "aceguidesShopUrl": "",
   "instagram": "",
   "linkedin": "",
-  "abn": "",
   "testimonials": [],
+  "legalBaseUrl": "https://kirithikbala21-jpg.github.io/3D-demo-sites/kbventures-site/legal/",
+  "legal": {
+    "tradingName": "KB Ventures",
+    "brands": ["AceGuides", "KB Websites"],
+    "contactEmail": "kb.ventures@outlook.com",
+    "abn": "",
+    "state": "Victoria, Australia",
+    "lastUpdated": "28 October 2026"
+  },
   "meta": {
     "title": "KB Ventures: study guides and websites, made in Melbourne",
     "description": "KB Ventures is two small businesses run from Melbourne: AceGuides makes revision guides for Year 10 and VCE students, and KB Websites builds websites for local businesses."
@@ -107,6 +115,11 @@
     "concept": "The website demos are concepts for made-up businesses.",
     "backToTop": "Back to top",
     "abnLabel": "ABN",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "refunds": "Refunds",
+    "lastUpdatedLabel": "Last updated",
+    "summaryLabel": "In plain English",
     "vceTrademark": "VCE® is a registered trademark of the VCAA."
   },
   "demos": [

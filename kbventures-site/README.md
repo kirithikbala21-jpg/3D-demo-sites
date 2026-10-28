@@ -10,6 +10,7 @@ Live: https://kirithikbala21-jpg.github.io/3D-demo-sites/kbventures-site/
 - `hero.js` and `scene.js`: the 3D metal-and-glass card in the hero (Three.js). It only runs with a real graphics card; reduced motion, Data Saver, low-powered phones and software WebGL get the still image. `?3d=off` shows the still image, `?3d=on` forces 3D.
 - `img/hero-object.webp`: the still of the same object, used while the 3D loads and whenever it can't run. Rebuild it with `tools/render-hero-still.mjs` after changing `scene.js`.
 - `img/grain.png`: the film-grain tile laid over the page at 3.5%
+- `legal/privacy.html`, `legal/terms.html`, `legal/refunds.html` and `legal/legal.js`: the legal pages (see Legal pages below)
 - `404.html`: page-not-found page (works both in this folder and at the root of its own repo)
 - `img/`: demo screenshots as one matching set (`<demo>-desktop.webp` 1280x800 from a 1440x900 window, `<demo>-tall.webp` 1280x1956 from the top 1440x2200 of the page, which scrolls slowly inside the browser frame on hover or keyboard focus, and `<demo>-mobile.webp` 480x1039 from a 390x844 phone). The browser and phone frames are drawn in CSS so they are identical for every demo.
 - `img/aceguides/`: AceGuides study-guide covers (720x960 WebP, 21 of them: Year 10, VCE Units 1 & 2 and Units 3 & 4). The AceGuides card shows the five listed in `businesses.aceguides.covers`.
@@ -35,7 +36,7 @@ The carousel builds its dots from however many cards there are, so nothing else 
 ## Optional fields (empty = not shown)
 - `aceguidesShopUrl`: the AceGuides shop address (must start with `https://`). While it is blank, the AceGuides card shows the quiet line "Guides launching soon" (`businesses.aceguides.noShopLine`); once filled in it shows a "See the guides" button instead.
 - `instagram`, `linkedin`: full `https://` addresses; each adds a footer link (and a `sameAs` entry in the structured data).
-- `abn`: shown in the footer as "ABN …".
+- `legal.abn`: shown in the footer and on the legal pages as "ABN …" (see Legal pages below).
 - `testimonials`: a list of `{ "quote": "...", "name": "...", "business": "..." }`. Only real quotes, word for word, with the person's real name. The section stays hidden while the list is empty, and any entry without a quote or a name is skipped.
 
 ## Other config fields
@@ -45,6 +46,15 @@ The carousel builds its dots from however many cards there are, so nothing else 
 - `footer.vceTrademark`: the VCE trademark line. Keep it while the covers mention VCE.
 
 Never put invented facts, reviews, prices or numbers in the config.
+
+## Legal pages
+The privacy, terms and refunds pages live in `legal/`. Their names, email, state, ABN and date come from the `legal` block in `site.config.json`, filled in by `legal/legal.js`. The HTML holds the same text, so the pages still read correctly if JavaScript is off; if you change a value in the config, change it in the three HTML files too so both copies match.
+- **Update the date:** whenever you change the wording of any legal page, set `legal.lastUpdated` (for example `"12 March 2027"`). It appears under each page title.
+- **Add an ABN:** put it in `legal.abn` (for example `"12 345 678 901"`). It then appears in the footer of every page and in the Contact section of each legal page. While it is empty, no ABN line is shown at all.
+- `legal.tradingName`, `legal.brands`, `legal.contactEmail` and `legal.state` fill the matching words in the pages. Never add a personal name, age, home address or phone number.
+- `legalBaseUrl` is the public address of the `legal/` folder. The AceGuides and KB Websites sites should link their footers to `legalBaseUrl + "privacy.html"`, `"terms.html"` and `"refunds.html"`, so every brand uses these same pages.
+- The footer of every page links Privacy · Terms · Refunds; the labels are `footer.privacy`, `footer.terms` and `footer.refunds`.
+- The pages are plain English and are not legal advice. Have them checked before relying on them for a large business.
 
 ## Move to its own repo (kbventures.github.io)
 1. Create an empty repo called `kbventures.github.io` under the `kbventures` GitHub account or organisation.

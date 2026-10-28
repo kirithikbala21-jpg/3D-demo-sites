@@ -1,4 +1,26 @@
-# Changes: dark glass card back, clean hero background (28 October 2026)
+# Changes: a sleeker hero card (28 October 2026)
+
+Only the card's look changed. It is still the dark glass KB card, at the same size and position, on the clean dark background, with the same still-image fallback and reduced-motion behaviour.
+
+## The card
+- **Edge:** a hairline polished-metal edge (about 1 to 2px at normal size) instead of the thick bevel. It catches the light along the top and upper left only, with no white outline all the way round. The corner radius is tighter (4.5% of the width instead of 6%) and the card is about half as thick.
+- **Gold:** a fine, soft champagne hairline (low saturation, 75% opacity) instead of the bright yellow rim.
+- **Body:** deep matte black anodised metal under a gentle clearcoat. It is slightly lighter top-left and darker bottom-right, with very fine brushing and micro-noise, so it is never one flat colour. The light streak is now a wide, faint reflection that crosses slowly every 12 seconds, not a bright line every 7.
+- **Mark:** the actual logo file, `img/kb-wordmark.svg`, set into the face, so it matches the logo exactly: the thin, widely spaced silver-to-white KB, the gold rule, and small, widely spaced VENTURES. It has a soft pressed-in shadow and a faint lit lip for engraved depth, instead of bold extruded letters.
+- **Light:** one large soft box above-left plus a softer front panel, a gentle rim on the right, a faint floor bounce, and lower exposure (0.9), with no hard strips. The contact shadow is softer and the reflection under the card is fainter (3.5%).
+- **Motion:** smaller and slower. The drift is about half as large, the pointer lean is about 3 to 4 degrees, the scroll tip is under a third of what it was, and every movement eases in over about a second and a half.
+- **Still image:** `img/hero-object.webp` was re-rendered to match, at full size (1200 x 958) instead of being scaled up. `tools/render-hero-still.mjs` now draws the stage 600px wide for this.
+
+## Checked
+- The card at 1440 (3D and still) and 390, compared with the previous version: thinner, less glossy and less chunky, with the logo clearly readable.
+- No console errors.
+- Lighthouse is unchanged: desktop 100 / 100 / 100 / 100, mobile 95 / 100 / 100 / 100, layout shift 0.
+- Frame rate in the same software-rendering test browser is about the same as before.
+- The full test suite passed at 1440, 768 and 390.
+
+---
+
+# Earlier: dark glass card back, clean hero background (28 October 2026)
 
 - **Card:** the 27 October silver card is undone. `scene.js` and `img/hero-object.webp` are back to the dark glass KB card used right before round 2 (byte-for-byte the files from commit c86a926). The import map and the soft fade at the foot of the card area are back to how they were then too.
 - **Removed from the hero:** the round 2 glowing grid lines, the extra glow layer behind the card, and the three small sparkle dots, along with their styles and animations. One of the dots was also baked into the still image under the card; just that dot was cleared out of the image, with the card and its shadow untouched.

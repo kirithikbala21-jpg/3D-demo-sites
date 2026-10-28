@@ -171,7 +171,7 @@ body.menu-open { overflow: hidden; }
 .hero-stage { position: relative; z-index: 1; order: -1; width: min(82%, 340px); aspect-ratio: 5 / 4; margin: 0 auto 4px; transform: translate3d(0, var(--py, 0px), 0); }
 @media (min-width: 600px) and (max-width: 1023px) { .hero-stage { width: 380px; } }
 @media (min-width: 1024px) { .hero-stage { order: 0; width: 100%; max-width: 500px; margin: 40px 0 0 auto; } }
-.hero-still, .hero-stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; -webkit-mask-image: linear-gradient(180deg, #000 72%, rgba(0, 0, 0, 0) 97%); mask-image: linear-gradient(180deg, #000 72%, rgba(0, 0, 0, 0) 97%); }
+.hero-still, .hero-stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
 .hero-still { object-fit: contain; transition: opacity 1.2s var(--ease); }
 .hero-stage canvas { display: block; opacity: 0; transition: opacity 1.2s var(--ease); touch-action: pan-y; }
 .hero-stage.has-3d canvas { opacity: 1; }

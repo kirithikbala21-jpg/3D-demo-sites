@@ -1,4 +1,27 @@
-# Changes: round 2, a fuller home page and four new pages (28 October 2026)
+# Changes: the 27 October hero card is back (28 October 2026)
+
+- **Why:** round 2 did not change the hero card. Its code, materials, lights and still image were byte-for-byte the same as before round 2, and screenshots matched. The brighter look you remembered is the first metal-and-glass card from 27 October (commit 305977f). It was replaced on 28 October by the darker "piano-black glass" card.
+- **Restored from 305977f, unchanged:**
+  - `scene.js`: a brushed-silver metal slab with a piano-black glass face, a bright white "KB" with "VENTURES" and a short gold rule under it, and a fine brushed-gold edge line;
+  - its lighting: a studio environment, key and rim lights, ACES tone mapping at exposure 1.0, the "less" shine level and the soft reflection sweep;
+  - its matching still image, `img/hero-object.webp`.
+- **Small fixes so it runs and shows in full:**
+  - the import map has `three/addons/` again (the restored card uses `RoomEnvironment`, still in `vendor/addons/`);
+  - the fade-out mask at the bottom of the hero stage is removed, as on 27 October, so the frame's lower edge isn't faded.
+- **Kept from round 2:**
+  - the smaller card size;
+  - the taller hero, text, buttons, glowing grid and light, and everything below the hero;
+  - reduced motion, Data Saver, weak phones and software-only graphics still get the still image, and `?3d=on` / `?3d=off` still work.
+  - The grid didn't make the restored card look darker, so its brightness is unchanged.
+- **Tool fix:** `tools/render-hero-still.mjs` now also hides the hero glow and the light specks, so a future still has a clean transparent background.
+- **Checked:**
+  - hero screenshots at 1440 (3D and still) and 390, compared against the 27 October page;
+  - no console errors;
+  - the full test suite passed again at 1440, 768 and 390.
+
+---
+
+# Earlier: round 2, a fuller home page and four new pages (28 October 2026)
 
 ## Home
 - **Hero:** almost a full screen tall on desktop, with the text and the smaller 3D card on one centreline. A faint glowing grid and a soft light sit behind the card. They're CSS only, drift very slowly and stay still with reduced motion.

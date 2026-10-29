@@ -7,6 +7,7 @@ Live: https://kirithikbala21-jpg.github.io/3D-demo-sites/kbventures-site/
 ## Pages
 - `index.html`: Home (hero, Our businesses, How we build, Our standard, About, Quick questions, Get in touch)
 - `aceguides.html`: the AceGuides shop (see "AceGuides shop" below)
+- `black-crest.html`: Black Crest Web Designs website pricing (see "Black Crest pricing" below). "Pricing" in the top bar and phone menu, "Website pricing" in the footer.
 - `businesses.html`, `how-we-work.html`, `faq.html`, `partner.html`, `about.html`, `contact.html` (the contact form), `404.html`
 - `legal/privacy.html`, `legal/terms.html`, `legal/refunds.html`
 
@@ -49,7 +50,15 @@ Everything on the page comes from the `aceguides` block in `site.config.json`; r
 - `price`: a number in AUD, shown on the card and in the Product structured data. Every guide needs one, and it must match the price in Stripe.
 - `cover`: a file in `img/aceguides/` (720x960 WebP). Without one, the card shows a plain style tile with the subject name.
 - Product structured data (Google) is added for every guide with a link and a price.
+- **Free samples:** put the PDF in `aceguides/samples/` named after the guide's key (the same keys as the Stripe metadata, like `y10-maths.pdf` or `y11-english.pdf`), then add the key to `samples`, for example `"samples": ["y10-maths"]`. The card then shows a "Free sample" link that opens the PDF in a new tab. A key is only shown when its file is really there: if it is listed but the file is missing, the build prints a warning and leaves the link out. The list is empty for now, so no sample links show. `samplesNote` is the line above the guides.
 - `inside`, `chooser`, `delivery`, `questions`, `policies` and `vcaa` hold the rest of the page text. `meta` holds the page title and description.
+
+## Black Crest pricing (`black-crest.html`)
+All of it is in the `blackCrest` block of `site.config.json`; run `tools/build-pages.py` after a change.
+- `packages`: one entry per card, with `name`, `price` (a number, shown as "From $490 AUD") and `features`. For a package without a set price, use `"price": null` and `priceText` (for example "Quote on request").
+- `button` and `buttonHref`: every package button goes to `contact.html?topic=black-crest`, which picks Black Crest Web Designs in the form.
+- `note`: the line under the packages. `label`, `title`, `lead` and `meta` hold the rest. The page shows the Coming soon tag (`nav.comingSoon`) and the Concept sites gallery.
+- Black Crest stays Coming soon on Home: its card is not a link until its `status` is `"live"`.
 
 ## Home page sections (all in `site.config.json`)
 Home runs: hero, Our businesses (with the Concept sites gallery), Latest, How we build, Our standard, Who’s behind it, Quick questions, Get updates, Get in touch.

@@ -77,7 +77,7 @@ def header_fallback(P='', images=True):
 
 
 def footer_fallback(P=''):
-    links = [('businesses.html', 'Businesses'), ('about.html', 'About'), ('how-we-work.html', 'How we work'), ('faq.html', 'FAQ'), ('partner.html', 'Partner with us'),
+    links = [('businesses.html', 'Businesses'), ('about.html', 'About'), ('how-we-work.html', 'How we work'), ('faq.html', 'FAQ'), ('partner.html', 'Partner with us'), ('black-crest.html', 'Website pricing'),
              ('contact.html', 'Contact'), ('legal/privacy.html', 'Privacy'), ('legal/terms.html', 'Terms'), ('legal/refunds.html', 'Refunds')]
     return f'''<!-- site.js replaces this with the full footer from site.config.json -->
 <footer class="footer" id="site-footer"><div class="container"><div class="footer-bottom">
@@ -618,6 +618,21 @@ def money(x):
     return f'${x:.2f}'
 
 
+def sample_files():
+    """Free samples: a guide gets a "Free sample" link only when its key is in aceguides.samples and the PDF is really there."""
+    found = {}
+    for key in ag.get('samples', []):
+        path = ag['samplePath'].replace('{key}', key)
+        if os.path.isfile(os.path.join(SITE_DIR, path)):
+            found[key] = path
+        else:
+            print(f'warning: aceguides.samples lists "{key}" but {path} is missing, so no sample link is shown')
+    return found
+
+
+samples = sample_files()
+
+
 def product_card(x):
     """One guide: cover (or a matching tile for bundles), level, subject, price, and Buy now (or Coming soon)."""
     if x.get('cover'):
@@ -632,6 +647,9 @@ def product_card(x):
     else:
         action = (f'<button class="pill pill-secondary product-soon" type="button" disabled>{E(ag["comingSoon"])}</button>'
                   f'<a class="text-link product-notify" href="{E(ag["notifyHref"])}">{E(ag["notify"])}<span class="sr-only">: {E(x["subject"])}, {E(x["level"])}</span></a>')
+    if x['key'] in samples:
+        action += (f'<a class="text-link product-sample" href="{E(samples[x["key"]])}" target="_blank" rel="noopener">{E(ag["sampleLabel"])}'
+                   f'<span class="sr-only">: {E(x["subject"])}, {E(x["level"])} {E(ag["newTab"])}</span></a>')
     return f'''        <li class="card product{'' if x.get('link') else ' is-soon'}" id="{E(x['key'])}">
           <div class="product-cover">{cover}</div>
           <div class="product-body">
@@ -683,6 +701,7 @@ pages['aceguides.html'] = page('aceguides.html', ag['meta']['title'], ag['meta']
     <ul class="principles">{chooser}
     </ul>
   </div>
+  <div class="container shop-samples"><p class="dim" data-c="aceguides.samplesNote">{E(ag['samplesNote'])}</p></div>
 {chr(10).join(groups_html)}
   <div class="container shop-foot">
     <p class="shop-delivery" data-c="aceguides.delivery">{E(ag['delivery'])}</p>
@@ -691,6 +710,40 @@ pages['aceguides.html'] = page('aceguides.html', ag['meta']['title'], ag['meta']
     <p class="shop-vcaa" data-c="aceguides.vcaa">{E(ag['vcaa'])}</p>
   </div>
 </main>''', 'aceguides', extra=f'<script type="application/ld+json" id="products-data">{products_ld()}</script>')
+
+bc = cfg['blackCrest']
+
+
+def package_card(i, x):
+    """One Black Crest package: name, "From $490" (or the quote text), what is included, and a button to the contact form."""
+    if x.get('price'):
+        price = (f'<p class="pkg-price"><span class="pkg-from" data-c="blackCrest.from">{E(bc["from"])}</span> '
+                 f'<span class="pkg-amount">${x["price"]:,}</span> <span class="pkg-cur" data-c="blackCrest.currency">{E(bc["currency"])}</span></p>')
+    else:
+        price = f'<p class="pkg-price"><span class="pkg-amount pkg-quote" data-c="blackCrest.packages.{i}.priceText">{E(x["priceText"])}</span></p>'
+    feats = ''.join(f'<li data-c="blackCrest.packages.{i}.features.{j}">{E(f)}</li>' for j, f in enumerate(x['features']))
+    return f'''      <li class="card pkg" id="{E(x['key'])}">
+        <h2 class="pkg-name" data-c="blackCrest.packages.{i}.name">{E(x['name'])}</h2>
+        {price}
+        <ul class="pkg-features">{feats}</ul>
+        <a class="pill {'pill-primary' if i == 1 else 'pill-secondary'} pkg-btn" href="{E(bc['buttonHref'])}"><span data-c="blackCrest.button">{E(bc['button'])}</span><span class="sr-only">: {E(x['name'])}</span></a>
+      </li>'''
+
+
+pages['black-crest.html'] = page('black-crest.html', bc['meta']['title'], bc['meta']['description'], f'''<main id="main" class="page pricing">
+  <div class="container page-head">
+    <p class="label pricing-label"><span data-c="blackCrest.label">{E(bc['label'])}</span> <span class="tag" data-c="nav.comingSoon">{E(cfg['nav']['comingSoon'])}</span></p>
+    <h1 class="page-title" data-c="blackCrest.title">{E(bc['title'])}</h1>
+    <p class="lead" data-c="blackCrest.lead">{E(bc['lead'])}</p>
+  </div>
+  <div class="container">
+    <ul class="pkg-grid">
+{chr(10).join(package_card(i, x) for i, x in enumerate(bc['packages']))}
+    </ul>
+    <p class="pkg-note" data-c="blackCrest.note">{E(bc['note'])}</p>
+  </div>
+{gallery('h2', 'h3')}
+</main>''', 'pricing')
 
 cp = cfg['contactPage']
 opts = ''.join(f'<option>{E(t)}</option>' for t in cp['topics'])

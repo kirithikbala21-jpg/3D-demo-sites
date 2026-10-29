@@ -1,3 +1,19 @@
+# Changes: free samples, Black Crest pricing, phone fixes (29 October 2026)
+
+## AceGuides shop
+- The shop fixes from the last round (all Year 10 guides on sale, bundle prices, the new delivery line, "6 concept websites") were already live and are unchanged.
+- **Free samples:** a guide card shows a "Free sample" link (new tab) when its key is in `aceguides.samples` and `aceguides/samples/<key>.pdf` exists. The list is empty, so no links show yet. A new line above the guides: "Look inside before you buy, where a sample is available."
+
+## Black Crest pricing (new page `black-crest.html`)
+- Starter (from $490), Standard (from $990) and Custom (quote on request), with what each includes, all from `blackCrest` in the config.
+- "Prices are a starting point. Every project is quoted before any work begins." Each "Get a quote" button opens the contact form with Black Crest Web Designs chosen.
+- The page is marked Coming soon and shows the Concept sites gallery. No customers are claimed. Black Crest is still Coming soon on Home.
+- "Pricing" was added to the top bar (it fits from 720px, with room to spare) and the phone menu, and "Website pricing" to the footer. Added to the sitemap.
+
+## Phone fixes (checked at 360, 390 and 768 on every page)
+- There was no horizontal scrolling, no overlapping text, no cut-off cards, and the phone menu opened and closed properly everywhere, before and after.
+- Tap targets made at least 44 x 44px: the KB logo in the top bar (was 32px wide), the Businesses dropdown arrow (was 30px wide), short footer links like About, FAQ and Terms (were 26 to 38px wide), and the Privacy Policy tick-box rows on the Get updates and contact forms (were 21 to 24px tall). Only the sizes changed, not how the forms work.
+
 # Changes: AceGuides fixes (29 October 2026)
 - **Year 10 English, History, Economics and Business, and the Year 10 bundle** now have Buy now buttons (Stripe, new tab, rel noopener). Every guide can be bought now.
 - **Bundle prices:** Year 10 $29.99, VCE Units 1 and 2 $69.99, VCE Units 3 and 4 $89.99. "See price at checkout" and "Price to be confirmed" are gone, and the Product structured data now covers all 24 guides with these prices.

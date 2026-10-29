@@ -125,7 +125,8 @@
     "businessesShow": "Show businesses",
     "howWeWork": "How we work",
     "faq": "FAQ",
-    "partner": "Partner with us"
+    "partner": "Partner with us",
+    "pricing": "Pricing"
   },
   "footer": {
     "businesses": "Businesses",
@@ -142,7 +143,8 @@
     "legal": "Legal",
     "howWeWork": "How we work",
     "faq": "FAQ",
-    "partner": "Partner with us"
+    "partner": "Partner with us",
+    "pricing": "Website pricing"
   },
   "home": {
     "hero": {
@@ -640,6 +642,10 @@
     "notify": "Notify me",
     "notifyHref": "index.html#updates",
     "newTab": "(opens in a new tab)",
+    "samples": [],
+    "samplePath": "aceguides/samples/{key}.pdf",
+    "sampleLabel": "Free sample",
+    "samplesNote": "Look inside before you buy, where a sample is available.",
     "groups": [
       {
         "title": "Year 10",
@@ -911,5 +917,51 @@
       "title": "AceGuides study guides: KB Ventures",
       "description": "AceGuides study guides for Year 10 and VCE students: clear explanations, worked examples, a practice exam with full worked solutions, a revision plan and a one-page summary."
     }
+  },
+  "blackCrest": {
+    "meta": {
+      "title": "Website pricing: Black Crest Web Designs",
+      "description": "Black Crest Web Designs website packages for local businesses: Starter from $490, Standard from $990, and Custom quoted on request. Every project is quoted before any work begins."
+    },
+    "label": "Black Crest Web Designs",
+    "title": "Website pricing.",
+    "lead": "Three simple packages for local business websites.",
+    "currency": "AUD",
+    "from": "From",
+    "packages": [
+      {
+        "key": "starter",
+        "name": "Starter",
+        "price": 490,
+        "features": [
+          "1-page site",
+          "Contact form",
+          "Mobile friendly"
+        ]
+      },
+      {
+        "key": "standard",
+        "name": "Standard",
+        "price": 990,
+        "features": [
+          "Up to 5 pages",
+          "Contact form",
+          "Basic SEO",
+          "1 round of changes"
+        ]
+      },
+      {
+        "key": "custom",
+        "name": "Custom",
+        "price": null,
+        "priceText": "Quote on request",
+        "features": [
+          "Bigger or special projects"
+        ]
+      }
+    ],
+    "button": "Get a quote",
+    "buttonHref": "contact.html?topic=black-crest",
+    "note": "Prices are a starting point. Every project is quoted before any work begins."
   }
 }

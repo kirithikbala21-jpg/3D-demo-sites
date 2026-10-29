@@ -55,6 +55,7 @@
         <div class="dd-panel" id="dd-panel" data-lenis-prevent hidden><ul class="dd-list" id="dd-list"></ul></div>
       </div>
       <a class="nav-link" href="${BASE}about.html"${cur('about')}>${esc(t.about)}</a>
+      <a class="nav-link nav-pricing" href="${BASE}black-crest.html"${cur('pricing')}>${esc(t.pricing)}</a>
       <a class="nav-link" href="${BASE}contact.html"${cur('contact')}>${esc(t.contact)}</a>
     </nav>
     <a class="pill pill-primary nav-cta" href="${BASE}contact.html">${esc(t.cta)}</a>
@@ -68,12 +69,13 @@
     <a href="${BASE}how-we-work.html"${cur('how')}>${esc(t.howWeWork)}</a>
     <a href="${BASE}faq.html"${cur('faq')}>${esc(t.faq)}</a>
     <a href="${BASE}partner.html"${cur('partner')}>${esc(t.partner)}</a>
+    <a href="${BASE}black-crest.html"${cur('pricing')}>${esc(t.pricing)}</a>
     <a href="${BASE}contact.html"${cur('contact')}>${esc(t.contact)}</a>
   </nav>
   <a class="pill pill-primary menu-cta" href="${BASE}contact.html">${esc(t.cta)}</a>
 </div>`;
   }
-  const DEFAULT_NAV = { businesses: 'Businesses', businessesShow: 'Show businesses', about: 'About', contact: 'Contact', howWeWork: 'How we work', faq: 'FAQ', partner: 'Partner with us', cta: 'Get in touch', menu: 'Menu', close: 'Close', home: '{name} home', comingSoon: 'Coming soon' };
+  const DEFAULT_NAV = { businesses: 'Businesses', businessesShow: 'Show businesses', about: 'About', contact: 'Contact', howWeWork: 'How we work', faq: 'FAQ', partner: 'Partner with us', pricing: 'Pricing', cta: 'Get in touch', menu: 'Menu', close: 'Close', home: '{name} home', comingSoon: 'Coming soon' };
   let navText = DEFAULT_NAV;
   const slot = $('#site-header');
   if (slot) slot.outerHTML = headerHTML(navText, null);
@@ -222,6 +224,7 @@
           <li><a href="${BASE}how-we-work.html"${cur('how')}>${esc(f.howWeWork || 'How we work')}</a></li>
           <li><a href="${BASE}faq.html"${cur('faq')}>${esc(f.faq || 'FAQ')}</a></li>
           <li><a href="${BASE}partner.html"${cur('partner')}>${esc(f.partner || 'Partner with us')}</a></li>
+          <li><a href="${BASE}black-crest.html"${cur('pricing')}>${esc(f.pricing || 'Website pricing')}</a></li>
           <li><a href="${BASE}contact.html"${cur('contact')}>${esc(f.contact || 'Contact')}</a></li>
         </ul>
       </nav>
@@ -249,8 +252,8 @@
     if (ddLink) ddLink.textContent = navText.businesses;
     if (ddBtn) ddBtn.setAttribute('aria-label', navText.businessesShow);
     const links = $$('.nav-links > a', nav), mlinks = $$('nav a', menu);
-    [navText.about, navText.contact].forEach((t, i) => { if (links[i]) links[i].textContent = t; });
-    [navText.businesses, navText.about, navText.howWeWork, navText.faq, navText.partner, navText.contact].forEach((t, i) => { if (mlinks[i]) mlinks[i].textContent = t; });
+    [navText.about, navText.pricing, navText.contact].forEach((t, i) => { if (links[i]) links[i].textContent = t; });
+    [navText.businesses, navText.about, navText.howWeWork, navText.faq, navText.partner, navText.pricing, navText.contact].forEach((t, i) => { if (mlinks[i]) mlinks[i].textContent = t; });
     $$('.nav-cta, .menu-cta').forEach((a) => { a.textContent = navText.cta; });
     $('.sr-only', btn).textContent = menuOpen() ? navText.close : navText.menu;
     $('.brand').setAttribute('aria-label', fill(navText.home, cfg));

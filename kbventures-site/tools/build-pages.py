@@ -624,12 +624,12 @@ def product_card(x):
         cover = f'<img src="{E(x["cover"])}" width="720" height="960" loading="lazy" decoding="async" alt="{E(x.get("coverAlt", ""))}">'
     else:
         cover = f'<div class="cover-tile" aria-hidden="true"><span class="tile-brand">AceGuides</span><span class="tile-line"></span><span class="tile-title">{E(x["subject"])}</span></div>'
+    # every guide needs a price in the config: there is no "price to be confirmed" text
+    price = f'<p class="product-price">{money(x["price"])} <span>{E(ag["currency"])}</span></p>' if x.get('price') else ''
     if x.get('link'):
-        price = f'<p class="product-price">{money(x["price"])} <span>{E(ag["currency"])}</span></p>' if x.get('price') else f'<p class="product-price is-tbc">{E(ag["noPrice"])}</p>'
         action = (f'<a class="pill pill-primary product-buy" href="{E(x["link"])}" target="_blank" rel="noopener">{E(ag["buy"])}'
                   f'<span class="sr-only">: {E(x["subject"])}, {E(x["level"])} {E(ag["newTab"])}</span></a>')
     else:
-        price = f'<p class="product-price">{money(x["price"])} <span>{E(ag["currency"])}</span></p>' if x.get('price') else f'<p class="product-price is-tbc">{E(ag["noPriceSoon"])}</p>'
         action = (f'<button class="pill pill-secondary product-soon" type="button" disabled>{E(ag["comingSoon"])}</button>'
                   f'<a class="text-link product-notify" href="{E(ag["notifyHref"])}">{E(ag["notify"])}<span class="sr-only">: {E(x["subject"])}, {E(x["level"])}</span></a>')
     return f'''        <li class="card product{'' if x.get('link') else ' is-soon'}" id="{E(x['key'])}">

@@ -46,9 +46,9 @@ Everything on the page comes from the `aceguides` block in `site.config.json`; r
   "link": "https://buy.stripe.com/...", "cover": "img/aceguides/vce12-english.webp", "coverAlt": "..." }
 ```
 - `link`: the Stripe payment link. With a link the card shows "Buy now" (new tab, `rel="noopener"`). With `"link": ""` it shows a disabled "Coming soon" button and a "Notify me" link to the Home sign-up (`notifyHref`). To open a guide for sale, just paste its link.
-- `price`: a number in AUD. Leave it `null` and the card says "See price at checkout" (`noPrice`); the bundles are like this now. Keep it equal to the price in Stripe.
+- `price`: a number in AUD, shown on the card and in the Product structured data. Every guide needs one, and it must match the price in Stripe.
 - `cover`: a file in `img/aceguides/` (720x960 WebP). Without one, the card shows a plain style tile with the subject name.
-- Product structured data (Google) is added only for guides with both a link and a price.
+- Product structured data (Google) is added for every guide with a link and a price.
 - `inside`, `chooser`, `delivery`, `questions`, `policies` and `vcaa` hold the rest of the page text. `meta` holds the page title and description.
 
 ## Home page sections (all in `site.config.json`)

@@ -412,7 +412,7 @@
       },
       {
         "label": "Black Crest Web Designs",
-        "text": "7 demo websites built for local businesses",
+        "text": "6 concept websites built for local businesses",
         "date": "Oct 2026"
       },
       {
@@ -610,7 +610,7 @@
       },
       {
         "date": "Oct 2026",
-        "text": "7 concept websites built"
+        "text": "6 concept websites built"
       },
       {
         "date": "Oct 2026",
@@ -639,8 +639,6 @@
     "comingSoon": "Coming soon",
     "notify": "Notify me",
     "notifyHref": "index.html#updates",
-    "noPrice": "See price at checkout",
-    "noPriceSoon": "Price to be confirmed",
     "newTab": "(opens in a new tab)",
     "groups": [
       {
@@ -669,7 +667,7 @@
             "subject": "English",
             "level": "Year 10",
             "price": 9.99,
-            "link": "",
+            "link": "https://buy.stripe.com/9B6eVea8y8Ju5Ys2dU4Rq0l",
             "cover": "img/aceguides/year10-english.webp",
             "coverAlt": "AceGuides Year 10 English study guide cover"
           },
@@ -678,7 +676,7 @@
             "subject": "History",
             "level": "Year 10",
             "price": 9.99,
-            "link": "",
+            "link": "https://buy.stripe.com/6oUcN6a8y3pa72wf0G4Rq0k",
             "cover": "img/aceguides/year10-history.webp",
             "coverAlt": "AceGuides Year 10 History study guide cover"
           },
@@ -687,7 +685,7 @@
             "subject": "Economics and Business",
             "level": "Year 10",
             "price": 9.99,
-            "link": "",
+            "link": "https://buy.stripe.com/dRm4gAgwW5xi0E8aKq4Rq0j",
             "cover": "img/aceguides/year10-economics-business.webp",
             "coverAlt": "AceGuides Year 10 Economics and Business study guide cover"
           }
@@ -854,27 +852,27 @@
             "key": "vce12-bundle",
             "subject": "VCE Units 1 and 2 bundle",
             "level": "Bundle",
-            "price": null,
+            "price": 69.99,
             "link": "https://buy.stripe.com/28E14o5Si8Ju2MgaKq4Rq0G"
           },
           {
             "key": "vce34-bundle",
             "subject": "VCE Units 3 and 4 bundle",
             "level": "Bundle",
-            "price": null,
+            "price": 89.99,
             "link": "https://buy.stripe.com/3cI14o1C29Ny0E82dU4Rq0H"
           },
           {
             "key": "y10-bundle",
             "subject": "Year 10 bundle",
             "level": "Bundle",
-            "price": null,
-            "link": ""
+            "price": 29.99,
+            "link": "https://buy.stripe.com/6oU14ocgG0cY4Uog4K4Rq0i"
           }
         ]
       }
     ],
-    "delivery": "Delivered by email after payment.",
+    "delivery": "Emailed to you within a few hours of payment.",
     "questions": "Questions? Contact us",
     "questionsLink": "contact.html?topic=aceguides",
     "policies": [

@@ -1,3 +1,10 @@
+# Changes: AceGuides fixes (29 October 2026)
+- **Year 10 English, History, Economics and Business, and the Year 10 bundle** now have Buy now buttons (Stripe, new tab, rel noopener). Every guide can be bought now.
+- **Bundle prices:** Year 10 $29.99, VCE Units 1 and 2 $69.99, VCE Units 3 and 4 $89.99. "See price at checkout" and "Price to be confirmed" are gone, and the Product structured data now covers all 24 guides with these prices.
+- **Delivery line:** "Emailed to you within a few hours of payment."
+- **Latest:** "6 concept websites built for local businesses". **About milestones:** "6 concept websites built".
+- All of this lives in `site.config.json` and the pages were rebuilt from it. Checked: the 4 new Stripe links open (HTTP 200) at the right price, and all page tests pass at 1440, 768 and 390.
+
 # Changes: the AceGuides shop (29 October 2026)
 
 ## New page: AceGuides (`aceguides.html`)

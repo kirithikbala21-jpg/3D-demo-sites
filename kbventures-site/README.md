@@ -38,12 +38,18 @@ Add one entry to `businesses` in `site.config.json`. Nothing else needs changing
 - Keep `description` to one short line: the main site carries only these. Everything else about a business goes on its own site.
 
 ## Home page sections (all in `site.config.json`)
-Home runs: hero, Our businesses, Latest, How we build, Why KB Ventures, Our standard, Meet the founder, About, Quick questions, Get in touch. After editing any of these, run `tools/build-pages.py` (see above).
+Home runs: hero, Our businesses (with the Concept sites gallery), Latest, How we build, Our standard, Who’s behind it, Quick questions, Get updates, Get in touch.
+- **Hero line** (`home.hero.intro`) sits under the heading; `home.hero.line` is the smaller location line below it. After editing any of these, run `tools/build-pages.py` (see above).
 - **"See inside" previews** (`businesses[].previews`): up to three small images under a business card's description. `frame` is `"cover"` (study guide covers) or `"browser"` (a website in a small browser frame), `size` is the images' `[width, height]`, and each item has `src` and `alt`. The website previews in `img/previews/` are made by `tools/make-previews.mjs` (the top of barber-demo, cafe-demo-v2 and gym-demo at 1440px wide). Run it again after those demos change.
 - **Latest** (`latest`): a title and a list of `{ "label", "text", "link" (optional), "linkLabel" (optional) }`. Keep each item true: no invented dates or numbers.
 - **How we build** (`process`): each step has `title`, `line`, `line2` (the second sentence on Home) and `detail` (How we work page).
-- **Why KB Ventures** (`why`): a title and four `{ "icon", "title", "text" }`. Icons: `pin`, `tag`, `refund`, `chat` (or any step or standard name).
-- **Meet the founder** (`founder`): `title`, `name`, `bio`, `button`, `photoAlt` and `photo`. **To add the photo:** save a square image as `img/founder.webp` (at least 480 x 480), set `"photo": "img/founder.webp"`, then run `tools/build-pages.py`. While `photo` is empty, a KB monogram fills the same round frame, so there is never a broken image.
+- **Our standard:** the three cards come from `standards`; the four small points under them from `standardPoints` (`{ "icon", "title", "text" }`; icons: `pin`, `tag`, `refund`, `chat`).
+- **Concept sites gallery** (`gallery`): shown on Home and the Businesses page. Each item has `name`, `label` ("Concept site: barbershop"), `url` (opens in a new tab), `image` and `alt`. List only made-up businesses: the line under the heading says they are not real businesses (the-one-barber-demo is a concept for a real shop, so it is left out). The images come from `tools/make-previews.mjs`.
+- **Get updates** (`signup`): one email box and the Privacy Policy tick, sent to Web3Forms with the same `formAccessKey` as the contact form, the subject "New update sign-up" and the hidden topic "Updates sign-up". The same `botcheck` spam trap is used.
+- **Milestones** (`milestones`): shown on the About page; each item has a `date` and one factual line. The Latest cards have a `date` too.
+- **About page** (`about`): `story` (a few sentences), `standardsTitle`, and `never` (title and items). **Partner page** (`partner`): `whoTitle` and `who`, `nextTitle` and `next` (the numbered steps).
+- **FAQ search** (`faqPage.searchLabel`, `searchPlaceholder`, `noMatch`): filters the questions as you type.
+- **Who’s behind it** (`who` for the title and button labels, `founder` for the rest): `title`, `name`, `bio`, `button`, `photoAlt` and `photo`. **To add the photo:** save a square image as `img/founder.webp` (at least 480 x 480), set `"photo": "img/founder.webp"`, then run `tools/build-pages.py`. While `photo` is empty, a KB monogram fills the same round frame, so there is never a broken image.
 
 ## FAQ questions
 The questions live in one place, `faq` in `site.config.json`. Home and the Contact page show the first three, and the FAQ page shows all of them, with matching FAQPage structured data.

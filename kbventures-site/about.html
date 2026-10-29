@@ -42,19 +42,53 @@
 <header class="nav" id="site-header"><div class="container nav-inner"><a class="brand" href="./"><span class="wm brand-word"><img src="img/kb-wordmark.svg" width="360" height="120" alt=""></span><img class="brand-mark" src="img/kb-favicon.svg" width="32" height="32" alt=""><span class="sr-only">KB Ventures home</span></a><a class="nav-link nav-fallback" href="contact.html">Contact</a></div></header>
 
 <main id="main" class="page">
-  <div class="container about-page">
-    <div class="about-mark"><img src="img/kb-favicon.svg" width="240" height="240" alt=""></div>
-    <div class="about-copy">
-      <h1 class="page-title" data-c="about.title">About KB Ventures</h1>
-      <p class="lead" data-c="about.text">KB Ventures is a Melbourne company that starts and runs businesses. Each one has its own website, and all of them follow the same standard.</p>
-      <ul class="principles">
-          <li><strong data-c="about.lines.0.title">Clear</strong>: <span data-c="about.lines.0.text">plain words, honest prices.</span></li>
-          <li><strong data-c="about.lines.1.title">Fair</strong>: <span data-c="about.lines.1.text">straight dealing, and refunds when something is wrong.</span></li>
-          <li><strong data-c="about.lines.2.title">Well made</strong>: <span data-c="about.lines.2.text">products and sites built carefully.</span></li>
-      </ul>
-      <a class="pill pill-primary" href="contact.html" data-c="about.button">Get in touch</a>
-    </div>
+  <div class="container narrow page-head">
+    <h1 class="page-title" data-c="about.title">About KB Ventures</h1>
+    <p class="lead about-story"><span data-c="about.story.0">KB Ventures is a Melbourne company that starts and runs businesses.</span> <span data-c="about.story.1">Each business has its own name and its own website.</span> <span data-c="about.story.2">They all follow one standard: clear, fair and well made.</span> <span data-c="about.story.3">We start small, build carefully and keep improving.</span></p>
   </div>
+  <div class="container page-sub">
+    <h2 class="h2" data-c="about.standardsTitle">Our standard.</h2>
+      <div class="std-grid">
+        <article class="card std-card">
+          <span class="std-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12Z"/><circle cx="12" cy="12" r="3"/></svg></span>
+          <h3 class="card-title" data-c="standards.0.title">Clear</h3>
+          <p class="dim" data-c="standards.0.line">Plain words and honest prices.</p>
+          <p class="std-detail" data-c="standards.0.detail">We say what you get and what it costs in plain words, so there are no surprises.</p>
+        </article>
+        <article class="card std-card">
+          <span class="std-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v16M8 20h8M5 7h14"/><path d="m5 7-3 6a3 3 0 0 0 6 0L5 7Z"/><path d="m19 7-3 6a3 3 0 0 0 6 0l-3-6Z"/></svg></span>
+          <h3 class="card-title" data-c="standards.1.title">Fair</h3>
+          <p class="dim" data-c="standards.1.line">Straight dealing, and refunds when something is wrong.</p>
+          <p class="std-detail" data-c="standards.1.detail">We deal with people the way we would want to be dealt with. If something you bought is faulty or not as described, we fix it or refund you.</p>
+        </article>
+        <article class="card std-card">
+          <span class="std-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4 6.5V12c0 4.4 3.4 8.1 8 9 4.6-.9 8-4.6 8-9V6.5L12 3Z"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg></span>
+          <h3 class="card-title" data-c="standards.2.title">Well made</h3>
+          <p class="dim" data-c="standards.2.line">Products and sites built carefully.</p>
+          <p class="std-detail" data-c="standards.2.detail">We take care over the details and check our work before it goes out, then keep improving it.</p>
+        </article>
+      </div>
+  </div>
+  <div class="container page-sub">
+      <h2 class="h2" data-c="milestones.title">Milestones.</h2>
+      <ol class="milestones">
+        <li><time class="ms-date" data-c="milestones.items.0.date">Oct 2026</time><p data-c="milestones.items.0.text">KB Ventures started</p></li>
+        <li><time class="ms-date" data-c="milestones.items.1.date">Oct 2026</time><p data-c="milestones.items.1.text">21 AceGuides study guides written</p></li>
+        <li><time class="ms-date" data-c="milestones.items.2.date">Oct 2026</time><p data-c="milestones.items.2.text">Black Crest Web Designs named</p></li>
+        <li><time class="ms-date" data-c="milestones.items.3.date">Oct 2026</time><p data-c="milestones.items.3.text">7 concept websites built</p></li>
+        <li><time class="ms-date" data-c="milestones.items.4.date">Oct 2026</time><p data-c="milestones.items.4.text">Contact form launched</p></li>
+      </ol>
+  </div>
+  <div class="container page-sub">
+    <h2 class="h2" data-c="about.never.title">What we will never do.</h2>
+    <ul class="never-list">
+      <li><span class="never-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m9 9 6 6M15 9l-6 6"/></svg></span><span data-c="about.never.items.0">Spam you.</span></li>
+      <li><span class="never-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m9 9 6 6M15 9l-6 6"/></svg></span><span data-c="about.never.items.1">Charge hidden fees.</span></li>
+      <li><span class="never-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m9 9 6 6M15 9l-6 6"/></svg></span><span data-c="about.never.items.2">Sell your information.</span></li>
+      <li><span class="never-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m9 9 6 6M15 9l-6 6"/></svg></span><span data-c="about.never.items.3">Make promises we cannot keep.</span></li>
+    </ul>
+  </div>
+  <div class="container page-end"><a class="pill pill-primary" href="contact.html" data-c="about.button">Get in touch</a></div>
 </main>
 
 <!-- site.js replaces this with the full footer from site.config.json -->

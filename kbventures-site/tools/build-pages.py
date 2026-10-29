@@ -98,6 +98,7 @@ ICONS = {
     'pin': '<path d="M12 21s-6.5-6-6.5-11a6.5 6.5 0 0 1 13 0c0 5-6.5 11-6.5 11Z"/><circle cx="12" cy="10" r="2.4"/>',
     'tag': '<path d="M3.5 12.2V4.5a1 1 0 0 1 1-1h7.7l8.3 8.3-8.7 8.7-8.3-8.3Z"/><circle cx="8" cy="8" r="1.4"/>',
     'refund': '<path d="M4 12a8 8 0 1 0 2.3-5.6"/><path d="M4 4v4.5h4.5"/><path d="m9 12.5 2 2 4-4.5"/>',
+    'cross': '<circle cx="12" cy="12" r="9"/><path d="m9 9 6 6M15 9l-6 6"/>',
     'chat': '<path d="M5 5h14a1.5 1.5 0 0 1 1.5 1.5v8A1.5 1.5 0 0 1 19 16h-9l-4.5 3.5V16H5a1.5 1.5 0 0 1-1.5-1.5v-8A1.5 1.5 0 0 1 5 5Z"/><path d="M8 9.5h8M8 12.5h5"/>',
 }
 
@@ -262,8 +263,9 @@ def latest_section():
     cards = []
     for i, x in enumerate(lt['items']):
         link = f'\n          {text_link(E(x["link"]), f"latest.items.{i}.linkLabel", x.get("linkLabel") or "Find out more")}' if x.get('link') else ''
+        date = f'<span class="latest-date" data-c="latest.items.{i}.date">{E(x["date"])}</span>' if x.get('date') else ''
         cards.append(f'''        <article class="card latest-card">
-          <p class="label" data-c="latest.items.{i}.label">{E(x['label'])}</p>
+          <p class="latest-meta"><span class="label" data-c="latest.items.{i}.label">{E(x['label'])}</span>{date}</p>
           <p class="latest-text" data-c="latest.items.{i}.text">{E(x['text'])}</p>{link}
         </article>''')
     return f'''  <section class="section" id="latest" aria-labelledby="latest-title">
@@ -276,48 +278,114 @@ def latest_section():
   </section>'''
 
 
-def why_section():
-    wy = cfg['why']
+def standard_points():
     items = []
-    for i, x in enumerate(wy['items']):
+    for i, x in enumerate(cfg['standardPoints']):
         items.append(f'''        <li class="why-item">
           <span class="step-icon">{icon(x.get('icon', ''))}</span>
-          <h3 class="why-title" data-c="why.items.{i}.title">{E(x['title'])}</h3>
-          <p class="dim" data-c="why.items.{i}.text">{E(x['text'])}</p>
+          <h3 class="why-title" data-c="standardPoints.{i}.title">{E(x['title'])}</h3>
+          <p class="dim" data-c="standardPoints.{i}.text">{E(x['text'])}</p>
         </li>''')
-    return f'''  <section class="section" id="why" aria-labelledby="why-title">
-    <div class="container center">
-      <h2 class="h2" id="why-title" data-c="why.title">{E(wy['title'])}</h2>
-    </div>
-    <div class="container">
-      <ul class="why-grid">
-{chr(10).join(items)}
-      </ul>
-    </div>
-  </section>'''
+    return '      <ul class="why-grid std-points">\n' + '\n'.join(items) + '\n      </ul>'
 
 
-def founder_section():
-    fd = cfg['founder']
+def who_section():
+    """Who's behind it: the founder (photo, or a KB monogram until there is one) with the short About line."""
+    fd, wh, ha = cfg['founder'], cfg['who'], cfg['home']['about']
     photo = fd.get('photo') or ''
     # the photo is used once the file exists; until then a KB monogram fills the same round frame (never a broken image)
     if photo and os.path.isfile(os.path.join(SITE_DIR, photo)):
         inner = f'<img src="{E(photo)}" width="480" height="480" loading="lazy" decoding="async" alt="{E(fd.get("photoAlt", ""))}">'
     else:
         inner = '<span class="founder-mono" aria-hidden="true">KB</span>'
-    return f'''  <section class="section section-founder" id="founder" aria-labelledby="founder-title">
+    return f'''  <section class="section section-founder" id="who" aria-labelledby="who-title">
     <div class="container center">
-      <h2 class="h2" id="founder-title" data-c="founder.title">{E(fd['title'])}</h2>
+      <h2 class="h2" id="who-title" data-c="who.title">{E(wh['title'])}</h2>
     </div>
     <div class="container founder-grid">
       <div class="founder-photo" id="founder-photo">{inner}</div>
       <div class="founder-text">
         <h3 class="founder-name" data-c="founder.name">{E(fd['name'])}</h3>
         <p class="lead" data-c="founder.bio">{E(fd['bio'])}</p>
-        <a class="pill pill-primary" href="contact.html" data-c="founder.button">{E(fd['button'])}</a>
+        <p class="who-about" data-c="home.about.text">{E(ha['text'])}</p>
+        <p class="values" data-c="home.about.values">{E(ha['values'])}</p>
+        <div class="who-actions">
+          <a class="pill pill-secondary" href="about.html" data-c="who.moreLabel">{E(wh['moreLabel'])}</a>
+          <a class="pill pill-primary" href="contact.html" data-c="who.contactLabel">{E(wh['contactLabel'])}</a>
+        </div>
       </div>
     </div>
   </section>'''
+
+
+def gallery(title_level='h3', item_level='h4'):
+    """Concept sites: a scroll-snap row of the demo websites (made-up businesses), each opening in a new tab."""
+    g = cfg['gallery']
+    items = []
+    for i, x in enumerate(g['items']):
+        items.append(f'''        <li class="gallery-item">
+          <a class="card gallery-card" href="{E(x['url'])}" target="_blank" rel="noopener">
+            <div class="mini-browser"><i aria-hidden="true"></i><img src="{E(x['image'])}" width="640" height="400" loading="lazy" decoding="async" alt="{E(x['alt'])}"></div>
+            <div class="gallery-text">
+              <p class="label" data-c="gallery.items.{i}.label">{E(x['label'])}</p>
+              <{item_level} class="gallery-name" data-c="gallery.items.{i}.name">{E(x['name'])}</{item_level}>
+              <span class="gallery-open"><span data-c="gallery.open">{E(g['open'])}</span>{ARROW}<span class="sr-only"> <span data-c="gallery.newTab">{E(g['newTab'])}</span></span></span>
+            </div>
+          </a>
+        </li>''')
+    chev = lambda d: f'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="{d}"/></svg>'
+    return f'''    <div class="container gallery" data-gallery>
+      <div class="gallery-head">
+        <{title_level} class="gallery-title" data-c="gallery.title">{E(g['title'])}</{title_level}>
+        <p class="dim" data-c="gallery.lead">{E(g['lead'])}</p>
+      </div>
+      <ul class="gallery-track" tabindex="0" aria-label="{E(g['title'].rstrip('.'))}">
+{chr(10).join(items)}
+      </ul>
+      <div class="gallery-controls">
+        <button class="gallery-btn" type="button" data-dir="-1" aria-label="{E(g['prev'])}">{chev('M15 6l-6 6 6 6')}</button>
+        <button class="gallery-btn" type="button" data-dir="1" aria-label="{E(g['next'])}">{chev('M9 6l6 6-6 6')}</button>
+      </div>
+    </div>'''
+
+
+def signup_section():
+    sg = cfg['signup']
+    return f'''  <section class="section section-signup" id="updates" aria-labelledby="updates-title">
+    <div class="container narrow center">
+      <h2 class="h2" id="updates-title" data-c="signup.title">{E(sg['title'])}</h2>
+      <p class="lead" data-c="signup.text">{E(sg['text'])}</p>
+      <div class="signup-box" id="signup-box">
+        <form class="signup-form" id="signup-form" novalidate>
+          <div class="hp" aria-hidden="true"><label>Leave this box empty <input type="checkbox" id="s-botcheck" name="botcheck" tabindex="-1" autocomplete="off"></label></div>
+          <input type="hidden" id="s-topic" name="topic" value="{E(sg['topic'])}">
+          <div class="signup-row">
+            <label class="sr-only" for="s-email" data-c="signup.emailLabel">{E(sg['emailLabel'])}</label>
+            <input class="input" id="s-email" name="email" type="email" inputmode="email" autocomplete="email" spellcheck="false" required placeholder="{E(sg['emailLabel'])}" aria-describedby="e-s-email">
+            <button class="pill pill-primary send" type="submit" id="s-send"><span class="spinner" aria-hidden="true"></span><span class="btn-label" data-c="signup.button">{E(sg['button'])}</span></button>
+          </div>
+          <p class="field-error" id="e-s-email" hidden></p>
+          <div class="check">
+            <input id="s-agree" name="agree" type="checkbox" required aria-describedby="e-s-agree">
+            <label for="s-agree"><span data-c="signup.agreeBefore">{E(sg['agreeBefore'])}</span> <a href="legal/privacy.html" target="_blank" rel="noopener"><span data-c="signup.agreeLink">{E(sg['agreeLink'])}</span><span class="sr-only"> (opens in a new tab)</span></a></label>
+          </div>
+          <p class="field-error" id="e-s-agree" hidden></p>
+          <p class="form-status" id="s-status" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </div>
+  </section>'''
+
+
+def milestones():
+    ms = cfg['milestones']
+    items = ''.join(f'''
+        <li><time class="ms-date" data-c="milestones.items.{i}.date">{E(x['date'])}</time><p data-c="milestones.items.{i}.text">{E(x['text'])}</p></li>''' for i, x in enumerate(ms['items']))
+    return f'''      <h2 class="h2" data-c="milestones.title">{E(ms['title'])}</h2>
+      <ol class="milestones">{items}
+      </ol>'''
+
+
 hm = cfg['home']
 ld = {"@context": "https://schema.org", "@type": "Organization", "name": C['name'], "url": SITE, "email": C['email'],
       "logo": SITE + "img/icon-512.png", "description": f"{C['name']} is a Melbourne company that starts and runs businesses.",
@@ -328,6 +396,7 @@ home_body = f'''<main id="main">
     <div class="container hero-grid">
       <div class="hero-text">
         <h1 class="hero-title" id="hero-title" data-c="company.tagline">{E(C['tagline'])}</h1>
+        <p class="hero-intro" data-c="home.hero.intro">{E(hm['hero']['intro'])}</p>
         <p class="hero-sub" data-c="home.hero.line">{E(fill(hm['hero']['line']))}</p>
         <div class="hero-actions">
           <a class="pill pill-primary" href="#businesses" data-c="home.hero.primary">{E(hm['hero']['primary'])}</a>
@@ -350,6 +419,7 @@ home_body = f'''<main id="main">
       <h2 class="h2" id="biz-title" data-c="home.businesses.title">{E(hm['businesses']['title'])}</h2>
     </div>
 {biz_grid()}
+{gallery('h3', 'h4')}
     <div class="container section-foot">{text_link('businesses.html', 'home.businesses.viewAll', hm['businesses']['viewAll'])}</div>
   </section>
 
@@ -371,36 +441,19 @@ home_body = f'''<main id="main">
 
 {DIV}
 
-{why_section()}
-
-{DIV}
-
   <section class="section section-standard" id="standard" aria-labelledby="std-title">
     <div class="container center">
       <h2 class="h2" id="std-title" data-c="home.standard.title">{E(hm['standard']['title'])}</h2>
     </div>
     <div class="container">
 {std_cards()}
+{standard_points()}
     </div>
   </section>
 
 {DIV}
 
-{founder_section()}
-
-{DIV}
-
-  <section class="section section-about" id="about" aria-labelledby="about-title">
-    <div class="container about-grid">
-      <div class="about-mark"><img src="img/kb-favicon.svg" width="240" height="240" loading="lazy" decoding="async" alt=""></div>
-      <div class="about-text">
-        <h2 class="h2" id="about-title" data-c="home.about.title">{E(hm['about']['title'])}</h2>
-        <p class="lead" data-c="home.about.text">{E(hm['about']['text'])}</p>
-        <p class="values" data-c="home.about.values">{E(hm['about']['values'])}</p>
-        {text_link('about.html', 'home.about.link', hm['about']['link'])}
-      </div>
-    </div>
-  </section>
+{who_section()}
 
 {DIV}
 
@@ -413,6 +466,10 @@ home_body = f'''<main id="main">
       <div class="section-foot">{text_link('faq.html', 'home.faq.link', hm['faq']['link'])}</div>
     </div>
   </section>
+
+{DIV}
+
+{signup_section()}
 
 {DIV}
 
@@ -432,7 +489,7 @@ pages['index.html'] = page('index.html', 'KB Ventures: many businesses, one stan
                            'KB Ventures is a Melbourne company that starts and runs businesses, including AceGuides and Black Crest Web Designs.', home_body, 'home',
                            extra='<link rel="preload" href="img/hero-object.webp" as="image" type="image/webp" fetchpriority="high">\n<script type="importmap">{"imports": {"three": "./vendor/three.module.min.js"}}</script>\n'
                                  '<script type="application/ld+json" id="org-data">' + json.dumps(ld, separators=(',', ':')) + '</script>',
-                           scripts=['<script src="main.js" defer></script>', '<script type="module" src="hero.js"></script>'])
+                           scripts=['<script src="main.js" defer></script>', '<script src="signup.js" defer></script>', '<script type="module" src="hero.js"></script>'])
 
 bp = cfg['businessesPage']
 pages['businesses.html'] = page('businesses.html', 'Our businesses: KB Ventures', 'The businesses started and run by KB Ventures. Each business has its own website.', f'''<main id="main" class="page">
@@ -441,6 +498,7 @@ pages['businesses.html'] = page('businesses.html', 'Our businesses: KB Ventures'
     <p class="lead" data-c="businessesPage.lead">{E(bp['lead'])}</p>
   </div>
 {biz_grid(always_more=True, level='h2')}
+{gallery('h2', 'h3')}
   <div class="container page-end"><a class="pill pill-primary" href="contact.html" data-c="businessesPage.button">{E(bp['button'])}</a></div>
 </main>''', 'businesses')
 
@@ -473,11 +531,26 @@ pages['how-we-work.html'] = page('how-we-work.html', 'How we work: KB Ventures',
 </main>''', 'how')
 
 fp = cfg['faqPage']
+
+
+def faq_none():
+    t, l = fp['noMatch'], fp.get('noMatchLink', '')
+    if l and l in t:
+        i = t.index(l)
+        return E(t[:i]) + f'<a href="contact.html">{E(l)}</a>' + E(t[i + len(l):])
+    return E(t)
+
+
 pages['faq.html'] = page('faq.html', 'Questions: KB Ventures', 'Answers to common questions about KB Ventures: which business to contact, replies, refunds, privacy and working with us.', f'''<main id="main" class="page">
   <div class="container narrow page-head">
     <h1 class="page-title" data-c="faqPage.title">{E(fp['title'])}</h1>
   </div>
-  <div class="container narrow">
+  <div class="container narrow faq-search">
+    <label class="faq-search-label" for="faq-search" data-c="faqPage.searchLabel">{E(fp['searchLabel'])}</label>
+    <input class="input" id="faq-search" type="search" autocomplete="off" spellcheck="false" placeholder="{E(fp['searchPlaceholder'])}" aria-controls="faq-list">
+    <p class="faq-none" id="faq-none" role="status" hidden>{faq_none()}</p>
+  </div>
+  <div class="container narrow" id="faq-list">
 {faq_box(0, 'p', 'h2')}
   </div>
   <div class="container narrow page-end faq-more">
@@ -499,21 +572,41 @@ pages['partner.html'] = page('partner.html', 'Partner with us: KB Ventures', 'KB
       <a class="pill pill-primary" href="contact.html?topic=partnership" data-c="partner.button">{E(pt['button'])}</a>
     </div>
   </div>
+  <div class="container page-sub">
+    <h2 class="h2" data-c="partner.whoTitle">{E(pt['whoTitle'])}</h2>
+    <ul class="principles">{''.join(f'{chr(10)}      <li data-c="partner.who.{i}">{E(x)}</li>' for i, x in enumerate(pt['who']))}
+    </ul>
+  </div>
+  <div class="container page-sub">
+    <h2 class="h2" data-c="partner.nextTitle">{E(pt['nextTitle'])}</h2>
+    <ol class="next-steps">{''.join(f'{chr(10)}      <li><span class="step-node" aria-hidden="true">{i + 1:02d}</span><span data-c="partner.next.{i}">{E(x)}</span></li>' for i, x in enumerate(pt['next']))}
+    </ol>
+  </div>
+  <div class="container page-end"><a class="pill pill-primary" href="contact.html?topic=partnership" data-c="partner.button">{E(pt['button'])}</a></div>
 </main>''', 'partner')
 
 ab = cfg['about']
-lines = ''.join(f'\n          <li><strong data-c="about.lines.{i}.title">{E(l["title"])}</strong>: <span data-c="about.lines.{i}.text">{E(l["text"])}</span></li>' for i, l in enumerate(ab['lines']))
+story = ' '.join(f'<span data-c="about.story.{i}">{E(x)}</span>' for i, x in enumerate(ab['story']))
+never = ''.join(f'''
+      <li><span class="never-icon">{icon('cross')}</span><span data-c="about.never.items.{i}">{E(x)}</span></li>''' for i, x in enumerate(ab['never']['items']))
 pages['about.html'] = page('about.html', 'About KB Ventures', ab['text'], f'''<main id="main" class="page">
-  <div class="container about-page">
-    <div class="about-mark"><img src="img/kb-favicon.svg" width="240" height="240" alt=""></div>
-    <div class="about-copy">
-      <h1 class="page-title" data-c="about.title">{E(ab['title'])}</h1>
-      <p class="lead" data-c="about.text">{E(ab['text'])}</p>
-      <ul class="principles">{lines}
-      </ul>
-      <a class="pill pill-primary" href="contact.html" data-c="about.button">{E(ab['button'])}</a>
-    </div>
+  <div class="container narrow page-head">
+    <h1 class="page-title" data-c="about.title">{E(ab['title'])}</h1>
+    <p class="lead about-story">{story}</p>
   </div>
+  <div class="container page-sub">
+    <h2 class="h2" data-c="about.standardsTitle">{E(ab['standardsTitle'])}</h2>
+{std_cards(detail=True)}
+  </div>
+  <div class="container page-sub">
+{milestones()}
+  </div>
+  <div class="container page-sub">
+    <h2 class="h2" data-c="about.never.title">{E(ab['never']['title'])}</h2>
+    <ul class="never-list">{never}
+    </ul>
+  </div>
+  <div class="container page-end"><a class="pill pill-primary" href="contact.html" data-c="about.button">{E(ab['button'])}</a></div>
 </main>''', 'about')
 
 cp = cfg['contactPage']

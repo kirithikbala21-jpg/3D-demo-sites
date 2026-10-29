@@ -170,6 +170,47 @@
     });
   }
 
+  /* ---------- Concept sites: a scroll-snap row with arrow buttons (and arrow keys on the row itself) ---------- */
+  $$('[data-gallery]').forEach((g) => {
+    const track = $('.gallery-track', g), btns = $$('.gallery-btn', g);
+    track.setAttribute('data-lenis-prevent', ''); // the row scrolls sideways natively
+    const step = () => { const first = $('.gallery-item', track); return first ? first.getBoundingClientRect().width + 16 : track.clientWidth * 0.8; };
+    const go = (dir) => track.scrollBy({ left: dir * step(), behavior: reduceMotion ? 'auto' : 'smooth' });
+    const update = () => {
+      const max = track.scrollWidth - track.clientWidth;
+      btns.forEach((b) => { b.disabled = +b.dataset.dir < 0 ? track.scrollLeft <= 2 : track.scrollLeft >= max - 2; });
+      g.classList.toggle('is-static', max <= 2); // everything fits: no buttons needed
+    };
+    btns.forEach((b) => b.addEventListener('click', () => go(+b.dataset.dir)));
+    track.addEventListener('keydown', (e) => {
+      if (e.target !== track) return; // links inside the cards keep their own keys
+      const dir = { ArrowRight: 1, ArrowLeft: -1 }[e.key];
+      if (dir) { e.preventDefault(); go(dir); }
+    });
+    let t = false;
+    track.addEventListener('scroll', () => { if (!t) { t = true; requestAnimationFrame(() => { t = false; update(); }); } }, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+  });
+
+  /* ---------- FAQ page: filter the questions as you type ---------- */
+  const search = $('#faq-search'), none = $('#faq-none');
+  if (search) {
+    const norm = (t) => t.toLowerCase().replace(/[^a-z0-9 ]+/g, ' ');
+    const filter = () => {
+      const words = norm(search.value).split(/\s+/).filter(Boolean);
+      let shown = 0;
+      $$('#faq-list .faq-item').forEach((item) => {
+        const hay = norm(item.textContent);
+        const hit = words.every((w) => hay.includes(w));
+        item.hidden = !hit; if (hit) shown++;
+      });
+      none.hidden = shown > 0;
+    };
+    search.addEventListener('input', filter);
+    window.__faqFilter = filter; // re-run after the questions are rebuilt from the config
+  }
+
   /* ---------- Parallax and watermarks ---------- */
   const stage = $('#stage');
   let parallax = $$('[data-parallax]');
@@ -214,6 +255,9 @@
     reveal($$('.latest-card'), 0.08);
     reveal($$('.why-item'), 0.08);
     reveal($$('.founder-photo, .founder-text'), 0.1);
+    reveal($$('.gallery-item'), 0.06);
+    reveal($$('.milestones li, .never-list li, .next-steps li'), 0.06);
+    reveal($$('.signup-box'));
   };
 
   /* ---------- From the config ---------- */
@@ -240,6 +284,7 @@
       if (faq.length) {
         $$('[data-faq]').forEach((box) => { const n = parseInt(box.dataset.faq, 10); buildFaq(box, n > 0 ? faq.slice(0, n) : faq); });
         faqLd(faq);
+        if (window.__faqFilter) window.__faqFilter();
       }
     }
     revealAll();

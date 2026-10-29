@@ -31,7 +31,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png" sizes="180x180">
 <link rel="preload" href="fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="styles.css">
-<script type="application/ld+json" id="faq-data">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is KB Ventures?","acceptedAnswer":{"@type":"Answer","text":"KB Ventures is a Melbourne company that starts and runs businesses. Each business has its own website, and all of them follow the same standard: clear, fair and well made."}},{"@type":"Question","name":"Which business should I contact about what?","acceptedAnswer":{"@type":"Answer","text":"AceGuides is for study guides for Year 10 and VCE students. Black Crest Web Designs is for websites for local businesses. If you are not sure, choose General question on the contact form and we will point you the right way."}},{"@type":"Question","name":"How fast do you reply?","acceptedAnswer":{"@type":"Answer","text":"We usually reply within 2 business days. You can use the form on the contact page or email kb.ventures@outlook.com."}},{"@type":"Question","name":"What if something I bought is faulty?","acceptedAnswer":{"@type":"Answer","text":"If a digital product is faulty, will not open or is not what was described, tell us and we will fix it or give you a full refund. Read the full details on the Refunds page."}},{"@type":"Question","name":"How do you use my information?","acceptedAnswer":{"@type":"Answer","text":"We only collect what we need to deliver your purchase, answer your messages and keep our records. We do not sell personal information. Read the full details in our Privacy Policy."}},{"@type":"Question","name":"Can I work with you?","acceptedAnswer":{"@type":"Answer","text":"Yes. If you would like to partner with us, tell us about it on the Partner with us page."}}]}</script>
+<script type="application/ld+json" id="faq-data">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is KB Ventures?","acceptedAnswer":{"@type":"Answer","text":"KB Ventures is a Melbourne company that starts and runs businesses. Each business has its own website, and all of them follow the same standard: clear, fair and well made."}},{"@type":"Question","name":"Which business should I contact about what?","acceptedAnswer":{"@type":"Answer","text":"AceGuides is for study guides for Year 10 and VCE students. Black Crest Web Designs is for websites for local businesses. If you are not sure, choose General question on the contact form and we will point you the right way."}},{"@type":"Question","name":"How fast do you reply?","acceptedAnswer":{"@type":"Answer","text":"We usually reply within 2 business days. You can use the form on the contact page or email kb.ventures@outlook.com."}},{"@type":"Question","name":"What if something I bought is faulty?","acceptedAnswer":{"@type":"Answer","text":"If a digital product is faulty, will not open or is not what was described, tell us and we will fix it or give you a full refund. Read the full details on the Refunds page."}},{"@type":"Question","name":"How do you use my information?","acceptedAnswer":{"@type":"Answer","text":"We only collect what we need to deliver your purchase, answer your messages and keep our records. We do not sell personal information. Read the full details in our Privacy Policy."}},{"@type":"Question","name":"Can I work with you?","acceptedAnswer":{"@type":"Answer","text":"Yes. If you would like to partner with us, tell us about it on the Partner with us page."}},{"@type":"Question","name":"When does AceGuides open?","acceptedAnswer":{"@type":"Answer","text":"We will announce it as soon as it is ready. Sign up for updates on the home page."}},{"@type":"Question","name":"How do I get a website made?","acceptedAnswer":{"@type":"Answer","text":"Choose Black Crest Web Designs on the contact form and tell us about your business. We will reply within 2 business days to talk about it."}},{"@type":"Question","name":"Where are you based?","acceptedAnswer":{"@type":"Answer","text":"Melbourne, Victoria, Australia."}},{"@type":"Question","name":"How do I get updates?","acceptedAnswer":{"@type":"Answer","text":"Sign up for updates on the home page. We will email you when AceGuides opens or a new business launches."}}]}</script>
 <script>document.documentElement.classList.add('js');</script>
 <script src="vendor/lenis-1.1.18.min.js" defer></script>
 <script src="site.js" defer></script>
@@ -46,7 +46,12 @@
   <div class="container narrow page-head">
     <h1 class="page-title" data-c="faqPage.title">Questions.</h1>
   </div>
-  <div class="container narrow">
+  <div class="container narrow faq-search">
+    <label class="faq-search-label" for="faq-search" data-c="faqPage.searchLabel">Search the questions</label>
+    <input class="input" id="faq-search" type="search" autocomplete="off" spellcheck="false" placeholder="Type to search" aria-controls="faq-list">
+    <p class="faq-none" id="faq-none" role="status" hidden>No match. Ask us on the <a href="contact.html">contact page</a>.</p>
+  </div>
+  <div class="container narrow" id="faq-list">
       <div class="faq" data-faq="0" data-level="h2">
         <div class="faq-item">
           <h2 class="faq-h"><button class="faq-q" type="button" id="faq-q-p1"><span>What is KB Ventures?</span><span class="faq-icon" aria-hidden="true"></span></button></h2>
@@ -71,6 +76,22 @@
         <div class="faq-item">
           <h2 class="faq-h"><button class="faq-q" type="button" id="faq-q-p6"><span>Can I work with you?</span><span class="faq-icon" aria-hidden="true"></span></button></h2>
           <div class="faq-a" id="faq-a-p6" role="region" aria-labelledby="faq-q-p6"><div class="faq-a-inner"><p>Yes. If you would like to partner with us, tell us about it on the <a href="partner.html">Partner with us page</a>.</p></div></div>
+        </div>
+        <div class="faq-item">
+          <h2 class="faq-h"><button class="faq-q" type="button" id="faq-q-p7"><span>When does AceGuides open?</span><span class="faq-icon" aria-hidden="true"></span></button></h2>
+          <div class="faq-a" id="faq-a-p7" role="region" aria-labelledby="faq-q-p7"><div class="faq-a-inner"><p>We will announce it as soon as it is ready. <a href="index.html#updates">Sign up for updates</a> on the home page.</p></div></div>
+        </div>
+        <div class="faq-item">
+          <h2 class="faq-h"><button class="faq-q" type="button" id="faq-q-p8"><span>How do I get a website made?</span><span class="faq-icon" aria-hidden="true"></span></button></h2>
+          <div class="faq-a" id="faq-a-p8" role="region" aria-labelledby="faq-q-p8"><div class="faq-a-inner"><p>Choose Black Crest Web Designs on the <a href="contact.html?topic=black-crest">contact form</a> and tell us about your business. We will reply within 2 business days to talk about it.</p></div></div>
+        </div>
+        <div class="faq-item">
+          <h2 class="faq-h"><button class="faq-q" type="button" id="faq-q-p9"><span>Where are you based?</span><span class="faq-icon" aria-hidden="true"></span></button></h2>
+          <div class="faq-a" id="faq-a-p9" role="region" aria-labelledby="faq-q-p9"><div class="faq-a-inner"><p>Melbourne, Victoria, Australia.</p></div></div>
+        </div>
+        <div class="faq-item">
+          <h2 class="faq-h"><button class="faq-q" type="button" id="faq-q-p10"><span>How do I get updates?</span><span class="faq-icon" aria-hidden="true"></span></button></h2>
+          <div class="faq-a" id="faq-a-p10" role="region" aria-labelledby="faq-q-p10"><div class="faq-a-inner"><p><a href="index.html#updates">Sign up for updates</a> on the home page. We will email you when AceGuides opens or a new business launches.</p></div></div>
         </div>
       </div>
   </div>

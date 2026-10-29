@@ -148,7 +148,8 @@
     "hero": {
       "line": "Based in {location}.",
       "primary": "Our businesses",
-      "secondary": "Get in touch"
+      "secondary": "Get in touch",
+      "intro": "Study guides for Victorian students. Websites for local businesses. More on the way."
     },
     "businesses": {
       "title": "Our businesses.",
@@ -196,7 +197,23 @@
         "text": "products and sites built carefully."
       }
     ],
-    "button": "Get in touch"
+    "button": "Get in touch",
+    "story": [
+      "KB Ventures is a Melbourne company that starts and runs businesses.",
+      "Each business has its own name and its own website.",
+      "They all follow one standard: clear, fair and well made.",
+      "We start small, build carefully and keep improving."
+    ],
+    "standardsTitle": "Our standard.",
+    "never": {
+      "title": "What we will never do.",
+      "items": [
+        "Spam you.",
+        "Charge hidden fees.",
+        "Sell your information.",
+        "Make promises we cannot keep."
+      ]
+    }
   },
   "contactPage": {
     "title": "Get in touch.",
@@ -342,6 +359,40 @@
           "href": "partner.html"
         }
       ]
+    },
+    {
+      "q": "When does AceGuides open?",
+      "a": "We will announce it as soon as it is ready. Sign up for updates on the home page.",
+      "links": [
+        {
+          "text": "Sign up for updates",
+          "href": "index.html#updates"
+        }
+      ]
+    },
+    {
+      "q": "How do I get a website made?",
+      "a": "Choose Black Crest Web Designs on the contact form and tell us about your business. We will reply within 2 business days to talk about it.",
+      "links": [
+        {
+          "text": "contact form",
+          "href": "contact.html?topic=black-crest"
+        }
+      ]
+    },
+    {
+      "q": "Where are you based?",
+      "a": "Melbourne, Victoria, Australia."
+    },
+    {
+      "q": "How do I get updates?",
+      "a": "Sign up for updates on the home page. We will email you when AceGuides opens or a new business launches.",
+      "links": [
+        {
+          "text": "Sign up for updates",
+          "href": "index.html#updates"
+        }
+      ]
     }
   ],
   "latest": {
@@ -349,42 +400,20 @@
     "items": [
       {
         "label": "AceGuides",
-        "text": "21 study guides written for AceGuides"
+        "text": "21 study guides written for AceGuides",
+        "date": "Oct 2026"
       },
       {
         "label": "Black Crest Web Designs",
-        "text": "7 demo websites built for local businesses"
+        "text": "7 demo websites built for local businesses",
+        "date": "Oct 2026"
       },
       {
         "label": "KB Ventures",
         "text": "Contact form now live",
         "link": "contact.html",
-        "linkLabel": "Send a message"
-      }
-    ]
-  },
-  "why": {
-    "title": "Why KB Ventures.",
-    "items": [
-      {
-        "icon": "pin",
-        "title": "Made in Melbourne",
-        "text": "Built and run locally."
-      },
-      {
-        "icon": "tag",
-        "title": "Plain pricing",
-        "text": "No hidden fees."
-      },
-      {
-        "icon": "refund",
-        "title": "Fair refunds",
-        "text": "If something is wrong, we fix it or refund it."
-      },
-      {
-        "icon": "chat",
-        "title": "Real replies",
-        "text": "A person reads every message."
+        "linkLabel": "Send a message",
+        "date": "Oct 2026"
       }
     ]
   },
@@ -410,7 +439,11 @@
   "faqPage": {
     "title": "Questions.",
     "more": "Still have a question?",
-    "button": "Get in touch"
+    "button": "Get in touch",
+    "searchLabel": "Search the questions",
+    "searchPlaceholder": "Type to search",
+    "noMatch": "No match. Ask us on the contact page.",
+    "noMatchLink": "contact page"
   },
   "partner": {
     "title": "Partner with us.",
@@ -429,7 +462,19 @@
         "text": "done carefully."
       }
     ],
-    "button": "Tell us about it"
+    "button": "Tell us about it",
+    "whoTitle": "Who we want to hear from.",
+    "who": [
+      "Local businesses that want a better website.",
+      "People with an idea for a business that fits our standard.",
+      "Makers and suppliers who work the way we do."
+    ],
+    "nextTitle": "What happens next.",
+    "next": [
+      "You message us.",
+      "We reply within 2 business days.",
+      "We talk and see if it fits."
+    ]
   },
   "notFound": {
     "code": "404",
@@ -441,5 +486,129 @@
   "legalText": {
     "lastUpdatedLabel": "Last updated",
     "summaryLabel": "In plain English"
+  },
+  "standardPoints": [
+    {
+      "icon": "pin",
+      "title": "Made in Melbourne",
+      "text": "Built and run locally."
+    },
+    {
+      "icon": "tag",
+      "title": "Plain pricing",
+      "text": "No hidden fees."
+    },
+    {
+      "icon": "refund",
+      "title": "Fair refunds",
+      "text": "If something is wrong, we fix it or refund it."
+    },
+    {
+      "icon": "chat",
+      "title": "Real replies",
+      "text": "A person reads every message."
+    }
+  ],
+  "who": {
+    "title": "Who’s behind it.",
+    "moreLabel": "More about us",
+    "contactLabel": "Get in touch"
+  },
+  "signup": {
+    "title": "Get updates.",
+    "text": "Be first to know when AceGuides opens and when new businesses launch.",
+    "emailLabel": "Email",
+    "button": "Notify me",
+    "sending": "Sending…",
+    "agreeBefore": "I agree to the",
+    "agreeLink": "Privacy Policy",
+    "subject": "New update sign-up",
+    "topic": "Updates sign-up",
+    "success": "Thanks. We will email you when there is news.",
+    "error": "Sorry, that did not go through. Please try again, or email us at {email}.",
+    "fallback": "Your email app should open with your sign-up ready to send. If it did not, email us at {email}.",
+    "fallbackLink": "Open the email again",
+    "errors": {
+      "email": "Please enter your email address.",
+      "emailFormat": "Please enter a valid email address, like name@example.com.",
+      "agree": "Please tick the box to agree to the Privacy Policy."
+    }
+  },
+  "gallery": {
+    "title": "Concept sites.",
+    "lead": "Examples of the kind of site we build. They are concepts, not real businesses.",
+    "open": "Open concept site",
+    "newTab": "(opens in a new tab)",
+    "prev": "Previous concept sites",
+    "next": "Next concept sites",
+    "items": [
+      {
+        "name": "Brass & Blade",
+        "label": "Concept site: barbershop",
+        "url": "https://kirithikbala21-jpg.github.io/3D-demo-sites/barber-demo/",
+        "image": "img/previews/barber.webp",
+        "alt": "Top of the Brass & Blade concept barbershop website"
+      },
+      {
+        "name": "Ember & Oak",
+        "label": "Concept site: cafe",
+        "url": "https://kirithikbala21-jpg.github.io/3D-demo-sites/cafe-demo-v2/",
+        "image": "img/previews/cafe.webp",
+        "alt": "Top of the Ember & Oak concept cafe website"
+      },
+      {
+        "name": "Iron & Ember Athletic Club",
+        "label": "Concept site: gym",
+        "url": "https://kirithikbala21-jpg.github.io/3D-demo-sites/gym-demo/",
+        "image": "img/previews/gym.webp",
+        "alt": "Top of the Iron & Ember Athletic Club concept gym website"
+      },
+      {
+        "name": "Waverley Plumbing & Gas",
+        "label": "Concept site: plumber",
+        "url": "https://kirithikbala21-jpg.github.io/3D-demo-sites/plumber-demo/",
+        "image": "img/previews/plumber.webp",
+        "alt": "Top of the Waverley Plumbing & Gas concept plumber website"
+      },
+      {
+        "name": "Maison Lune",
+        "label": "Concept site: hair salon",
+        "url": "https://kirithikbala21-jpg.github.io/3D-demo-sites/salon-demo/",
+        "image": "img/previews/salon.webp",
+        "alt": "Top of the Maison Lune concept hair salon website"
+      },
+      {
+        "name": "Torque & Co.",
+        "label": "Concept site: auto parts store",
+        "url": "https://kirithikbala21-jpg.github.io/3D-demo-sites/parts-store-demo/",
+        "image": "img/previews/parts.webp",
+        "alt": "Top of the Torque & Co. concept auto parts store website"
+      }
+    ]
+  },
+  "milestones": {
+    "title": "Milestones.",
+    "items": [
+      {
+        "date": "Oct 2026",
+        "text": "KB Ventures started"
+      },
+      {
+        "date": "Oct 2026",
+        "text": "21 AceGuides study guides written"
+      },
+      {
+        "date": "Oct 2026",
+        "text": "Black Crest Web Designs named"
+      },
+      {
+        "date": "Oct 2026",
+        "text": "7 concept websites built"
+      },
+      {
+        "date": "Oct 2026",
+        "text": "Contact form launched"
+      }
+    ]
   }
 }

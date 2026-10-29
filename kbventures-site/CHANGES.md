@@ -1,4 +1,38 @@
-# Changes: a fuller home page (29 October 2026)
+# Changes: a cleaner, fuller site (29 October 2026)
+
+## Home
+- **New order:** hero, Our businesses, Latest, How we build, Our standard, Who’s behind it, Quick questions, Get updates, Get in touch.
+- **Hero:** a new line under the heading: "Study guides for Victorian students. Websites for local businesses. More on the way." "Based in Melbourne, Australia." is now smaller, below it. The heading and buttons are unchanged.
+- **Our standard:** merged with "Why KB Ventures". It has the three cards (Clear, Fair, Well made) with the four small points (Made in Melbourne, Plain pricing, Fair refunds, Real replies) beneath them.
+- **Who’s behind it:** merged from "Meet the founder" and "About KB Ventures". It has the KB monogram circle (it becomes the founder photo once `founder.photo` points to a file), the bio, the About line, "Clear. Fair. Well made." and two buttons: "More about us" and "Get in touch". The large KB square is gone from Home.
+- **Concept sites:** a swipeable, scroll-snap row inside Our businesses (and on the Businesses page) with 6 demo websites. Each card has its name, a label ("Concept site: barbershop") and opens the live demo in a new tab (rel noopener).
+  - On desktop it has arrow buttons; the row also scrolls with the arrow keys, with a visible focus ring.
+  - The new screenshots of plumber, salon and parts store, plus refreshed barber, cafe and gym, are 13 to 22 KB each, taken at 1440px.
+  - The One Barber is left out on purpose. It is a concept for a real shop, and the gallery line says these are not real businesses.
+- **Latest:** each card shows "Oct 2026".
+- **Get updates:** a new sign-up with one email box, "Notify me", the required Privacy Policy tick and the same hidden `botcheck` spam trap. It posts to Web3Forms with the same key, the subject "New update sign-up" and a hidden topic field "Updates sign-up". It has its own success and error messages (with the email fallback).
+
+## Other pages
+- **About:** a short story, the Our standard cards, a Milestones strip (5 dated facts from `milestones`), "What we will never do." (4 items) and Get in touch.
+- **Partner:** adds "Who we want to hear from." (3 points) and "What happens next." (3 numbered steps). The buttons go to `contact.html?topic=partnership`, which preselects Partnership.
+- **FAQ:** 4 new questions (10 in all), a search box that filters as you type with "No match. Ask us on the contact page." when nothing fits, and FAQPage structured data for all 10. Home still shows the first 3.
+- **Privacy policy:** one new sentence about update sign-ups. "Last updated" is 29 October 2026 (today), and the sitemap dates are updated.
+
+## Checked
+- **Playwright** at 1440, 768 and 390:
+  - no horizontal scroll, no overlaps and layout shift 0;
+  - every image has a width and height, and images below the fold load lazily;
+  - one h1 per page with no skipped heading levels, and the social icons are labelled;
+  - the contact form's spam trap has `aria-hidden`, `tabindex -1` and autocomplete off;
+  - no old business names and no em dashes;
+  - reduced motion is respected.
+- **Forms:** the sign-up and contact forms were tested with faked requests only; nothing was sent.
+- **Links:** every internal link on every page works, and every gallery link was checked against the local copy of each demo.
+- **Weight and speed:** the home page's first load is about 500 KB over the wire with the 3D card and about 330 KB with the still image. Lighthouse: desktop 100 / 100 / 100 / 100; mobile performance 92 (Home) and 99 (FAQ and About), with 100 for the rest.
+
+---
+
+# Earlier: a fuller home page (29 October 2026)
 
 New on Home, in this order after the hero: Our businesses, **Latest**, How we build, **Why KB Ventures**, Our standard, **Meet the founder**, About, Quick questions, Get in touch. Everything comes from `site.config.json`.
 

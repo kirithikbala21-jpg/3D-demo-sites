@@ -1,6 +1,7 @@
-// Makes the small website previews shown in the Black Crest Web Designs card ("See inside"): the top of three demo
-// sites, captured at 1440px wide with the clock frozen and the live banners hidden, cropped to the first screen and
-// saved as small WebP files in ../img/previews/ (640 x 400). The demo folders are only opened, never changed.
+// Makes the small website previews for the Black Crest Web Designs card ("See inside") and the Concept sites gallery:
+// the top of each demo site, captured at 1440px wide with the clock frozen and the live banners hidden, cropped to
+// the first screen and saved as small WebP files in ../img/previews/ (640 x 400). The demo folders are only opened,
+// never changed.
 // Run from the repo root while a static server is up:
 //   python3 -m http.server 8123 --bind 127.0.0.1 &
 //   node kbventures-site/tools/make-previews.mjs
@@ -16,7 +17,8 @@ const { chromium } = createRequire(import.meta.url)('playwright');
 const BASE = process.env.BASE || 'http://127.0.0.1:8123/';
 const OUT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'img', 'previews');
 const TMP = mkdtempSync(path.join(tmpdir(), 'kb-previews-'));
-const DEMOS = { barber: 'barber-demo', cafe: 'cafe-demo-v2', gym: 'gym-demo' };
+// the made-up businesses only (the-one-barber-demo is a concept for a real shop, so it is left out on purpose)
+const DEMOS = { barber: 'barber-demo', cafe: 'cafe-demo-v2', gym: 'gym-demo', plumber: 'plumber-demo', salon: 'salon-demo', parts: 'parts-store-demo' };
 const HIDE = '.announce,.notice-bar,.open-bar,.open-banner,.open-strip,.cookie,#cookie,.nojs-banner,.preloader,.toast,.progress{display:none!important}html{--ticker-h:0px!important}';
 mkdirSync(OUT, { recursive: true });
 

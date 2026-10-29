@@ -1,4 +1,24 @@
-# Changes: contact form details for Web3Forms (29 October 2026)
+# Changes: a fuller home page (29 October 2026)
+
+New on Home, in this order after the hero: Our businesses, **Latest**, How we build, **Why KB Ventures**, Our standard, **Meet the founder**, About, Quick questions, Get in touch. Everything comes from `site.config.json`.
+
+- **"See inside" previews in the business cards:**
+  - AceGuides shows three of the real study guide covers already in `img/aceguides/` (Year 10 Maths, VCE Biology 3&4, VCE English 3&4).
+  - Black Crest Web Designs shows the top of barber-demo, cafe-demo-v2 and gym-demo in small browser frames. They were captured at 1440px wide by the new `tools/make-previews.mjs` and saved as 640 x 400 WebP files in `img/previews/` (about 20 KB each).
+  - The cards keep their "Coming soon" status and description lines. Every preview has alt text, lazy loading and a set width and height.
+- **Latest:** three true update cards: "21 study guides written for AceGuides", "7 demo websites built for local businesses" and "Contact form now live" (with a link to the contact page).
+- **How we build:** larger cards, each with its icon, heading and two short sentences. A numbered gold node sits on a fine gold line joining the steps (across on desktop, down the left on phones). The cards are equal height.
+- **Why KB Ventures:** four points with line icons: Made in Melbourne, Plain pricing, Fair refunds, Real replies.
+- **Meet the founder:** Kirithik, the short bio and a "Get in touch" button. The photo is read from `founder.photo`. It is empty for now, so a KB monogram fills the round frame and no image ever breaks.
+- **Unchanged:** the hero card, colours, fonts, header and footer. Gold is about 0.2% of the page.
+- **Checked:**
+  - Playwright at 1440, 768 and 390: the section order, the previews, no horizontal scroll, no overlaps, layout shift 0, everything fully visible after fading in, no em dashes and no console errors. With reduced motion, nothing fades.
+  - The full site suite (every page and link) and the mocked contact form tests passed.
+  - Lighthouse: desktop 100 / 100 / 100 / 100, mobile 94 / 100 / 100 / 100.
+
+---
+
+# Earlier: contact form details for Web3Forms (29 October 2026)
 
 - The "from name" on form emails is now "KB Ventures Website" (`contactPage.fromName`).
 - The JSON sent to `https://api.web3forms.com/submit` now also carries Web3Forms' `botcheck` honeypot field (false for real visitors; if the hidden box is ticked, nothing is sent).

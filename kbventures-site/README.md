@@ -37,6 +37,14 @@ Add one entry to `businesses` in `site.config.json`. Nothing else needs changing
 - **The "More coming" card:** it always shows on the Businesses page. On Home it shows only when `"showMoreComingCard": true`; set it to `false` to hide it there. Its title is `home.businesses.moreComing`.
 - Keep `description` to one short line: the main site carries only these. Everything else about a business goes on its own site.
 
+## Home page sections (all in `site.config.json`)
+Home runs: hero, Our businesses, Latest, How we build, Why KB Ventures, Our standard, Meet the founder, About, Quick questions, Get in touch. After editing any of these, run `tools/build-pages.py` (see above).
+- **"See inside" previews** (`businesses[].previews`): up to three small images under a business card's description. `frame` is `"cover"` (study guide covers) or `"browser"` (a website in a small browser frame), `size` is the images' `[width, height]`, and each item has `src` and `alt`. The website previews in `img/previews/` are made by `tools/make-previews.mjs` (the top of barber-demo, cafe-demo-v2 and gym-demo at 1440px wide). Run it again after those demos change.
+- **Latest** (`latest`): a title and a list of `{ "label", "text", "link" (optional), "linkLabel" (optional) }`. Keep each item true: no invented dates or numbers.
+- **How we build** (`process`): each step has `title`, `line`, `line2` (the second sentence on Home) and `detail` (How we work page).
+- **Why KB Ventures** (`why`): a title and four `{ "icon", "title", "text" }`. Icons: `pin`, `tag`, `refund`, `chat` (or any step or standard name).
+- **Meet the founder** (`founder`): `title`, `name`, `bio`, `button`, `photoAlt` and `photo`. **To add the photo:** save a square image as `img/founder.webp` (at least 480 x 480), set `"photo": "img/founder.webp"`, then run `tools/build-pages.py`. While `photo` is empty, a KB monogram fills the same round frame, so there is never a broken image.
+
 ## FAQ questions
 The questions live in one place, `faq` in `site.config.json`. Home and the Contact page show the first three, and the FAQ page shows all of them, with matching FAQPage structured data.
 ```json

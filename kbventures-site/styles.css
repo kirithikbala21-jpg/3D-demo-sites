@@ -506,3 +506,60 @@ select.input option { background: #1A1C23; color: var(--text-platinum); }
 .quick .section-foot { margin-top: 16px; }
 /* three cards in a row: smaller covers so the fan fits its narrower card */
 @media (min-width: 720px) { .biz-grid[data-count="3"] .cover { width: clamp(60px, 5.4vw, 80px); } }
+
+/* ---------- Home: "See inside" previews in the business cards ---------- */
+.peek-label { font-size: 11px; font-weight: 500; letter-spacing: .22em; text-transform: uppercase; color: var(--label); }
+.peek-row { display: grid; gap: 10px; margin: 10px 0 0; padding: 0; list-style: none; }
+.peek-cover { grid-template-columns: repeat(3, minmax(0, 78px)); }
+.peek-browser { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.peek-cover img { width: 100%; height: auto; aspect-ratio: 3 / 4; object-fit: cover; border-radius: 6px; border: 1px solid rgba(255, 255, 255, .12); box-shadow: 0 10px 22px -14px rgba(0, 0, 0, .9); }
+.mini-browser { position: relative; overflow: hidden; padding-top: 11px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, .12); background: linear-gradient(180deg, #2a2d36, #16181e); box-shadow: 0 10px 22px -14px rgba(0, 0, 0, .9); }
+.mini-browser i { position: absolute; top: 4px; left: 7px; width: 4px; height: 4px; border-radius: 50%; background: #626776; box-shadow: 6px 0 #626776, 12px 0 #626776; }
+.mini-browser img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; object-position: 50% 0; }
+
+/* ---------- Home: Latest ---------- */
+.latest-grid { display: grid; gap: 16px; margin-top: 40px; }
+@media (min-width: 820px) { .latest-grid { grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 48px; } }
+.latest-card { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; padding: 24px 24px 22px; }
+.latest-text { font-size: 19px; line-height: 1.4; letter-spacing: -.01em; color: var(--text-platinum); }
+.latest-card .text-link { margin-top: auto; }
+.latest-card:hover::after { transform: translateX(-130%); transition: none; }
+
+/* ---------- Home: How we build, larger, joined by a fine gold line (across on desktop, down on phones) ---------- */
+.steps-big { position: relative; display: grid; grid-template-columns: 1fr; gap: 20px; margin-top: 40px; padding: 0; list-style: none; }
+.step-item { position: relative; display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 16px; align-items: start; }
+.step-node { position: relative; z-index: 1; display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; background: var(--bg-deep); box-shadow: inset 0 0 0 1px rgba(212, 175, 55, .6); font-size: 12px; font-weight: 500; letter-spacing: .06em; color: var(--text-platinum); }
+.step-item:not(:last-child)::before { content: ""; position: absolute; left: 20px; top: 40px; bottom: -20px; width: 1px; background: rgba(212, 175, 55, .4); }
+.steps-big .step-card { gap: 12px; padding: 24px 22px 26px; }
+.steps-big .step-icon { width: 52px; height: 52px; }
+.steps-big .step-icon svg { width: 24px; height: 24px; }
+.steps-big .step-title { margin-top: 6px; font-size: 22px; }
+.steps-big .step-card .dim { font-size: 15px; line-height: 1.65; }
+@media (min-width: 960px) {
+  .steps-big { grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: 48px; }
+  .step-item { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto 1fr; gap: 20px; align-items: stretch; }
+  .step-node { align-self: start; }
+  .step-node { justify-self: center; }
+  /* from this node's edge to the next node's edge: half a column plus the 20px gap, less the node's 20px radius */
+  .step-item:not(:last-child)::before { left: calc(50% + 20px); right: -50%; top: 20px; bottom: auto; width: auto; height: 1px; }
+}
+
+/* ---------- Home: Why KB Ventures ---------- */
+.why-grid { display: grid; gap: 28px 24px; margin: 40px 0 0; padding: 0; list-style: none; }
+@media (min-width: 600px) { .why-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 960px) { .why-grid { grid-template-columns: repeat(4, 1fr); margin-top: 48px; } }
+.why-item { display: flex; flex-direction: column; gap: 10px; }
+.why-title { margin-top: 6px; font-size: 19px; font-weight: 400; letter-spacing: -.02em; color: var(--text-platinum); }
+.why-item .dim { font-size: 15px; line-height: 1.6; }
+
+/* ---------- Home: Meet the founder (a photo, or a KB monogram in the same round frame until there is one) ---------- */
+.founder-grid { display: grid; gap: 28px; justify-items: center; margin-top: 40px; text-align: center; }
+@media (min-width: 720px) { .founder-grid { grid-template-columns: 220px minmax(0, 1fr); gap: 56px; max-width: 900px; justify-items: start; align-items: center; text-align: left; } }
+.founder-photo { position: relative; display: grid; place-items: center; width: min(200px, 56vw); aspect-ratio: 1; overflow: hidden; border-radius: 50%; border: 1px solid rgba(255, 255, 255, .14); background: radial-gradient(circle at 35% 25%, #2a2e38, #121419 70%); box-shadow: 0 30px 60px -30px rgba(0, 0, 0, .95); }
+@media (min-width: 720px) { .founder-photo { width: 220px; } }
+.founder-photo img { width: 100%; height: 100%; object-fit: cover; }
+.founder-mono { font-size: 64px; font-weight: 200; letter-spacing: .06em; color: var(--text-platinum); }
+@supports ((-webkit-background-clip: text) or (background-clip: text)) { .founder-mono { background: var(--metal-text); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; } }
+.founder-name { font-size: clamp(26px, 2.6vw, 32px); font-weight: var(--w-head); letter-spacing: -.02em; color: var(--text-platinum); }
+.founder-text .lead { margin-top: 12px; }
+.founder-text .pill { margin-top: 24px; }

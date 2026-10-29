@@ -35,7 +35,29 @@
       "imageSize": [
         720,
         960
-      ]
+      ],
+      "previews": {
+        "label": "See inside",
+        "frame": "cover",
+        "size": [
+          720,
+          960
+        ],
+        "items": [
+          {
+            "src": "img/aceguides/year10-maths.webp",
+            "alt": "AceGuides Year 10 Maths study guide cover"
+          },
+          {
+            "src": "img/aceguides/vce34-biology.webp",
+            "alt": "AceGuides VCE Biology Units 3 & 4 study guide cover"
+          },
+          {
+            "src": "img/aceguides/vce34-english.webp",
+            "alt": "AceGuides VCE English Units 3 & 4 study guide cover"
+          }
+        ]
+      }
     },
     {
       "name": "Black Crest Web Designs",
@@ -50,7 +72,29 @@
         1280,
         800
       ],
-      "imageFrame": "browser"
+      "imageFrame": "browser",
+      "previews": {
+        "label": "See inside",
+        "frame": "browser",
+        "size": [
+          640,
+          400
+        ],
+        "items": [
+          {
+            "src": "img/previews/barber.webp",
+            "alt": "Top of Brass & Blade, a concept barbershop website"
+          },
+          {
+            "src": "img/previews/cafe.webp",
+            "alt": "Top of Ember & Oak, a concept cafe website"
+          },
+          {
+            "src": "img/previews/gym.webp",
+            "alt": "Top of Iron & Ember Athletic Club, a concept gym website"
+          }
+        ]
+      }
     }
   ],
   "showMoreComingCard": false,
@@ -201,22 +245,26 @@
     {
       "title": "Idea",
       "line": "We start with a real need and check it makes sense.",
-      "detail": "Before anything is built, we look at who it is for and what they actually need. If the idea does not hold up, we do not go ahead."
+      "detail": "Before anything is built, we look at who it is for and what they actually need. If the idea does not hold up, we do not go ahead.",
+      "line2": "If it does not hold up, we do not build it."
     },
     {
       "title": "Build",
       "line": "We build it carefully, with its own website and clear prices.",
-      "detail": "Each business gets its own name, its own website and prices that are easy to understand. We take the time to get the details right before anything opens."
+      "detail": "Each business gets its own name, its own website and prices that are easy to understand. We take the time to get the details right before anything opens.",
+      "line2": "Every detail is checked before it opens."
     },
     {
       "title": "Launch",
       "line": "We open it up, check it works and fix problems fast.",
-      "detail": "When a business opens, we test it ourselves and listen to the first people who use it. Anything that goes wrong is fixed as quickly as we can."
+      "detail": "When a business opens, we test it ourselves and listen to the first people who use it. Anything that goes wrong is fixed as quickly as we can.",
+      "line2": "Early feedback shapes what we fix and improve."
     },
     {
       "title": "Run",
       "line": "We keep it running, with support and fair dealing.",
-      "detail": "After launch, we keep looking after it and answer questions. If something goes wrong with a purchase, we put it right."
+      "detail": "After launch, we keep looking after it and answer questions. If something goes wrong with a purchase, we put it right.",
+      "line2": "Questions get answered and problems get put right."
     }
   ],
   "standards": [
@@ -296,6 +344,58 @@
       ]
     }
   ],
+  "latest": {
+    "title": "Latest.",
+    "items": [
+      {
+        "label": "AceGuides",
+        "text": "21 study guides written for AceGuides"
+      },
+      {
+        "label": "Black Crest Web Designs",
+        "text": "7 demo websites built for local businesses"
+      },
+      {
+        "label": "KB Ventures",
+        "text": "Contact form now live",
+        "link": "contact.html",
+        "linkLabel": "Send a message"
+      }
+    ]
+  },
+  "why": {
+    "title": "Why KB Ventures.",
+    "items": [
+      {
+        "icon": "pin",
+        "title": "Made in Melbourne",
+        "text": "Built and run locally."
+      },
+      {
+        "icon": "tag",
+        "title": "Plain pricing",
+        "text": "No hidden fees."
+      },
+      {
+        "icon": "refund",
+        "title": "Fair refunds",
+        "text": "If something is wrong, we fix it or refund it."
+      },
+      {
+        "icon": "chat",
+        "title": "Real replies",
+        "text": "A person reads every message."
+      }
+    ]
+  },
+  "founder": {
+    "title": "Meet the founder.",
+    "name": "Kirithik",
+    "photo": "",
+    "photoAlt": "Kirithik, founder of KB Ventures",
+    "bio": "Hi, I’m Kirithik, the founder of KB Ventures. I’m based in Melbourne and I start businesses that follow one standard: clear, fair and well made.",
+    "button": "Get in touch"
+  },
   "businessesPage": {
     "title": "Our businesses.",
     "lead": "Each business has its own website.",

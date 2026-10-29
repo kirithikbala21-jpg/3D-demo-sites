@@ -45,6 +45,24 @@
     return box;
   }
   let level = 'h3'; // h2 on pages where the cards come straight after the H1
+  // "See inside": three small previews (study guide covers, or the top of demo websites in a small browser frame)
+  function peek(b) {
+    const pv = b.previews || {};
+    const items = (Array.isArray(pv.items) ? pv.items : []).filter((x) => x && local(x.src)).slice(0, 3);
+    if (!items.length) return null;
+    const size = Array.isArray(pv.size) && pv.size.length === 2 ? pv.size.map(Number) : null;
+    const browser = pv.frame === 'browser';
+    const box = el('div', 'peek'), row = el('ul', 'peek-row ' + (browser ? 'peek-browser' : 'peek-cover'));
+    row.append(...items.map((x) => {
+      const li = el('li'), i = el('img');
+      i.src = BASE + x.src.trim(); i.alt = filled(x.alt) ? x.alt : ''; i.loading = 'lazy'; i.decoding = 'async';
+      if (size) { i.width = size[0]; i.height = size[1]; }
+      if (browser) { const f = el('div', 'mini-browser'), bar = el('i'); bar.setAttribute('aria-hidden', 'true'); f.append(bar, i); li.append(f); } else li.append(i);
+      return li;
+    }));
+    box.append(el('p', 'peek-label', filled(pv.label) ? pv.label : 'See inside'), row);
+    return box;
+  }
   function card(b, cfg) {
     const nav = cfg.nav || {}, live = KB.isLive(b);
     // a live business is one big link; a coming-soon business is not a link at all
@@ -60,7 +78,10 @@
     const foot = el('div', 'biz-foot');
     if (live) { const cta = el('span', 'biz-cta', b.ctaLabel || 'Visit'); cta.insertAdjacentHTML('beforeend', ARROW); foot.append(cta); }
     else foot.append(el('p', 'quiet', nav.comingSoon || 'Coming soon'));
-    content.append(status, body, foot);
+    content.append(status, body);
+    const strip = peek(b);
+    if (strip) content.append(strip);
+    content.append(foot);
     root.append(picture(b), content);
     return root;
   }
@@ -190,6 +211,9 @@
     reveal($$('.step-card'), 0.08);
     reveal($$('.std-card'), 0.1);
     reveal($$('.about-mark, .faq, .section-foot, .detail-row'));
+    reveal($$('.latest-card'), 0.08);
+    reveal($$('.why-item'), 0.08);
+    reveal($$('.founder-photo, .founder-text'), 0.1);
   };
 
   /* ---------- From the config ---------- */
@@ -204,6 +228,13 @@
         grid.replaceChildren(...cards);
         grid.dataset.count = String(cards.length);
         parallax = $$('[data-parallax]');
+      }
+      // the founder's photo, once the file exists; until then the KB monogram stays (never a broken image)
+      const fp = $('#founder-photo'), photo = cfg.founder && cfg.founder.photo;
+      if (fp && local(photo) && !fp.querySelector('img')) {
+        const im = new Image();
+        im.onload = () => { im.width = 480; im.height = 480; im.alt = cfg.founder.photoAlt || ''; fp.replaceChildren(im); };
+        im.src = BASE + photo.trim();
       }
       const faq = Array.isArray(cfg.faq) ? cfg.faq.filter((f) => f && filled(f.q) && filled(f.a)) : [];
       if (faq.length) {

@@ -95,6 +95,10 @@ ICONS = {
     'Clear': '<path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12Z"/><circle cx="12" cy="12" r="3"/>',
     'Fair': '<path d="M12 4v16M8 20h8M5 7h14"/><path d="m5 7-3 6a3 3 0 0 0 6 0L5 7Z"/><path d="m19 7-3 6a3 3 0 0 0 6 0l-3-6Z"/>',
     'Well made': '<path d="M12 3 4 6.5V12c0 4.4 3.4 8.1 8 9 4.6-.9 8-4.6 8-9V6.5L12 3Z"/><path d="m8.5 12 2.5 2.5 4.5-5"/>',
+    'pin': '<path d="M12 21s-6.5-6-6.5-11a6.5 6.5 0 0 1 13 0c0 5-6.5 11-6.5 11Z"/><circle cx="12" cy="10" r="2.4"/>',
+    'tag': '<path d="M3.5 12.2V4.5a1 1 0 0 1 1-1h7.7l8.3 8.3-8.7 8.7-8.3-8.3Z"/><circle cx="8" cy="8" r="1.4"/>',
+    'refund': '<path d="M4 12a8 8 0 1 0 2.3-5.6"/><path d="M4 4v4.5h4.5"/><path d="m9 12.5 2 2 4-4.5"/>',
+    'chat': '<path d="M5 5h14a1.5 1.5 0 0 1 1.5 1.5v8A1.5 1.5 0 0 1 19 16h-9l-4.5 3.5V16H5a1.5 1.5 0 0 1-1.5-1.5v-8A1.5 1.5 0 0 1 5 5Z"/><path d="M8 9.5h8M8 12.5h5"/>',
 }
 
 
@@ -126,6 +130,26 @@ def picture(b):
     return '<div class="biz-visual"></div>'
 
 
+def peek(b):
+    """The "See inside" strip: three small previews (study guide covers, or the top of demo websites in a browser frame)."""
+    pv = b.get('previews') or {}
+    items = [x for x in pv.get('items', []) if x.get('src')][:3]
+    if not items:
+        return ''
+    w, h = (pv.get('size') or [None, None])[:2]
+    wh = f' width="{w}" height="{h}"' if w else ''
+    browser = pv.get('frame') == 'browser'
+    lis = []
+    for x in items:
+        img = f'<img src="{E(x["src"])}"{wh} loading="lazy" decoding="async" alt="{E(x.get("alt", ""))}">'
+        lis.append(f'<li>{"<div class=" + chr(34) + "mini-browser" + chr(34) + "><i aria-hidden=" + chr(34) + "true" + chr(34) + "></i>" + img + "</div>" if browser else img}</li>')
+    return f'''
+          <div class="peek">
+            <p class="peek-label">{E(pv.get('label') or 'See inside')}</p>
+            <ul class="peek-row {'peek-browser' if browser else 'peek-cover'}">{''.join(lis)}</ul>
+          </div>'''
+
+
 def card(b, level='h3'):
     n = cfg['nav']
     live = is_live(b)
@@ -138,7 +162,7 @@ def card(b, level='h3'):
           <p class="status"><span class="dot {'dot-live' if live else 'dot-soon'}" aria-hidden="true"></span><span>{E(n['live'] if live else n['comingSoon'])}</span></p>
           <div class="biz-body">
             <{level} class="card-title">{E(b['name'])}</{level}>{desc}
-          </div>
+          </div>{peek(b)}
           <div class="biz-foot">{foot}</div>
         </div>
       </{tag}>'''
@@ -202,13 +226,15 @@ def faq_ld():
 def steps4():
     items = []
     for i, s in enumerate(cfg['process']):
-        items.append(f'''        <li class="card step-card">
-          <span class="step-num" aria-hidden="true">{i + 1:02d}</span>
-          <span class="step-icon">{icon(s['title'])}</span>
-          <h3 class="step-title" data-c="process.{i}.title">{E(s['title'])}</h3>
-          <p class="dim" data-c="process.{i}.line">{E(s['line'])}</p>
+        items.append(f'''        <li class="step-item">
+          <span class="step-node" aria-hidden="true">{i + 1:02d}</span>
+          <div class="card step-card">
+            <span class="step-icon">{icon(s['title'])}</span>
+            <h3 class="step-title" data-c="process.{i}.title">{E(s['title'])}</h3>
+            <p class="dim"><span data-c="process.{i}.line">{E(s['line'])}</span> <span data-c="process.{i}.line2">{E(s.get('line2', ''))}</span></p>
+          </div>
         </li>''')
-    return '      <ol class="steps4">\n' + '\n'.join(items) + '\n      </ol>'
+    return '      <ol class="steps4 steps-big">\n' + '\n'.join(items) + '\n      </ol>'
 
 
 def std_cards(detail=False):
@@ -229,6 +255,69 @@ def page(name, title, desc, body, data_page, scripts=('<script src="main.js" def
 
 
 DIV = '  <div class="divider" aria-hidden="true"><span></span></div>'
+
+
+def latest_section():
+    lt = cfg['latest']
+    cards = []
+    for i, x in enumerate(lt['items']):
+        link = f'\n          {text_link(E(x["link"]), f"latest.items.{i}.linkLabel", x.get("linkLabel") or "Find out more")}' if x.get('link') else ''
+        cards.append(f'''        <article class="card latest-card">
+          <p class="label" data-c="latest.items.{i}.label">{E(x['label'])}</p>
+          <p class="latest-text" data-c="latest.items.{i}.text">{E(x['text'])}</p>{link}
+        </article>''')
+    return f'''  <section class="section" id="latest" aria-labelledby="latest-title">
+    <div class="container center">
+      <h2 class="h2" id="latest-title" data-c="latest.title">{E(lt['title'])}</h2>
+    </div>
+    <div class="container latest-grid">
+{chr(10).join(cards)}
+    </div>
+  </section>'''
+
+
+def why_section():
+    wy = cfg['why']
+    items = []
+    for i, x in enumerate(wy['items']):
+        items.append(f'''        <li class="why-item">
+          <span class="step-icon">{icon(x.get('icon', ''))}</span>
+          <h3 class="why-title" data-c="why.items.{i}.title">{E(x['title'])}</h3>
+          <p class="dim" data-c="why.items.{i}.text">{E(x['text'])}</p>
+        </li>''')
+    return f'''  <section class="section" id="why" aria-labelledby="why-title">
+    <div class="container center">
+      <h2 class="h2" id="why-title" data-c="why.title">{E(wy['title'])}</h2>
+    </div>
+    <div class="container">
+      <ul class="why-grid">
+{chr(10).join(items)}
+      </ul>
+    </div>
+  </section>'''
+
+
+def founder_section():
+    fd = cfg['founder']
+    photo = fd.get('photo') or ''
+    # the photo is used once the file exists; until then a KB monogram fills the same round frame (never a broken image)
+    if photo and os.path.isfile(os.path.join(SITE_DIR, photo)):
+        inner = f'<img src="{E(photo)}" width="480" height="480" loading="lazy" decoding="async" alt="{E(fd.get("photoAlt", ""))}">'
+    else:
+        inner = '<span class="founder-mono" aria-hidden="true">KB</span>'
+    return f'''  <section class="section section-founder" id="founder" aria-labelledby="founder-title">
+    <div class="container center">
+      <h2 class="h2" id="founder-title" data-c="founder.title">{E(fd['title'])}</h2>
+    </div>
+    <div class="container founder-grid">
+      <div class="founder-photo" id="founder-photo">{inner}</div>
+      <div class="founder-text">
+        <h3 class="founder-name" data-c="founder.name">{E(fd['name'])}</h3>
+        <p class="lead" data-c="founder.bio">{E(fd['bio'])}</p>
+        <a class="pill pill-primary" href="contact.html" data-c="founder.button">{E(fd['button'])}</a>
+      </div>
+    </div>
+  </section>'''
 hm = cfg['home']
 ld = {"@context": "https://schema.org", "@type": "Organization", "name": C['name'], "url": SITE, "email": C['email'],
       "logo": SITE + "img/icon-512.png", "description": f"{C['name']} is a Melbourne company that starts and runs businesses.",
@@ -266,6 +355,10 @@ home_body = f'''<main id="main">
 
 {DIV}
 
+{latest_section()}
+
+{DIV}
+
   <section class="section" id="how" aria-labelledby="build-title">
     <div class="container center">
       <h2 class="h2" id="build-title" data-c="home.build.title">{E(hm['build']['title'])}</h2>
@@ -278,6 +371,10 @@ home_body = f'''<main id="main">
 
 {DIV}
 
+{why_section()}
+
+{DIV}
+
   <section class="section section-standard" id="standard" aria-labelledby="std-title">
     <div class="container center">
       <h2 class="h2" id="std-title" data-c="home.standard.title">{E(hm['standard']['title'])}</h2>
@@ -286,6 +383,10 @@ home_body = f'''<main id="main">
 {std_cards()}
     </div>
   </section>
+
+{DIV}
+
+{founder_section()}
 
 {DIV}
 

@@ -7,6 +7,7 @@
 import html
 import json
 import os
+import re
 
 SITE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 REPO = os.path.dirname(SITE_DIR)
@@ -113,7 +114,8 @@ def text_link(href, path, label):
 
 # ---------- business cards (the same markup main.js builds) ----------
 def is_live(b):
-    return b.get('status') == 'live' and str(b.get('url', '')).startswith('https://')
+    u = str(b.get('url', '')).strip()
+    return b.get('status') == 'live' and (u.startswith('https://') or re.match(r'^[\w-]+\.html(#[\w-]+)?$', u) is not None)
 
 
 def picture(b):
@@ -608,6 +610,87 @@ pages['about.html'] = page('about.html', 'About KB Ventures', ab['text'], f'''<m
   </div>
   <div class="container page-end"><a class="pill pill-primary" href="contact.html" data-c="about.button">{E(ab['button'])}</a></div>
 </main>''', 'about')
+
+ag = cfg['aceguides']
+
+
+def money(x):
+    return f'${x:.2f}'
+
+
+def product_card(x):
+    """One guide: cover (or a matching tile for bundles), level, subject, price, and Buy now (or Coming soon)."""
+    if x.get('cover'):
+        cover = f'<img src="{E(x["cover"])}" width="720" height="960" loading="lazy" decoding="async" alt="{E(x.get("coverAlt", ""))}">'
+    else:
+        cover = f'<div class="cover-tile" aria-hidden="true"><span class="tile-brand">AceGuides</span><span class="tile-line"></span><span class="tile-title">{E(x["subject"])}</span></div>'
+    if x.get('link'):
+        price = f'<p class="product-price">{money(x["price"])} <span>{E(ag["currency"])}</span></p>' if x.get('price') else f'<p class="product-price is-tbc">{E(ag["noPrice"])}</p>'
+        action = (f'<a class="pill pill-primary product-buy" href="{E(x["link"])}" target="_blank" rel="noopener">{E(ag["buy"])}'
+                  f'<span class="sr-only">: {E(x["subject"])}, {E(x["level"])} {E(ag["newTab"])}</span></a>')
+    else:
+        price = f'<p class="product-price">{money(x["price"])} <span>{E(ag["currency"])}</span></p>' if x.get('price') else f'<p class="product-price is-tbc">{E(ag["noPriceSoon"])}</p>'
+        action = (f'<button class="pill pill-secondary product-soon" type="button" disabled>{E(ag["comingSoon"])}</button>'
+                  f'<a class="text-link product-notify" href="{E(ag["notifyHref"])}">{E(ag["notify"])}<span class="sr-only">: {E(x["subject"])}, {E(x["level"])}</span></a>')
+    return f'''        <li class="card product{'' if x.get('link') else ' is-soon'}" id="{E(x['key'])}">
+          <div class="product-cover">{cover}</div>
+          <div class="product-body">
+            <p class="label">{E(x['level'])}</p>
+            <h3 class="product-name">{E(x['subject'])}</h3>
+            {price}
+            <div class="product-actions">{action}</div>
+          </div>
+        </li>'''
+
+
+def products_ld():
+    """Product structured data for every guide that can be bought now with a known price."""
+    items = []
+    for g in ag['groups']:
+        for x in g['products']:
+            if not (x.get('link') and x.get('price')):
+                continue
+            name = f'AceGuides {x["subject"]} ({x["level"]})'
+            items.append({'@type': 'Product', 'name': name, 'brand': {'@type': 'Brand', 'name': 'AceGuides'},
+                          'description': f'{x["subject"]} study guide for {x["level"]} students: ' + ', '.join(i.lower() for i in ag['inside'][:-1]) + ' and ' + ag['inside'][-1].lower() + '.',
+                          'image': SITE + x['cover'] if x.get('cover') else SITE + 'og.jpg',
+                          'offers': {'@type': 'Offer', 'price': f'{x["price"]:.2f}', 'priceCurrency': ag['currency'], 'availability': 'https://schema.org/InStock', 'url': x['link']}})
+    return json.dumps({'@context': 'https://schema.org', '@graph': items}, ensure_ascii=False, separators=(',', ':'))
+
+
+groups_html = []
+for gi, g in enumerate(ag['groups']):
+    gid = re.sub(r'[^a-z0-9]+', '-', g['title'].lower()).strip('-')
+    groups_html.append(f'''  <section class="container shop-group" id="{gid}" aria-labelledby="{gid}-h">
+    <h2 class="h2" id="{gid}-h" data-c="aceguides.groups.{gi}.title">{E(g['title'])}</h2>
+    <ul class="product-grid">
+{chr(10).join(product_card(x) for x in g['products'])}
+    </ul>
+  </section>''')
+inside = ''.join(f'<li data-c="aceguides.inside.{i}">{E(t)}</li>' for i, t in enumerate(ag['inside']))
+chooser = ''.join(f'''
+      <li><strong data-c="aceguides.chooser.items.{i}.title">{E(x['title'])}</strong>: <span data-c="aceguides.chooser.items.{i}.text">{E(x['text'])}</span></li>''' for i, x in enumerate(ag['chooser']['items']))
+policies = ' &middot; '.join(f'<a href="{E(x["href"])}">{E(x["text"])}</a>' for x in ag['policies'])
+pages['aceguides.html'] = page('aceguides.html', ag['meta']['title'], ag['meta']['description'], f'''<main id="main" class="page shop">
+  <div class="container page-head shop-head">
+    <h1 class="page-title" data-c="aceguides.title">{E(ag['title'])}</h1>
+    <p class="lead" data-c="aceguides.lead">{E(ag['lead'])}</p>
+    <p class="label shop-inside-label" data-c="aceguides.insideTitle">{E(ag['insideTitle'])}</p>
+    <ul class="shop-inside">{inside}</ul>
+  </div>
+  <div class="container shop-chooser">
+    <h2 class="shop-chooser-title" data-c="aceguides.chooser.title">{E(ag['chooser']['title'])}</h2>
+    <ul class="principles">{chooser}
+    </ul>
+  </div>
+{chr(10).join(groups_html)}
+  <div class="container shop-foot">
+    <p class="shop-delivery" data-c="aceguides.delivery">{E(ag['delivery'])}</p>
+    <p>{text_link(E(ag['questionsLink']), 'aceguides.questions', ag['questions'])}</p>
+    <p class="shop-policies">{policies}</p>
+    <p class="shop-vcaa" data-c="aceguides.vcaa">{E(ag['vcaa'])}</p>
+  </div>
+</main>''', 'aceguides', extra=f'<script type="application/ld+json" id="products-data">{products_ld()}</script>')
 
 cp = cfg['contactPage']
 opts = ''.join(f'<option>{E(t)}</option>' for t in cp['topics'])

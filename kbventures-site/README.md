@@ -6,6 +6,7 @@ Live: https://kirithikbala21-jpg.github.io/3D-demo-sites/kbventures-site/
 
 ## Pages
 - `index.html`: Home (hero, Our businesses, How we build, Our standard, About, Quick questions, Get in touch)
+- `aceguides.html`: the AceGuides shop (see "AceGuides shop" below)
 - `businesses.html`, `how-we-work.html`, `faq.html`, `partner.html`, `about.html`, `contact.html` (the contact form), `404.html`
 - `legal/privacy.html`, `legal/terms.html`, `legal/refunds.html`
 
@@ -32,10 +33,23 @@ Add one entry to `businesses` in `site.config.json`. Nothing else needs changing
   "image": "img/new-business.webp", "imageAlt": "What the picture shows", "imageSize": [1280, 800] }
 ```
 - `shortName` (optional): a shorter name used only in the footer's narrow Businesses column (for example "Black Crest" for Black Crest Web Designs). Everywhere else shows `name`.
-- `status`: `"coming-soon"` or `"live"`. A business counts as live only when the status is `"live"` **and** `url` is a full `https://` address. Then its card becomes one big link with a LIVE badge and `ctaLabel` with an arrow, and its footer and dropdown entries become links. While coming soon, the card is not a link, has no hover lift, and says "Coming soon".
+- `status`: `"coming-soon"` or `"live"`. A business counts as live only when the status is `"live"` **and** `url` is a full `https://` address or a page in this folder (like `"aceguides.html"`). Then its card becomes one big link with an "Available now" badge (`nav.live`) and `ctaLabel` with an arrow, and its footer and dropdown entries become links. While coming soon, the card is not a link, has no hover lift, and says "Coming soon".
 - `image`: one picture (shown filling the card's picture area; add `"imageFrame": "browser"` to show it in a browser frame), or a list of up to five (shown as a fanned stack, like AceGuides), with `imageAlt` as one text or a matching list. Images must be in `img/`. Use WebP and give `imageSize` as `[width, height]`.
 - **The "More coming" card:** it always shows on the Businesses page. On Home it shows only when `"showMoreComingCard": true`; set it to `false` to hide it there. Its title is `home.businesses.moreComing`.
 - Keep `description` to one short line: the main site carries only these. Everything else about a business goes on its own site.
+
+## AceGuides shop (`aceguides.html`)
+Everything on the page comes from the `aceguides` block in `site.config.json`; run `tools/build-pages.py` after any change.
+- `groups`: the four headings ("Year 10", "VCE Units 1 and 2", "VCE Units 3 and 4", "Bundles"), each with a list of `products`:
+```json
+{ "key": "y11-english", "subject": "English", "level": "VCE Units 1 and 2", "price": 14.99,
+  "link": "https://buy.stripe.com/...", "cover": "img/aceguides/vce12-english.webp", "coverAlt": "..." }
+```
+- `link`: the Stripe payment link. With a link the card shows "Buy now" (new tab, `rel="noopener"`). With `"link": ""` it shows a disabled "Coming soon" button and a "Notify me" link to the Home sign-up (`notifyHref`). To open a guide for sale, just paste its link.
+- `price`: a number in AUD. Leave it `null` and the card says "See price at checkout" (`noPrice`); the bundles are like this now. Keep it equal to the price in Stripe.
+- `cover`: a file in `img/aceguides/` (720x960 WebP). Without one, the card shows a plain style tile with the subject name.
+- Product structured data (Google) is added only for guides with both a link and a price.
+- `inside`, `chooser`, `delivery`, `questions`, `policies` and `vcaa` hold the rest of the page text. `meta` holds the page title and description.
 
 ## Home page sections (all in `site.config.json`)
 Home runs: hero, Our businesses (with the Concept sites gallery), Latest, How we build, Our standard, Who’s behind it, Quick questions, Get updates, Get in touch.

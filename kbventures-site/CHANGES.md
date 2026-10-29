@@ -1,3 +1,26 @@
+# Changes: the AceGuides shop (29 October 2026)
+
+## New page: AceGuides (`aceguides.html`)
+- **Top:** "AceGuides.", "Study guides for Year 10 and VCE students." and the six things inside every guide.
+- **Not sure which to choose?** A short guide to the three levels.
+- **Guides:** grouped under Year 10, VCE Units 1 and 2, VCE Units 3 and 4, and Bundles. Each card has the cover, subject, level, price in AUD and "Buy now", which opens the Stripe payment link in a new tab (rel noopener).
+  - Prices are $9.99 (Year 10), $14.99 (Units 1 and 2) and $19.99 (Units 3 and 4).
+  - The two VCE bundles have no price in the config, so they say "See price at checkout".
+  - Year 10 English, History, Economics and Business, and the Year 10 bundle have no payment link yet. They show a disabled "Coming soon" button and a "Notify me" link to the Home sign-up.
+- **Under the guides:** "Delivered by email after payment.", "Questions? Contact us" (opens the contact form with AceGuides chosen), the Refunds, Terms and Privacy links, and the VCAA trademark line.
+- **Search and sharing:** a title, description, share tags, canonical address, a sitemap entry, and Product structured data for the 18 guides that have both a link and a price.
+
+## Connected to the rest of the site
+- **AceGuides is live:** the Home and Businesses card says "Available now" and has a "Shop guides" button. The footer and the Businesses dropdown link to the shop with no Coming soon tag. Black Crest Web Designs is still Coming soon.
+- **Latest:** a new first item, "AceGuides study guides are now on sale" (Oct 2026), linking to the shop. **About milestones:** "AceGuides study guides on sale".
+- **FAQ:** "When does AceGuides open?" is replaced by "How do I buy an AceGuides guide?". The sign-up text and the "How do I get updates?" answer no longer say AceGuides is opening soon.
+- `contact.html?topic=aceguides` preselects AceGuides.
+
+## Checked
+- **Stripe:** all 20 Buy now links open a live Stripe checkout (HTTP 200) for the matching guide at the matching price.
+- **Playwright** at 1440, 768 and 390: no horizontal scroll, no overlaps, all covers load, no console errors, no em dashes. Every internal link works. The earlier full-site, round and form checks all still pass.
+- Not changed: the demo folders, the hero card, colours, fonts, the legal pages and the contact form.
+
 # Changes: a cleaner, fuller site (29 October 2026)
 
 ## Home

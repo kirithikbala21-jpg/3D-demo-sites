@@ -15,9 +15,9 @@
     {
       "name": "AceGuides",
       "description": "Revision guides for Year 10 and VCE students, with bundles for each year level.",
-      "status": "coming-soon",
-      "url": "",
-      "ctaLabel": "Browse guides",
+      "status": "live",
+      "url": "aceguides.html",
+      "ctaLabel": "Shop guides",
       "image": [
         "img/aceguides/year10-maths.webp",
         "img/aceguides/year10-science.webp",
@@ -121,7 +121,7 @@
     "close": "Close",
     "home": "{name} home",
     "comingSoon": "Coming soon",
-    "live": "Live",
+    "live": "Available now",
     "businessesShow": "Show businesses",
     "howWeWork": "How we work",
     "faq": "FAQ",
@@ -361,12 +361,12 @@
       ]
     },
     {
-      "q": "When does AceGuides open?",
-      "a": "We will announce it as soon as it is ready. Sign up for updates on the home page.",
+      "q": "How do I buy an AceGuides guide?",
+      "a": "Choose your guide on the AceGuides page and pay securely with Stripe. We email the guide to you after payment.",
       "links": [
         {
-          "text": "Sign up for updates",
-          "href": "index.html#updates"
+          "text": "AceGuides page",
+          "href": "aceguides.html"
         }
       ]
     },
@@ -386,7 +386,7 @@
     },
     {
       "q": "How do I get updates?",
-      "a": "Sign up for updates on the home page. We will email you when AceGuides opens or a new business launches.",
+      "a": "Sign up for updates on the home page. We will email you about new AceGuides guides and when a new business launches.",
       "links": [
         {
           "text": "Sign up for updates",
@@ -398,6 +398,13 @@
   "latest": {
     "title": "Latest.",
     "items": [
+      {
+        "label": "AceGuides",
+        "text": "AceGuides study guides are now on sale",
+        "date": "Oct 2026",
+        "link": "aceguides.html",
+        "linkLabel": "Shop guides"
+      },
       {
         "label": "AceGuides",
         "text": "21 study guides written for AceGuides",
@@ -516,7 +523,7 @@
   },
   "signup": {
     "title": "Get updates.",
-    "text": "Be first to know when AceGuides opens and when new businesses launch.",
+    "text": "Be first to know about new AceGuides guides and when new businesses launch.",
     "emailLabel": "Email",
     "button": "Notify me",
     "sending": "Sending…",
@@ -608,7 +615,303 @@
       {
         "date": "Oct 2026",
         "text": "Contact form launched"
+      },
+      {
+        "date": "Oct 2026",
+        "text": "AceGuides study guides on sale"
       }
     ]
+  },
+  "aceguides": {
+    "title": "AceGuides.",
+    "lead": "Study guides for Year 10 and VCE students.",
+    "insideTitle": "Inside every guide",
+    "inside": [
+      "Clear explanations",
+      "Worked examples",
+      "A practice exam",
+      "Full worked solutions",
+      "A revision plan",
+      "A one-page summary"
+    ],
+    "currency": "AUD",
+    "buy": "Buy now",
+    "comingSoon": "Coming soon",
+    "notify": "Notify me",
+    "notifyHref": "index.html#updates",
+    "noPrice": "See price at checkout",
+    "noPriceSoon": "Price to be confirmed",
+    "newTab": "(opens in a new tab)",
+    "groups": [
+      {
+        "title": "Year 10",
+        "products": [
+          {
+            "key": "y10-maths",
+            "subject": "Maths",
+            "level": "Year 10",
+            "price": 9.99,
+            "link": "https://buy.stripe.com/eVq28seoOgbWaeIcSy4Rq0o",
+            "cover": "img/aceguides/year10-maths.webp",
+            "coverAlt": "AceGuides Year 10 Maths study guide cover"
+          },
+          {
+            "key": "y10-science",
+            "subject": "Science",
+            "level": "Year 10",
+            "price": 9.99,
+            "link": "https://buy.stripe.com/7sYbJ280q2l6gD6g4K4Rq0p",
+            "cover": "img/aceguides/year10-science.webp",
+            "coverAlt": "AceGuides Year 10 Science study guide cover"
+          },
+          {
+            "key": "y10-english",
+            "subject": "English",
+            "level": "Year 10",
+            "price": 9.99,
+            "link": "",
+            "cover": "img/aceguides/year10-english.webp",
+            "coverAlt": "AceGuides Year 10 English study guide cover"
+          },
+          {
+            "key": "y10-history",
+            "subject": "History",
+            "level": "Year 10",
+            "price": 9.99,
+            "link": "",
+            "cover": "img/aceguides/year10-history.webp",
+            "coverAlt": "AceGuides Year 10 History study guide cover"
+          },
+          {
+            "key": "y10-economics-business",
+            "subject": "Economics and Business",
+            "level": "Year 10",
+            "price": 9.99,
+            "link": "",
+            "cover": "img/aceguides/year10-economics-business.webp",
+            "coverAlt": "AceGuides Year 10 Economics and Business study guide cover"
+          }
+        ]
+      },
+      {
+        "title": "VCE Units 1 and 2",
+        "products": [
+          {
+            "key": "y11-english",
+            "subject": "English",
+            "level": "VCE Units 1 and 2",
+            "price": 14.99,
+            "link": "https://buy.stripe.com/fZu5kE3Ka9NyaeI9Gm4Rq0q",
+            "cover": "img/aceguides/vce12-english.webp",
+            "coverAlt": "AceGuides VCE English Units 1 & 2 study guide cover"
+          },
+          {
+            "key": "y11-methods",
+            "subject": "Mathematical Methods",
+            "level": "VCE Units 1 and 2",
+            "price": 14.99,
+            "link": "https://buy.stripe.com/8x2fZi0xY9Ny5Ys8Ci4Rq0r",
+            "cover": "img/aceguides/vce12-maths-methods.webp",
+            "coverAlt": "AceGuides VCE Mathematical Methods Units 1 & 2 study guide cover"
+          },
+          {
+            "key": "y11-biology",
+            "subject": "Biology",
+            "level": "VCE Units 1 and 2",
+            "price": 14.99,
+            "link": "https://buy.stripe.com/8x214o4Oe0cY0E805M4Rq0s",
+            "cover": "img/aceguides/vce12-biology.webp",
+            "coverAlt": "AceGuides VCE Biology Units 1 & 2 study guide cover"
+          },
+          {
+            "key": "y11-chemistry",
+            "subject": "Chemistry",
+            "level": "VCE Units 1 and 2",
+            "price": 14.99,
+            "link": "https://buy.stripe.com/aFa3cw0xY7FqeuYdWC4Rq0t",
+            "cover": "img/aceguides/vce12-chemistry.webp",
+            "coverAlt": "AceGuides VCE Chemistry Units 1 & 2 study guide cover"
+          },
+          {
+            "key": "y11-physics",
+            "subject": "Physics",
+            "level": "VCE Units 1 and 2",
+            "price": 14.99,
+            "link": "https://buy.stripe.com/bJe8wQ6Wm5xi86A8Ci4Rq0u",
+            "cover": "img/aceguides/vce12-physics.webp",
+            "coverAlt": "AceGuides VCE Physics Units 1 & 2 study guide cover"
+          },
+          {
+            "key": "y11-business",
+            "subject": "Business Management",
+            "level": "VCE Units 1 and 2",
+            "price": 14.99,
+            "link": "https://buy.stripe.com/00w00kgwWbVG9aE2dU4Rq0v",
+            "cover": "img/aceguides/vce12-business-management.webp",
+            "coverAlt": "AceGuides VCE Business Management Units 1 & 2 study guide cover"
+          },
+          {
+            "key": "y11-economics",
+            "subject": "Economics",
+            "level": "VCE Units 1 and 2",
+            "price": 14.99,
+            "link": "https://buy.stripe.com/7sYbJ2cgG4te4UobOu4Rq0w",
+            "cover": "img/aceguides/vce12-economics.webp",
+            "coverAlt": "AceGuides VCE Economics Units 1 & 2 study guide cover"
+          },
+          {
+            "key": "y11-history",
+            "subject": "Modern History",
+            "level": "VCE Units 1 and 2",
+            "price": 14.99,
+            "link": "https://buy.stripe.com/6oUdRaa8y3paeuYbOu4Rq0x",
+            "cover": "img/aceguides/vce12-modern-history.webp",
+            "coverAlt": "AceGuides VCE Modern History Units 1 & 2 study guide cover"
+          }
+        ]
+      },
+      {
+        "title": "VCE Units 3 and 4",
+        "products": [
+          {
+            "key": "y12-english",
+            "subject": "English",
+            "level": "VCE Units 3 and 4",
+            "price": 19.99,
+            "link": "https://buy.stripe.com/fZu28s1C25xi1IcaKq4Rq0y",
+            "cover": "img/aceguides/vce34-english.webp",
+            "coverAlt": "AceGuides VCE English Units 3 & 4 study guide cover"
+          },
+          {
+            "key": "y12-methods",
+            "subject": "Mathematical Methods",
+            "level": "VCE Units 3 and 4",
+            "price": 19.99,
+            "link": "https://buy.stripe.com/dRmcN6eoO4te3QkcSy4Rq0z",
+            "cover": "img/aceguides/vce34-maths-methods.webp",
+            "coverAlt": "AceGuides VCE Mathematical Methods Units 3 & 4 study guide cover"
+          },
+          {
+            "key": "y12-biology",
+            "subject": "Biology",
+            "level": "VCE Units 3 and 4",
+            "price": 19.99,
+            "link": "https://buy.stripe.com/fZu6oI80q4tecmQ4m24Rq0A",
+            "cover": "img/aceguides/vce34-biology.webp",
+            "coverAlt": "AceGuides VCE Biology Units 3 & 4 study guide cover"
+          },
+          {
+            "key": "y12-chemistry",
+            "subject": "Chemistry",
+            "level": "VCE Units 3 and 4",
+            "price": 19.99,
+            "link": "https://buy.stripe.com/aFa00kfsS6Bm0E819Q4Rq0B",
+            "cover": "img/aceguides/vce34-chemistry.webp",
+            "coverAlt": "AceGuides VCE Chemistry Units 3 & 4 study guide cover"
+          },
+          {
+            "key": "y12-physics",
+            "subject": "Physics",
+            "level": "VCE Units 3 and 4",
+            "price": 19.99,
+            "link": "https://buy.stripe.com/14A6oI0xY1h24UoaKq4Rq0C",
+            "cover": "img/aceguides/vce34-physics.webp",
+            "coverAlt": "AceGuides VCE Physics Units 3 & 4 study guide cover"
+          },
+          {
+            "key": "y12-business",
+            "subject": "Business Management",
+            "level": "VCE Units 3 and 4",
+            "price": 19.99,
+            "link": "https://buy.stripe.com/6oU5kEdkK9Ny1Ic8Ci4Rq0D",
+            "cover": "img/aceguides/vce34-business-management.webp",
+            "coverAlt": "AceGuides VCE Business Management Units 3 & 4 study guide cover"
+          },
+          {
+            "key": "y12-economics",
+            "subject": "Economics",
+            "level": "VCE Units 3 and 4",
+            "price": 19.99,
+            "link": "https://buy.stripe.com/8x228sa8y3padqUbOu4Rq0E",
+            "cover": "img/aceguides/vce34-economics.webp",
+            "coverAlt": "AceGuides VCE Economics Units 3 & 4 study guide cover"
+          },
+          {
+            "key": "y12-history",
+            "subject": "History: Revolutions",
+            "level": "VCE Units 3 and 4",
+            "price": 19.99,
+            "link": "https://buy.stripe.com/cNi28sa8y9Ny9aEdWC4Rq0F",
+            "cover": "img/aceguides/vce34-revolutions.webp",
+            "coverAlt": "AceGuides VCE History: Revolutions Units 3 & 4 study guide cover"
+          }
+        ]
+      },
+      {
+        "title": "Bundles",
+        "products": [
+          {
+            "key": "vce12-bundle",
+            "subject": "VCE Units 1 and 2 bundle",
+            "level": "Bundle",
+            "price": null,
+            "link": "https://buy.stripe.com/28E14o5Si8Ju2MgaKq4Rq0G"
+          },
+          {
+            "key": "vce34-bundle",
+            "subject": "VCE Units 3 and 4 bundle",
+            "level": "Bundle",
+            "price": null,
+            "link": "https://buy.stripe.com/3cI14o1C29Ny0E82dU4Rq0H"
+          },
+          {
+            "key": "y10-bundle",
+            "subject": "Year 10 bundle",
+            "level": "Bundle",
+            "price": null,
+            "link": ""
+          }
+        ]
+      }
+    ],
+    "delivery": "Delivered by email after payment.",
+    "questions": "Questions? Contact us",
+    "questionsLink": "contact.html?topic=aceguides",
+    "policies": [
+      {
+        "text": "Refunds",
+        "href": "legal/refunds.html"
+      },
+      {
+        "text": "Terms",
+        "href": "legal/terms.html"
+      },
+      {
+        "text": "Privacy",
+        "href": "legal/privacy.html"
+      }
+    ],
+    "vcaa": "VCE® is a registered trademark of the VCAA. AceGuides is not affiliated with or endorsed by the VCAA.",
+    "chooser": {
+      "title": "Not sure which to choose?",
+      "items": [
+        {
+          "title": "Year 10",
+          "text": "Year 10 guides are for Year 10 students."
+        },
+        {
+          "title": "VCE Units 1 and 2",
+          "text": "Units 1 and 2 are for Year 11."
+        },
+        {
+          "title": "VCE Units 3 and 4",
+          "text": "Units 3 and 4 are for Year 12 and VCE exam prep."
+        }
+      ]
+    },
+    "meta": {
+      "title": "AceGuides study guides: KB Ventures",
+      "description": "AceGuides study guides for Year 10 and VCE students: clear explanations, worked examples, a practice exam with full worked solutions, a revision plan and a one-page summary."
+    }
   }
 }

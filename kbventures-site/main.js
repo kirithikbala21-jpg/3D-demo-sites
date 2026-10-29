@@ -67,7 +67,7 @@
     const nav = cfg.nav || {}, live = KB.isLive(b);
     // a live business is one big link; a coming-soon business is not a link at all
     const root = el(live ? 'a' : 'article', 'card biz ' + (live ? 'biz-live' : 'biz-soon'));
-    if (live) root.href = b.url.trim();
+    if (live) root.href = KB.linkFor ? KB.linkFor(b.url) : b.url.trim();
     const content = el('div', 'biz-content');
     const status = el('p', 'status');
     const dot = el('span', 'dot ' + (live ? 'dot-live' : 'dot-soon')); dot.setAttribute('aria-hidden', 'true');

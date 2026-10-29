@@ -22,7 +22,10 @@
     const v = k in extra ? extra[k] : k === 'year' ? year : get(cfg, 'company.' + k);
     return v == null ? m : v;
   });
-  const isLive = (b) => b && b.status === 'live' && safeUrl(b.url);
+  // a business is live once its status is "live" and it has an address: a full https:// one, or a page of this site
+  const localPage = (u) => filled(u) && /^[\w-]+\.html(#[\w-]+)?$/.test(u.trim());
+  const linkFor = (u) => (localPage(u) ? BASE + u.trim() : u.trim());
+  const isLive = (b) => b && b.status === 'live' && (safeUrl(b.url) || localPage(b.url));
   const businesses = (cfg) => (Array.isArray(cfg && cfg.businesses) ? cfg.businesses.filter((b) => b && filled(b.name)) : []);
 
   const ICON = {
@@ -84,7 +87,7 @@
     if (!list.length) return;
     $('#dd-list').innerHTML = list.map((b) => {
       const body = `<span class="dd-name">${esc(b.name)}${isLive(b) ? '' : `<span class="tag">${esc(navText.comingSoon)}</span>`}</span>${filled(b.description) ? `<span class="dd-desc">${esc(b.description)}</span>` : ''}`;
-      return `<li>${isLive(b) ? `<a class="dd-item" href="${esc(b.url.trim())}">${body}</a>` : `<div class="dd-item is-soon">${body}</div>`}</li>`;
+      return `<li>${isLive(b) ? `<a class="dd-item" href="${esc(linkFor(b.url))}">${body}</a>` : `<div class="dd-item is-soon">${body}</div>`}</li>`;
     }).join('');
     ddFilled = true;
   }
@@ -199,7 +202,7 @@
     // the footer column is narrow, so a business can give a shorter name for it ("shortName")
     const footName = (b) => (filled(b.shortName) ? b.shortName : b.name);
     const bizItems = list.map((b) => (isLive(b)
-      ? `<li><a href="${esc(b.url.trim())}">${esc(footName(b))}</a></li>`
+      ? `<li><a href="${esc(linkFor(b.url))}">${esc(footName(b))}</a></li>`
       : `<li><span class="footer-soon">${esc(footName(b))}</span> <span class="tag">${esc(navText.comingSoon)}</span></li>`)).join('');
     // the VCAA line goes wherever the footer mentions AceGuides or VCE
     const vce = list.some((b) => /aceguides|\bvce\b/i.test(b.name)) && filled(f.vceTrademark);
@@ -281,6 +284,6 @@
   const config = fetch(BASE + 'site.config.json', { cache: 'no-cache' })
     .then((r) => (r.ok ? r.json() : null))
     .catch(() => null);
-  window.KB = { base: BASE, config, filled, get, esc, safeUrl, fill, isLive, businesses, reduceMotion, lenis: () => lenis, goTo };
+  window.KB = { base: BASE, config, filled, get, esc, safeUrl, fill, isLive, linkFor, businesses, reduceMotion, lenis: () => lenis, goTo };
   config.then((cfg) => { if (cfg) apply(cfg); });
 })();

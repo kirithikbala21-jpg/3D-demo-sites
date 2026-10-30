@@ -153,16 +153,26 @@ def peek(b):
           </div>'''
 
 
+def is_preview(b):
+    """A business shown as a preview: its card links to the work-in-progress site, but it is not live yet
+    (the footer and the Businesses menu still say Coming soon)."""
+    u = str(b.get('url', '')).strip()
+    return b.get('status') == 'preview' and (u.startswith('https://') or re.match(r'^\.\./[\w-]+/$', u) is not None)
+
+
 def card(b, level='h3'):
     n = cfg['nav']
-    live = is_live(b)
-    tag, cls, href = ('a', 'biz-live', f' href="{E(b["url"])}"') if live else ('article', 'biz-soon', '')
-    foot = f'<span class="biz-cta">{E(b.get("ctaLabel") or "Visit")}{ARROW}</span>' if live else f'<p class="quiet">{E(n["comingSoon"])}</p>'
+    live, preview = is_live(b), is_preview(b)
+    link = live or preview
+    tag, cls, href = ('a', 'biz-live' + (' biz-preview' if preview else ''), f' href="{E(b["url"])}"') if link else ('article', 'biz-soon', '')
+    label = b.get('previewLabel') if preview else b.get('ctaLabel')
+    foot = f'<span class="biz-cta">{E(label or "Visit")}{ARROW}</span>' if link else f'<p class="quiet">{E(n["comingSoon"])}</p>'
+    badge = n['live'] if live else n.get('preview', 'Preview') if preview else n['comingSoon']
     desc = f'\n            <p class="dim">{E(b["description"])}</p>' if b.get('description') else ''
     return f'''      <{tag} class="card biz {cls}"{href}>
         {picture(b)}
         <div class="biz-content">
-          <p class="status"><span class="dot {'dot-live' if live else 'dot-soon'}" aria-hidden="true"></span><span>{E(n['live'] if live else n['comingSoon'])}</span></p>
+          <p class="status"><span class="dot {'dot-live' if live else 'dot-soon'}" aria-hidden="true"></span><span>{E(badge)}</span></p>
           <div class="biz-body">
             <{level} class="card-title">{E(b['name'])}</{level}>{desc}
           </div>{peek(b)}

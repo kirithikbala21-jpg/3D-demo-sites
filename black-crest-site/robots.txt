@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /3D-demo-sites/black-crest-site/free-concept.html
+Disallow: /3D-demo-sites/black-crest-site/thank-you.html
+
+Sitemap: https://kirithikbala21-jpg.github.io/3D-demo-sites/black-crest-site/sitemap.xml

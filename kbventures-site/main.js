@@ -65,18 +65,21 @@
   }
   function card(b, cfg) {
     const nav = cfg.nav || {}, live = KB.isLive(b);
-    // a live business is one big link; a coming-soon business is not a link at all
-    const root = el(live ? 'a' : 'article', 'card biz ' + (live ? 'biz-live' : 'biz-soon'));
+    // a preview business links to its work-in-progress site (like "../black-crest-site/") but is not live yet
+    const preview = !live && b.status === 'preview' && filled(b.url) && (/^https:\/\//.test(b.url.trim()) || /^\.\.\/[\w-]+\/$/.test(b.url.trim()));
+    // a live or preview business is one big link; a coming-soon business is not a link at all
+    const root = el(live || preview ? 'a' : 'article', 'card biz ' + (live ? 'biz-live' : preview ? 'biz-live biz-preview' : 'biz-soon'));
     if (live) root.href = KB.linkFor ? KB.linkFor(b.url) : b.url.trim();
+    if (preview) root.href = b.url.trim();
     const content = el('div', 'biz-content');
     const status = el('p', 'status');
     const dot = el('span', 'dot ' + (live ? 'dot-live' : 'dot-soon')); dot.setAttribute('aria-hidden', 'true');
-    status.append(dot, el('span', '', live ? nav.live || 'Live' : nav.comingSoon || 'Coming soon'));
+    status.append(dot, el('span', '', live ? nav.live || 'Live' : preview ? nav.preview || 'Preview' : nav.comingSoon || 'Coming soon'));
     const body = el('div', 'biz-body');
     body.append(el(level, 'card-title', b.name));
     if (filled(b.description)) body.append(el('p', 'dim', b.description));
     const foot = el('div', 'biz-foot');
-    if (live) { const cta = el('span', 'biz-cta', b.ctaLabel || 'Visit'); cta.insertAdjacentHTML('beforeend', ARROW); foot.append(cta); }
+    if (live || preview) { const cta = el('span', 'biz-cta', (preview ? b.previewLabel : b.ctaLabel) || 'Visit'); cta.insertAdjacentHTML('beforeend', ARROW); foot.append(cta); }
     else foot.append(el('p', 'quiet', nav.comingSoon || 'Coming soon'));
     content.append(status, body);
     const strip = peek(b);

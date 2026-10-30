@@ -12,8 +12,8 @@ const CONFIG = /* CONFIG-START */ {
   "email": "kb.ventures@outlook.com",
   "phone": "",
   "packages": {
-    "onePage": { "name": "One Page", "price": 300 },
-    "fullSite": { "name": "Full Website", "price": 700 }
+    "onePage": { "name": "One Page", "price": 490 },
+    "fullSite": { "name": "Full Website", "price": 990 }
   },
   "carePlan": { "name": "Care plan", "pricePerMonth": 30 },
   "addOns": [

@@ -631,6 +631,10 @@ def sample_files():
 
 
 samples = sample_files()
+# guides listed in aceguides.paused keep their Stripe link in the config but cannot be bought until taken off the list
+paused = set(ag.get('paused', []))
+for key in paused - {x['key'] for g in ag['groups'] for x in g['products']}:
+    print(f'warning: aceguides.paused lists "{key}" but no guide has that key')
 
 
 def product_card(x):
@@ -641,16 +645,19 @@ def product_card(x):
         cover = f'<div class="cover-tile" aria-hidden="true"><span class="tile-brand">AceGuides</span><span class="tile-line"></span><span class="tile-title">{E(x["subject"])}</span></div>'
     # every guide needs a price in the config: there is no "price to be confirmed" text
     price = f'<p class="product-price">{money(x["price"])} <span>{E(ag["currency"])}</span></p>' if x.get('price') else ''
-    if x.get('link'):
+    notify = (f'<a class="text-link product-notify" href="{E(ag["notifyHref"])}">{E(ag["notify"])}<span class="sr-only">: {E(x["subject"])}, {E(x["level"])}</span></a>')
+    buyable = x.get('link') and x['key'] not in paused
+    if x.get('link') and not buyable:
+        action = f'<button class="pill pill-secondary product-soon product-paused" type="button" disabled>{E(ag["pausedLabel"])}</button>' + notify
+    elif buyable:
         action = (f'<a class="pill pill-primary product-buy" href="{E(x["link"])}" target="_blank" rel="noopener">{E(ag["buy"])}'
                   f'<span class="sr-only">: {E(x["subject"])}, {E(x["level"])} {E(ag["newTab"])}</span></a>')
     else:
-        action = (f'<button class="pill pill-secondary product-soon" type="button" disabled>{E(ag["comingSoon"])}</button>'
-                  f'<a class="text-link product-notify" href="{E(ag["notifyHref"])}">{E(ag["notify"])}<span class="sr-only">: {E(x["subject"])}, {E(x["level"])}</span></a>')
+        action = f'<button class="pill pill-secondary product-soon" type="button" disabled>{E(ag["comingSoon"])}</button>' + notify
     if x['key'] in samples:
         action += (f'<a class="text-link product-sample" href="{E(samples[x["key"]])}" target="_blank" rel="noopener">{E(ag["sampleLabel"])}'
                    f'<span class="sr-only">: {E(x["subject"])}, {E(x["level"])} {E(ag["newTab"])}</span></a>')
-    return f'''        <li class="card product{'' if x.get('link') else ' is-soon'}" id="{E(x['key'])}">
+    return f'''        <li class="card product{'' if buyable else ' is-soon'}" id="{E(x['key'])}">
           <div class="product-cover">{cover}</div>
           <div class="product-body">
             <p class="label">{E(x['level'])}</p>
@@ -672,7 +679,7 @@ def products_ld():
             items.append({'@type': 'Product', 'name': name, 'brand': {'@type': 'Brand', 'name': 'AceGuides'},
                           'description': f'{x["subject"]} study guide for {x["level"]} students: ' + ', '.join(i.lower() for i in ag['inside'][:-1]) + ' and ' + ag['inside'][-1].lower() + '.',
                           'image': SITE + x['cover'] if x.get('cover') else SITE + 'og.jpg',
-                          'offers': {'@type': 'Offer', 'price': f'{x["price"]:.2f}', 'priceCurrency': ag['currency'], 'availability': 'https://schema.org/InStock', 'url': x['link']}})
+                          'offers': {'@type': 'Offer', 'price': f'{x["price"]:.2f}', 'priceCurrency': ag['currency'], 'availability': 'https://schema.org/OutOfStock' if x['key'] in paused else 'https://schema.org/InStock', 'url': x['link']}})
     return json.dumps({'@context': 'https://schema.org', '@graph': items}, ensure_ascii=False, separators=(',', ':'))
 
 

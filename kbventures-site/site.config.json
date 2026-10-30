@@ -641,6 +641,12 @@
     "comingSoon": "Coming soon",
     "notify": "Notify me",
     "notifyHref": "index.html#updates",
+    "paused": [
+      "y10-history",
+      "y10-economics",
+      "bundle-y10"
+    ],
+    "pausedLabel": "Being updated, back soon",
     "newTab": "(opens in a new tab)",
     "samples": [],
     "samplePath": "aceguides/samples/{key}.pdf",
@@ -687,7 +693,7 @@
             "coverAlt": "AceGuides Year 10 History study guide cover"
           },
           {
-            "key": "y10-economics-business",
+            "key": "y10-economics",
             "subject": "Economics and Business",
             "level": "Year 10",
             "price": 9.99,
@@ -855,21 +861,21 @@
         "title": "Bundles",
         "products": [
           {
-            "key": "vce12-bundle",
+            "key": "bundle-y11",
             "subject": "VCE Units 1 and 2 bundle",
             "level": "Bundle",
             "price": 69.99,
             "link": "https://buy.stripe.com/28E14o5Si8Ju2MgaKq4Rq0G"
           },
           {
-            "key": "vce34-bundle",
+            "key": "bundle-y12",
             "subject": "VCE Units 3 and 4 bundle",
             "level": "Bundle",
             "price": 89.99,
             "link": "https://buy.stripe.com/3cI14o1C29Ny0E82dU4Rq0H"
           },
           {
-            "key": "y10-bundle",
+            "key": "bundle-y10",
             "subject": "Year 10 bundle",
             "level": "Bundle",
             "price": 29.99,

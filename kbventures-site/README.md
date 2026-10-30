@@ -50,6 +50,8 @@ Everything on the page comes from the `aceguides` block in `site.config.json`; r
 - `price`: a number in AUD, shown on the card and in the Product structured data. Every guide needs one, and it must match the price in Stripe.
 - `cover`: a file in `img/aceguides/` (720x960 WebP). Without one, the card shows a plain style tile with the subject name.
 - Product structured data (Google) is added for every guide with a link and a price.
+- **Pausing a guide:** add its key to `paused`, for example `"paused": ["y10-history"]`. Its card then shows a disabled "Being updated, back soon" button (`pausedLabel`) and the "Notify me" link, and its Product structured data says OutOfStock. Keep the Stripe `link` in the config: take the key off `paused` and rebuild to put the guide back on sale.
+- **Keys** match the `guide` metadata on the Stripe payment links: `y10-maths`, `y11-english`, `y12-history`, `bundle-y10`, `bundle-y11`, `bundle-y12` and so on. They are also each card's id on the page and the sample PDF names.
 - **Free samples:** put the PDF in `aceguides/samples/` named after the guide's key (the same keys as the Stripe metadata, like `y10-maths.pdf` or `y11-english.pdf`), then add the key to `samples`, for example `"samples": ["y10-maths"]`. The card then shows a "Free sample" link that opens the PDF in a new tab. A key is only shown when its file is really there: if it is listed but the file is missing, the build prints a warning and leaves the link out. The list is empty for now, so no sample links show. `samplesNote` is the line above the guides.
 - `inside`, `chooser`, `delivery`, `questions`, `policies` and `vcaa` hold the rest of the page text. `meta` holds the page title and description.
 

@@ -1,3 +1,9 @@
+# Changes: paused guides (30 October 2026)
+- New `aceguides.paused` list in `site.config.json`: `y10-history`, `y10-economics` and `bundle-y10`. Those cards show a disabled "Being updated, back soon" button and keep "Notify me". The label wraps onto two lines on narrow cards, so it is never cut off.
+- Their Stripe links stay in the config. Take a key off `paused` and rebuild to turn the guide back on.
+- Product structured data: the paused guides are OutOfStock, and the other 21 stay InStock.
+- Guide keys now match the `guide` metadata on the Stripe payment links: `y10-economics-business` became `y10-economics`, and the bundles became `bundle-y10`, `bundle-y11` and `bundle-y12`.
+
 # Changes: free samples, Black Crest pricing, phone fixes (29 October 2026)
 
 ## AceGuides shop

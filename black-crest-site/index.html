@@ -2,10 +2,10 @@
 <html lang="en-AU">
 <head>
 <meta charset="utf-8">
-<script>document.documentElement.classList.add('js')</script>
+<script>(function(d){d.classList.add('js');try{if(!sessionStorage.getItem('bc-pre')&&!matchMedia('(prefers-reduced-motion: reduce)').matches)d.classList.add('preload')}catch(e){}})(document.documentElement)</script>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Black Crest Web Designs: premium sites for local businesses</title>
-<meta name="description" content="Fast, good-looking websites for Melbourne barbers, cafes, gyms, salons and tradies. A free concept homepage first. One Page $300, Full Website $700.">
+<meta name="description" content="Premium websites for Melbourne barbers, cafes, gyms, salons and trades. We design your homepage first, free. One Page $300, Full Website $700.">
 
 <link rel="canonical" href="https://kirithikbala21-jpg.github.io/3D-demo-sites/black-crest-site/">
 <meta name="theme-color" content="#0D0E12">
@@ -14,7 +14,7 @@
 <meta property="og:site_name" content="Black Crest Web Designs">
 <meta property="og:locale" content="en_AU">
 <meta property="og:title" content="Black Crest Web Designs: premium sites for local businesses">
-<meta property="og:description" content="Fast, good-looking websites for Melbourne barbers, cafes, gyms, salons and tradies. A free concept homepage first. One Page $300, Full Website $700.">
+<meta property="og:description" content="Premium websites for Melbourne barbers, cafes, gyms, salons and trades. We design your homepage first, free. One Page $300, Full Website $700.">
 <meta property="og:url" content="https://kirithikbala21-jpg.github.io/3D-demo-sites/black-crest-site/">
 <meta property="og:image" content="https://kirithikbala21-jpg.github.io/3D-demo-sites/black-crest-site/img/og.jpg">
 <meta property="og:image:width" content="1200">
@@ -22,7 +22,7 @@
 <meta property="og:image:alt" content="The gold Black Crest crest beside the line: Premium sites for local businesses.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Black Crest Web Designs: premium sites for local businesses">
-<meta name="twitter:description" content="Fast, good-looking websites for Melbourne barbers, cafes, gyms, salons and tradies. A free concept homepage first. One Page $300, Full Website $700.">
+<meta name="twitter:description" content="Premium websites for Melbourne barbers, cafes, gyms, salons and trades. We design your homepage first, free. One Page $300, Full Website $700.">
 <meta name="twitter:image" content="https://kirithikbala21-jpg.github.io/3D-demo-sites/black-crest-site/img/og.jpg">
 <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="favicon.ico" sizes="32x32">
@@ -34,7 +34,7 @@
 <script src="vendor/gsap/gsap.min.js" defer></script>
 <script src="vendor/gsap/ScrollTrigger.min.js" defer></script>
 <script src="vendor/gsap/SplitText.min.js" defer></script>
-<script src="vendor/lenis/lenis.min.js" defer></script>
+<script src="vendor/lenis/lenis.min.js" defer></script><script src="vendor/gsap/Flip.min.js" defer></script>
 <script type="module" src="js/core.js"></script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"ProfessionalService","@id":"https://kirithikbala21-jpg.github.io/3D-demo-sites/black-crest-site/#business","name":"Black Crest Web Designs","slogan":"Premium sites for local businesses","description":"Fast, good-looking websites for local businesses in Melbourne. A free concept homepage first, clear prices, and you own your site.","url":"https://kirithikbala21-jpg.github.io/3D-demo-sites/black-crest-site/","email":"kb.ventures@outlook.com","image":"https://kirithikbala21-jpg.github.io/3D-demo-sites/black-crest-site/img/og.jpg","logo":"https://kirithikbala21-jpg.github.io/3D-demo-sites/black-crest-site/img/icon-512.png","address":{"@type":"PostalAddress","addressLocality":"Melbourne","addressRegion":"VIC","addressCountry":"AU"},"areaServed":{"@type":"City","name":"Melbourne"},"parentOrganization":{"@type":"Organization","name":"KB Ventures","url":"https://kirithikbala21-jpg.github.io/3D-demo-sites/kbventures-site/"},"makesOffer":[{"@type":"Offer","name":"One Page website","price":"300.00","priceCurrency":"AUD","url":"https://kirithikbala21-jpg.github.io/3D-demo-sites/black-crest-site/pricing.html"},{"@type":"Offer","name":"Full Website (up to about 5 pages)","price":"700.00","priceCurrency":"AUD","url":"https://kirithikbala21-jpg.github.io/3D-demo-sites/black-crest-site/pricing.html"},{"@type":"Offer","name":"Care plan","price":"30.00","priceCurrency":"AUD","url":"https://kirithikbala21-jpg.github.io/3D-demo-sites/black-crest-site/care-plan.html","priceSpecification":{"@type":"UnitPriceSpecification","price":"30.00","priceCurrency":"AUD","unitText":"month"}}]}</script>
 </head>
@@ -42,9 +42,13 @@
 <a class="skip" href="#main">Skip to content</a>
 <div class="grain" aria-hidden="true"></div>
 <div class="progress" aria-hidden="true"><span></span></div>
-<div class="intro" id="intro" hidden aria-hidden="true">
-  <svg class="crest" viewBox="0 0 48 56" aria-hidden="true" focusable="false"><path class="crest-outline" pathLength="1" d="M24 2.5 43.5 9.2V26c0 12.6-8.1 21.6-19.5 27.5C12.6 47.6 4.5 38.6 4.5 26V9.2Z"/><path class="crest-inner" d="M24 7.6 38.6 12.6V26c0 9.6-6 16.6-14.6 21.4C15.4 42.6 9.4 35.6 9.4 26V12.6Z"/><text class="crest-text" x="24" y="32.6" text-anchor="middle">BC</text></svg>
-  <button class="intro-skip" type="button" tabindex="-1">Skip</button>
+<div class="preloader" id="preloader" aria-hidden="true">
+  <div class="pre-half pre-top"></div><div class="pre-half pre-bot"></div>
+  <div class="pre-mid">
+    <svg class="pre-crest" viewBox="0 0 48 56" focusable="false"><path pathLength="1" d="M24 2.5 43.5 9.2V26c0 12.6-8.1 21.6-19.5 27.5C12.6 47.6 4.5 38.6 4.5 26V9.2Z"/><path pathLength="1" d="M24 8.2 38.6 13.2v12.4c0 9.4-6 16.2-14.6 20.7-8.6-4.5-14.6-11.3-14.6-20.7V13.2Z"/></svg>
+    <p class="pre-count"><span data-pre-count>000</span></p>
+    <p class="pre-name">Black Crest Web Designs</p>
+  </div>
 </div>
 <header class="site-header">
   <div class="container header-inner">
@@ -56,7 +60,7 @@
 </header>
 <div class="menu" id="menu" role="dialog" aria-modal="true" aria-label="Menu" hidden>
   <div class="container menu-inner">
-    <nav aria-label="Menu"><ol class="menu-links"><li><a href="work.html" data-preview="img/work/barber-desktop-800.webp"><span class="n" aria-hidden="true">01</span>Work</a></li><li><a href="process.html" data-preview="img/work/cafe-desktop-800.webp"><span class="n" aria-hidden="true">02</span>Process</a></li><li><a href="pricing.html" data-preview="img/work/plumber-desktop-800.webp"><span class="n" aria-hidden="true">03</span>Pricing</a></li><li><a href="about.html" data-preview="img/work/salon-desktop-800.webp"><span class="n" aria-hidden="true">04</span>About</a></li><li><a href="faq.html" data-preview="img/work/gym-desktop-800.webp"><span class="n" aria-hidden="true">05</span>FAQ</a></li><li><a href="contact.html" data-preview="img/work/parts-desktop-800.webp"><span class="n" aria-hidden="true">06</span>Contact</a></li></ol><div class="menu-sub"><a href="care-plan.html">Care plan</a><a href="start.html">Start your project</a><a href="guides/">Guides</a><a href="quiz.html">Website quiz</a><a href="for-barbers.html">Barbers</a><a href="for-cafes.html">Cafes</a><a href="for-gyms.html">Gyms</a><a href="for-tradies.html">Tradies</a><a href="for-salons.html">Salons</a></div></nav>
+    <nav aria-label="Menu"><ol class="menu-links"><li><a href="work.html" data-preview="img/work/barber-desktop-800.webp"><span class="n" aria-hidden="true">01</span>Work</a></li><li><a href="lab.html" data-preview="img/work/salon-desktop-800.webp"><span class="n" aria-hidden="true">02</span>Concept Lab</a></li><li><a href="process.html" data-preview="img/work/cafe-desktop-800.webp"><span class="n" aria-hidden="true">03</span>Process</a></li><li><a href="pricing.html" data-preview="img/work/plumber-desktop-800.webp"><span class="n" aria-hidden="true">04</span>Pricing</a></li><li><a href="standard.html" data-preview="img/work/gym-desktop-800.webp"><span class="n" aria-hidden="true">05</span>Standard</a></li><li><a href="about.html" data-preview="img/work/parts-desktop-800.webp"><span class="n" aria-hidden="true">06</span>About</a></li><li><a href="faq.html" data-preview="img/work/cafe-desktop-800.webp"><span class="n" aria-hidden="true">07</span>FAQ</a></li><li><a href="contact.html" data-preview="img/work/barber-desktop-800.webp"><span class="n" aria-hidden="true">08</span>Contact</a></li></ol><div class="menu-sub"><a href="care-plan.html">Care plan</a><a href="start.html">Start your project</a><a href="guides/">Guides</a><a href="quiz.html">Website quiz</a><a href="for-barbers.html">Barbers</a><a href="for-cafes.html">Cafes</a><a href="for-gyms.html">Gyms</a><a href="for-tradies.html">Tradies</a><a href="for-salons.html">Salons</a></div></nav>
     <aside class="menu-aside">
       <div class="menu-preview" aria-hidden="true"><img src="img/work/barber-desktop-800.webp" width="800" height="500" alt="" loading="lazy" decoding="async"></div>
       <a class="link" data-email href="mailto:kb.ventures@outlook.com">kb.ventures@outlook.com</a>
@@ -68,38 +72,26 @@
 </div>
 <main id="main">
   <section class="hero" aria-labelledby="hero-h">
-    <div class="hero-stage" data-hero3d><svg class="crest-art" viewBox="0 0 200 232" aria-hidden="true" focusable="false">
-      <defs>
-        <linearGradient id="ca-g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F6E3A0"/><stop offset=".35" stop-color="#D4AF37"/><stop offset=".62" stop-color="#8E6E1F"/><stop offset=".82" stop-color="#E7C863"/><stop offset="1" stop-color="#7A5D17"/></linearGradient>
-        <linearGradient id="ca-p" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#23252d"/><stop offset="1" stop-color="#0e0f13"/></linearGradient>
-        <linearGradient id="ca-t" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF1C2"/><stop offset=".55" stop-color="#E0BE55"/><stop offset="1" stop-color="#A27F25"/></linearGradient>
-        <linearGradient id="ca-s" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".35"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
-      </defs>
-      <path d="M100 6 186 35v73c0 55-36 94-86 120C50 202 14 163 14 108V35Z" fill="url(#ca-g)"/>
-      <path d="M100 26 168 49v59c0 43-28 74-68 95-40-21-68-52-68-95V49Z" fill="url(#ca-p)"/>
-      <path d="M100 36 159 56v52c0 38-24 65-59 84-35-19-59-46-59-84V56Z" fill="none" stroke="url(#ca-g)" stroke-width="1.6"/>
-      <text x="100" y="141" text-anchor="middle" font-family="Cormorant Garamond, Georgia, serif" font-weight="600" font-size="78" fill="url(#ca-t)">BC</text>
-      <path d="M100 6 186 35v20L100 26 14 55V35Z" fill="url(#ca-s)" opacity=".5"/>
-    </svg></div>
-    <div class="container hero-grid">
-      <div>
-        <p class="label">Black Crest Web Designs &middot; Melbourne</p>
-        <h1 id="hero-h">Premium sites for <em>local</em> businesses</h1>
-        <p class="lead">Sharp, fast websites for barbers, cafes, gyms, salons and tradies. We design your homepage first, free. You decide after.</p>
-        <p class="from-line">From <strong><i>$</i><span data-price="onePage" data-prefix="">300</span></strong> one-off</p>
-        <div class="btn-row">
-          <a class="btn btn-gold" href="free-concept.html">Get a free concept</a>
-          <a class="btn btn-ghost" href="pricing.html">See pricing</a>
-        </div>
+    <div class="hero-stage" data-hero3d>
+      <picture class="crest-still"><source type="image/avif" srcset="assets/crest-still.avif" sizes="(min-width: 1024px) 48vw, 80vw"><source type="image/webp" srcset="assets/crest-still.webp" sizes="(min-width: 1024px) 48vw, 80vw"><img src="assets/crest-still.jpg" width="1280" height="1520" fetchpriority="high" decoding="async" alt=""></picture>
+    </div>
+    <div class="container hero-copy">
+      <p class="label">Black Crest Web Designs &middot; Melbourne</p>
+      <h1 id="hero-h">Premium sites for <em>local</em> businesses</h1>
+      <p class="lead">We design your homepage first, free. You decide after.</p>
+      <div class="btn-row">
+        <a class="btn btn-gold" href="free-concept.html">Get a free concept</a>
+        <a class="btn btn-ghost" href="work.html">See the work</a>
       </div>
+    </div>
+    <div class="container hero-foot">
       <aside class="tile hero-card" aria-label="How paying works">
         <p class="tile-label"><span>Your new website</span><span class="chip">Concept first</span></p>
-        <p class="balance"><span data-price="onePage" data-count="300">$300</span> <span class="per">from, one-off</span></p>
+        <p class="balance"><span class="from">From</span><span data-price="onePage">$300</span> <span class="per">one-off</span></p>
         <ul class="rows">
           <li><span>Concept homepage</span><b>$0</b></li>
           <li><span>Deposit to start the build</span><b>50%</b></li>
           <li><span>Balance</span><b>At launch</b></li>
-          <li><span>Rounds of changes</span><b>2 included</b></li>
         </ul>
         <p class="acct"><span>Black Crest &middot; AUD</span><span>&bull;&bull;&bull;&bull; 0300</span></p>
       </aside>
@@ -107,229 +99,280 @@
     <p class="scroll-cue" aria-hidden="true"><i></i>Scroll</p>
   </section>
 
-  <section class="marquee" data-marquee aria-label="Local businesses we build for"><div class="marquee-track"><ul><li>Barbers</li><li>Cafes</li><li>Gyms</li><li>Salons</li><li>Plumbers</li><li>Electricians</li><li>Bakeries</li><li>Florists</li><li>Mechanics</li><li>Restaurants</li></ul><ul aria-hidden="true"><li>Barbers</li><li>Cafes</li><li>Gyms</li><li>Salons</li><li>Plumbers</li><li>Electricians</li><li>Bakeries</li><li>Florists</li><li>Mechanics</li><li>Restaurants</li></ul></div></section>
-
-  <section class="section" aria-labelledby="work-h">
-    <div class="container showcase">
-      <div>
+  <section class="section reel-sec" aria-labelledby="work-h">
+    <div class="container reel-split">
+      <div class="reel-copy">
         <p class="label" data-reveal><span class="idx">01</span><span class="slash" aria-hidden="true">/</span>Work</p>
         <h2 id="work-h" class="h2" data-split>Concept sites, <em>built properly.</em></h2>
-        <p class="lead" data-reveal>Six made-up local businesses, designed and built like real ones: booking, menus, timetables, quote forms. Every one is a concept, not a customer.</p>
-        <a class="link" data-reveal href="work.html">See all six <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <p class="lead" data-reveal>Six made-up local businesses, designed and coded like real ones: bookings, menus, timetables and quote forms.</p>
+        <div class="btn-row" data-reveal><button class="btn btn-ghost" type="button" data-reel-play>Play reel</button><a class="link" href="work.html">See all six <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
       </div>
-      <div data-reveal><div class="devices duo" data-parallax="0.07"><div class="laptop"><div class="laptop-screen"><img src="img/work/barber-desktop-1600.webp" srcset="img/work/barber-desktop-800.webp 800w, img/work/barber-desktop-1600.webp 1600w" sizes="(min-width: 1024px) 60vw, 92vw" width="1600" height="1000" loading="lazy" decoding="async" alt="The Brass &amp; Blade concept site on a laptop"></div><div class="laptop-base" aria-hidden="true"></div></div><div class="phone"><img src="img/work/cafe-phone.webp" width="600" height="1300" loading="lazy" decoding="async" alt="The Ember &amp; Oak concept site on a phone"></div></div></div>
+      <figure class="reel" data-reveal>
+        <div class="laptop"><div class="laptop-screen">
+          <video data-reel muted loop playsinline preload="none" width="1280" height="800" poster="assets/reel-poster.webp" aria-label="A short silent reel scrolling through the six concept sites">
+            <source src="assets/reel.webm" type="video/webm"><source src="assets/reel.mp4" type="video/mp4">
+          </video>
+        </div><div class="laptop-base" aria-hidden="true"></div></div>
+        <figcaption class="reel-cap">Concept sites. Real code. Not real clients, yet.</figcaption>
+      </figure>
     </div>
   </section>
 
-  <section class="section band" aria-labelledby="why-h">
+  <section class="chapters" aria-labelledby="chapters-h" data-chapters>
+    <div class="container chapters-intro">
+      <p class="label" data-reveal><span class="idx">02</span><span class="slash" aria-hidden="true">/</span>Trades</p>
+      <h2 id="chapters-h" class="h2" data-split>Five trades, <em>five first impressions.</em></h2>
+    </div>
+    <div class="chapters-stage">
+      <article class="chapter" style="--i:0" aria-labelledby="ch-0">
+        <div class="chapter-media"><picture><source type="image/avif" srcset="assets/chapters/barbers-l.avif" sizes="100vw"><source type="image/webp" srcset="assets/chapters/barbers-l.webp" sizes="100vw"><img src="assets/chapters/barbers-l.jpg" width="900" height="623" loading="lazy" decoding="async" alt="A barber’s chair in a warm, dark shop"></picture></div>
+        <div class="container chapter-copy">
+          <p class="chapter-idx"><b>01</b> / 05</p>
+          <h3 id="ch-0" class="chapter-title">Barbers</h3>
+          <i class="chapter-rule" aria-hidden="true"></i>
+          <p class="chapter-cap">Book a chair in two taps, from the footpath.</p>
+          <p class="chapter-meta"><span class="chip chip-plain">Concept site</span> Brass &amp; Blade</p>
+          <a class="link" href="../barber-demo/" target="_blank" rel="noopener">See the concept <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg><span class="sr-only"> Brass &amp; Blade, a concept site (opens in a new tab)</span></a>
+        </div>
+      </article><article class="chapter" style="--i:1" aria-labelledby="ch-1">
+        <div class="chapter-media"><picture><source type="image/avif" srcset="assets/chapters/cafes-l.avif" sizes="100vw"><source type="image/webp" srcset="assets/chapters/cafes-l.webp" sizes="100vw"><img src="assets/chapters/cafes-l.jpg" width="900" height="600" loading="lazy" decoding="async" alt="Coffee being poured through a glass filter"></picture></div>
+        <div class="container chapter-copy">
+          <p class="chapter-idx"><b>02</b> / 05</p>
+          <h3 id="ch-1" class="chapter-title">Cafés</h3>
+          <i class="chapter-rule" aria-hidden="true"></i>
+          <p class="chapter-cap">The menu, the hours and the map, before the coffee is poured.</p>
+          <p class="chapter-meta"><span class="chip chip-plain">Concept site</span> Ember &amp; Oak</p>
+          <a class="link" href="../cafe-demo-v2/" target="_blank" rel="noopener">See the concept <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg><span class="sr-only"> Ember &amp; Oak, a concept site (opens in a new tab)</span></a>
+        </div>
+      </article><article class="chapter" style="--i:2" aria-labelledby="ch-2">
+        <div class="chapter-media"><picture><source type="image/avif" srcset="assets/chapters/gyms-l.avif" sizes="100vw"><source type="image/webp" srcset="assets/chapters/gyms-l.webp" sizes="100vw"><img src="assets/chapters/gyms-l.jpg" width="900" height="600" loading="lazy" decoding="async" alt="Weights on a gym floor under neon light"></picture></div>
+        <div class="container chapter-copy">
+          <p class="chapter-idx"><b>03</b> / 05</p>
+          <h3 id="ch-2" class="chapter-title">Gyms</h3>
+          <i class="chapter-rule" aria-hidden="true"></i>
+          <p class="chapter-cap">A free-trial form that turns a maybe into a first session.</p>
+          <p class="chapter-meta"><span class="chip chip-plain">Concept site</span> Iron &amp; Ember</p>
+          <a class="link" href="../gym-demo/" target="_blank" rel="noopener">See the concept <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg><span class="sr-only"> Iron &amp; Ember, a concept site (opens in a new tab)</span></a>
+        </div>
+      </article><article class="chapter" style="--i:3" aria-labelledby="ch-3">
+        <div class="chapter-media"><picture><source type="image/avif" srcset="assets/chapters/trades-s.avif 1200w, assets/chapters/trades-l.avif 1800w" sizes="100vw"><source type="image/webp" srcset="assets/chapters/trades-s.webp 1200w, assets/chapters/trades-l.webp 1800w" sizes="100vw"><img src="assets/chapters/trades-l.jpg" width="1800" height="1200" loading="lazy" decoding="async" alt="Copper pipe fittings laid out on a bench"></picture></div>
+        <div class="container chapter-copy">
+          <p class="chapter-idx"><b>04</b> / 05</p>
+          <h3 id="ch-3" class="chapter-title">Trades</h3>
+          <i class="chapter-rule" aria-hidden="true"></i>
+          <p class="chapter-cap">One big call button, for the day a pipe bursts.</p>
+          <p class="chapter-meta"><span class="chip chip-plain">Concept site</span> Waverley Plumbing</p>
+          <a class="link" href="../plumber-demo/" target="_blank" rel="noopener">See the concept <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg><span class="sr-only"> Waverley Plumbing, a concept site (opens in a new tab)</span></a>
+        </div>
+      </article><article class="chapter" style="--i:4" aria-labelledby="ch-4">
+        <div class="chapter-media"><picture><source type="image/avif" srcset="assets/chapters/salons-s.avif 1200w, assets/chapters/salons-l.avif 2000w" sizes="100vw"><source type="image/webp" srcset="assets/chapters/salons-s.webp 1200w, assets/chapters/salons-l.webp 2000w" sizes="100vw"><img src="assets/chapters/salons-l.jpg" width="2000" height="1333" loading="lazy" decoding="async" alt="A bright salon interior with styling chairs"></picture></div>
+        <div class="container chapter-copy">
+          <p class="chapter-idx"><b>05</b> / 05</p>
+          <h3 id="ch-4" class="chapter-title">Salons</h3>
+          <i class="chapter-rule" aria-hidden="true"></i>
+          <p class="chapter-cap">A calm service menu, with every price in plain sight.</p>
+          <p class="chapter-meta"><span class="chip chip-plain">Concept site</span> Maison Lune</p>
+          <a class="link" href="../salon-demo/" target="_blank" rel="noopener">See the concept <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg><span class="sr-only"> Maison Lune, a concept site (opens in a new tab)</span></a>
+        </div>
+      </article>
+      <div class="chapters-hud" aria-hidden="true"><span class="chapters-count"><b>01</b> / 05</span><span class="chapters-bar"><i></i></span></div>
+    </div>
+  </section>
+
+  <section class="section lab-sec" id="lab" aria-labelledby="lab-h">
     <div class="container">
       <div class="section-head split">
-      <div><p class="label" data-reveal><span class="idx">02</span><span class="slash" aria-hidden="true">/</span>Why it matters</p><h2 class="h2" data-split><span id="why-h">Built for how people <em>actually</em> find you.</span></h2></div>
-      <p class="lead" data-reveal>Most customers meet you on a phone, minutes before they need you. Every detail is there to turn that moment into a call, a booking or a visit.</p>
+      <div><p class="label" data-reveal><span class="idx">03</span><span class="slash" aria-hidden="true">/</span>Concept Lab</p><h2 class="h2" data-split><span id="lab-h">Sketch your homepage <em>in a minute.</em></span></h2></div>
+      <p class="lead" data-reveal>Pick a trade, a mood and the features you need. The preview changes as you go.</p>
     </div>
-      <div class="bento">
-        <article class="tile big illo-wrap" data-reveal><svg class="illo" viewBox="0 0 240 180" aria-hidden="true" focusable="false"><circle class="s" cx="128" cy="100" r="66"/><path class="g" pathLength="1" d="M70 128a60 60 0 0 1 116 0"/><path class="g" pathLength="1" d="M78 104l8 3M92 80l6 6M118 66v9M146 70l-4 8M170 86l-7 5M182 108l-8 2"/>
-      <path class="g" pathLength="1" d="M128 128 160 86"/><circle class="d" cx="128" cy="128" r="3.5"/><path class="g" pathLength="1" d="M18 70h40M8 90h48M24 110h28"/><path class="s" d="M60 146h136"/></svg><div><h3 class="h3">Fast on any phone</h3><p>Light pages, compressed images, no page-builder bloat. Your site opens before they lose interest.</p></div></article>
-        <article class="tile half illo-wrap" data-reveal><svg class="illo" viewBox="0 0 240 180" aria-hidden="true" focusable="false"><rect class="g" pathLength="1" x="86" y="18" width="68" height="144" rx="14"/><path class="s" d="M98 40h44M98 52h30M98 64h38"/><rect class="s" x="98" y="78" width="44" height="26" rx="4"/>
-      <rect class="g" pathLength="1" x="100" y="120" width="40" height="18" rx="9"/><circle class="g" pathLength="1" cx="120" cy="129" r="26"/><circle class="s" cx="120" cy="129" r="40"/><circle class="d" cx="120" cy="129" r="2.5"/><path class="g" pathLength="1" d="M112 26h16"/></svg><div><h3 class="h3">One tap to act</h3><p>Call, book or get directions without hunting for the button.</p></div></article>
-        <article class="tile half illo-wrap" data-reveal><svg class="illo" viewBox="0 0 240 180" aria-hidden="true" focusable="false"><path class="s" d="M20 40h200M20 80h200M20 120h200M20 160h200M60 20v150M110 20v150M160 20v150M210 20v150"/>
-      <path class="g" pathLength="1" d="M162 36c-14 0-24 10-24 23 0 17 24 40 24 40s24-23 24-40c0-13-10-23-24-23Z"/><circle class="g" pathLength="1" cx="162" cy="59" r="8"/>
-      <circle class="g" pathLength="1" cx="96" cy="104" r="36"/><circle class="s" cx="96" cy="104" r="26"/><path class="g" pathLength="1" d="M122 130l34 34"/><circle class="d" cx="162" cy="59" r="2.5"/></svg><div><h3 class="h3">Found on Google</h3><p>Clean titles and structure from day one, plus help with your free Google Business Profile.</p></div></article>
-        <article class="tile wide illo-wrap" data-reveal><svg class="illo" viewBox="0 0 240 180" aria-hidden="true" focusable="false"><path class="s" d="M120 14 182 36v52c0 42-26 71-62 90-36-19-62-48-62-90V36Z"/><path class="g" pathLength="1" d="M120 30 168 47v41c0 33-20 56-48 71-28-15-48-38-48-71V47Z"/>
-      <circle class="g" pathLength="1" cx="96" cy="96" r="18"/><circle class="s" cx="96" cy="96" r="8"/><path class="g" pathLength="1" d="M114 96h52M150 96v14M160 96v10"/><circle class="d" cx="166" cy="96" r="2.5"/></svg><div><h3 class="h3">Yours, outright</h3><p>You own the finished site and your domain. No lock-in contracts and no hostage fees, ever.</p></div></article>
+      <div class="lab" data-lab data-base="">
+        <form class="lab-controls" data-lab-form>
+          <fieldset><legend>Trade</legend><div class="pills"><label class="pill"><input type="radio" name="lab-trade" value="barber" checked><span>Barber</span></label><label class="pill"><input type="radio" name="lab-trade" value="cafe"><span>Café</span></label><label class="pill"><input type="radio" name="lab-trade" value="gym"><span>Gym</span></label><label class="pill"><input type="radio" name="lab-trade" value="trades"><span>Trades</span></label><label class="pill"><input type="radio" name="lab-trade" value="salon"><span>Salon</span></label></div></fieldset>
+          <div class="field"><label for="lab-name">Business name</label><input id="lab-name" name="lab-name" type="text" maxlength="32" autocomplete="organization" placeholder="Your business name"></div>
+          <fieldset><legend>Mood</legend><div class="pills"><label class="pill mood"><input type="radio" name="lab-mood" value="obsidian" checked><span><i style="--a:#0D0E12;--b:#D4AF37" aria-hidden="true"></i>Obsidian &amp; Gold</span></label><label class="pill mood"><input type="radio" name="lab-mood" value="espresso"><span><i style="--a:#2B1E17;--b:#E9D9C2" aria-hidden="true"></i>Espresso &amp; Cream</span></label><label class="pill mood"><input type="radio" name="lab-mood" value="stone"><span><i style="--a:#E7E4DC;--b:#6F7F63" aria-hidden="true"></i>Stone &amp; Sage</span></label></div></fieldset>
+          <fieldset><legend>Features</legend><div class="pills"><label class="pill"><input type="checkbox" name="lab-feature" value="booking" checked><span>Online booking</span></label><label class="pill"><input type="checkbox" name="lab-feature" value="menu" checked><span>Menu or price list</span></label><label class="pill"><input type="checkbox" name="lab-feature" value="gallery"><span>Gallery</span></label><label class="pill"><input type="checkbox" name="lab-feature" value="reviews"><span>Reviews section</span></label><label class="pill"><input type="checkbox" name="lab-feature" value="map"><span>Map and hours</span></label></div></fieldset>
+          <p class="lab-note">This is a quick preview. Your real free concept is designed properly, by hand, for your business.</p>
+          <button class="btn btn-gold" type="button" data-lab-send>Send me this concept</button>
+          <p class="sr-only" role="status" aria-live="polite" data-lab-status></p>
+        </form>
+        <div class="lab-stage" aria-hidden="true">
+          <div class="lab-laptop"><div class="lab-screen" data-lab-screen></div><div class="laptop-base"></div></div>
+          <div class="lab-phone"><div class="lab-screen" data-lab-screen></div></div>
+        </div>
+        <noscript><p class="lab-nojs">The Concept Lab needs JavaScript to draw its preview. You can still <a href="free-concept.html">ask for a free concept</a>.</p></noscript>
       </div>
     </div>
   </section>
 
-  <section class="section" aria-labelledby="ba-h">
+  <section class="section anatomy-sec" aria-labelledby="anat-h">
     <div class="container">
       <div class="section-head split">
-      <div><p class="label" data-reveal><span class="idx">03</span><span class="slash" aria-hidden="true">/</span>Before and after</p><h2 class="h2" data-split><span id="ba-h">From dated <em>to sharp.</em></span></h2></div>
-      <p class="lead" data-reveal>Drag the handle. Same business, two very different first impressions.</p>
+      <div><p class="label" data-reveal><span class="idx">04</span><span class="slash" aria-hidden="true">/</span>Anatomy</p><h2 class="h2" data-split><span id="anat-h">Every detail <em>earns its place.</em></span></h2></div>
+      <p class="lead" data-reveal>A concept homepage, taken apart. Each marked spot is there to turn a visit into a call or a booking.</p>
     </div>
+      <div class="anatomy" data-anatomy>
+        <figure class="anatomy-shot" data-reveal>
+          <div class="phone"><div class="hot-wrap"><img src="img/work/plumber-phone.webp" width="600" height="1300" loading="lazy" decoding="async" alt="The Waverley Plumbing concept homepage on a phone, with six numbered spots"><span class="hot" style="--y:3.5%;--x:72%" data-hot="0" aria-hidden="true">1</span><span class="hot" style="--y:17%;--x:25%" data-hot="1" aria-hidden="true">2</span><span class="hot" style="--y:45%;--x:40%" data-hot="2" aria-hidden="true">3</span><span class="hot" style="--y:70%;--x:73%" data-hot="3" aria-hidden="true">4</span><span class="hot" style="--y:79%;--x:50%" data-hot="4" aria-hidden="true">5</span><span class="hot" style="--y:89%;--x:82%" data-hot="5" aria-hidden="true">6</span></div></div>
+          <figcaption class="tiny">Concept site. Waverley Plumbing is a made-up business.</figcaption>
+        </figure>
+        <ol class="anatomy-list"><li class="hot-card" data-hot-card="0" style="--i:0"><span class="n" aria-hidden="true">01</span><div><h3>Tap to call</h3><p>The call button sits where a thumb lands, at the top and again in a bar along the bottom.</p></div></li><li class="hot-card" data-hot-card="1" style="--i:1"><span class="n" aria-hidden="true">02</span><div><h3>The job, in one tap</h3><p>Customers pick what is wrong first, so the next screen already speaks to them.</p></div></li><li class="hot-card" data-hot-card="2" style="--i:2"><span class="n" aria-hidden="true">03</span><div><h3>Google-ready titles</h3><p>The trade and the suburb are in the main heading, the way people search for them.</p></div></li><li class="hot-card" data-hot-card="3" style="--i:3"><span class="n" aria-hidden="true">04</span><div><h3>Book or quote in two taps</h3><p>A short form with a clear button, not a maze of pages.</p></div></li><li class="hot-card" data-hot-card="4" style="--i:4"><span class="n" aria-hidden="true">05</span><div><h3>Open now, and the hours</h3><p>Whether you are available today is the first thing many people want to know.</p></div></li><li class="hot-card" data-hot-card="5" style="--i:5"><span class="n" aria-hidden="true">06</span><div><h3>Loads fast on a weak signal</h3><p>Small images and no page-builder bloat, so the page opens on one bar of 4G.</p></div></li></ol>
+        <svg class="anatomy-lines" aria-hidden="true" focusable="false"></svg>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-tight ba-sec" aria-labelledby="ba-h">
+    <div class="container ba-split">
+      <div>
+        <p class="label" data-reveal><span class="idx">05</span><span class="slash" aria-hidden="true">/</span>Before and after</p>
+        <h2 id="ba-h" class="h2" data-split>From dated <em>to sharp.</em></h2>
+        <p class="lead" data-reveal>Same business, two first impressions. Drag the handle, or use the arrow keys.</p>
+        <div class="compare-meta" data-reveal><span class="chip">Example, not a real customer</span><span class="tiny">Both sides are mock-ups made for this comparison.</span></div>
+      </div>
       <div class="compare" data-reveal data-compare>
         <img src="img/compare-before.webp" width="1600" height="1000" loading="lazy" decoding="async" alt="Before: a dated, cluttered barbershop homepage with small text and no clear booking button">
         <img class="after" src="img/compare-after.webp" width="1600" height="1000" loading="lazy" decoding="async" alt="After: the Brass and Blade concept homepage, dark and clean with a clear Book a chair button">
         <span class="compare-tag l" aria-hidden="true">Before</span><span class="compare-tag r" aria-hidden="true">After</span>
-        <span class="handle" aria-hidden="true"></span>
+        <span class="handle" aria-hidden="true"><span class="disc"><i></i><i></i></span><span class="drag-hint">Drag</span></span>
         <label class="sr-only" for="compare-range">Compare before and after</label>
         <input id="compare-range" type="range" min="0" max="100" value="50">
       </div>
-      <div class="compare-meta"><span class="chip">Example, not a real customer</span><span class="tiny">Both sides are mock-ups made for this comparison.</span></div>
     </div>
   </section>
 
-  <section class="section band band-gold" aria-labelledby="how-h">
-    <div class="container">
-      <div class="section-head split">
-      <div><p class="label" data-reveal><span class="idx">04</span><span class="slash" aria-hidden="true">/</span>Process</p><h2 class="h2" data-split><span id="how-h">Four steps. <em>No surprises.</em></span></h2></div>
-      <p class="lead" data-reveal>You see your homepage before you pay a cent. Here is everything that happens after that.</p>
-    </div>
-      <div class="story" data-story>
-      <div class="story-visual" aria-hidden="true"><div class="story-frame"><div class="stage is-active"><svg class="illo" viewBox="0 0 240 180" aria-hidden="true" focusable="false"><path class="g" pathLength="1" d="M38 40h112a12 12 0 0 1 12 12v44a12 12 0 0 1-12 12H84l-24 20v-20H38a12 12 0 0 1-12-12V52a12 12 0 0 1 12-12Z"/>
-      <path class="s" d="M98 92h98a10 10 0 0 1 10 10v36a10 10 0 0 1-10 10h-16v18l-22-18H98a10 10 0 0 1-10-10v-36a10 10 0 0 1 10-10Z"/>
-      <circle class="d" cx="70" cy="74" r="3"/><circle class="d" cx="88" cy="74" r="3"/><circle class="d" cx="106" cy="74" r="3"/><path class="g" pathLength="1" d="M110 120h70M110 132h46"/></svg></div><div class="stage"><svg class="illo" viewBox="0 0 240 180" aria-hidden="true" focusable="false"><rect class="g" pathLength="1" x="34" y="26" width="172" height="128" rx="8"/><path class="g" pathLength="1" d="M34 44h172"/><circle class="d" cx="46" cy="35" r="2.2"/><circle class="s" cx="56" cy="35" r="2.2"/><circle class="s" cx="66" cy="35" r="2.2"/>
-      <path class="g" pathLength="1" d="M52 70h72M52 84h52"/><path class="s" d="M52 104h40M52 114h56"/><rect class="g" pathLength="1" x="52" y="126" width="44" height="14" rx="7"/>
-      <path class="s" d="M140 60 186 60 186 140 140 140Z"/><path class="g" pathLength="1" d="M146 132l14-24 10 14 8-10 6 20"/><circle class="g" pathLength="1" cx="170" cy="78" r="6"/></svg></div><div class="stage"><svg class="illo" viewBox="0 0 240 180" aria-hidden="true" focusable="false"><path class="s" d="M30 156h180"/><rect class="g" pathLength="1" x="48" y="96" width="70" height="52" rx="6"/><rect class="g" pathLength="1" x="126" y="96" width="70" height="52" rx="6"/>
-      <rect class="g" pathLength="1" x="48" y="40" width="148" height="48" rx="6"/><path class="s" d="M60 56h60M60 68h90M60 112h40M60 124h28M138 112h44M138 124h30"/><circle class="d" cx="180" cy="58" r="3"/>
-      <path class="g" pathLength="1" d="M196 26l14-14M200 12h10v10"/></svg></div><div class="stage"><svg class="illo" viewBox="0 0 240 180" aria-hidden="true" focusable="false"><path class="s" d="M20 150h200"/><path class="s" d="M40 150a80 80 0 0 1 160 0"/><path class="g" pathLength="1" d="M44 146C76 120 112 70 186 34"/>
-      <path class="g" pathLength="1" d="M186 34l-14 2M186 34l-4 13"/><circle class="d" cx="186" cy="34" r="3.5"/><circle class="g" pathLength="1" cx="186" cy="34" r="12"/><path class="g" pathLength="1" d="M120 150v-8M80 150v-5M160 150v-5"/></svg></div><div class="bar"><i></i></div><p class="count"><b>01</b> / 04</p></div></div>
-      <ol class="story-steps"><li class="story-step is-active">
-          <span class="step-n" aria-hidden="true">01</span>
-          <div class="step-illo illo-wrap"><svg class="illo" viewBox="0 0 240 180" aria-hidden="true" focusable="false"><path class="g" pathLength="1" d="M38 40h112a12 12 0 0 1 12 12v44a12 12 0 0 1-12 12H84l-24 20v-20H38a12 12 0 0 1-12-12V52a12 12 0 0 1 12-12Z"/>
+  <section class="section process-sec has-grid" aria-labelledby="how-h">
+    <div class="container process-split">
+      <div class="process-head">
+        <p class="label" data-reveal><span class="idx">06</span><span class="slash" aria-hidden="true">/</span>Process</p>
+        <h2 id="how-h" class="h2" data-split>Four steps. <em>No surprises.</em></h2>
+        <p class="lead" data-reveal>You see your homepage before you pay anything. This is everything that happens after that.</p>
+        <a class="link" data-reveal href="process.html">The full process <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
+      <ol class="stack"><li class="stack-card" style="--i:0">
+          <div class="stack-inner">
+            <span class="stack-n" aria-hidden="true">01</span>
+            <div class="stack-copy"><span class="chip chip-plain">Usually the same or next day</span><h3 class="h3">Chat</h3><p>Tell us what you do, where you are and what people should do on your site: call, book or visit. A short message is enough. Send links to your logo, photos or old site if you have them.</p></div>
+            <div class="stack-illo illo-wrap"><svg class="illo" viewBox="0 0 240 180" aria-hidden="true" focusable="false"><path class="g" pathLength="1" d="M38 40h112a12 12 0 0 1 12 12v44a12 12 0 0 1-12 12H84l-24 20v-20H38a12 12 0 0 1-12-12V52a12 12 0 0 1 12-12Z"/>
       <path class="s" d="M98 92h98a10 10 0 0 1 10 10v36a10 10 0 0 1-10 10h-16v18l-22-18H98a10 10 0 0 1-10-10v-36a10 10 0 0 1 10-10Z"/>
       <circle class="d" cx="70" cy="74" r="3"/><circle class="d" cx="88" cy="74" r="3"/><circle class="d" cx="106" cy="74" r="3"/><path class="g" pathLength="1" d="M110 120h70M110 132h46"/></svg></div>
-          <h3>Chat</h3>
-          <p>Tell us what you do, where you are and what people should do on your site: call, book or visit. A short message is enough. Send links to your logo, photos or old site if you have them.</p>
-          <span class="chip chip-plain when">Usually the same or next day</span>
-        </li><li class="story-step">
-          <span class="step-n" aria-hidden="true">02</span>
-          <div class="step-illo illo-wrap"><svg class="illo" viewBox="0 0 240 180" aria-hidden="true" focusable="false"><rect class="g" pathLength="1" x="34" y="26" width="172" height="128" rx="8"/><path class="g" pathLength="1" d="M34 44h172"/><circle class="d" cx="46" cy="35" r="2.2"/><circle class="s" cx="56" cy="35" r="2.2"/><circle class="s" cx="66" cy="35" r="2.2"/>
+          </div>
+        </li><li class="stack-card" style="--i:1">
+          <div class="stack-inner">
+            <span class="stack-n" aria-hidden="true">02</span>
+            <div class="stack-copy"><span class="chip chip-plain">Usually within 5 business days</span><h3 class="h3">Free concept</h3><p>We design your homepage around your name, your trade and your suburb. It costs nothing and commits you to nothing. Not for you? Walk away and owe nothing.</p></div>
+            <div class="stack-illo illo-wrap"><svg class="illo" viewBox="0 0 240 180" aria-hidden="true" focusable="false"><rect class="g" pathLength="1" x="34" y="26" width="172" height="128" rx="8"/><path class="g" pathLength="1" d="M34 44h172"/><circle class="d" cx="46" cy="35" r="2.2"/><circle class="s" cx="56" cy="35" r="2.2"/><circle class="s" cx="66" cy="35" r="2.2"/>
       <path class="g" pathLength="1" d="M52 70h72M52 84h52"/><path class="s" d="M52 104h40M52 114h56"/><rect class="g" pathLength="1" x="52" y="126" width="44" height="14" rx="7"/>
       <path class="s" d="M140 60 186 60 186 140 140 140Z"/><path class="g" pathLength="1" d="M146 132l14-24 10 14 8-10 6 20"/><circle class="g" pathLength="1" cx="170" cy="78" r="6"/></svg></div>
-          <h3>Free concept</h3>
-          <p>We design your homepage around your name, your trade and your suburb. It costs nothing and commits you to nothing. Not for you? Walk away and owe nothing.</p>
-          <span class="chip chip-plain when">Usually within 5 business days</span>
-        </li><li class="story-step">
-          <span class="step-n" aria-hidden="true">03</span>
-          <div class="step-illo illo-wrap"><svg class="illo" viewBox="0 0 240 180" aria-hidden="true" focusable="false"><path class="s" d="M30 156h180"/><rect class="g" pathLength="1" x="48" y="96" width="70" height="52" rx="6"/><rect class="g" pathLength="1" x="126" y="96" width="70" height="52" rx="6"/>
+          </div>
+        </li><li class="stack-card" style="--i:2">
+          <div class="stack-inner">
+            <span class="stack-n" aria-hidden="true">03</span>
+            <div class="stack-copy"><span class="chip chip-plain">Usually 1 to 2 weeks after the deposit</span><h3 class="h3">Build</h3><p>Like it? We email a quote and the payment details, and a 50% deposit starts the build. We write the words with you, add your photos, the contact form and the Google basics, then share a private preview. Two rounds of changes are included.</p></div>
+            <div class="stack-illo illo-wrap"><svg class="illo" viewBox="0 0 240 180" aria-hidden="true" focusable="false"><path class="s" d="M30 156h180"/><rect class="g" pathLength="1" x="48" y="96" width="70" height="52" rx="6"/><rect class="g" pathLength="1" x="126" y="96" width="70" height="52" rx="6"/>
       <rect class="g" pathLength="1" x="48" y="40" width="148" height="48" rx="6"/><path class="s" d="M60 56h60M60 68h90M60 112h40M60 124h28M138 112h44M138 124h30"/><circle class="d" cx="180" cy="58" r="3"/>
       <path class="g" pathLength="1" d="M196 26l14-14M200 12h10v10"/></svg></div>
-          <h3>Build</h3>
-          <p>Like it? We email a quote and the payment details, and a 50% deposit starts the build. We write the words with you, add your photos, the contact form and the Google basics, then share a private preview. Two rounds of changes are included.</p>
-          <span class="chip chip-plain when">Usually 1 to 2 weeks after the deposit</span>
-        </li><li class="story-step">
-          <span class="step-n" aria-hidden="true">04</span>
-          <div class="step-illo illo-wrap"><svg class="illo" viewBox="0 0 240 180" aria-hidden="true" focusable="false"><path class="s" d="M20 150h200"/><path class="s" d="M40 150a80 80 0 0 1 160 0"/><path class="g" pathLength="1" d="M44 146C76 120 112 70 186 34"/>
+          </div>
+        </li><li class="stack-card" style="--i:3">
+          <div class="stack-inner">
+            <span class="stack-n" aria-hidden="true">04</span>
+            <div class="stack-copy"><span class="chip chip-plain">Usually 1 to 2 days after you approve it</span><h3 class="h3">Launch</h3><p>You pay the balance. We connect your domain, switch on HTTPS and check every page on phones and computers. Then we hand it over: the site, the domain and the logins are yours.</p></div>
+            <div class="stack-illo illo-wrap"><svg class="illo" viewBox="0 0 240 180" aria-hidden="true" focusable="false"><path class="s" d="M20 150h200"/><path class="s" d="M40 150a80 80 0 0 1 160 0"/><path class="g" pathLength="1" d="M44 146C76 120 112 70 186 34"/>
       <path class="g" pathLength="1" d="M186 34l-14 2M186 34l-4 13"/><circle class="d" cx="186" cy="34" r="3.5"/><circle class="g" pathLength="1" cx="186" cy="34" r="12"/><path class="g" pathLength="1" d="M120 150v-8M80 150v-5M160 150v-5"/></svg></div>
-          <h3>Launch</h3>
-          <p>You pay the balance. We connect your domain, switch on HTTPS and check every page on phones and computers. Then we hand it over: the site, the domain and the logins are yours.</p>
-          <span class="chip chip-plain when">Usually 1 to 2 days after you approve it</span>
+          </div>
         </li></ol>
     </div>
-      <a class="link" data-reveal href="process.html">The full process <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+  </section>
+
+  <section class="section-tight standard-band" aria-labelledby="std-h">
+    <div class="container">
+      <div class="standard-head">
+        <p class="label" data-reveal><span class="idx">07</span><span class="slash" aria-hidden="true">/</span>The Black Crest Standard</p>
+        <h2 id="std-h" class="h3" data-reveal>Promises you can hold us to.</h2>
+      </div>
+      <ul class="standard-nums"><li data-reveal><b class="odo" data-price="onePage" data-odometer="$300">$300</b><span>Starting price, written down before any work begins.</span></li><li data-reveal><b class="odo" data-odometer="5">5</b><span>Pages, about, in a Full Website.</span></li><li data-reveal><b class="odo" data-odometer="2">2</b><span>Rounds of changes, included in every build.</span></li><li data-reveal><b class="odo" data-odometer="0">0</b><span>Lock-in contracts. The care plan is month to month.</span></li><li data-reveal><b class="odo" data-odometer="100%">100%</b><span>Yours. The finished site, the files and the logins.</span></li></ul>
+      <a class="link" data-reveal href="standard.html">Read the full standard <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
     </div>
   </section>
 
-  <section class="rail section" data-rail aria-labelledby="rail-h">
-    <div class="container"><div class="section-head split">
-      <div><p class="label" data-reveal>Concept sites</p><h2 class="h2" data-split><span id="rail-h">Six concepts, <em>six trades.</em></span></h2></div>
-      <p class="lead" data-reveal>Swipe through, then open any of them on your phone. All six are made-up businesses.</p>
-    </div></div>
-    <div class="rail-pin"><div class="rail-sticky">
-      <ul class="rail-track" aria-label="Six concept sites"><li class="rail-item"><article class="tile rail-card">
-          <p class="tile-label"><span>Barbershop</span><span class="chip">Concept site</span></p>
-          <div class="devices duo" data-parallax="0"><div class="laptop"><div class="laptop-screen"><img src="img/work/barber-desktop-1600.webp" srcset="img/work/barber-desktop-800.webp 800w, img/work/barber-desktop-1600.webp 1600w" sizes="(min-width: 1024px) 60vw, 92vw" width="1600" height="1000" loading="lazy" decoding="async" alt="The Brass &amp; Blade concept site on a laptop"></div><div class="laptop-base" aria-hidden="true"></div></div><div class="phone"><img src="img/work/barber-phone.webp" width="600" height="1300" loading="lazy" decoding="async" alt="The Brass &amp; Blade concept site on a phone"></div></div>
-          <h3>Brass &amp; Blade</h3>
-          <p>Prices, online booking and a gallery of cuts, under a spinning 3D barber pole.</p>
-          <a class="btn btn-ghost" href="../barber-demo/" target="_blank" rel="noopener">Open the concept <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg><span class="sr-only"> Brass &amp; Blade (opens in a new tab)</span></a>
-        </article></li><li class="rail-item"><article class="tile rail-card">
-          <p class="tile-label"><span>Cafe</span><span class="chip">Concept site</span></p>
-          <div class="devices duo" data-parallax="0"><div class="laptop"><div class="laptop-screen"><img src="img/work/cafe-desktop-1600.webp" srcset="img/work/cafe-desktop-800.webp 800w, img/work/cafe-desktop-1600.webp 1600w" sizes="(min-width: 1024px) 60vw, 92vw" width="1600" height="1000" loading="lazy" decoding="async" alt="The Ember &amp; Oak concept site on a laptop"></div><div class="laptop-base" aria-hidden="true"></div></div><div class="phone"><img src="img/work/cafe-phone.webp" width="600" height="1300" loading="lazy" decoding="async" alt="The Ember &amp; Oak concept site on a phone"></div></div>
-          <h3>Ember &amp; Oak</h3>
-          <p>A full menu, opening hours, a map and pick-up ordering, with a steaming 3D cup.</p>
-          <a class="btn btn-ghost" href="../cafe-demo-v2/" target="_blank" rel="noopener">Open the concept <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg><span class="sr-only"> Ember &amp; Oak (opens in a new tab)</span></a>
-        </article></li><li class="rail-item"><article class="tile rail-card">
-          <p class="tile-label"><span>Gym</span><span class="chip">Concept site</span></p>
-          <div class="devices duo" data-parallax="0"><div class="laptop"><div class="laptop-screen"><img src="img/work/gym-desktop-1600.webp" srcset="img/work/gym-desktop-800.webp 800w, img/work/gym-desktop-1600.webp 1600w" sizes="(min-width: 1024px) 60vw, 92vw" width="1600" height="1000" loading="lazy" decoding="async" alt="The Iron &amp; Ember concept site on a laptop"></div><div class="laptop-base" aria-hidden="true"></div></div><div class="phone"><img src="img/work/gym-phone.webp" width="600" height="1300" loading="lazy" decoding="async" alt="The Iron &amp; Ember concept site on a phone"></div></div>
-          <h3>Iron &amp; Ember</h3>
-          <p>Class timetable, memberships and a free-trial form that turns interest into a first session.</p>
-          <a class="btn btn-ghost" href="../gym-demo/" target="_blank" rel="noopener">Open the concept <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg><span class="sr-only"> Iron &amp; Ember (opens in a new tab)</span></a>
-        </article></li><li class="rail-item"><article class="tile rail-card">
-          <p class="tile-label"><span>Plumber</span><span class="chip">Concept site</span></p>
-          <div class="devices duo" data-parallax="0"><div class="laptop"><div class="laptop-screen"><img src="img/work/plumber-desktop-1600.webp" srcset="img/work/plumber-desktop-800.webp 800w, img/work/plumber-desktop-1600.webp 1600w" sizes="(min-width: 1024px) 60vw, 92vw" width="1600" height="1000" loading="lazy" decoding="async" alt="The Waverley Plumbing concept site on a laptop"></div><div class="laptop-base" aria-hidden="true"></div></div><div class="phone"><img src="img/work/plumber-phone.webp" width="600" height="1300" loading="lazy" decoding="async" alt="The Waverley Plumbing concept site on a phone"></div></div>
-          <h3>Waverley Plumbing</h3>
-          <p>A big call button, the suburbs covered, a price guide and a quote form.</p>
-          <a class="btn btn-ghost" href="../plumber-demo/" target="_blank" rel="noopener">Open the concept <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg><span class="sr-only"> Waverley Plumbing (opens in a new tab)</span></a>
-        </article></li><li class="rail-item"><article class="tile rail-card">
-          <p class="tile-label"><span>Salon</span><span class="chip">Concept site</span></p>
-          <div class="devices duo" data-parallax="0"><div class="laptop"><div class="laptop-screen"><img src="img/work/salon-desktop-1600.webp" srcset="img/work/salon-desktop-800.webp 800w, img/work/salon-desktop-1600.webp 1600w" sizes="(min-width: 1024px) 60vw, 92vw" width="1600" height="1000" loading="lazy" decoding="async" alt="The Maison Lune concept site on a laptop"></div><div class="laptop-base" aria-hidden="true"></div></div><div class="phone"><img src="img/work/salon-phone.webp" width="600" height="1300" loading="lazy" decoding="async" alt="The Maison Lune concept site on a phone"></div></div>
-          <h3>Maison Lune</h3>
-          <p>A calm service menu with prices, stylists and a booking widget.</p>
-          <a class="btn btn-ghost" href="../salon-demo/" target="_blank" rel="noopener">Open the concept <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg><span class="sr-only"> Maison Lune (opens in a new tab)</span></a>
-        </article></li><li class="rail-item"><article class="tile rail-card">
-          <p class="tile-label"><span>Auto parts</span><span class="chip">Concept site</span></p>
-          <div class="devices duo" data-parallax="0"><div class="laptop"><div class="laptop-screen"><img src="img/work/parts-desktop-1600.webp" srcset="img/work/parts-desktop-800.webp 800w, img/work/parts-desktop-1600.webp 1600w" sizes="(min-width: 1024px) 60vw, 92vw" width="1600" height="1000" loading="lazy" decoding="async" alt="The Torque &amp; Co. concept site on a laptop"></div><div class="laptop-base" aria-hidden="true"></div></div><div class="phone"><img src="img/work/parts-phone.webp" width="600" height="1300" loading="lazy" decoding="async" alt="The Torque &amp; Co. concept site on a phone"></div></div>
-          <h3>Torque &amp; Co.</h3>
-          <p>A home page that helps drivers find the part that fits their car.</p>
-          <a class="btn btn-ghost" href="../parts-store-demo/" target="_blank" rel="noopener">Open the concept <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg><span class="sr-only"> Torque &amp; Co. (opens in a new tab)</span></a>
-        </article></li></ul>
-      <div class="container rail-controls"><p class="rail-count"><b>01</b> / 06</p><div class="rail-btns"><button class="rail-btn" type="button" data-dir="-1" aria-label="Previous concept"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M15 6l-6 6 6 6"/></svg></button><button class="rail-btn" type="button" data-dir="1" aria-label="Next concept"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 6l6 6-6 6"/></svg></button></div></div>
-    </div></div>
-  </section>
-
-  <section class="section" aria-labelledby="price-h">
+  <section class="section has-grid pricing-sec" aria-labelledby="price-h">
     <div class="container">
       <div class="section-head split">
-      <div><p class="label" data-reveal><span class="idx">05</span><span class="slash" aria-hidden="true">/</span>Pricing</p><h2 class="h2" data-split><span id="price-h">Clear prices. <em>Set before we start.</em></span></h2></div>
-      <p class="lead" data-reveal>One price per package, written down before any work begins. No retainers you did not ask for.</p>
+      <div><p class="label" data-reveal><span class="idx">08</span><span class="slash" aria-hidden="true">/</span>Pricing</p><h2 class="h2" data-split><span id="price-h">Clear prices. <em>Set before we start.</em></span></h2></div>
+      <p class="lead" data-reveal>One price per package, agreed in writing before any work begins. Bigger projects are quoted.</p>
     </div>
       <div class="accounts three">
         <div data-reveal><article class="tile acct-card">
+        
         <div class="acct-top"><svg class="crest" viewBox="0 0 48 56" aria-hidden="true" focusable="false"><path class="crest-outline" pathLength="1" d="M24 2.5 43.5 9.2V26c0 12.6-8.1 21.6-19.5 27.5C12.6 47.6 4.5 38.6 4.5 26V9.2Z"/><path class="crest-inner" d="M24 7.6 38.6 12.6V26c0 9.6-6 16.6-14.6 21.4C15.4 42.6 9.4 35.6 9.4 26V12.6Z"/><text class="crest-text" x="24" y="32.6" text-anchor="middle">BC</text></svg><span class="chip chip-plain">Simple</span></div>
         <h3 class="acct-name">One Page</h3>
         <p class="acct"><span>AUD</span><span>&bull;&bull;&bull;&bull; 0300</span></p>
-        <p class="balance"><span data-price="onePage" data-count="300">$300</span> <span class="per">one-off</span></p>
+        <p class="balance"><span class="odo" data-price="onePage" data-odometer="$300">$300</span> <span class="per">one-off</span></p>
         <p class="muted small">One polished page with everything a local business needs.</p>
         <ul><li>Writing help</li><li>Designed for phones first</li><li>Contact form</li><li>Google basics set up</li><li>Fast and secure (HTTPS)</li><li>2 rounds of changes</li></ul>
         <a class="btn btn-ghost" href="contact.html?need=one-page">Choose One Page</a>
       </article></div>
         <div data-reveal><article class="tile acct-card is-featured">
+        <span class="sweep" aria-hidden="true"></span>
         <div class="acct-top"><svg class="crest" viewBox="0 0 48 56" aria-hidden="true" focusable="false"><path class="crest-outline" pathLength="1" d="M24 2.5 43.5 9.2V26c0 12.6-8.1 21.6-19.5 27.5C12.6 47.6 4.5 38.6 4.5 26V9.2Z"/><path class="crest-inner" d="M24 7.6 38.6 12.6V26c0 9.6-6 16.6-14.6 21.4C15.4 42.6 9.4 35.6 9.4 26V12.6Z"/><text class="crest-text" x="24" y="32.6" text-anchor="middle">BC</text></svg><span class="chip">Better value</span></div>
         <h3 class="acct-name">Full Website</h3>
         <p class="acct"><span>AUD</span><span>&bull;&bull;&bull;&bull; 0700</span></p>
-        <p class="balance"><span data-price="fullSite" data-count="700">$700</span> <span class="per">one-off</span></p>
+        <p class="balance"><span class="odo" data-price="fullSite" data-odometer="$700">$700</span> <span class="per">one-off</span></p>
         <p class="muted small">Up to about 5 pages, for a business with more to show.</p>
         <ul><li>Everything in One Page</li><li>Up to about 5 pages</li><li>Room for a menu, timetable, services or gallery</li><li>2 rounds of changes</li></ul>
         <a class="btn btn-gold" href="contact.html?need=full-website">Choose Full Website</a>
       </article></div>
         <div data-reveal><article class="tile acct-card">
+        
         <div class="acct-top"><svg class="crest" viewBox="0 0 48 56" aria-hidden="true" focusable="false"><path class="crest-outline" pathLength="1" d="M24 2.5 43.5 9.2V26c0 12.6-8.1 21.6-19.5 27.5C12.6 47.6 4.5 38.6 4.5 26V9.2Z"/><path class="crest-inner" d="M24 7.6 38.6 12.6V26c0 9.6-6 16.6-14.6 21.4C15.4 42.6 9.4 35.6 9.4 26V12.6Z"/><text class="crest-text" x="24" y="32.6" text-anchor="middle">BC</text></svg><span class="chip chip-plain">Optional</span></div>
         <h3 class="acct-name">Care plan</h3>
         <p class="acct"><span>AUD</span><span>&bull;&bull;&bull;&bull; 0030</span></p>
-        <p class="balance"><span data-price="carePlan" data-count="30">$30</span> <span class="per">a month</span></p>
+        <p class="balance"><span class="odo" data-price="carePlan" data-odometer="$30">$30</span> <span class="per">a month</span></p>
         <p class="muted small">We look after your site once it is live.</p>
         <ul><li>Hosting upkeep</li><li>Small text and photo changes</li><li>Security checks and backups</li><li>Priority replies</li></ul>
         <a class="btn btn-ghost" href="care-plan.html">What it covers</a>
       </article></div>
       </div>
-      <p data-reveal style="margin-top:28px">Something bigger in mind? Custom projects are quoted. <a class="link" href="pricing.html">Pricing and the calculator <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></p>
+      <p class="pricing-more" data-reveal>Something bigger in mind? Custom projects are quoted. <a class="link" href="pricing.html">Pricing and the calculator <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></p>
     </div>
   </section>
 
-  <section class="section band" aria-labelledby="trades-h">
-    <div class="container">
-      <div class="section-head split">
-      <div><p class="label" data-reveal><span class="idx">06</span><span class="slash" aria-hidden="true">/</span>Trades</p><h2 class="h2" data-split><span id="trades-h">Made for the high street.</span></h2></div>
-      <p class="lead" data-reveal>We build for businesses across Melbourne and its suburbs. Pick your trade to see what it usually needs.</p>
+  <section class="section globe-sec" aria-labelledby="globe-h">
+    <div class="container globe-split">
+      <div class="globe-copy">
+        <p class="label" data-reveal><span class="idx">09</span><span class="slash" aria-hidden="true">/</span>Where</p>
+        <h2 id="globe-h" class="h2" data-split>Made in <em>Melbourne.</em></h2>
+        <p class="lead" data-reveal>Based in Melbourne. Building for local businesses across Victoria.</p>
+        <p class="tiny globe-clock" data-reveal><span class="avail-dot" aria-hidden="true"></span><span data-clock>Melbourne</span></p>
+      </div>
+      <div class="globe" data-globe>
+        <picture class="globe-still"><source type="image/avif" srcset="assets/globe-still.avif" sizes="(min-width: 1024px) 50vw, 92vw"><source type="image/webp" srcset="assets/globe-still.webp" sizes="(min-width: 1024px) 50vw, 92vw"><img src="assets/globe-still.jpg" width="1200" height="1200" loading="lazy" decoding="async" alt="A dotted globe turned to Australia, with a gold pin on Melbourne"></picture>
+      </div>
     </div>
-      <ol class="trade-list" data-reveal><li><a href="for-barbers.html"><span class="n">01</span><span class="t">Barbers</span><span class="x">Bookings, prices and the cuts that sell the chair.</span><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 17 17 7M8 7h9v9"/></svg></span></a></li><li><a href="for-cafes.html"><span class="n">02</span><span class="t">Cafes</span><span class="x">Menu, hours and a map, before they leave the house.</span><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 17 17 7M8 7h9v9"/></svg></span></a></li><li><a href="for-gyms.html"><span class="n">03</span><span class="t">Gyms</span><span class="x">Timetables, memberships and an easy first class.</span><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 17 17 7M8 7h9v9"/></svg></span></a></li><li><a href="for-tradies.html"><span class="n">04</span><span class="t">Tradies</span><span class="x">The call, the quote and the suburbs you cover.</span><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 17 17 7M8 7h9v9"/></svg></span></a></li><li><a href="for-salons.html"><span class="n">05</span><span class="t">Salons</span><span class="x">Services, prices and bookings at any hour.</span><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 17 17 7M8 7h9v9"/></svg></span></a></li></ol>
-    </div>
+    <div class="marquee" data-marquee role="region" aria-label="Places across Victoria"><div class="marquee-track"><ul><li>Melbourne</li><li>Geelong</li><li>Ballarat</li><li>Bendigo</li><li>Mornington Peninsula</li><li>Yarra Valley</li><li>Dandenong Ranges</li><li>Bellarine</li><li>Gippsland</li><li>Macedon Ranges</li><li>Shepparton</li><li>Warrnambool</li></ul><ul aria-hidden="true"><li>Melbourne</li><li>Geelong</li><li>Ballarat</li><li>Bendigo</li><li>Mornington Peninsula</li><li>Yarra Valley</li><li>Dandenong Ranges</li><li>Bellarine</li><li>Gippsland</li><li>Macedon Ranges</li><li>Shepparton</li><li>Warrnambool</li></ul></div></div>
   </section>
 
-  <section class="section" aria-labelledby="case-h">
-    <div class="container">
-      <div class="grid grid-2" style="align-items:end">
-        <div><p class="label" data-reveal>An honest offer</p><h2 id="case-h" class="h2" data-split>Be our first <em>case study.</em></h2></div>
-        <div data-reveal>
-          <p class="lead">We are new, so there are no customer reviews to show yet, and we will never invent any. The first few local shops we work with get a discount, in return for an honest quote about the experience and permission to show their site here.</p>
-          <a class="btn btn-ghost" href="contact.html">Ask about the offer</a>
-        </div>
+  <section class="section offer-sec" aria-labelledby="case-h">
+    <div class="container offer-split">
+      <div><p class="label" data-reveal><span class="idx">10</span><span class="slash" aria-hidden="true">/</span>An honest offer</p><h2 id="case-h" class="h2" data-split>Be our first <em>case study.</em></h2></div>
+      <div data-reveal>
+        <p class="lead">We are new, so there are no customer reviews to show yet, and we will never invent any. The first few local shops we work with get a discount, in return for an honest quote about the experience and permission to show their site here.</p>
+        <a class="btn btn-ghost" href="contact.html">Ask about the offer</a>
       </div>
     </div>
   </section>
 
-  <section class="section band" aria-labelledby="faq-h">
+  <section class="section-tight band" aria-labelledby="faq-h">
     <div class="container faq-split">
       <div class="section-head">
-      <div><p class="label" data-reveal><span class="idx">07</span><span class="slash" aria-hidden="true">/</span>FAQ</p><h2 class="h2" data-split><span id="faq-h">Straight <em>answers.</em></span></h2></div>
+      <div><p class="label" data-reveal><span class="idx">11</span><span class="slash" aria-hidden="true">/</span>FAQ</p><h2 class="h2" data-split><span id="faq-h">Straight <em>answers.</em></span></h2></div>
       <p class="lead" data-reveal>The questions everyone asks before they start.</p>
     </div>
-      <div data-reveal><div class="faq"><details><summary>How much does a website cost?</summary><div class="answer"><p>A One Page site is $300. A Full Website, up to about 5 pages, is $700. The care plan is optional at $30 a month, and bigger projects are quoted. The only other cost is your own domain name, about $20 a year. See <a href="pricing.html">pricing</a>.</p></div></details><details><summary>How long does it take?</summary><div class="answer"><p>Your free concept homepage is usually ready within 5 business days of our first chat. The build usually takes 1 to 2 weeks after the deposit, and launch takes 1 to 2 days once you approve the preview.</p></div></details><details><summary>Who owns the website?</summary><div class="answer"><p>You do. Once the balance is paid, the finished site is yours. Your domain name is registered in your name, so it is always yours too.</p></div></details><details><summary>Can I ask for changes?</summary><div class="answer"><p>Yes. Two rounds of changes are included while we build. After launch, small text and photo changes are part of the care plan. Anything bigger is quoted fairly before we start it.</p></div></details></div><p style="margin-top:22px"><a class="link" href="faq.html">All questions <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></p></div>
+      <div data-reveal><div class="faq"><details><summary>How much does a website cost?</summary><div class="answer"><p>A One Page site is $300. A Full Website, up to about 5 pages, is $700. The care plan is optional at $30 a month, and bigger projects are quoted. The only other cost is your own domain name, about $20 a year. See <a href="pricing.html">pricing</a>.</p></div></details><details><summary>How long does it take?</summary><div class="answer"><p>Your free concept homepage is usually ready within 5 business days of our first chat. The build usually takes 1 to 2 weeks after the deposit, and launch takes 1 to 2 days once you approve the preview.</p></div></details><details><summary>Who owns the website?</summary><div class="answer"><p>You do. Once the balance is paid, the finished site is yours. Your domain name is registered in your name, so it is always yours too.</p></div></details><details><summary>Can I ask for changes?</summary><div class="answer"><p>Yes. Two rounds of changes are included while we build. After launch, small text and photo changes are part of the care plan. Anything bigger is quoted fairly before we start it.</p></div></details><details><summary>What about the domain name and hosting?</summary><div class="answer"><p>You pay for your own domain name (your web address), about $20 a year, registered in your name. Hosting setup is included in the price. If anything about hosting would cost you extra, we tell you before you say yes.</p></div></details></div><p style="margin-top:22px"><a class="link" href="faq.html">All questions <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></p></div>
     </div>
   </section>
 
   <section class="cta-final" aria-labelledby="cta-h">
+    <svg class="cta-crest" viewBox="0 0 48 56" aria-hidden="true" focusable="false"><path d="M24 2.5 43.5 9.2V26c0 12.6-8.1 21.6-19.5 27.5C12.6 47.6 4.5 38.6 4.5 26V9.2Z"/></svg>
     <div class="container">
       <p class="label" data-reveal style="justify-content:center">Next step</p>
       <h2 id="cta-h" class="display" data-split>See it <em>before</em> you pay.</h2>

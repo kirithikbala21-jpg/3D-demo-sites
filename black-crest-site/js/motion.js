@@ -58,6 +58,39 @@ export function initMotion({ reduce, tier, fine }) {
     gsap.fromTo(el, { yPercent: amt / 2 }, { yPercent: -amt / 2, ease: 'none', scrollTrigger: { trigger: el, start: 'top bottom', end: 'bottom top', scrub: true } });
   });
 
+  // ---- trade chapters (home): one pinned full-screen stage on desktop. Each scene wipes up over the last, its photo
+  // slowly zooms from 1 to 1.12, the title rises and a gold hairline draws. Phones and tablets keep stacked cards.
+  const ch = document.querySelector('[data-chapters]');
+  if (ch && innerWidth >= 1024) {
+    ch.classList.add('is-pinned');
+    const stage = ch.querySelector('.chapters-stage'), scenes = $$('.chapter', stage), n = scenes.length;
+    const count = stage.querySelector('.chapters-count b'), bar = stage.querySelector('.chapters-bar i');
+    let cur = -1;
+    const tl = gsap.timeline({ defaults: { ease: 'none' }, scrollTrigger: {
+      trigger: stage, start: 'top top', end: () => '+=' + innerHeight * (n - 0.5), pin: true, scrub: 0.6, invalidateOnRefresh: true,
+      onUpdate: (s) => {
+        const i = Math.min(n - 1, Math.max(0, Math.round(s.progress * (n - 1))));
+        if (i === cur) return; cur = i;
+        count.textContent = String(i + 1).padStart(2, '0');
+        gsap.to(bar, { scaleX: (i + 1) / n, duration: 0.6, ease: EASE, overwrite: true });
+        scenes.forEach((sc, j) => sc.toggleAttribute('inert', j !== i));
+      }
+    } });
+    scenes.forEach((sc, i) => {
+      const at = Math.max(0, i - 0.5);
+      const img = sc.querySelector('.chapter-media img'), title = sc.querySelector('.chapter-title'), rule = sc.querySelector('.chapter-rule');
+      const rest = sc.querySelectorAll('.chapter-cap, .chapter-meta, .chapter-copy .link');
+      if (i > 0) tl.fromTo(sc, { clipPath: 'inset(100% 0% 0% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 0.5, ease: 'power2.inOut' }, at);
+      tl.fromTo(img, { scale: 1 }, { scale: 1.12, duration: i === 0 ? 1 : 1.5 }, i === 0 ? 0 : at);
+      if (i > 0) {
+        tl.fromTo(title, { yPercent: 70, opacity: 0 }, { yPercent: 0, opacity: 1, duration: 0.35, ease: 'power3.out' }, at + 0.2);
+        tl.fromTo(rest, { y: 24, opacity: 0 }, { y: 0, opacity: 1, duration: 0.3, stagger: 0.04, ease: 'power3.out' }, at + 0.3);
+      }
+      tl.fromTo(rule, { scaleX: 0 }, { scaleX: 1, duration: 0.35, ease: 'power2.out' }, i === 0 ? 0.05 : at + 0.32);
+    });
+    tl.to({}, { duration: 0.4 }); // a short hold on the last scene before the page moves on
+  }
+
   // ---- numbers that roll like an odometer
   $$('[data-odometer]').forEach((el) => odometer(el, gsap, ST));
 

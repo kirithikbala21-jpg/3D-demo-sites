@@ -1,125 +1,132 @@
-// The home page hero: a slowly turning gold crest with drifting dust and light, and a light that follows the cursor.
-// Loaded only on the home page, only on capable devices, after first paint (see core.js).
-// Three.js is vendored (vendor/three, 0.170.0). If anything fails, the still crest simply stays.
+// The home page hero: a real-time gold crest, extruded from SVG paths (the shield, its rim, an inlay line and the
+// "BC" monogram as real letter outlines). Lit by a RoomEnvironment reflection map, a warm key light, a cool rim
+// light and a slow light sweep. It turns a few degrees on its own, tilts towards the pointer (or the phone, after a
+// tap), and recedes and dims as the page scrolls. Rendering pauses when the hero is off screen or the tab is hidden.
+// Loaded only on the home page, only on capable devices, when the browser is idle (see core.js). If anything fails,
+// the still image of the same crest (assets/crest-still.*) simply stays in place.
+// ?still=1 renders one fixed frame with a transparent background, for tools/render-still.mjs.
 import * as THREE from '../vendor/three/three.module.min.js';
+import { SVGLoader } from '../vendor/three/addons/SVGLoader.js';
+import { RoomEnvironment } from '../vendor/three/addons/RoomEnvironment.js';
+import { CREST_SVG } from './crest-shape.js';
 
-// the crest outline, the same shape as the logo (48 x 56 units, y pointing down as in SVG)
-function shieldShape(scale = 1, cx = 24, cy = 28) {
-  const p = (x, y) => [(x - cx) * scale, -(y - cy) * scale];
-  const s = new THREE.Shape();
-  s.moveTo(...p(24, 2.5)); s.lineTo(...p(43.5, 9.2)); s.lineTo(...p(43.5, 26));
-  s.bezierCurveTo(...p(43.5, 38.6), ...p(35.4, 47.6), ...p(24, 53.5));
-  s.bezierCurveTo(...p(12.6, 47.6), ...p(4.5, 38.6), ...p(4.5, 26));
-  s.lineTo(...p(4.5, 9.2)); s.closePath();
-  return s;
+const DEG = Math.PI / 180;
+// layer: [svg path id, extrude depth, front face z (svg units), material]
+const LAYERS = [['plate', 10, 4, 'enamel'], ['rim', 30, 22, 'gold'], ['inlay', 12, 12, 'gold'], ['mono', 22, 20, 'gold']];
+
+function buildCrest() {
+  const data = new SVGLoader().parse(CREST_SVG);
+  const gold = new THREE.MeshPhysicalMaterial({ color: 0xd6a648, metalness: 1, roughness: 0.25, clearcoat: 0.4, clearcoatRoughness: 0.12 });
+  const enamel = new THREE.MeshPhysicalMaterial({ color: 0x030304, metalness: 0.2, roughness: 0.6, clearcoat: 0.25, clearcoatRoughness: 0.2 });
+  const mats = { gold, enamel };
+  // centre on the shield, flip SVG's downward y (a half turn about x keeps the faces pointing the right way)
+  const flip = new THREE.Matrix4().makeScale(1, -1, -1).multiply(new THREE.Matrix4().makeTranslation(-240, -280, 0));
+  const group = new THREE.Group();
+  LAYERS.forEach(([id, depth, front, mat]) => {
+    const path = data.paths.find((p) => p.userData && p.userData.node && p.userData.node.id === id);
+    if (!path) return;
+    const shapes = SVGLoader.createShapes(path);
+    const bevel = id === 'plate' ? 2 : id === 'rim' ? 7 : 4;
+    const geo = new THREE.ExtrudeGeometry(shapes, { depth, curveSegments: id === 'mono' ? 10 : 28, bevelEnabled: true, bevelThickness: bevel, bevelSize: bevel * 0.7, bevelSegments: 4 });
+    geo.applyMatrix4(flip);
+    geo.computeVertexNormals();
+    const mesh = new THREE.Mesh(geo, mats[mat]);
+    mesh.position.z = front - bevel;
+    group.add(mesh);
+  });
+  group.scale.setScalar(0.01); // 480 x 560 svg units become 4.8 x 5.6 world units
+  return { group, mats };
 }
 
-function monogramTexture() {
-  const c = document.createElement('canvas'); c.width = c.height = 512;
-  const g = c.getContext('2d');
-  const grad = g.createLinearGradient(0, 120, 0, 400);
-  grad.addColorStop(0, '#FFF3C4'); grad.addColorStop(.5, '#E2C15A'); grad.addColorStop(1, '#A8842A');
-  g.fillStyle = grad; g.textAlign = 'center'; g.textBaseline = 'middle';
-  g.font = '600 250px "Cormorant Garamond", Georgia, serif';
-  g.fillText('BC', 256, 270);
-  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 4;
-  return t;
-}
-
-function dotTexture() {
-  const c = document.createElement('canvas'); c.width = c.height = 64;
-  const g = c.getContext('2d'), r = g.createRadialGradient(32, 32, 0, 32, 32, 32);
-  r.addColorStop(0, 'rgba(255,255,255,1)'); r.addColorStop(.25, 'rgba(255,240,200,.6)'); r.addColorStop(1, 'rgba(255,240,200,0)');
-  g.fillStyle = r; g.fillRect(0, 0, 64, 64);
-  return new THREE.CanvasTexture(c);
-}
-
-export function start(stage) { // phase 3 rebuilds this scene
-  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
-  renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 1.75));
+export function start(stage, env = {}) {
+  const still = /[?&]still=1\b/.test(location.search);
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance', preserveDrawingBuffer: still });
+  renderer.setPixelRatio(still ? 2 : Math.min(devicePixelRatio || 1, 1.75));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
-  renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.05;
-  renderer.domElement.setAttribute('aria-hidden', 'true');
-  stage.append(renderer.domElement);
+  renderer.toneMapping = THREE.NeutralToneMapping;
+  renderer.toneMappingExposure = 1.1;
+  renderer.setClearColor(0x000000, 0);
+  const canvas = renderer.domElement;
+  canvas.className = 'hero-canvas';
+  canvas.setAttribute('aria-hidden', 'true');
 
   const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(32, 1, 0.1, 400);
-  camera.position.set(0, 0, 118);
-
-  // studio lighting baked into an environment map: a dark room with a few soft boxes
   const pmrem = new THREE.PMREMGenerator(renderer);
-  const room = new THREE.Scene();
-  room.add(new THREE.Mesh(new THREE.BoxGeometry(100, 100, 100), new THREE.MeshBasicMaterial({ color: 0x08090c, side: THREE.BackSide })));
-  const box = (w, h, x, y, z, c) => { const m = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshBasicMaterial({ color: c, side: THREE.DoubleSide })); m.position.set(x, y, z); m.lookAt(0, 0, 0); room.add(m); };
-  box(60, 18, 0, 45, 10, 0xffffff); box(16, 60, -46, 5, 20, 0xfff1d0); box(16, 50, 46, -5, 15, 0xd8dcff); box(40, 10, 0, -45, 30, 0x6a5a30);
-  scene.environment = pmrem.fromScene(room, 0.03).texture;
+  scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+  scene.environmentIntensity = 1.0;
+  scene.environmentRotation.set(-0.35, 0.9, 0); // bright panels of the room catch the bevels, the faces stay deep
+  pmrem.dispose();
 
-  const gold = new THREE.MeshStandardMaterial({ color: 0xd4af37, metalness: 1, roughness: 0.24 });
-  const plate = new THREE.MeshStandardMaterial({ color: 0x15161c, metalness: 0.75, roughness: 0.38 });
-  const crest = new THREE.Group();
+  const camera = new THREE.PerspectiveCamera(28, 1, 0.1, 60);
+  camera.position.set(0, 0, 13.5);
 
-  // the gold rim: the outer shield with the inner shield cut out
-  const outer = shieldShape(1); outer.holes.push(new THREE.Path(shieldShape(0.8).getPoints(64).reverse()));
-  const rim = new THREE.Mesh(new THREE.ExtrudeGeometry(outer, { depth: 5, bevelEnabled: true, bevelThickness: 1.4, bevelSize: 0.9, bevelSegments: 6, curveSegments: 48 }), gold);
-  rim.position.z = -2.5; crest.add(rim);
-  // the dark plate, slightly recessed
-  const inner = new THREE.Mesh(new THREE.ExtrudeGeometry(shieldShape(0.82), { depth: 3, bevelEnabled: true, bevelThickness: 0.4, bevelSize: 0.3, bevelSegments: 3, curveSegments: 48 }), plate);
-  inner.position.z = -1.5; crest.add(inner);
-  // a fine gold inlay line
-  const inlay = new THREE.Mesh(new THREE.ExtrudeGeometry((() => { const s = shieldShape(0.7); s.holes.push(new THREE.Path(shieldShape(0.675).getPoints(64).reverse())); return s; })(), { depth: 0.6, bevelEnabled: false, curveSegments: 48 }), gold);
-  inlay.position.z = 1.95; crest.add(inlay); // just proud of the plate's front face (z = 1.9)
-  const inlayBack = inlay.clone(); inlayBack.position.z = -2.55; crest.add(inlayBack);
-  // the BC monogram on both faces
-  const mono = new THREE.MeshBasicMaterial({ map: monogramTexture(), transparent: true, depthWrite: false });
-  const front = new THREE.Mesh(new THREE.PlaneGeometry(26, 26), mono); front.position.set(0, -1.2, 2.6); crest.add(front);
-  const back = front.clone(); back.rotation.y = Math.PI; back.position.z = -2.6; crest.add(back);
-  scene.add(crest);
+  const key = new THREE.DirectionalLight(0xffe0b0, 6); key.position.set(-3, 4, 9); scene.add(key);
+  const rim = new THREE.DirectionalLight(0xb4c4ff, 3); rim.position.set(5, 1.5, -5); scene.add(rim);
+  const sweep = new THREE.PointLight(0xfff4dc, 0, 9, 1.6); sweep.position.set(-4, 1, 3); scene.add(sweep);
 
-  // lights: a key light, and a warm spotlight that follows the cursor
-  scene.add(new THREE.AmbientLight(0xffffff, 0.15));
-  const key = new THREE.DirectionalLight(0xfff4dc, 1.6); key.position.set(-30, 50, 80); scene.add(key);
-  const follow = new THREE.PointLight(0xffd88a, 900, 220, 1.6); follow.position.set(20, 10, 60); scene.add(follow);
+  const { group } = buildCrest();
+  const pivot = new THREE.Group(); pivot.add(group); scene.add(pivot);
 
-  // dust and light: slow particles in front of and behind the crest
-  const N = 520, pos = new Float32Array(N * 3), speed = new Float32Array(N);
-  for (let i = 0; i < N; i++) { pos[i * 3] = (Math.random() - 0.5) * 160; pos[i * 3 + 1] = (Math.random() - 0.5) * 110; pos[i * 3 + 2] = (Math.random() - 0.5) * 90; speed[i] = 0.4 + Math.random(); }
-  const pg = new THREE.BufferGeometry(); pg.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-  const dust = new THREE.Points(pg, new THREE.PointsMaterial({ size: 1.1, map: dotTexture(), color: 0xf3dc9a, transparent: true, opacity: 0.55, depthWrite: false, blending: THREE.AdditiveBlending, sizeAttenuation: true }));
-  scene.add(dust);
-
-  // size, pointer, visibility
+  // fit the crest to the stage: the whole shield, with a little air around it
   const resize = () => {
-    const w = stage.clientWidth, h = stage.clientHeight;
-    if (!w || !h) return;
-    renderer.setSize(w, h, false); camera.aspect = w / h;
-    camera.position.z = w / h < 1.2 ? 190 : w / h > 1.6 ? 120 : 165;
+    const w = Math.max(1, stage.clientWidth), h = Math.max(1, stage.clientHeight);
+    renderer.setSize(w, h, false);
+    camera.aspect = w / h;
+    const vfit = 6.4 / (2 * Math.tan((camera.fov * DEG) / 2)); // shield is about 5.6 tall, plus air
+    const hfit = 5.6 / (2 * Math.tan((camera.fov * DEG) / 2) * camera.aspect);
+    camera.position.z = Math.max(vfit, hfit);
     camera.updateProjectionMatrix();
   };
-  resize(); new ResizeObserver(resize).observe(stage);
-  let px = 0, py = 0, tx = 0, ty = 0;
-  addEventListener('pointermove', (e) => { tx = (e.clientX / innerWidth - 0.5) * 2; ty = (e.clientY / innerHeight - 0.5) * 2; }, { passive: true });
-  let visible = true;
-  new IntersectionObserver((en) => { visible = en[0].isIntersecting; }).observe(stage);
+  resize();
+  stage.append(canvas);
 
-  const clock = new THREE.Clock();
-  let first = true;
-  renderer.setAnimationLoop(() => {
-    if (!visible || document.hidden) { clock.getDelta(); return; }
-    const dt = Math.min(clock.getDelta(), 0.05), t = clock.elapsedTime;
-    px += (tx - px) * 0.05; py += (ty - py) * 0.05;
-    crest.rotation.y += dt * 0.32;
-    crest.rotation.x = Math.sin(t * 0.4) * 0.06 + py * 0.08;
-    crest.position.y = Math.sin(t * 0.6) * 1.6;
-    follow.position.set(px * 70, -py * 45, 55);
-    const a = pg.attributes.position.array;
-    for (let i = 0; i < N; i++) {
-      a[i * 3 + 1] += dt * speed[i] * 1.6; a[i * 3] += Math.sin(t * 0.3 + i) * dt * 0.6;
-      if (a[i * 3 + 1] > 56) a[i * 3 + 1] = -56;
-    }
-    pg.attributes.position.needsUpdate = true;
-    dust.rotation.y = px * 0.05;
+  if (still) {
+    pivot.rotation.set(6 * DEG, -14 * DEG, 0);
+    sweep.position.set(-1.2, 1.6, 3); sweep.intensity = 6;
     renderer.render(scene, camera);
-    if (first) { first = false; stage.classList.add('is-3d'); }
-  });
+    stage.classList.add('is-live');
+    window.__crestReady = true;
+    return;
+  }
+
+  // ---- input: pointer on desktop; on phones the device tilt, only after a tap on the crest (iOS asks permission)
+  let tx = 0, ty = 0, cx = 0, cy = 0;
+  addEventListener('pointermove', (e) => { if (e.pointerType !== 'mouse') return; tx = (e.clientX / innerWidth - 0.5) * 2; ty = (e.clientY / innerHeight - 0.5) * 2; }, { passive: true });
+  if (!env.fine) {
+    const orient = (e) => { if (e.gamma == null) return; tx = Math.max(-1, Math.min(1, e.gamma / 30)); ty = Math.max(-1, Math.min(1, (e.beta - 45) / 30)); };
+    stage.addEventListener('click', async () => {
+      try { const D = window.DeviceOrientationEvent; if (D && D.requestPermission && (await D.requestPermission()) !== 'granted') return; addEventListener('deviceorientation', orient, { passive: true }); } catch (_) {}
+    }, { once: true });
+  }
+
+  // ---- scroll: the crest recedes and dims as the hero leaves
+  const hero = stage.closest('.hero') || stage;
+  let p = 0;
+  const onScroll = () => { p = Math.min(1, Math.max(0, scrollY / Math.max(1, hero.offsetHeight))); };
+  addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+  // ---- loop, paused off screen and in hidden tabs
+  let visible = true, raf = 0, last = performance.now(), t = 0;
+  const frame = (now) => {
+    raf = 0;
+    const dt = Math.min(0.05, (now - last) / 1000); last = now; t += dt;
+    cx += (tx - cx) * Math.min(1, dt * 3); cy += (ty - cy) * Math.min(1, dt * 3);
+    pivot.rotation.y = Math.sin(t * 0.32) * 8 * DEG + cx * 9 * DEG;
+    pivot.rotation.x = Math.sin(t * 0.21) * 2 * DEG + cy * 6 * DEG;
+    pivot.position.z = -p * 4; pivot.position.y = p * 0.6;
+    // a light sweeps across the face every 7 seconds
+    const s = (t % 7) / 2.4;
+    if (s < 1) { sweep.position.x = -4 + s * 8; sweep.intensity = Math.sin(s * Math.PI) * 9; } else sweep.intensity = 0;
+    renderer.toneMappingExposure = 1.1 - p * 0.65;
+    canvas.style.opacity = String(1 - p * 0.75);
+    renderer.render(scene, camera);
+    if (visible && !document.hidden) raf = requestAnimationFrame(frame);
+  };
+  const play = () => { if (!raf && visible && !document.hidden) { last = performance.now(); raf = requestAnimationFrame(frame); } };
+  new IntersectionObserver(([e]) => { visible = e.isIntersecting; play(); }).observe(stage);
+  document.addEventListener('visibilitychange', play);
+  addEventListener('resize', () => { resize(); play(); });
+  renderer.render(scene, camera);
+  requestAnimationFrame(() => stage.classList.add('is-live'));
+  play();
 }

@@ -42,16 +42,32 @@ if (clocks.length) {
   tick(); setInterval(tick, 15000);
 }
 
-/* ---------- First-visit intro (replaced by the preloader on the home page in phase 3) ---------- */
-const intro = $('#intro');
-if (intro) {
-  if (reduce || store.get('bc-intro')) intro.remove();
+/* ---------- Home preloader: a crest hairline draws while a counter follows real loading (fonts, the hero image,
+   the page), capped at 1.4 s, then the screen splits open. Once per visit; never with reduced motion. ---------- */
+const pre = $('#preloader');
+if (pre) {
+  if (!root.classList.contains('preload')) pre.remove();
   else {
-    store.set('bc-intro', '1'); intro.hidden = false;
-    const end = () => { if (!intro.isConnected) return; intro.classList.add('is-done'); setTimeout(() => intro.remove(), 500); };
-    intro.addEventListener('click', end); document.addEventListener('keydown', end, { once: true }); setTimeout(end, 1500);
+    store.set('bc-pre', '1');
+    const out = $('[data-pre-count]', pre), t0 = performance.now(), heroImg = $('.hero-stage img');
+    const jobs = [
+      document.fonts ? document.fonts.ready : Promise.resolve(),
+      heroImg && !heroImg.complete ? new Promise((r) => { heroImg.addEventListener('load', r, { once: true }); heroImg.addEventListener('error', r, { once: true }); }) : Promise.resolve(),
+      document.readyState === 'complete' ? Promise.resolve() : new Promise((r) => addEventListener('load', r, { once: true }))
+    ];
+    let done = 0, shown = 0;
+    jobs.forEach((j) => j.then(() => { done++; }));
+    const step = (now) => {
+      const goal = now - t0 >= 1400 ? 100 : (done / jobs.length) * 100;
+      shown = Math.min(goal, shown + Math.max(1, (goal - shown) * 0.18));
+      out.textContent = String(Math.round(shown)).padStart(3, '0');
+      if (shown < 100) return requestAnimationFrame(step);
+      pre.classList.add('is-open');
+      setTimeout(() => { root.classList.remove('preload'); pre.remove(); }, 950);
+    };
+    requestAnimationFrame(step);
   }
-}
+} else root.classList.remove('preload');
 
 /* ---------- Button labels roll up to a duplicate on hover (mouse only; screen readers still hear the label once) ---------- */
 if (fine && !reduce) $$('.btn').forEach((b) => {
@@ -81,31 +97,44 @@ if (fine && !reduce) $$('.tile').forEach((c) => c.addEventListener('pointermove'
   c.style.setProperty('--mx', (e.clientX - r.left) + 'px'); c.style.setProperty('--my', (e.clientY - r.top) + 'px');
 }));
 
-/* ---------- Hero spotlight ---------- */
-const hero = $('.hero');
-if (hero && fine && !reduce) {
-  hero.addEventListener('pointermove', (e) => {
-    const r = hero.getBoundingClientRect();
-    hero.style.setProperty('--gx', ((e.clientX - r.left) / r.width * 100).toFixed(1) + '%');
-    hero.style.setProperty('--gy', ((e.clientY - r.top) / r.height * 100).toFixed(1) + '%');
-    hero.classList.add('has-glow');
+/* ---------- Showreel: plays muted while on screen (not with reduced motion); "Play reel" opens it full screen ---------- */
+const reel = $('[data-reel]');
+if (reel) {
+  if (!reduce) new IntersectionObserver(([e]) => { if (e.isIntersecting) { reel.preload = 'auto'; reel.play().catch(() => {}); } else reel.pause(); }, { threshold: 0.2 }).observe(reel);
+  const btn = $('[data-reel-play]');
+  if (btn) btn.addEventListener('click', () => {
+    reel.controls = true; reel.play().catch(() => {});
+    const fs = reel.requestFullscreen || reel.webkitRequestFullscreen || reel.webkitEnterFullscreen;
+    if (fs) try { const r = fs.call(reel); if (r && r.catch) r.catch(() => {}); } catch (_) {}
   });
-  hero.addEventListener('pointerleave', () => hero.classList.remove('has-glow'));
+  const exit = () => { if (!document.fullscreenElement && !document.webkitFullscreenElement) { reel.controls = false; if (reduce) reel.pause(); } };
+  document.addEventListener('fullscreenchange', exit); reel.addEventListener('webkitendfullscreen', exit);
 }
 
-/* ---------- Hero crest area: keep the crest clear of the headline and the price card ---------- */
-const heroStage = $('.hero-stage');
-if (heroStage) {
-  const fitStage = () => {
-    const blockers = $$(innerWidth >= 1200 ? '.hero-card' : '.hero-grid .label, .hero-grid h1, .hero-card');
-    heroStage.style.height = '';
-    const s = heroStage.getBoundingClientRect();
-    let limit = s.bottom;
-    blockers.forEach((el) => { const r = el.getBoundingClientRect(); if (r.right > s.left && r.left < s.right && r.top < limit) limit = r.top; });
-    heroStage.style.height = Math.max(140, Math.floor(limit - s.top - 16)) + 'px';
+/* ---------- Anatomy: numbered spots on a concept screenshot, joined to their cards by hairlines on desktop ---------- */
+const anat = $('[data-anatomy]');
+if (anat) {
+  const svg = $('.anatomy-lines', anat), dots = $$('.hot', anat), cards = $$('.hot-card', anat);
+  const draw = () => {
+    if (innerWidth < 1024) { svg.innerHTML = ''; return; }
+    const box = anat.getBoundingClientRect();
+    svg.setAttribute('viewBox', `0 0 ${box.width} ${box.height}`);
+    svg.innerHTML = cards.map((c, i) => {
+      const d = dots[i].getBoundingClientRect(), r = c.getBoundingClientRect(), left = r.right < d.left;
+      const x1 = d.left + d.width / 2 - box.left, y1 = d.top + d.height / 2 - box.top, x2 = (left ? r.right : r.left) - box.left, y2 = r.top + r.height / 2 - box.top;
+      const mx = left ? x2 + 28 : x2 - 28;
+      return `<path data-line="${i}" d="M${x1.toFixed(1)} ${y1.toFixed(1)} L${mx.toFixed(1)} ${y2.toFixed(1)} L${x2.toFixed(1)} ${y2.toFixed(1)}"/>`;
+    }).join('');
   };
-  fitStage(); addEventListener('resize', fitStage); if (document.fonts) document.fonts.ready.then(fitStage);
+  const on = (i, v) => { dots[i].classList.toggle('is-on', v); cards[i].classList.toggle('is-on', v); const l = svg.querySelector(`[data-line="${i}"]`); if (l) l.classList.toggle('is-on', v); };
+  cards.forEach((c, i) => { c.addEventListener('pointerenter', () => on(i, true)); c.addEventListener('pointerleave', () => on(i, false)); });
+  draw(); addEventListener('resize', draw); addEventListener('load', draw);
+  const img = $('img', anat); if (img && !img.complete) img.addEventListener('load', draw, { once: true });
+  if (window.ScrollTrigger) window.ScrollTrigger.addEventListener('refresh', draw);
 }
+
+/* ---------- Concept Lab (home and lab.html) ---------- */
+if ($('[data-lab]')) import('./lab.js').then((m) => m.initLab(env));
 
 /* ---------- How it works: the pinned visual follows the step in view ---------- */
 const story = $('[data-story]');
@@ -140,26 +169,37 @@ if (rail) {
 $$('[data-compare]').forEach((box) => {
   const range = $('input[type=range]', box);
   const set = () => { box.style.setProperty('--pos', range.value + '%'); range.setAttribute('aria-valuenow', range.value); range.setAttribute('aria-valuetext', range.value + '% before'); };
-  range.addEventListener('input', set); set();
+  range.addEventListener('input', () => { set(); box.classList.add('is-touched'); }); set();
 });
 
-/* ---------- Home: the 3D crest, only on capable devices, after first paint ---------- */
+/* ---------- Home: real-time 3D (the hero crest and the globe), only on capable devices, when the browser is idle ---------- */
+const force3d = /[?&](3d=on|still=1)\b/.test(location.search);
+const gpuOK = () => {
+  try {
+    const c = document.createElement('canvas'), gl = c.getContext('webgl2') || c.getContext('webgl');
+    if (!gl) return false;
+    const info = gl.getExtension('WEBGL_debug_renderer_info');
+    return !/swiftshader|llvmpipe|software|basic render/i.test(info ? String(gl.getParameter(info.UNMASKED_RENDERER_WEBGL)) : '');
+  } catch (_) { return false; }
+};
+const can3d = force3d || (tier === 'full' && gpuOK());
+root.classList.toggle('has-3d', can3d);
+const idle = (fn) => {
+  const go = () => ('requestIdleCallback' in window ? requestIdleCallback(fn, { timeout: 1500 }) : setTimeout(fn, 200));
+  if (document.readyState === 'complete') go(); else addEventListener('load', go, { once: true });
+};
 const stage = $('.hero-stage[data-hero3d]');
-if (stage && (tier === 'full' || /[?&]3d=on\b/.test(location.search))) {
-  const gpuOK = () => {
-    try {
-      const c = document.createElement('canvas'), gl = c.getContext('webgl2') || c.getContext('webgl');
-      if (!gl) return false;
-      const info = gl.getExtension('WEBGL_debug_renderer_info');
-      return !/swiftshader|llvmpipe|software|basic render/i.test(info ? String(gl.getParameter(info.UNMASKED_RENDERER_WEBGL)) : '');
-    } catch (_) { return false; }
-  };
-  if (/[?&]3d=on\b/.test(location.search) || gpuOK()) {
-    let started = false;
-    const go = () => { if (started) return; started = true; ['pointermove', 'scroll', 'touchstart', 'keydown'].forEach((t) => removeEventListener(t, go)); import('./hero3d.js').then((m) => m.start(stage, env)).catch(() => {}); };
-    const arm = () => ['pointermove', 'scroll', 'touchstart', 'keydown'].forEach((t) => addEventListener(t, go, { passive: true, once: true }));
-    if (document.readyState === 'complete') arm(); else addEventListener('load', arm, { once: true });
-  }
+if (stage && can3d) {
+  const run = () => import('./hero3d.js').then((m) => m.start(stage, env)).catch((e) => console.warn('3D crest skipped:', e && e.message));
+  /[?&]still=1\b/.test(location.search) ? run() : idle(run);
+}
+const globe = $('[data-globe]');
+if (globe && can3d) {
+  const io = new IntersectionObserver(([e]) => {
+    if (!e.isIntersecting) return; io.disconnect();
+    import('./globe3d.js').then((m) => m.start(globe, env)).catch((err) => console.warn('3D globe skipped:', err && err.message));
+  }, { rootMargin: '400px 0px' });
+  idle(() => io.observe(globe));
 }
 
 /* ---------- Small things ---------- */

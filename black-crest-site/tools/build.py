@@ -174,8 +174,8 @@ def cur(name, here):
 
 
 # the full-screen menu: label, page, preview image shown on desktop hover
-MENU = [('Work', 'work.html', 'barber'), ('Process', 'process.html', 'cafe'), ('Pricing', 'pricing.html', 'plumber'),
-        ('About', 'about.html', 'salon'), ('FAQ', 'faq.html', 'gym'), ('Contact', 'contact.html', 'parts')]
+MENU = [('Work', 'work.html', 'barber'), ('Concept Lab', 'lab.html', 'salon'), ('Process', 'process.html', 'cafe'), ('Pricing', 'pricing.html', 'plumber'),
+        ('Standard', 'standard.html', 'gym'), ('About', 'about.html', 'parts'), ('FAQ', 'faq.html', 'cafe'), ('Contact', 'contact.html', 'barber')]
 INLINE_NAV = [('work.html', 'Work'), ('pricing.html', 'Pricing'), ('contact.html', 'Contact')]
 
 
@@ -239,13 +239,17 @@ def mobile_bar(P):
 </div>'''
 
 
-INTRO = f'''<div class="intro" id="intro" hidden aria-hidden="true">
-  {crest()}
-  <button class="intro-skip" type="button" tabindex="-1">Skip</button>
+PRELOADER = '''<div class="preloader" id="preloader" aria-hidden="true">
+  <div class="pre-half pre-top"></div><div class="pre-half pre-bot"></div>
+  <div class="pre-mid">
+    <svg class="pre-crest" viewBox="0 0 48 56" focusable="false"><path pathLength="1" d="M24 2.5 43.5 9.2V26c0 12.6-8.1 21.6-19.5 27.5C12.6 47.6 4.5 38.6 4.5 26V9.2Z"/><path pathLength="1" d="M24 8.2 38.6 13.2v12.4c0 9.4-6 16.2-14.6 20.7-8.6-4.5-14.6-11.3-14.6-20.7V13.2Z"/></svg>
+    <p class="pre-count"><span data-pre-count>000</span></p>
+    <p class="pre-name">Black Crest Web Designs</p>
+  </div>
 </div>'''
 
 
-def head(title, desc, path, P, noindex=False, ld=(), base_script=False, extra=''):
+def head(title, desc, path, P, noindex=False, ld=(), base_script=False, extra='', vendor=()):
     canon = SITE + path
     og = SITE + 'img/og.jpg'
     lds = ''.join(f'\n<script type="application/ld+json">{json.dumps(x, ensure_ascii=False, separators=(",", ":"))}</script>' for x in ld)
@@ -255,7 +259,7 @@ def head(title, desc, path, P, noindex=False, ld=(), base_script=False, extra=''
 <html lang="en-AU">
 <head>
 <meta charset="utf-8">
-<script>document.documentElement.classList.add('js')</script>
+<script>(function(d){{d.classList.add('js');try{{if(!sessionStorage.getItem('bc-pre')&&!matchMedia('(prefers-reduced-motion: reduce)').matches)d.classList.add('preload')}}catch(e){{}}}})(document.documentElement)</script>
 {base}<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>{E(title)}</title>
 <meta name="description" content="{E(desc)}">
@@ -287,7 +291,7 @@ def head(title, desc, path, P, noindex=False, ld=(), base_script=False, extra=''
 <script src="{P}vendor/gsap/gsap.min.js" defer></script>
 <script src="{P}vendor/gsap/ScrollTrigger.min.js" defer></script>
 <script src="{P}vendor/gsap/SplitText.min.js" defer></script>
-<script src="{P}vendor/lenis/lenis.min.js" defer></script>
+<script src="{P}vendor/lenis/lenis.min.js" defer></script>{''.join(f'<script src="{P}vendor/{v}" defer></script>' for v in vendor)}
 <script type="module" src="{P}js/core.js"></script>{lds}
 </head>'''
 
@@ -295,17 +299,17 @@ def head(title, desc, path, P, noindex=False, ld=(), base_script=False, extra=''
 pages = {}
 
 
-def page(path, title, desc, body, noindex=False, ld=(), bare=False, base_script=False, extra='', toast=False):
+def page(path, title, desc, body, noindex=False, ld=(), bare=False, base_script=False, extra='', toast=False, vendor=(), pre=False):
     P = '../' * path.count('/')
     top = '' if bare else header(P, path)
     bottom = '' if bare else f'{footer(P, path)}\n{mobile_bar(P)}'
     t = '\n<div class="toast" id="toast" role="status" hidden><i aria-hidden="true"></i>Message sent. We reply within 24 hours.</div>' if toast else ''
-    pages[path] = f'''{head(title, desc, path if path != 'index.html' else '', P, noindex, ld, base_script, extra)}
+    pages[path] = f'''{head(title, desc, path if path != 'index.html' else '', P, noindex, ld, base_script, extra, vendor)}
 <body>
 <a class="skip" href="#main">Skip to content</a>
 <div class="grain" aria-hidden="true"></div>
 <div class="progress" aria-hidden="true"><span></span></div>
-{'' if bare else INTRO}
+{PRELOADER if pre else ''}
 {top}
 {body}
 {bottom}{t}
@@ -325,6 +329,7 @@ def head_block(label, title, lead='', split=False, level='h2', cls='h2', center=
 def cta_final(title, text, primary=('free-concept.html', 'Get a free concept'), secondary=None, P=''):
     sec = f'<a class="btn btn-ghost" href="{P}{secondary[0]}">{secondary[1]}</a>' if secondary else ''
     return f'''<section class="cta-final" aria-labelledby="cta-h">
+    <svg class="cta-crest" viewBox="0 0 48 56" aria-hidden="true" focusable="false"><path d="M24 2.5 43.5 9.2V26c0 12.6-8.1 21.6-19.5 27.5C12.6 47.6 4.5 38.6 4.5 26V9.2Z"/></svg>
     <div class="container">
       <p class="label" data-reveal style="justify-content:center">Next step</p>
       <h2 id="cta-h" class="display" data-split>{title}</h2>
@@ -355,9 +360,10 @@ def account(kind, P, featured=False, level='h3'):
         sub = 'Bigger or unusual projects: many pages or special features.'
         items = ['Scoped with you first', 'A fixed quote before any work', 'Same promise: concept first']
         href, cta = 'contact.html?need=not-sure', 'Ask for a quote'
-    bal = (f'<p class="balance"><span data-price="{key}" data-count="{amt}">{money(amt)}</span> <span class="per">{per}</span></p>'
+    bal = (f'<p class="balance"><span class="odo" data-price="{key}" data-odometer="{money(amt)}">{money(amt)}</span> <span class="per">{per}</span></p>'
            if amt else '<p class="balance balance-quote">By quote</p>')
     return f'''<article class="tile acct-card{' is-featured' if featured else ''}">
+        {'<span class="sweep" aria-hidden="true"></span>' if featured else ''}
         <div class="acct-top">{crest()}<span class="chip{'' if featured else ' chip-plain'}">{chip}</span></div>
         <{level} class="acct-name">{name}</{level}>
         <p class="acct"><span>AUD</span><span>&bull;&bull;&bull;&bull; {no}</span></p>
@@ -484,35 +490,221 @@ def rail(P, title_html, lead):
 MARQUEE = ['Barbers', 'Cafes', 'Gyms', 'Salons', 'Plumbers', 'Electricians', 'Bakeries', 'Florists', 'Mechanics', 'Restaurants']
 
 
-def marquee():
-    ul = lambda hidden: f'<ul{" aria-hidden=" + chr(34) + "true" + chr(34) if hidden else ""}>' + ''.join(f'<li>{t}</li>' for t in MARQUEE) + '</ul>'
-    return f'<section class="marquee" data-marquee aria-label="Local businesses we build for"><div class="marquee-track">{ul(False)}{ul(True)}</div></section>'
-
-
 # ================================================================= Home
-P = ''
-page('index.html', 'Black Crest Web Designs: premium sites for local businesses', f'Fast, good-looking websites for Melbourne barbers, cafes, gyms, salons and tradies. A free concept homepage first. One Page {money(ONE)}, Full Website {money(FULL)}.', f'''<main id="main">
-  <section class="hero" aria-labelledby="hero-h">
-    <div class="hero-stage" data-hero3d>{CREST_ART}</div>
-    <div class="container hero-grid">
-      <div>
-        <p class="label">Black Crest Web Designs &middot; Melbourne</p>
-        <h1 id="hero-h">Premium sites for <em>local</em> businesses</h1>
-        <p class="lead">Sharp, fast websites for barbers, cafes, gyms, salons and tradies. We design your homepage first, free. You decide after.</p>
-        <p class="from-line">From <strong><i>$</i><span data-price="onePage" data-prefix="">{ONE}</span></strong> one-off</p>
-        <div class="btn-row">
-          <a class="btn btn-gold" href="free-concept.html">Get a free concept</a>
-          <a class="btn btn-ghost" href="pricing.html">See pricing</a>
+PLACES = ['Melbourne', 'Geelong', 'Ballarat', 'Bendigo', 'Mornington Peninsula', 'Yarra Valley', 'Dandenong Ranges', 'Bellarine', 'Gippsland', 'Macedon Ranges', 'Shepparton', 'Warrnambool']
+
+
+def marquee(items=MARQUEE, label='Local businesses we build for'):
+    ul = lambda hidden: f'<ul{" aria-hidden=" + chr(34) + "true" + chr(34) if hidden else ""}>' + ''.join(f'<li>{t}</li>' for t in items) + '</ul>'
+    return f'<div class="marquee" data-marquee role="region" aria-label="{label}"><div class="marquee-track">{ul(False)}{ul(True)}</div></div>'
+
+
+def pic(stem, w, h, alt, P='', lazy=True, sizes='100vw', small=None, cls='', high=False):
+    """<picture> with AVIF, WebP and a JPEG fallback. small = (stem, width) of a smaller copy, if one exists."""
+    def ss(ext):
+        return f'{P}{small[0]}.{ext} {small[1]}w, {P}{stem}.{ext} {w}w' if small else f'{P}{stem}.{ext}'
+    load = 'fetchpriority="high"' if high else ('loading="lazy"' if lazy else '')
+    return (f'<picture{f" class={chr(34)}{cls}{chr(34)}" if cls else ""}><source type="image/avif" srcset="{ss("avif")}" sizes="{sizes}">'
+            f'<source type="image/webp" srcset="{ss("webp")}" sizes="{sizes}">'
+            f'<img src="{P}{stem}.jpg" width="{w}" height="{h}" {load} decoding="async" alt="{alt}"></picture>')
+
+
+CHAPTERS = [
+    ('Barbers', 'barber', 'barbers', (900, 623), None, 'Book a chair in two taps, from the footpath.', 'A barber’s chair in a warm, dark shop'),
+    ('Cafés', 'cafe', 'cafes', (900, 600), None, 'The menu, the hours and the map, before the coffee is poured.', 'Coffee being poured through a glass filter'),
+    ('Gyms', 'gym', 'gyms', (900, 600), None, 'A free-trial form that turns a maybe into a first session.', 'Weights on a gym floor under neon light'),
+    ('Trades', 'plumber', 'trades', (1800, 1200), 1200, 'One big call button, for the day a pipe bursts.', 'Copper pipe fittings laid out on a bench'),
+    ('Salons', 'salon', 'salons', (2000, 1333), 1200, 'A calm service menu, with every price in plain sight.', 'A bright salon interior with styling chairs'),
+]
+
+
+def chapters(P):
+    n = len(CHAPTERS)
+    out = []
+    for i, (title, slug, stem, (w, h), small, cap, alt) in enumerate(CHAPTERS):
+        d = DEMO[slug]
+        img = pic(f'assets/chapters/{stem}-l', w, h, alt, P, sizes='100vw', small=(f'assets/chapters/{stem}-s', small) if small else None)
+        out.append(f'''<article class="chapter" style="--i:{i}" aria-labelledby="ch-{i}">
+        <div class="chapter-media">{img}</div>
+        <div class="container chapter-copy">
+          <p class="chapter-idx"><b>0{i + 1}</b> / 0{n}</p>
+          <h3 id="ch-{i}" class="chapter-title">{title}</h3>
+          <i class="chapter-rule" aria-hidden="true"></i>
+          <p class="chapter-cap">{cap}</p>
+          <p class="chapter-meta"><span class="chip chip-plain">Concept site</span> {d[2]}</p>
+          <a class="link" href="{P}../{d[1]}/" target="_blank" rel="noopener">See the concept {icon('arrow')}<span class="sr-only"> {d[2]}, a concept site (opens in a new tab)</span></a>
         </div>
+      </article>''')
+    return f'''<section class="chapters" aria-labelledby="chapters-h" data-chapters>
+    <div class="container chapters-intro">
+      <p class="label" data-reveal><span class="idx">02</span><span class="slash" aria-hidden="true">/</span>Trades</p>
+      <h2 id="chapters-h" class="h2" data-split>Five trades, <em>five first impressions.</em></h2>
+    </div>
+    <div class="chapters-stage">
+      {''.join(out)}
+      <div class="chapters-hud" aria-hidden="true"><span class="chapters-count"><b>01</b> / 0{n}</span><span class="chapters-bar"><i></i></span></div>
+    </div>
+  </section>'''
+
+
+LAB_TRADES = [('barber', 'Barber'), ('cafe', 'Café'), ('gym', 'Gym'), ('trades', 'Trades'), ('salon', 'Salon')]
+LAB_MOODS = [('obsidian', 'Obsidian &amp; Gold', '#0D0E12', '#D4AF37'), ('espresso', 'Espresso &amp; Cream', '#2B1E17', '#E9D9C2'), ('stone', 'Stone &amp; Sage', '#E7E4DC', '#6F7F63')]
+LAB_FEATURES = [('booking', 'Online booking'), ('menu', 'Menu or price list'), ('gallery', 'Gallery'), ('reviews', 'Reviews section'), ('map', 'Map and hours')]
+
+
+def lab(P, idx='03', level='h2', heading=True):
+    trades = ''.join(f'<label class="pill"><input type="radio" name="lab-trade" value="{k}"{" checked" if i == 0 else ""}><span>{t}</span></label>' for i, (k, t) in enumerate(LAB_TRADES))
+    moods = ''.join(f'<label class="pill mood"><input type="radio" name="lab-mood" value="{k}"{" checked" if i == 0 else ""}><span><i style="--a:{a};--b:{b}" aria-hidden="true"></i>{t}</span></label>' for i, (k, t, a, b) in enumerate(LAB_MOODS))
+    feats = ''.join(f'<label class="pill"><input type="checkbox" name="lab-feature" value="{k}"{" checked" if k in ("booking", "menu") else ""}><span>{t}</span></label>' for k, t in LAB_FEATURES)
+    head_html = head_block('Concept Lab', '<span id="lab-h">Sketch your homepage <em>in a minute.</em></span>', 'Pick a trade, a mood and the features you need. The preview changes as you go.', split=True, idx=idx, level=level) if heading else ''
+    return f'''{head_html}
+      <div class="lab" data-lab data-base="{P}">
+        <form class="lab-controls" data-lab-form>
+          <fieldset><legend>Trade</legend><div class="pills">{trades}</div></fieldset>
+          <div class="field"><label for="lab-name">Business name</label><input id="lab-name" name="lab-name" type="text" maxlength="32" autocomplete="organization" placeholder="Your business name"></div>
+          <fieldset><legend>Mood</legend><div class="pills">{moods}</div></fieldset>
+          <fieldset><legend>Features</legend><div class="pills">{feats}</div></fieldset>
+          <p class="lab-note">This is a quick preview. Your real free concept is designed properly, by hand, for your business.</p>
+          <button class="btn btn-gold" type="button" data-lab-send>Send me this concept</button>
+          <p class="sr-only" role="status" aria-live="polite" data-lab-status></p>
+        </form>
+        <div class="lab-stage" aria-hidden="true">
+          <div class="lab-laptop"><div class="lab-screen" data-lab-screen></div><div class="laptop-base"></div></div>
+          <div class="lab-phone"><div class="lab-screen" data-lab-screen></div></div>
+        </div>
+        <noscript><p class="lab-nojs">The Concept Lab needs JavaScript to draw its preview. You can still <a href="{P}free-concept.html">ask for a free concept</a>.</p></noscript>
+      </div>'''
+
+
+ANATOMY = [
+    (3.5, 72, 'Tap to call', 'The call button sits where a thumb lands, at the top and again in a bar along the bottom.'),
+    (17, 25, 'The job, in one tap', 'Customers pick what is wrong first, so the next screen already speaks to them.'),
+    (45, 40, 'Google-ready titles', 'The trade and the suburb are in the main heading, the way people search for them.'),
+    (70, 73, 'Book or quote in two taps', 'A short form with a clear button, not a maze of pages.'),
+    (79, 50, 'Open now, and the hours', 'Whether you are available today is the first thing many people want to know.'),
+    (89, 82, 'Loads fast on a weak signal', 'Small images and no page-builder bloat, so the page opens on one bar of 4G.'),
+]
+
+
+def anatomy(P):
+    dots = ''.join(f'<span class="hot" style="--y:{y}%;--x:{x}%" data-hot="{i}" aria-hidden="true">{i + 1}</span>' for i, (y, x, _, _) in enumerate(ANATOMY))
+    cards = ''.join(f'<li class="hot-card" data-hot-card="{i}" style="--i:{i}"><span class="n" aria-hidden="true">0{i + 1}</span><div><h3>{t}</h3><p>{x}</p></div></li>' for i, (_, _, t, x) in enumerate(ANATOMY))
+    return f'''<section class="section anatomy-sec" aria-labelledby="anat-h">
+    <div class="container">
+      {head_block('Anatomy', '<span id="anat-h">Every detail <em>earns its place.</em></span>', 'A concept homepage, taken apart. Each marked spot is there to turn a visit into a call or a booking.', split=True, idx='04')}
+      <div class="anatomy" data-anatomy>
+        <figure class="anatomy-shot" data-reveal>
+          <div class="phone"><div class="hot-wrap"><img src="{P}img/work/plumber-phone.webp" width="600" height="1300" loading="lazy" decoding="async" alt="The Waverley Plumbing concept homepage on a phone, with six numbered spots">{dots}</div></div>
+          <figcaption class="tiny">Concept site. Waverley Plumbing is a made-up business.</figcaption>
+        </figure>
+        <ol class="anatomy-list">{cards}</ol>
+        <svg class="anatomy-lines" aria-hidden="true" focusable="false"></svg>
       </div>
+    </div>
+  </section>'''
+
+
+def process_stack(P):
+    cards = ''.join(f'''<li class="stack-card" style="--i:{i}">
+          <div class="stack-inner">
+            <span class="stack-n" aria-hidden="true">0{i + 1}</span>
+            <div class="stack-copy"><span class="chip chip-plain">{w}</span><h3 class="h3">{t}</h3><p>{x}</p></div>
+            <div class="stack-illo illo-wrap">{illo(k)}</div>
+          </div>
+        </li>''' for i, (t, k, w, x) in enumerate(STEPS))
+    return f'''<section class="section process-sec has-grid" aria-labelledby="how-h">
+    <div class="container process-split">
+      <div class="process-head">
+        <p class="label" data-reveal><span class="idx">06</span><span class="slash" aria-hidden="true">/</span>Process</p>
+        <h2 id="how-h" class="h2" data-split>Four steps. <em>No surprises.</em></h2>
+        <p class="lead" data-reveal>You see your homepage before you pay anything. This is everything that happens after that.</p>
+        <a class="link" data-reveal href="{P}process.html">The full process {icon('arrow')}</a>
+      </div>
+      <ol class="stack">{cards}</ol>
+    </div>
+  </section>'''
+
+
+STANDARD_NUMS = [('onePage', None, 'Starting price, written down before any work begins.'), (None, '5', 'Pages, about, in a Full Website.'),
+                 (None, '2', 'Rounds of changes, included in every build.'), (None, '0', 'Lock-in contracts. The care plan is month to month.'),
+                 (None, '100%', 'Yours. The finished site, the files and the logins.')]
+
+
+def standard_band(P):
+    items = ''.join(f'''<li data-reveal><b class="odo" {f'data-price="{k}" data-odometer="{money(ONE)}"' if k else f'data-odometer="{v}"'}>{money(ONE) if k else v}</b><span>{x}</span></li>''' for k, v, x in STANDARD_NUMS)
+    return f'''<section class="section-tight standard-band" aria-labelledby="std-h">
+    <div class="container">
+      <div class="standard-head">
+        <p class="label" data-reveal><span class="idx">07</span><span class="slash" aria-hidden="true">/</span>The Black Crest Standard</p>
+        <h2 id="std-h" class="h3" data-reveal>Promises you can hold us to.</h2>
+      </div>
+      <ul class="standard-nums">{items}</ul>
+      <a class="link" data-reveal href="{P}standard.html">Read the full standard {icon('arrow')}</a>
+    </div>
+  </section>'''
+
+
+def reel(P):
+    return f'''<section class="section reel-sec" aria-labelledby="work-h">
+    <div class="container reel-split">
+      <div class="reel-copy">
+        <p class="label" data-reveal><span class="idx">01</span><span class="slash" aria-hidden="true">/</span>Work</p>
+        <h2 id="work-h" class="h2" data-split>Concept sites, <em>built properly.</em></h2>
+        <p class="lead" data-reveal>Six made-up local businesses, designed and coded like real ones: bookings, menus, timetables and quote forms.</p>
+        <div class="btn-row" data-reveal><button class="btn btn-ghost" type="button" data-reel-play>Play reel</button><a class="link" href="{P}work.html">See all six {icon('arrow')}</a></div>
+      </div>
+      <figure class="reel" data-reveal>
+        <div class="laptop"><div class="laptop-screen">
+          <video data-reel muted loop playsinline preload="none" width="1280" height="800" poster="{P}assets/reel-poster.webp" aria-label="A short silent reel scrolling through the six concept sites">
+            <source src="{P}assets/reel.webm" type="video/webm"><source src="{P}assets/reel.mp4" type="video/mp4">
+          </video>
+        </div><div class="laptop-base" aria-hidden="true"></div></div>
+        <figcaption class="reel-cap">Concept sites. Real code. Not real clients, yet.</figcaption>
+      </figure>
+    </div>
+  </section>'''
+
+
+def globe_sec(P):
+    return f'''<section class="section globe-sec" aria-labelledby="globe-h">
+    <div class="container globe-split">
+      <div class="globe-copy">
+        <p class="label" data-reveal><span class="idx">09</span><span class="slash" aria-hidden="true">/</span>Where</p>
+        <h2 id="globe-h" class="h2" data-split>Made in <em>Melbourne.</em></h2>
+        <p class="lead" data-reveal>Based in Melbourne. Building for local businesses across Victoria.</p>
+        <p class="tiny globe-clock" data-reveal><span class="avail-dot" aria-hidden="true"></span><span data-clock>Melbourne</span></p>
+      </div>
+      <div class="globe" data-globe>
+        {pic('assets/globe-still', 1200, 1200, 'A dotted globe turned to Australia, with a gold pin on Melbourne', P, sizes='(min-width: 1024px) 50vw, 92vw', cls='globe-still')}
+      </div>
+    </div>
+    {marquee(PLACES, 'Places across Victoria')}
+  </section>'''
+
+
+P = ''
+page('index.html', 'Black Crest Web Designs: premium sites for local businesses', f'Premium websites for Melbourne barbers, cafes, gyms, salons and trades. We design your homepage first, free. One Page {money(ONE)}, Full Website {money(FULL)}.', f'''<main id="main">
+  <section class="hero" aria-labelledby="hero-h">
+    <div class="hero-stage" data-hero3d>
+      {pic('assets/crest-still', 1280, 1520, '', P, lazy=False, sizes='(min-width: 1024px) 48vw, 80vw', cls='crest-still', high=True)}
+    </div>
+    <div class="container hero-copy">
+      <p class="label">Black Crest Web Designs &middot; Melbourne</p>
+      <h1 id="hero-h">Premium sites for <em>local</em> businesses</h1>
+      <p class="lead">We design your homepage first, free. You decide after.</p>
+      <div class="btn-row">
+        <a class="btn btn-gold" href="free-concept.html">Get a free concept</a>
+        <a class="btn btn-ghost" href="work.html">See the work</a>
+      </div>
+    </div>
+    <div class="container hero-foot">
       <aside class="tile hero-card" aria-label="How paying works">
         <p class="tile-label"><span>Your new website</span><span class="chip">Concept first</span></p>
-        <p class="balance"><span data-price="onePage" data-count="{ONE}">{money(ONE)}</span> <span class="per">from, one-off</span></p>
+        <p class="balance"><span class="from">From</span><span data-price="onePage">{money(ONE)}</span> <span class="per">one-off</span></p>
         <ul class="rows">
           <li><span>Concept homepage</span><b>$0</b></li>
           <li><span>Deposit to start the build</span><b>50%</b></li>
           <li><span>Balance</span><b>At launch</b></li>
-          <li><span>Rounds of changes</span><b>2 included</b></li>
         </ul>
         <p class="acct"><span>Black Crest &middot; AUD</span><span>&bull;&bull;&bull;&bull; 0300</span></p>
       </aside>
@@ -520,97 +712,121 @@ page('index.html', 'Black Crest Web Designs: premium sites for local businesses'
     <p class="scroll-cue" aria-hidden="true"><i></i>Scroll</p>
   </section>
 
-  {marquee()}
+  {reel(P)}
 
-  <section class="section" aria-labelledby="work-h">
-    <div class="container showcase">
+  {chapters(P)}
+
+  <section class="section lab-sec" id="lab" aria-labelledby="lab-h">
+    <div class="container">
+      {lab(P)}
+    </div>
+  </section>
+
+  {anatomy(P)}
+
+  <section class="section-tight ba-sec" aria-labelledby="ba-h">
+    <div class="container ba-split">
       <div>
-        <p class="label" data-reveal><span class="idx">01</span><span class="slash" aria-hidden="true">/</span>Work</p>
-        <h2 id="work-h" class="h2" data-split>Concept sites, <em>built properly.</em></h2>
-        <p class="lead" data-reveal>Six made-up local businesses, designed and built like real ones: booking, menus, timetables, quote forms. Every one is a concept, not a customer.</p>
-        <a class="link" data-reveal href="work.html">See all six {icon('arrow')}</a>
+        <p class="label" data-reveal><span class="idx">05</span><span class="slash" aria-hidden="true">/</span>Before and after</p>
+        <h2 id="ba-h" class="h2" data-split>From dated <em>to sharp.</em></h2>
+        <p class="lead" data-reveal>Same business, two first impressions. Drag the handle, or use the arrow keys.</p>
+        <div class="compare-meta" data-reveal><span class="chip">Example, not a real customer</span><span class="tiny">Both sides are mock-ups made for this comparison.</span></div>
       </div>
-      <div data-reveal>{duo('barber', P, '0.07', phone_slug='cafe')}</div>
-    </div>
-  </section>
-
-  <section class="section band" aria-labelledby="why-h">
-    <div class="container">
-      {head_block('Why it matters', '<span id="why-h">Built for how people <em>actually</em> find you.</span>', 'Most customers meet you on a phone, minutes before they need you. Every detail is there to turn that moment into a call, a booking or a visit.', split=True, idx='02')}
-      <div class="bento">
-        <article class="tile big illo-wrap" data-reveal>{illo('fast')}<div><h3 class="h3">Fast on any phone</h3><p>Light pages, compressed images, no page-builder bloat. Your site opens before they lose interest.</p></div></article>
-        <article class="tile half illo-wrap" data-reveal>{illo('phone')}<div><h3 class="h3">One tap to act</h3><p>Call, book or get directions without hunting for the button.</p></div></article>
-        <article class="tile half illo-wrap" data-reveal>{illo('find')}<div><h3 class="h3">Found on Google</h3><p>Clean titles and structure from day one, plus help with your free Google Business Profile.</p></div></article>
-        <article class="tile wide illo-wrap" data-reveal>{illo('own')}<div><h3 class="h3">Yours, outright</h3><p>You own the finished site and your domain. No lock-in contracts and no hostage fees, ever.</p></div></article>
-      </div>
-    </div>
-  </section>
-
-  <section class="section" aria-labelledby="ba-h">
-    <div class="container">
-      {head_block('Before and after', '<span id="ba-h">From dated <em>to sharp.</em></span>', 'Drag the handle. Same business, two very different first impressions.', split=True, idx='03')}
       <div class="compare" data-reveal data-compare>
         <img src="img/compare-before.webp" width="1600" height="1000" loading="lazy" decoding="async" alt="Before: a dated, cluttered barbershop homepage with small text and no clear booking button">
         <img class="after" src="img/compare-after.webp" width="1600" height="1000" loading="lazy" decoding="async" alt="After: the Brass and Blade concept homepage, dark and clean with a clear Book a chair button">
         <span class="compare-tag l" aria-hidden="true">Before</span><span class="compare-tag r" aria-hidden="true">After</span>
-        <span class="handle" aria-hidden="true"></span>
+        <span class="handle" aria-hidden="true"><span class="disc"><i></i><i></i></span><span class="drag-hint">Drag</span></span>
         <label class="sr-only" for="compare-range">Compare before and after</label>
         <input id="compare-range" type="range" min="0" max="100" value="50">
       </div>
-      <div class="compare-meta"><span class="chip">Example, not a real customer</span><span class="tiny">Both sides are mock-ups made for this comparison.</span></div>
     </div>
   </section>
 
-  <section class="section band band-gold" aria-labelledby="how-h">
-    <div class="container">
-      {head_block('Process', '<span id="how-h">Four steps. <em>No surprises.</em></span>', 'You see your homepage before you pay a cent. Here is everything that happens after that.', split=True, idx='04')}
-      {story(P)}
-      <a class="link" data-reveal href="process.html">The full process {icon('arrow')}</a>
-    </div>
-  </section>
+  {process_stack(P)}
 
-  {rail(P, 'Six concepts, <em>six trades.</em>', 'Swipe through, then open any of them on your phone. All six are made-up businesses.')}
+  {standard_band(P)}
 
-  <section class="section" aria-labelledby="price-h">
+  <section class="section has-grid pricing-sec" aria-labelledby="price-h">
     <div class="container">
-      {head_block('Pricing', '<span id="price-h">Clear prices. <em>Set before we start.</em></span>', 'One price per package, written down before any work begins. No retainers you did not ask for.', split=True, idx='05')}
+      {head_block('Pricing', '<span id="price-h">Clear prices. <em>Set before we start.</em></span>', 'One price per package, agreed in writing before any work begins. Bigger projects are quoted.', split=True, idx='08')}
       <div class="accounts three">
         <div data-reveal>{account('one', P)}</div>
         <div data-reveal>{account('full', P, featured=True)}</div>
         <div data-reveal>{account('care', P)}</div>
       </div>
-      <p data-reveal style="margin-top:28px">Something bigger in mind? Custom projects are quoted. <a class="link" href="pricing.html">Pricing and the calculator {icon('arrow')}</a></p>
+      <p class="pricing-more" data-reveal>Something bigger in mind? Custom projects are quoted. <a class="link" href="pricing.html">Pricing and the calculator {icon('arrow')}</a></p>
     </div>
   </section>
 
-  <section class="section band" aria-labelledby="trades-h">
-    <div class="container">
-      {head_block('Trades', '<span id="trades-h">Made for the high street.</span>', 'We build for businesses across Melbourne and its suburbs. Pick your trade to see what it usually needs.', split=True, idx='06')}
-      <ol class="trade-list" data-reveal>{''.join(f'<li><a href="{h}"><span class="n">0{i + 1}</span><span class="t">{t}</span><span class="x">{x}</span><span class="ic">{icon("ne")}</span></a></li>' for i, (h, t, _, x) in enumerate(TRADES))}</ol>
-    </div>
-  </section>
+  {globe_sec(P)}
 
-  <section class="section" aria-labelledby="case-h">
-    <div class="container">
-      <div class="grid grid-2" style="align-items:end">
-        <div><p class="label" data-reveal>An honest offer</p><h2 id="case-h" class="h2" data-split>Be our first <em>case study.</em></h2></div>
-        <div data-reveal>
-          <p class="lead">We are new, so there are no customer reviews to show yet, and we will never invent any. The first few local shops we work with get a discount, in return for an honest quote about the experience and permission to show their site here.</p>
-          <a class="btn btn-ghost" href="contact.html">Ask about the offer</a>
-        </div>
+  <section class="section offer-sec" aria-labelledby="case-h">
+    <div class="container offer-split">
+      <div><p class="label" data-reveal><span class="idx">10</span><span class="slash" aria-hidden="true">/</span>An honest offer</p><h2 id="case-h" class="h2" data-split>Be our first <em>case study.</em></h2></div>
+      <div data-reveal>
+        <p class="lead">We are new, so there are no customer reviews to show yet, and we will never invent any. The first few local shops we work with get a discount, in return for an honest quote about the experience and permission to show their site here.</p>
+        <a class="btn btn-ghost" href="contact.html">Ask about the offer</a>
       </div>
     </div>
   </section>
 
-  <section class="section band" aria-labelledby="faq-h">
+  <section class="section-tight band" aria-labelledby="faq-h">
     <div class="container faq-split">
-      {head_block('FAQ', '<span id="faq-h">Straight <em>answers.</em></span>', 'The questions everyone asks before they start.', idx='07')}
-      <div data-reveal>{faq_list(FAQS[:4], P)}<p style="margin-top:22px"><a class="link" href="faq.html">All questions {icon('arrow')}</a></p></div>
+      {head_block('FAQ', '<span id="faq-h">Straight <em>answers.</em></span>', 'The questions everyone asks before they start.', idx='11')}
+      <div data-reveal>{faq_list(FAQS[:5], P)}<p style="margin-top:22px"><a class="link" href="faq.html">All questions {icon('arrow')}</a></p></div>
     </div>
   </section>
 
   {cta_final('See it <em>before</em> you pay.', 'Tell us about your business. We reply within 24 hours and design your homepage for free.', secondary=('contact.html', 'Ask a question'))}
-</main>''', ld=[ORG])
+</main>''', ld=[ORG], vendor=('gsap/Flip.min.js',), pre=True)
+
+
+# ================================================================= Concept Lab
+P = ''
+page('lab.html', 'Concept Lab: Black Crest Web Designs', 'Sketch a homepage for your business in a minute: pick your trade, a mood and the features you need, then send it to us as the start of your free concept.', f'''<main id="main">
+  <div class="container page-head">
+      <p class="label"><span class="idx">01</span><span class="slash" aria-hidden="true">/</span>Concept Lab</p>
+      <h1 class="h1" data-split>Sketch it <em>yourself.</em></h1>
+      <p class="lead" data-reveal>Pick your trade, a mood and the features you need. When it looks close, send it to us and we design the real thing, free.</p>
+  </div>
+  <section class="section-tight lab-sec" aria-label="Concept Lab">
+    <div class="container">
+      {lab(P, heading=False)}
+    </div>
+  </section>
+  {cta_final('Rather <em>just talk?</em>', 'Tell us about your business in a few lines. We reply within 24 hours.', secondary=('contact.html', 'Ask a question'))}
+</main>''', vendor=('gsap/Flip.min.js',))
+
+
+# ================================================================= The Black Crest Standard
+STANDARD = [
+    ('A free concept, first', 'We design your homepage before you pay anything. If it is not right for you, you walk away and owe nothing.'),
+    ('One price, in writing', f'Every price is agreed in writing before work starts. One Page is {money(ONE)}, a Full Website is {money(FULL)}, bigger projects are quoted.'),
+    ('Half now, half at launch', 'A 50% deposit starts the build. The balance is due when your site goes live, never before.'),
+    ('Two rounds of changes', 'Two rounds of changes are included in every build, so the site ends up the way you want it.'),
+    ('You own it', 'Once the balance is paid, the finished site is yours: the files, the logins and the right to take it anywhere.'),
+    ('Your domain, in your name', 'Your web address is registered in your name and paid for by you, about $20 a year. Nobody can hold it back from you.'),
+    ('No lock-in', f'The care plan is {money(CARE)} a month, month to month. Cancel by email before the next month starts.'),
+    ('Built for phones', 'Every page is designed for phones first and checked on phones and computers before launch.'),
+    ('No tracking we did not discuss', 'We do not add analytics, cookies or trackers to your site unless you ask for them. This site has none.'),
+    ('Honest words only', 'No made-up reviews, invented numbers or borrowed logos, on your site or on ours.'),
+]
+P = ''
+page('standard.html', 'The Black Crest Standard: Black Crest Web Designs', 'Ten commitments we make on every website: a free concept first, one written price, half at launch, two rounds of changes, and you own the finished site.', f'''<main id="main">
+  <div class="container page-head">
+      <p class="label"><span class="idx">01</span><span class="slash" aria-hidden="true">/</span>The Black Crest Standard</p>
+      <h1 class="h1" data-split>Ten promises, <em>in writing.</em></h1>
+      <p class="lead" data-reveal>These hold for every project, whatever the size. If we ever fall short of one, tell us at <a class="link" data-email href="mailto:{EMAIL}">{EMAIL}</a>.</p>
+  </div>
+  <section class="section-tight has-grid" aria-label="The ten commitments">
+    <div class="container">
+      <ol class="standard-list">{''.join(f'<li data-reveal><span class="n" aria-hidden="true">{i + 1:02d}</span><div><h2 class="h3">{t}</h2><p>{x}</p></div></li>' for i, (t, x) in enumerate(STANDARD))}</ol>
+    </div>
+  </section>
+  {cta_final('See it <em>before</em> you pay.', 'Tell us about your business. We reply within 24 hours and design your homepage for free.', secondary=('pricing.html', 'See pricing'))}
+</main>''')
+
 
 # ================================================================= Work
 P = ''

@@ -2,6 +2,7 @@
 <html lang="en-AU">
 <head>
 <meta charset="utf-8">
+<script>document.documentElement.classList.add('js')</script>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Pricing: Black Crest Web Designs</title>
 <meta name="description" content="One Page website $300. Full Website (up to about 5 pages) $700. Optional care plan $30 a month. No hidden costs, and a price calculator.">
@@ -28,16 +29,18 @@
 <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="preload" href="fonts/cormorant-garamond.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="fonts/cormorant-garamond-italic.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="style.css">
-<script src="main.js" defer></script>
+<script src="vendor/gsap/gsap.min.js" defer></script>
+<script src="vendor/gsap/ScrollTrigger.min.js" defer></script>
+<script src="vendor/gsap/SplitText.min.js" defer></script>
+<script src="vendor/lenis/lenis.min.js" defer></script>
+<script type="module" src="js/core.js"></script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"OfferCatalog","name":"Black Crest Web Designs pricing","url":"https://kirithikbala21-jpg.github.io/3D-demo-sites/black-crest-site/pricing.html","itemListElement":[{"@type":"Offer","name":"One Page website","price":"300.00","priceCurrency":"AUD","url":"https://kirithikbala21-jpg.github.io/3D-demo-sites/black-crest-site/pricing.html"},{"@type":"Offer","name":"Full Website (up to about 5 pages)","price":"700.00","priceCurrency":"AUD","url":"https://kirithikbala21-jpg.github.io/3D-demo-sites/black-crest-site/pricing.html"},{"@type":"Offer","name":"Care plan","price":"30.00","priceCurrency":"AUD","url":"https://kirithikbala21-jpg.github.io/3D-demo-sites/black-crest-site/care-plan.html","priceSpecification":{"@type":"UnitPriceSpecification","price":"30.00","priceCurrency":"AUD","unitText":"month"}},{"@type":"Offer","name":"Extra page","priceCurrency":"AUD","priceSpecification":{"@type":"PriceSpecification","minPrice":"80.00","priceCurrency":"AUD"}},{"@type":"Offer","name":"Booking button","priceCurrency":"AUD","priceSpecification":{"@type":"PriceSpecification","minPrice":"50.00","priceCurrency":"AUD"}},{"@type":"Offer","name":"Google Map","priceCurrency":"AUD","priceSpecification":{"@type":"PriceSpecification","minPrice":"30.00","priceCurrency":"AUD"}},{"@type":"Offer","name":"Logo tidy-up","priceCurrency":"AUD","priceSpecification":{"@type":"PriceSpecification","minPrice":"60.00","priceCurrency":"AUD"}},{"@type":"Offer","name":"Google Business Profile setup","priceCurrency":"AUD","priceSpecification":{"@type":"PriceSpecification","minPrice":"80.00","priceCurrency":"AUD"}}]}</script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
 <div class="grain" aria-hidden="true"></div>
-<div class="lines" aria-hidden="true"></div>
 <div class="progress" aria-hidden="true"><span></span></div>
 <div class="intro" id="intro" hidden aria-hidden="true">
   <svg class="crest" viewBox="0 0 48 56" aria-hidden="true" focusable="false"><path class="crest-outline" pathLength="1" d="M24 2.5 43.5 9.2V26c0 12.6-8.1 21.6-19.5 27.5C12.6 47.6 4.5 38.6 4.5 26V9.2Z"/><path class="crest-inner" d="M24 7.6 38.6 12.6V26c0 9.6-6 16.6-14.6 21.4C15.4 42.6 9.4 35.6 9.4 26V12.6Z"/><text class="crest-text" x="24" y="32.6" text-anchor="middle">BC</text></svg>
@@ -46,24 +49,32 @@
 <header class="site-header">
   <div class="container header-inner">
     <a class="brand" href="index.html"><svg class="crest" viewBox="0 0 48 56" aria-hidden="true" focusable="false"><path class="crest-outline" pathLength="1" d="M24 2.5 43.5 9.2V26c0 12.6-8.1 21.6-19.5 27.5C12.6 47.6 4.5 38.6 4.5 26V9.2Z"/><path class="crest-inner" d="M24 7.6 38.6 12.6V26c0 9.6-6 16.6-14.6 21.4C15.4 42.6 9.4 35.6 9.4 26V12.6Z"/><text class="crest-text" x="24" y="32.6" text-anchor="middle">BC</text></svg><span class="brand-name"><b>Black Crest</b> <small>Web Designs</small></span><span class="sr-only"> home</span></a>
-    <nav aria-label="Main"><ul class="nav-links"><li><a href="work.html">Work</a></li><li><a href="process.html">Process</a></li><li><a href="pricing.html" aria-current="page">Pricing</a></li><li><a href="about.html">About</a></li><li><a href="faq.html">FAQ</a></li><li><a href="contact.html">Contact</a></li></ul></nav>
+    <nav aria-label="Main"><ul class="nav-links"><li><a href="work.html">Work</a></li><li><a href="pricing.html" aria-current="page">Pricing</a></li><li><a href="contact.html">Contact</a></li></ul></nav>
     <a class="btn btn-gold btn-sm header-cta" href="free-concept.html">Get a free concept</a>
-    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu"><span class="menu-icon" aria-hidden="true"></span><span class="sr-only">Open menu</span></button>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu"><span class="menu-label" aria-hidden="true">Menu</span><span class="menu-icon" aria-hidden="true"></span><span class="sr-only">Open menu</span></button>
   </div>
 </header>
-<div class="menu" id="menu" hidden>
-  <nav aria-label="Menu"><ol><li><a href="index.html">Home</a></li><li><a href="work.html">Work</a></li><li><a href="process.html">Process</a></li><li><a href="pricing.html" aria-current="page">Pricing</a></li><li><a href="about.html">About</a></li><li><a href="faq.html">FAQ</a></li><li><a href="contact.html">Contact</a></li></ol><div class="menu-sub"><a href="care-plan.html">Care plan</a><a href="start.html">Start your project</a><a href="guides/">Guides</a><a href="quiz.html">Website quiz</a><a href="for-barbers.html">Barbers</a><a href="for-cafes.html">Cafes</a><a href="for-gyms.html">Gyms</a><a href="for-tradies.html">Tradies</a><a href="for-salons.html">Salons</a></div></nav>
-  <a class="btn btn-gold" href="free-concept.html">Get a free concept</a>
+<div class="menu" id="menu" role="dialog" aria-modal="true" aria-label="Menu" hidden>
+  <div class="container menu-inner">
+    <nav aria-label="Menu"><ol class="menu-links"><li><a href="work.html" data-preview="img/work/barber-desktop-800.webp"><span class="n" aria-hidden="true">01</span>Work</a></li><li><a href="process.html" data-preview="img/work/cafe-desktop-800.webp"><span class="n" aria-hidden="true">02</span>Process</a></li><li><a href="pricing.html" aria-current="page" data-preview="img/work/plumber-desktop-800.webp"><span class="n" aria-hidden="true">03</span>Pricing</a></li><li><a href="about.html" data-preview="img/work/salon-desktop-800.webp"><span class="n" aria-hidden="true">04</span>About</a></li><li><a href="faq.html" data-preview="img/work/gym-desktop-800.webp"><span class="n" aria-hidden="true">05</span>FAQ</a></li><li><a href="contact.html" data-preview="img/work/parts-desktop-800.webp"><span class="n" aria-hidden="true">06</span>Contact</a></li></ol><div class="menu-sub"><a href="care-plan.html">Care plan</a><a href="start.html">Start your project</a><a href="guides/">Guides</a><a href="quiz.html">Website quiz</a><a href="for-barbers.html">Barbers</a><a href="for-cafes.html">Cafes</a><a href="for-gyms.html">Gyms</a><a href="for-tradies.html">Tradies</a><a href="for-salons.html">Salons</a></div></nav>
+    <aside class="menu-aside">
+      <div class="menu-preview" aria-hidden="true"><img src="img/work/barber-desktop-800.webp" width="800" height="500" alt="" loading="lazy" decoding="async"></div>
+      <a class="link" data-email href="mailto:kb.ventures@outlook.com">kb.ventures@outlook.com</a>
+      <p class="tiny" data-clock>Melbourne</p>
+      <p class="tiny"><span class="avail-dot" aria-hidden="true"></span><span data-availability>Taking new projects now</span></p>
+      <a class="btn btn-gold" href="free-concept.html">Get a free concept</a>
+    </aside>
+  </div>
 </div>
 <main id="main">
   <div class="container page-head">
     <p class="label">Pricing</p>
     <h1 class="h1" data-split>Clear prices. <em>No hidden costs.</em></h1>
-    <p class="lead reveal d1">Every price is set before we start, your concept homepage is free, and everything is in Australian dollars.</p>
+    <p class="lead" data-reveal>Every price is set before we start, your concept homepage is free, and everything is in Australian dollars.</p>
   </div>
   <section class="container" aria-label="Packages">
     <div class="accounts four">
-      <div class="reveal"><article class="tile acct-card">
+      <div data-reveal><article class="tile acct-card">
         <div class="acct-top"><svg class="crest" viewBox="0 0 48 56" aria-hidden="true" focusable="false"><path class="crest-outline" pathLength="1" d="M24 2.5 43.5 9.2V26c0 12.6-8.1 21.6-19.5 27.5C12.6 47.6 4.5 38.6 4.5 26V9.2Z"/><path class="crest-inner" d="M24 7.6 38.6 12.6V26c0 9.6-6 16.6-14.6 21.4C15.4 42.6 9.4 35.6 9.4 26V12.6Z"/><text class="crest-text" x="24" y="32.6" text-anchor="middle">BC</text></svg><span class="chip chip-plain">Simple</span></div>
         <h2 class="acct-name">One Page</h2>
         <p class="acct"><span>AUD</span><span>&bull;&bull;&bull;&bull; 0300</span></p>
@@ -72,7 +83,7 @@
         <ul><li>Writing help</li><li>Designed for phones first</li><li>Contact form</li><li>Google basics set up</li><li>Fast and secure (HTTPS)</li><li>2 rounds of changes</li></ul>
         <a class="btn btn-ghost" href="contact.html?need=one-page">Choose One Page</a>
       </article></div>
-      <div class="reveal d1"><article class="tile acct-card is-featured">
+      <div data-reveal><article class="tile acct-card is-featured">
         <div class="acct-top"><svg class="crest" viewBox="0 0 48 56" aria-hidden="true" focusable="false"><path class="crest-outline" pathLength="1" d="M24 2.5 43.5 9.2V26c0 12.6-8.1 21.6-19.5 27.5C12.6 47.6 4.5 38.6 4.5 26V9.2Z"/><path class="crest-inner" d="M24 7.6 38.6 12.6V26c0 9.6-6 16.6-14.6 21.4C15.4 42.6 9.4 35.6 9.4 26V12.6Z"/><text class="crest-text" x="24" y="32.6" text-anchor="middle">BC</text></svg><span class="chip">Better value</span></div>
         <h2 class="acct-name">Full Website</h2>
         <p class="acct"><span>AUD</span><span>&bull;&bull;&bull;&bull; 0700</span></p>
@@ -81,7 +92,7 @@
         <ul><li>Everything in One Page</li><li>Up to about 5 pages</li><li>Room for a menu, timetable, services or gallery</li><li>2 rounds of changes</li></ul>
         <a class="btn btn-gold" href="contact.html?need=full-website">Choose Full Website</a>
       </article></div>
-      <div class="reveal d2"><article class="tile acct-card">
+      <div data-reveal><article class="tile acct-card">
         <div class="acct-top"><svg class="crest" viewBox="0 0 48 56" aria-hidden="true" focusable="false"><path class="crest-outline" pathLength="1" d="M24 2.5 43.5 9.2V26c0 12.6-8.1 21.6-19.5 27.5C12.6 47.6 4.5 38.6 4.5 26V9.2Z"/><path class="crest-inner" d="M24 7.6 38.6 12.6V26c0 9.6-6 16.6-14.6 21.4C15.4 42.6 9.4 35.6 9.4 26V12.6Z"/><text class="crest-text" x="24" y="32.6" text-anchor="middle">BC</text></svg><span class="chip chip-plain">Optional</span></div>
         <h2 class="acct-name">Care plan</h2>
         <p class="acct"><span>AUD</span><span>&bull;&bull;&bull;&bull; 0030</span></p>
@@ -90,7 +101,7 @@
         <ul><li>Hosting upkeep</li><li>Small text and photo changes</li><li>Security checks and backups</li><li>Priority replies</li></ul>
         <a class="btn btn-ghost" href="care-plan.html">What it covers</a>
       </article></div>
-      <div class="reveal d3"><article class="tile acct-card">
+      <div data-reveal><article class="tile acct-card">
         <div class="acct-top"><svg class="crest" viewBox="0 0 48 56" aria-hidden="true" focusable="false"><path class="crest-outline" pathLength="1" d="M24 2.5 43.5 9.2V26c0 12.6-8.1 21.6-19.5 27.5C12.6 47.6 4.5 38.6 4.5 26V9.2Z"/><path class="crest-inner" d="M24 7.6 38.6 12.6V26c0 9.6-6 16.6-14.6 21.4C15.4 42.6 9.4 35.6 9.4 26V12.6Z"/><text class="crest-text" x="24" y="32.6" text-anchor="middle">BC</text></svg><span class="chip chip-plain">By quote</span></div>
         <h2 class="acct-name">Custom</h2>
         <p class="acct"><span>AUD</span><span>&bull;&bull;&bull;&bull; QUOTE</span></p>
@@ -106,10 +117,10 @@
     <div class="container">
       <div class="grid grid-2" style="gap:48px;align-items:start">
         <div class="section-head">
-      <div><p class="label reveal">What's included</p><h2 class="h2" data-split><span id="inc-h">Everything listed <em>is included.</em></span></h2></div>
-      <p class="lead reveal d1">No hidden extras. All of this comes with both the One Page and the Full Website.</p>
+      <div><p class="label" data-reveal>What's included</p><h2 class="h2" data-split><span id="inc-h">Everything listed <em>is included.</em></span></h2></div>
+      <p class="lead" data-reveal>No hidden extras. All of this comes with both the One Page and the Full Website.</p>
     </div>
-        <div class="table-wrap reveal"><table class="stack-table"><caption>Included in each package</caption>
+        <div class="table-wrap" data-reveal><table class="stack-table"><caption>Included in each package</caption>
           <thead><tr><th scope="col">Item</th><th scope="col">One Page</th><th scope="col">Full Website</th></tr></thead>
           <tbody><tr><th scope="row">Writing help</th><td class="yes" data-label="One Page">Included</td><td class="yes" data-label="Full Website">Included</td></tr><tr><th scope="row">Mobile design</th><td class="yes" data-label="One Page">Included</td><td class="yes" data-label="Full Website">Included</td></tr><tr><th scope="row">Contact form</th><td class="yes" data-label="One Page">Included</td><td class="yes" data-label="Full Website">Included</td></tr><tr><th scope="row">Google basics (SEO setup)</th><td class="yes" data-label="One Page">Included</td><td class="yes" data-label="Full Website">Included</td></tr><tr><th scope="row">Speed</th><td class="yes" data-label="One Page">Included</td><td class="yes" data-label="Full Website">Included</td></tr><tr><th scope="row">Secure HTTPS</th><td class="yes" data-label="One Page">Included</td><td class="yes" data-label="Full Website">Included</td></tr><tr><th scope="row">Handover of your site and logins</th><td class="yes" data-label="One Page">Included</td><td class="yes" data-label="Full Website">Included</td></tr><tr><th scope="row">2 rounds of changes</th><td class="yes" data-label="One Page">Included</td><td class="yes" data-label="Full Website">Included</td></tr></tbody></table></div>
       </div>
@@ -119,8 +130,8 @@
   <section class="section band band-gold" aria-labelledby="promise-h">
     <div class="container">
       <div class="grid grid-2" style="gap:48px;align-items:start">
-        <div><p class="label reveal">Our promise</p><h2 id="promise-h" class="h2" data-split>No hidden <em>costs.</em></h2><p class="lead reveal d1" style="margin-top:24px">The price we quote is the price you pay.</p></div>
-        <ul class="ticks reveal d1" style="align-self:end">
+        <div><p class="label" data-reveal>Our promise</p><h2 id="promise-h" class="h2" data-split>No hidden <em>costs.</em></h2><p class="lead" data-reveal style="margin-top:24px">The price we quote is the price you pay.</p></div>
+        <ul class="ticks" data-reveal style="align-self:end">
           <li>You pay for your own domain name (your web address, like yourbusiness.com.au), about $20 a year. It is registered in your name, so it is always yours.</li>
           <li>Hosting setup is included. If anything about hosting would cost you extra, we tell you before you say yes.</li>
           <li>Add-ons are optional, and their price is confirmed before any work begins.</li>
@@ -134,10 +145,10 @@
     <div class="container">
       <div class="grid grid-2" style="gap:48px;align-items:start">
         <div class="section-head">
-      <div><p class="label reveal">Add-ons</p><h2 class="h2" data-split><span id="addons-h">Add what <em>you need.</em></span></h2></div>
-      <p class="lead reveal d1">Optional extras, priced from these amounts. We confirm the exact price with you first.</p>
+      <div><p class="label" data-reveal>Add-ons</p><h2 class="h2" data-split><span id="addons-h">Add what <em>you need.</em></span></h2></div>
+      <p class="lead" data-reveal>Optional extras, priced from these amounts. We confirm the exact price with you first.</p>
     </div>
-        <ul class="addon-list reveal"><li><span><b>Extra page</b><span class="tiny">Each page beyond what your package includes.</span></span><span class="amt"><small>from</small><span data-price="extraPage">$80</span> <small>each</small></span></li><li><span><b>Booking button</b><span class="tiny">Links to the booking app you already use.</span></span><span class="amt"><small>from</small><span data-price="booking">$50</span></span></li><li><span><b>Google Map</b><span class="tiny">A map of your location on your contact section.</span></span><span class="amt"><small>from</small><span data-price="map">$30</span></span></li><li><span><b>Logo tidy-up</b><span class="tiny">We clean up the logo you have so it looks sharp on screens.</span></span><span class="amt"><small>from</small><span data-price="logo">$60</span></span></li><li><span><b>Google Business Profile setup</b><span class="tiny">We set up or tidy your free Google listing with you.</span></span><span class="amt"><small>from</small><span data-price="gbp">$80</span></span></li></ul>
+        <ul class="addon-list" data-reveal><li><span><b>Extra page</b><span class="tiny">Each page beyond what your package includes.</span></span><span class="amt"><small>from</small><span data-price="extraPage">$80</span> <small>each</small></span></li><li><span><b>Booking button</b><span class="tiny">Links to the booking app you already use.</span></span><span class="amt"><small>from</small><span data-price="booking">$50</span></span></li><li><span><b>Google Map</b><span class="tiny">A map of your location in your contact section.</span></span><span class="amt"><small>from</small><span data-price="map">$30</span></span></li><li><span><b>Logo tidy-up</b><span class="tiny">We clean up the logo you have so it is sharp on screens.</span></span><span class="amt"><small>from</small><span data-price="logo">$60</span></span></li><li><span><b>Google Business Profile setup</b><span class="tiny">We set up or tidy your free Google listing with you.</span></span><span class="amt"><small>from</small><span data-price="gbp">$80</span></span></li></ul>
       </div>
     </div>
   </section>
@@ -145,10 +156,10 @@
   <section class="section band" aria-labelledby="cmp-h">
     <div class="container">
       <div class="section-head split">
-      <div><p class="label reveal">Compare</p><h2 class="h2" data-split><span id="cmp-h">Your options, <em>side by side.</em></span></h2></div>
-      <p class="lead reveal d1">Laid out like a statement: what each route costs you in money, time, effort and ownership.</p>
+      <div><p class="label" data-reveal>Compare</p><h2 class="h2" data-split><span id="cmp-h">Your options, <em>side by side.</em></span></h2></div>
+      <p class="lead" data-reveal>Laid out like a statement: what each route costs you in money, time, effort and ownership.</p>
     </div>
-      <div class="statement reveal">
+      <div class="statement" data-reveal>
         <div class="statement-head"><span>Statement &middot; <b>Website options</b></span><span>Melbourne &middot; AUD</span></div>
         <div class="table-wrap"><table class="stack-table">
           <caption class="sr-only">A DIY builder, a typical Melbourne agency and Black Crest</caption>
@@ -162,21 +173,21 @@
   <section class="section" aria-labelledby="calc-h">
     <div class="container">
       <div class="section-head split">
-      <div><p class="label reveal">Price calculator</p><h2 class="h2" data-split><span id="calc-h">Build your <em>quote.</em></span></h2></div>
-      <p class="lead reveal d1">Tick what you want and watch the total. Send it to us and we confirm it by email.</p>
+      <div><p class="label" data-reveal>Price calculator</p><h2 class="h2" data-split><span id="calc-h">Build your <em>quote.</em></span></h2></div>
+      <p class="lead" data-reveal>Tick what you want and watch the total. Send it to us and we confirm it by email.</p>
     </div>
       <form class="calc" id="calc" onsubmit="return false">
-        <div class="reveal">
+        <div data-reveal>
           <fieldset><legend>Package</legend>
             <label class="opt" for="pkg-one"><input type="radio" name="pkg" id="pkg-one" value="onePage" checked><span class="opt-text"><b>One Page</b><span class="tiny">One polished page</span></span><span class="amt" data-price="onePage">$300</span></label>
             <label class="opt" for="pkg-full"><input type="radio" name="pkg" id="pkg-full" value="fullSite"><span class="opt-text"><b>Full Website</b><span class="tiny">Up to about 5 pages</span></span><span class="amt" data-price="fullSite">$700</span></label>
           </fieldset>
-          <fieldset><legend>Add-ons</legend><label class="opt" for="add-extraPage"><input type="checkbox" id="add-extraPage" value="extraPage"><span class="opt-text"><b>Extra page</b><span class="tiny">Each page beyond what your package includes.</span></span><select class="qty" data-for="extraPage" id="qty-extraPage" aria-label="How many extra pages"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select><span class="amt">from <span data-price="extraPage">$80</span></span></label><label class="opt" for="add-booking"><input type="checkbox" id="add-booking" value="booking"><span class="opt-text"><b>Booking button</b><span class="tiny">Links to the booking app you already use.</span></span><span class="amt">from <span data-price="booking">$50</span></span></label><label class="opt" for="add-map"><input type="checkbox" id="add-map" value="map"><span class="opt-text"><b>Google Map</b><span class="tiny">A map of your location on your contact section.</span></span><span class="amt">from <span data-price="map">$30</span></span></label><label class="opt" for="add-logo"><input type="checkbox" id="add-logo" value="logo"><span class="opt-text"><b>Logo tidy-up</b><span class="tiny">We clean up the logo you have so it looks sharp on screens.</span></span><span class="amt">from <span data-price="logo">$60</span></span></label><label class="opt" for="add-gbp"><input type="checkbox" id="add-gbp" value="gbp"><span class="opt-text"><b>Google Business Profile setup</b><span class="tiny">We set up or tidy your free Google listing with you.</span></span><span class="amt">from <span data-price="gbp">$80</span></span></label></fieldset>
+          <fieldset><legend>Add-ons</legend><label class="opt" for="add-extraPage"><input type="checkbox" id="add-extraPage" value="extraPage"><span class="opt-text"><b>Extra page</b><span class="tiny">Each page beyond what your package includes.</span></span><select class="qty" data-for="extraPage" id="qty-extraPage" aria-label="How many extra pages"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select><span class="amt">from <span data-price="extraPage">$80</span></span></label><label class="opt" for="add-booking"><input type="checkbox" id="add-booking" value="booking"><span class="opt-text"><b>Booking button</b><span class="tiny">Links to the booking app you already use.</span></span><span class="amt">from <span data-price="booking">$50</span></span></label><label class="opt" for="add-map"><input type="checkbox" id="add-map" value="map"><span class="opt-text"><b>Google Map</b><span class="tiny">A map of your location in your contact section.</span></span><span class="amt">from <span data-price="map">$30</span></span></label><label class="opt" for="add-logo"><input type="checkbox" id="add-logo" value="logo"><span class="opt-text"><b>Logo tidy-up</b><span class="tiny">We clean up the logo you have so it is sharp on screens.</span></span><span class="amt">from <span data-price="logo">$60</span></span></label><label class="opt" for="add-gbp"><input type="checkbox" id="add-gbp" value="gbp"><span class="opt-text"><b>Google Business Profile setup</b><span class="tiny">We set up or tidy your free Google listing with you.</span></span><span class="amt">from <span data-price="gbp">$80</span></span></label></fieldset>
           <fieldset><legend>After launch</legend>
             <label class="opt" for="add-care"><input type="checkbox" id="add-care" value="care"><span class="opt-text"><b>Care plan</b><span class="tiny">Optional, cancel any time</span></span><span class="amt"><span data-price="carePlan">$30</span> a month</span></label>
           </fieldset>
         </div>
-        <div class="tile calc-total reveal d1">
+        <div class="tile calc-total" data-reveal>
           <div class="calc-head">
             <div><p class="tile-label" style="margin:0 0 6px"><span>Estimated total</span></p><p class="tiny" style="margin:0">One-off, in AUD</p></div>
             <div class="ring" aria-hidden="true"><svg viewBox="0 0 40 40"><circle class="track" cx="20" cy="20" r="17"/><circle class="fill" cx="20" cy="20" r="17" pathLength="1"/></svg><span><b>0</b>extras</span></div>
@@ -193,21 +204,22 @@
 
   <section class="cta-final" aria-labelledby="cta-h">
     <div class="container">
-      <p class="label reveal" style="justify-content:center">Next step</p>
+      <p class="label" data-reveal style="justify-content:center">Next step</p>
       <h2 id="cta-h" class="display" data-split>Start with a <em>free</em> concept.</h2>
-      <p class="reveal">See your new homepage first. Decide after.</p>
-      <div class="btn-row reveal"><a class="btn btn-gold" href="free-concept.html">Get a free concept</a><a class="btn btn-ghost" href="process.html">How it works</a></div>
+      <p data-reveal>See your new homepage first. Decide after.</p>
+      <div class="btn-row" data-reveal><a class="btn btn-gold" href="free-concept.html">Get a free concept</a><a class="btn btn-ghost" href="process.html">How it works</a></div>
     </div>
   </section>
 </main>
 <footer class="site-footer">
   <div class="container">
-    <p class="footer-word" aria-hidden="true">Black <em>Crest</em></p>
     <div class="footer-top">
       <div class="footer-brand">
         <a class="brand" href="index.html"><svg class="crest" viewBox="0 0 48 56" aria-hidden="true" focusable="false"><path class="crest-outline" pathLength="1" d="M24 2.5 43.5 9.2V26c0 12.6-8.1 21.6-19.5 27.5C12.6 47.6 4.5 38.6 4.5 26V9.2Z"/><path class="crest-inner" d="M24 7.6 38.6 12.6V26c0 9.6-6 16.6-14.6 21.4C15.4 42.6 9.4 35.6 9.4 26V12.6Z"/><text class="crest-text" x="24" y="32.6" text-anchor="middle">BC</text></svg><span class="brand-name"><b>Black Crest</b> <small>Web Designs</small></span><span class="sr-only"> home</span></a>
         <p>Premium sites for local businesses. A KB Ventures company, based in Melbourne, Australia.</p>
         <a class="mail link" data-email href="mailto:kb.ventures@outlook.com">kb.ventures@outlook.com</a>
+        <p class="tiny" data-clock>Melbourne</p>
+        <p class="tiny"><span class="avail-dot" aria-hidden="true"></span><span data-availability>Taking new projects now</span></p>
       </div>
       <div class="footer-cols">
         <nav class="footer-col" aria-labelledby="f-0"><h2 id="f-0">Services</h2><ul><li><a href="pricing.html" aria-current="page">Pricing</a></li><li><a href="care-plan.html">Care plan</a></li><li><a href="process.html">Process</a></li><li><a href="work.html">Work</a></li><li><a href="start.html">Start your project</a></li></ul></nav>
@@ -219,8 +231,10 @@
     <div class="footer-bottom">
       <p>&copy; <span data-year>2026</span> Black Crest Web Designs, a <a href="../kbventures-site/">KB Ventures</a> company.</p>
       <p>No cookies. No tracking. Prices in AUD.</p>
+      <button class="to-top" type="button" data-top>Back to top <span aria-hidden="true">&uarr;</span></button>
     </div>
   </div>
+  <p class="footer-word" aria-hidden="true">BLACK CREST</p>
 </footer>
 <div class="mobile-bar" role="region" aria-label="Quick actions">
   <a class="btn btn-gold" href="free-concept.html">Get a free concept</a>

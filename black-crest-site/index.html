@@ -2,6 +2,7 @@
 <html lang="en-AU">
 <head>
 <meta charset="utf-8">
+<script>document.documentElement.classList.add('js')</script>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Black Crest Web Designs: premium sites for local businesses</title>
 <meta name="description" content="Fast, good-looking websites for Melbourne barbers, cafes, gyms, salons and tradies. A free concept homepage first. One Page $300, Full Website $700.">
@@ -28,16 +29,18 @@
 <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="preload" href="fonts/cormorant-garamond.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="fonts/cormorant-garamond-italic.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="style.css">
-<script src="main.js" defer></script>
+<script src="vendor/gsap/gsap.min.js" defer></script>
+<script src="vendor/gsap/ScrollTrigger.min.js" defer></script>
+<script src="vendor/gsap/SplitText.min.js" defer></script>
+<script src="vendor/lenis/lenis.min.js" defer></script>
+<script type="module" src="js/core.js"></script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"ProfessionalService","@id":"https://kirithikbala21-jpg.github.io/3D-demo-sites/black-crest-site/#business","name":"Black Crest Web Designs","slogan":"Premium sites for local businesses","description":"Fast, good-looking websites for local businesses in Melbourne. A free concept homepage first, clear prices, and you own your site.","url":"https://kirithikbala21-jpg.github.io/3D-demo-sites/black-crest-site/","email":"kb.ventures@outlook.com","image":"https://kirithikbala21-jpg.github.io/3D-demo-sites/black-crest-site/img/og.jpg","logo":"https://kirithikbala21-jpg.github.io/3D-demo-sites/black-crest-site/img/icon-512.png","address":{"@type":"PostalAddress","addressLocality":"Melbourne","addressRegion":"VIC","addressCountry":"AU"},"areaServed":{"@type":"City","name":"Melbourne"},"parentOrganization":{"@type":"Organization","name":"KB Ventures","url":"https://kirithikbala21-jpg.github.io/3D-demo-sites/kbventures-site/"},"makesOffer":[{"@type":"Offer","name":"One Page website","price":"300.00","priceCurrency":"AUD","url":"https://kirithikbala21-jpg.github.io/3D-demo-sites/black-crest-site/pricing.html"},{"@type":"Offer","name":"Full Website (up to about 5 pages)","price":"700.00","priceCurrency":"AUD","url":"https://kirithikbala21-jpg.github.io/3D-demo-sites/black-crest-site/pricing.html"},{"@type":"Offer","name":"Care plan","price":"30.00","priceCurrency":"AUD","url":"https://kirithikbala21-jpg.github.io/3D-demo-sites/black-crest-site/care-plan.html","priceSpecification":{"@type":"UnitPriceSpecification","price":"30.00","priceCurrency":"AUD","unitText":"month"}}]}</script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
 <div class="grain" aria-hidden="true"></div>
-<div class="lines" aria-hidden="true"></div>
 <div class="progress" aria-hidden="true"><span></span></div>
 <div class="intro" id="intro" hidden aria-hidden="true">
   <svg class="crest" viewBox="0 0 48 56" aria-hidden="true" focusable="false"><path class="crest-outline" pathLength="1" d="M24 2.5 43.5 9.2V26c0 12.6-8.1 21.6-19.5 27.5C12.6 47.6 4.5 38.6 4.5 26V9.2Z"/><path class="crest-inner" d="M24 7.6 38.6 12.6V26c0 9.6-6 16.6-14.6 21.4C15.4 42.6 9.4 35.6 9.4 26V12.6Z"/><text class="crest-text" x="24" y="32.6" text-anchor="middle">BC</text></svg>
@@ -46,18 +49,26 @@
 <header class="site-header">
   <div class="container header-inner">
     <a class="brand" href="index.html"><svg class="crest" viewBox="0 0 48 56" aria-hidden="true" focusable="false"><path class="crest-outline" pathLength="1" d="M24 2.5 43.5 9.2V26c0 12.6-8.1 21.6-19.5 27.5C12.6 47.6 4.5 38.6 4.5 26V9.2Z"/><path class="crest-inner" d="M24 7.6 38.6 12.6V26c0 9.6-6 16.6-14.6 21.4C15.4 42.6 9.4 35.6 9.4 26V12.6Z"/><text class="crest-text" x="24" y="32.6" text-anchor="middle">BC</text></svg><span class="brand-name"><b>Black Crest</b> <small>Web Designs</small></span><span class="sr-only"> home</span></a>
-    <nav aria-label="Main"><ul class="nav-links"><li><a href="work.html">Work</a></li><li><a href="process.html">Process</a></li><li><a href="pricing.html">Pricing</a></li><li><a href="about.html">About</a></li><li><a href="faq.html">FAQ</a></li><li><a href="contact.html">Contact</a></li></ul></nav>
+    <nav aria-label="Main"><ul class="nav-links"><li><a href="work.html">Work</a></li><li><a href="pricing.html">Pricing</a></li><li><a href="contact.html">Contact</a></li></ul></nav>
     <a class="btn btn-gold btn-sm header-cta" href="free-concept.html">Get a free concept</a>
-    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu"><span class="menu-icon" aria-hidden="true"></span><span class="sr-only">Open menu</span></button>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu"><span class="menu-label" aria-hidden="true">Menu</span><span class="menu-icon" aria-hidden="true"></span><span class="sr-only">Open menu</span></button>
   </div>
 </header>
-<div class="menu" id="menu" hidden>
-  <nav aria-label="Menu"><ol><li><a href="index.html" aria-current="page">Home</a></li><li><a href="work.html">Work</a></li><li><a href="process.html">Process</a></li><li><a href="pricing.html">Pricing</a></li><li><a href="about.html">About</a></li><li><a href="faq.html">FAQ</a></li><li><a href="contact.html">Contact</a></li></ol><div class="menu-sub"><a href="care-plan.html">Care plan</a><a href="start.html">Start your project</a><a href="guides/">Guides</a><a href="quiz.html">Website quiz</a><a href="for-barbers.html">Barbers</a><a href="for-cafes.html">Cafes</a><a href="for-gyms.html">Gyms</a><a href="for-tradies.html">Tradies</a><a href="for-salons.html">Salons</a></div></nav>
-  <a class="btn btn-gold" href="free-concept.html">Get a free concept</a>
+<div class="menu" id="menu" role="dialog" aria-modal="true" aria-label="Menu" hidden>
+  <div class="container menu-inner">
+    <nav aria-label="Menu"><ol class="menu-links"><li><a href="work.html" data-preview="img/work/barber-desktop-800.webp"><span class="n" aria-hidden="true">01</span>Work</a></li><li><a href="process.html" data-preview="img/work/cafe-desktop-800.webp"><span class="n" aria-hidden="true">02</span>Process</a></li><li><a href="pricing.html" data-preview="img/work/plumber-desktop-800.webp"><span class="n" aria-hidden="true">03</span>Pricing</a></li><li><a href="about.html" data-preview="img/work/salon-desktop-800.webp"><span class="n" aria-hidden="true">04</span>About</a></li><li><a href="faq.html" data-preview="img/work/gym-desktop-800.webp"><span class="n" aria-hidden="true">05</span>FAQ</a></li><li><a href="contact.html" data-preview="img/work/parts-desktop-800.webp"><span class="n" aria-hidden="true">06</span>Contact</a></li></ol><div class="menu-sub"><a href="care-plan.html">Care plan</a><a href="start.html">Start your project</a><a href="guides/">Guides</a><a href="quiz.html">Website quiz</a><a href="for-barbers.html">Barbers</a><a href="for-cafes.html">Cafes</a><a href="for-gyms.html">Gyms</a><a href="for-tradies.html">Tradies</a><a href="for-salons.html">Salons</a></div></nav>
+    <aside class="menu-aside">
+      <div class="menu-preview" aria-hidden="true"><img src="img/work/barber-desktop-800.webp" width="800" height="500" alt="" loading="lazy" decoding="async"></div>
+      <a class="link" data-email href="mailto:kb.ventures@outlook.com">kb.ventures@outlook.com</a>
+      <p class="tiny" data-clock>Melbourne</p>
+      <p class="tiny"><span class="avail-dot" aria-hidden="true"></span><span data-availability>Taking new projects now</span></p>
+      <a class="btn btn-gold" href="free-concept.html">Get a free concept</a>
+    </aside>
+  </div>
 </div>
 <main id="main">
   <section class="hero" aria-labelledby="hero-h">
-    <div class="hero-stage" data-three="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.module.min.js" data-sri="sha512-QbgvOagVq2O5Ompxc2TOWKYQnJ1e+Y0JbTUQD9l2tUUtbdCWDqa7WA4REFVlSuFwWQmJLGtE+nW0EJMlmOx2RQ==" data-module="./hero3d.js"><svg class="crest-art" viewBox="0 0 200 232" aria-hidden="true" focusable="false">
+    <div class="hero-stage" data-hero3d><svg class="crest-art" viewBox="0 0 200 232" aria-hidden="true" focusable="false">
       <defs>
         <linearGradient id="ca-g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F6E3A0"/><stop offset=".35" stop-color="#D4AF37"/><stop offset=".62" stop-color="#8E6E1F"/><stop offset=".82" stop-color="#E7C863"/><stop offset="1" stop-color="#7A5D17"/></linearGradient>
         <linearGradient id="ca-p" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#23252d"/><stop offset="1" stop-color="#0e0f13"/></linearGradient>
@@ -96,35 +107,35 @@
     <p class="scroll-cue" aria-hidden="true"><i></i>Scroll</p>
   </section>
 
-  <section class="marquee" aria-label="Local businesses we build for"><div class="marquee-track"><ul><li>Barbers</li><li>Cafes</li><li>Gyms</li><li>Salons</li><li>Plumbers</li><li>Electricians</li><li>Bakeries</li><li>Florists</li><li>Mechanics</li><li>Restaurants</li></ul><ul aria-hidden="true"><li>Barbers</li><li>Cafes</li><li>Gyms</li><li>Salons</li><li>Plumbers</li><li>Electricians</li><li>Bakeries</li><li>Florists</li><li>Mechanics</li><li>Restaurants</li></ul></div></section>
+  <section class="marquee" data-marquee aria-label="Local businesses we build for"><div class="marquee-track"><ul><li>Barbers</li><li>Cafes</li><li>Gyms</li><li>Salons</li><li>Plumbers</li><li>Electricians</li><li>Bakeries</li><li>Florists</li><li>Mechanics</li><li>Restaurants</li></ul><ul aria-hidden="true"><li>Barbers</li><li>Cafes</li><li>Gyms</li><li>Salons</li><li>Plumbers</li><li>Electricians</li><li>Bakeries</li><li>Florists</li><li>Mechanics</li><li>Restaurants</li></ul></div></section>
 
   <section class="section" aria-labelledby="work-h">
     <div class="container showcase">
       <div>
-        <p class="label reveal"><span class="idx">01</span> Work</p>
+        <p class="label" data-reveal><span class="idx">01</span><span class="slash" aria-hidden="true">/</span>Work</p>
         <h2 id="work-h" class="h2" data-split>Concept sites, <em>built properly.</em></h2>
-        <p class="lead reveal d1">Six made-up local businesses, designed and built like real ones: booking, menus, timetables, quote forms. Every one is a concept, not a customer.</p>
-        <a class="link reveal d2" href="work.html">See all six <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <p class="lead" data-reveal>Six made-up local businesses, designed and built like real ones: booking, menus, timetables, quote forms. Every one is a concept, not a customer.</p>
+        <a class="link" data-reveal href="work.html">See all six <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
       </div>
-      <div class="reveal d1"><div class="devices duo" data-parallax="0.07"><div class="laptop"><div class="laptop-screen"><img src="img/work/barber-desktop-1600.webp" srcset="img/work/barber-desktop-800.webp 800w, img/work/barber-desktop-1600.webp 1600w" sizes="(min-width: 1024px) 60vw, 92vw" width="1600" height="1000" loading="lazy" decoding="async" alt="The Brass &amp; Blade concept site on a laptop"></div><div class="laptop-base" aria-hidden="true"></div></div><div class="phone"><img src="img/work/cafe-phone.webp" width="600" height="1300" loading="lazy" decoding="async" alt="The Ember &amp; Oak concept site on a phone"></div></div></div>
+      <div data-reveal><div class="devices duo" data-parallax="0.07"><div class="laptop"><div class="laptop-screen"><img src="img/work/barber-desktop-1600.webp" srcset="img/work/barber-desktop-800.webp 800w, img/work/barber-desktop-1600.webp 1600w" sizes="(min-width: 1024px) 60vw, 92vw" width="1600" height="1000" loading="lazy" decoding="async" alt="The Brass &amp; Blade concept site on a laptop"></div><div class="laptop-base" aria-hidden="true"></div></div><div class="phone"><img src="img/work/cafe-phone.webp" width="600" height="1300" loading="lazy" decoding="async" alt="The Ember &amp; Oak concept site on a phone"></div></div></div>
     </div>
   </section>
 
   <section class="section band" aria-labelledby="why-h">
     <div class="container">
       <div class="section-head split">
-      <div><p class="label reveal"><span class="idx">02</span> Why it matters</p><h2 class="h2" data-split><span id="why-h">Built for how people <em>actually</em> find you.</span></h2></div>
-      <p class="lead reveal d1">Most customers meet you on a phone, minutes before they need you. Every detail is there to turn that moment into a call, a booking or a visit.</p>
+      <div><p class="label" data-reveal><span class="idx">02</span><span class="slash" aria-hidden="true">/</span>Why it matters</p><h2 class="h2" data-split><span id="why-h">Built for how people <em>actually</em> find you.</span></h2></div>
+      <p class="lead" data-reveal>Most customers meet you on a phone, minutes before they need you. Every detail is there to turn that moment into a call, a booking or a visit.</p>
     </div>
       <div class="bento">
-        <article class="tile big reveal illo-wrap"><svg class="illo" viewBox="0 0 240 180" aria-hidden="true" focusable="false"><circle class="s" cx="128" cy="100" r="66"/><path class="g" pathLength="1" d="M70 128a60 60 0 0 1 116 0"/><path class="g" pathLength="1" d="M78 104l8 3M92 80l6 6M118 66v9M146 70l-4 8M170 86l-7 5M182 108l-8 2"/>
+        <article class="tile big illo-wrap" data-reveal><svg class="illo" viewBox="0 0 240 180" aria-hidden="true" focusable="false"><circle class="s" cx="128" cy="100" r="66"/><path class="g" pathLength="1" d="M70 128a60 60 0 0 1 116 0"/><path class="g" pathLength="1" d="M78 104l8 3M92 80l6 6M118 66v9M146 70l-4 8M170 86l-7 5M182 108l-8 2"/>
       <path class="g" pathLength="1" d="M128 128 160 86"/><circle class="d" cx="128" cy="128" r="3.5"/><path class="g" pathLength="1" d="M18 70h40M8 90h48M24 110h28"/><path class="s" d="M60 146h136"/></svg><div><h3 class="h3">Fast on any phone</h3><p>Light pages, compressed images, no page-builder bloat. Your site opens before they lose interest.</p></div></article>
-        <article class="tile half reveal d1 illo-wrap"><svg class="illo" viewBox="0 0 240 180" aria-hidden="true" focusable="false"><rect class="g" pathLength="1" x="86" y="18" width="68" height="144" rx="14"/><path class="s" d="M98 40h44M98 52h30M98 64h38"/><rect class="s" x="98" y="78" width="44" height="26" rx="4"/>
+        <article class="tile half illo-wrap" data-reveal><svg class="illo" viewBox="0 0 240 180" aria-hidden="true" focusable="false"><rect class="g" pathLength="1" x="86" y="18" width="68" height="144" rx="14"/><path class="s" d="M98 40h44M98 52h30M98 64h38"/><rect class="s" x="98" y="78" width="44" height="26" rx="4"/>
       <rect class="g" pathLength="1" x="100" y="120" width="40" height="18" rx="9"/><circle class="g" pathLength="1" cx="120" cy="129" r="26"/><circle class="s" cx="120" cy="129" r="40"/><circle class="d" cx="120" cy="129" r="2.5"/><path class="g" pathLength="1" d="M112 26h16"/></svg><div><h3 class="h3">One tap to act</h3><p>Call, book or get directions without hunting for the button.</p></div></article>
-        <article class="tile half reveal d2 illo-wrap"><svg class="illo" viewBox="0 0 240 180" aria-hidden="true" focusable="false"><path class="s" d="M20 40h200M20 80h200M20 120h200M20 160h200M60 20v150M110 20v150M160 20v150M210 20v150"/>
+        <article class="tile half illo-wrap" data-reveal><svg class="illo" viewBox="0 0 240 180" aria-hidden="true" focusable="false"><path class="s" d="M20 40h200M20 80h200M20 120h200M20 160h200M60 20v150M110 20v150M160 20v150M210 20v150"/>
       <path class="g" pathLength="1" d="M162 36c-14 0-24 10-24 23 0 17 24 40 24 40s24-23 24-40c0-13-10-23-24-23Z"/><circle class="g" pathLength="1" cx="162" cy="59" r="8"/>
       <circle class="g" pathLength="1" cx="96" cy="104" r="36"/><circle class="s" cx="96" cy="104" r="26"/><path class="g" pathLength="1" d="M122 130l34 34"/><circle class="d" cx="162" cy="59" r="2.5"/></svg><div><h3 class="h3">Found on Google</h3><p>Clean titles and structure from day one, plus help with your free Google Business Profile.</p></div></article>
-        <article class="tile wide reveal illo-wrap"><svg class="illo" viewBox="0 0 240 180" aria-hidden="true" focusable="false"><path class="s" d="M120 14 182 36v52c0 42-26 71-62 90-36-19-62-48-62-90V36Z"/><path class="g" pathLength="1" d="M120 30 168 47v41c0 33-20 56-48 71-28-15-48-38-48-71V47Z"/>
+        <article class="tile wide illo-wrap" data-reveal><svg class="illo" viewBox="0 0 240 180" aria-hidden="true" focusable="false"><path class="s" d="M120 14 182 36v52c0 42-26 71-62 90-36-19-62-48-62-90V36Z"/><path class="g" pathLength="1" d="M120 30 168 47v41c0 33-20 56-48 71-28-15-48-38-48-71V47Z"/>
       <circle class="g" pathLength="1" cx="96" cy="96" r="18"/><circle class="s" cx="96" cy="96" r="8"/><path class="g" pathLength="1" d="M114 96h52M150 96v14M160 96v10"/><circle class="d" cx="166" cy="96" r="2.5"/></svg><div><h3 class="h3">Yours, outright</h3><p>You own the finished site and your domain. No lock-in contracts and no hostage fees, ever.</p></div></article>
       </div>
     </div>
@@ -133,10 +144,10 @@
   <section class="section" aria-labelledby="ba-h">
     <div class="container">
       <div class="section-head split">
-      <div><p class="label reveal"><span class="idx">03</span> Before and after</p><h2 class="h2" data-split><span id="ba-h">From dated <em>to sharp.</em></span></h2></div>
-      <p class="lead reveal d1">Drag the handle. Same business, two very different first impressions.</p>
+      <div><p class="label" data-reveal><span class="idx">03</span><span class="slash" aria-hidden="true">/</span>Before and after</p><h2 class="h2" data-split><span id="ba-h">From dated <em>to sharp.</em></span></h2></div>
+      <p class="lead" data-reveal>Drag the handle. Same business, two very different first impressions.</p>
     </div>
-      <div class="compare reveal" data-compare>
+      <div class="compare" data-reveal data-compare>
         <img src="img/compare-before.webp" width="1600" height="1000" loading="lazy" decoding="async" alt="Before: a dated, cluttered barbershop homepage with small text and no clear booking button">
         <img class="after" src="img/compare-after.webp" width="1600" height="1000" loading="lazy" decoding="async" alt="After: the Brass and Blade concept homepage, dark and clean with a clear Book a chair button">
         <span class="compare-tag l" aria-hidden="true">Before</span><span class="compare-tag r" aria-hidden="true">After</span>
@@ -151,8 +162,8 @@
   <section class="section band band-gold" aria-labelledby="how-h">
     <div class="container">
       <div class="section-head split">
-      <div><p class="label reveal"><span class="idx">04</span> Process</p><h2 class="h2" data-split><span id="how-h">Four steps. <em>No surprises.</em></span></h2></div>
-      <p class="lead reveal d1">You see your homepage before you pay a cent. Here is everything that happens after that.</p>
+      <div><p class="label" data-reveal><span class="idx">04</span><span class="slash" aria-hidden="true">/</span>Process</p><h2 class="h2" data-split><span id="how-h">Four steps. <em>No surprises.</em></span></h2></div>
+      <p class="lead" data-reveal>You see your homepage before you pay a cent. Here is everything that happens after that.</p>
     </div>
       <div class="story" data-story>
       <div class="story-visual" aria-hidden="true"><div class="story-frame"><div class="stage is-active"><svg class="illo" viewBox="0 0 240 180" aria-hidden="true" focusable="false"><path class="g" pathLength="1" d="M38 40h112a12 12 0 0 1 12 12v44a12 12 0 0 1-12 12H84l-24 20v-20H38a12 12 0 0 1-12-12V52a12 12 0 0 1 12-12Z"/>
@@ -196,14 +207,14 @@
           <span class="chip chip-plain when">Usually 1 to 2 days after you approve it</span>
         </li></ol>
     </div>
-      <a class="link reveal" href="process.html">The full process <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      <a class="link" data-reveal href="process.html">The full process <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
     </div>
   </section>
 
   <section class="rail section" data-rail aria-labelledby="rail-h">
     <div class="container"><div class="section-head split">
-      <div><p class="label reveal">Concept sites</p><h2 class="h2" data-split><span id="rail-h">Six concepts, <em>six trades.</em></span></h2></div>
-      <p class="lead reveal d1">Swipe through, then open any of them on your phone. All six are made-up businesses.</p>
+      <div><p class="label" data-reveal>Concept sites</p><h2 class="h2" data-split><span id="rail-h">Six concepts, <em>six trades.</em></span></h2></div>
+      <p class="lead" data-reveal>Swipe through, then open any of them on your phone. All six are made-up businesses.</p>
     </div></div>
     <div class="rail-pin"><div class="rail-sticky">
       <ul class="rail-track" aria-label="Six concept sites"><li class="rail-item"><article class="tile rail-card">
@@ -250,11 +261,11 @@
   <section class="section" aria-labelledby="price-h">
     <div class="container">
       <div class="section-head split">
-      <div><p class="label reveal"><span class="idx">05</span> Pricing</p><h2 class="h2" data-split><span id="price-h">Clear prices. <em>Set before we start.</em></span></h2></div>
-      <p class="lead reveal d1">One price per package, written down before any work begins. No retainers you did not ask for.</p>
+      <div><p class="label" data-reveal><span class="idx">05</span><span class="slash" aria-hidden="true">/</span>Pricing</p><h2 class="h2" data-split><span id="price-h">Clear prices. <em>Set before we start.</em></span></h2></div>
+      <p class="lead" data-reveal>One price per package, written down before any work begins. No retainers you did not ask for.</p>
     </div>
       <div class="accounts three">
-        <div class="reveal"><article class="tile acct-card">
+        <div data-reveal><article class="tile acct-card">
         <div class="acct-top"><svg class="crest" viewBox="0 0 48 56" aria-hidden="true" focusable="false"><path class="crest-outline" pathLength="1" d="M24 2.5 43.5 9.2V26c0 12.6-8.1 21.6-19.5 27.5C12.6 47.6 4.5 38.6 4.5 26V9.2Z"/><path class="crest-inner" d="M24 7.6 38.6 12.6V26c0 9.6-6 16.6-14.6 21.4C15.4 42.6 9.4 35.6 9.4 26V12.6Z"/><text class="crest-text" x="24" y="32.6" text-anchor="middle">BC</text></svg><span class="chip chip-plain">Simple</span></div>
         <h3 class="acct-name">One Page</h3>
         <p class="acct"><span>AUD</span><span>&bull;&bull;&bull;&bull; 0300</span></p>
@@ -263,7 +274,7 @@
         <ul><li>Writing help</li><li>Designed for phones first</li><li>Contact form</li><li>Google basics set up</li><li>Fast and secure (HTTPS)</li><li>2 rounds of changes</li></ul>
         <a class="btn btn-ghost" href="contact.html?need=one-page">Choose One Page</a>
       </article></div>
-        <div class="reveal d1"><article class="tile acct-card is-featured">
+        <div data-reveal><article class="tile acct-card is-featured">
         <div class="acct-top"><svg class="crest" viewBox="0 0 48 56" aria-hidden="true" focusable="false"><path class="crest-outline" pathLength="1" d="M24 2.5 43.5 9.2V26c0 12.6-8.1 21.6-19.5 27.5C12.6 47.6 4.5 38.6 4.5 26V9.2Z"/><path class="crest-inner" d="M24 7.6 38.6 12.6V26c0 9.6-6 16.6-14.6 21.4C15.4 42.6 9.4 35.6 9.4 26V12.6Z"/><text class="crest-text" x="24" y="32.6" text-anchor="middle">BC</text></svg><span class="chip">Better value</span></div>
         <h3 class="acct-name">Full Website</h3>
         <p class="acct"><span>AUD</span><span>&bull;&bull;&bull;&bull; 0700</span></p>
@@ -272,7 +283,7 @@
         <ul><li>Everything in One Page</li><li>Up to about 5 pages</li><li>Room for a menu, timetable, services or gallery</li><li>2 rounds of changes</li></ul>
         <a class="btn btn-gold" href="contact.html?need=full-website">Choose Full Website</a>
       </article></div>
-        <div class="reveal d2"><article class="tile acct-card">
+        <div data-reveal><article class="tile acct-card">
         <div class="acct-top"><svg class="crest" viewBox="0 0 48 56" aria-hidden="true" focusable="false"><path class="crest-outline" pathLength="1" d="M24 2.5 43.5 9.2V26c0 12.6-8.1 21.6-19.5 27.5C12.6 47.6 4.5 38.6 4.5 26V9.2Z"/><path class="crest-inner" d="M24 7.6 38.6 12.6V26c0 9.6-6 16.6-14.6 21.4C15.4 42.6 9.4 35.6 9.4 26V12.6Z"/><text class="crest-text" x="24" y="32.6" text-anchor="middle">BC</text></svg><span class="chip chip-plain">Optional</span></div>
         <h3 class="acct-name">Care plan</h3>
         <p class="acct"><span>AUD</span><span>&bull;&bull;&bull;&bull; 0030</span></p>
@@ -282,25 +293,25 @@
         <a class="btn btn-ghost" href="care-plan.html">What it covers</a>
       </article></div>
       </div>
-      <p class="reveal" style="margin-top:28px">Something bigger in mind? Custom projects are quoted. <a class="link" href="pricing.html">Pricing and the calculator <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></p>
+      <p data-reveal style="margin-top:28px">Something bigger in mind? Custom projects are quoted. <a class="link" href="pricing.html">Pricing and the calculator <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></p>
     </div>
   </section>
 
   <section class="section band" aria-labelledby="trades-h">
     <div class="container">
       <div class="section-head split">
-      <div><p class="label reveal"><span class="idx">06</span> Trades</p><h2 class="h2" data-split><span id="trades-h">Made for the high street.</span></h2></div>
-      <p class="lead reveal d1">We build for businesses across Melbourne and its suburbs. Pick your trade to see what it usually needs.</p>
+      <div><p class="label" data-reveal><span class="idx">06</span><span class="slash" aria-hidden="true">/</span>Trades</p><h2 class="h2" data-split><span id="trades-h">Made for the high street.</span></h2></div>
+      <p class="lead" data-reveal>We build for businesses across Melbourne and its suburbs. Pick your trade to see what it usually needs.</p>
     </div>
-      <ol class="trade-list reveal"><li><a href="for-barbers.html"><span class="n">01</span><span class="t">Barbers</span><span class="x">Bookings, prices and the cuts that sell the chair.</span><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 17 17 7M8 7h9v9"/></svg></span></a></li><li><a href="for-cafes.html"><span class="n">02</span><span class="t">Cafes</span><span class="x">Menu, hours and a map, before they leave the house.</span><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 17 17 7M8 7h9v9"/></svg></span></a></li><li><a href="for-gyms.html"><span class="n">03</span><span class="t">Gyms</span><span class="x">Timetables, memberships and an easy first class.</span><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 17 17 7M8 7h9v9"/></svg></span></a></li><li><a href="for-tradies.html"><span class="n">04</span><span class="t">Tradies</span><span class="x">The call, the quote and the suburbs you cover.</span><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 17 17 7M8 7h9v9"/></svg></span></a></li><li><a href="for-salons.html"><span class="n">05</span><span class="t">Salons</span><span class="x">Services, prices and bookings at any hour.</span><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 17 17 7M8 7h9v9"/></svg></span></a></li></ol>
+      <ol class="trade-list" data-reveal><li><a href="for-barbers.html"><span class="n">01</span><span class="t">Barbers</span><span class="x">Bookings, prices and the cuts that sell the chair.</span><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 17 17 7M8 7h9v9"/></svg></span></a></li><li><a href="for-cafes.html"><span class="n">02</span><span class="t">Cafes</span><span class="x">Menu, hours and a map, before they leave the house.</span><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 17 17 7M8 7h9v9"/></svg></span></a></li><li><a href="for-gyms.html"><span class="n">03</span><span class="t">Gyms</span><span class="x">Timetables, memberships and an easy first class.</span><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 17 17 7M8 7h9v9"/></svg></span></a></li><li><a href="for-tradies.html"><span class="n">04</span><span class="t">Tradies</span><span class="x">The call, the quote and the suburbs you cover.</span><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 17 17 7M8 7h9v9"/></svg></span></a></li><li><a href="for-salons.html"><span class="n">05</span><span class="t">Salons</span><span class="x">Services, prices and bookings at any hour.</span><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 17 17 7M8 7h9v9"/></svg></span></a></li></ol>
     </div>
   </section>
 
   <section class="section" aria-labelledby="case-h">
     <div class="container">
       <div class="grid grid-2" style="align-items:end">
-        <div><p class="label reveal">An honest offer</p><h2 id="case-h" class="h2" data-split>Be our first <em>case study.</em></h2></div>
-        <div class="reveal d1">
+        <div><p class="label" data-reveal>An honest offer</p><h2 id="case-h" class="h2" data-split>Be our first <em>case study.</em></h2></div>
+        <div data-reveal>
           <p class="lead">We are new, so there are no customer reviews to show yet, and we will never invent any. The first few local shops we work with get a discount, in return for an honest quote about the experience and permission to show their site here.</p>
           <a class="btn btn-ghost" href="contact.html">Ask about the offer</a>
         </div>
@@ -311,30 +322,31 @@
   <section class="section band" aria-labelledby="faq-h">
     <div class="container faq-split">
       <div class="section-head">
-      <div><p class="label reveal"><span class="idx">07</span> FAQ</p><h2 class="h2" data-split><span id="faq-h">Straight <em>answers.</em></span></h2></div>
-      <p class="lead reveal d1">The questions everyone asks before they start.</p>
+      <div><p class="label" data-reveal><span class="idx">07</span><span class="slash" aria-hidden="true">/</span>FAQ</p><h2 class="h2" data-split><span id="faq-h">Straight <em>answers.</em></span></h2></div>
+      <p class="lead" data-reveal>The questions everyone asks before they start.</p>
     </div>
-      <div class="reveal"><div class="faq"><details><summary>How much does a website cost?</summary><div class="answer"><p>A One Page site is $300. A Full Website, up to about 5 pages, is $700. The care plan is optional at $30 a month, and bigger projects are quoted. The only other cost is your own domain name, about $20 a year. See <a href="pricing.html">pricing</a>.</p></div></details><details><summary>How long does it take?</summary><div class="answer"><p>Your free concept homepage is usually ready within 5 business days of our first chat. The build usually takes 1 to 2 weeks after the deposit, and launch takes 1 to 2 days once you approve the preview.</p></div></details><details><summary>Who owns the website?</summary><div class="answer"><p>You do. Once the balance is paid, the finished site is yours. Your domain name is registered in your name, so it is always yours too.</p></div></details><details><summary>Can I ask for changes?</summary><div class="answer"><p>Yes. Two rounds of changes are included while we build. After launch, small text and photo changes are part of the care plan. Anything bigger is quoted fairly before we start it.</p></div></details></div><p style="margin-top:22px"><a class="link" href="faq.html">All questions <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></p></div>
+      <div data-reveal><div class="faq"><details><summary>How much does a website cost?</summary><div class="answer"><p>A One Page site is $300. A Full Website, up to about 5 pages, is $700. The care plan is optional at $30 a month, and bigger projects are quoted. The only other cost is your own domain name, about $20 a year. See <a href="pricing.html">pricing</a>.</p></div></details><details><summary>How long does it take?</summary><div class="answer"><p>Your free concept homepage is usually ready within 5 business days of our first chat. The build usually takes 1 to 2 weeks after the deposit, and launch takes 1 to 2 days once you approve the preview.</p></div></details><details><summary>Who owns the website?</summary><div class="answer"><p>You do. Once the balance is paid, the finished site is yours. Your domain name is registered in your name, so it is always yours too.</p></div></details><details><summary>Can I ask for changes?</summary><div class="answer"><p>Yes. Two rounds of changes are included while we build. After launch, small text and photo changes are part of the care plan. Anything bigger is quoted fairly before we start it.</p></div></details></div><p style="margin-top:22px"><a class="link" href="faq.html">All questions <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></p></div>
     </div>
   </section>
 
   <section class="cta-final" aria-labelledby="cta-h">
     <div class="container">
-      <p class="label reveal" style="justify-content:center">Next step</p>
+      <p class="label" data-reveal style="justify-content:center">Next step</p>
       <h2 id="cta-h" class="display" data-split>See it <em>before</em> you pay.</h2>
-      <p class="reveal">Tell us about your business. We reply within 24 hours and design your homepage for free.</p>
-      <div class="btn-row reveal"><a class="btn btn-gold" href="free-concept.html">Get a free concept</a><a class="btn btn-ghost" href="contact.html">Ask a question</a></div>
+      <p data-reveal>Tell us about your business. We reply within 24 hours and design your homepage for free.</p>
+      <div class="btn-row" data-reveal><a class="btn btn-gold" href="free-concept.html">Get a free concept</a><a class="btn btn-ghost" href="contact.html">Ask a question</a></div>
     </div>
   </section>
 </main>
 <footer class="site-footer">
   <div class="container">
-    <p class="footer-word" aria-hidden="true">Black <em>Crest</em></p>
     <div class="footer-top">
       <div class="footer-brand">
         <a class="brand" href="index.html"><svg class="crest" viewBox="0 0 48 56" aria-hidden="true" focusable="false"><path class="crest-outline" pathLength="1" d="M24 2.5 43.5 9.2V26c0 12.6-8.1 21.6-19.5 27.5C12.6 47.6 4.5 38.6 4.5 26V9.2Z"/><path class="crest-inner" d="M24 7.6 38.6 12.6V26c0 9.6-6 16.6-14.6 21.4C15.4 42.6 9.4 35.6 9.4 26V12.6Z"/><text class="crest-text" x="24" y="32.6" text-anchor="middle">BC</text></svg><span class="brand-name"><b>Black Crest</b> <small>Web Designs</small></span><span class="sr-only"> home</span></a>
         <p>Premium sites for local businesses. A KB Ventures company, based in Melbourne, Australia.</p>
         <a class="mail link" data-email href="mailto:kb.ventures@outlook.com">kb.ventures@outlook.com</a>
+        <p class="tiny" data-clock>Melbourne</p>
+        <p class="tiny"><span class="avail-dot" aria-hidden="true"></span><span data-availability>Taking new projects now</span></p>
       </div>
       <div class="footer-cols">
         <nav class="footer-col" aria-labelledby="f-0"><h2 id="f-0">Services</h2><ul><li><a href="pricing.html">Pricing</a></li><li><a href="care-plan.html">Care plan</a></li><li><a href="process.html">Process</a></li><li><a href="work.html">Work</a></li><li><a href="start.html">Start your project</a></li></ul></nav>
@@ -346,8 +358,10 @@
     <div class="footer-bottom">
       <p>&copy; <span data-year>2026</span> Black Crest Web Designs, a <a href="../kbventures-site/">KB Ventures</a> company.</p>
       <p>No cookies. No tracking. Prices in AUD.</p>
+      <button class="to-top" type="button" data-top>Back to top <span aria-hidden="true">&uarr;</span></button>
     </div>
   </div>
+  <p class="footer-word" aria-hidden="true">BLACK CREST</p>
 </footer>
 <div class="mobile-bar" role="region" aria-label="Quick actions">
   <a class="btn btn-gold" href="free-concept.html">Get a free concept</a>

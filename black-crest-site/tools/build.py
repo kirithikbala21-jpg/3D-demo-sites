@@ -5,7 +5,7 @@ phone bar and prices stay the same on every page. Run it after changing any text
 
     python3 black-crest-site/tools/build.py
 
-Prices come from the CONFIG object at the top of main.js. The Web3Forms access key is read from the
+Prices come from the CONFIG object in js/config.js. The Web3Forms access key is read from the
 KB Ventures config (kbventures-site/site.config.json), so both sites use the same key.
 """
 import html
@@ -19,11 +19,9 @@ REPO = os.path.dirname(SITE_DIR)
 SITE = 'https://kirithikbala21-jpg.github.io/3D-demo-sites/black-crest-site/'
 KB_SITE = '../kbventures-site/'
 LASTMOD = '2026-11-01'
-THREE_URL = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.module.min.js'
-THREE_SRI = 'sha512-QbgvOagVq2O5Ompxc2TOWKYQnJ1e+Y0JbTUQD9l2tUUtbdCWDqa7WA4REFVlSuFwWQmJLGtE+nW0EJMlmOx2RQ=='
 E = html.escape
 
-with open(os.path.join(SITE_DIR, 'main.js'), encoding='utf-8') as fh:
+with open(os.path.join(SITE_DIR, 'js', 'config.js'), encoding='utf-8') as fh:
     CONFIG = json.loads(re.search(r'/\* CONFIG-START \*/(.*?)/\* CONFIG-END \*/', fh.read(), re.S).group(1))
 with open(os.path.join(REPO, 'kbventures-site', 'site.config.json'), encoding='utf-8') as fh:
     FORM_KEY = json.load(fh)['formAccessKey'].strip()
@@ -175,21 +173,35 @@ def cur(name, here):
     return ' aria-current="page"' if name == here else ''
 
 
+# the full-screen menu: label, page, preview image shown on desktop hover
+MENU = [('Work', 'work.html', 'barber'), ('Process', 'process.html', 'cafe'), ('Pricing', 'pricing.html', 'plumber'),
+        ('About', 'about.html', 'salon'), ('FAQ', 'faq.html', 'gym'), ('Contact', 'contact.html', 'parts')]
+INLINE_NAV = [('work.html', 'Work'), ('pricing.html', 'Pricing'), ('contact.html', 'Contact')]
+
+
 def header(P, here):
-    links = ''.join(f'<li><a href="{P}{h}"{cur(h, here)}>{t}</a></li>' for h, t in NAV)
-    mlinks = ''.join(f'<li><a href="{P}{h}"{cur(h, here)}>{t}</a></li>' for h, t in [('index.html', 'Home')] + NAV)
+    links = ''.join(f'<li><a href="{P}{h}"{cur(h, here)}>{t}</a></li>' for h, t in INLINE_NAV)
+    mlinks = ''.join(f'<li><a href="{P}{h}"{cur(h, here)} data-preview="{P}img/work/{img}-desktop-800.webp"><span class="n" aria-hidden="true">0{i + 1}</span>{t}</a></li>' for i, (t, h, img) in enumerate(MENU))
     sub = ''.join(f'<a href="{P}{h}">{t}</a>' for h, t in [('care-plan.html', 'Care plan'), ('start.html', 'Start your project'), ('guides/', 'Guides'), ('quiz.html', 'Website quiz')] + [(h, t) for h, t, _, _ in TRADES])
     return f'''<header class="site-header">
   <div class="container header-inner">
     {brand(P)}
     <nav aria-label="Main"><ul class="nav-links">{links}</ul></nav>
     <a class="btn btn-gold btn-sm header-cta" href="{P}free-concept.html">Get a free concept</a>
-    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu"><span class="menu-icon" aria-hidden="true"></span><span class="sr-only">Open menu</span></button>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu"><span class="menu-label" aria-hidden="true">Menu</span><span class="menu-icon" aria-hidden="true"></span><span class="sr-only">Open menu</span></button>
   </div>
 </header>
-<div class="menu" id="menu" hidden>
-  <nav aria-label="Menu"><ol>{mlinks}</ol><div class="menu-sub">{sub}</div></nav>
-  <a class="btn btn-gold" href="{P}free-concept.html">Get a free concept</a>
+<div class="menu" id="menu" role="dialog" aria-modal="true" aria-label="Menu" hidden>
+  <div class="container menu-inner">
+    <nav aria-label="Menu"><ol class="menu-links">{mlinks}</ol><div class="menu-sub">{sub}</div></nav>
+    <aside class="menu-aside">
+      <div class="menu-preview" aria-hidden="true"><img src="{P}img/work/barber-desktop-800.webp" width="800" height="500" alt="" loading="lazy" decoding="async"></div>
+      <a class="link" data-email href="mailto:{EMAIL}">{EMAIL}</a>
+      <p class="tiny" data-clock>Melbourne</p>
+      <p class="tiny"><span class="avail-dot" aria-hidden="true"></span><span data-availability>{E(CONFIG['availability'])}</span></p>
+      <a class="btn btn-gold" href="{P}free-concept.html">Get a free concept</a>
+    </aside>
+  </div>
 </div>'''
 
 
@@ -198,12 +210,13 @@ def footer(P, here):
         <nav class="footer-col" aria-labelledby="f-{i}"><h2 id="f-{i}">{t}</h2><ul>{"".join(f'<li><a href="{P}{h}"{cur(h, here)}>{x}</a></li>' for h, x in items)}</ul></nav>''' for i, (t, items) in enumerate(FOOTER))
     return f'''<footer class="site-footer">
   <div class="container">
-    <p class="footer-word" aria-hidden="true">Black <em>Crest</em></p>
     <div class="footer-top">
       <div class="footer-brand">
         {brand(P)}
         <p>Premium sites for local businesses. A KB Ventures company, based in Melbourne, Australia.</p>
         <a class="mail link" data-email href="mailto:{EMAIL}">{EMAIL}</a>
+        <p class="tiny" data-clock>Melbourne</p>
+        <p class="tiny"><span class="avail-dot" aria-hidden="true"></span><span data-availability>{E(CONFIG['availability'])}</span></p>
       </div>
       <div class="footer-cols">{cols}
       </div>
@@ -211,8 +224,10 @@ def footer(P, here):
     <div class="footer-bottom">
       <p>&copy; <span data-year>2026</span> Black Crest Web Designs, a <a href="{P}{KB_SITE}">KB Ventures</a> company.</p>
       <p>No cookies. No tracking. Prices in AUD.</p>
+      <button class="to-top" type="button" data-top>Back to top <span aria-hidden="true">&uarr;</span></button>
     </div>
   </div>
+  <p class="footer-word" aria-hidden="true">BLACK CREST</p>
 </footer>'''
 
 
@@ -240,6 +255,7 @@ def head(title, desc, path, P, noindex=False, ld=(), base_script=False, extra=''
 <html lang="en-AU">
 <head>
 <meta charset="utf-8">
+<script>document.documentElement.classList.add('js')</script>
 {base}<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>{E(title)}</title>
 <meta name="description" content="{E(desc)}">
@@ -266,10 +282,13 @@ def head(title, desc, path, P, noindex=False, ld=(), base_script=False, extra=''
 <link rel="apple-touch-icon" href="{P}img/apple-touch-icon.png">
 <link rel="manifest" href="{P}manifest.webmanifest">
 <link rel="preload" href="{P}fonts/cormorant-garamond.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="{P}fonts/cormorant-garamond-italic.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="{P}fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="{P}style.css">{extra}
-<script src="{P}main.js" defer></script>{lds}
+<script src="{P}vendor/gsap/gsap.min.js" defer></script>
+<script src="{P}vendor/gsap/ScrollTrigger.min.js" defer></script>
+<script src="{P}vendor/gsap/SplitText.min.js" defer></script>
+<script src="{P}vendor/lenis/lenis.min.js" defer></script>
+<script type="module" src="{P}js/core.js"></script>{lds}
 </head>'''
 
 
@@ -285,7 +304,6 @@ def page(path, title, desc, body, noindex=False, ld=(), bare=False, base_script=
 <body>
 <a class="skip" href="#main">Skip to content</a>
 <div class="grain" aria-hidden="true"></div>
-<div class="lines" aria-hidden="true"></div>
 <div class="progress" aria-hidden="true"><span></span></div>
 {'' if bare else INTRO}
 {top}
@@ -297,10 +315,10 @@ def page(path, title, desc, body, noindex=False, ld=(), bare=False, base_script=
 
 
 def head_block(label, title, lead='', split=False, level='h2', cls='h2', center=False, idx=''):
-    i = f'<span class="idx">{idx}</span> ' if idx else ''
+    i = f'<span class="idx">{idx}</span><span class="slash" aria-hidden="true">/</span>' if idx else ''
     return f'''<div class="section-head{' split' if split else ''}{' center' if center else ''}">
-      <div><p class="label reveal">{i}{label}</p><{level} class="{cls}" data-split>{title}</{level}></div>
-      {f'<p class="lead reveal d1">{lead}</p>' if lead else ''}
+      <div><p class="label" data-reveal>{i}{label}</p><{level} class="{cls}" data-split>{title}</{level}></div>
+      {f'<p class="lead" data-reveal>{lead}</p>' if lead else ''}
     </div>'''
 
 
@@ -308,10 +326,10 @@ def cta_final(title, text, primary=('free-concept.html', 'Get a free concept'), 
     sec = f'<a class="btn btn-ghost" href="{P}{secondary[0]}">{secondary[1]}</a>' if secondary else ''
     return f'''<section class="cta-final" aria-labelledby="cta-h">
     <div class="container">
-      <p class="label reveal" style="justify-content:center">Next step</p>
+      <p class="label" data-reveal style="justify-content:center">Next step</p>
       <h2 id="cta-h" class="display" data-split>{title}</h2>
-      <p class="reveal">{text}</p>
-      <div class="btn-row reveal"><a class="btn btn-gold" href="{P}{primary[0]}">{primary[1]}</a>{sec}</div>
+      <p data-reveal>{text}</p>
+      <div class="btn-row" data-reveal><a class="btn btn-gold" href="{P}{primary[0]}">{primary[1]}</a>{sec}</div>
     </div>
   </section>'''
 
@@ -468,14 +486,14 @@ MARQUEE = ['Barbers', 'Cafes', 'Gyms', 'Salons', 'Plumbers', 'Electricians', 'Ba
 
 def marquee():
     ul = lambda hidden: f'<ul{" aria-hidden=" + chr(34) + "true" + chr(34) if hidden else ""}>' + ''.join(f'<li>{t}</li>' for t in MARQUEE) + '</ul>'
-    return f'<section class="marquee" aria-label="Local businesses we build for"><div class="marquee-track">{ul(False)}{ul(True)}</div></section>'
+    return f'<section class="marquee" data-marquee aria-label="Local businesses we build for"><div class="marquee-track">{ul(False)}{ul(True)}</div></section>'
 
 
 # ================================================================= Home
 P = ''
 page('index.html', 'Black Crest Web Designs: premium sites for local businesses', f'Fast, good-looking websites for Melbourne barbers, cafes, gyms, salons and tradies. A free concept homepage first. One Page {money(ONE)}, Full Website {money(FULL)}.', f'''<main id="main">
   <section class="hero" aria-labelledby="hero-h">
-    <div class="hero-stage" data-three="{THREE_URL}" data-sri="{THREE_SRI}" data-module="./hero3d.js">{CREST_ART}</div>
+    <div class="hero-stage" data-hero3d>{CREST_ART}</div>
     <div class="container hero-grid">
       <div>
         <p class="label">Black Crest Web Designs &middot; Melbourne</p>
@@ -507,12 +525,12 @@ page('index.html', 'Black Crest Web Designs: premium sites for local businesses'
   <section class="section" aria-labelledby="work-h">
     <div class="container showcase">
       <div>
-        <p class="label reveal"><span class="idx">01</span> Work</p>
+        <p class="label" data-reveal><span class="idx">01</span><span class="slash" aria-hidden="true">/</span>Work</p>
         <h2 id="work-h" class="h2" data-split>Concept sites, <em>built properly.</em></h2>
-        <p class="lead reveal d1">Six made-up local businesses, designed and built like real ones: booking, menus, timetables, quote forms. Every one is a concept, not a customer.</p>
-        <a class="link reveal d2" href="work.html">See all six {icon('arrow')}</a>
+        <p class="lead" data-reveal>Six made-up local businesses, designed and built like real ones: booking, menus, timetables, quote forms. Every one is a concept, not a customer.</p>
+        <a class="link" data-reveal href="work.html">See all six {icon('arrow')}</a>
       </div>
-      <div class="reveal d1">{duo('barber', P, '0.07', phone_slug='cafe')}</div>
+      <div data-reveal>{duo('barber', P, '0.07', phone_slug='cafe')}</div>
     </div>
   </section>
 
@@ -520,10 +538,10 @@ page('index.html', 'Black Crest Web Designs: premium sites for local businesses'
     <div class="container">
       {head_block('Why it matters', '<span id="why-h">Built for how people <em>actually</em> find you.</span>', 'Most customers meet you on a phone, minutes before they need you. Every detail is there to turn that moment into a call, a booking or a visit.', split=True, idx='02')}
       <div class="bento">
-        <article class="tile big reveal illo-wrap">{illo('fast')}<div><h3 class="h3">Fast on any phone</h3><p>Light pages, compressed images, no page-builder bloat. Your site opens before they lose interest.</p></div></article>
-        <article class="tile half reveal d1 illo-wrap">{illo('phone')}<div><h3 class="h3">One tap to act</h3><p>Call, book or get directions without hunting for the button.</p></div></article>
-        <article class="tile half reveal d2 illo-wrap">{illo('find')}<div><h3 class="h3">Found on Google</h3><p>Clean titles and structure from day one, plus help with your free Google Business Profile.</p></div></article>
-        <article class="tile wide reveal illo-wrap">{illo('own')}<div><h3 class="h3">Yours, outright</h3><p>You own the finished site and your domain. No lock-in contracts and no hostage fees, ever.</p></div></article>
+        <article class="tile big illo-wrap" data-reveal>{illo('fast')}<div><h3 class="h3">Fast on any phone</h3><p>Light pages, compressed images, no page-builder bloat. Your site opens before they lose interest.</p></div></article>
+        <article class="tile half illo-wrap" data-reveal>{illo('phone')}<div><h3 class="h3">One tap to act</h3><p>Call, book or get directions without hunting for the button.</p></div></article>
+        <article class="tile half illo-wrap" data-reveal>{illo('find')}<div><h3 class="h3">Found on Google</h3><p>Clean titles and structure from day one, plus help with your free Google Business Profile.</p></div></article>
+        <article class="tile wide illo-wrap" data-reveal>{illo('own')}<div><h3 class="h3">Yours, outright</h3><p>You own the finished site and your domain. No lock-in contracts and no hostage fees, ever.</p></div></article>
       </div>
     </div>
   </section>
@@ -531,7 +549,7 @@ page('index.html', 'Black Crest Web Designs: premium sites for local businesses'
   <section class="section" aria-labelledby="ba-h">
     <div class="container">
       {head_block('Before and after', '<span id="ba-h">From dated <em>to sharp.</em></span>', 'Drag the handle. Same business, two very different first impressions.', split=True, idx='03')}
-      <div class="compare reveal" data-compare>
+      <div class="compare" data-reveal data-compare>
         <img src="img/compare-before.webp" width="1600" height="1000" loading="lazy" decoding="async" alt="Before: a dated, cluttered barbershop homepage with small text and no clear booking button">
         <img class="after" src="img/compare-after.webp" width="1600" height="1000" loading="lazy" decoding="async" alt="After: the Brass and Blade concept homepage, dark and clean with a clear Book a chair button">
         <span class="compare-tag l" aria-hidden="true">Before</span><span class="compare-tag r" aria-hidden="true">After</span>
@@ -547,7 +565,7 @@ page('index.html', 'Black Crest Web Designs: premium sites for local businesses'
     <div class="container">
       {head_block('Process', '<span id="how-h">Four steps. <em>No surprises.</em></span>', 'You see your homepage before you pay a cent. Here is everything that happens after that.', split=True, idx='04')}
       {story(P)}
-      <a class="link reveal" href="process.html">The full process {icon('arrow')}</a>
+      <a class="link" data-reveal href="process.html">The full process {icon('arrow')}</a>
     </div>
   </section>
 
@@ -557,26 +575,26 @@ page('index.html', 'Black Crest Web Designs: premium sites for local businesses'
     <div class="container">
       {head_block('Pricing', '<span id="price-h">Clear prices. <em>Set before we start.</em></span>', 'One price per package, written down before any work begins. No retainers you did not ask for.', split=True, idx='05')}
       <div class="accounts three">
-        <div class="reveal">{account('one', P)}</div>
-        <div class="reveal d1">{account('full', P, featured=True)}</div>
-        <div class="reveal d2">{account('care', P)}</div>
+        <div data-reveal>{account('one', P)}</div>
+        <div data-reveal>{account('full', P, featured=True)}</div>
+        <div data-reveal>{account('care', P)}</div>
       </div>
-      <p class="reveal" style="margin-top:28px">Something bigger in mind? Custom projects are quoted. <a class="link" href="pricing.html">Pricing and the calculator {icon('arrow')}</a></p>
+      <p data-reveal style="margin-top:28px">Something bigger in mind? Custom projects are quoted. <a class="link" href="pricing.html">Pricing and the calculator {icon('arrow')}</a></p>
     </div>
   </section>
 
   <section class="section band" aria-labelledby="trades-h">
     <div class="container">
       {head_block('Trades', '<span id="trades-h">Made for the high street.</span>', 'We build for businesses across Melbourne and its suburbs. Pick your trade to see what it usually needs.', split=True, idx='06')}
-      <ol class="trade-list reveal">{''.join(f'<li><a href="{h}"><span class="n">0{i + 1}</span><span class="t">{t}</span><span class="x">{x}</span><span class="ic">{icon("ne")}</span></a></li>' for i, (h, t, _, x) in enumerate(TRADES))}</ol>
+      <ol class="trade-list" data-reveal>{''.join(f'<li><a href="{h}"><span class="n">0{i + 1}</span><span class="t">{t}</span><span class="x">{x}</span><span class="ic">{icon("ne")}</span></a></li>' for i, (h, t, _, x) in enumerate(TRADES))}</ol>
     </div>
   </section>
 
   <section class="section" aria-labelledby="case-h">
     <div class="container">
       <div class="grid grid-2" style="align-items:end">
-        <div><p class="label reveal">An honest offer</p><h2 id="case-h" class="h2" data-split>Be our first <em>case study.</em></h2></div>
-        <div class="reveal d1">
+        <div><p class="label" data-reveal>An honest offer</p><h2 id="case-h" class="h2" data-split>Be our first <em>case study.</em></h2></div>
+        <div data-reveal>
           <p class="lead">We are new, so there are no customer reviews to show yet, and we will never invent any. The first few local shops we work with get a discount, in return for an honest quote about the experience and permission to show their site here.</p>
           <a class="btn btn-ghost" href="contact.html">Ask about the offer</a>
         </div>
@@ -587,7 +605,7 @@ page('index.html', 'Black Crest Web Designs: premium sites for local businesses'
   <section class="section band" aria-labelledby="faq-h">
     <div class="container faq-split">
       {head_block('FAQ', '<span id="faq-h">Straight <em>answers.</em></span>', 'The questions everyone asks before they start.', idx='07')}
-      <div class="reveal">{faq_list(FAQS[:4], P)}<p style="margin-top:22px"><a class="link" href="faq.html">All questions {icon('arrow')}</a></p></div>
+      <div data-reveal>{faq_list(FAQS[:4], P)}<p style="margin-top:22px"><a class="link" href="faq.html">All questions {icon('arrow')}</a></p></div>
     </div>
   </section>
 
@@ -597,7 +615,7 @@ page('index.html', 'Black Crest Web Designs: premium sites for local businesses'
 # ================================================================= Work
 P = ''
 rows = ''.join(f'''<article class="work-row" aria-labelledby="w-{d[0]}">
-      <div class="work-text reveal">
+      <div class="work-text" data-reveal>
         <span class="n" aria-hidden="true">0{i + 1}</span>
         <p class="tile-label" style="justify-content:flex-start"><span>{d[3]}</span><span class="chip">Concept site</span></p>
         <h2 id="w-{d[0]}" class="h2" data-split>{d[2]}</h2>
@@ -605,16 +623,16 @@ rows = ''.join(f'''<article class="work-row" aria-labelledby="w-{d[0]}">
         <ul class="feats">{''.join(f'<li>{f}</li>' for f in d[5])}</ul>
         <div class="btn-row">{open_demo(d, P)}{f'<a class="link" href="{d[6]}">For {d[3].lower()}s {icon("arrow")}</a>' if d[6] else ''}</div>
       </div>
-      <div class="reveal d1">{duo(d[0], P, '0.05', lazy=i > 0)}</div>
+      <div data-reveal>{duo(d[0], P, '0.05', lazy=i > 0)}</div>
     </article>''' for i, d in enumerate(DEMOS))
 page('work.html', 'Work: concept sites by Black Crest Web Designs', 'Six concept websites for made-up local businesses: a barbershop, cafe, gym, plumber, salon and auto parts store, shown on laptop and phone.', f'''<main id="main">
   <div class="container page-head">
     <p class="label">Work</p>
     <h1 class="h1" data-split>Six concepts. <em>Zero templates.</em></h1>
-    <p class="lead reveal d1">Made-up local businesses, designed and built like real ones. None of them are customers: they show what we build, and you can open each one on your phone.</p>
+    <p class="lead" data-reveal>Made-up local businesses, designed and built like real ones. None of them are customers: they show what we build, and you can open each one on your phone.</p>
   </div>
   <section class="container" aria-label="Concept sites">{rows}
-    <p class="tiny reveal" style="padding-bottom:40px">All six are concepts for fictional businesses. Names, prices, reviews and photos inside them are made up or stock images.</p>
+    <p class="tiny" data-reveal style="padding-bottom:40px">All six are concepts for fictional businesses. Names, prices, reviews and photos inside them are made up or stock images.</p>
   </section>
   {cta_final('Want one like <em>this?</em>', 'We design your homepage concept for free, so you can see it first.', secondary=('pricing.html', 'See pricing'))}
 </main>''')
@@ -639,14 +657,14 @@ page('pricing.html', 'Pricing: Black Crest Web Designs', f'One Page website {mon
   <div class="container page-head">
     <p class="label">Pricing</p>
     <h1 class="h1" data-split>Clear prices. <em>No hidden costs.</em></h1>
-    <p class="lead reveal d1">Every price is set before we start, your concept homepage is free, and everything is in Australian dollars.</p>
+    <p class="lead" data-reveal>Every price is set before we start, your concept homepage is free, and everything is in Australian dollars.</p>
   </div>
   <section class="container" aria-label="Packages">
     <div class="accounts four">
-      <div class="reveal">{account('one', P, level='h2')}</div>
-      <div class="reveal d1">{account('full', P, featured=True, level='h2')}</div>
-      <div class="reveal d2">{account('care', P, level='h2')}</div>
-      <div class="reveal d3">{account('custom', P, level='h2')}</div>
+      <div data-reveal>{account('one', P, level='h2')}</div>
+      <div data-reveal>{account('full', P, featured=True, level='h2')}</div>
+      <div data-reveal>{account('care', P, level='h2')}</div>
+      <div data-reveal>{account('custom', P, level='h2')}</div>
     </div>
   </section>
 
@@ -654,7 +672,7 @@ page('pricing.html', 'Pricing: Black Crest Web Designs', f'One Page website {mon
     <div class="container">
       <div class="grid grid-2" style="gap:48px;align-items:start">
         {head_block("What's included", '<span id="inc-h">Everything listed <em>is included.</em></span>', 'No hidden extras. All of this comes with both the One Page and the Full Website.')}
-        <div class="table-wrap reveal"><table class="stack-table"><caption>Included in each package</caption>
+        <div class="table-wrap" data-reveal><table class="stack-table"><caption>Included in each package</caption>
           <thead><tr><th scope="col">Item</th><th scope="col">One Page</th><th scope="col">Full Website</th></tr></thead>
           <tbody>{inc_rows}</tbody></table></div>
       </div>
@@ -664,8 +682,8 @@ page('pricing.html', 'Pricing: Black Crest Web Designs', f'One Page website {mon
   <section class="section band band-gold" aria-labelledby="promise-h">
     <div class="container">
       <div class="grid grid-2" style="gap:48px;align-items:start">
-        <div><p class="label reveal">Our promise</p><h2 id="promise-h" class="h2" data-split>No hidden <em>costs.</em></h2><p class="lead reveal d1" style="margin-top:24px">The price we quote is the price you pay.</p></div>
-        <ul class="ticks reveal d1" style="align-self:end">
+        <div><p class="label" data-reveal>Our promise</p><h2 id="promise-h" class="h2" data-split>No hidden <em>costs.</em></h2><p class="lead" data-reveal style="margin-top:24px">The price we quote is the price you pay.</p></div>
+        <ul class="ticks" data-reveal style="align-self:end">
           <li>You pay for your own domain name (your web address, like yourbusiness.com.au), about $20 a year. It is registered in your name, so it is always yours.</li>
           <li>Hosting setup is included. If anything about hosting would cost you extra, we tell you before you say yes.</li>
           <li>Add-ons are optional, and their price is confirmed before any work begins.</li>
@@ -679,7 +697,7 @@ page('pricing.html', 'Pricing: Black Crest Web Designs', f'One Page website {mon
     <div class="container">
       <div class="grid grid-2" style="gap:48px;align-items:start">
         {head_block('Add-ons', '<span id="addons-h">Add what <em>you need.</em></span>', 'Optional extras, priced from these amounts. We confirm the exact price with you first.')}
-        <ul class="addon-list reveal">{addon_rows}</ul>
+        <ul class="addon-list" data-reveal>{addon_rows}</ul>
       </div>
     </div>
   </section>
@@ -687,7 +705,7 @@ page('pricing.html', 'Pricing: Black Crest Web Designs', f'One Page website {mon
   <section class="section band" aria-labelledby="cmp-h">
     <div class="container">
       {head_block('Compare', '<span id="cmp-h">Your options, <em>side by side.</em></span>', 'Laid out like a statement: what each route costs you in money, time, effort and ownership.', split=True)}
-      <div class="statement reveal">
+      <div class="statement" data-reveal>
         <div class="statement-head"><span>Statement &middot; <b>Website options</b></span><span>Melbourne &middot; AUD</span></div>
         <div class="table-wrap"><table class="stack-table">
           <caption class="sr-only">A DIY builder, a typical Melbourne agency and Black Crest</caption>
@@ -702,7 +720,7 @@ page('pricing.html', 'Pricing: Black Crest Web Designs', f'One Page website {mon
     <div class="container">
       {head_block('Price calculator', '<span id="calc-h">Build your <em>quote.</em></span>', 'Tick what you want and watch the total. Send it to us and we confirm it by email.', split=True)}
       <form class="calc" id="calc" onsubmit="return false">
-        <div class="reveal">
+        <div data-reveal>
           <fieldset><legend>Package</legend>
             <label class="opt" for="pkg-one"><input type="radio" name="pkg" id="pkg-one" value="onePage" checked><span class="opt-text"><b>One Page</b><span class="tiny">One polished page</span></span><span class="amt" data-price="onePage">{money(ONE)}</span></label>
             <label class="opt" for="pkg-full"><input type="radio" name="pkg" id="pkg-full" value="fullSite"><span class="opt-text"><b>Full Website</b><span class="tiny">Up to about 5 pages</span></span><span class="amt" data-price="fullSite">{money(FULL)}</span></label>
@@ -712,7 +730,7 @@ page('pricing.html', 'Pricing: Black Crest Web Designs', f'One Page website {mon
             <label class="opt" for="add-care"><input type="checkbox" id="add-care" value="care"><span class="opt-text"><b>Care plan</b><span class="tiny">Optional, cancel any time</span></span><span class="amt"><span data-price="carePlan">{money(CARE)}</span> a month</span></label>
           </fieldset>
         </div>
-        <div class="tile calc-total reveal d1">
+        <div class="tile calc-total" data-reveal>
           <div class="calc-head">
             <div><p class="tile-label" style="margin:0 0 6px"><span>Estimated total</span></p><p class="tiny" style="margin:0">One-off, in AUD</p></div>
             <div class="ring" aria-hidden="true"><svg viewBox="0 0 40 40"><circle class="track" cx="20" cy="20" r="17"/><circle class="fill" cx="20" cy="20" r="17" pathLength="1"/></svg><span><b>0</b>extras</span></div>
@@ -736,14 +754,14 @@ page('process.html', 'Process: how Black Crest Web Designs works', 'Four steps: 
   <div class="container page-head">
     <p class="label">Process</p>
     <h1 class="h1" data-split>Four steps. <em>No surprises.</em></h1>
-    <p class="lead reveal d1">From the first message to your site going live: what happens, who does what, and how long each step usually takes.</p>
+    <p class="lead" data-reveal>From the first message to your site going live: what happens, who does what, and how long each step usually takes.</p>
   </div>
   <section class="container" aria-label="The four steps">{story(P, True)}</section>
   <section class="section band band-gold" aria-labelledby="promise-h">
     <div class="container">
       <div class="grid grid-2" style="gap:48px;align-items:end">
-        <div><p class="label reveal">Our promise</p><h2 id="promise-h" class="h2" data-split>How paying <em>works.</em></h2></div>
-        <div class="reveal d1">
+        <div><p class="label" data-reveal>Our promise</p><h2 id="promise-h" class="h2" data-split>How paying <em>works.</em></h2></div>
+        <div data-reveal>
           <ul class="ticks">
             <li><strong>Free concept first.</strong> You see your homepage before you pay anything.</li>
             <li><strong>50% deposit to start the build.</strong> Only once you choose to go ahead.</li>
@@ -786,10 +804,10 @@ page('start.html', 'Start your project: Black Crest Web Designs', 'Tell us about
   <div class="container page-head narrow">
     <p class="label">Start your project</p>
     <h1 class="h1" data-split>Tell us about <em>your business.</em></h1>
-    <p class="lead reveal d1">The more you share, the closer your free concept will be. Only the first four boxes are needed. We reply within 24 hours.</p>
+    <p class="lead" data-reveal>The more you share, the closer your free concept will be. Only the first four boxes are needed. We reply within 24 hours.</p>
   </div>
   <section class="container narrow" aria-label="Project details" style="padding-bottom:120px">
-    <div class="tile reveal">
+    <div class="tile" data-reveal>
       {form_open('start', 'Black Crest: new project details (start form)', P)}
         <div class="form-row">
           {field('business', 'Business name', required=True, auto='organization', empty='Please tell us your business name.')}
@@ -832,17 +850,17 @@ page('care-plan.html', f'Care plan, {money(CARE)} a month: Black Crest Web Desig
   <div class="container page-head">
     <p class="label">Care plan</p>
     <h1 class="h1" data-split>We look after it. <em>You run the shop.</em></h1>
-    <p class="lead reveal d1">Optional, month to month, cancel any time.</p>
+    <p class="lead" data-reveal>Optional, month to month, cancel any time.</p>
   </div>
   <section class="container" aria-labelledby="cover-h">
     <div class="grid grid-2">
-      <div class="tile reveal">
+      <div class="tile" data-reveal>
         <p class="tile-label"><span>Care plan</span><span class="chip">Optional</span></p>
         <p class="balance"><span data-price="carePlan" data-count="{CARE}">{money(CARE)}</span> <span class="per">a month</span></p>
         <h2 id="cover-h" class="sr-only">What it covers</h2>
         <ul class="ticks" style="margin-top:22px">{''.join(f'<li><strong>{t}.</strong> {x}</li>' for t, x in COVER)}</ul>
       </div>
-      <div class="tile reveal d1">
+      <div class="tile" data-reveal>
         <h2 class="h3">What it does not cover</h2>
         <ul style="margin-top:18px;color:var(--silver-2)">{''.join(f'<li>{x}</li>' for x in NOT_COVER)}</ul>
         <p class="muted small" style="margin-top:18px">Not on the care plan? You can still ask for changes any time. We quote them fairly first.</p>
@@ -852,7 +870,7 @@ page('care-plan.html', f'Care plan, {money(CARE)} a month: Black Crest Web Desig
   <section class="section" aria-labelledby="req-h">
     <div class="container narrow">
       {head_block('Request a change', '<span id="req-h">Need something <em>updated?</em></span>', 'Tell us what to change. We confirm by email before we do it.')}
-      <div class="tile reveal">
+      <div class="tile" data-reveal>
         {form_open('care-change', 'Black Crest: care plan change request', P)}
           <div class="form-row">
             {field('name', 'Your name', required=True, auto='name', empty='Please enter your name.')}
@@ -897,7 +915,7 @@ TRADE_PAGES = {
 for path, (art, slug, trade, h1, lead, reasons, feats) in TRADE_PAGES.items():
     P = ''
     d = DEMO[slug]
-    rs = ''.join(f'<li class="reveal"><span class="n">0{i + 1}</span><h3>{t}</h3><p>{x}</p></li>' for i, (t, x) in enumerate(reasons))
+    rs = ''.join(f'<li data-reveal><span class="n">0{i + 1}</span><h3>{t}</h3><p>{x}</p></li>' for i, (t, x) in enumerate(reasons))
     plain = re.sub(r'<[^>]+>', '', h1).rstrip('.')
     page(path, f'{plain} in Melbourne: Black Crest Web Designs', f'{lead} Websites for {trade.lower()} in Melbourne and its suburbs. One Page {money(ONE)}, Full Website {money(FULL)}, free concept first.', f'''<main id="main">
   <div class="container page-head">
@@ -905,10 +923,10 @@ for path, (art, slug, trade, h1, lead, reasons, feats) in TRADE_PAGES.items():
       <div>
         <p class="label">For {trade.lower()}</p>
         <h1 class="h1" data-split>{h1}</h1>
-        <p class="lead reveal d1">{lead} We work with {trade.lower()} across Melbourne and its suburbs.</p>
-        <div class="btn-row reveal d2" style="margin-top:32px"><a class="btn btn-gold" href="free-concept.html">Get a free concept</a><a class="btn btn-ghost" href="pricing.html">See pricing</a></div>
+        <p class="lead" data-reveal>{lead} We work with {trade.lower()} across Melbourne and its suburbs.</p>
+        <div class="btn-row" data-reveal style="margin-top:32px"><a class="btn btn-gold" href="free-concept.html">Get a free concept</a><a class="btn btn-ghost" href="pricing.html">See pricing</a></div>
       </div>
-      <div class="illo-wrap reveal d1">{illo(art)}</div>
+      <div class="illo-wrap" data-reveal>{illo(art)}</div>
     </div>
   </div>
   <section class="section band" aria-labelledby="why-h">
@@ -920,14 +938,14 @@ for path, (art, slug, trade, h1, lead, reasons, feats) in TRADE_PAGES.items():
   <section class="section" aria-labelledby="feat-h">
     <div class="container showcase">
       <div>
-        <p class="label reveal">What you usually need</p>
+        <p class="label" data-reveal>What you usually need</p>
         <h2 id="feat-h" class="h2" data-split>The features <em>that matter.</em></h2>
-        <ul class="ticks reveal d1" style="margin:30px 0">{''.join(f'<li>{x}</li>' for x in feats)}</ul>
-        <p class="muted reveal">Every site also comes with writing help, a contact form, Google basics and HTTPS.</p>
-        <p class="reveal"><span class="chip">Concept site: {d[2]}</span></p>
-        <div class="reveal">{open_demo(d, P)}</div>
+        <ul class="ticks" data-reveal style="margin:30px 0">{''.join(f'<li>{x}</li>' for x in feats)}</ul>
+        <p class="muted" data-reveal>Every site also comes with writing help, a contact form, Google basics and HTTPS.</p>
+        <p data-reveal><span class="chip">Concept site: {d[2]}</span></p>
+        <div data-reveal>{open_demo(d, P)}</div>
       </div>
-      <div class="reveal d1">{duo(slug, P, '0.06')}</div>
+      <div data-reveal>{duo(slug, P, '0.06')}</div>
     </div>
   </section>
   {cta_final('See your site <em>before</em> you pay.', 'We design a free concept homepage for your business. No deposit, no obligation.', secondary=('work.html', 'See all concept sites'))}
@@ -939,11 +957,11 @@ page('faq.html', 'FAQ: Black Crest Web Designs', 'Answers about cost, timing, wh
   <div class="container page-head">
     <p class="label">FAQ</p>
     <h1 class="h1" data-split>Straight <em>answers.</em></h1>
-    <p class="lead reveal d1">Cost, timing, ownership and how we work. Something else? <a class="inline-link" href="contact.html">Ask us</a>.</p>
+    <p class="lead" data-reveal>Cost, timing, ownership and how we work. Something else? <a class="inline-link" href="contact.html">Ask us</a>.</p>
   </div>
   <section class="container faq-split" aria-label="Questions" style="padding-bottom:40px">
-    <div class="section-head"><p class="label reveal">{len(FAQS)} questions</p><p class="lead reveal">Tap a question to open it. Every answer uses the same prices and promises as the rest of the site.</p></div>
-    <div class="reveal">{faq_list(FAQS, P)}</div>
+    <div class="section-head"><p class="label" data-reveal>{len(FAQS)} questions</p><p class="lead" data-reveal>Tap a question to open it. Every answer uses the same prices and promises as the rest of the site.</p></div>
+    <div data-reveal>{faq_list(FAQS, P)}</div>
   </section>
   {cta_final('Still <em>deciding?</em>', 'A free concept is the easiest way to see if we are the right fit.', secondary=('contact.html', 'Ask a question'))}
 </main>''', ld=[faq_ld()])
@@ -954,30 +972,30 @@ page('about.html', 'About: Black Crest Web Designs', 'Black Crest Web Designs ma
   <div class="container page-head">
     <p class="label">About</p>
     <h1 class="h1" data-split>Studio quality. <em>Local prices.</em></h1>
-    <p class="lead reveal d1">Black Crest Web Designs makes fast, good-looking websites for the local businesses that keep a suburb going: barbers, cafes, gyms, salons and tradies.</p>
+    <p class="lead" data-reveal>Black Crest Web Designs makes fast, good-looking websites for the local businesses that keep a suburb going: barbers, cafes, gyms, salons and tradies.</p>
   </div>
   <section class="section band" aria-labelledby="stand-h">
     <div class="container">
       {head_block('What we stand for', '<span id="stand-h">Three things we <em>never trade away.</em></span>', split=True)}
       <ol class="reason-list">
-        <li class="reveal"><span class="n">01</span><h3>Plain English</h3><p>No jargon and no hard sell. You always know what you are paying for and why.</p></li>
-        <li class="reveal"><span class="n">02</span><h3>Well made</h3><p>Fast, secure, easy to use on a phone, and built to last. We sweat the details so your customers never notice them.</p></li>
-        <li class="reveal"><span class="n">03</span><h3>Yours</h3><p>You own the finished site and your domain. No lock-in contracts, ever.</p></li>
+        <li data-reveal><span class="n">01</span><h3>Plain English</h3><p>No jargon and no hard sell. You always know what you are paying for and why.</p></li>
+        <li data-reveal><span class="n">02</span><h3>Well made</h3><p>Fast, secure, easy to use on a phone, and built to last. We sweat the details so your customers never notice them.</p></li>
+        <li data-reveal><span class="n">03</span><h3>Yours</h3><p>You own the finished site and your domain. No lock-in contracts, ever.</p></li>
       </ol>
     </div>
   </section>
   <section class="section" aria-labelledby="how-h">
     <div class="container showcase">
       <div>{head_block('How we work', '<span id="how-h">See it first. <em>Decide after.</em></span>', 'We design your homepage for free before you pay anything. If you like it, a 50% deposit starts the build and the balance is due at launch. Two rounds of changes are included.')}
-        <a class="link reveal" href="process.html">The full process {icon('arrow')}</a></div>
-      <div class="illo-wrap reveal d1">{illo('concept')}</div>
+        <a class="link" data-reveal href="process.html">The full process {icon('arrow')}</a></div>
+      <div class="illo-wrap" data-reveal>{illo('concept')}</div>
     </div>
   </section>
   <section class="section band band-gold" aria-labelledby="prom-h">
     <div class="container">
       <div class="grid grid-2" style="gap:48px;align-items:end">
-        <div><p class="label reveal">Our promises</p><h2 id="prom-h" class="h2" data-split>What you can <em>hold us to.</em></h2></div>
-        <ul class="ticks reveal d1">
+        <div><p class="label" data-reveal>Our promises</p><h2 id="prom-h" class="h2" data-split>What you can <em>hold us to.</em></h2></div>
+        <ul class="ticks" data-reveal>
           <li>A free concept homepage before you pay anything.</li>
           <li>Clear prices, set before we start. No hidden costs.</li>
           <li>A reply within 24 hours.</li>
@@ -990,7 +1008,7 @@ page('about.html', 'About: Black Crest Web Designs', 'Black Crest Web Designs ma
   </section>
   <section class="section" aria-labelledby="kb-h">
     <div class="container narrow">
-      <div class="tile reveal">
+      <div class="tile" data-reveal>
         <p class="label">A KB Ventures company</p>
         <h2 id="kb-h" class="h3">Part of something bigger.</h2>
         <p class="muted" style="margin-top:14px">Black Crest Web Designs is a brand of KB Ventures, a Melbourne company that starts and runs small businesses to one standard: clear, fair and well made.</p>
@@ -1016,10 +1034,10 @@ page('quiz.html', 'Is your website costing you customers? A 1-minute quiz', 'Six
   <div class="container page-head narrow">
     <p class="label">Website quiz</p>
     <h1 class="h1" data-split>Is your website <em>costing you customers?</em></h1>
-    <p class="lead reveal d1">Six quick yes or no questions. Your answers stay on this page: nothing is stored or sent.</p>
+    <p class="lead" data-reveal>Six quick yes or no questions. Your answers stay on this page: nothing is stored or sent.</p>
   </div>
   <section class="container narrow" aria-label="Quiz" style="padding-bottom:120px">
-    <form class="quiz reveal" id="quiz" novalidate>
+    <form class="quiz" data-reveal id="quiz" novalidate>
       {qs}
       <p class="field-error" id="quiz-error" role="alert" hidden></p>
       <button class="btn btn-gold" type="submit">See my score</button>
@@ -1109,10 +1127,10 @@ page('guides/index.html', 'Guides for local business websites: Black Crest', 'Sh
   <div class="container page-head">
     <p class="label">Guides</p>
     <h1 class="h1" data-split>Short, <em>useful</em> guides.</h1>
-    <p class="lead reveal d1">Plain-English advice for local businesses. No jargon, no made-up numbers.</p>
+    <p class="lead" data-reveal>Plain-English advice for local businesses. No jargon, no made-up numbers.</p>
   </div>
   <section class="container" aria-label="Guides" style="padding-bottom:120px">
-    <ol class="trade-list guide-list reveal" style="--t:clamp(28px,4vw,48px)">{gcards}</ol>
+    <ol class="trade-list guide-list" data-reveal style="--t:clamp(28px,4vw,48px)">{gcards}</ol>
   </section>
 </main>''')
 
@@ -1123,14 +1141,14 @@ page('contact.html', 'Contact: Black Crest Web Designs', 'Ask a question or requ
   <div class="container page-head">
     <p class="label">Contact</p>
     <h1 class="h1" data-split>Let's talk <em>about your site.</em></h1>
-    <p class="lead reveal d1">Tell us what you need. We reply within 24 hours.</p>
-    <div class="btn-row reveal d2" style="margin-top:28px">
+    <p class="lead" data-reveal>Tell us what you need. We reply within 24 hours.</p>
+    <div class="btn-row" data-reveal style="margin-top:28px">
       <a class="btn btn-ghost" data-email href="mailto:{EMAIL}">{icon('mail')} Email {EMAIL}</a>
       <a class="btn btn-ghost" data-call href="#" hidden>{icon('call')} Call us</a>
     </div>
   </div>
   <section class="container narrow" aria-label="Contact form" style="padding-bottom:120px">
-    <div class="tile reveal">
+    <div class="tile" data-reveal>
       {form_open('contact', 'Black Crest: contact form message', P)}
         <input type="hidden" name="quote" value="">
         <p class="prefill" id="prefill-note" hidden></p>
@@ -1152,13 +1170,13 @@ page('thank-you.html', 'Thank you: Black Crest Web Designs', 'Thanks for your me
   <div class="container page-head">
     <p class="label">Message received</p>
     <h1 class="h1" data-split>Thank you. <em>It's with us.</em></h1>
-    <p class="lead reveal d1">Here is what happens next.</p>
+    <p class="lead" data-reveal>Here is what happens next.</p>
   </div>
   <section class="container" aria-label="What happens next" style="padding-bottom:120px">
     <ol class="reason-list">
-      <li class="reveal"><span class="n">01</span><h2 class="h3">We reply within 24 hours</h2><p>By email, or by phone if you asked us to call.</p></li>
-      <li class="reveal"><span class="n">02</span><h2 class="h3">We ask a few questions</h2><p>Only what we need to design your free concept or answer your question.</p></li>
-      <li class="reveal"><span class="n">03</span><h2 class="h3">You see it, then decide</h2><p>No deposit and no obligation until you say yes.</p></li>
+      <li data-reveal><span class="n">01</span><h2 class="h3">We reply within 24 hours</h2><p>By email, or by phone if you asked us to call.</p></li>
+      <li data-reveal><span class="n">02</span><h2 class="h3">We ask a few questions</h2><p>Only what we need to design your free concept or answer your question.</p></li>
+      <li data-reveal><span class="n">03</span><h2 class="h3">You see it, then decide</h2><p>No deposit and no obligation until you say yes.</p></li>
     </ol>
     <div class="btn-row" style="margin-top:40px"><a class="btn btn-gold" href="work.html">See the concept sites</a><a class="btn btn-ghost" href="index.html">Back to home</a></div>
   </section>

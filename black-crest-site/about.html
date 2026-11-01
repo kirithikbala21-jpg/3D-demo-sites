@@ -2,6 +2,7 @@
 <html lang="en-AU">
 <head>
 <meta charset="utf-8">
+<script>document.documentElement.classList.add('js')</script>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>About: Black Crest Web Designs</title>
 <meta name="description" content="Black Crest Web Designs makes premium websites for local businesses in Melbourne. Plain English, clear prices, and you own your site. A KB Ventures company.">
@@ -28,16 +29,18 @@
 <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="preload" href="fonts/cormorant-garamond.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="fonts/cormorant-garamond-italic.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="style.css">
-<script src="main.js" defer></script>
+<script src="vendor/gsap/gsap.min.js" defer></script>
+<script src="vendor/gsap/ScrollTrigger.min.js" defer></script>
+<script src="vendor/gsap/SplitText.min.js" defer></script>
+<script src="vendor/lenis/lenis.min.js" defer></script>
+<script type="module" src="js/core.js"></script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"ProfessionalService","@id":"https://kirithikbala21-jpg.github.io/3D-demo-sites/black-crest-site/#business","name":"Black Crest Web Designs","slogan":"Premium sites for local businesses","description":"Fast, good-looking websites for local businesses in Melbourne. A free concept homepage first, clear prices, and you own your site.","url":"https://kirithikbala21-jpg.github.io/3D-demo-sites/black-crest-site/","email":"kb.ventures@outlook.com","image":"https://kirithikbala21-jpg.github.io/3D-demo-sites/black-crest-site/img/og.jpg","logo":"https://kirithikbala21-jpg.github.io/3D-demo-sites/black-crest-site/img/icon-512.png","address":{"@type":"PostalAddress","addressLocality":"Melbourne","addressRegion":"VIC","addressCountry":"AU"},"areaServed":{"@type":"City","name":"Melbourne"},"parentOrganization":{"@type":"Organization","name":"KB Ventures","url":"https://kirithikbala21-jpg.github.io/3D-demo-sites/kbventures-site/"},"makesOffer":[{"@type":"Offer","name":"One Page website","price":"300.00","priceCurrency":"AUD","url":"https://kirithikbala21-jpg.github.io/3D-demo-sites/black-crest-site/pricing.html"},{"@type":"Offer","name":"Full Website (up to about 5 pages)","price":"700.00","priceCurrency":"AUD","url":"https://kirithikbala21-jpg.github.io/3D-demo-sites/black-crest-site/pricing.html"},{"@type":"Offer","name":"Care plan","price":"30.00","priceCurrency":"AUD","url":"https://kirithikbala21-jpg.github.io/3D-demo-sites/black-crest-site/care-plan.html","priceSpecification":{"@type":"UnitPriceSpecification","price":"30.00","priceCurrency":"AUD","unitText":"month"}}]}</script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
 <div class="grain" aria-hidden="true"></div>
-<div class="lines" aria-hidden="true"></div>
 <div class="progress" aria-hidden="true"><span></span></div>
 <div class="intro" id="intro" hidden aria-hidden="true">
   <svg class="crest" viewBox="0 0 48 56" aria-hidden="true" focusable="false"><path class="crest-outline" pathLength="1" d="M24 2.5 43.5 9.2V26c0 12.6-8.1 21.6-19.5 27.5C12.6 47.6 4.5 38.6 4.5 26V9.2Z"/><path class="crest-inner" d="M24 7.6 38.6 12.6V26c0 9.6-6 16.6-14.6 21.4C15.4 42.6 9.4 35.6 9.4 26V12.6Z"/><text class="crest-text" x="24" y="32.6" text-anchor="middle">BC</text></svg>
@@ -46,42 +49,50 @@
 <header class="site-header">
   <div class="container header-inner">
     <a class="brand" href="index.html"><svg class="crest" viewBox="0 0 48 56" aria-hidden="true" focusable="false"><path class="crest-outline" pathLength="1" d="M24 2.5 43.5 9.2V26c0 12.6-8.1 21.6-19.5 27.5C12.6 47.6 4.5 38.6 4.5 26V9.2Z"/><path class="crest-inner" d="M24 7.6 38.6 12.6V26c0 9.6-6 16.6-14.6 21.4C15.4 42.6 9.4 35.6 9.4 26V12.6Z"/><text class="crest-text" x="24" y="32.6" text-anchor="middle">BC</text></svg><span class="brand-name"><b>Black Crest</b> <small>Web Designs</small></span><span class="sr-only"> home</span></a>
-    <nav aria-label="Main"><ul class="nav-links"><li><a href="work.html">Work</a></li><li><a href="process.html">Process</a></li><li><a href="pricing.html">Pricing</a></li><li><a href="about.html" aria-current="page">About</a></li><li><a href="faq.html">FAQ</a></li><li><a href="contact.html">Contact</a></li></ul></nav>
+    <nav aria-label="Main"><ul class="nav-links"><li><a href="work.html">Work</a></li><li><a href="pricing.html">Pricing</a></li><li><a href="contact.html">Contact</a></li></ul></nav>
     <a class="btn btn-gold btn-sm header-cta" href="free-concept.html">Get a free concept</a>
-    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu"><span class="menu-icon" aria-hidden="true"></span><span class="sr-only">Open menu</span></button>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu"><span class="menu-label" aria-hidden="true">Menu</span><span class="menu-icon" aria-hidden="true"></span><span class="sr-only">Open menu</span></button>
   </div>
 </header>
-<div class="menu" id="menu" hidden>
-  <nav aria-label="Menu"><ol><li><a href="index.html">Home</a></li><li><a href="work.html">Work</a></li><li><a href="process.html">Process</a></li><li><a href="pricing.html">Pricing</a></li><li><a href="about.html" aria-current="page">About</a></li><li><a href="faq.html">FAQ</a></li><li><a href="contact.html">Contact</a></li></ol><div class="menu-sub"><a href="care-plan.html">Care plan</a><a href="start.html">Start your project</a><a href="guides/">Guides</a><a href="quiz.html">Website quiz</a><a href="for-barbers.html">Barbers</a><a href="for-cafes.html">Cafes</a><a href="for-gyms.html">Gyms</a><a href="for-tradies.html">Tradies</a><a href="for-salons.html">Salons</a></div></nav>
-  <a class="btn btn-gold" href="free-concept.html">Get a free concept</a>
+<div class="menu" id="menu" role="dialog" aria-modal="true" aria-label="Menu" hidden>
+  <div class="container menu-inner">
+    <nav aria-label="Menu"><ol class="menu-links"><li><a href="work.html" data-preview="img/work/barber-desktop-800.webp"><span class="n" aria-hidden="true">01</span>Work</a></li><li><a href="process.html" data-preview="img/work/cafe-desktop-800.webp"><span class="n" aria-hidden="true">02</span>Process</a></li><li><a href="pricing.html" data-preview="img/work/plumber-desktop-800.webp"><span class="n" aria-hidden="true">03</span>Pricing</a></li><li><a href="about.html" aria-current="page" data-preview="img/work/salon-desktop-800.webp"><span class="n" aria-hidden="true">04</span>About</a></li><li><a href="faq.html" data-preview="img/work/gym-desktop-800.webp"><span class="n" aria-hidden="true">05</span>FAQ</a></li><li><a href="contact.html" data-preview="img/work/parts-desktop-800.webp"><span class="n" aria-hidden="true">06</span>Contact</a></li></ol><div class="menu-sub"><a href="care-plan.html">Care plan</a><a href="start.html">Start your project</a><a href="guides/">Guides</a><a href="quiz.html">Website quiz</a><a href="for-barbers.html">Barbers</a><a href="for-cafes.html">Cafes</a><a href="for-gyms.html">Gyms</a><a href="for-tradies.html">Tradies</a><a href="for-salons.html">Salons</a></div></nav>
+    <aside class="menu-aside">
+      <div class="menu-preview" aria-hidden="true"><img src="img/work/barber-desktop-800.webp" width="800" height="500" alt="" loading="lazy" decoding="async"></div>
+      <a class="link" data-email href="mailto:kb.ventures@outlook.com">kb.ventures@outlook.com</a>
+      <p class="tiny" data-clock>Melbourne</p>
+      <p class="tiny"><span class="avail-dot" aria-hidden="true"></span><span data-availability>Taking new projects now</span></p>
+      <a class="btn btn-gold" href="free-concept.html">Get a free concept</a>
+    </aside>
+  </div>
 </div>
 <main id="main">
   <div class="container page-head">
     <p class="label">About</p>
     <h1 class="h1" data-split>Studio quality. <em>Local prices.</em></h1>
-    <p class="lead reveal d1">Black Crest Web Designs makes fast, good-looking websites for the local businesses that keep a suburb going: barbers, cafes, gyms, salons and tradies.</p>
+    <p class="lead" data-reveal>Black Crest Web Designs makes fast, good-looking websites for the local businesses that keep a suburb going: barbers, cafes, gyms, salons and tradies.</p>
   </div>
   <section class="section band" aria-labelledby="stand-h">
     <div class="container">
       <div class="section-head split">
-      <div><p class="label reveal">What we stand for</p><h2 class="h2" data-split><span id="stand-h">Three things we <em>never trade away.</em></span></h2></div>
+      <div><p class="label" data-reveal>What we stand for</p><h2 class="h2" data-split><span id="stand-h">Three things we <em>never trade away.</em></span></h2></div>
       
     </div>
       <ol class="reason-list">
-        <li class="reveal"><span class="n">01</span><h3>Plain English</h3><p>No jargon and no hard sell. You always know what you are paying for and why.</p></li>
-        <li class="reveal"><span class="n">02</span><h3>Well made</h3><p>Fast, secure, easy to use on a phone, and built to last. We sweat the details so your customers never notice them.</p></li>
-        <li class="reveal"><span class="n">03</span><h3>Yours</h3><p>You own the finished site and your domain. No lock-in contracts, ever.</p></li>
+        <li data-reveal><span class="n">01</span><h3>Plain English</h3><p>No jargon and no hard sell. You always know what you are paying for and why.</p></li>
+        <li data-reveal><span class="n">02</span><h3>Well made</h3><p>Fast, secure, easy to use on a phone, and built to last. We sweat the details so your customers never notice them.</p></li>
+        <li data-reveal><span class="n">03</span><h3>Yours</h3><p>You own the finished site and your domain. No lock-in contracts, ever.</p></li>
       </ol>
     </div>
   </section>
   <section class="section" aria-labelledby="how-h">
     <div class="container showcase">
       <div><div class="section-head">
-      <div><p class="label reveal">How we work</p><h2 class="h2" data-split><span id="how-h">See it first. <em>Decide after.</em></span></h2></div>
-      <p class="lead reveal d1">We design your homepage for free before you pay anything. If you like it, a 50% deposit starts the build and the balance is due at launch. Two rounds of changes are included.</p>
+      <div><p class="label" data-reveal>How we work</p><h2 class="h2" data-split><span id="how-h">See it first. <em>Decide after.</em></span></h2></div>
+      <p class="lead" data-reveal>We design your homepage for free before you pay anything. If you like it, a 50% deposit starts the build and the balance is due at launch. Two rounds of changes are included.</p>
     </div>
-        <a class="link reveal" href="process.html">The full process <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
-      <div class="illo-wrap reveal d1"><svg class="illo" viewBox="0 0 240 180" aria-hidden="true" focusable="false"><rect class="g" pathLength="1" x="34" y="26" width="172" height="128" rx="8"/><path class="g" pathLength="1" d="M34 44h172"/><circle class="d" cx="46" cy="35" r="2.2"/><circle class="s" cx="56" cy="35" r="2.2"/><circle class="s" cx="66" cy="35" r="2.2"/>
+        <a class="link" data-reveal href="process.html">The full process <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+      <div class="illo-wrap" data-reveal><svg class="illo" viewBox="0 0 240 180" aria-hidden="true" focusable="false"><rect class="g" pathLength="1" x="34" y="26" width="172" height="128" rx="8"/><path class="g" pathLength="1" d="M34 44h172"/><circle class="d" cx="46" cy="35" r="2.2"/><circle class="s" cx="56" cy="35" r="2.2"/><circle class="s" cx="66" cy="35" r="2.2"/>
       <path class="g" pathLength="1" d="M52 70h72M52 84h52"/><path class="s" d="M52 104h40M52 114h56"/><rect class="g" pathLength="1" x="52" y="126" width="44" height="14" rx="7"/>
       <path class="s" d="M140 60 186 60 186 140 140 140Z"/><path class="g" pathLength="1" d="M146 132l14-24 10 14 8-10 6 20"/><circle class="g" pathLength="1" cx="170" cy="78" r="6"/></svg></div>
     </div>
@@ -89,8 +100,8 @@
   <section class="section band band-gold" aria-labelledby="prom-h">
     <div class="container">
       <div class="grid grid-2" style="gap:48px;align-items:end">
-        <div><p class="label reveal">Our promises</p><h2 id="prom-h" class="h2" data-split>What you can <em>hold us to.</em></h2></div>
-        <ul class="ticks reveal d1">
+        <div><p class="label" data-reveal>Our promises</p><h2 id="prom-h" class="h2" data-split>What you can <em>hold us to.</em></h2></div>
+        <ul class="ticks" data-reveal>
           <li>A free concept homepage before you pay anything.</li>
           <li>Clear prices, set before we start. No hidden costs.</li>
           <li>A reply within 24 hours.</li>
@@ -103,7 +114,7 @@
   </section>
   <section class="section" aria-labelledby="kb-h">
     <div class="container narrow">
-      <div class="tile reveal">
+      <div class="tile" data-reveal>
         <p class="label">A KB Ventures company</p>
         <h2 id="kb-h" class="h3">Part of something bigger.</h2>
         <p class="muted" style="margin-top:14px">Black Crest Web Designs is a brand of KB Ventures, a Melbourne company that starts and runs small businesses to one standard: clear, fair and well made.</p>
@@ -114,12 +125,13 @@
 </main>
 <footer class="site-footer">
   <div class="container">
-    <p class="footer-word" aria-hidden="true">Black <em>Crest</em></p>
     <div class="footer-top">
       <div class="footer-brand">
         <a class="brand" href="index.html"><svg class="crest" viewBox="0 0 48 56" aria-hidden="true" focusable="false"><path class="crest-outline" pathLength="1" d="M24 2.5 43.5 9.2V26c0 12.6-8.1 21.6-19.5 27.5C12.6 47.6 4.5 38.6 4.5 26V9.2Z"/><path class="crest-inner" d="M24 7.6 38.6 12.6V26c0 9.6-6 16.6-14.6 21.4C15.4 42.6 9.4 35.6 9.4 26V12.6Z"/><text class="crest-text" x="24" y="32.6" text-anchor="middle">BC</text></svg><span class="brand-name"><b>Black Crest</b> <small>Web Designs</small></span><span class="sr-only"> home</span></a>
         <p>Premium sites for local businesses. A KB Ventures company, based in Melbourne, Australia.</p>
         <a class="mail link" data-email href="mailto:kb.ventures@outlook.com">kb.ventures@outlook.com</a>
+        <p class="tiny" data-clock>Melbourne</p>
+        <p class="tiny"><span class="avail-dot" aria-hidden="true"></span><span data-availability>Taking new projects now</span></p>
       </div>
       <div class="footer-cols">
         <nav class="footer-col" aria-labelledby="f-0"><h2 id="f-0">Services</h2><ul><li><a href="pricing.html">Pricing</a></li><li><a href="care-plan.html">Care plan</a></li><li><a href="process.html">Process</a></li><li><a href="work.html">Work</a></li><li><a href="start.html">Start your project</a></li></ul></nav>
@@ -131,8 +143,10 @@
     <div class="footer-bottom">
       <p>&copy; <span data-year>2026</span> Black Crest Web Designs, a <a href="../kbventures-site/">KB Ventures</a> company.</p>
       <p>No cookies. No tracking. Prices in AUD.</p>
+      <button class="to-top" type="button" data-top>Back to top <span aria-hidden="true">&uarr;</span></button>
     </div>
   </div>
+  <p class="footer-word" aria-hidden="true">BLACK CREST</p>
 </footer>
 <div class="mobile-bar" role="region" aria-label="Quick actions">
   <a class="btn btn-gold" href="free-concept.html">Get a free concept</a>

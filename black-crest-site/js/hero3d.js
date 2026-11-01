@@ -1,7 +1,7 @@
 // The home page hero: a slowly turning gold crest with drifting dust and light, and a light that follows the cursor.
-// Loaded only on the home page, only on capable devices, after the page has finished loading (see main.js).
-// Three.js comes from cdnjs, pinned to 0.160.0. If anything fails, the static SVG crest simply stays.
-import * as THREE from 'https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.module.min.js';
+// Loaded only on the home page, only on capable devices, after first paint (see core.js).
+// Three.js is vendored (vendor/three, 0.170.0). If anything fails, the still crest simply stays.
+import * as THREE from '../vendor/three/three.module.min.js';
 
 // the crest outline, the same shape as the logo (48 x 56 units, y pointing down as in SVG)
 function shieldShape(scale = 1, cx = 24, cy = 28) {
@@ -34,7 +34,7 @@ function dotTexture() {
   return new THREE.CanvasTexture(c);
 }
 
-export function start(stage) {
+export function start(stage) { // phase 3 rebuilds this scene
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
   renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 1.75));
   renderer.outputColorSpace = THREE.SRGBColorSpace;

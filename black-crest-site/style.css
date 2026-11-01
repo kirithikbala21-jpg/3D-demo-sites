@@ -151,15 +151,15 @@ body.menu-open { overflow: hidden; }
 
 /* word-by-word reveal */
 .js [data-split] .w { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: .1em; margin-bottom: -.1em; }
-.js [data-split] .w > span { display: inline-block; transform: translateY(108%); transition: transform 1s var(--ease-out); transition-delay: calc(var(--i) * 55ms); }
+.js [data-split] .w > span { display: inline-block; transform: translateY(108%); transition: transform .7s var(--ease-out); transition-delay: min(calc(var(--i) * 18ms), 120ms); } /* short, capped stagger: done within .82s */
 .js [data-split].is-in .w > span { transform: none; }
 
 /* ---------- Reveal on scroll ---------- */
-.js .reveal { opacity: 0; transform: translateY(26px); transition: opacity 1s var(--ease-out), transform 1s var(--ease-out); }
+.js .reveal { opacity: 0; transform: translateY(18px); transition: opacity .6s var(--ease-out), transform .7s var(--ease-out); }
 .js .reveal.is-in { opacity: 1; transform: none; }
-.d1 { transition-delay: .08s !important; }
-.d2 { transition-delay: .16s !important; }
-.d3 { transition-delay: .24s !important; }
+.d1 { transition-delay: .04s !important; }
+.d2 { transition-delay: .08s !important; }
+.d3 { transition-delay: .12s !important; }
 .draw-line { height: 1px; border: 0; margin: 0; background: linear-gradient(90deg, var(--gold), rgba(212, 175, 55, .1)); transform: scaleX(0); transform-origin: 0 50%; transition: transform 1.6s var(--ease-out); }
 .draw-line.is-in { transform: none; }
 
@@ -215,7 +215,7 @@ svg[viewBox="0 0 24 24"] { fill: none; stroke: currentColor; stroke-width: 1.6; 
 .illo .s { fill: none; stroke: rgba(228, 230, 237, .22); stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
 .illo .d { fill: var(--gold); }
 .illo .p { fill: rgba(228, 230, 237, .05); }
-.js .illo .g { stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 2.4s var(--ease-out); }
+.js .illo .g { stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset .9s var(--ease-out); }
 .js .is-in .illo .g, .js .illo.is-in .g, .js .is-active .illo .g { stroke-dashoffset: 0; }
 
 /* ---------- Hero ---------- */

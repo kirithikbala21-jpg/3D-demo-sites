@@ -110,7 +110,7 @@ const CONFIG = /* CONFIG-START */ {
   const count = (el) => {
     const to = Number(el.dataset.count), pre = el.dataset.prefix ?? '$';
     if (reduce || !to) return;
-    const t0 = performance.now(), dur = 1300;
+    const t0 = performance.now(), dur = 900;
     const step = (t) => {
       const p = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - p, 4);
       el.textContent = pre + Math.round(to * e).toLocaleString('en-AU');
@@ -119,15 +119,18 @@ const CONFIG = /* CONFIG-START */ {
     requestAnimationFrame(step);
   };
   const watched = $$('.reveal, [data-split], .draw-line, .illo-wrap, [data-count]');
+  const show = (el) => { if (el.classList.contains('is-in')) return; el.classList.add('is-in'); if (el.matches('[data-count]')) count(el); };
   if ('IntersectionObserver' in window && !reduce) {
+    // starts the moment any part of an element enters the viewport
     const io = new IntersectionObserver((entries) => entries.forEach((en) => {
       if (!en.isIntersecting) return;
-      en.target.classList.add('is-in');
-      if (en.target.matches('[data-count]')) count(en.target);
-      io.unobserve(en.target);
-    }), { rootMargin: '0px 0px -8% 0px', threshold: 0.1 });
+      show(en.target); io.unobserve(en.target);
+    }), { rootMargin: '0px', threshold: 0 });
     watched.forEach((el) => io.observe(el));
-  } else watched.forEach((el) => el.classList.add('is-in'));
+    // jumping down the page (anchor links, fast flicks): everything at or above the viewport shows at once
+    const catchUp = () => { const vh = innerHeight; watched.forEach((el) => { if (!el.classList.contains('is-in') && el.getBoundingClientRect().top < vh) { show(el); io.unobserve(el); } }); };
+    addEventListener('scroll', () => requestAnimationFrame(catchUp), { passive: true });
+  } else watched.forEach(show);
 
   /* ---------- Scroll-driven effects: header, gold progress line, parallax, pinned rail ---------- */
   const header = $('.site-header'), bar = $('.progress span');

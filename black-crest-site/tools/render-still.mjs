@@ -1,7 +1,8 @@
 // Renders the stills that stand in for the real-time 3D on phones, low-power devices, reduced motion and
 // browsers without WebGL. It opens the home page with ?still=1, which makes js/hero3d.js and js/globe3d.js draw
 // one fixed frame on a transparent background, and saves that frame at 2x as AVIF and WebP (plus a JPEG
-// fallback on the page's own background colour). Also renders img/og.jpg (1200 x 630) from the same 3D crest.
+// fallback on the page's own background colour). Also renders img/og.jpg (1200 x 630), the app icons and
+// favicon.ico from the same 3D crest.
 //
 //   1. serve the repo root:   python3 -m http.server 8123 --bind 127.0.0.1
 //   2. run:                   node black-crest-site/tools/render-still.mjs  [base URL, default http://127.0.0.1:8123/]
@@ -66,4 +67,14 @@ for i, line in enumerate(['Premium sites', 'for local', 'businesses']):
 d.text((80, 520), 'Melbourne  ·  A free concept homepage first', font=sans, fill=(138, 143, 158))
 og.convert('RGB').save(${JSON.stringify(out('img/og.jpg'))}, quality=86, optimize=True, progressive=True)
 print('og.jpg')
+
+# app icons and the favicon, from the same crest
+cc = crest.crop(crest.getbbox())
+def icon(size, frac):
+    im = Image.new('RGBA', (size, size), BG); h = round(size * frac); w = round(cc.width * h / cc.height)
+    im.alpha_composite(cc.resize((w, h), Image.LANCZOS), ((size - w) // 2, (size - h) // 2)); return im.convert('RGB')
+for size, frac, name in [(512, .78, 'img/icon-512.png'), (192, .78, 'img/icon-192.png'), (512, .56, 'img/icon-maskable-512.png'), (180, .74, 'img/apple-touch-icon.png')]:
+    icon(size, frac).save(${JSON.stringify(SITE)} + '/' + name, optimize=True)
+icon(256, .86).save(${JSON.stringify(out('favicon.ico'))}, sizes=[(16, 16), (32, 32), (48, 48)])
+print('icons')
 `], { stdio: 'inherit' });

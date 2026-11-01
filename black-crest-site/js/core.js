@@ -133,6 +133,21 @@ if (anat) {
   if (window.ScrollTrigger) window.ScrollTrigger.addEventListener('refresh', draw);
 }
 
+/* ---------- Hover image reveals (work list, "next concept"): a preview follows the pointer on desktop ---------- */
+const hovers = $$('[data-hover-img]');
+if (hovers.length && fine && !reduce) {
+  const box = document.createElement('div'), img = new Image();
+  box.className = 'hover-img'; box.setAttribute('aria-hidden', 'true'); img.alt = ''; box.append(img); document.body.append(box);
+  let x = 0, y = 0, tx = 0, ty = 0, raf = 0;
+  const loop = () => { x += (tx - x) * 0.18; y += (ty - y) * 0.18; box.style.left = x + 'px'; box.style.top = y + 'px'; raf = Math.abs(tx - x) + Math.abs(ty - y) > 0.5 ? requestAnimationFrame(loop) : 0; };
+  hovers.forEach((a) => {
+    a.addEventListener('pointerenter', (e) => { img.src = a.dataset.hoverImg; x = tx = e.clientX; y = ty = e.clientY; box.classList.add('is-on'); loop(); });
+    a.addEventListener('pointermove', (e) => { tx = e.clientX + 40; ty = e.clientY; if (!raf) raf = requestAnimationFrame(loop); });
+    a.addEventListener('pointerleave', () => box.classList.remove('is-on'));
+  });
+  addEventListener('scroll', () => box.classList.remove('is-on'), { passive: true });
+}
+
 /* ---------- Concept Lab (home and lab.html) ---------- */
 if ($('[data-lab]')) import('./lab.js').then((m) => m.initLab(env));
 

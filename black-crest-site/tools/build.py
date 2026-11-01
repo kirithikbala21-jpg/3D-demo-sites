@@ -157,10 +157,10 @@ TRADES = [('for-barbers.html', 'Barbers', 'barber', 'Bookings, prices and the cu
           ('for-tradies.html', 'Tradies', 'tradie', 'The call, the quote and the suburbs you cover.'),
           ('for-salons.html', 'Salons', 'salon', 'Services, prices and bookings at any hour.')]
 FOOTER = [
-    ('Services', [('pricing.html', 'Pricing'), ('care-plan.html', 'Care plan'), ('process.html', 'Process'), ('work.html', 'Work'), ('start.html', 'Start your project')]),
+    ('Services', [('pricing.html', 'Pricing'), ('care-plan.html', 'Care plan'), ('process.html', 'Process'), ('work.html', 'Work'), ('lab.html', 'Concept Lab'), ('start.html', 'Start your project')]),
     ('Trades', [(h, t) for h, t, _, _ in TRADES]),
     ('Resources', [('faq.html', 'FAQ'), ('guides/', 'Guides'), ('quiz.html', 'Website quiz'), ('free-concept.html', 'Free concept'), ('qr.html', 'Printable QR code')]),
-    ('Company', [('about.html', 'About'), ('contact.html', 'Contact'), ('privacy.html', 'Privacy'), ('terms.html', 'Terms')]),
+    ('Company', [('about.html', 'About'), ('standard.html', 'The Standard'), ('contact.html', 'Contact'), ('credits.html', 'Credits'), ('privacy.html', 'Privacy'), ('terms.html', 'Terms')]),
 ]
 
 
@@ -195,7 +195,7 @@ def header(P, here):
   <div class="container menu-inner">
     <nav aria-label="Menu"><ol class="menu-links">{mlinks}</ol><div class="menu-sub">{sub}</div></nav>
     <aside class="menu-aside">
-      <div class="menu-preview" aria-hidden="true"><img src="{P}img/work/barber-desktop-800.webp" width="800" height="500" alt="" loading="lazy" decoding="async"></div>
+      <div class="menu-preview" aria-hidden="true"><img data-nopic src="{P}img/work/barber-desktop-800.webp" width="800" height="500" alt="" loading="lazy" decoding="async"></div>
       <a class="link" data-email href="mailto:{EMAIL}">{EMAIL}</a>
       <p class="tiny" data-clock>Melbourne</p>
       <p class="tiny"><span class="avail-dot" aria-hidden="true"></span><span data-availability>{E(CONFIG['availability'])}</span></p>
@@ -287,13 +287,35 @@ def head(title, desc, path, P, noindex=False, ld=(), base_script=False, extra=''
 <link rel="manifest" href="{P}manifest.webmanifest">
 <link rel="preload" href="{P}fonts/cormorant-garamond.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="{P}fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="{P}style.css">{extra}
+<link rel="stylesheet" href="{P}style.min.css">{extra}
 <script src="{P}vendor/gsap/gsap.min.js" defer></script>
 <script src="{P}vendor/gsap/ScrollTrigger.min.js" defer></script>
 <script src="{P}vendor/gsap/SplitText.min.js" defer></script>
 <script src="{P}vendor/lenis/lenis.min.js" defer></script>{''.join(f'<script src="{P}vendor/{v}" defer></script>' for v in vendor)}
 <script type="module" src="{P}js/core.js"></script>{lds}
 </head>'''
+
+
+def picturise(html, P):
+    """Wrap each <img> of a .webp in img/ (that also has .avif and .jpg copies) in <picture>: AVIF, then WebP, then a JPEG fallback."""
+    def one(m):
+        tag = m.group(0)
+        if 'data-nopic' in tag:
+            return tag
+        src = re.search(r'src="([^"]+)\.webp"', tag).group(1)
+        disk = os.path.join(SITE_DIR, src[len(P):] if P and src.startswith(P) else src)
+        if not (os.path.exists(disk + '.avif') and os.path.exists(disk + '.jpg')):
+            return tag
+        ss = re.search(r'srcset="([^"]+)"', tag)
+        sizes = re.search(r'sizes="([^"]+)"', tag)
+        set_ = ss.group(1) if ss else src + '.webp'
+        sz = f' sizes="{sizes.group(1)}"' if sizes else ''
+        img = tag.replace(src + '.webp"', src + '.jpg"', 1)
+        if ss:
+            img = img.replace(ss.group(0), 'srcset="' + set_.replace('.webp', '.jpg') + '"')
+        return (f'<picture><source type="image/avif" srcset="{set_.replace(".webp", ".avif")}"{sz}>'
+                f'<source type="image/webp" srcset="{set_}"{sz}>{img}</picture>')
+    return re.sub(r'<img\b[^>]*\bsrc="[^"]*img/[^"]+\.webp"[^>]*>', one, html)
 
 
 pages = {}
@@ -304,6 +326,9 @@ def page(path, title, desc, body, noindex=False, ld=(), bare=False, base_script=
     top = '' if bare else header(P, path)
     bottom = '' if bare else f'{footer(P, path)}\n{mobile_bar(P)}'
     t = '\n<div class="toast" id="toast" role="status" hidden><i aria-hidden="true"></i>Message sent. We reply within 24 hours.</div>' if toast else ''
+    if path != 'index.html':
+        body = re.sub(r'<p class="label">(?!<span class="idx">)([^<]+)</p>', r'<p class="label"><span class="idx">01</span><span class="slash" aria-hidden="true">/</span>\1</p>', body, count=1)
+    body = picturise(body, P)
     pages[path] = f'''{head(title, desc, path if path != 'index.html' else '', P, noindex, ld, base_script, extra, vendor)}
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -532,7 +557,7 @@ def chapters(P):
           <i class="chapter-rule" aria-hidden="true"></i>
           <p class="chapter-cap">{cap}</p>
           <p class="chapter-meta"><span class="chip chip-plain">Concept site</span> {d[2]}</p>
-          <a class="link" href="{P}../{d[1]}/" target="_blank" rel="noopener">See the concept {icon('arrow')}<span class="sr-only"> {d[2]}, a concept site (opens in a new tab)</span></a>
+          <a class="link" href="{P}work/{slug}.html">See the concept {icon('arrow')}<span class="sr-only">: {d[2]}</span></a>
         </div>
       </article>''')
     return f'''<section class="chapters" aria-labelledby="chapters-h" data-chapters>
@@ -604,14 +629,17 @@ def anatomy(P):
   </section>'''
 
 
-def process_stack(P):
-    cards = ''.join(f'''<li class="stack-card" style="--i:{i}">
+def stack_cards():
+    return '<ol class="stack">' + ''.join(f'''<li class="stack-card" style="--i:{i}">
           <div class="stack-inner">
             <span class="stack-n" aria-hidden="true">0{i + 1}</span>
             <div class="stack-copy"><span class="chip chip-plain">{w}</span><h3 class="h3">{t}</h3><p>{x}</p></div>
             <div class="stack-illo illo-wrap">{illo(k)}</div>
           </div>
-        </li>''' for i, (t, k, w, x) in enumerate(STEPS))
+        </li>''' for i, (t, k, w, x) in enumerate(STEPS)) + '</ol>'
+
+
+def process_stack(P):
     return f'''<section class="section process-sec has-grid" aria-labelledby="how-h">
     <div class="container process-split">
       <div class="process-head">
@@ -620,7 +648,7 @@ def process_stack(P):
         <p class="lead" data-reveal>You see your homepage before you pay anything. This is everything that happens after that.</p>
         <a class="link" data-reveal href="{P}process.html">The full process {icon('arrow')}</a>
       </div>
-      <ol class="stack">{cards}</ol>
+      {stack_cards()}
     </div>
   </section>'''
 
@@ -829,28 +857,194 @@ page('standard.html', 'The Black Crest Standard: Black Crest Web Designs', 'Ten 
 
 
 # ================================================================= Work
-P = ''
-rows = ''.join(f'''<article class="work-row" aria-labelledby="w-{d[0]}">
-      <div class="work-text" data-reveal>
-        <span class="n" aria-hidden="true">0{i + 1}</span>
-        <p class="tile-label" style="justify-content:flex-start"><span>{d[3]}</span><span class="chip">Concept site</span></p>
-        <h2 id="w-{d[0]}" class="h2" data-split>{d[2]}</h2>
-        <p>{d[4]}</p>
-        <ul class="feats">{''.join(f'<li>{f}</li>' for f in d[5])}</ul>
-        <div class="btn-row">{open_demo(d, P)}{f'<a class="link" href="{d[6]}">For {d[3].lower()}s {icon("arrow")}</a>' if d[6] else ''}</div>
+# Case studies: facts read from each concept's own files (title, description, address, pages, CSS colours and fonts).
+LH_DATE = '30 October 2026'
+CASES = {
+    'barber': {
+        'place': 'Surry Hills, Sydney NSW', 'line': 'A dark, brass-lit barbershop site where booking a chair is never more than a thumb away.',
+        'brief': 'A neighbourhood barbershop that lives on walk-ins and regulars. People find it on their phones, often a block away, and decide in seconds. The site had to feel like the shop and make booking the obvious next step.',
+        'built': ['A home page with a slowly turning 3D barber pole and a sticky "Book a chair" bar', 'Services and a full price list, also as a printable PDF', 'Online booking, a barbers page and a membership page', 'A gallery of cuts, a journal and a reviews page', 'A visit page with the map, hours and directions'],
+        'swatches': [('#0B0B0C', 'Page'), ('#161617', 'Cards'), ('#F2EBDD', 'Text'), ('#C9A24B', 'Brass'), ('#E4C77A', 'Brass, light')],
+        'fonts': [('Oswald', 'Headings, set in capitals like shop signage'), ('Montserrat', 'Body text and buttons')],
+        'decisions': 'Near-black with one brass accent, so prices and the booking button are the brightest things on screen. Tall condensed headings echo old shopfront lettering.',
+        'lh': (89, 100, 100, 69)},
+    'cafe': {
+        'place': 'Melbourne VIC', 'line': 'Warm espresso tones, a steaming 3D cup and a menu you can read standing at the counter.',
+        'brief': 'An all-day café with small-batch coffee and long tables. Customers want the menu, the hours and how to order ahead, and they want to feel the room before they walk in.',
+        'built': ['A home page with a steaming 3D coffee cup', 'A full menu page, plus the menu as a PDF', 'Pick-up ordering and table reservations', 'Story, sustainability, experiences and press pages', 'Opening hours, a map and a reviews page'],
+        'swatches': [('#120D0A', 'Page'), ('#1C1511', 'Cards'), ('#F3E9DA', 'Text'), ('#E0782B', 'Ember'), ('#CFC3B1', 'Body text')],
+        'fonts': [('Montserrat', 'Headings and body text'), ('Mrs Saint Delafield', 'A handwritten accent, used sparingly')],
+        'decisions': 'Espresso browns instead of black, so the page feels warm. One ember orange marks every action. A single handwritten flourish gives it a signature without hurting legibility.',
+        'lh': (82, 100, 100, 69)},
+    'gym': {
+        'place': 'Fortitude Valley, Brisbane QLD', 'line': 'A loud, confident gym site built around one goal: getting someone to a free first session.',
+        'brief': 'A strength and conditioning gym competing with big chains. Its edge is coaching. The site needed to show the timetable and the coaches, and turn a maybe into a booked free trial.',
+        'built': ['A home page with a slowly rotating 3D barbell', 'A weekly class timetable', 'Coaches, memberships and a 7-day free trial form', 'A visit page, a journal and a reviews page', 'A careers page'],
+        'swatches': [('#0B0B0C', 'Page'), ('#161618', 'Cards'), ('#F5F1EA', 'Text'), ('#FFE000', 'Accent'), ('#D2CCC2', 'Body text')],
+        'fonts': [('Barlow Condensed', 'Headings, tight and athletic'), ('Montserrat', 'Body text and buttons')],
+        'decisions': 'One electric yellow on near-black, used only where a visitor can act. Condensed headings fit long class names on a phone without wrapping.',
+        'lh': (89, 100, 100, 69)},
+    'plumber': {
+        'place': 'Glen Waverley VIC', 'line': 'A plumber’s site for the worst day of someone’s week: one big call button and straight answers.',
+        'brief': 'A local plumbing and gas business. Most visitors arrive mid-emergency on a phone. They need to call in one tap, see that the business covers their suburb, and get a sense of the price.',
+        'built': ['A "What’s happening?" picker that leads with the problem', 'A call button at the top and a call bar along the bottom', 'Service areas, a price guide and a before-and-after', 'A quote form and straight-answer FAQs', 'A reviews page and a privacy page'],
+        'swatches': [('#0B2545', 'Navy'), ('#FF6A13', 'Safety orange'), ('#F2F4F7', 'Grey'), ('#1A2433', 'Ink'), ('#C47A3D', 'Copper')],
+        'fonts': [('Barlow Condensed', 'Headings, in capitals'), ('Inter', 'Body text and forms')],
+        'decisions': 'A light page for reading in daylight, a trustworthy navy, and one safety orange reserved for calling. Nothing decorative competes with the phone number.',
+        'lh': (72, 100, 100, 69)},
+    'salon': {
+        'place': 'Glen Waverley VIC', 'line': 'A calm, light salon site where every price is visible and booking takes under a minute.',
+        'brief': 'A hair and beauty salon whose clients hate surprises at the counter. The site had to feel unhurried, show clear prices for every service, and make booking simple.',
+        'built': ['A service menu with clear prices', 'Online booking, designed to take under a minute', 'Stylists, a gallery of recent work and FAQs', 'Gift vouchers', 'A map, contact details and a reviews page'],
+        'swatches': [('#FAF6F0', 'Ivory'), ('#2B211C', 'Cocoa'), ('#C9A38C', 'Clay'), ('#8A9A86', 'Sage'), ('#F3EBE1', 'Sand')],
+        'fonts': [('Cormorant Garamond', 'Headings, soft and editorial'), ('Inter', 'Body text and prices')],
+        'decisions': 'Warm ivory and cocoa instead of stark white and black, with clay and sage accents. An elegant serif for headings, and a plain sans for prices so they read at a glance.',
+        'lh': (90, 100, 100, 69)},
+    'parts': {
+        'place': None, 'line': 'An auto parts home page that starts with your car, not with a catalogue.',
+        'brief': 'An auto parts store home page, redesigned as a concept with a made-up brand. Drivers often know the job but not the part. The page had to help them find parts that fit their car quickly, on a phone.',
+        'built': ['A car finder that starts from a number plate', 'Shop by job, with steps for common jobs', 'An oil finder and featured products', 'Shop by category and a cart', 'Rego and service reminders, and a rewards sign-up'],
+        'swatches': [('#EE3123', 'Red'), ('#D91414', 'Buttons'), ('#009546', 'In stock'), ('#1A1A1A', 'Charcoal'), ('#F4F4F4', 'Grey')],
+        'fonts': [('Lato', 'Headings and body text')],
+        'decisions': 'Retail red for the brand and buttons, green only for good news like stock. One plain typeface keeps dense product information easy to scan.',
+        'lh': (99, 100, 100, 63)},
+}
+YEAR = '2026'
+
+
+def case_page(i, d):
+    slug, folder, name, trade = d[0], d[1], d[2], d[3]
+    c = CASES[slug]
+    P = '../'
+    nxt = DEMOS[(i + 1) % len(DEMOS)]
+    sw = ''.join(f'<li><span class="sw" style="background:{h}"></span><b>{label}</b><code>{h}</code></li>' for h, label in c['swatches'])
+    fonts = ''.join(f'<li><b>{f}</b><span>{use}</span></li>' for f, use in c['fonts'])
+    built = ''.join(f'<li>{x}</li>' for x in c['built'])
+    perf, a11y, bp, seo = c['lh']
+    place = c['place'] or 'No location: an online store concept'
+    return f'''<main id="main" class="case">
+  <section class="case-hero">
+    <div class="container">
+      <p class="label"><a class="crumb" href="{P}work.html">Work</a><span class="slash" aria-hidden="true">/</span>{trade}</p>
+      <h1 class="display" data-split>{name}</h1>
+      <p class="lead" data-reveal>{c['line']}</p>
+      <p class="case-strip" data-reveal><span>Concept project &middot; not a real client</span><span>{trade}</span><span>{place}</span><span>Year {YEAR}</span></p>
+      <div class="btn-row" data-reveal><a class="btn btn-gold" href="{P}../{folder}/" target="_blank" rel="noopener">Visit the live concept {icon('ext')}<span class="sr-only"> (opens in a new tab)</span></a><a class="btn btn-ghost" href="{P}work.html">All concepts</a></div>
+    </div>
+    <div class="container case-shot" data-wipe>{laptop(slug, name, P, lazy=False)}</div>
+  </section>
+
+  <section class="section-tight" aria-labelledby="brief-h">
+    <div class="container case-split">
+      <div><p class="label" data-reveal><span class="idx">01</span><span class="slash" aria-hidden="true">/</span>The brief</p><h2 id="brief-h" class="h3" data-reveal>What it had to do</h2></div>
+      <p class="lead case-text" data-reveal>{c['brief']}</p>
+    </div>
+  </section>
+
+  <section class="section-tight band" aria-labelledby="built-h">
+    <div class="container case-split">
+      <div><p class="label" data-reveal><span class="idx">02</span><span class="slash" aria-hidden="true">/</span>What we built</p><h2 id="built-h" class="h3" data-reveal>Inside the concept</h2></div>
+      <ul class="ticks case-built" data-reveal>{built}</ul>
+    </div>
+  </section>
+
+  <section class="section-tight" aria-labelledby="design-h">
+    <div class="container">
+      <div class="case-split">
+        <div><p class="label" data-reveal><span class="idx">03</span><span class="slash" aria-hidden="true">/</span>Design decisions</p><h2 id="design-h" class="h3" data-reveal>Colour and type</h2></div>
+        <p class="lead case-text" data-reveal>{c['decisions']}</p>
       </div>
-      <div data-reveal>{duo(d[0], P, '0.05', lazy=i > 0)}</div>
-    </article>''' for i, d in enumerate(DEMOS))
-page('work.html', 'Work: concept sites by Black Crest Web Designs', 'Six concept websites for made-up local businesses: a barbershop, cafe, gym, plumber, salon and auto parts store, shown on laptop and phone.', f'''<main id="main">
+      <div class="case-design">
+        <ul class="swatches" data-reveal aria-label="Colours from the concept's stylesheet">{sw}</ul>
+        <ul class="typefaces" data-reveal aria-label="Typefaces">{fonts}</ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-tight case-screens" aria-label="Screens">
+    <div class="container case-gallery">
+      <div class="g-wide" data-parallax="0.06"><img src="{P}img/work/{slug}-desktop-1600.webp" srcset="{P}img/work/{slug}-desktop-800.webp 800w, {P}img/work/{slug}-desktop-1600.webp 1600w" sizes="(min-width: 1024px) 66vw, 92vw" width="1600" height="1000" loading="lazy" decoding="async" alt="The {name} concept home page on a desktop screen"></div>
+      <div class="g-phone" data-parallax="0.14">{phone(slug, name, P)}</div>
+    </div>
+  </section>
+
+  <section class="section-tight band" aria-labelledby="speed-h">
+    <div class="container case-split">
+      <div><p class="label" data-reveal><span class="idx">04</span><span class="slash" aria-hidden="true">/</span>Speed</p><h2 id="speed-h" class="h3" data-reveal>Measured, not promised</h2></div>
+      <div data-reveal>
+        <ul class="scores">
+          <li><b>{perf}</b><span>Performance</span></li><li><b>{a11y}</b><span>Accessibility</span></li><li><b>{bp}</b><span>Best practices</span></li><li><b>{seo}</b><span>SEO</span></li>
+        </ul>
+        <p class="tiny">Lighthouse 12.8.2, mobile preset, measured on {LH_DATE} against a copy of the concept served locally. SEO is held back on purpose: every concept is set to "noindex" so it never competes with real businesses in search.</p>
+      </div>
+    </div>
+  </section>
+
+  <nav class="case-next" aria-label="Next concept">
+    <a class="container next-link" href="{P}work/{nxt[0]}.html" data-hover-img="{P}img/work/{nxt[0]}-desktop-800.webp">
+      <span class="label">Next concept</span>
+      <span class="next-name">{nxt[2]} <span class="arrow">{icon('arrow')}</span></span>
+      <span class="tiny">{nxt[3]} &middot; concept site</span>
+    </a>
+  </nav>
+  {cta_final('Want one like <em>this?</em>', 'We design your homepage concept for free, so you can see it before you decide.', secondary=('lab.html', 'Try the Concept Lab'), P=P)}
+</main>'''
+
+
+for i, d in enumerate(DEMOS):
+    page(f'work/{d[0]}.html', f'{strip_tags(d[2])}: concept case study by Black Crest Web Designs',
+         f'{strip_tags(d[2])} is a concept {d[3].lower()} website by Black Crest Web Designs, for a made-up business. The brief, what we built, colours, type and measured speed.',
+         case_page(i, d), ld=[{'@context': 'https://schema.org', '@type': 'CreativeWork', 'name': f'{strip_tags(d[2])} (concept site)',
+                                'description': f'A concept website for a made-up {d[3].lower()}, designed and built by Black Crest Web Designs. Not a real client.',
+                                'url': SITE + f'work/{d[0]}.html', 'image': SITE + f'img/work/{d[0]}-desktop-1600.jpg', 'dateCreated': YEAR,
+                                'creator': {'@id': SITE + '#business'}, 'isPartOf': {'@type': 'WebSite', 'name': 'Black Crest Web Designs', 'url': SITE}}])
+
+P = ''
+rows = ''.join(f'''<li><a class="work-line" href="work/{d[0]}.html" data-hover-img="img/work/{d[0]}-desktop-800.webp">
+          <span class="n" aria-hidden="true">0{i + 1}</span>
+          <span class="w-name">{d[2]}</span>
+          <span class="w-meta"><span>{d[3]}</span><span>{CASES[d[0]]['place'] or 'Online store'}</span></span>
+          <img class="w-thumb" src="img/work/{d[0]}-desktop-800.webp" width="800" height="500" loading="lazy" decoding="async" alt="">
+          <span class="w-go" aria-hidden="true">{icon('arrow')}</span>
+        </a></li>''' for i, d in enumerate(DEMOS))
+page('work.html', 'Work: concept sites by Black Crest Web Designs', 'Six concept websites for made-up local businesses: a barbershop, café, gym, plumber, salon and auto parts store. Each has a case study.', f'''<main id="main">
   <div class="container page-head">
-    <p class="label">Work</p>
-    <h1 class="h1" data-split>Six concepts. <em>Zero templates.</em></h1>
-    <p class="lead" data-reveal>Made-up local businesses, designed and built like real ones. None of them are customers: they show what we build, and you can open each one on your phone.</p>
+    <p class="label"><span class="idx">01</span><span class="slash" aria-hidden="true">/</span>Work</p>
+    <h1 class="h1" data-split>Six concepts. <em>No templates.</em></h1>
+    <p class="lead" data-reveal>Made-up local businesses, designed and coded like real ones. None of them are clients: they show what we build. Each has a short case study.</p>
   </div>
-  <section class="container" aria-label="Concept sites">{rows}
-    <p class="tiny" data-reveal style="padding-bottom:40px">All six are concepts for fictional businesses. Names, prices, reviews and photos inside them are made up or stock images.</p>
+  <section class="container work-list-wrap" aria-label="Concept case studies">
+    <ol class="work-list">{rows}</ol>
+    <p class="tiny work-note" data-reveal>All six are concepts for fictional businesses. Names, prices, reviews and photos inside them are made up or stock images.</p>
+  </section>
+  <section class="section-tight band" aria-labelledby="try-h">
+    <div class="container offer-split">
+      <div><p class="label" data-reveal><span class="idx">02</span><span class="slash" aria-hidden="true">/</span>Concept Lab</p><h2 id="try-h" class="h2" data-split>Try the <em>Concept Lab.</em></h2></div>
+      <div data-reveal><p class="lead">Pick your trade, a mood and the features you need, and watch a homepage sketch itself. Then send it to us as the start of your free concept.</p><a class="btn btn-gold" href="lab.html">Open the Concept Lab</a></div>
+    </div>
   </section>
   {cta_final('Want one like <em>this?</em>', 'We design your homepage concept for free, so you can see it first.', secondary=('pricing.html', 'See pricing'))}
+</main>''')
+
+# ================================================================= Credits
+P = ''
+CREDIT_ROWS = [
+    ('Trade chapter photos (home page)', 'Barbers, Cafés, Gyms, Trades and Salons: copied from the source photos of the matching concept sites. They are from Unsplash, under the Unsplash licence. The photographers’ names were not recorded when the photos were first collected; they will be added here when found.'),
+    ('Concept site screenshots and the showreel', 'Captured by Black Crest from our own six concept sites.'),
+    ('The 3D crest and its stills', 'Made by Black Crest with Three.js from the Black Crest logo.'),
+    ('Globe land shapes', 'Natural Earth (public domain), via the world-atlas package, turned into dots once when the site is built.'),
+    ('Typefaces', 'Cormorant Garamond and Inter, both under the SIL Open Font License, served from this site.'),
+    ('Code libraries', 'GSAP 3.14.2 (ScrollTrigger, SplitText, Flip) under the GSAP standard licence, Lenis 1.3.27 (MIT) and Three.js 0.170.0 (MIT), all served from this site.'),
+]
+page('credits.html', 'Credits: Black Crest Web Designs', 'Where the photos, data, typefaces and code libraries on the Black Crest Web Designs site come from.', f'''<main id="main">
+  <div class="container page-head">
+    <p class="label"><span class="idx">01</span><span class="slash" aria-hidden="true">/</span>Credits</p>
+    <h1 class="h1" data-split>Credit where <em>it’s due.</em></h1>
+    <p class="lead" data-reveal>Where everything on this site comes from. If something of yours is here without the right credit, email <a class="link" data-email href="mailto:{EMAIL}">{EMAIL}</a> and we will fix it.</p>
+  </div>
+  <section class="section-tight" aria-label="Credits">
+    <div class="container"><ol class="standard-list">{''.join(f'<li data-reveal><span class="n" aria-hidden="true">{i + 1:02d}</span><div><h2 class="h3">{t}</h2><p>{x}</p></div></li>' for i, (t, x) in enumerate(CREDIT_ROWS))}</ol></div>
+  </section>
 </main>''')
 
 # ================================================================= Pricing
@@ -972,11 +1166,16 @@ page('process.html', 'Process: how Black Crest Web Designs works', 'Four steps: 
     <h1 class="h1" data-split>Four steps. <em>No surprises.</em></h1>
     <p class="lead" data-reveal>From the first message to your site going live: what happens, who does what, and how long each step usually takes.</p>
   </div>
-  <section class="container" aria-label="The four steps">{story(P, True)}</section>
+  <section class="section-tight has-grid" aria-labelledby="steps-h">
+    <div class="container process-split">
+      <div class="process-head"><p class="label" data-reveal><span class="idx">02</span><span class="slash" aria-hidden="true">/</span>Step by step</p><h2 id="steps-h" class="h2" data-split>From hello <em>to live.</em></h2><p class="lead" data-reveal>Each step has a usual timeframe. If anything will take longer, we tell you before it does.</p></div>
+      {stack_cards()}
+    </div>
+  </section>
   <section class="section band band-gold" aria-labelledby="promise-h">
     <div class="container">
       <div class="grid grid-2" style="gap:48px;align-items:end">
-        <div><p class="label" data-reveal>Our promise</p><h2 id="promise-h" class="h2" data-split>How paying <em>works.</em></h2></div>
+        <div><p class="label" data-reveal><span class="idx">03</span><span class="slash" aria-hidden="true">/</span>Paying</p><h2 id="promise-h" class="h2" data-split>How paying <em>works.</em></h2></div>
         <div data-reveal>
           <ul class="ticks">
             <li><strong>Free concept first.</strong> You see your homepage before you pay anything.</li>
@@ -997,7 +1196,7 @@ P = ''
 page('free-concept.html', 'Get a free website concept: Black Crest Web Designs', 'We design your new homepage for free. No deposit, no obligation. Reply within 24 hours.', f'''<main id="main" class="landing">
   <div class="container">
     <div class="landing-head">{brand(P)}</div>
-    <h1>See your new website <em>before you pay.</em></h1>
+    <h1>See it <em>before you pay.</em></h1>
     <ul class="ticks">
       <li>We design your homepage for free.</li>
       <li>No deposit and no obligation.</li>
@@ -1065,7 +1264,7 @@ NOT_COVER = ['New pages or new sections (we quote these first)', 'Redesigns or a
 page('care-plan.html', f'Care plan, {money(CARE)} a month: Black Crest Web Designs', f'Our optional care plan is {money(CARE)} a month: hosting upkeep, small text and photo changes, security checks, backups and priority replies. Cancel any time.', f'''<main id="main">
   <div class="container page-head">
     <p class="label">Care plan</p>
-    <h1 class="h1" data-split>We look after it. <em>You run the shop.</em></h1>
+    <h1 class="h1" data-split>Looked after, <em>every month.</em></h1>
     <p class="lead" data-reveal>Optional, month to month, cancel any time.</p>
   </div>
   <section class="container" aria-labelledby="cover-h">
@@ -1272,6 +1471,11 @@ page('quiz.html', 'Is your website costing you customers? A 1-minute quiz', 'Six
 </main>''')
 
 # ================================================================= Guides
+GUIDE_H1 = {  # headlines stay at 2 to 6 words; the full title is still the page title
+    'Why your cafe needs a Google Business Profile': 'Why cafés need <em>a Google profile</em>',
+    'How much should a small business website cost?': 'What a small business <em>site costs</em>',
+    '5 things every barber website needs': '5 things every <em>barber site</em> needs',
+}
 GUIDES = [
     ('barber-website-checklist.html', '5 things every barber website needs', 'Five simple things that turn a barber website into booked chairs: booking, prices, real photos, hours and speed.', '''
       <p>A barber website has one job: help someone who wants a cut today pick you and book. Most people find a barber on their phone, so every one of these is about making that quick.</p>
@@ -1326,7 +1530,7 @@ for slug, title, desc, body in GUIDES:
   <article class="container prose" style="padding-bottom:120px">
     <header class="page-head" style="padding-bottom:20px">
       <p class="label"><a class="crumb" href="./">Guides</a></p>
-      <h1 class="h1" style="font-size:clamp(42px,7vw,76px)">{title}</h1>
+      <h1 class="h1" style="font-size:clamp(42px,7vw,76px)">{GUIDE_H1.get(title, title)}</h1>
       <p class="byline">Black Crest Web Designs</p>
     </header>
     {body}
@@ -1464,13 +1668,27 @@ page('terms.html', 'Terms: Black Crest Web Designs', 'The plain-English terms fo
 # ================================================================= 404
 P = ''
 page('404.html', 'Page not found: Black Crest Web Designs', 'This page could not be found.', f'''<main id="main" class="nf">
-  <div class="container">
-    <p class="code" aria-hidden="true">4<span>0</span>4</p>
-    <h1 class="h2" style="margin-top:12px">This page has <em>moved on.</em></h1>
-    <p class="lead" style="margin:18px auto 0">It may have moved, or the address may be mistyped. These will get you back on track.</p>
-    <div class="btn-row"><a class="btn btn-gold" href="index.html">Go to the home page</a><a class="btn btn-ghost" href="pricing.html">See pricing</a></div>
+  <div class="container nf-split">
+    <div>
+      <p class="label"><span class="idx">404</span><span class="slash" aria-hidden="true">/</span>Not found</p>
+      <h1 class="h1" data-split>This page isn’t <em>on the map.</em></h1>
+      <p class="lead" data-reveal>The address may be mistyped, or the page may have moved. These will get you back on track.</p>
+      <div class="btn-row" data-reveal><a class="btn btn-gold" href="index.html">Go to the home page</a><a class="btn btn-ghost" href="work.html">See the work</a></div>
+    </div>
+    <div class="nf-globe" aria-hidden="true">{pic('assets/globe-still', 1200, 1200, '', '', sizes='(min-width: 1024px) 40vw, 80vw')}</div>
   </div>
 </main>''', noindex=True, base_script=True)
+
+# ================================================================= style.min.css
+# style.css is the readable source, edited by hand. Pages load style.min.css: the same rules without comments and
+# spare whitespace, so the page plus its CSS stays inside the size budget. Rebuild after editing style.css.
+with open(os.path.join(SITE_DIR, 'style.css'), encoding='utf-8') as fh:
+    _css = fh.read()
+_css = re.sub(r'/\*.*?\*/', '', _css, flags=re.S)
+_css = re.sub(r'\s+', ' ', _css)
+_css = re.sub(r'\s*([{};,>])\s*', r'\1', _css).replace(';}', '}').strip()
+with open(os.path.join(SITE_DIR, 'style.min.css'), 'w', encoding='utf-8') as fh:
+    fh.write('/* Black Crest Web Designs. Built from style.css by tools/build.py: edit style.css, not this file. */\n' + _css + '\n')
 
 # ================================================================= write files
 for path, content in pages.items():
@@ -1488,7 +1706,7 @@ with open(os.path.join(SITE_DIR, 'sitemap.xml'), 'w', encoding='utf-8') as fh:
         fh.write(f'  <url><loc>{SITE + ("" if p == "index.html" else p.replace("index.html", ""))}</loc><lastmod>{LASTMOD}</lastmod></url>\n')
     fh.write('</urlset>\n')
 with open(os.path.join(SITE_DIR, 'robots.txt'), 'w', encoding='utf-8') as fh:
-    fh.write(f'User-agent: *\nDisallow: /3D-demo-sites/black-crest-site/free-concept.html\nDisallow: /3D-demo-sites/black-crest-site/thank-you.html\n\nSitemap: {SITE}sitemap.xml\n')
+    fh.write(f'# free-concept.html, thank-you.html, qr.html and 404.html carry a noindex tag instead of a Disallow,\n# so search engines can read it.\nUser-agent: *\nAllow: /\n\nSitemap: {SITE}sitemap.xml\n')
 with open(os.path.join(SITE_DIR, 'manifest.webmanifest'), 'w', encoding='utf-8') as fh:
     json.dump({'name': 'Black Crest Web Designs', 'short_name': 'Black Crest', 'description': 'Premium sites for local businesses.', 'lang': 'en-AU',
                'start_url': './', 'scope': './', 'display': 'standalone', 'background_color': '#0D0E12', 'theme_color': '#0D0E12',

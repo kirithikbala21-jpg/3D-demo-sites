@@ -1,5 +1,6 @@
+# free-concept.html, thank-you.html, qr.html and 404.html carry a noindex tag instead of a Disallow,
+# so search engines can read it.
 User-agent: *
-Disallow: /3D-demo-sites/black-crest-site/free-concept.html
-Disallow: /3D-demo-sites/black-crest-site/thank-you.html
+Allow: /
 
 Sitemap: https://kirithikbala21-jpg.github.io/3D-demo-sites/black-crest-site/sitemap.xml

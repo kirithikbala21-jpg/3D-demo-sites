@@ -30,7 +30,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="preload" href="fonts/cormorant-garamond.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.min.css">
 <script src="vendor/gsap/gsap.min.js" defer></script>
 <script src="vendor/gsap/ScrollTrigger.min.js" defer></script>
 <script src="vendor/gsap/SplitText.min.js" defer></script>
@@ -54,7 +54,7 @@
   <div class="container menu-inner">
     <nav aria-label="Menu"><ol class="menu-links"><li><a href="work.html" data-preview="img/work/barber-desktop-800.webp"><span class="n" aria-hidden="true">01</span>Work</a></li><li><a href="lab.html" data-preview="img/work/salon-desktop-800.webp"><span class="n" aria-hidden="true">02</span>Concept Lab</a></li><li><a href="process.html" data-preview="img/work/cafe-desktop-800.webp"><span class="n" aria-hidden="true">03</span>Process</a></li><li><a href="pricing.html" data-preview="img/work/plumber-desktop-800.webp"><span class="n" aria-hidden="true">04</span>Pricing</a></li><li><a href="standard.html" data-preview="img/work/gym-desktop-800.webp"><span class="n" aria-hidden="true">05</span>Standard</a></li><li><a href="about.html" data-preview="img/work/parts-desktop-800.webp"><span class="n" aria-hidden="true">06</span>About</a></li><li><a href="faq.html" data-preview="img/work/cafe-desktop-800.webp"><span class="n" aria-hidden="true">07</span>FAQ</a></li><li><a href="contact.html" aria-current="page" data-preview="img/work/barber-desktop-800.webp"><span class="n" aria-hidden="true">08</span>Contact</a></li></ol><div class="menu-sub"><a href="care-plan.html">Care plan</a><a href="start.html">Start your project</a><a href="guides/">Guides</a><a href="quiz.html">Website quiz</a><a href="for-barbers.html">Barbers</a><a href="for-cafes.html">Cafes</a><a href="for-gyms.html">Gyms</a><a href="for-tradies.html">Tradies</a><a href="for-salons.html">Salons</a></div></nav>
     <aside class="menu-aside">
-      <div class="menu-preview" aria-hidden="true"><img src="img/work/barber-desktop-800.webp" width="800" height="500" alt="" loading="lazy" decoding="async"></div>
+      <div class="menu-preview" aria-hidden="true"><img data-nopic src="img/work/barber-desktop-800.webp" width="800" height="500" alt="" loading="lazy" decoding="async"></div>
       <a class="link" data-email href="mailto:kb.ventures@outlook.com">kb.ventures@outlook.com</a>
       <p class="tiny" data-clock>Melbourne</p>
       <p class="tiny"><span class="avail-dot" aria-hidden="true"></span><span data-availability>Taking new projects now</span></p>
@@ -64,7 +64,7 @@
 </div>
 <main id="main">
   <div class="container page-head">
-    <p class="label">Contact</p>
+    <p class="label"><span class="idx">01</span><span class="slash" aria-hidden="true">/</span>Contact</p>
     <h1 class="h1" data-split>Let's talk <em>about your site.</em></h1>
     <p class="lead" data-reveal>Tell us what you need. We reply within 24 hours.</p>
     <div class="btn-row" data-reveal style="margin-top:28px">
@@ -123,10 +123,10 @@
         <p class="tiny"><span class="avail-dot" aria-hidden="true"></span><span data-availability>Taking new projects now</span></p>
       </div>
       <div class="footer-cols">
-        <nav class="footer-col" aria-labelledby="f-0"><h2 id="f-0">Services</h2><ul><li><a href="pricing.html">Pricing</a></li><li><a href="care-plan.html">Care plan</a></li><li><a href="process.html">Process</a></li><li><a href="work.html">Work</a></li><li><a href="start.html">Start your project</a></li></ul></nav>
+        <nav class="footer-col" aria-labelledby="f-0"><h2 id="f-0">Services</h2><ul><li><a href="pricing.html">Pricing</a></li><li><a href="care-plan.html">Care plan</a></li><li><a href="process.html">Process</a></li><li><a href="work.html">Work</a></li><li><a href="lab.html">Concept Lab</a></li><li><a href="start.html">Start your project</a></li></ul></nav>
         <nav class="footer-col" aria-labelledby="f-1"><h2 id="f-1">Trades</h2><ul><li><a href="for-barbers.html">Barbers</a></li><li><a href="for-cafes.html">Cafes</a></li><li><a href="for-gyms.html">Gyms</a></li><li><a href="for-tradies.html">Tradies</a></li><li><a href="for-salons.html">Salons</a></li></ul></nav>
         <nav class="footer-col" aria-labelledby="f-2"><h2 id="f-2">Resources</h2><ul><li><a href="faq.html">FAQ</a></li><li><a href="guides/">Guides</a></li><li><a href="quiz.html">Website quiz</a></li><li><a href="free-concept.html">Free concept</a></li><li><a href="qr.html">Printable QR code</a></li></ul></nav>
-        <nav class="footer-col" aria-labelledby="f-3"><h2 id="f-3">Company</h2><ul><li><a href="about.html">About</a></li><li><a href="contact.html" aria-current="page">Contact</a></li><li><a href="privacy.html">Privacy</a></li><li><a href="terms.html">Terms</a></li></ul></nav>
+        <nav class="footer-col" aria-labelledby="f-3"><h2 id="f-3">Company</h2><ul><li><a href="about.html">About</a></li><li><a href="standard.html">The Standard</a></li><li><a href="contact.html" aria-current="page">Contact</a></li><li><a href="credits.html">Credits</a></li><li><a href="privacy.html">Privacy</a></li><li><a href="terms.html">Terms</a></li></ul></nav>
       </div>
     </div>
     <div class="footer-bottom">

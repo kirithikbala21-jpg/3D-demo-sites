@@ -12,7 +12,7 @@ Work happens in `black-crest-site/` only. Each phase is committed and pushed to 
 | 3. Cinematic home page | Done |
 | 4. Other pages and new pages | Done |
 | 5. Technical quality bar | Done |
-| 6. Testing, Lighthouse, live check | Next |
+| 6. Testing, Lighthouse, live check | Done |
 
 ## Phase 1: fixes (done)
 - Custom cursor: already removed on the live site (commit 0ad0d86). Re-checked: no `.cursor` or `.cursor-dot` elements, CSS or JS, and the system cursor is used everywhere.
@@ -188,6 +188,66 @@ The home page runs in this order:
   | Barber case study | Desktop | 100 | 100 | 100 | 100 |
   | Barber case study | Mobile | 86 | 100 | 100 | 100 |
 
+## Phase 6: testing, Lighthouse, live check (done)
+- **`tools/check.mjs`, final run:** 34 pages at 390, 768, 1280 and 1920 px, all clear: no console errors, failed requests, broken links, sideways scrolling, wrong prices, banned words or the-one-barber links. Full-page screenshots are in `tools/screens/` (gitignored) and were reviewed.
+- **Reduced motion:**
+  - No preloader, no smooth scrolling, no pinning, and no 3D (stills stay).
+  - The reel does not autoplay, and nothing is left hidden.
+- **Keyboard:** skip link first, visible focus rings, the menu opens, traps focus and closes on Escape with focus restored, the before/after slider moves with the arrow keys, and the Lab works with arrows and Space.
+- **Forms:** never submitted. The check blocks any request to the form service. The Lab hand-off was tested only up to the pre-filled contact form.
+- **Live:**
+  - Deployed to GitHub Pages; every phase's deploy run passed.
+  - Verified on the live site with Firecrawl: the home page (new links and meta) and a case study (`work/parts.html`).
+- **KB Ventures card (read-only):** links to `../black-crest-site/` with a "Preview" badge. Correct, so no change.
+
+## Final report
+**What changed:**
+- **Home page:** a real-time 3D gold crest hero, extruded from the logo and BC letter outlines, with a still image for phones and low-power devices. Plus:
+  - A preloader and a showreel of the six concepts.
+  - Five pinned trade chapters and the Concept Lab.
+  - Anatomy hotspots, before/after, stacked process cards and the Standard band.
+  - Account-style pricing and a dotted 3D globe turned to Melbourne.
+  - The honest case study offer, the FAQ and the final CTA.
+- **New pages:**
+  - Six case studies (`work/<slug>.html`) with measured speed.
+  - Plus `lab.html`, `standard.html`, `credits.html`, a new `404.html`, and an editorial `work.html`.
+- **Every page:** the new design system (tokens, type, labels "01 / Name", spacing), GSAP and Lenis motion with a reduced-motion path, the full-screen menu with the Melbourne clock and availability line, and the new footer.
+- **Engineering:**
+  - Vendored libraries with versions in `vendor/VERSIONS.md` (no CDN).
+  - `<picture>` with AVIF, WebP and JPEG.
+  - A generated `style.min.css`.
+  - New share image and icons from the 3D crest; JSON-LD, sitemap and robots updated.
+  - Tools for every generated asset, and `tools/check.mjs`.
+
+**Lighthouse (real runs):** Lighthouse 12.8.2, 1 November 2026, against the site served locally in this environment:
+
+| Page | Desktop (Perf / A11y / BP / SEO) | Mobile (Perf / A11y / BP / SEO) |
+| --- | --- | --- |
+| Home | 99 / 100 / 100 / 100 | 80 / 100 / 100 / 100 |
+| Pricing | 100 / 100 / 100 / 100 | 91 / 100 / 100 / 100 |
+| Barber case study | 100 / 100 / 100 / 100 | 86 / 100 / 100 / 100 |
+
+These meet every target: desktop 90+, mobile 80+, and accessibility, best practices and SEO 95+. Home on mobile is right at 80. The local server does not compress files and GitHub Pages does, so live scores should be the same or better. This was not confirmed, because PageSpeed Insights refused the request (its daily quota was used up).
+
+**What could not be done, or was changed:**
+- **Live Lighthouse:** not possible from here, as above. These scores are not shown on the site; only the concepts' own scores (measured 30 Oct 2026) appear on the case studies.
+- **The 3D in testing:** this environment only has software graphics, which the site deliberately refuses, so the 3D was tested with `?3d=on`. Real 3D on real devices still needs checking by eye: see owner tasks.
+- **Anatomy:** "Directions" was replaced with "The job, in one tap", because the plumber concept used for the screenshot has no directions link.
+- **Chapter photos:** the barber, café and gym originals are only 900 px wide, so they are shown at that resolution (no upscaling).
+- **The italic serif** loads with `font-display: optional` to avoid layout shift, so a first-time visitor may briefly see a fallback italic.
+- **JS size:** raw JS excluding Three.js is 257 KB, over the ~150 KB budget. The transfer size is 109 KB gzipped, and about 80 KB on phones.
+- **Outside this folder:** the KB Ventures `black-crest.html` page still shows the old $490 / $990 prices. `kbventures-site/` is off limits for this brief.
+
+**Missing photo credits:** the five chapter photos (from the barber, café, gym, plumber and salon concepts) are Unsplash photos. The photographers' names were never recorded: see each concept's `CREDITS-TODO.md`. `credits.html` says so and invites corrections.
+
+**Owner tasks:**
+1. Buy the domain (about $20 a year), then change `SITE` in `tools/build.py` and `URL` in `tools/make-qr.py` and rebuild (see the README).
+2. Change the availability line in `js/config.js` whenever it changes, then run `python3 black-crest-site/tools/build.py`.
+3. Check the site on your own phone: the hero crest (3D on a recent phone, otherwise the still), the reel, the Lab, and a test message to yourself from the contact form.
+4. If you know the photographers of the chapter photos, add them to `credits.html` (via `tools/build.py`, `CREDIT_ROWS`).
+5. Set the real add-on prices in `js/config.js` (they are still placeholders).
+6. Update the old prices on the KB Ventures `black-crest.html` page.
+
 ## Decisions and notes
 - Tools available in this environment: Node and npm (registry reachable), Playwright with Chromium, system ffmpeg, Pillow with AVIF and WebP. fontTools is not installed: it gets installed into a scratch folder only when needed, to extract glyph outlines.
 - This container reports 4 CPU cores, so local tests simulate an 8-core desktop when testing the full tier.
@@ -196,9 +256,4 @@ The home page runs in this order:
 - The concept sites in the reel show their own made-up ratings and badges. They are labelled concept sites, and the reel caption says so.
 
 ## Resume here
-Phase 6:
-1. Full `tools/check.mjs` run and a screenshot review.
-2. Reduced motion and keyboard (both passed in Phase 5; re-run after the last changes).
-3. Lighthouse on the live site if reachable (PageSpeed Insights). Otherwise report the local scores with their date.
-4. Check the KB card (read-only).
-5. Deploy, verify live, and write the final report.
+All six phases are done. Remaining items are the owner tasks in the final report above.

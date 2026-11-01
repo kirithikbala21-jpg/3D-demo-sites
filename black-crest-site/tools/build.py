@@ -18,6 +18,9 @@ SITE_DIR = os.path.dirname(HERE)
 REPO = os.path.dirname(SITE_DIR)
 SITE = 'https://kirithikbala21-jpg.github.io/3D-demo-sites/black-crest-site/'
 KB_SITE = '../kbventures-site/'
+LASTMOD = '2026-11-01'
+THREE_URL = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.module.min.js'
+THREE_SRI = 'sha512-QbgvOagVq2O5Ompxc2TOWKYQnJ1e+Y0JbTUQD9l2tUUtbdCWDqa7WA4REFVlSuFwWQmJLGtE+nW0EJMlmOx2RQ=='
 E = html.escape
 
 with open(os.path.join(SITE_DIR, 'main.js'), encoding='utf-8') as fh:
@@ -36,36 +39,20 @@ def money(n):
     return f'${n:,}'
 
 
-# ---------------------------------------------------------------- icons and the crest
+# ---------------------------------------------------------------- icons
 ICON = {
-    'bolt': '<path d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z"/>',
-    'phone': '<rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18.5h2"/>',
-    'search': '<circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.4-4.4"/>',
-    'key': '<circle cx="8" cy="15" r="4"/><path d="m11 12 9-9M17 6l3 3M15 8l2 2"/>',
-    'unlock': '<rect x="4.5" y="10.5" width="15" height="10" rx="2"/><path d="M8 10.5V7a4 4 0 0 1 7.6-1.7"/>',
-    'lock': '<rect x="4.5" y="10.5" width="15" height="10" rx="2"/><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"/>',
-    'clock': '<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>',
     'mail': '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3.5 6.5 8.5 6.5 8.5-6.5"/>',
     'call': '<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a1 1 0 0 1-1 1A16 16 0 0 1 4 5a1 1 0 0 1 1-1Z"/>',
     'arrow': '<path d="M5 12h14M13 6l6 6-6 6"/>',
+    'ne': '<path d="M7 17 17 7M8 7h9v9"/>',
     'ext': '<path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/>',
     'left': '<path d="M15 6l-6 6 6 6"/>',
     'right': '<path d="M9 6l6 6-6 6"/>',
-    'pen': '<path d="M4 20h4L19 9l-4-4L4 16v4Z"/><path d="m13.5 6.5 4 4"/>',
-    'chat': '<path d="M5 5h14a1.5 1.5 0 0 1 1.5 1.5v8A1.5 1.5 0 0 1 19 16h-8l-4.5 3.5V16H5a1.5 1.5 0 0 1-1.5-1.5v-8A1.5 1.5 0 0 1 5 5Z"/>',
-    'shield': '<path d="M12 3 4.5 6v6c0 4.5 3.2 8 7.5 9 4.3-1 7.5-4.5 7.5-9V6L12 3Z"/><path d="m8.8 12 2.2 2.2 4.2-4.4"/>',
-    'map': '<path d="M12 21s-6.5-6-6.5-11a6.5 6.5 0 0 1 13 0c0 5-6.5 11-6.5 11Z"/><circle cx="12" cy="10" r="2.3"/>',
-    'spark': '<path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M6 18l2.5-2.5M15.5 8.5 18 6"/>',
 }
 
 
-def icon(name, cls=''):
-    c = f' class="{cls}"' if cls else ''
-    return f'<svg{c} viewBox="0 0 24 24" aria-hidden="true" focusable="false">{ICON[name]}</svg>'
-
-
-def tile_icon(name):
-    return f'<span class="icon">{icon(name)}</span>'
+def icon(name):
+    return f'<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">{ICON[name]}</svg>'
 
 
 def crest(cls='crest'):
@@ -75,20 +62,113 @@ def crest(cls='crest'):
             '<text class="crest-text" x="24" y="32.6" text-anchor="middle">BC</text></svg>')
 
 
+# the static crest artwork: shown first, and kept on low-power devices and with reduced motion
+CREST_ART = '''<svg class="crest-art" viewBox="0 0 200 232" aria-hidden="true" focusable="false">
+      <defs>
+        <linearGradient id="ca-g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F6E3A0"/><stop offset=".35" stop-color="#D4AF37"/><stop offset=".62" stop-color="#8E6E1F"/><stop offset=".82" stop-color="#E7C863"/><stop offset="1" stop-color="#7A5D17"/></linearGradient>
+        <linearGradient id="ca-p" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#23252d"/><stop offset="1" stop-color="#0e0f13"/></linearGradient>
+        <linearGradient id="ca-t" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF1C2"/><stop offset=".55" stop-color="#E0BE55"/><stop offset="1" stop-color="#A27F25"/></linearGradient>
+        <linearGradient id="ca-s" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".35"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+      </defs>
+      <path d="M100 6 186 35v73c0 55-36 94-86 120C50 202 14 163 14 108V35Z" fill="url(#ca-g)"/>
+      <path d="M100 26 168 49v59c0 43-28 74-68 95-40-21-68-52-68-95V49Z" fill="url(#ca-p)"/>
+      <path d="M100 36 159 56v52c0 38-24 65-59 84-35-19-59-46-59-84V56Z" fill="none" stroke="url(#ca-g)" stroke-width="1.6"/>
+      <text x="100" y="141" text-anchor="middle" font-family="Cormorant Garamond, Georgia, serif" font-weight="600" font-size="78" fill="url(#ca-t)">BC</text>
+      <path d="M100 6 186 35v20L100 26 14 55V35Z" fill="url(#ca-s)" opacity=".5"/>
+    </svg>'''
+
+
+# ---------------------------------------------------------------- illustrations: gold hairlines on dark, one style
+ILLO = {
+    'fast': '''<circle class="s" cx="128" cy="100" r="66"/><path class="g" d="M70 128a60 60 0 0 1 116 0"/><path class="g" d="M78 104l8 3M92 80l6 6M118 66v9M146 70l-4 8M170 86l-7 5M182 108l-8 2"/>
+      <path class="g" d="M128 128 160 86"/><circle class="d" cx="128" cy="128" r="3.5"/><path class="g" d="M18 70h40M8 90h48M24 110h28"/><path class="s" d="M60 146h136"/>''',
+    'phone': '''<rect class="g" x="86" y="18" width="68" height="144" rx="14"/><path class="s" d="M98 40h44M98 52h30M98 64h38"/><rect class="s" x="98" y="78" width="44" height="26" rx="4"/>
+      <rect class="g" x="100" y="120" width="40" height="18" rx="9"/><circle class="g" cx="120" cy="129" r="26"/><circle class="s" cx="120" cy="129" r="40"/><circle class="d" cx="120" cy="129" r="2.5"/><path class="g" d="M112 26h16"/>''',
+    'find': '''<path class="s" d="M20 40h200M20 80h200M20 120h200M20 160h200M60 20v150M110 20v150M160 20v150M210 20v150"/>
+      <path class="g" d="M162 36c-14 0-24 10-24 23 0 17 24 40 24 40s24-23 24-40c0-13-10-23-24-23Z"/><circle class="g" cx="162" cy="59" r="8"/>
+      <circle class="g" cx="96" cy="104" r="36"/><circle class="s" cx="96" cy="104" r="26"/><path class="g" d="M122 130l34 34"/><circle class="d" cx="162" cy="59" r="2.5"/>''',
+    'own': '''<path class="s" d="M120 14 182 36v52c0 42-26 71-62 90-36-19-62-48-62-90V36Z"/><path class="g" d="M120 30 168 47v41c0 33-20 56-48 71-28-15-48-38-48-71V47Z"/>
+      <circle class="g" cx="96" cy="96" r="18"/><circle class="s" cx="96" cy="96" r="8"/><path class="g" d="M114 96h52M150 96v14M160 96v10"/><circle class="d" cx="166" cy="96" r="2.5"/>''',
+    'chat': '''<path class="g" d="M38 40h112a12 12 0 0 1 12 12v44a12 12 0 0 1-12 12H84l-24 20v-20H38a12 12 0 0 1-12-12V52a12 12 0 0 1 12-12Z"/>
+      <path class="s" d="M98 92h98a10 10 0 0 1 10 10v36a10 10 0 0 1-10 10h-16v18l-22-18H98a10 10 0 0 1-10-10v-36a10 10 0 0 1 10-10Z"/>
+      <circle class="d" cx="70" cy="74" r="3"/><circle class="d" cx="88" cy="74" r="3"/><circle class="d" cx="106" cy="74" r="3"/><path class="g" d="M110 120h70M110 132h46"/>''',
+    'concept': '''<rect class="g" x="34" y="26" width="172" height="128" rx="8"/><path class="g" d="M34 44h172"/><circle class="d" cx="46" cy="35" r="2.2"/><circle class="s" cx="56" cy="35" r="2.2"/><circle class="s" cx="66" cy="35" r="2.2"/>
+      <path class="g" d="M52 70h72M52 84h52"/><path class="s" d="M52 104h40M52 114h56"/><rect class="g" x="52" y="126" width="44" height="14" rx="7"/>
+      <path class="s" d="M140 60 186 60 186 140 140 140Z"/><path class="g" d="M146 132l14-24 10 14 8-10 6 20"/><circle class="g" cx="170" cy="78" r="6"/>''',
+    'build': '''<path class="s" d="M30 156h180"/><rect class="g" x="48" y="96" width="70" height="52" rx="6"/><rect class="g" x="126" y="96" width="70" height="52" rx="6"/>
+      <rect class="g" x="48" y="40" width="148" height="48" rx="6"/><path class="s" d="M60 56h60M60 68h90M60 112h40M60 124h28M138 112h44M138 124h30"/><circle class="d" cx="180" cy="58" r="3"/>
+      <path class="g" d="M196 26l14-14M200 12h10v10"/>''',
+    'launch': '''<path class="s" d="M20 150h200"/><path class="s" d="M40 150a80 80 0 0 1 160 0"/><path class="g" d="M44 146C76 120 112 70 186 34"/>
+      <path class="g" d="M186 34l-14 2M186 34l-4 13"/><circle class="d" cx="186" cy="34" r="3.5"/><circle class="g" cx="186" cy="34" r="12"/><path class="g" d="M120 150v-8M80 150v-5M160 150v-5"/>''',
+    'barber': '''<circle class="g" cx="70" cy="128" r="16"/><circle class="g" cx="110" cy="138" r="16"/><path class="g" d="M80 115 170 30M98 124 182 42"/><circle class="d" cx="94" cy="111" r="2.5"/>
+      <rect class="g" x="138" y="96" width="70" height="16" rx="3"/><path class="s" d="M146 112v18M154 112v18M162 112v18M170 112v18M178 112v18M186 112v18M194 112v18M202 112v18"/><path class="s" d="M30 160h180"/>''',
+    'cafe': '''<path class="g" d="M66 84h96v34c0 22-18 38-48 38S66 140 66 118Z"/><path class="g" d="M162 94h10a14 14 0 0 1 0 28h-12"/><path class="s" d="M44 160h152"/><ellipse class="g" cx="114" cy="160" rx="66" ry="7"/>
+      <path class="g" d="M96 70c-8-10 8-16 0-28M116 70c-8-10 8-16 0-28M136 70c-8-10 8-16 0-28"/><circle class="d" cx="114" cy="100" r="2.5"/>''',
+    'gym': '''<path class="g" d="M58 92h124"/><rect class="g" x="36" y="64" width="16" height="56" rx="4"/><rect class="g" x="188" y="64" width="16" height="56" rx="4"/><rect class="g" x="22" y="74" width="12" height="36" rx="3"/><rect class="g" x="206" y="74" width="12" height="36" rx="3"/>
+      <path class="s" d="M20 150h200"/><path class="s" d="M80 150l20-40M160 150l-20-40"/><circle class="d" cx="120" cy="92" r="2.5"/>''',
+    'tradie': '''<path class="g" d="M52 156 120 88"/><path class="g" d="M120 88a26 26 0 1 0 34-36l-16 16-14-4-4-14 16-16a26 26 0 0 0-36 34"/>
+      <path class="s" d="M150 160v-48a16 16 0 0 1 16-16h40"/><path class="s" d="M168 160v-44a6 6 0 0 1 6-6h32"/><circle class="d" cx="52" cy="156" r="3"/><path class="s" d="M24 168h196"/>''',
+    'salon': '''<ellipse class="g" cx="96" cy="70" rx="40" ry="48"/><ellipse class="s" cx="96" cy="70" rx="30" ry="38"/><path class="g" d="M96 118v42"/><path class="g" d="M84 160h24"/>
+      <path class="g" d="M150 40l40 100"/><path class="s" d="M156 54l10-4M160 64l10-4M164 74l10-4M168 84l10-4M172 94l10-4M176 104l10-4"/><circle class="d" cx="84" cy="54" r="2.5"/>''',
+}
+
+
+def illo(name):
+    body = re.sub(r'class="g"', 'class="g" pathLength="1"', ILLO[name])
+    return f'<svg class="illo" viewBox="0 0 240 180" aria-hidden="true" focusable="false">{body}</svg>'
+
+
+# ---------------------------------------------------------------- devices (the six concept demos, read-only)
+DEMOS = [
+    ('barber', 'barber-demo', 'Brass &amp; Blade', 'Barbershop', 'Prices, online booking and a gallery of cuts, under a spinning 3D barber pole.', ['Online booking', 'Price list', 'Gallery', '3D hero'], 'for-barbers.html'),
+    ('cafe', 'cafe-demo-v2', 'Ember &amp; Oak', 'Cafe', 'A full menu, opening hours, a map and pick-up ordering, with a steaming 3D cup.', ['Menu', 'Pick-up ordering', 'Opening hours', 'Map'], 'for-cafes.html'),
+    ('gym', 'gym-demo', 'Iron &amp; Ember', 'Gym', 'Class timetable, memberships and a free-trial form that turns interest into a first session.', ['Timetable', 'Memberships', 'Free trial', 'Coaches'], 'for-gyms.html'),
+    ('plumber', 'plumber-demo', 'Waverley Plumbing', 'Plumber', 'A big call button, the suburbs covered, a price guide and a quote form.', ['Call button', 'Quote form', 'Service areas', 'Price guide'], 'for-tradies.html'),
+    ('salon', 'salon-demo', 'Maison Lune', 'Salon', 'A calm service menu with prices, stylists and a booking widget.', ['Service menu', 'Booking', 'Stylists', 'Gift vouchers'], 'for-salons.html'),
+    ('parts', 'parts-store-demo', 'Torque &amp; Co.', 'Auto parts', 'A home page that helps drivers find the part that fits their car.', ['Car finder', 'Shop by job', 'Oil finder', 'Phone first'], None),
+]
+DEMO = {d[0]: d for d in DEMOS}
+
+
+def laptop(slug, name, P, lazy=True):
+    ld = 'loading="lazy" ' if lazy else 'fetchpriority="low" '
+    return (f'<div class="laptop"><div class="laptop-screen"><img src="{P}img/work/{slug}-desktop-1600.webp" '
+            f'srcset="{P}img/work/{slug}-desktop-800.webp 800w, {P}img/work/{slug}-desktop-1600.webp 1600w" sizes="(min-width: 1024px) 60vw, 92vw" '
+            f'width="1600" height="1000" {ld}decoding="async" alt="The {name} concept site on a laptop"></div><div class="laptop-base" aria-hidden="true"></div></div>')
+
+
+def phone(slug, name, P, lazy=True):
+    return (f'<div class="phone"><img src="{P}img/work/{slug}-phone.webp" width="600" height="1300" '
+            f'{"loading=" + chr(34) + "lazy" + chr(34) + " " if lazy else ""}decoding="async" alt="The {name} concept site on a phone"></div>')
+
+
+def duo(slug, P, parallax='0.06', lazy=True, phone_slug=None):
+    d, p = DEMO[slug], DEMO[phone_slug or slug]
+    return f'<div class="devices duo" data-parallax="{parallax}">{laptop(slug, d[2], P, lazy)}{phone(p[0], p[2], P, lazy)}</div>'
+
+
+def open_demo(d, P, cls='btn btn-ghost'):
+    return f'<a class="{cls}" href="{P}../{d[1]}/" target="_blank" rel="noopener">Open the concept {icon("ext")}<span class="sr-only"> {d[2]} (opens in a new tab)</span></a>'
+
+
 # ---------------------------------------------------------------- page parts
-NAV = [('work.html', 'Work'), ('pricing.html', 'Pricing'), ('process.html', 'Process'), ('about.html', 'About'), ('faq.html', 'FAQ'), ('contact.html', 'Contact')]
-TRADES = [('for-barbers.html', 'Barbers'), ('for-cafes.html', 'Cafes'), ('for-gyms.html', 'Gyms'), ('for-tradies.html', 'Tradies'), ('for-salons.html', 'Salons')]
+NAV = [('work.html', 'Work'), ('process.html', 'Process'), ('pricing.html', 'Pricing'), ('about.html', 'About'), ('faq.html', 'FAQ'), ('contact.html', 'Contact')]
+TRADES = [('for-barbers.html', 'Barbers', 'barber', 'Bookings, prices and the cuts that sell the chair.'),
+          ('for-cafes.html', 'Cafes', 'cafe', 'Menu, hours and a map, before they leave the house.'),
+          ('for-gyms.html', 'Gyms', 'gym', 'Timetables, memberships and an easy first class.'),
+          ('for-tradies.html', 'Tradies', 'tradie', 'The call, the quote and the suburbs you cover.'),
+          ('for-salons.html', 'Salons', 'salon', 'Services, prices and bookings at any hour.')]
 FOOTER = [
-    ('Services', [('pricing.html', 'Pricing'), ('care-plan.html', 'Care plan'), ('process.html', 'How it works'), ('work.html', 'Concept sites'), ('start.html', 'Start your project')]),
-    ('Trades', [(h, t) for h, t in TRADES]),
+    ('Services', [('pricing.html', 'Pricing'), ('care-plan.html', 'Care plan'), ('process.html', 'Process'), ('work.html', 'Work'), ('start.html', 'Start your project')]),
+    ('Trades', [(h, t) for h, t, _, _ in TRADES]),
     ('Resources', [('faq.html', 'FAQ'), ('guides/', 'Guides'), ('quiz.html', 'Website quiz'), ('free-concept.html', 'Free concept'), ('qr.html', 'Printable QR code')]),
     ('Company', [('about.html', 'About'), ('contact.html', 'Contact'), ('privacy.html', 'Privacy'), ('terms.html', 'Terms')]),
 ]
 
 
 def brand(P):
-    return (f'<a class="brand" href="{P}index.html" aria-label="Black Crest Web Designs home">{crest()}'
-            '<span class="brand-name" aria-hidden="true"><b>Black Crest</b><small>Web Designs</small></span></a>')
+    return (f'<a class="brand" href="{P}index.html">{crest()}'
+            '<span class="brand-name"><b>Black Crest</b> <small>Web Designs</small></span><span class="sr-only"> home</span></a>')
 
 
 def cur(name, here):
@@ -98,7 +178,7 @@ def cur(name, here):
 def header(P, here):
     links = ''.join(f'<li><a href="{P}{h}"{cur(h, here)}>{t}</a></li>' for h, t in NAV)
     mlinks = ''.join(f'<li><a href="{P}{h}"{cur(h, here)}>{t}</a></li>' for h, t in [('index.html', 'Home')] + NAV)
-    sub = ''.join(f'<a href="{P}{h}">{t}</a>' for h, t in [('care-plan.html', 'Care plan'), ('start.html', 'Start your project'), ('guides/', 'Guides'), ('quiz.html', 'Website quiz')] + TRADES)
+    sub = ''.join(f'<a href="{P}{h}">{t}</a>' for h, t in [('care-plan.html', 'Care plan'), ('start.html', 'Start your project'), ('guides/', 'Guides'), ('quiz.html', 'Website quiz')] + [(h, t) for h, t, _, _ in TRADES])
     return f'''<header class="site-header">
   <div class="container header-inner">
     {brand(P)}
@@ -108,21 +188,22 @@ def header(P, here):
   </div>
 </header>
 <div class="menu" id="menu" hidden>
-  <nav aria-label="Menu"><ul>{mlinks}</ul><div class="menu-sub">{sub}</div></nav>
+  <nav aria-label="Menu"><ol>{mlinks}</ol><div class="menu-sub">{sub}</div></nav>
   <a class="btn btn-gold" href="{P}free-concept.html">Get a free concept</a>
 </div>'''
 
 
 def footer(P, here):
     cols = ''.join(f'''
-      <nav class="footer-col" aria-labelledby="f-{i}"><h2 id="f-{i}">{t}</h2><ul>{"".join(f'<li><a href="{P}{h}"{cur(h, here)}>{x}</a></li>' for h, x in items)}</ul></nav>''' for i, (t, items) in enumerate(FOOTER))
+        <nav class="footer-col" aria-labelledby="f-{i}"><h2 id="f-{i}">{t}</h2><ul>{"".join(f'<li><a href="{P}{h}"{cur(h, here)}>{x}</a></li>' for h, x in items)}</ul></nav>''' for i, (t, items) in enumerate(FOOTER))
     return f'''<footer class="site-footer">
   <div class="container">
+    <p class="footer-word" aria-hidden="true">Black <em>Crest</em></p>
     <div class="footer-top">
       <div class="footer-brand">
         {brand(P)}
         <p>Premium sites for local businesses. A KB Ventures company, based in Melbourne, Australia.</p>
-        <a class="mail" data-email href="mailto:{EMAIL}">{EMAIL}</a>
+        <a class="mail link" data-email href="mailto:{EMAIL}">{EMAIL}</a>
       </div>
       <div class="footer-cols">{cols}
       </div>
@@ -144,12 +225,12 @@ def mobile_bar(P):
 
 
 INTRO = f'''<div class="intro" id="intro" hidden aria-hidden="true">
-  {crest('intro-mark')}
+  {crest()}
   <button class="intro-skip" type="button" tabindex="-1">Skip</button>
 </div>'''
 
 
-def head(title, desc, path, P, noindex=False, ld=(), base_script=False):
+def head(title, desc, path, P, noindex=False, ld=(), base_script=False, extra=''):
     canon = SITE + path
     og = SITE + 'img/og.jpg'
     lds = ''.join(f'\n<script type="application/ld+json">{json.dumps(x, ensure_ascii=False, separators=(",", ":"))}</script>' for x in ld)
@@ -175,7 +256,7 @@ def head(title, desc, path, P, noindex=False, ld=(), base_script=False):
 <meta property="og:image" content="{og}">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="The Black Crest Web Designs crest and the line: Premium sites for local businesses.">
+<meta property="og:image:alt" content="The gold Black Crest crest beside the line: Premium sites for local businesses.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{E(title)}">
 <meta name="twitter:description" content="{E(desc)}">
@@ -185,8 +266,9 @@ def head(title, desc, path, P, noindex=False, ld=(), base_script=False):
 <link rel="apple-touch-icon" href="{P}img/apple-touch-icon.png">
 <link rel="manifest" href="{P}manifest.webmanifest">
 <link rel="preload" href="{P}fonts/cormorant-garamond.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="{P}fonts/cormorant-garamond-italic.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="{P}fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="{P}style.css">
+<link rel="stylesheet" href="{P}style.css">{extra}
 <script src="{P}main.js" defer></script>{lds}
 </head>'''
 
@@ -194,99 +276,82 @@ def head(title, desc, path, P, noindex=False, ld=(), base_script=False):
 pages = {}
 
 
-def page(path, title, desc, body, noindex=False, ld=(), bare=False, base_script=False):
-    depth = path.count('/')
-    P = '../' * depth
-    here = path
-    top = '' if bare else header(P, here)
-    bottom = '' if bare else f'{footer(P, here)}\n{mobile_bar(P)}'
-    pages[path] = f'''{head(title, desc, path if path != 'index.html' else '', P, noindex, ld, base_script)}
+def page(path, title, desc, body, noindex=False, ld=(), bare=False, base_script=False, extra='', toast=False):
+    P = '../' * path.count('/')
+    top = '' if bare else header(P, path)
+    bottom = '' if bare else f'{footer(P, path)}\n{mobile_bar(P)}'
+    t = '\n<div class="toast" id="toast" role="status" hidden><i aria-hidden="true"></i>Message sent. We reply within 24 hours.</div>' if toast else ''
+    pages[path] = f'''{head(title, desc, path if path != 'index.html' else '', P, noindex, ld, base_script, extra)}
 <body>
 <a class="skip" href="#main">Skip to content</a>
-<div class="scroll-line" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+<div class="lines" aria-hidden="true"></div>
+<div class="progress" aria-hidden="true"><span></span></div>
 {'' if bare else INTRO}
 {top}
 {body}
-{bottom}
+{bottom}{t}
 </body>
 </html>
 '''
 
 
-def section_head(eyebrow, title, text='', center=False, level='h2'):
-    return f'''<div class="section-head{' center' if center else ''} reveal">
-      <p class="eyebrow">{eyebrow}</p>
-      <{level}>{title}</{level}>
-      {f'<p>{text}</p>' if text else ''}
+def head_block(label, title, lead='', split=False, level='h2', cls='h2', center=False, idx=''):
+    i = f'<span class="idx">{idx}</span> ' if idx else ''
+    return f'''<div class="section-head{' split' if split else ''}{' center' if center else ''}">
+      <div><p class="label reveal">{i}{label}</p><{level} class="{cls}" data-split>{title}</{level}></div>
+      {f'<p class="lead reveal d1">{lead}</p>' if lead else ''}
     </div>'''
 
 
-# ---------------------------------------------------------------- shared content
-DEMOS = [
-    ('barber', 'barber-demo', 'Brass &amp; Blade', 'Barbershop', 'Prices, online booking and a gallery of cuts, with a spinning 3D barber pole.', 'for-barbers.html'),
-    ('cafe', 'cafe-demo-v2', 'Ember &amp; Oak', 'Cafe', 'A full menu, opening hours, a map and pick-up ordering.', 'for-cafes.html'),
-    ('gym', 'gym-demo', 'Iron &amp; Ember Athletic Club', 'Gym', 'Class timetable, memberships and a free-trial form.', 'for-gyms.html'),
-    ('plumber', 'plumber-demo', 'Waverley Plumbing &amp; Gas', 'Plumber', 'A big call button, service areas, a price guide and a quote form.', 'for-tradies.html'),
-    ('salon', 'salon-demo', 'Maison Lune', 'Hair and beauty salon', 'A service menu with prices, a booking widget and a gallery.', 'for-salons.html'),
-    ('parts', 'parts-store-demo', 'Torque &amp; Co.', 'Auto parts store', 'A home page that helps drivers find parts that fit their car.', None),
-]
-DEMO = {d[0]: d for d in DEMOS}
+def cta_final(title, text, primary=('free-concept.html', 'Get a free concept'), secondary=None, P=''):
+    sec = f'<a class="btn btn-ghost" href="{P}{secondary[0]}">{secondary[1]}</a>' if secondary else ''
+    return f'''<section class="cta-final" aria-labelledby="cta-h">
+    <div class="container">
+      <p class="label reveal" style="justify-content:center">Next step</p>
+      <h2 id="cta-h" class="display" data-split>{title}</h2>
+      <p class="reveal">{text}</p>
+      <div class="btn-row reveal"><a class="btn btn-gold" href="{P}{primary[0]}">{primary[1]}</a>{sec}</div>
+    </div>
+  </section>'''
 
 
-def phone_img(slug, name, P, lazy=True):
-    return (f'<div class="phone"><img src="{P}img/work/{slug}.webp" width="540" height="1170" '
-            f'{"loading=lazy " if lazy else ""}decoding="async" alt="The {name} concept site on a phone"></div>').replace('loading=lazy', 'loading="lazy"')
-
-
-def demo_card(d, P, level='h3', lazy=True):
-    slug, folder, name, trade, text, _ = d
-    return f'''<article class="tile work-card">
-        <p class="tile-label"><span>{trade}</span><span class="chip">Concept site</span></p>
-        {phone_img(slug, name, P, lazy)}
-        <{level}>{name}</{level}>
-        <p>{text}</p>
-        <a class="btn btn-ghost" href="{P}../{folder}/" target="_blank" rel="noopener">Open concept site {icon('ext')}<span class="sr-only"> (opens in a new tab)</span></a>
-      </article>'''
-
-
-def price_tile(kind, P, featured=False, long=False):
+def account(kind, P, featured=False, level='h3'):
     if kind == 'one':
-        name, amt, key, per, chip = 'One Page', ONE, 'onePage', 'one-off', 'Simple'
-        lead = 'One polished page with everything a local business needs.'
+        name, amt, key, per, chip, no = 'One Page', ONE, 'onePage', 'one-off', 'Simple', '0300'
+        sub = 'One polished page with everything a local business needs.'
         items = ['Writing help', 'Designed for phones first', 'Contact form', 'Google basics set up', 'Fast and secure (HTTPS)', '2 rounds of changes']
-        href, cta = f'{P}contact.html?need=one-page', 'Choose One Page'
+        href, cta = 'contact.html?need=one-page', 'Choose One Page'
     elif kind == 'full':
-        name, amt, key, per, chip = 'Full Website', FULL, 'fullSite', 'one-off', 'Better value'
-        lead = 'Up to about 5 pages, for businesses with more to show.'
+        name, amt, key, per, chip, no = 'Full Website', FULL, 'fullSite', 'one-off', 'Better value', '0700'
+        sub = 'Up to about 5 pages, for a business with more to show.'
         items = ['Everything in One Page', 'Up to about 5 pages', 'Room for a menu, timetable, services or gallery', '2 rounds of changes']
-        href, cta = f'{P}contact.html?need=full-website', 'Choose Full Website'
+        href, cta = 'contact.html?need=full-website', 'Choose Full Website'
     elif kind == 'care':
-        name, amt, key, per, chip = 'Care plan', CARE, 'carePlan', 'a month', 'Optional'
-        lead = 'We look after your site after launch.'
+        name, amt, key, per, chip, no = 'Care plan', CARE, 'carePlan', 'a month', 'Optional', '0030'
+        sub = 'We look after your site once it is live.'
         items = ['Hosting upkeep', 'Small text and photo changes', 'Security checks and backups', 'Priority replies']
-        href, cta = f'{P}care-plan.html', 'What the care plan covers'
+        href, cta = 'care-plan.html', 'What it covers'
     else:
-        name, amt, key, per, chip = 'Custom', None, None, '', 'By quote'
-        lead = 'Bigger or special projects, like many pages or special features.'
-        items = ['Scoped with you first', 'A fixed quote before any work', 'Same promises: free concept first']
-        href, cta = f'{P}contact.html?need=not-sure', 'Ask for a quote'
+        name, amt, key, per, chip, no = 'Custom', None, None, '', 'By quote', 'QUOTE'
+        sub = 'Bigger or unusual projects: many pages or special features.'
+        items = ['Scoped with you first', 'A fixed quote before any work', 'Same promise: concept first']
+        href, cta = 'contact.html?need=not-sure', 'Ask for a quote'
     bal = (f'<p class="balance"><span data-price="{key}" data-count="{amt}">{money(amt)}</span> <span class="per">{per}</span></p>'
            if amt else '<p class="balance balance-quote">By quote</p>')
-    lis = ''.join(f'<li>{x}</li>' for x in items)
-    return f'''<article class="tile price-tile tilt{' is-featured' if featured else ''}">
-        <p class="tile-label"><span>{name}</span><span class="chip{'' if featured else ' chip-plain'}">{chip}</span></p>
+    return f'''<article class="tile acct-card{' is-featured' if featured else ''}">
+        <div class="acct-top">{crest()}<span class="chip{'' if featured else ' chip-plain'}">{chip}</span></div>
+        <{level} class="acct-name">{name}</{level}>
+        <p class="acct"><span>AUD</span><span>&bull;&bull;&bull;&bull; {no}</span></p>
         {bal}
-        <p class="muted small">{lead}</p>
-        <ul>{lis}</ul>
-        <a class="btn {'btn-gold' if featured else 'btn-ghost'}" href="{href}">{cta}</a>
+        <p class="muted small">{sub}</p>
+        <ul>{''.join(f'<li>{x}</li>' for x in items)}</ul>
+        <a class="btn {'btn-gold' if featured else 'btn-ghost'}" href="{P}{href}">{cta}</a>
       </article>'''
 
 
 def faq_list(items, P):
-    out = []
-    for q, a in items:
-        out.append(f'<details><summary>{q}</summary><div class="answer"><p>{a.replace("{P}", P)}</p></div></details>')
-    return '<div class="faq">' + ''.join(out) + '</div>'
+    return '<div class="faq">' + ''.join(f'<details><summary>{q}</summary><div class="answer"><p>{a.replace("{P}", P)}</p></div></details>' for q, a in items) + '</div>'
 
 
 def strip_tags(s):
@@ -294,8 +359,8 @@ def strip_tags(s):
 
 
 # ---------------------------------------------------------------- forms
-def form_open(name, subject, P, extra_class=''):
-    return f'''<form class="form{extra_class}" id="form-{name}" data-form="{name}" action="https://api.web3forms.com/submit" method="POST" data-thanks="{P}thank-you.html" novalidate>
+def form_open(name, subject, P):
+    return f'''<form class="form" id="form-{name}" data-form="{name}" action="https://api.web3forms.com/submit" method="POST" data-thanks="{P}thank-you.html" novalidate>
         <input type="hidden" name="access_key" value="{FORM_KEY}">
         <input type="hidden" name="subject" value="{E(subject)}">
         <input type="hidden" name="from_name" value="Black Crest Website">
@@ -325,11 +390,11 @@ def form_close(button, P):
       </form>'''
 
 
-# ================================================================= PAGES
+# ================================================================= shared content
 ORG = {
     '@context': 'https://schema.org', '@type': 'ProfessionalService', '@id': SITE + '#business',
     'name': 'Black Crest Web Designs', 'slogan': 'Premium sites for local businesses',
-    'description': 'Fast, good-looking websites for local businesses in Melbourne. Free concept homepage first, clear prices, and you own your site.',
+    'description': 'Fast, good-looking websites for local businesses in Melbourne. A free concept homepage first, clear prices, and you own your site.',
     'url': SITE, 'email': EMAIL, 'image': SITE + 'img/og.jpg', 'logo': SITE + 'img/icon-512.png',
     'address': {'@type': 'PostalAddress', 'addressLocality': 'Melbourne', 'addressRegion': 'VIC', 'addressCountry': 'AU'},
     'areaServed': {'@type': 'City', 'name': 'Melbourne'},
@@ -341,25 +406,23 @@ ORG = {
          'priceSpecification': {'@type': 'UnitPriceSpecification', 'price': f'{CARE:.2f}', 'priceCurrency': CONFIG['currency'], 'unitText': 'month'}},
     ],
 }
-
-TRUST = [('key', 'You own your site'), ('unlock', 'No lock-in contracts'), ('lock', 'Secure HTTPS'), ('clock', 'Reply within 24 hours')]
 STEPS = [
-    ('Chat', 'Tell us about your business. A short message is enough.', 'Day 1'),
-    ('Free concept', 'We design your homepage for free. No deposit, no obligation.', 'Usually within 5 business days'),
-    ('Build', 'Like it? Pay a 50% deposit and we build the rest with you.', 'Usually 1 to 2 weeks'),
-    ('Launch', 'You check everything, pay the balance and go live.', 'Usually 1 to 2 days'),
+    ('Chat', 'chat', 'Usually the same or next day', 'Tell us what you do, where you are and what people should do on your site: call, book or visit. A short message is enough. Send links to your logo, photos or old site if you have them.'),
+    ('Free concept', 'concept', 'Usually within 5 business days', 'We design your homepage around your name, your trade and your suburb. It costs nothing and commits you to nothing. Not for you? Walk away and owe nothing.'),
+    ('Build', 'build', 'Usually 1 to 2 weeks after the deposit', 'Like it? We email a quote and the payment details, and a 50% deposit starts the build. We write the words with you, add your photos, the contact form and the Google basics, then share a private preview. Two rounds of changes are included.'),
+    ('Launch', 'launch', 'Usually 1 to 2 days after you approve it', 'You pay the balance. We connect your domain, switch on HTTPS and check every page on phones and computers. Then we hand it over: the site, the domain and the logins are yours.'),
 ]
 FAQS = [
-    ('How much does a website cost?', f'A One Page site is {money(ONE)}. A Full Website, up to about 5 pages, is {money(FULL)}. The care plan is optional and costs {money(CARE)} a month. Bigger or special projects are quoted. The only other cost is your own domain name, about $20 a year. See <a href="{{P}}pricing.html">pricing</a>.'),
+    ('How much does a website cost?', f'A One Page site is {money(ONE)}. A Full Website, up to about 5 pages, is {money(FULL)}. The care plan is optional at {money(CARE)} a month, and bigger projects are quoted. The only other cost is your own domain name, about $20 a year. See <a href="{{P}}pricing.html">pricing</a>.'),
     ('How long does it take?', 'Your free concept homepage is usually ready within 5 business days of our first chat. The build usually takes 1 to 2 weeks after the deposit, and launch takes 1 to 2 days once you approve the preview.'),
     ('Who owns the website?', 'You do. Once the balance is paid, the finished site is yours. Your domain name is registered in your name, so it is always yours too.'),
-    ('Can I ask for changes?', 'Yes. Two rounds of changes are included while we build. After launch, small text and photo changes are included in the care plan. Anything bigger is quoted fairly before we do it.'),
-    ('What about the domain name and hosting?', 'You pay for your own domain name (your web address), about $20 a year, and it is registered in your name. Hosting setup is included in the price. If anything about hosting would cost you extra, we tell you before you say yes.'),
-    ('What do I need to give you?', 'Your business name, what you do, where you are, how people should contact you, your opening hours, your services and prices, and your logo and photos if you have them. We help with the writing.'),
-    ("What if I don't like the concept?", "Then you don't pay anything. Tell us what isn't right and we can adjust it before you decide, or you can simply walk away. There is no deposit until you're happy to go ahead."),
-    ('How do payment and the deposit work?', 'The concept is free. If you go ahead, a 50% deposit starts the build and the balance is due at launch. We email you an invoice with the payment details. We never take payments on this website.'),
+    ('Can I ask for changes?', 'Yes. Two rounds of changes are included while we build. After launch, small text and photo changes are part of the care plan. Anything bigger is quoted fairly before we start it.'),
+    ('What about the domain name and hosting?', 'You pay for your own domain name (your web address), about $20 a year, registered in your name. Hosting setup is included in the price. If anything about hosting would cost you extra, we tell you before you say yes.'),
+    ('What do I need to give you?', 'Your business name, what you do, where you are, how people should reach you, your hours, your services and prices, and your logo and photos if you have them. We help with the writing.'),
+    ("What if I don't like the concept?", "Then you pay nothing. Tell us what isn't right and we can adjust it before you decide, or simply walk away. There is no deposit until you choose to go ahead."),
+    ('How do payment and the deposit work?', 'The concept is free. If you go ahead, a 50% deposit starts the build and the balance is due at launch. We email an invoice with the payment details. We never take payments on this website.'),
     ('How long does the care plan last?', 'Month to month, for as long as it is useful to you. There is no lock-in contract.'),
-    ('How do I cancel the care plan?', 'Email us before your next month starts and that is it. Your site stays yours, and we hand over your files and logins.'),
+    ('How do I cancel the care plan?', 'Email us before your next month starts. Your site stays yours, and we hand over your files and logins.'),
 ]
 
 
@@ -368,157 +431,195 @@ def faq_ld():
             'mainEntity': [{'@type': 'Question', 'name': strip_tags(q), 'acceptedAnswer': {'@type': 'Answer', 'text': strip_tags(a)}} for q, a in FAQS]}
 
 
-# ---------------------------------------------------------------- Home
+def story(P, page_mode=False):
+    stages = ''.join(f'<div class="stage{" is-active" if i == 0 else ""}">{illo(k)}</div>' for i, (_, k, _, _) in enumerate(STEPS))
+    steps = ''.join(f'''<li class="story-step{" is-active" if i == 0 else ""}">
+          <span class="step-n" aria-hidden="true">0{i + 1}</span>
+          <div class="step-illo illo-wrap">{illo(k)}</div>
+          <h3>{t}</h3>
+          <p>{x}</p>
+          <span class="chip chip-plain when">{w}</span>
+        </li>''' for i, (t, k, w, x) in enumerate(STEPS))
+    return f'''<div class="story" data-story>
+      <div class="story-visual" aria-hidden="true"><div class="story-frame">{stages}<div class="bar"><i></i></div><p class="count"><b>01</b> / 04</p></div></div>
+      <ol class="story-steps">{steps}</ol>
+    </div>'''
+
+
+def rail(P, title_html, lead):
+    items = ''.join(f'''<li class="rail-item"><article class="tile rail-card">
+          <p class="tile-label"><span>{d[3]}</span><span class="chip">Concept site</span></p>
+          {duo(d[0], P, parallax='0')}
+          <h3>{d[2]}</h3>
+          <p>{d[4]}</p>
+          {open_demo(d, P)}
+        </article></li>''' for d in DEMOS)
+    return f'''<section class="rail section" data-rail aria-labelledby="rail-h">
+    <div class="container">{head_block('Concept sites', f'<span id="rail-h">{title_html}</span>', lead, split=True)}</div>
+    <div class="rail-pin"><div class="rail-sticky">
+      <ul class="rail-track" aria-label="Six concept sites">{items}</ul>
+      <div class="container rail-controls"><p class="rail-count"><b>01</b> / 0{len(DEMOS)}</p><div class="rail-btns"><button class="rail-btn" type="button" data-dir="-1" aria-label="Previous concept">{icon('left')}</button><button class="rail-btn" type="button" data-dir="1" aria-label="Next concept">{icon('right')}</button></div></div>
+    </div></div>
+  </section>'''
+
+
+MARQUEE = ['Barbers', 'Cafes', 'Gyms', 'Salons', 'Plumbers', 'Electricians', 'Bakeries', 'Florists', 'Mechanics', 'Restaurants']
+
+
+def marquee():
+    ul = lambda hidden: f'<ul{" aria-hidden=" + chr(34) + "true" + chr(34) if hidden else ""}>' + ''.join(f'<li>{t}</li>' for t in MARQUEE) + '</ul>'
+    return f'<section class="marquee" aria-label="Local businesses we build for"><div class="marquee-track">{ul(False)}{ul(True)}</div></section>'
+
+
+# ================================================================= Home
 P = ''
-carousel = ''.join(f'<li>{demo_card(d, P)}</li>' for d in DEMOS)
-steps = ''.join(f'''<li class="tile reveal d{i % 4}"><span class="num">0{i + 1}</span><h3>{t}</h3><p class="muted">{x}</p><span class="when">{w}</span></li>''' for i, (t, x, w) in enumerate(STEPS))
-trust = ''.join(f'<li>{icon(i)}<span>{t}</span></li>' for i, t in TRUST)
-page('index.html', 'Black Crest Web Designs: premium sites for local businesses', f'Fast, good-looking websites for Melbourne barbers, cafes, gyms, salons and tradies. Free concept homepage first. One Page {money(ONE)}, Full Website {money(FULL)}.', f'''<main id="main">
+page('index.html', 'Black Crest Web Designs: premium sites for local businesses', f'Fast, good-looking websites for Melbourne barbers, cafes, gyms, salons and tradies. A free concept homepage first. One Page {money(ONE)}, Full Website {money(FULL)}.', f'''<main id="main">
   <section class="hero" aria-labelledby="hero-h">
+    <div class="hero-stage" data-three="{THREE_URL}" data-sri="{THREE_SRI}" data-module="./hero3d.js">{CREST_ART}</div>
     <div class="container hero-grid">
       <div>
-        <p class="eyebrow">Black Crest Web Designs &middot; Melbourne</p>
-        <h1 id="hero-h">Premium sites for <em>local businesses</em></h1>
-        <p class="lead">Fast, good-looking websites for barbers, cafes, gyms, salons and tradies. We design your new homepage for free first, so you can see it before you pay a cent.</p>
-        <p class="from-line">From <strong><span>$</span><span data-price="onePage" data-count="{ONE}" data-prefix="">{ONE}</span></strong> one-off</p>
+        <p class="label">Black Crest Web Designs &middot; Melbourne</p>
+        <h1 id="hero-h">Premium sites for <em>local</em> businesses</h1>
+        <p class="lead">Sharp, fast websites for barbers, cafes, gyms, salons and tradies. We design your homepage first, free. You decide after.</p>
+        <p class="from-line">From <strong><i>$</i><span data-price="onePage" data-prefix="">{ONE}</span></strong> one-off</p>
         <div class="btn-row">
           <a class="btn btn-gold" href="free-concept.html">Get a free concept</a>
           <a class="btn btn-ghost" href="pricing.html">See pricing</a>
         </div>
       </div>
-      <aside class="tile hero-card tilt reveal d2" aria-label="How paying works">
+      <aside class="tile hero-card" aria-label="How paying works">
         <p class="tile-label"><span>Your new website</span><span class="chip">Concept first</span></p>
         <p class="balance"><span data-price="onePage" data-count="{ONE}">{money(ONE)}</span> <span class="per">from, one-off</span></p>
         <ul class="rows">
-          <li><span>Free concept homepage</span><b>$0</b></li>
+          <li><span>Concept homepage</span><b>$0</b></li>
           <li><span>Deposit to start the build</span><b>50%</b></li>
           <li><span>Balance</span><b>At launch</b></li>
           <li><span>Rounds of changes</span><b>2 included</b></li>
         </ul>
-        <p class="acct"><span>Black Crest Web Designs</span><span>AUD</span></p>
+        <p class="acct"><span>Black Crest &middot; AUD</span><span>&bull;&bull;&bull;&bull; 0300</span></p>
       </aside>
+    </div>
+    <p class="scroll-cue" aria-hidden="true"><i></i>Scroll</p>
+  </section>
+
+  {marquee()}
+
+  <section class="section" aria-labelledby="work-h">
+    <div class="container showcase">
+      <div>
+        <p class="label reveal"><span class="idx">01</span> Work</p>
+        <h2 id="work-h" class="h2" data-split>Concept sites, <em>built properly.</em></h2>
+        <p class="lead reveal d1">Six made-up local businesses, designed and built like real ones: booking, menus, timetables, quote forms. Every one is a concept, not a customer.</p>
+        <a class="link reveal d2" href="work.html">See all six {icon('arrow')}</a>
+      </div>
+      <div class="reveal d1">{duo('barber', P, '0.07', phone_slug='cafe')}</div>
     </div>
   </section>
 
-  <section class="trust" aria-label="Our promises"><div class="container"><ul>{trust}</ul></div></section>
-
-  <section class="section" aria-labelledby="why-h">
+  <section class="section band" aria-labelledby="why-h">
     <div class="container">
-      {section_head('Why it matters', '<span id="why-h">A website that works as hard as you do.</span>', 'Most people will find you on their phone, often minutes before they need you. Your site should make it easy to say yes.')}
-      <div class="grid grid-3">
-        <article class="tile tilt reveal">{tile_icon('bolt')}<h3>Fast</h3><p class="muted">Pages load quickly, even on a phone with a weak signal. We keep them light: no heavy page builders, no slow add-ons.</p></article>
-        <article class="tile tilt reveal d1">{tile_icon('phone')}<h3>Great on phones</h3><p class="muted">Designed for the small screen first, with big buttons to call, book or get directions in one tap.</p></article>
-        <article class="tile tilt reveal d2">{tile_icon('search')}<h3>Easy to find on Google</h3><p class="muted">Clear page titles, descriptions and structure from day one, plus help with your free Google Business Profile.</p></article>
+      {head_block('Why it matters', '<span id="why-h">Built for how people <em>actually</em> find you.</span>', 'Most customers meet you on a phone, minutes before they need you. Every detail is there to turn that moment into a call, a booking or a visit.', split=True, idx='02')}
+      <div class="bento">
+        <article class="tile big reveal illo-wrap">{illo('fast')}<div><h3 class="h3">Fast on any phone</h3><p>Light pages, compressed images, no page-builder bloat. Your site opens before they lose interest.</p></div></article>
+        <article class="tile half reveal d1 illo-wrap">{illo('phone')}<div><h3 class="h3">One tap to act</h3><p>Call, book or get directions without hunting for the button.</p></div></article>
+        <article class="tile half reveal d2 illo-wrap">{illo('find')}<div><h3 class="h3">Found on Google</h3><p>Clean titles and structure from day one, plus help with your free Google Business Profile.</p></div></article>
+        <article class="tile wide reveal illo-wrap">{illo('own')}<div><h3 class="h3">Yours, outright</h3><p>You own the finished site and your domain. No lock-in contracts and no hostage fees, ever.</p></div></article>
       </div>
     </div>
   </section>
 
   <section class="section" aria-labelledby="ba-h">
-    <div class="container narrow">
-      {section_head('Before and after', '<span id="ba-h">From dated to sharp.</span>', 'Drag the handle to compare a tired old homepage with a concept redesign.', center=True)}
+    <div class="container">
+      {head_block('Before and after', '<span id="ba-h">From dated <em>to sharp.</em></span>', 'Drag the handle. Same business, two very different first impressions.', split=True, idx='03')}
       <div class="compare reveal" data-compare>
-        <img src="img/compare-before.webp" width="1200" height="750" loading="lazy" decoding="async" alt="Before: a dated, cluttered barbershop homepage with small text and no clear booking button">
-        <img class="after" src="img/compare-after.webp" width="1200" height="750" loading="lazy" decoding="async" alt="After: the Brass and Blade concept homepage, dark and clean with a clear Book now button">
+        <img src="img/compare-before.webp" width="1600" height="1000" loading="lazy" decoding="async" alt="Before: a dated, cluttered barbershop homepage with small text and no clear booking button">
+        <img class="after" src="img/compare-after.webp" width="1600" height="1000" loading="lazy" decoding="async" alt="After: the Brass and Blade concept homepage, dark and clean with a clear Book a chair button">
         <span class="compare-tag l" aria-hidden="true">Before</span><span class="compare-tag r" aria-hidden="true">After</span>
         <span class="handle" aria-hidden="true"></span>
         <label class="sr-only" for="compare-range">Compare before and after</label>
         <input id="compare-range" type="range" min="0" max="100" value="50">
       </div>
-      <p class="compare-note"><span class="chip">Example, not a real customer</span></p>
+      <div class="compare-meta"><span class="chip">Example, not a real customer</span><span class="tiny">Both sides are mock-ups made for this comparison.</span></div>
     </div>
   </section>
 
-  <section class="section" aria-labelledby="how-h">
+  <section class="section band band-gold" aria-labelledby="how-h">
     <div class="container">
-      {section_head('How it works', '<span id="how-h">Four simple steps.</span>', 'You see your new homepage before you pay anything.')}
-      <ol class="steps">{steps}</ol>
-      <p class="reveal"><a class="text-link" href="process.html">See the full process {icon('arrow', 'ic')}</a></p>
+      {head_block('Process', '<span id="how-h">Four steps. <em>No surprises.</em></span>', 'You see your homepage before you pay a cent. Here is everything that happens after that.', split=True, idx='04')}
+      {story(P)}
+      <a class="link reveal" href="process.html">The full process {icon('arrow')}</a>
     </div>
   </section>
 
-  <section class="section" aria-labelledby="work-h">
-    <div class="container" data-carousel>
-      {section_head('Concept sites', '<span id="work-h">See what we build.</span>', 'Six concept websites for made-up local businesses. They are examples, not real customers. Swipe to look, and open any of them on your phone.')}
-      <ul class="carousel-track" aria-label="Concept sites">{carousel}</ul>
-      <div class="carousel-controls">
-        <button class="carousel-btn" type="button" data-dir="-1" aria-label="Previous concept">{icon('left')}</button>
-        <button class="carousel-btn" type="button" data-dir="1" aria-label="Next concept">{icon('right')}</button>
-      </div>
-    </div>
-  </section>
+  {rail(P, 'Six concepts, <em>six trades.</em>', 'Swipe through, then open any of them on your phone. All six are made-up businesses.')}
 
   <section class="section" aria-labelledby="price-h">
     <div class="container">
-      {section_head('Pricing', '<span id="price-h">Clear prices. No surprises.</span>', 'Pick a package, see the price, and know exactly what is included.')}
-      <div class="grid grid-3">
-        {price_tile('one', P)}
-        {price_tile('full', P, featured=True)}
-        {price_tile('care', P)}
+      {head_block('Pricing', '<span id="price-h">Clear prices. <em>Set before we start.</em></span>', 'One price per package, written down before any work begins. No retainers you did not ask for.', split=True, idx='05')}
+      <div class="accounts three">
+        <div class="reveal">{account('one', P)}</div>
+        <div class="reveal d1">{account('full', P, featured=True)}</div>
+        <div class="reveal d2">{account('care', P)}</div>
       </div>
-      <p class="reveal" style="margin-top:24px">Need something bigger? Custom projects are quoted. <a class="text-link" href="pricing.html">Full pricing and the price calculator {icon('arrow')}</a></p>
+      <p class="reveal" style="margin-top:28px">Something bigger in mind? Custom projects are quoted. <a class="link" href="pricing.html">Pricing and the calculator {icon('arrow')}</a></p>
     </div>
   </section>
 
-  <section class="section" aria-labelledby="who-h">
+  <section class="section band" aria-labelledby="trades-h">
     <div class="container">
-      {section_head('Who it is for', '<span id="who-h">Built for local businesses.</span>', 'If people find you nearby and then call, book or walk in, a good website helps. We work with businesses across Melbourne and its suburbs.')}
-      <ul class="trade-links reveal">{''.join(f'<li><a href="{h}">{t} {icon("arrow")}</a></li>' for h, t in TRADES)}</ul>
+      {head_block('Trades', '<span id="trades-h">Made for the high street.</span>', 'We build for businesses across Melbourne and its suburbs. Pick your trade to see what it usually needs.', split=True, idx='06')}
+      <ol class="trade-list reveal">{''.join(f'<li><a href="{h}"><span class="n">0{i + 1}</span><span class="t">{t}</span><span class="x">{x}</span><span class="ic">{icon("ne")}</span></a></li>' for i, (h, t, _, x) in enumerate(TRADES))}</ol>
     </div>
   </section>
 
   <section class="section" aria-labelledby="case-h">
     <div class="container">
-      <div class="tile offer reveal">
-        <div>
-          <p class="eyebrow">An honest offer</p>
-          <h2 id="case-h">Be our first case study.</h2>
-          <p>We are new, so there are no customer reviews to show you yet, and we will never make any up. The first few local shops we work with get a discount, in return for an honest quote about the experience and permission to show their site here.</p>
+      <div class="grid grid-2" style="align-items:end">
+        <div><p class="label reveal">An honest offer</p><h2 id="case-h" class="h2" data-split>Be our first <em>case study.</em></h2></div>
+        <div class="reveal d1">
+          <p class="lead">We are new, so there are no customer reviews to show yet, and we will never invent any. The first few local shops we work with get a discount, in return for an honest quote about the experience and permission to show their site here.</p>
+          <a class="btn btn-ghost" href="contact.html">Ask about the offer</a>
         </div>
-        <a class="btn btn-ghost" href="contact.html">Ask about it</a>
       </div>
     </div>
   </section>
 
-  <section class="section" aria-labelledby="faq-h">
-    <div class="container narrow">
-      {section_head('Questions', '<span id="faq-h">Quick answers.</span>')}
-      <div class="reveal">{faq_list(FAQS[:3], P)}</div>
-      <p class="reveal"><a class="text-link" href="faq.html">All questions {icon('arrow')}</a></p>
+  <section class="section band" aria-labelledby="faq-h">
+    <div class="container faq-split">
+      {head_block('FAQ', '<span id="faq-h">Straight <em>answers.</em></span>', 'The questions everyone asks before they start.', idx='07')}
+      <div class="reveal">{faq_list(FAQS[:4], P)}<p style="margin-top:22px"><a class="link" href="faq.html">All questions {icon('arrow')}</a></p></div>
     </div>
   </section>
 
-  <section class="section cta-final" aria-labelledby="cta-h">
-    <div class="container">
-      <hr class="rule draw" style="max-width:240px;margin:0 auto 40px">
-      <h2 id="cta-h" class="reveal">See your new homepage before you pay.</h2>
-      <p class="reveal">Tell us about your business. We reply within 24 hours and design your concept for free.</p>
-      <div class="btn-row reveal"><a class="btn btn-gold" href="free-concept.html">Get a free concept</a><a class="btn btn-ghost" href="contact.html">Ask a question</a></div>
-    </div>
-  </section>
+  {cta_final('See it <em>before</em> you pay.', 'Tell us about your business. We reply within 24 hours and design your homepage for free.', secondary=('contact.html', 'Ask a question'))}
 </main>''', ld=[ORG])
 
-# ---------------------------------------------------------------- Work
+# ================================================================= Work
 P = ''
-page('work.html', 'Concept sites: Black Crest Web Designs', 'Six concept websites for made-up local businesses: a barbershop, cafe, gym, plumber, salon and auto parts store. Open each one on your phone.', f'''<main id="main">
+rows = ''.join(f'''<article class="work-row" aria-labelledby="w-{d[0]}">
+      <div class="work-text reveal">
+        <span class="n" aria-hidden="true">0{i + 1}</span>
+        <p class="tile-label" style="justify-content:flex-start"><span>{d[3]}</span><span class="chip">Concept site</span></p>
+        <h2 id="w-{d[0]}" class="h2" data-split>{d[2]}</h2>
+        <p>{d[4]}</p>
+        <ul class="feats">{''.join(f'<li>{f}</li>' for f in d[5])}</ul>
+        <div class="btn-row">{open_demo(d, P)}{f'<a class="link" href="{d[6]}">For {d[3].lower()}s {icon("arrow")}</a>' if d[6] else ''}</div>
+      </div>
+      <div class="reveal d1">{duo(d[0], P, '0.05', lazy=i > 0)}</div>
+    </article>''' for i, d in enumerate(DEMOS))
+page('work.html', 'Work: concept sites by Black Crest Web Designs', 'Six concept websites for made-up local businesses: a barbershop, cafe, gym, plumber, salon and auto parts store, shown on laptop and phone.', f'''<main id="main">
   <div class="container page-head">
-    <p class="eyebrow reveal">Our work</p>
-    <h1 class="reveal d1">Concept sites.</h1>
-    <p class="lead reveal d2">Six concept websites for made-up local businesses, built to show what we do. They are not real customers. Open any of them and try it on your phone.</p>
+    <p class="label">Work</p>
+    <h1 class="h1" data-split>Six concepts. <em>Zero templates.</em></h1>
+    <p class="lead reveal d1">Made-up local businesses, designed and built like real ones. None of them are customers: they show what we build, and you can open each one on your phone.</p>
   </div>
-  <section class="container" aria-label="Concept sites">
-    <div class="work-grid">{''.join(f'<div class="reveal d{i % 3}">{demo_card(d, P, "h2", lazy=i > 2)}</div>' for i, d in enumerate(DEMOS))}</div>
-    <p class="tiny" style="margin-top:28px">All six are concepts for fictional businesses. The names, prices, reviews and photos inside them are made up or stock images.</p>
+  <section class="container" aria-label="Concept sites">{rows}
+    <p class="tiny reveal" style="padding-bottom:40px">All six are concepts for fictional businesses. Names, prices, reviews and photos inside them are made up or stock images.</p>
   </section>
-  <section class="section cta-final" aria-labelledby="cta-h">
-    <div class="container">
-      <h2 id="cta-h" class="reveal">Want one like this for your business?</h2>
-      <p class="reveal">We design your homepage concept for free, so you can see it first.</p>
-      <div class="btn-row reveal"><a class="btn btn-gold" href="free-concept.html">Get a free concept</a><a class="btn btn-ghost" href="pricing.html">See pricing</a></div>
-    </div>
-  </section>
+  {cta_final('Want one like <em>this?</em>', 'We design your homepage concept for free, so you can see it first.', secondary=('pricing.html', 'See pricing'))}
 </main>''')
 
-# ---------------------------------------------------------------- Pricing
+# ================================================================= Pricing
 P = ''
 INCLUDED = ['Writing help', 'Mobile design', 'Contact form', 'Google basics (SEO setup)', 'Speed', 'Secure HTTPS', 'Handover of your site and logins', '2 rounds of changes']
 inc_rows = ''.join(f'<tr><th scope="row">{x}</th><td class="yes" data-label="One Page">Included</td><td class="yes" data-label="Full Website">Included</td></tr>' for x in INCLUDED)
@@ -536,65 +637,70 @@ PRICE_LD = {'@context': 'https://schema.org', '@type': 'OfferCatalog', 'name': '
                                                      'priceSpecification': {'@type': 'PriceSpecification', 'minPrice': f"{a['from']:.2f}", 'priceCurrency': CONFIG['currency']}} for a in ADDONS]}
 page('pricing.html', 'Pricing: Black Crest Web Designs', f'One Page website {money(ONE)}. Full Website (up to about 5 pages) {money(FULL)}. Optional care plan {money(CARE)} a month. No hidden costs, and a price calculator.', f'''<main id="main">
   <div class="container page-head">
-    <p class="eyebrow reveal">Pricing</p>
-    <h1 class="reveal d1">Clear prices. No hidden costs.</h1>
-    <p class="lead reveal d2">Every price is set before we start, and your concept homepage is free. All prices are in Australian dollars.</p>
+    <p class="label">Pricing</p>
+    <h1 class="h1" data-split>Clear prices. <em>No hidden costs.</em></h1>
+    <p class="lead reveal d1">Every price is set before we start, your concept homepage is free, and everything is in Australian dollars.</p>
   </div>
   <section class="container" aria-label="Packages">
-    <div class="grid grid-4">
-      {price_tile('one', P)}
-      {price_tile('full', P, featured=True)}
-      {price_tile('care', P)}
-      {price_tile('custom', P)}
+    <div class="accounts four">
+      <div class="reveal">{account('one', P, level='h2')}</div>
+      <div class="reveal d1">{account('full', P, featured=True, level='h2')}</div>
+      <div class="reveal d2">{account('care', P, level='h2')}</div>
+      <div class="reveal d3">{account('custom', P, level='h2')}</div>
     </div>
   </section>
 
   <section class="section" aria-labelledby="inc-h">
-    <div class="container narrow">
-      {section_head('What is included', '<span id="inc-h">Everything listed is included.</span>', 'No hidden extras. These come with both the One Page and the Full Website.')}
-      <div class="table-wrap reveal"><table class="stack-table"><caption>What is included in each package</caption>
-        <thead><tr><th scope="col">Item</th><th scope="col">One Page</th><th scope="col">Full Website</th></tr></thead>
-        <tbody>{inc_rows}</tbody></table></div>
+    <div class="container">
+      <div class="grid grid-2" style="gap:48px;align-items:start">
+        {head_block("What's included", '<span id="inc-h">Everything listed <em>is included.</em></span>', 'No hidden extras. All of this comes with both the One Page and the Full Website.')}
+        <div class="table-wrap reveal"><table class="stack-table"><caption>Included in each package</caption>
+          <thead><tr><th scope="col">Item</th><th scope="col">One Page</th><th scope="col">Full Website</th></tr></thead>
+          <tbody>{inc_rows}</tbody></table></div>
+      </div>
     </div>
   </section>
 
-  <section class="section" aria-labelledby="promise-h">
-    <div class="container narrow">
-      <div class="tile reveal">
-        <p class="eyebrow">Our promise</p>
-        <h2 id="promise-h">No hidden costs.</h2>
-        <p class="lead" style="margin-top:16px">The price we quote is the price you pay.</p>
-        <ul class="ticks">
+  <section class="section band band-gold" aria-labelledby="promise-h">
+    <div class="container">
+      <div class="grid grid-2" style="gap:48px;align-items:start">
+        <div><p class="label reveal">Our promise</p><h2 id="promise-h" class="h2" data-split>No hidden <em>costs.</em></h2><p class="lead reveal d1" style="margin-top:24px">The price we quote is the price you pay.</p></div>
+        <ul class="ticks reveal d1" style="align-self:end">
           <li>You pay for your own domain name (your web address, like yourbusiness.com.au), about $20 a year. It is registered in your name, so it is always yours.</li>
           <li>Hosting setup is included. If anything about hosting would cost you extra, we tell you before you say yes.</li>
           <li>Add-ons are optional, and their price is confirmed before any work begins.</li>
-          <li>Extra changes beyond the 2 included rounds are quoted fairly first. Nothing is added to your bill without your OK.</li>
+          <li>Changes beyond the 2 included rounds are quoted fairly first. Nothing lands on your bill without your OK.</li>
         </ul>
       </div>
     </div>
   </section>
 
   <section class="section" aria-labelledby="addons-h">
-    <div class="container narrow">
-      {section_head('Add-ons', '<span id="addons-h">Add what you need.</span>', 'Optional extras, priced from these amounts. We confirm the exact price with you first.')}
-      <ul class="addon-list reveal">{addon_rows}</ul>
+    <div class="container">
+      <div class="grid grid-2" style="gap:48px;align-items:start">
+        {head_block('Add-ons', '<span id="addons-h">Add what <em>you need.</em></span>', 'Optional extras, priced from these amounts. We confirm the exact price with you first.')}
+        <ul class="addon-list reveal">{addon_rows}</ul>
+      </div>
     </div>
   </section>
 
-  <section class="section" aria-labelledby="cmp-h">
+  <section class="section band" aria-labelledby="cmp-h">
     <div class="container">
-      {section_head('Compare', '<span id="cmp-h">Your options, side by side.</span>')}
-      <div class="table-wrap reveal"><table class="stack-table">
-        <caption>A DIY builder, a typical Melbourne agency and Black Crest</caption>
-        <thead><tr><th scope="col"><span class="sr-only">Compared on</span></th><th scope="col">DIY builder (Wix or Squarespace)</th><th scope="col">Typical Melbourne agency</th><th scope="col" class="col-us">Black Crest</th></tr></thead>
-        <tbody>{cmp_rows}</tbody></table></div>
-      <p class="tiny reveal" style="margin-top:12px">*Typical market range; prices vary.</p>
+      {head_block('Compare', '<span id="cmp-h">Your options, <em>side by side.</em></span>', 'Laid out like a statement: what each route costs you in money, time, effort and ownership.', split=True)}
+      <div class="statement reveal">
+        <div class="statement-head"><span>Statement &middot; <b>Website options</b></span><span>Melbourne &middot; AUD</span></div>
+        <div class="table-wrap"><table class="stack-table">
+          <caption class="sr-only">A DIY builder, a typical Melbourne agency and Black Crest</caption>
+          <thead><tr><th scope="col"><span class="sr-only">Compared on</span></th><th scope="col">DIY builder (Wix or Squarespace)</th><th scope="col">Typical Melbourne agency</th><th scope="col" class="col-us">Black Crest</th></tr></thead>
+          <tbody>{cmp_rows}</tbody></table></div>
+        <div class="statement-foot"><span>*Typical market range; prices vary.</span><span>Black Crest prices are fixed before work begins.</span></div>
+      </div>
     </div>
   </section>
 
   <section class="section" aria-labelledby="calc-h">
     <div class="container">
-      {section_head('Price calculator', '<span id="calc-h">Build your quote.</span>', 'Tick what you want and see the total. Then send it to us and we confirm it by email.')}
+      {head_block('Price calculator', '<span id="calc-h">Build your <em>quote.</em></span>', 'Tick what you want and watch the total. Send it to us and we confirm it by email.', split=True)}
       <form class="calc" id="calc" onsubmit="return false">
         <div class="reveal">
           <fieldset><legend>Package</legend>
@@ -606,98 +712,83 @@ page('pricing.html', 'Pricing: Black Crest Web Designs', f'One Page website {mon
             <label class="opt" for="add-care"><input type="checkbox" id="add-care" value="care"><span class="opt-text"><b>Care plan</b><span class="tiny">Optional, cancel any time</span></span><span class="amt"><span data-price="carePlan">{money(CARE)}</span> a month</span></label>
           </fieldset>
         </div>
-        <div class="tile calc-total reveal d1" aria-live="polite">
-          <p class="tile-label"><span>Estimated total</span><span class="chip">AUD</span></p>
-          <p class="balance"><span class="from">from</span> <span id="calc-total">{money(ONE)}</span></p>
+        <div class="tile calc-total reveal d1">
+          <div class="calc-head">
+            <div><p class="tile-label" style="margin:0 0 6px"><span>Estimated total</span></p><p class="tiny" style="margin:0">One-off, in AUD</p></div>
+            <div class="ring" aria-hidden="true"><svg viewBox="0 0 40 40"><circle class="track" cx="20" cy="20" r="17"/><circle class="fill" cx="20" cy="20" r="17" pathLength="1"/></svg><span><b>0</b>extras</span></div>
+          </div>
+          <p class="balance" aria-live="polite"><span class="from">from</span> <span id="calc-total">{money(ONE)}</span></p>
           <p class="muted small" id="calc-month" hidden>plus the care plan, <span data-price="carePlan">{money(CARE)}</span> a month</p>
           <ul id="calc-lines"><li>One Page: {money(ONE)}</li></ul>
           <button class="btn btn-gold" type="button" id="calc-send">Send me this quote</button>
-          <p class="tiny" style="margin-top:12px">This opens the contact form with your choices filled in. Nothing is sent until you press Send there.</p>
+          <p class="tiny" style="margin:12px 0 0">Opens the contact form with your choices filled in. Nothing is sent until you press Send there.</p>
         </div>
       </form>
     </div>
   </section>
 
-  <section class="section cta-final" aria-labelledby="cta-h">
-    <div class="container">
-      <h2 id="cta-h" class="reveal">Start with a free concept.</h2>
-      <p class="reveal">See your new homepage first. Decide after.</p>
-      <div class="btn-row reveal"><a class="btn btn-gold" href="free-concept.html">Get a free concept</a><a class="btn btn-ghost" href="process.html">How it works</a></div>
-    </div>
-  </section>
+  {cta_final('Start with a <em>free</em> concept.', 'See your new homepage first. Decide after.', secondary=('process.html', 'How it works'))}
 </main>''', ld=[PRICE_LD])
 
-# ---------------------------------------------------------------- Process
+# ================================================================= Process
 P = ''
-TIMELINE = [
-    ('Chat', 'Usually the same or next day. We reply within 24 hours.', ['Send us a message through the site or by email. Tell us what you do, where you are, and what you want people to do on your site: call, book or visit.', 'If you have a logo, photos or an old website, send links. No long forms unless you want to.']),
-    ('Free concept homepage', 'Usually within 5 business days.', ['We design your homepage using your name, your trade and your area. For a One Page site, that is most of your site.', 'It is free, with no deposit and no obligation. If it is not for you, you walk away and owe nothing.']),
-    ('Build', 'Usually 1 to 2 weeks after the deposit. A One Page site is often quicker.', ['Like the concept? We email you a quote and the payment details. A 50% deposit starts the build.', 'We write the text with you, add your photos and details, set up your contact form and Google basics, and send you a private preview link. Two rounds of changes are included.']),
-    ('Launch', 'Usually 1 to 2 days after you approve the preview.', ['You pay the balance. We connect your domain, switch on HTTPS and check everything on phones and computers.', 'Then we hand over. Your site, your domain and your logins are yours.']),
-]
-tl = ''.join(f'''<li class="reveal"><span class="node">0{i + 1}</span><h2>{t}</h2><span class="chip chip-plain when">{w}</span>{''.join(f'<p>{p}</p>' for p in ps)}</li>''' for i, (t, w, ps) in enumerate(TIMELINE))
-page('process.html', 'How it works: Black Crest Web Designs', 'Four steps: chat, free concept homepage, build and launch. Free concept first, 50% deposit to start, balance at launch, 2 rounds of changes included.', f'''<main id="main">
-  <div class="container page-head narrow">
-    <p class="eyebrow reveal">How it works</p>
-    <h1 class="reveal d1">Four steps. No surprises.</h1>
-    <p class="lead reveal d2">From the first message to your site going live, here is what happens and how long each step usually takes.</p>
+page('process.html', 'Process: how Black Crest Web Designs works', 'Four steps: chat, free concept homepage, build and launch. Free concept first, 50% deposit to start, balance at launch, 2 rounds of changes included.', f'''<main id="main">
+  <div class="container page-head">
+    <p class="label">Process</p>
+    <h1 class="h1" data-split>Four steps. <em>No surprises.</em></h1>
+    <p class="lead reveal d1">From the first message to your site going live: what happens, who does what, and how long each step usually takes.</p>
   </div>
-  <section class="container narrow" aria-label="The four steps"><ol class="timeline">{tl}</ol></section>
-  <section class="section" aria-labelledby="promise-h">
-    <div class="container narrow">
-      <div class="tile reveal">
-        <p class="eyebrow">Our promise</p>
-        <h2 id="promise-h">How paying works.</h2>
-        <ul class="ticks" style="margin-top:20px">
-          <li><strong>Free concept first.</strong> You see your homepage before you pay anything.</li>
-          <li><strong>50% deposit to start the build.</strong> Only once you are happy to go ahead.</li>
-          <li><strong>Balance at launch.</strong> When your site is ready to go live.</li>
-          <li><strong>2 rounds of changes included.</strong> Extra changes are quoted fairly, before we do them.</li>
-        </ul>
-        <p class="muted small" style="margin-top:18px">We email you an invoice with the payment details. We never take payments on this website.</p>
+  <section class="container" aria-label="The four steps">{story(P, True)}</section>
+  <section class="section band band-gold" aria-labelledby="promise-h">
+    <div class="container">
+      <div class="grid grid-2" style="gap:48px;align-items:end">
+        <div><p class="label reveal">Our promise</p><h2 id="promise-h" class="h2" data-split>How paying <em>works.</em></h2></div>
+        <div class="reveal d1">
+          <ul class="ticks">
+            <li><strong>Free concept first.</strong> You see your homepage before you pay anything.</li>
+            <li><strong>50% deposit to start the build.</strong> Only once you choose to go ahead.</li>
+            <li><strong>Balance at launch.</strong> When your site is ready to go live.</li>
+            <li><strong>2 rounds of changes included.</strong> Extra changes are quoted fairly, before we do them.</li>
+          </ul>
+          <p class="muted small" style="margin-top:20px">We email an invoice with the payment details. We never take payments on this website.</p>
+        </div>
       </div>
     </div>
   </section>
-  <section class="section cta-final" aria-labelledby="cta-h">
-    <div class="container">
-      <h2 id="cta-h" class="reveal">Ready for step one?</h2>
-      <p class="reveal">Send a short message. We reply within 24 hours.</p>
-      <div class="btn-row reveal"><a class="btn btn-gold" href="free-concept.html">Get a free concept</a><a class="btn btn-ghost" href="start.html">Start your project</a></div>
-    </div>
-  </section>
+  {cta_final('Ready for <em>step one?</em>', 'Send a short message. We reply within 24 hours.', secondary=('start.html', 'Start your project'))}
 </main>''')
 
-# ---------------------------------------------------------------- Free concept (landing page for DMs: no site menu)
+# ================================================================= Free concept (landing page for DMs: no site menu)
 P = ''
 page('free-concept.html', 'Get a free website concept: Black Crest Web Designs', 'We design your new homepage for free. No deposit, no obligation. Reply within 24 hours.', f'''<main id="main" class="landing">
   <div class="container">
     <div class="landing-head">{brand(P)}</div>
-    <h1 class="reveal">Get a free concept for your website.</h1>
-    <ul class="ticks reveal d1">
-      <li>We design your new homepage for free.</li>
+    <h1>See your new website <em>before you pay.</em></h1>
+    <ul class="ticks">
+      <li>We design your homepage for free.</li>
       <li>No deposit and no obligation.</li>
       <li>We reply within 24 hours.</li>
     </ul>
-    <div class="tile reveal d2">
+    <div class="tile">
       {form_open('free-concept', 'Black Crest: free concept request', P)}
         {field('business', 'Business name', required=True, auto='organization', empty='Please tell us your business name.')}
         {field('trade', 'What you do', required=True, placeholder='For example: barbershop in Brunswick', empty='Please tell us what your business does.')}
         {field('contact', 'Email or phone', required=True, auto='email', contact=True, empty='Please add an email address or phone number so we can reply.')}
         {form_close('Get my free concept', P)}
     </div>
-    <p class="back"><a class="text-link" href="index.html">Visit the main Black Crest site {icon('arrow')}</a></p>
+    <p class="back"><a class="link" href="index.html">Visit the main Black Crest site {icon('arrow')}</a></p>
   </div>
 </main>''', noindex=True, bare=True)
 
-# ---------------------------------------------------------------- Start your project
+# ================================================================= Start your project
 P = ''
 page('start.html', 'Start your project: Black Crest Web Designs', 'Tell us about your business so we can design your free concept homepage: your trade, suburb, hours, services, colours and links.', f'''<main id="main">
   <div class="container page-head narrow">
-    <p class="eyebrow reveal">Start your project</p>
-    <h1 class="reveal d1">Tell us about your business.</h1>
-    <p class="lead reveal d2">The more you share, the closer your free concept will be. Only the first four boxes are needed. We reply within 24 hours.</p>
+    <p class="label">Start your project</p>
+    <h1 class="h1" data-split>Tell us about <em>your business.</em></h1>
+    <p class="lead reveal d1">The more you share, the closer your free concept will be. Only the first four boxes are needed. We reply within 24 hours.</p>
   </div>
-  <section class="container narrow" aria-label="Project details">
+  <section class="container narrow" aria-label="Project details" style="padding-bottom:120px">
     <div class="tile reveal">
       {form_open('start', 'Black Crest: new project details (start form)', P)}
         <div class="form-row">
@@ -725,10 +816,9 @@ page('start.html', 'Start your project: Black Crest Web Designs', 'Tell us about
         {form_close('Send my details', P)}
     </div>
   </section>
-  <div style="height:80px"></div>
 </main>''')
 
-# ---------------------------------------------------------------- Care plan
+# ================================================================= Care plan
 P = ''
 COVER = [
     ('Hosting upkeep', 'We keep your site online and keep its hosting settings and HTTPS certificate up to date.'),
@@ -740,9 +830,9 @@ COVER = [
 NOT_COVER = ['New pages or new sections (we quote these first)', 'Redesigns or a new look', 'Writing large amounts of new content from scratch', 'Your domain name renewal, which you pay directly (about $20 a year)', 'Other services you sign up to, like booking apps or email accounts', 'Unused changes do not roll over to the next month']
 page('care-plan.html', f'Care plan, {money(CARE)} a month: Black Crest Web Designs', f'Our optional care plan is {money(CARE)} a month: hosting upkeep, small text and photo changes, security checks, backups and priority replies. Cancel any time.', f'''<main id="main">
   <div class="container page-head">
-    <p class="eyebrow reveal">Care plan</p>
-    <h1 class="reveal d1">We look after it. You run your business.</h1>
-    <p class="lead reveal d2">Optional, month to month, and you can cancel any time.</p>
+    <p class="label">Care plan</p>
+    <h1 class="h1" data-split>We look after it. <em>You run the shop.</em></h1>
+    <p class="lead reveal d1">Optional, month to month, cancel any time.</p>
   </div>
   <section class="container" aria-labelledby="cover-h">
     <div class="grid grid-2">
@@ -750,18 +840,18 @@ page('care-plan.html', f'Care plan, {money(CARE)} a month: Black Crest Web Desig
         <p class="tile-label"><span>Care plan</span><span class="chip">Optional</span></p>
         <p class="balance"><span data-price="carePlan" data-count="{CARE}">{money(CARE)}</span> <span class="per">a month</span></p>
         <h2 id="cover-h" class="sr-only">What it covers</h2>
-        <ul class="ticks" style="margin-top:20px">{''.join(f'<li><strong>{t}.</strong> {x}</li>' for t, x in COVER)}</ul>
+        <ul class="ticks" style="margin-top:22px">{''.join(f'<li><strong>{t}.</strong> {x}</li>' for t, x in COVER)}</ul>
       </div>
       <div class="tile reveal d1">
-        <h2 style="font-size:30px">What it does not cover</h2>
-        <ul style="margin-top:16px;color:var(--silver-2)">{''.join(f'<li>{x}</li>' for x in NOT_COVER)}</ul>
-        <p class="muted small" style="margin-top:16px">Not on the care plan? You can still ask for changes at any time. We quote them fairly first.</p>
+        <h2 class="h3">What it does not cover</h2>
+        <ul style="margin-top:18px;color:var(--silver-2)">{''.join(f'<li>{x}</li>' for x in NOT_COVER)}</ul>
+        <p class="muted small" style="margin-top:18px">Not on the care plan? You can still ask for changes any time. We quote them fairly first.</p>
       </div>
     </div>
   </section>
   <section class="section" aria-labelledby="req-h">
     <div class="container narrow">
-      {section_head('Request a change', '<span id="req-h">Need something updated?</span>', 'Tell us what to change. We confirm by email before we do it.')}
+      {head_block('Request a change', '<span id="req-h">Need something <em>updated?</em></span>', 'Tell us what to change. We confirm by email before we do it.')}
       <div class="tile reveal">
         {form_open('care-change', 'Black Crest: care plan change request', P)}
           <div class="form-row">
@@ -776,159 +866,159 @@ page('care-plan.html', f'Care plan, {money(CARE)} a month: Black Crest Web Desig
   </section>
 </main>''')
 
-# ---------------------------------------------------------------- Trade pages
+# ================================================================= Trade pages
 TRADE_PAGES = {
-    'for-barbers.html': ('barber', 'Barbers', 'Websites for barbers.', 'A sharp site that turns a quick search into a booked chair.', [
-        ('People decide on their phone', 'Most people pick a barber on their phone, often minutes before they want a cut. Clear prices and a booking button make the choice easy.'),
-        ('Instagram is not enough', 'Your feed shows your work, but not your prices, hours or where to park. A website puts it all in one place.'),
-        ('Fewer calls while you cut', 'A booking link on your own site means fewer calls and DMs while you are with a client.')],
-        ['Booking button that links to the app you already use', 'Price list for every cut and shave', 'Gallery of your cuts', 'Opening hours, address and a map', 'One-tap call and directions']),
-    'for-cafes.html': ('cafe', 'Cafes', 'Websites for cafes.', 'Your menu, hours and location, easy to find and quick to load.', [
+    'for-barbers.html': ('barber', 'barber', 'Barbers', 'Websites for <em>barbers.</em>', 'A sharp site that turns a quick search into a booked chair.', [
+        ('People decide on their phone', 'Most people choose a barber on their phone, often minutes before they want a cut. Clear prices and a booking button make the choice easy.'),
+        ('Instagram is not enough', 'Your feed shows your work, but not your prices, hours or where to park. A website puts all of it in one place.'),
+        ('Fewer calls mid-cut', 'A booking link on your own site means fewer calls and DMs while you are with a client.')],
+        ['Booking button for the app you already use', 'Price list for every cut and shave', 'Gallery of your cuts', 'Opening hours, address and a map', 'One-tap call and directions']),
+    'for-cafes.html': ('cafe', 'cafe', 'Cafes', 'Websites for <em>cafes.</em>', 'Your menu, hours and location: easy to find, quick to load.', [
         ('People check before they come', 'Before a visit, people look up your hours and menu. If they cannot find them, they often go somewhere else.'),
-        ('Your menu, always current', 'A menu on your own site is easy to update, and easy to read on a phone. No blurry photo of a board.'),
+        ('A menu that stays current', 'A menu on your own site is easy to update and easy to read on a phone. No blurry photo of a board.'),
         ('Works with Google', 'Your website and your free Google Business Profile work together, so the right details show in Search and Maps.')],
         ['Menu that is easy to update', 'Opening hours, including public holidays', 'Map and directions', 'Link to online ordering, if you use it', 'Photos of your food and space']),
-    'for-gyms.html': ('gym', 'Gyms', 'Websites for gyms.', 'Timetables, memberships and a clear way to try a class.', [
-        ('Answer the first questions', 'New members want to know the classes, the times and the cost. A good site answers all three before they ask.'),
+    'for-gyms.html': ('gym', 'gym', 'Gyms', 'Websites for <em>gyms.</em>', 'Timetables, memberships and an easy way to try a class.', [
+        ('Answer the first questions', 'New members want the classes, the times and the cost. A good site answers all three before they ask.'),
         ('Make trying easy', 'A simple free-trial or visit form turns interest into a first session.'),
         ('Show the space', 'Photos of your floor, equipment and coaches help people picture themselves training with you.')],
         ['Class timetable', 'Membership options and prices', 'Free-trial or visit form', 'Coach profiles', 'Location, parking and hours']),
-    'for-tradies.html': ('plumber', 'Tradies', 'Websites for tradies.', 'Get the call, win the quote, look like the professional you are.', [
-        ('Customers check you out first', 'Before they call, most people look you up. A clean site with your services and areas builds trust fast.'),
-        ('Make calling easy', 'A big call button and a short quote form mean more enquiries from people on the go.'),
-        ('Show where you work', 'Listing the suburbs you cover helps the right customers find you, and saves you from calls outside your area.')],
+    'for-tradies.html': ('tradie', 'plumber', 'Tradies', 'Websites for <em>tradies.</em>', 'Get the call, win the quote, look like the professional you are.', [
+        ('Customers check you first', 'Before they call, most people look you up. A clean site with your services and areas builds trust fast.'),
+        ('Make calling easy', 'A big call button and a short quote form mean more enquiries from people on the move.'),
+        ('Show where you work', 'Listing the suburbs you cover brings the right customers and saves you calls from outside your area.')],
         ['Quote request form', 'One-tap call button', 'Services and the suburbs you cover', 'Gallery of your jobs', 'Licence and insurance details']),
-    'for-salons.html': ('salon', 'Salons', 'Websites for salons.', 'A calm, beautiful site with your services, prices and bookings.', [
-        ('Clients want to see prices', 'A clear service menu with prices helps clients choose, and cuts down on questions.'),
-        ('Booking at any hour', 'A booking button that links to your booking app lets clients book at night, when you are closed.'),
+    'for-salons.html': ('salon', 'salon', 'Salons', 'Websites for <em>salons.</em>', 'A calm, beautiful site with your services, prices and bookings.', [
+        ('Clients want to see prices', 'A clear service menu with prices helps clients choose and cuts down on questions.'),
+        ('Booking at any hour', 'A booking button linked to your booking app lets clients book at night, while you are closed.'),
         ('Your work sells itself', 'A gallery of your work and your stylists shows clients what to expect before they walk in.')],
-        ['Service menu with prices', 'Booking button that links to your booking app', 'Gallery of your work', 'Stylist profiles', 'Gift vouchers, if you sell them']),
+        ['Service menu with prices', 'Booking button for your booking app', 'Gallery of your work', 'Stylist profiles', 'Gift vouchers, if you sell them']),
 }
-for path, (slug, trade, h1, lead, reasons, feats) in TRADE_PAGES.items():
+for path, (art, slug, trade, h1, lead, reasons, feats) in TRADE_PAGES.items():
     P = ''
     d = DEMO[slug]
-    rs = ''.join(f'<article class="tile tilt reveal d{i}"><h3>{t}</h3><p class="muted">{x}</p></article>' for i, (t, x) in enumerate(reasons))
-    page(path, f'{h1[:-1]} in Melbourne: Black Crest Web Designs', f'{lead} Websites for {trade.lower()} in Melbourne and its suburbs. One Page {money(ONE)}, Full Website {money(FULL)}, free concept first.', f'''<main id="main">
+    rs = ''.join(f'<li class="reveal"><span class="n">0{i + 1}</span><h3>{t}</h3><p>{x}</p></li>' for i, (t, x) in enumerate(reasons))
+    plain = re.sub(r'<[^>]+>', '', h1).rstrip('.')
+    page(path, f'{plain} in Melbourne: Black Crest Web Designs', f'{lead} Websites for {trade.lower()} in Melbourne and its suburbs. One Page {money(ONE)}, Full Website {money(FULL)}, free concept first.', f'''<main id="main">
   <div class="container page-head">
-    <p class="eyebrow reveal">For {trade.lower()}</p>
-    <h1 class="reveal d1">{h1}</h1>
-    <p class="lead reveal d2">{lead} We work with {trade.lower()} across Melbourne and its suburbs.</p>
-    <div class="btn-row reveal d3" style="margin-top:28px"><a class="btn btn-gold" href="free-concept.html">Get a free concept</a><a class="btn btn-ghost" href="pricing.html">See pricing</a></div>
+    <div class="trade-hero">
+      <div>
+        <p class="label">For {trade.lower()}</p>
+        <h1 class="h1" data-split>{h1}</h1>
+        <p class="lead reveal d1">{lead} We work with {trade.lower()} across Melbourne and its suburbs.</p>
+        <div class="btn-row reveal d2" style="margin-top:32px"><a class="btn btn-gold" href="free-concept.html">Get a free concept</a><a class="btn btn-ghost" href="pricing.html">See pricing</a></div>
+      </div>
+      <div class="illo-wrap reveal d1">{illo(art)}</div>
+    </div>
   </div>
-  <section class="section" aria-labelledby="why-h">
+  <section class="section band" aria-labelledby="why-h">
     <div class="container">
-      {section_head('Why it matters', f'<span id="why-h">Why {trade.lower()} need a good website.</span>')}
-      <div class="grid grid-3">{rs}</div>
+      {head_block('Why it matters', f'<span id="why-h">Why {trade.lower()} need <em>a good site.</em></span>', split=True)}
+      <ol class="reason-list">{rs}</ol>
     </div>
   </section>
   <section class="section" aria-labelledby="feat-h">
-    <div class="container">
-      <div class="grid grid-2" style="align-items:center">
-        <div class="reveal">
-          <p class="eyebrow">What you usually need</p>
-          <h2 id="feat-h">The features that matter.</h2>
-          <ul class="ticks" style="margin-top:24px">{''.join(f'<li>{x}</li>' for x in feats)}</ul>
-          <p class="muted" style="margin-top:22px">Every site also comes with writing help, a contact form, Google basics and HTTPS.</p>
-        </div>
-        <div class="reveal d1" style="max-width:360px;justify-self:center;width:100%">{demo_card(d, P)}</div>
+    <div class="container showcase">
+      <div>
+        <p class="label reveal">What you usually need</p>
+        <h2 id="feat-h" class="h2" data-split>The features <em>that matter.</em></h2>
+        <ul class="ticks reveal d1" style="margin:30px 0">{''.join(f'<li>{x}</li>' for x in feats)}</ul>
+        <p class="muted reveal">Every site also comes with writing help, a contact form, Google basics and HTTPS.</p>
+        <p class="reveal"><span class="chip">Concept site: {d[2]}</span></p>
+        <div class="reveal">{open_demo(d, P)}</div>
       </div>
+      <div class="reveal d1">{duo(slug, P, '0.06')}</div>
     </div>
   </section>
-  <section class="section cta-final" aria-labelledby="cta-h">
-    <div class="container">
-      <h2 id="cta-h" class="reveal">See your site before you pay.</h2>
-      <p class="reveal">We design a free concept homepage for your business. No deposit, no obligation.</p>
-      <div class="btn-row reveal"><a class="btn btn-gold" href="free-concept.html">Get a free concept</a><a class="btn btn-ghost" href="work.html">See all concept sites</a></div>
-    </div>
-  </section>
+  {cta_final('See your site <em>before</em> you pay.', 'We design a free concept homepage for your business. No deposit, no obligation.', secondary=('work.html', 'See all concept sites'))}
 </main>''')
 
-# ---------------------------------------------------------------- FAQ
+# ================================================================= FAQ
 P = ''
-page('faq.html', 'Questions: Black Crest Web Designs', 'Answers about cost, timing, who owns the site, changes, domain and hosting, deposits, the free concept and the care plan.', f'''<main id="main">
-  <div class="container page-head narrow">
-    <p class="eyebrow reveal">FAQ</p>
-    <h1 class="reveal d1">Questions, answered.</h1>
-    <p class="lead reveal d2">Plain answers about cost, timing and how we work. Something else? <a class="text-link" href="contact.html">Ask us</a>.</p>
+page('faq.html', 'FAQ: Black Crest Web Designs', 'Answers about cost, timing, who owns the site, changes, domain and hosting, deposits, the free concept and the care plan.', f'''<main id="main">
+  <div class="container page-head">
+    <p class="label">FAQ</p>
+    <h1 class="h1" data-split>Straight <em>answers.</em></h1>
+    <p class="lead reveal d1">Cost, timing, ownership and how we work. Something else? <a class="inline-link" href="contact.html">Ask us</a>.</p>
   </div>
-  <section class="container narrow reveal" aria-label="Questions">{faq_list(FAQS, P)}</section>
-  <section class="section cta-final" aria-labelledby="cta-h">
-    <div class="container">
-      <h2 id="cta-h" class="reveal">Still deciding?</h2>
-      <p class="reveal">A free concept is the easiest way to see if we are a good fit.</p>
-      <div class="btn-row reveal"><a class="btn btn-gold" href="free-concept.html">Get a free concept</a><a class="btn btn-ghost" href="contact.html">Ask a question</a></div>
-    </div>
+  <section class="container faq-split" aria-label="Questions" style="padding-bottom:40px">
+    <div class="section-head"><p class="label reveal">{len(FAQS)} questions</p><p class="lead reveal">Tap a question to open it. Every answer uses the same prices and promises as the rest of the site.</p></div>
+    <div class="reveal">{faq_list(FAQS, P)}</div>
   </section>
+  {cta_final('Still <em>deciding?</em>', 'A free concept is the easiest way to see if we are the right fit.', secondary=('contact.html', 'Ask a question'))}
 </main>''', ld=[faq_ld()])
 
-# ---------------------------------------------------------------- About
+# ================================================================= About
 P = ''
 page('about.html', 'About: Black Crest Web Designs', 'Black Crest Web Designs makes premium websites for local businesses in Melbourne. Plain English, clear prices, and you own your site. A KB Ventures company.', f'''<main id="main">
-  <div class="container page-head narrow">
-    <p class="eyebrow reveal">About</p>
-    <h1 class="reveal d1">Quality websites, without the agency price.</h1>
-    <p class="lead reveal d2">Black Crest Web Designs makes fast, good-looking websites for local businesses in Melbourne: the barbers, cafes, gyms, salons and tradies that keep a suburb going.</p>
+  <div class="container page-head">
+    <p class="label">About</p>
+    <h1 class="h1" data-split>Studio quality. <em>Local prices.</em></h1>
+    <p class="lead reveal d1">Black Crest Web Designs makes fast, good-looking websites for the local businesses that keep a suburb going: barbers, cafes, gyms, salons and tradies.</p>
   </div>
-  <section class="section" aria-labelledby="stand-h">
+  <section class="section band" aria-labelledby="stand-h">
     <div class="container">
-      {section_head('What we stand for', '<span id="stand-h">Three things we do not compromise on.</span>')}
-      <div class="grid grid-3">
-        <article class="tile tilt reveal">{tile_icon('chat')}<h3>Plain English</h3><p class="muted">No jargon and no hard sell. You always know what you are paying for and why.</p></article>
-        <article class="tile tilt reveal d1">{tile_icon('spark')}<h3>Well made</h3><p class="muted">Fast, secure, easy to use on a phone, and built to last. We sweat the details so your customers do not notice them.</p></article>
-        <article class="tile tilt reveal d2">{tile_icon('key')}<h3>Yours</h3><p class="muted">You own the finished site and your domain. No lock-in contracts, ever.</p></article>
-      </div>
+      {head_block('What we stand for', '<span id="stand-h">Three things we <em>never trade away.</em></span>', split=True)}
+      <ol class="reason-list">
+        <li class="reveal"><span class="n">01</span><h3>Plain English</h3><p>No jargon and no hard sell. You always know what you are paying for and why.</p></li>
+        <li class="reveal"><span class="n">02</span><h3>Well made</h3><p>Fast, secure, easy to use on a phone, and built to last. We sweat the details so your customers never notice them.</p></li>
+        <li class="reveal"><span class="n">03</span><h3>Yours</h3><p>You own the finished site and your domain. No lock-in contracts, ever.</p></li>
+      </ol>
     </div>
   </section>
   <section class="section" aria-labelledby="how-h">
-    <div class="container narrow">
-      {section_head('How we work', '<span id="how-h">See it first. Decide after.</span>', 'We design your homepage for free before you pay anything. If you like it, a 50% deposit starts the build and the balance is due at launch. Two rounds of changes are included.')}
-      <p class="reveal"><a class="text-link" href="process.html">The full process {icon('arrow')}</a></p>
+    <div class="container showcase">
+      <div>{head_block('How we work', '<span id="how-h">See it first. <em>Decide after.</em></span>', 'We design your homepage for free before you pay anything. If you like it, a 50% deposit starts the build and the balance is due at launch. Two rounds of changes are included.')}
+        <a class="link reveal" href="process.html">The full process {icon('arrow')}</a></div>
+      <div class="illo-wrap reveal d1">{illo('concept')}</div>
     </div>
   </section>
-  <section class="section" aria-labelledby="prom-h">
-    <div class="container narrow">
-      {section_head('Our promises', '<span id="prom-h">What you can hold us to.</span>')}
-      <ul class="ticks reveal">
-        <li>A free concept homepage before you pay anything.</li>
-        <li>Clear prices, set before we start. No hidden costs.</li>
-        <li>A reply within 24 hours.</li>
-        <li>No lock-in contracts.</li>
-        <li>You own your site and your domain.</li>
-        <li>No fake reviews or made-up numbers. We show concept sites and will earn real reviews.</li>
-      </ul>
+  <section class="section band band-gold" aria-labelledby="prom-h">
+    <div class="container">
+      <div class="grid grid-2" style="gap:48px;align-items:end">
+        <div><p class="label reveal">Our promises</p><h2 id="prom-h" class="h2" data-split>What you can <em>hold us to.</em></h2></div>
+        <ul class="ticks reveal d1">
+          <li>A free concept homepage before you pay anything.</li>
+          <li>Clear prices, set before we start. No hidden costs.</li>
+          <li>A reply within 24 hours.</li>
+          <li>No lock-in contracts.</li>
+          <li>You own your site and your domain.</li>
+          <li>No fake reviews or made-up numbers. We show concept sites, and we will earn real reviews.</li>
+        </ul>
+      </div>
     </div>
   </section>
   <section class="section" aria-labelledby="kb-h">
     <div class="container narrow">
       <div class="tile reveal">
-        <p class="eyebrow">A KB Ventures company</p>
-        <h2 id="kb-h">Part of something bigger.</h2>
+        <p class="label">A KB Ventures company</p>
+        <h2 id="kb-h" class="h3">Part of something bigger.</h2>
         <p class="muted" style="margin-top:14px">Black Crest Web Designs is a brand of KB Ventures, a Melbourne company that starts and runs small businesses to one standard: clear, fair and well made.</p>
-        <a class="text-link" href="{KB_SITE}">Visit KB Ventures {icon('arrow')}</a>
+        <a class="link" href="{KB_SITE}">Visit KB Ventures {icon('arrow')}</a>
       </div>
     </div>
   </section>
 </main>''', ld=[ORG])
 
-# ---------------------------------------------------------------- Quiz
+# ================================================================= Quiz
 P = ''
 QUIZ = [
-    ('Do you have your own website, not just social media pages?', 'yes', 'Get your own website. Social pages are useful, but you do not control them, and they rarely show your prices or hours clearly.'),
-    ('Does your website load in a few seconds on your phone?', 'yes', 'Make it faster. Smaller images and a lighter site fix most slow pages, and people leave slow pages quickly.'),
-    ('Can someone call, book or get directions with one tap from your homepage?', 'yes', 'Add one-tap buttons to call, book and get directions near the top of your homepage.'),
-    ('Are your prices, or a price guide, on your website?', 'yes', 'Show your prices, or at least a guide. It answers the first question most people have.'),
-    ('Are your opening hours and address correct everywhere online, including Google?', 'yes', 'Check your hours and address on your site and your Google Business Profile, including public holidays.'),
-    ('Does your website show recent photos of your work, shop or team?', 'yes', 'Add recent, real photos. They build trust faster than stock images.'),
+    ('Do you have your own website, not just social media pages?', 'Get your own website. Social pages are useful, but you do not control them, and they rarely show prices or hours clearly.'),
+    ('Does your website load in a few seconds on your phone?', 'Make it faster. Smaller images and a lighter site fix most slow pages, and people leave slow pages quickly.'),
+    ('Can someone call, book or get directions with one tap from your homepage?', 'Add one-tap buttons to call, book and get directions near the top of your homepage.'),
+    ('Are your prices, or a price guide, on your website?', 'Show your prices, or at least a guide. It answers the first question most people have.'),
+    ('Are your opening hours and address correct everywhere online, including Google?', 'Check your hours and address on your site and your Google Business Profile, including public holidays.'),
+    ('Does your website show recent photos of your work, shop or team?', 'Add recent, real photos. They build trust faster than stock images.'),
 ]
 qs = ''.join(f'''<fieldset data-tip="{E(tip)}"><legend><span>Question {i + 1} of {len(QUIZ)}</span>{q}</legend>
-          <div class="yn"><label class="choice"><input type="radio" name="q{i}" value="{'good' if good == 'yes' else 'bad'}"> Yes</label><label class="choice"><input type="radio" name="q{i}" value="{'good' if good == 'no' else 'bad'}"> No</label></div></fieldset>''' for i, (q, good, tip) in enumerate(QUIZ))
+          <div class="yn"><label class="choice"><input type="radio" name="q{i}" value="good"> Yes</label><label class="choice"><input type="radio" name="q{i}" value="bad"> No</label></div></fieldset>''' for i, (q, tip) in enumerate(QUIZ))
 page('quiz.html', 'Is your website costing you customers? A 1-minute quiz', 'Six quick yes or no questions to check if your website is costing you customers, with simple advice. Nothing is stored or sent.', f'''<main id="main">
   <div class="container page-head narrow">
-    <p class="eyebrow reveal">Website quiz</p>
-    <h1 class="reveal d1">Is your website costing you customers?</h1>
-    <p class="lead reveal d2">Six quick yes or no questions. Your answers stay on this page: nothing is stored or sent.</p>
+    <p class="label">Website quiz</p>
+    <h1 class="h1" data-split>Is your website <em>costing you customers?</em></h1>
+    <p class="lead reveal d1">Six quick yes or no questions. Your answers stay on this page: nothing is stored or sent.</p>
   </div>
-  <section class="container narrow" aria-label="Quiz">
+  <section class="container narrow" aria-label="Quiz" style="padding-bottom:120px">
     <form class="quiz reveal" id="quiz" novalidate>
       {qs}
       <p class="field-error" id="quiz-error" role="alert" hidden></p>
@@ -945,15 +1035,14 @@ page('quiz.html', 'Is your website costing you customers? A 1-minute quiz', 'Six
       <a class="btn btn-gold" id="quiz-review" href="contact.html#review">Get a free mini review</a>
     </div>
   </section>
-  <div style="height:96px"></div>
 </main>''')
 
-# ---------------------------------------------------------------- Guides
+# ================================================================= Guides
 GUIDES = [
     ('barber-website-checklist.html', '5 things every barber website needs', 'Five simple things that turn a barber website into booked chairs: booking, prices, real photos, hours and speed.', '''
       <p>A barber website has one job: help someone who wants a cut today pick you and book. Most people find a barber on their phone, so every one of these is about making that quick.</p>
       <h2>1. A booking button you cannot miss</h2>
-      <p>Put a <strong>Book now</strong> button at the top of every page, linking to the booking app you already use. On a phone, keep it in easy reach of the thumb. If you take walk-ins, say so clearly too.</p>
+      <p>Put a <strong>Book now</strong> button at the top of every page, linking to the booking app you already use. On a phone, keep it within easy reach of the thumb. If you take walk-ins, say so clearly too.</p>
       <h2>2. Prices, clearly</h2>
       <p>List your cuts, fades, beard trims and shaves with prices, even if some are "from" prices. People compare barbers on price and style. If they have to message you to ask, many will not.</p>
       <h2>3. Photos of real cuts</h2>
@@ -977,14 +1066,14 @@ GUIDES = [
       <h2>Your website and your profile work together</h2>
       <p>Your profile gets you seen. Your website answers the next questions: the full menu, what makes you different, and how to order or book. Link them to each other, and keep the details the same in both places.</p>'''),
     ('small-business-website-cost.html', 'How much should a small business website cost?', 'An honest look at what a small business website costs in Australia: DIY builders, freelancers and agencies, what changes the price, and the ongoing costs.', '''
-      <p>The honest answer is: it depends on what you need. A one-page site for a local barber is a very different job to an online shop with hundreds of products. Here is how the main options compare, and what to ask before you pay anyone.</p>
+      <p>The honest answer: it depends on what you need. A one-page site for a local barber is a very different job to an online shop with hundreds of products. Here is how the main options compare, and what to ask before you pay anyone.</p>
       <h2>Your three main options</h2>
       <h3>Do it yourself with a website builder</h3>
       <p>Builders like Wix and Squarespace charge a monthly subscription. The real cost is your time: you do the design, the writing and the setup. Your site also lives on their platform, so leaving usually means rebuilding.</p>
       <h3>A freelancer or small studio</h3>
       <p>Prices vary widely, from a few hundred dollars to several thousand. Ask exactly what is included, how many changes you get, and who owns the site at the end.</p>
       <h3>An agency</h3>
-      <p>Agencies often charge $3,000 or more for a small business site. This is a typical market range and prices vary. You usually get a team, a longer process, and more meetings.</p>
+      <p>Agencies often charge $3,000 or more for a small business site. This is a typical market range and prices vary. You usually get a team, a longer process and more meetings.</p>
       <h2>What changes the price</h2>
       <ul><li><strong>Number of pages.</strong> One page costs less than ten.</li><li><strong>Features.</strong> Booking, online ordering or a shop add work.</li><li><strong>Writing and photos.</strong> Someone has to write the words and supply good images.</li><li><strong>Changes.</strong> More rounds of changes means more time.</li></ul>
       <h2>Ongoing costs</h2>
@@ -1000,47 +1089,47 @@ for slug, title, desc, body in GUIDES:
     art = {'@context': 'https://schema.org', '@type': 'Article', 'headline': title, 'description': desc, 'url': SITE + 'guides/' + slug, 'image': SITE + 'img/og.jpg',
            'publisher': {'@id': SITE + '#business', '@type': 'ProfessionalService', 'name': 'Black Crest Web Designs'}, 'author': {'@type': 'Organization', 'name': 'Black Crest Web Designs'}}
     page('guides/' + slug, f'{title}: Black Crest guides', desc, f'''<main id="main">
-  <article class="container prose">
-    <header class="page-head" style="padding-bottom:16px">
-      <p class="eyebrow"><a class="crumb" href="./">Guides</a></p>
-      <h1 style="font-size:clamp(38px,7vw,62px)">{title}</h1>
+  <article class="container prose" style="padding-bottom:120px">
+    <header class="page-head" style="padding-bottom:20px">
+      <p class="label"><a class="crumb" href="./">Guides</a></p>
+      <h1 class="h1" style="font-size:clamp(42px,7vw,76px)">{title}</h1>
       <p class="byline">Black Crest Web Designs</p>
     </header>
     {body}
     <div class="tile callout">
-      <h2 style="margin:0 0 10px;font-size:30px">Want a hand with yours?</h2>
+      <h2 class="h3" style="margin:0 0 12px">Want a hand with yours?</h2>
       <p>We design a free concept homepage for your business, so you can see it before you pay.</p>
       <div class="btn-row"><a class="btn btn-gold" href="../free-concept.html">Get a free concept</a><a class="btn btn-ghost" href="./">More guides</a></div>
     </div>
   </article>
 </main>''', ld=[art])
 P = '../'
+gcards = ''.join(f'''<li><a href="{s}"><span class="n">0{i + 1}</span><span class="t">{t}</span><span class="x">{d}</span><span class="ic">{icon("ne")}</span></a></li>''' for i, (s, t, d, _) in enumerate(GUIDES))
 page('guides/index.html', 'Guides for local business websites: Black Crest', 'Short, practical guides for local businesses: what a barber website needs, Google Business Profiles for cafes, and what a website should cost.', f'''<main id="main">
   <div class="container page-head">
-    <p class="eyebrow reveal">Guides</p>
-    <h1 class="reveal d1">Short, useful guides.</h1>
-    <p class="lead reveal d2">Plain-English advice for local businesses. No jargon, no made-up numbers.</p>
+    <p class="label">Guides</p>
+    <h1 class="h1" data-split>Short, <em>useful</em> guides.</h1>
+    <p class="lead reveal d1">Plain-English advice for local businesses. No jargon, no made-up numbers.</p>
   </div>
-  <section class="container" aria-label="Guides">
-    <div class="grid grid-3">{''.join(f'<article class="tile tilt reveal d{i}"><p class="tile-label"><span>Guide</span></p><h2 style="font-size:28px">{t}</h2><p class="muted" style="margin-top:12px">{d}</p><a class="text-link" href="{s}">Read the guide {icon("arrow")}<span class="sr-only">: {t}</span></a></article>' for i, (s, t, d, _) in enumerate(GUIDES))}</div>
+  <section class="container" aria-label="Guides" style="padding-bottom:120px">
+    <ol class="trade-list guide-list reveal" style="--t:clamp(28px,4vw,48px)">{gcards}</ol>
   </section>
-  <div style="height:96px"></div>
 </main>''')
 
-# ---------------------------------------------------------------- Contact
+# ================================================================= Contact
 P = ''
 needs = ''.join(f'<label class="choice"><input type="radio" name="need" value="{v}"{" checked" if v == "Not sure" else ""}> {v}</label>' for v in ['One Page', 'Full Website', 'Care plan', 'Not sure'])
 page('contact.html', 'Contact: Black Crest Web Designs', 'Ask a question or request a quote. We reply within 24 hours. Based in Melbourne, Australia.', f'''<main id="main">
-  <div class="container page-head narrow">
-    <p class="eyebrow reveal">Contact</p>
-    <h1 class="reveal d1">Get in touch.</h1>
-    <p class="lead reveal d2">Tell us what you need. We reply within 24 hours.</p>
-    <div class="btn-row reveal d3" style="margin-top:24px">
+  <div class="container page-head">
+    <p class="label">Contact</p>
+    <h1 class="h1" data-split>Let's talk <em>about your site.</em></h1>
+    <p class="lead reveal d1">Tell us what you need. We reply within 24 hours.</p>
+    <div class="btn-row reveal d2" style="margin-top:28px">
       <a class="btn btn-ghost" data-email href="mailto:{EMAIL}">{icon('mail')} Email {EMAIL}</a>
       <a class="btn btn-ghost" data-call href="#" hidden>{icon('call')} Call us</a>
     </div>
   </div>
-  <section class="container narrow" aria-label="Contact form">
+  <section class="container narrow" aria-label="Contact form" style="padding-bottom:120px">
     <div class="tile reveal">
       {form_open('contact', 'Black Crest: contact form message', P)}
         <input type="hidden" name="quote" value="">
@@ -1055,34 +1144,33 @@ page('contact.html', 'Contact: Black Crest Web Designs', 'Ask a question or requ
     </div>
     <p class="muted small" style="margin-top:20px">Based in Melbourne, Australia. We work with businesses across Melbourne and its suburbs.</p>
   </section>
-  <div style="height:80px"></div>
 </main>''')
 
-# ---------------------------------------------------------------- Thank you
+# ================================================================= Thank you
 P = ''
 page('thank-you.html', 'Thank you: Black Crest Web Designs', 'Thanks for your message. Here is what happens next.', f'''<main id="main">
-  <div class="container page-head narrow">
-    <p class="eyebrow">Message sent</p>
-    <h1>Thank you. We have your message.</h1>
-    <p class="lead">Here is what happens next.</p>
+  <div class="container page-head">
+    <p class="label">Message received</p>
+    <h1 class="h1" data-split>Thank you. <em>It's with us.</em></h1>
+    <p class="lead reveal d1">Here is what happens next.</p>
   </div>
-  <section class="container" aria-label="What happens next">
-    <ol class="steps">
-      <li class="tile"><span class="num">01</span><h2 style="font-size:26px">We reply within 24 hours</h2><p class="muted">By email, or by phone if you asked us to call.</p></li>
-      <li class="tile"><span class="num">02</span><h2 style="font-size:26px">We ask a few questions</h2><p class="muted">Only what we need to design your free concept or answer your question.</p></li>
-      <li class="tile"><span class="num">03</span><h2 style="font-size:26px">You see it, then decide</h2><p class="muted">No deposit and no obligation until you say yes.</p></li>
+  <section class="container" aria-label="What happens next" style="padding-bottom:120px">
+    <ol class="reason-list">
+      <li class="reveal"><span class="n">01</span><h2 class="h3">We reply within 24 hours</h2><p>By email, or by phone if you asked us to call.</p></li>
+      <li class="reveal"><span class="n">02</span><h2 class="h3">We ask a few questions</h2><p>Only what we need to design your free concept or answer your question.</p></li>
+      <li class="reveal"><span class="n">03</span><h2 class="h3">You see it, then decide</h2><p>No deposit and no obligation until you say yes.</p></li>
     </ol>
-    <div class="btn-row" style="margin:36px 0 96px"><a class="btn btn-gold" href="work.html">See our concept sites</a><a class="btn btn-ghost" href="index.html">Back to home</a></div>
+    <div class="btn-row" style="margin-top:40px"><a class="btn btn-gold" href="work.html">See the concept sites</a><a class="btn btn-ghost" href="index.html">Back to home</a></div>
   </section>
-</main>''', noindex=True)
+</main>''', noindex=True, toast=True)
 
-# ---------------------------------------------------------------- QR (printable)
+# ================================================================= QR (printable)
 P = ''
 page('qr.html', 'Printable QR code: Black Crest Web Designs', 'A printable QR code that opens the Black Crest free concept page.', f'''<main id="main">
   <div class="container page-head">
     <div class="qr-sheet">
       <div style="display:flex;justify-content:center">{brand(P)}</div>
-      <h1 style="font-size:clamp(36px,7vw,56px);margin-top:28px">Scan for a free website concept.</h1>
+      <h1 class="h1" style="font-size:clamp(40px,7vw,64px);margin-top:30px">Scan for a free <em>website concept.</em></h1>
       <div class="qr-code"><img src="img/qr-free-concept.svg" width="320" height="320" alt="QR code that opens the Black Crest free concept page"></div>
       <p class="muted">Or visit:<br><span style="word-break:break-all">{SITE}free-concept.html</span></p>
       <div class="btn-row no-print" style="justify-content:center;margin-top:24px"><button class="btn btn-gold" type="button" data-print>Print this page</button></div>
@@ -1090,11 +1178,11 @@ page('qr.html', 'Printable QR code: Black Crest Web Designs', 'A printable QR co
   </div>
 </main>''', noindex=True)
 
-# ---------------------------------------------------------------- Privacy and terms
+# ================================================================= Privacy and terms
 P = ''
 page('privacy.html', 'Privacy policy: Black Crest Web Designs', 'How Black Crest Web Designs (a KB Ventures company) handles your information. No cookies, no tracking, no analytics.', f'''<main id="main">
-  <article class="container prose">
-    <header class="page-head" style="padding-bottom:8px"><p class="eyebrow">Legal</p><h1>Privacy policy</h1><p class="byline">Last updated 30 October 2026</p></header>
+  <article class="container prose" style="padding-bottom:120px">
+    <header class="page-head" style="padding-bottom:8px"><p class="label">Legal</p><h1 class="h1">Privacy policy</h1><p class="byline">Last updated 1 November 2026</p></header>
     <p>Black Crest Web Designs is a brand of KB Ventures, based in Melbourne, Australia. This policy explains, in plain English, what we collect and what we do with it. "We" and "us" mean Black Crest Web Designs and KB Ventures.</p>
     <h2>What we collect</h2>
     <p>Only what you choose to send us through a form or by email: for example your name, business name, email address, phone number and the details of your project.</p>
@@ -1102,21 +1190,20 @@ page('privacy.html', 'Privacy policy: Black Crest Web Designs', 'How Black Crest
     <ul><li>To reply to you and prepare your free concept or quote.</li><li>To build and look after your website if you become a customer.</li><li>To send invoices and keep the business records the law requires.</li></ul>
     <p>We do not sell your information, and we do not add you to a mailing list.</p>
     <h2>No cookies, no tracking</h2>
-    <p>This website does not use cookies, analytics or advertising trackers. It uses your browser's session storage for two small things that never leave your device: remembering that you have seen the opening animation, and carrying your price-calculator choices to the contact form. Both are cleared when you close the tab.</p>
+    <p>This website does not use cookies, analytics or advertising trackers. It uses your browser's session storage for small things that never leave your device: remembering that you have seen the opening animation, carrying your price-calculator or quiz choices to the contact form, and showing a confirmation after you send a form. All of it is cleared when you close the tab.</p>
     <h2>Services we use</h2>
-    <ul><li><strong>Web3Forms</strong> delivers our website forms to our email inbox.</li><li><strong>GitHub Pages</strong> hosts this website. Like most hosts, it may record basic technical information such as your IP address to keep the service secure.</li></ul>
+    <ul><li><strong>Web3Forms</strong> delivers our website forms to our email inbox.</li><li><strong>GitHub Pages</strong> hosts this website. Like most hosts, it may record basic technical information such as your IP address to keep the service secure.</li><li><strong>cdnjs</strong> (Cloudflare) serves the 3D graphics library used on the home page. Like any web server, it receives your IP address when your browser requests the file.</li></ul>
     <p>Some of these services may store information outside Australia.</p>
     <h2>Seeing, correcting or deleting your information</h2>
     <p>Email <a data-email href="mailto:{EMAIL}">{EMAIL}</a> to ask what we hold about you, or to correct or delete it. We reply within 30 days.</p>
     <h2>The Australian Privacy Principles</h2>
     <p>We aim to follow the Australian Privacy Principles in the <em>Privacy Act 1988</em> (Cth). If you are unhappy with how we handled your information, email us first. If we cannot fix it, you can contact the Office of the Australian Information Commissioner at <a href="https://www.oaic.gov.au/" rel="noopener">oaic.gov.au</a>.</p>
-    <div style="height:96px"></div>
   </article>
 </main>''')
 page('terms.html', 'Terms: Black Crest Web Designs', 'The plain-English terms for working with Black Crest Web Designs: free concept first, 50% deposit, balance at launch, 2 rounds of changes, and you own your site.', f'''<main id="main">
-  <article class="container prose">
-    <header class="page-head" style="padding-bottom:8px"><p class="eyebrow">Legal</p><h1>Terms</h1><p class="byline">Last updated 30 October 2026</p></header>
-    <p>These are the terms for websites made by Black Crest Web Designs, a brand of KB Ventures, Melbourne, Australia. We have kept them short and plain. Your written quote sets out the exact price and what is included for your project.</p>
+  <article class="container prose" style="padding-bottom:120px">
+    <header class="page-head" style="padding-bottom:8px"><p class="label">Legal</p><h1 class="h1">Terms</h1><p class="byline">Last updated 1 November 2026</p></header>
+    <p>These are the terms for websites made by Black Crest Web Designs, a brand of KB Ventures, Melbourne, Australia. We have kept them short and plain. Your written quote sets out the exact price and what is included for your project. Our current packages are One Page ({money(ONE)}) and Full Website ({money(FULL)}).</p>
     <h2>1. The free concept</h2>
     <p>We design a concept homepage for you free of charge. You are under no obligation to go ahead, and you owe nothing if you do not.</p>
     <h2>2. Quote and deposit</h2>
@@ -1137,17 +1224,16 @@ page('terms.html', 'Terms: Black Crest Web Designs', 'The plain-English terms fo
     <p>Nothing in these terms limits your rights under the Australian Consumer Law.</p>
     <h2>Questions</h2>
     <p>Email <a data-email href="mailto:{EMAIL}">{EMAIL}</a>.</p>
-    <div style="height:96px"></div>
   </article>
 </main>''')
 
-# ---------------------------------------------------------------- 404
+# ================================================================= 404
 P = ''
 page('404.html', 'Page not found: Black Crest Web Designs', 'This page could not be found.', f'''<main id="main" class="nf">
   <div class="container">
-    <p class="code">4<span>0</span>4</p>
-    <h1 style="font-size:clamp(34px,6vw,52px);margin-top:16px">This page could not be found.</h1>
-    <p class="lead" style="margin-top:14px">It may have moved. These will get you back on track.</p>
+    <p class="code" aria-hidden="true">4<span>0</span>4</p>
+    <h1 class="h2" style="margin-top:12px">This page has <em>moved on.</em></h1>
+    <p class="lead" style="margin:18px auto 0">It may have moved, or the address may be mistyped. These will get you back on track.</p>
     <div class="btn-row"><a class="btn btn-gold" href="index.html">Go to the home page</a><a class="btn btn-ghost" href="pricing.html">See pricing</a></div>
   </div>
 </main>''', noindex=True, base_script=True)
@@ -1160,12 +1246,12 @@ for path, content in pages.items():
         fh.write(content)
 
 SKIP = {'free-concept.html', 'thank-you.html', '404.html', 'qr.html'}
-urls = [p for p in pages if p not in SKIP]
 with open(os.path.join(SITE_DIR, 'sitemap.xml'), 'w', encoding='utf-8') as fh:
     fh.write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n')
-    for p in urls:
-        loc = SITE + ('' if p == 'index.html' else p.replace('index.html', ''))
-        fh.write(f'  <url><loc>{loc}</loc><lastmod>2026-10-30</lastmod></url>\n')
+    for p in pages:
+        if p in SKIP:
+            continue
+        fh.write(f'  <url><loc>{SITE + ("" if p == "index.html" else p.replace("index.html", ""))}</loc><lastmod>{LASTMOD}</lastmod></url>\n')
     fh.write('</urlset>\n')
 with open(os.path.join(SITE_DIR, 'robots.txt'), 'w', encoding='utf-8') as fh:
     fh.write(f'User-agent: *\nDisallow: /3D-demo-sites/black-crest-site/free-concept.html\nDisallow: /3D-demo-sites/black-crest-site/thank-you.html\n\nSitemap: {SITE}sitemap.xml\n')
@@ -1175,4 +1261,4 @@ with open(os.path.join(SITE_DIR, 'manifest.webmanifest'), 'w', encoding='utf-8')
                'icons': [{'src': 'img/icon-192.png', 'sizes': '192x192', 'type': 'image/png'},
                          {'src': 'img/icon-512.png', 'sizes': '512x512', 'type': 'image/png'},
                          {'src': 'img/icon-maskable-512.png', 'sizes': '512x512', 'type': 'image/png', 'purpose': 'maskable'}]}, fh, indent=2)
-print('built', len(pages), 'pages:', ', '.join(pages))
+print('built', len(pages), 'pages')

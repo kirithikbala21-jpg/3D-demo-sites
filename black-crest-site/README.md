@@ -13,7 +13,13 @@ Live: https://kirithikbala21-jpg.github.io/3D-demo-sites/black-crest-site/
 - `free-concept.html`: the landing page for DMs (no menu, noindex). `qr.html`: a printable QR code for it.
 - `thank-you.html` (after any form, noindex), `privacy.html`, `terms.html`, `404.html`
 
-Every page shares `style.css` and `main.js`.
+Every page shares `style.css` and `main.js` (about 33 KB of the site's own JavaScript together with `hero3d.js`).
+
+## The 3D crest (home page only)
+`hero3d.js` draws the turning gold crest with Three.js 0.160.0 from cdnjs (pinned, with an integrity hash).
+It loads only on the home page, after the page has finished loading and on the visitor's first interaction (mouse move, scroll, touch or key), and only on capable devices:
+not with reduced motion, Data Saver, fewer than 4 CPU cores, under 4 GB of memory, or software-only graphics. Everyone else sees the static SVG crest.
+Add `?3d=on` to the home page address to skip the device checks when testing.
 
 ## Changing prices
 All prices live in the `CONFIG` object at the top of `main.js`: One Page, Full Website, the care plan and the add-ons.
@@ -36,7 +42,7 @@ The price calculator and the quiz pass their choices to the contact form in the 
 
 ## Images
 `node black-crest-site/tools/make-images.mjs` (with a local server on port 8123 at the repo root) remakes:
-the phone screenshots of the six demos (`img/work/`), the before and after images, the share image `img/og.jpg`, and the app icons.
+the desktop (1600 and 800 wide) and phone (600 x 1300) screenshots of the six demos in `img/work/`, the before and after images, the share image `img/og.jpg`, and the app icons. The share image uses `tools/crest-art.svg`, the same crest as the home page's still image.
 The demo folders are only opened, never changed. Made-up ratings inside the demos are hidden in the screenshots.
 `img/favicon.svg` is drawn by hand. The "before" image is a made-up dated homepage, labelled "Example, not a real customer" on the site.
 

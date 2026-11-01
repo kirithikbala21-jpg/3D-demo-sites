@@ -59,19 +59,22 @@ table{border-collapse:collapse;width:100%;font:13px Arial;background:#fff}td{bor
 <p class="small">Best viewed in Internet Explorer at 1024x768.</p></div></div>
 <div class="foot">Copyright Brass &amp; Blade. All rights reserved. Site designed with a free website builder.</div></div></body></html>`;
 
-// The 1200x630 share image: obsidian, the crest and the tagline. Gold stays to the crest and two hairlines.
-const OG = `<!doctype html><html><head><style>${FONTS}
+// The 1200x630 share image, in the site's new look: grain, the gold crest, a large serif headline. Gold stays under 5%.
+const CREST_ART = readFileSync(path.join(SITE, 'tools', 'crest-art.svg'), 'utf8');
+const OG = `<!doctype html><html><head><style>${FONTS}@font-face{font-family:"Cormorant Garamond";src:${font("cormorant-garamond.woff2")};font-weight:300 700}
 html,body{margin:0;width:1200px;height:630px;overflow:hidden;background:#0D0E12}
-body{position:relative;font-family:IN;color:#E4E6ED;background:radial-gradient(60% 80% at 82% 10%,rgba(212,175,55,.10),transparent 60%),radial-gradient(60% 70% at 0% 100%,rgba(120,128,150,.16),transparent 65%),#0D0E12}
-.frame{position:absolute;inset:28px;border:1px solid rgba(228,230,237,.10);border-radius:28px}
-.row{position:absolute;left:96px;right:96px;top:0;bottom:0;display:flex;align-items:center;gap:72px}
-.mark{flex:none;width:230px}
-h1{margin:0;font:600 104px/0.95 CG;letter-spacing:-.01em}
-.sub{margin-top:14px;font:500 17px IN;letter-spacing:.42em;text-transform:uppercase;color:#8A8F9E}
-.line{width:72px;height:1px;background:#D4AF37;margin:34px 0 26px}
-.tag{font:italic 500 44px/1.15 CG;color:#E4E6ED}
-.foot{position:absolute;left:96px;bottom:58px;font:500 15px IN;letter-spacing:.26em;text-transform:uppercase;color:#8A8F9E}
-</style></head><body><div class="frame"></div><div class="row"><div class="mark">${CREST(230)}</div><div><h1>Black Crest</h1><div class="sub">Web Designs</div><div class="line"></div><div class="tag">Premium sites for local businesses</div></div></div><div class="foot">A KB Ventures company &middot; Melbourne</div></body></html>`;
+body{position:relative;font-family:IN;color:#E4E6ED;background:radial-gradient(45% 70% at 80% 40%,rgba(212,175,55,.13),transparent 65%),radial-gradient(60% 70% at 0% 100%,rgba(120,128,150,.15),transparent 65%),#0D0E12}
+.grain{position:absolute;inset:0;opacity:.09;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1.1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.lines{position:absolute;inset:0;background-image:linear-gradient(90deg,rgba(228,230,237,.05) 1px,transparent 1px);background-size:200px 100%}
+.label{position:absolute;left:84px;top:78px;display:flex;align-items:center;gap:16px;font:500 15px IN;letter-spacing:.34em;text-transform:uppercase;color:#8A8F9E}
+.label i{width:34px;height:1px;background:#D4AF37}
+h1{position:absolute;left:80px;top:128px;margin:0;width:700px;font:500 112px/.9 CG;letter-spacing:-.04em}
+h1 em{font-style:italic;font-weight:400}
+.foot{position:absolute;left:84px;bottom:72px;font:500 15px IN;letter-spacing:.3em;text-transform:uppercase;color:#8A8F9E}
+.foot b{color:#E4E6ED;font-weight:500}
+.crest{position:absolute;right:96px;top:84px;width:330px;filter:drop-shadow(0 40px 50px rgba(0,0,0,.75))}
+.crest svg{width:100%}
+</style></head><body><div class="lines"></div><div class="grain"></div><p class="label"><i></i>Black Crest Web Designs</p><h1>Premium sites for <em>local</em> businesses</h1><p class="foot"><b>Melbourne</b> &middot; A KB Ventures company</p><div class="crest">${CREST_ART}</div></body></html>`;
 
 const browser = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });
 const shot = async (opts, fn, file) => {
@@ -90,13 +93,15 @@ const demo = (dir, threeD = 'on') => async (page) => {
   await page.evaluate(() => document.fonts && document.fonts.ready);
   await page.waitForTimeout(7000);
 };
-// phone screenshots
-for (const [slug, dir] of Object.entries(DEMOS)) await shot({ viewport: { width: 390, height: 845 }, deviceScaleFactor: 1.5, isMobile: true, hasTouch: true }, demo(dir, 'off'), `work-${slug}.png`); // phones: the demos' still-image hero
+// phone and desktop screenshots, at twice the pixel density
+for (const [slug, dir] of Object.entries(DEMOS)) {
+  await shot({ viewport: { width: 390, height: 845 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true }, demo(dir, 'off'), `phone-${slug}.png`); // phones: the demos' still-image hero
+  await shot({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 2 }, demo(dir), `desktop-${slug}.png`);
+}
 // before/after (desktop)
-await shot({ viewport: { width: 1440, height: 900 } }, demo('barber-demo'), 'after.png');
-await shot({ viewport: { width: 1440, height: 900 } }, async (page) => { await page.setContent(BEFORE); await page.waitForTimeout(300); }, 'before.png');
+await shot({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 2 }, async (page) => { await page.setContent(BEFORE); await page.waitForTimeout(300); }, 'before.png');
 // share image
-await shot({ viewport: { width: 1200, height: 630 } }, async (page) => { await page.setContent(OG); await page.evaluate(() => document.fonts.ready); await page.waitForTimeout(400); }, 'og.png');
+await shot({ viewport: { width: 1200, height: 630 }, deviceScaleFactor: 1 }, async (page) => { await page.setContent(OG); await page.evaluate(() => document.fonts.ready); await page.waitForTimeout(500); }, 'og.png');
 // icons
 for (const [name, size, pad] of [['icon-512', 512, 0.2], ['icon-192', 192, 0.2], ['icon-maskable-512', 512, 0.3], ['apple-touch-icon', 180, 0.18], ['favicon-64', 64, 0.1]]) {
   await shot({ viewport: { width: size, height: size } }, async (page) => {
@@ -111,11 +116,15 @@ import sys
 from PIL import Image
 tmp, img, site, *slugs = sys.argv[1:]
 for s in slugs:
-    im = Image.open(f'{tmp}/work-{s}.png').convert('RGB')          # 585 x 1268
-    im = im.crop((0, 0, im.width, int(im.width * 19.5 / 9))).resize((540, 1170), Image.LANCZOS)
-    im.save(f'{img}/work/{s}.webp', 'WEBP', quality=68, method=6)
-for n in ('before', 'after'):
-    Image.open(f'{tmp}/{n}.png').convert('RGB').resize((1200, 750), Image.LANCZOS).save(f'{img}/compare-{n}.webp', 'WEBP', quality=72, method=6)
+    ph = Image.open(f'{tmp}/phone-{s}.png').convert('RGB')          # 780 x 1690
+    ph = ph.crop((0, 0, ph.width, int(ph.width * 19.5 / 9))).resize((600, 1300), Image.LANCZOS)
+    ph.save(f'{img}/work/{s}-phone.webp', 'WEBP', quality=72, method=6)
+    dk = Image.open(f'{tmp}/desktop-{s}.png').convert('RGB')        # 2880 x 1800
+    dk.resize((1600, 1000), Image.LANCZOS).save(f'{img}/work/{s}-desktop-1600.webp', 'WEBP', quality=70, method=6)
+    dk.resize((800, 500), Image.LANCZOS).save(f'{img}/work/{s}-desktop-800.webp', 'WEBP', quality=72, method=6)
+    if s == 'barber':
+        dk.resize((1600, 1000), Image.LANCZOS).save(f'{img}/compare-after.webp', 'WEBP', quality=72, method=6)
+Image.open(f'{tmp}/before.png').convert('RGB').resize((1600, 1000), Image.LANCZOS).save(f'{img}/compare-before.webp', 'WEBP', quality=70, method=6)
 Image.open(f'{tmp}/og.png').convert('RGB').save(f'{img}/og.jpg', 'JPEG', quality=86, optimize=True, progressive=True)
 for n in ('icon-512', 'icon-192', 'icon-maskable-512', 'apple-touch-icon'):
     Image.open(f'{tmp}/{n}.png').convert('RGB').save(f'{img}/{n}.png', optimize=True)

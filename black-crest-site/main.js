@@ -185,6 +185,26 @@ const CONFIG = /* CONFIG-START */ {
     addEventListener('keydown', () => { running = false; }, { passive: true });
   }
 
+  /* ---------- Hero: keep the crest fully visible, above the headline and the price card ---------- */
+  const heroStage = $('.hero-stage');
+  if (heroStage) {
+    const fitStage = () => {
+      // phones and tablets: the crest sits above the text, so the text and the card are in its way; desktop: only the card
+      const blockers = $$(innerWidth >= 1200 ? '.hero-card' : '.hero-grid .label, .hero-grid h1, .hero-card');
+      heroStage.style.height = '';
+      const s = heroStage.getBoundingClientRect();
+      let limit = s.bottom;
+      blockers.forEach((el) => {
+        const r = el.getBoundingClientRect();
+        if (r.right > s.left && r.left < s.right && r.top < limit) limit = r.top; // only what sits under the crest's column
+      });
+      heroStage.style.height = Math.max(140, Math.floor(limit - s.top - 16)) + 'px';
+    };
+    fitStage();
+    addEventListener('resize', fitStage);
+    if (document.fonts) document.fonts.ready.then(fitStage);
+  }
+
   /* ---------- Hero: soft spotlight that follows the cursor ---------- */
   const hero = $('.hero');
   if (hero && fine && !reduce) {
@@ -197,7 +217,7 @@ const CONFIG = /* CONFIG-START */ {
     hero.addEventListener('pointerleave', () => hero.classList.remove('has-glow'));
   }
 
-  /* ---------- Micro-interactions: spotlight borders, magnetic buttons, custom cursor ---------- */
+  /* ---------- Micro-interactions: spotlight borders, magnetic buttons ---------- */
   if (fine && !reduce) {
     $$('.tile').forEach((c) => c.addEventListener('pointermove', (e) => {
       const r = c.getBoundingClientRect();
@@ -210,22 +230,6 @@ const CONFIG = /* CONFIG-START */ {
       });
       b.addEventListener('pointerleave', () => { b.style.transform = ''; });
     });
-    const ring = document.createElement('div'), dot = document.createElement('div');
-    ring.className = 'cursor'; dot.className = 'cursor-dot'; ring.setAttribute('aria-hidden', 'true'); dot.setAttribute('aria-hidden', 'true');
-    document.body.append(ring, dot);
-    let mx = -100, my = -100, rx = -100, ry = -100, shown = false;
-    addEventListener('pointermove', (e) => {
-      if (e.pointerType !== 'mouse') return;
-      mx = e.clientX; my = e.clientY;
-      if (!shown) { shown = true; rx = mx; ry = my; document.documentElement.classList.add('has-cursor'); }
-      dot.style.transform = `translate(${mx}px, ${my}px)`;
-      ring.classList.toggle('is-link', !!e.target.closest('a, button, summary, label, input[type=range], select'));
-    }, { passive: true });
-    addEventListener('pointerdown', () => ring.classList.add('is-down'));
-    addEventListener('pointerup', () => ring.classList.remove('is-down'));
-    document.addEventListener('pointerleave', () => document.documentElement.classList.remove('has-cursor'));
-    document.addEventListener('pointerenter', () => { if (shown) document.documentElement.classList.add('has-cursor'); });
-    (function loop() { rx += (mx - rx) * 0.2; ry += (my - ry) * 0.2; ring.style.transform = `translate(${rx.toFixed(1)}px, ${ry.toFixed(1)}px)`; requestAnimationFrame(loop); })();
   }
 
   /* ---------- How it works: the pinned visual follows the step in view ---------- */

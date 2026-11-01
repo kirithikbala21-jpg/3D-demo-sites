@@ -127,8 +127,8 @@ function initStatic() {
 
 function odometer(el, gsap, ST) {
   const text = el.dataset.odometer; // e.g. "$300", "5", "100%"
-  el.setAttribute('aria-label', text);
   el.textContent = '';
+  const said = document.createElement('span'); said.className = 'sr-only'; said.textContent = text; el.append(said); // what screen readers hear
   const cols = [];
   for (const ch of text) {
     const span = document.createElement('span');

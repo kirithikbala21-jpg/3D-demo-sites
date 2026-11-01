@@ -6,7 +6,7 @@
 
 /* ---------- Fonts (Google Fonts, served from this folder: no requests to Google) ---------- */
 @font-face { font-family: "Cormorant Garamond"; src: url("fonts/cormorant-garamond.woff2") format("woff2"); font-weight: 300 700; font-style: normal; font-display: swap; }
-@font-face { font-family: "Cormorant Garamond"; src: url("fonts/cormorant-garamond-italic.woff2") format("woff2"); font-weight: 300 700; font-style: italic; font-display: swap; }
+@font-face { font-family: "Cormorant Garamond"; src: url("fonts/cormorant-garamond-italic.woff2") format("woff2"); font-weight: 300 700; font-style: italic; font-display: optional; /* not preloaded: never swapped in late, so headlines never re-wrap */ }
 @font-face { font-family: "Inter"; src: url("fonts/inter.woff2") format("woff2"); font-weight: 100 900; font-style: normal; font-display: swap; }
 
 /* ---------- Tokens ---------- */
@@ -190,6 +190,7 @@ main, .site-footer, .site-header { position: relative; z-index: 1; }
 .site-footer { padding: 88px 0 32px; border-top: 1px solid var(--hair); overflow: hidden; }
 .site-footer { padding-bottom: 0; }
 .footer-word { margin: 56px 0 0; font: 600 clamp(64px, 17.5vw, 340px)/.74 var(--serif); letter-spacing: -.04em; color: var(--graphite); text-align: center; white-space: nowrap; user-select: none; height: .62em; overflow: hidden; }
+.footer-word::before { content: attr(data-word); } /* drawn by CSS: it is decoration, not text */
 .footer-brand p.tiny { margin: 6px 0 0; }
 .to-top { min-height: 44px; padding: 0 16px; border: 1px solid var(--hair-2); border-radius: 999px; background: none; color: var(--silver-2); font: 500 12px var(--sans); letter-spacing: .14em; text-transform: uppercase; cursor: pointer; }
 .to-top:hover { color: var(--platinum); border-color: rgba(228, 230, 237, .35); }

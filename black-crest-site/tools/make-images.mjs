@@ -2,8 +2,8 @@
 //   work/<demo>.webp      phone screenshots of the six concept demos (the demo folders are only opened, never changed)
 //   compare-before.webp   a deliberately dated, generic homepage mockup (made here, not a real site)
 //   compare-after.webp    the Brass & Blade concept homepage
-//   og.jpg                1200x630 share image with the crest and tagline
-//   icon-192.png, icon-512.png, icon-maskable-512.png, apple-touch-icon.png, ../favicon.ico
+//   each also as .avif and .jpg, for <picture>
+// (the share image og.jpg, the app icons and favicon.ico are made by tools/render-still.mjs from the 3D crest)
 // Run from the repo root while a static server is up:
 //   python3 -m http.server 8123 --bind 127.0.0.1 &
 //   node black-crest-site/tools/make-images.mjs
@@ -100,15 +100,7 @@ for (const [slug, dir] of Object.entries(DEMOS)) {
 }
 // before/after (desktop)
 await shot({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 2 }, async (page) => { await page.setContent(BEFORE); await page.waitForTimeout(300); }, 'before.png');
-// share image
-await shot({ viewport: { width: 1200, height: 630 }, deviceScaleFactor: 1 }, async (page) => { await page.setContent(OG); await page.evaluate(() => document.fonts.ready); await page.waitForTimeout(500); }, 'og.png');
-// icons
-for (const [name, size, pad] of [['icon-512', 512, 0.2], ['icon-192', 192, 0.2], ['icon-maskable-512', 512, 0.3], ['apple-touch-icon', 180, 0.18], ['favicon-64', 64, 0.1]]) {
-  await shot({ viewport: { width: size, height: size } }, async (page) => {
-    await page.setContent(`<style>${FONTS}html,body{margin:0;width:${size}px;height:${size}px;background:#0D0E12;display:grid;place-items:center}</style>${CREST(Math.round(size * (1 - 2 * pad) * 48 / 56))}`);
-    await page.evaluate(() => document.fonts.ready); await page.waitForTimeout(200);
-  }, `${name}.png`);
-}
+// the share image, the app icons and favicon.ico now come from the 3D crest: see tools/render-still.mjs
 await browser.close();
 
 execFileSync('python3', ['-I', '-c', `
@@ -125,9 +117,9 @@ for s in slugs:
     if s == 'barber':
         dk.resize((1600, 1000), Image.LANCZOS).save(f'{img}/compare-after.webp', 'WEBP', quality=72, method=6)
 Image.open(f'{tmp}/before.png').convert('RGB').resize((1600, 1000), Image.LANCZOS).save(f'{img}/compare-before.webp', 'WEBP', quality=70, method=6)
-Image.open(f'{tmp}/og.png').convert('RGB').save(f'{img}/og.jpg', 'JPEG', quality=86, optimize=True, progressive=True)
-for n in ('icon-512', 'icon-192', 'icon-maskable-512', 'apple-touch-icon'):
-    Image.open(f'{tmp}/{n}.png').convert('RGB').save(f'{img}/{n}.png', optimize=True)
-Image.open(f'{tmp}/favicon-64.png').convert('RGBA').save(f'{site}/favicon.ico', sizes=[(16, 16), (32, 32), (48, 48)])
+# AVIF and JPEG copies, for <picture> (tools/build.py uses them when they exist)
+import glob
+for f in glob.glob(f'{img}/work/*.webp') + [f'{img}/compare-before.webp', f'{img}/compare-after.webp']:
+    im = Image.open(f).convert('RGB'); im.save(f[:-5] + '.avif', quality=55); im.save(f[:-5] + '.jpg', quality=78, optimize=True, progressive=True)
 print('saved images')
 `, TMP, IMG, SITE, ...Object.keys(DEMOS)], { stdio: 'inherit' });

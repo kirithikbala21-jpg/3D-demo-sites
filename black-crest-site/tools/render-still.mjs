@@ -46,6 +46,9 @@ def save(src, stem, size):
     im.save(stem + '.avif', quality=60)
     flat = Image.new('RGBA', im.size, BG); flat.alpha_composite(im)
     flat.convert('RGB').save(stem + '.jpg', quality=82, optimize=True, progressive=True)
+    if 'crest' in stem:  # a half-size copy for phones
+        sm = im.resize((im.width // 2, im.height // 2), Image.LANCZOS); sm.save(stem + '-s.webp', quality=82, method=6); sm.save(stem + '-s.avif', quality=60)
+        fs = Image.new('RGBA', sm.size, BG); fs.alpha_composite(sm); fs.convert('RGB').save(stem + '-s.jpg', quality=82, optimize=True, progressive=True)
     print(stem, im.size)
 save(${JSON.stringify(path.join(tmp, 'crest.png'))}, ${JSON.stringify(out('assets/crest-still'))}, None)
 save(${JSON.stringify(path.join(tmp, 'globe.png'))}, ${JSON.stringify(out('assets/globe-still'))}, None)

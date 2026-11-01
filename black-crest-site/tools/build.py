@@ -227,7 +227,7 @@ def footer(P, here):
       <button class="to-top" type="button" data-top>Back to top <span aria-hidden="true">&uarr;</span></button>
     </div>
   </div>
-  <p class="footer-word" aria-hidden="true">BLACK CREST</p>
+  <p class="footer-word" aria-hidden="true" data-word="BLACK CREST"></p>
 </footer>'''
 
 
@@ -714,7 +714,7 @@ P = ''
 page('index.html', 'Black Crest Web Designs: premium sites for local businesses', f'Premium websites for Melbourne barbers, cafes, gyms, salons and trades. We design your homepage first, free. One Page {money(ONE)}, Full Website {money(FULL)}.', f'''<main id="main">
   <section class="hero" aria-labelledby="hero-h">
     <div class="hero-stage" data-hero3d>
-      {pic('assets/crest-still', 1280, 1520, '', P, lazy=False, sizes='(min-width: 1024px) 48vw, 80vw', cls='crest-still', high=True)}
+      {pic('assets/crest-still', 1280, 1520, '', P, lazy=False, sizes='(min-width: 1024px) 48vw, 80vw', small=('assets/crest-still-s', 640), cls='crest-still', high=True)}
     </div>
     <div class="container hero-copy">
       <p class="label">Black Crest Web Designs &middot; Melbourne</p>

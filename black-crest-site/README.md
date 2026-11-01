@@ -15,11 +15,23 @@ Live: https://kirithikbala21-jpg.github.io/3D-demo-sites/black-crest-site/
 
 Every page shares `style.css` and the small ES modules in `js/` (`config.js`, `core.js`, `motion.js`, `menu.js`, `forms.js`, plus `hero3d.js` on the home page). Motion libraries are vendored in `vendor/` (see `vendor/VERSIONS.md`).
 
-## The 3D crest (home page only)
-`js/hero3d.js` draws the turning gold crest with the vendored Three.js (`vendor/three`).
-It loads only on the home page, after the page has finished loading and on the visitor's first interaction (mouse move, scroll, touch or key), and only on capable devices:
-not with reduced motion, Data Saver, fewer than 4 CPU cores, under 4 GB of memory, or software-only graphics. Everyone else sees the static SVG crest.
+## The 3D crest and the globe (home page only)
+`js/hero3d.js` draws the gold crest and `js/globe3d.js` the dotted globe, with the vendored Three.js (`vendor/three`).
+They load only on the home page, when the browser is idle (the globe when its section comes near), and only on capable devices:
+not with reduced motion, Data Saver, 4 or fewer CPU cores, 4 GB of memory or less, or software-only graphics. Everyone else sees still images of the same scenes.
 Add `?3d=on` to the home page address to skip the device checks when testing.
+
+## Tools (run from the repo root, with `python3 -m http.server 8123 --bind 127.0.0.1` running there)
+- `python3 black-crest-site/tools/build.py`: writes every page, `style.min.css`, the sitemap and robots.txt. Run it after any change.
+- `node black-crest-site/tools/check.mjs`: checks every page at 390, 768, 1280 and 1920 px (console errors, failed requests, broken links, sideways scrolling, prices, banned words, no the-one-barber links). Screenshots land in `tools/screens/`, which git ignores. `--quick` checks two widths without screenshots.
+- `node black-crest-site/tools/render-still.mjs`: the crest and globe stills, `img/og.jpg`, the app icons and `favicon.ico`.
+- `node black-crest-site/tools/record-reel.mjs`: the home page showreel (`assets/reel.*`). Needs ffmpeg.
+- `node black-crest-site/tools/make-images.mjs`: the concept screenshots in `img/work/` and the before/after images.
+- `python3 black-crest-site/tools/make-crest-svg.py`: the crest outline and BC letter shapes for the 3D crest (needs fontTools).
+- `node black-crest-site/tools/make-globe-points.mjs`: the globe's land dots (needs `npm install world-atlas@2.0.2 topojson-client@3.1.0 d3-geo@3.1.1` outside the repo).
+
+## Styles
+Edit `style.css` (it is in sections: tokens, base, layout, components, pages, motion, reduced motion and print). Pages load `style.min.css`, which `build.py` writes from it.
 
 ## Changing prices
 All prices live in the `CONFIG` object in `js/config.js`: One Page, Full Website, the care plan and the add-ons.
@@ -42,7 +54,7 @@ The price calculator and the quiz pass their choices to the contact form in the 
 
 ## Images
 `node black-crest-site/tools/make-images.mjs` (with a local server on port 8123 at the repo root) remakes:
-the desktop (1600 and 800 wide) and phone (600 x 1300) screenshots of the six demos in `img/work/`, the before and after images, the share image `img/og.jpg`, and the app icons. The share image uses `tools/crest-art.svg`, the same crest as the home page's still image.
+the desktop (1600 and 800 wide) and phone (600 x 1300) screenshots of the six demos in `img/work/` and the before and after images, each as WebP, AVIF and JPEG. The share image and app icons come from `tools/render-still.mjs`.
 The demo folders are only opened, never changed. Made-up ratings inside the demos are hidden in the screenshots.
 `img/favicon.svg` is drawn by hand. The "before" image is a made-up dated homepage, labelled "Example, not a real customer" on the site.
 

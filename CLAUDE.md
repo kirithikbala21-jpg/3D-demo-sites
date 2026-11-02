@@ -157,6 +157,12 @@ Every number must be a real commitment, a real price or a real measurement (with
 
 **The One Barber is a real shop.** Never show, link, screenshot or mention `the-one-barber-demo` on any other site.
 
+**Keep the sites in sync.** Whenever you change one brand's site, also update everything that shows that brand somewhere else, in the same task:
+- KB Ventures shows Black Crest and AceGuides in its business gallery. If a Black Crest or AceGuides logo, hero object, tagline, price, label (PREVIEW or AVAILABLE NOW) or screenshot changes, update the KB Ventures version to match.
+- Black Crest shows screenshots of the concept demos. If a demo changes, re-take its screenshots and stills for the Black Crest alcoves, case study and showreel.
+- Shared footer details (email, "A KB Ventures company", social links): keep them identical across every site.
+- If you improve a house-style pattern on one site, note it in CLAUDE.md so the other sites can use it too, and tell the owner which sites could get the upgrade next.
+
 ---
 
 ## 8. Technical standards for every site

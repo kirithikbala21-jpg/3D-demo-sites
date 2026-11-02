@@ -261,7 +261,7 @@ def head(title, desc, path, P, noindex=False, ld=(), base_script=False, extra=''
 <meta property="og:image" content="{og}">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="The gold Black Crest crest beside the line: Premium sites for local businesses.">
+<meta property="og:image:alt" content="A black brushed-titanium card engraved in gold with the Black Crest hallmark, beside the line: Premium sites for local businesses.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{E(title)}">
 <meta name="twitter:description" content="{E(desc)}">

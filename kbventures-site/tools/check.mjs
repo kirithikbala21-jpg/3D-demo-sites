@@ -55,7 +55,7 @@ for (const pg of pages) {
     if (x.link && !html.includes(x.link)) fail(pg, '-', `Stripe link for ${x.key} is missing or changed`);
     if (!text.includes(money(x.price))) fail(pg, '-', `price ${money(x.price)} for ${x.key} is missing`);
   });
-  if (pg === 'black-crest.html') { BC_PRICES.forEach((p) => { if (!text.includes(p)) fail(pg, '-', `Black Crest price ${p} is missing`); }); if (/\$(490|990)\b/.test(text)) fail(pg, '-', 'an old Black Crest price ($490 or $990)'); }
+  if (pg === 'black-crest.html') { BC_PRICES.forEach((p) => { if (!text.includes(p)) fail(pg, '-', `Black Crest price ${p} is missing`); }); if (/\$(490|990)\b/.test(html)) fail(pg, '-', 'an old Black Crest price ($490 or $990), in the text or the page tags'); }
   for (const [, href] of html.matchAll(/<a\b[^>]*\bhref="([^"]+)"/g)) {
     if (/^(https?:|mailto:|tel:|#|javascript:)/.test(href)) continue;
     const clean = href.split('#')[0].split('?')[0]; if (!clean) continue;

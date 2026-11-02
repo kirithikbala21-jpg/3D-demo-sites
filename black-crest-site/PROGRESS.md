@@ -6,8 +6,8 @@ Brief: "Everything to do, in one go (Black Crest v4, house style and KB Ventures
 | --- | --- |
 | A. `CLAUDE.md` house style at the repo root | Done (commit 2945a34) |
 | B. Black Crest v4 | Done |
-| C. KB Ventures site | Next (see `kbventures-site/PROGRESS.md` once started) |
-| Final check and report | To do |
+| C. KB Ventures site | Done (commit e7d6f41, see `kbventures-site/PROGRESS.md`) |
+| Final check and report | In progress |
 
 ## Part B: what changed
 - **B1, the "vibecoded" list:**
@@ -37,7 +37,7 @@ Brief: "Everything to do, in one go (Black Crest v4, house style and KB Ventures
 - **B8:** one gentle grade for all five chapter photos (a slight warm wash and a vignette), with small exposure trims for the brighter salon and trades shots.
 
 ## Resume here (if usage runs out)
-Part C: KB Ventures. Then the final check (section 9 on both sites, Lighthouse on BC home, BC pricing and KB home).
+The final check: section 9 on both sites, Lighthouse on BC home, BC pricing and KB home, then the live click-through and the report.
 
 ---
 

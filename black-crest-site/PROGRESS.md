@@ -1,3 +1,46 @@
+# Version 4 (house style, 2 Nov 2026)
+
+Brief: "Everything to do, in one go (Black Crest v4, house style and KB Ventures)". Parts A, B and C, then a final check.
+
+| Part | State |
+| --- | --- |
+| A. `CLAUDE.md` house style at the repo root | Done (commit 2945a34) |
+| B. Black Crest v4 | Done |
+| C. KB Ventures site | Next (see `kbventures-site/PROGRESS.md` once started) |
+| Final check and report | To do |
+
+## Part B: what changed
+- **B1, the "vibecoded" list:**
+  - Inter is replaced by Switzer (Fontshare, ITF Free Font License, licence file in `fonts/`). General Sans could not be downloaded here (fontshare.com is blocked by the network), and Switzer is the fallback CLAUDE.md names.
+  - Every corner is 0 to 4px, buttons included.
+  - Removed: all UI shadows and the glass blur (the header and phone bar are now solid), the glowing tile borders, lift and slide hovers, rolling button labels, magnetic buttons, gold radial glows, and checkmark bullets (lists are now plain hairline rows or numbered).
+  - The anatomy section is an editorial split.
+  - The house-style scan in `tools/check.mjs` found nothing left on any page.
+- **B2:**
+  - New hallmark logo: one fine crest outline with engraved BC letter outlines (`tools/make-logo.py`). Used in the header, footer, preloader, favicon and app icons.
+  - New hero: a real-time black brushed-titanium card (85.6 x 54 x 0.8 mm, 3 mm corners) with a gold engraving, a soft floor reflection, a warm key, a cool rim, a light sweep, an idle turn, a pointer tilt, and an edge-on turn on scroll. There is a still at 2x for everyone else.
+  - The price card is replaced by one statement line.
+  - New `og.jpg` from the card.
+  - The old shield model, stills and artwork are deleted.
+- **B3:** "The concept collection" is a Three.js basalt wall with six lit niches, each with a phone showing the concept.
+  - Hover or focus: that niche warms and the others dim to 40%; its phone turns towards you; its label fades in.
+  - Click: the camera glides in, then the case study opens.
+  - Phones get a two-column grid of lit niche stills. Desktops without 3D get the wall still, with the same six real links on top.
+  - The showreel now sits under the gallery.
+- **B4:** every case study opens as a detail view: the concept's laptop and phone in a lit niche, then breadcrumb, serif name with one italic word, lines, a hairline fact list, "Visit the live concept" and "Back to the collection". The deeper sections stay below.
+- **B5:** prices are a hairline statement table on home and pricing: One Page $300, Full Website $700 ("Better value"), and below a rule the Care plan at $30 a month. Custom is by quote. Calm text buttons have underlines that draw in. The calculator and comparison stay.
+- **B6:** the globe and all its files are removed. "Made in Melbourne." is now a full-bleed dark band with the live time and an outline marquee of trades.
+- **B7, photos NOT replaced:** images.unsplash.com is blocked by this environment's network (HTTP 403), so the four new photos could not be downloaded, and no other images were used.
+  - The old photos stay for now.
+  - `tools/make-chapters.py` is ready: when `cafes.jpg`, `gyms.jpg`, `trades.jpg` and `salons.jpg` are uploaded to `assets/chapters/originals/`, it builds them at 2400 and 1200 px with the right focal points, and the credits page adds the photographers by itself.
+  - The barber photo is only 900 px wide (below 2000), and there is no larger copy in the repo.
+- **B8:** one gentle grade for all five chapter photos (a slight warm wash and a vignette), with small exposure trims for the brighter salon and trades shots.
+
+## Resume here (if usage runs out)
+Part C: KB Ventures. Then the final check (section 9 on both sites, Lighthouse on BC home, BC pricing and KB home).
+
+---
+
 # Black Crest v3: progress
 
 Brief: "Black Crest Web Designs: Version 3 master brief" (pasted by the owner on 1 November 2026).

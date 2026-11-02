@@ -53,30 +53,15 @@ def icon(name):
     return f'<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">{ICON[name]}</svg>'
 
 
+LOGO = json.load(open(os.path.join(HERE, 'logo.json'), encoding='utf-8'))
+
+
 def crest(cls='crest'):
-    return (f'<svg class="{cls}" viewBox="0 0 48 56" aria-hidden="true" focusable="false">'
-            '<path class="crest-outline" pathLength="1" d="M24 2.5 43.5 9.2V26c0 12.6-8.1 21.6-19.5 27.5C12.6 47.6 4.5 38.6 4.5 26V9.2Z"/>'
-            '<path class="crest-inner" d="M24 7.6 38.6 12.6V26c0 9.6-6 16.6-14.6 21.4C15.4 42.6 9.4 35.6 9.4 26V12.6Z"/>'
-            '<text class="crest-text" x="24" y="32.6" text-anchor="middle">BC</text></svg>')
+    """The Black Crest hallmark: one fine crest outline with an engraved "BC" (letter outlines, made by tools/make-logo.py)."""
+    return (f'<svg class="{cls}" viewBox="0 0 40 48" aria-hidden="true" focusable="false">'
+            f'<path class="crest-outline" pathLength="1" d="{LOGO['crest']}"/><path class="crest-letters" d="{LOGO['letters']}"/></svg>')
 
 
-# the static crest artwork: shown first, and kept on low-power devices and with reduced motion
-CREST_ART = '''<svg class="crest-art" viewBox="0 0 200 232" aria-hidden="true" focusable="false">
-      <defs>
-        <linearGradient id="ca-g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F6E3A0"/><stop offset=".35" stop-color="#D4AF37"/><stop offset=".62" stop-color="#8E6E1F"/><stop offset=".82" stop-color="#E7C863"/><stop offset="1" stop-color="#7A5D17"/></linearGradient>
-        <linearGradient id="ca-p" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#23252d"/><stop offset="1" stop-color="#0e0f13"/></linearGradient>
-        <linearGradient id="ca-t" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF1C2"/><stop offset=".55" stop-color="#E0BE55"/><stop offset="1" stop-color="#A27F25"/></linearGradient>
-        <linearGradient id="ca-s" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".35"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
-      </defs>
-      <path d="M100 6 186 35v73c0 55-36 94-86 120C50 202 14 163 14 108V35Z" fill="url(#ca-g)"/>
-      <path d="M100 26 168 49v59c0 43-28 74-68 95-40-21-68-52-68-95V49Z" fill="url(#ca-p)"/>
-      <path d="M100 36 159 56v52c0 38-24 65-59 84-35-19-59-46-59-84V56Z" fill="none" stroke="url(#ca-g)" stroke-width="1.6"/>
-      <text x="100" y="141" text-anchor="middle" font-family="Cormorant Garamond, Georgia, serif" font-weight="600" font-size="78" fill="url(#ca-t)">BC</text>
-      <path d="M100 6 186 35v20L100 26 14 55V35Z" fill="url(#ca-s)" opacity=".5"/>
-    </svg>'''
-
-
-# ---------------------------------------------------------------- illustrations: gold hairlines on dark, one style
 ILLO = {
     'fast': '''<circle class="s" cx="128" cy="100" r="66"/><path class="g" d="M70 128a60 60 0 0 1 116 0"/><path class="g" d="M78 104l8 3M92 80l6 6M118 66v9M146 70l-4 8M170 86l-7 5M182 108l-8 2"/>
       <path class="g" d="M128 128 160 86"/><circle class="d" cx="128" cy="128" r="3.5"/><path class="g" d="M18 70h40M8 90h48M24 110h28"/><path class="s" d="M60 146h136"/>''',
@@ -239,10 +224,10 @@ def mobile_bar(P):
 </div>'''
 
 
-PRELOADER = '''<div class="preloader" id="preloader" aria-hidden="true">
+PRELOADER = f'''<div class="preloader" id="preloader" aria-hidden="true">
   <div class="pre-half pre-top"></div><div class="pre-half pre-bot"></div>
   <div class="pre-mid">
-    <svg class="pre-crest" viewBox="0 0 48 56" focusable="false"><path pathLength="1" d="M24 2.5 43.5 9.2V26c0 12.6-8.1 21.6-19.5 27.5C12.6 47.6 4.5 38.6 4.5 26V9.2Z"/><path pathLength="1" d="M24 8.2 38.6 13.2v12.4c0 9.4-6 16.2-14.6 20.7-8.6-4.5-14.6-11.3-14.6-20.7V13.2Z"/></svg>
+    <svg class="pre-crest" viewBox="0 0 40 48" focusable="false"><path pathLength="1" d="{LOGO['crest']}"/><path class="pre-letters" d="{LOGO['letters']}"/></svg>
     <p class="pre-count"><span data-pre-count>000</span></p>
     <p class="pre-name">Black Crest Web Designs</p>
   </div>
@@ -286,7 +271,7 @@ def head(title, desc, path, P, noindex=False, ld=(), base_script=False, extra=''
 <link rel="apple-touch-icon" href="{P}img/apple-touch-icon.png">
 <link rel="manifest" href="{P}manifest.webmanifest">
 <link rel="preload" href="{P}fonts/cormorant-garamond.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="{P}fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="{P}fonts/switzer-400.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="{P}style.min.css">{extra}
 <script src="{P}vendor/gsap/gsap.min.js" defer></script>
 <script src="{P}vendor/gsap/ScrollTrigger.min.js" defer></script>
@@ -354,7 +339,6 @@ def head_block(label, title, lead='', split=False, level='h2', cls='h2', center=
 def cta_final(title, text, primary=('free-concept.html', 'Get a free concept'), secondary=None, P=''):
     sec = f'<a class="btn btn-ghost" href="{P}{secondary[0]}">{secondary[1]}</a>' if secondary else ''
     return f'''<section class="cta-final" aria-labelledby="cta-h">
-    <svg class="cta-crest" viewBox="0 0 48 56" aria-hidden="true" focusable="false"><path d="M24 2.5 43.5 9.2V26c0 12.6-8.1 21.6-19.5 27.5C12.6 47.6 4.5 38.6 4.5 26V9.2Z"/></svg>
     <div class="container">
       <p class="label" data-reveal style="justify-content:center">Next step</p>
       <h2 id="cta-h" class="display" data-split>{title}</h2>
@@ -364,39 +348,36 @@ def cta_final(title, text, primary=('free-concept.html', 'Get a free concept'), 
   </section>'''
 
 
-def account(kind, P, featured=False, level='h3'):
-    if kind == 'one':
-        name, amt, key, per, chip, no = 'One Page', ONE, 'onePage', 'one-off', 'Simple', '0300'
-        sub = 'One polished page with everything a local business needs.'
-        items = ['Writing help', 'Designed for phones first', 'Contact form', 'Google basics set up', 'Fast and secure (HTTPS)', '2 rounds of changes']
-        href, cta = 'contact.html?need=one-page', 'Choose One Page'
-    elif kind == 'full':
-        name, amt, key, per, chip, no = 'Full Website', FULL, 'fullSite', 'one-off', 'Better value', '0700'
-        sub = 'Up to about 5 pages, for a business with more to show.'
-        items = ['Everything in One Page', 'Up to about 5 pages', 'Room for a menu, timetable, services or gallery', '2 rounds of changes']
-        href, cta = 'contact.html?need=full-website', 'Choose Full Website'
-    elif kind == 'care':
-        name, amt, key, per, chip, no = 'Care plan', CARE, 'carePlan', 'a month', 'Optional', '0030'
-        sub = 'We look after your site once it is live.'
-        items = ['Hosting upkeep', 'Small text and photo changes', 'Security checks and backups', 'Priority replies']
-        href, cta = 'care-plan.html', 'What it covers'
-    else:
-        name, amt, key, per, chip, no = 'Custom', None, None, '', 'By quote', 'QUOTE'
-        sub = 'Bigger or unusual projects: many pages or special features.'
-        items = ['Scoped with you first', 'A fixed quote before any work', 'Same promise: concept first']
-        href, cta = 'contact.html?need=not-sure', 'Ask for a quote'
-    bal = (f'<p class="balance"><span class="odo" data-price="{key}" data-odometer="{money(amt)}">{money(amt)}</span> <span class="per">{per}</span></p>'
-           if amt else '<p class="balance balance-quote">By quote</p>')
-    return f'''<article class="tile acct-card{' is-featured' if featured else ''}">
-        {'<span class="sweep" aria-hidden="true"></span>' if featured else ''}
-        <div class="acct-top">{crest()}<span class="chip{'' if featured else ' chip-plain'}">{chip}</span></div>
-        <{level} class="acct-name">{name}</{level}>
-        <p class="acct"><span>AUD</span><span>&bull;&bull;&bull;&bull; {no}</span></p>
-        {bal}
-        <p class="muted small">{sub}</p>
-        <ul>{''.join(f'<li>{x}</li>' for x in items)}</ul>
-        <a class="btn {'btn-gold' if featured else 'btn-ghost'}" href="{P}{href}">{cta}</a>
-      </article>'''
+STATEMENT = [
+    ('onePage', 'One Page', 'one-off', 'contact.html?need=one-page', 'Choose One Page', False,
+     'One polished page with everything a local business needs.', ['Writing help', 'Designed for phones first', 'Contact form', 'Google basics set up', 'Fast and secure (HTTPS)', '2 rounds of changes']),
+    ('fullSite', 'Full Website', 'one-off', 'contact.html?need=full-website', 'Choose Full Website', True,
+     'Up to about 5 pages, for a business with more to show.', ['Everything in One Page', 'Up to about 5 pages', 'Room for a menu, timetable, services or gallery', '2 rounds of changes']),
+]
+
+
+def statement(P, level='h3'):
+    """The packages set like a private-bank statement: hairline rules, tabular figures, plain lines, calm text buttons."""
+    def row(key, name, per, href, cta, featured, sub, items, amount, cls=''):
+        flag = '<span class="st-flag">Better value</span>' if featured else ''
+        return f'''<tr class="st-row{cls}">
+            <th scope="row" class="st-name"><{level} class="st-title">{name}</{level}>{flag}<p>{sub}</p></th>
+            <td class="st-inc"><ul>{''.join(f'<li>{x}</li>' for x in items)}</ul></td>
+            <td class="st-amt"><span class="odo" data-price="{key}" data-odometer="{money(amount)}">{money(amount)}</span><small>{per}</small></td>
+            <td class="st-go"><a class="text-btn" href="{P}{href}">{cta}</a></td>
+          </tr>'''
+    rows = ''.join(row(k, n, per, h, c, f, sub, items, PKG[k]['price']) for k, n, per, h, c, f, sub, items in STATEMENT)
+    care = row('carePlan', 'Care plan', 'a month', 'care-plan.html', 'What it covers', False, 'Optional. We look after your site once it is live.',
+               ['Hosting upkeep', 'Small text and photo changes', 'Security checks and backups', 'Priority replies'], CARE, ' st-after')
+    return f'''<div class="statement-wrap" data-reveal>
+      <table class="st-table">
+        <caption class="sr-only">Black Crest packages and prices, in Australian dollars</caption>
+        <thead><tr><th scope="col">Package</th><th scope="col">Includes</th><th scope="col">Price, AUD</th><th scope="col"><span class="sr-only">Choose</span></th></tr></thead>
+        <tbody>{rows}</tbody>
+        <tbody class="st-optional">{care}</tbody>
+      </table>
+      <p class="st-foot"><span>Custom work, bigger or unusual projects, is by quote.</span> <a class="text-btn" href="{P}contact.html?need=not-sure">Ask for a quote</a></p>
+    </div>'''
 
 
 def faq_list(items, P):
@@ -534,6 +515,8 @@ def pic(stem, w, h, alt, P='', lazy=True, sizes='100vw', small=None, cls='', hig
             f'<img src="{P}{stem}.jpg" width="{w}" height="{h}" {load} decoding="async" alt="{alt}"></picture>')
 
 
+# per-photo exposure trims, so the set reads as one: dark, warm, one light source (see the CSS grade)
+GRADE = {'barbers': 1, 'cafes': .95, 'gyms': .95, 'trades': .82, 'salons': .68}
 CHAPTERS = [
     ('Barbers', 'barber', 'barbers', (900, 623), None, 'Book a chair in two taps, from the footpath.', 'A barber’s chair in a warm, dark shop'),
     ('Cafés', 'cafe', 'cafes', (900, 600), None, 'The menu, the hours and the map, before the coffee is poured.', 'Coffee being poured through a glass filter'),
@@ -543,13 +526,20 @@ CHAPTERS = [
 ]
 
 
+_CJ = os.path.join(HERE, 'chapters.json')
+NEW_PHOTOS = json.load(open(_CJ, encoding='utf-8')) if os.path.exists(_CJ) else {}
+
+
 def chapters(P):
     n = len(CHAPTERS)
     out = []
     for i, (title, slug, stem, (w, h), small, cap, alt) in enumerate(CHAPTERS):
+        np = NEW_PHOTOS.get(stem)
+        if np:
+            (w, h), small = np['size'], np['small']
         d = DEMO[slug]
         img = pic(f'assets/chapters/{stem}-l', w, h, alt, P, sizes='100vw', small=(f'assets/chapters/{stem}-s', small) if small else None)
-        out.append(f'''<article class="chapter" style="--i:{i}" aria-labelledby="ch-{i}">
+        out.append(f'''<article class="chapter" style="--i:{i};--exposure:{1 if np else GRADE.get(stem, 1)}{';--focus:' + np['focus'] if np else ''}" aria-labelledby="ch-{i}">
         <div class="chapter-media">{img}</div>
         <div class="container chapter-copy">
           <p class="chapter-idx"><b>0{i + 1}</b> / 0{n}</p>
@@ -613,18 +603,19 @@ ANATOMY = [
 
 def anatomy(P):
     dots = ''.join(f'<span class="hot" style="--y:{y}%;--x:{x}%" data-hot="{i}" aria-hidden="true">{i + 1}</span>' for i, (y, x, _, _) in enumerate(ANATOMY))
-    cards = ''.join(f'<li class="hot-card" data-hot-card="{i}" style="--i:{i}"><span class="n" aria-hidden="true">0{i + 1}</span><div><h3>{t}</h3><p>{x}</p></div></li>' for i, (_, _, t, x) in enumerate(ANATOMY))
+    points = ''.join(f'<li class="hot-card" data-hot-card="{i}"><span class="n" aria-hidden="true">0{i + 1}</span><div><h3>{t}</h3><p>{x}</p></div></li>' for i, (_, _, t, x) in enumerate(ANATOMY))
     return f'''<section class="section anatomy-sec" aria-labelledby="anat-h">
-    <div class="container">
-      {head_block('Anatomy', '<span id="anat-h">Every detail <em>earns its place.</em></span>', 'A concept homepage, taken apart. Each marked spot is there to turn a visit into a call or a booking.', split=True, idx='04')}
-      <div class="anatomy" data-anatomy>
+    <div class="container anatomy" data-anatomy>
+      <div class="anatomy-statement">
+        <p class="label" data-reveal><span class="idx">04</span><span class="slash" aria-hidden="true">/</span>Anatomy</p>
+        <h2 id="anat-h" class="h2" data-split>Every detail <em>earns its place.</em></h2>
+        <p class="lead" data-reveal>A concept homepage, taken apart. Each numbered spot turns a visit into a call or a booking.</p>
         <figure class="anatomy-shot" data-reveal>
-          <div class="phone"><div class="hot-wrap"><img src="{P}img/work/plumber-phone.webp" width="600" height="1300" loading="lazy" decoding="async" alt="The Waverley Plumbing concept homepage on a phone, with six numbered spots">{dots}</div></div>
+          <div class="hot-wrap"><img src="{P}img/work/plumber-phone.webp" width="600" height="1300" loading="lazy" decoding="async" alt="The Waverley Plumbing concept homepage on a phone, with six numbered spots">{dots}</div>
           <figcaption class="tiny">Concept site. Waverley Plumbing is a made-up business.</figcaption>
         </figure>
-        <ol class="anatomy-list">{cards}</ol>
-        <svg class="anatomy-lines" aria-hidden="true" focusable="false"></svg>
       </div>
+      <ol class="anatomy-list">{points}</ol>
     </div>
   </section>'''
 
@@ -672,14 +663,31 @@ def standard_band(P):
   </section>'''
 
 
-def reel(P):
-    return f'''<section class="section reel-sec" aria-labelledby="work-h">
-    <div class="container reel-split">
+GALLERY = json.load(open(os.path.join(HERE, 'gallery.json'), encoding='utf-8'))
+
+
+def collection(P):
+    items = ''.join(f'''<li style="--l:{g['left']}%;--t:{g['top']}%;--w:{g['right'] - g['left']}%;--h:{g['bottom'] - g['top']}%">
+          <a class="niche" data-niche="{i}" href="{P}work/{d[0]}.html">
+            {pic(f'assets/gallery/niche-{d[0]}', 840, 1120, '', P, sizes='(min-width: 900px) 1px, 46vw', cls='niche-still')}
+            <span class="niche-label"><b>{d[2]}</b><small>Concept site &middot; {d[3]}</small></span>
+          </a></li>''' for i, (d, g) in enumerate(zip(DEMOS, GALLERY)))
+    return f'''<section class="collection" aria-labelledby="work-h">
+    <div class="container collection-head">
+      <p class="label" data-reveal><span class="idx">01</span><span class="slash" aria-hidden="true">/</span>Work</p>
+      <h2 id="work-h" class="h2" data-split>The <em>concept</em> collection</h2>
+      <p class="lead" data-reveal>Six made-up local businesses. Real code. Open any of them.</p>
+    </div>
+    <div class="gallery" data-gallery data-base="{P}">
+      {pic('assets/gallery/wall', 2400, 1022, 'Six lit niches in a dark stone wall, each holding a phone that shows one of the concept sites', P, sizes='100vw', cls='gallery-still')}
+      <ol class="niches">{items}</ol>
+    </div>
+    <div class="container reel-row">
       <div class="reel-copy">
-        <p class="label" data-reveal><span class="idx">01</span><span class="slash" aria-hidden="true">/</span>Work</p>
-        <h2 id="work-h" class="h2" data-split>Concept sites, <em>built properly.</em></h2>
-        <p class="lead" data-reveal>Six made-up local businesses, designed and coded like real ones: bookings, menus, timetables and quote forms.</p>
-        <div class="btn-row" data-reveal><button class="btn btn-ghost" type="button" data-reel-play>Play reel</button><a class="link" href="{P}work.html">See all six {icon('arrow')}</a></div>
+        <p class="label" data-reveal>Showreel</p>
+        <p class="h3" data-reveal>See them <em>move.</em></p>
+        <p data-reveal>Twenty-three silent seconds across all six concepts.</p>
+        <p data-reveal><button class="text-btn" type="button" data-reel-play>Play reel</button></p>
       </div>
       <figure class="reel" data-reveal>
         <div class="laptop"><div class="laptop-screen">
@@ -693,20 +701,19 @@ def reel(P):
   </section>'''
 
 
-def globe_sec(P):
-    return f'''<section class="section globe-sec" aria-labelledby="globe-h">
-    <div class="container globe-split">
-      <div class="globe-copy">
-        <p class="label" data-reveal><span class="idx">09</span><span class="slash" aria-hidden="true">/</span>Where</p>
-        <h2 id="globe-h" class="h2" data-split>Made in <em>Melbourne.</em></h2>
-        <p class="lead" data-reveal>Based in Melbourne. Building for local businesses across Victoria.</p>
-        <p class="tiny globe-clock" data-reveal><span class="avail-dot" aria-hidden="true"></span><span data-clock>Melbourne</span></p>
-      </div>
-      <div class="globe" data-globe>
-        {pic('assets/globe-still', 1200, 1200, 'A dotted globe turned to Australia, with a gold pin on Melbourne', P, sizes='(min-width: 1024px) 50vw, 92vw', cls='globe-still')}
-      </div>
+MEL_TRADES = ['Barbers', 'Cafés', 'Gyms', 'Plumbers', 'Electricians', 'Salons', 'Mechanics']
+
+
+def melbourne(P):
+    ul = lambda hidden: f'<ul{" aria-hidden=" + chr(34) + "true" + chr(34) if hidden else ""}>' + ''.join(f'<li>{t}</li>' for t in MEL_TRADES) + '</ul>'
+    return f'''<section class="melbourne" aria-labelledby="mel-h">
+    <div class="container">
+      <p class="label" data-reveal><span class="idx">09</span><span class="slash" aria-hidden="true">/</span>Where</p>
+      <h2 id="mel-h" class="mel-title" data-split>Made in <em>Melbourne.</em></h2>
+      <p class="mel-time" data-reveal><span data-clock>Melbourne</span></p>
+      <p class="lead" data-reveal>Building for local businesses across Victoria.</p>
     </div>
-    {marquee(PLACES, 'Places across Victoria')}
+    <div class="marquee marquee-outline" data-marquee role="region" aria-label="Trades we build for"><div class="marquee-track">{ul(False)}{ul(True)}</div></div>
   </section>'''
 
 
@@ -714,7 +721,7 @@ P = ''
 page('index.html', 'Black Crest Web Designs: premium sites for local businesses', f'Premium websites for Melbourne barbers, cafes, gyms, salons and trades. We design your homepage first, free. One Page {money(ONE)}, Full Website {money(FULL)}.', f'''<main id="main">
   <section class="hero" aria-labelledby="hero-h">
     <div class="hero-stage" data-hero3d>
-      {pic('assets/crest-still', 1280, 1520, '', P, lazy=False, sizes='(min-width: 1024px) 48vw, 80vw', small=('assets/crest-still-s', 640), cls='crest-still', high=True)}
+      {pic('assets/card-still', 1800, 1400, '', P, lazy=False, sizes='(min-width: 1024px) 52vw, 92vw', small=('assets/card-still-s', 900), cls='card-still', high=True)}
     </div>
     <div class="container hero-copy">
       <p class="label">Black Crest Web Designs &middot; Melbourne</p>
@@ -724,23 +731,12 @@ page('index.html', 'Black Crest Web Designs: premium sites for local businesses'
         <a class="btn btn-gold" href="free-concept.html">Get a free concept</a>
         <a class="btn btn-ghost" href="work.html">See the work</a>
       </div>
-    </div>
-    <div class="container hero-foot">
-      <aside class="tile hero-card" aria-label="How paying works">
-        <p class="tile-label"><span>Your new website</span><span class="chip">Concept first</span></p>
-        <p class="balance"><span class="from">From</span><span data-price="onePage">{money(ONE)}</span> <span class="per">one-off</span></p>
-        <ul class="rows">
-          <li><span>Concept homepage</span><b>$0</b></li>
-          <li><span>Deposit to start the build</span><b>50%</b></li>
-          <li><span>Balance</span><b>At launch</b></li>
-        </ul>
-        <p class="acct"><span>Black Crest &middot; AUD</span><span>&bull;&bull;&bull;&bull; 0300</span></p>
-      </aside>
+      <p class="hero-statement">One page from <span data-price="onePage">{money(ONE)}</span> <i aria-hidden="true">&middot;</i> Full website <span data-price="fullSite">{money(FULL)}</span> <i aria-hidden="true">&middot;</i> Concept free</p>
     </div>
     <p class="scroll-cue" aria-hidden="true"><i></i>Scroll</p>
   </section>
 
-  {reel(P)}
+  {collection(P)}
 
   {chapters(P)}
 
@@ -778,16 +774,12 @@ page('index.html', 'Black Crest Web Designs: premium sites for local businesses'
   <section class="section has-grid pricing-sec" aria-labelledby="price-h">
     <div class="container">
       {head_block('Pricing', '<span id="price-h">Clear prices. <em>Set before we start.</em></span>', 'One price per package, agreed in writing before any work begins. Bigger projects are quoted.', split=True, idx='08')}
-      <div class="accounts three">
-        <div data-reveal>{account('one', P)}</div>
-        <div data-reveal>{account('full', P, featured=True)}</div>
-        <div data-reveal>{account('care', P)}</div>
-      </div>
-      <p class="pricing-more" data-reveal>Something bigger in mind? Custom projects are quoted. <a class="link" href="pricing.html">Pricing and the calculator {icon('arrow')}</a></p>
+      {statement(P)}
+      <p class="pricing-more" data-reveal><a class="text-btn" href="pricing.html">Pricing, add-ons and the calculator</a></p>
     </div>
   </section>
 
-  {globe_sec(P)}
+  {melbourne(P)}
 
   <section class="section offer-sec" aria-labelledby="case-h">
     <div class="container offer-split">
@@ -912,6 +904,12 @@ CASES = {
 YEAR = '2026'
 
 
+def italic_last(name):
+    """One italic word per headline: the last word of the concept's name."""
+    head, _, last = name.rpartition(' ')
+    return f'{head} <em>{last}</em>' if head else f'<em>{name}</em>'
+
+
 def case_page(i, d):
     slug, folder, name, trade = d[0], d[1], d[2], d[3]
     c = CASES[slug]
@@ -923,15 +921,23 @@ def case_page(i, d):
     perf, a11y, bp, seo = c['lh']
     place = c['place'] or 'No location: an online store concept'
     return f'''<main id="main" class="case">
-  <section class="case-hero">
-    <div class="container">
-      <p class="label"><a class="crumb" href="{P}work.html">Work</a><span class="slash" aria-hidden="true">/</span>{trade}</p>
-      <h1 class="display" data-split>{name}</h1>
-      <p class="lead" data-reveal>{c['line']}</p>
-      <p class="case-strip" data-reveal><span>Concept project &middot; not a real client</span><span>{trade}</span><span>{place}</span><span>Year {YEAR}</span></p>
-      <div class="btn-row" data-reveal><a class="btn btn-gold" href="{P}../{folder}/" target="_blank" rel="noopener">Visit the live concept {icon('ext')}<span class="sr-only"> (opens in a new tab)</span></a><a class="btn btn-ghost" href="{P}work.html">All concepts</a></div>
+  <section class="detail" aria-labelledby="case-name">
+    <div class="container detail-grid">
+      <div class="detail-object" data-wipe>{pic(f'assets/gallery/detail-{slug}', 1040, 1280, f'The {name} concept on a laptop and a phone, standing in a lit stone niche', P, lazy=False, sizes='(min-width: 1024px) 46vw, 92vw', high=True)}</div>
+      <div class="detail-copy">
+        <p class="crumbs"><a href="{P}work.html">Work</a><span aria-hidden="true">/</span>{trade}</p>
+        <h1 id="case-name" class="display" data-split>{italic_last(name)}</h1>
+        <p class="lead" data-reveal>{c['line']}</p>
+        <dl class="facts" data-reveal>
+          <div><dt>Project</dt><dd>Concept, not a real client</dd></div>
+          <div><dt>Trade</dt><dd>{trade}</dd></div>
+          <div><dt>Location</dt><dd>{place}</dd></div>
+          <div><dt>Year</dt><dd class="num">{YEAR}</dd></div>
+        </dl>
+        <div class="detail-actions" data-reveal><a class="btn btn-gold" href="{P}../{folder}/" target="_blank" rel="noopener">Visit the live concept<span class="sr-only"> (opens in a new tab)</span></a>
+        <a class="text-btn" href="{P}index.html#work-h">Back to the collection</a></div>
+      </div>
     </div>
-    <div class="container case-shot" data-wipe>{laptop(slug, name, P, lazy=False)}</div>
   </section>
 
   <section class="section-tight" aria-labelledby="brief-h">
@@ -1028,12 +1034,15 @@ page('work.html', 'Work: concept sites by Black Crest Web Designs', 'Six concept
 
 # ================================================================= Credits
 P = ''
+_NEW_CREDIT = ', '.join(f'<a class="link" href="{v["credit"][1]}" rel="noopener">{v["credit"][0]}</a> ({k.capitalize().replace("Cafes", "Cafés")})' for k, v in NEW_PHOTOS.items())
 CREDIT_ROWS = [
-    ('Trade chapter photos (home page)', 'Barbers, Cafés, Gyms, Trades and Salons: copied from the source photos of the matching concept sites. They are from Unsplash, under the Unsplash licence. The photographers’ names were not recorded when the photos were first collected; they will be added here when found.'),
+    ('Trade chapter photos (home page)', 'All five are from Unsplash, under the Unsplash License. '
+     + (f'Photographers: {_NEW_CREDIT}. ' if NEW_PHOTOS else '')
+     + ('The Barbers photo comes from the barber concept site; its photographer was not recorded when it was first collected and will be added here when found.' if NEW_PHOTOS else
+        'They come from the source photos of the matching concept sites. The photographers were not recorded when the photos were first collected; they will be added here when found.')),
     ('Concept site screenshots and the showreel', 'Captured by Black Crest from our own six concept sites.'),
-    ('The 3D crest and its stills', 'Made by Black Crest with Three.js from the Black Crest logo.'),
-    ('Globe land shapes', 'Natural Earth (public domain), via the world-atlas package, turned into dots once when the site is built.'),
-    ('Typefaces', 'Cormorant Garamond and Inter, both under the SIL Open Font License, served from this site.'),
+    ('The 3D card, the concept collection and their stills', 'Made by Black Crest with Three.js: the card from the Black Crest hallmark, the stone and brushed metal drawn in code, and the phones showing screenshots of our own concepts.'),
+    ('Typefaces', 'Cormorant Garamond, under the SIL Open Font License, and Switzer by the Indian Type Foundry, under the ITF Free Font License (Fontshare). Both are served from this site.'),
     ('Code libraries', 'GSAP 3.14.2 (ScrollTrigger, SplitText, Flip) under the GSAP standard licence, Lenis 1.3.27 (MIT) and Three.js 0.170.0 (MIT), all served from this site.'),
 ]
 page('credits.html', 'Credits: Black Crest Web Designs', 'Where the photos, data, typefaces and code libraries on the Black Crest Web Designs site come from.', f'''<main id="main">
@@ -1069,13 +1078,8 @@ page('pricing.html', 'Pricing: Black Crest Web Designs', f'One Page website {mon
     <h1 class="h1" data-split>Clear prices. <em>No hidden costs.</em></h1>
     <p class="lead" data-reveal>Every price is set before we start, your concept homepage is free, and everything is in Australian dollars.</p>
   </div>
-  <section class="container" aria-label="Packages">
-    <div class="accounts four">
-      <div data-reveal>{account('one', P, level='h2')}</div>
-      <div data-reveal>{account('full', P, featured=True, level='h2')}</div>
-      <div data-reveal>{account('care', P, level='h2')}</div>
-      <div data-reveal>{account('custom', P, level='h2')}</div>
-    </div>
+  <section class="container has-grid" aria-label="Packages">
+    {statement(P, level='h2')}
   </section>
 
   <section class="section" aria-labelledby="inc-h">
@@ -1093,12 +1097,12 @@ page('pricing.html', 'Pricing: Black Crest Web Designs', f'One Page website {mon
     <div class="container">
       <div class="grid grid-2" style="gap:48px;align-items:start">
         <div><p class="label" data-reveal>Our promise</p><h2 id="promise-h" class="h2" data-split>No hidden <em>costs.</em></h2><p class="lead" data-reveal style="margin-top:24px">The price we quote is the price you pay.</p></div>
-        <ul class="ticks" data-reveal style="align-self:end">
+        <ol class="numbered" data-reveal style="align-self:end">
           <li>You pay for your own domain name (your web address, like yourbusiness.com.au), about $20 a year. It is registered in your name, so it is always yours.</li>
           <li>Hosting setup is included. If anything about hosting would cost you extra, we tell you before you say yes.</li>
           <li>Add-ons are optional, and their price is confirmed before any work begins.</li>
           <li>Changes beyond the 2 included rounds are quoted fairly first. Nothing lands on your bill without your OK.</li>
-        </ul>
+        </ol>
       </div>
     </div>
   </section>
@@ -1675,7 +1679,7 @@ page('404.html', 'Page not found: Black Crest Web Designs', 'This page could not
       <p class="lead" data-reveal>The address may be mistyped, or the page may have moved. These will get you back on track.</p>
       <div class="btn-row" data-reveal><a class="btn btn-gold" href="index.html">Go to the home page</a><a class="btn btn-ghost" href="work.html">See the work</a></div>
     </div>
-    <div class="nf-globe" aria-hidden="true">{pic('assets/globe-still', 1200, 1200, '', '', sizes='(min-width: 1024px) 40vw, 80vw')}</div>
+    <div class="nf-card" aria-hidden="true">{pic('assets/card-still', 1800, 1400, '', '', sizes='(min-width: 1024px) 40vw, 80vw', small=('assets/card-still-s', 900))}</div>
   </div>
 </main>''', noindex=True, base_script=True)
 

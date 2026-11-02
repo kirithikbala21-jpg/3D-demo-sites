@@ -59,22 +59,6 @@ table{border-collapse:collapse;width:100%;font:13px Arial;background:#fff}td{bor
 <p class="small">Best viewed in Internet Explorer at 1024x768.</p></div></div>
 <div class="foot">Copyright Brass &amp; Blade. All rights reserved. Site designed with a free website builder.</div></div></body></html>`;
 
-// The 1200x630 share image, in the site's new look: grain, the gold crest, a large serif headline. Gold stays under 5%.
-const CREST_ART = readFileSync(path.join(SITE, 'tools', 'crest-art.svg'), 'utf8');
-const OG = `<!doctype html><html><head><style>${FONTS}@font-face{font-family:"Cormorant Garamond";src:${font("cormorant-garamond.woff2")};font-weight:300 700}
-html,body{margin:0;width:1200px;height:630px;overflow:hidden;background:#0D0E12}
-body{position:relative;font-family:IN;color:#E4E6ED;background:radial-gradient(45% 70% at 80% 40%,rgba(212,175,55,.13),transparent 65%),radial-gradient(60% 70% at 0% 100%,rgba(120,128,150,.15),transparent 65%),#0D0E12}
-.grain{position:absolute;inset:0;opacity:.09;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1.1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
-.lines{position:absolute;inset:0;background-image:linear-gradient(90deg,rgba(228,230,237,.05) 1px,transparent 1px);background-size:200px 100%}
-.label{position:absolute;left:84px;top:78px;display:flex;align-items:center;gap:16px;font:500 15px IN;letter-spacing:.34em;text-transform:uppercase;color:#8A8F9E}
-.label i{width:34px;height:1px;background:#D4AF37}
-h1{position:absolute;left:80px;top:128px;margin:0;width:700px;font:500 112px/.9 CG;letter-spacing:-.04em}
-h1 em{font-style:italic;font-weight:400}
-.foot{position:absolute;left:84px;bottom:72px;font:500 15px IN;letter-spacing:.3em;text-transform:uppercase;color:#8A8F9E}
-.foot b{color:#E4E6ED;font-weight:500}
-.crest{position:absolute;right:96px;top:84px;width:330px;filter:drop-shadow(0 40px 50px rgba(0,0,0,.75))}
-.crest svg{width:100%}
-</style></head><body><div class="lines"></div><div class="grain"></div><p class="label"><i></i>Black Crest Web Designs</p><h1>Premium sites for <em>local</em> businesses</h1><p class="foot"><b>Melbourne</b> &middot; A KB Ventures company</p><div class="crest">${CREST_ART}</div></body></html>`;
 
 const browser = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });
 const shot = async (opts, fn, file) => {

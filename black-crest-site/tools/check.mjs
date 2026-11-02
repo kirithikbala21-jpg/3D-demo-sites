@@ -1,6 +1,7 @@
 // Site check: opens every page at 390, 768, 1280 and 1920 px wide and fails on
 //   console errors, failed requests, broken internal links, sideways scrolling,
-//   prices that do not match js/config.js, banned words, and any link to the-one-barber.
+//   prices that do not match js/config.js, banned words, any link to the-one-barber, and the house-style bans in
+//   CLAUDE.md section 6 (em dashes, icon libraries, corners over 6px, shadows, backdrop blur, Inter, Geist, Space Grotesk).
 // Full-page screenshots go to tools/screens/ (ignored by git) for a visual review.
 //
 //   1. serve the repo root:   python3 -m http.server 8123 --bind 127.0.0.1
@@ -46,6 +47,8 @@ for (const pg of pages) {
   const html = readFileSync(path.join(SITE, pg), 'utf8');
   if (/the-one-barber/i.test(html)) fail(pg, '-', 'mentions the-one-barber');
   const text = html.replace(/<script[\s\S]*?<\/script>/g, ' ').replace(/<style[\s\S]*?<\/style>/g, ' ').replace(/<[^>]+>/g, ' ').replace(/&rsquo;|&#39;|’/g, "'").replace(/\s+/g, ' ').toLowerCase();
+  if (text.includes('\u2014')) fail(pg, '-', 'em dash in the copy');
+  if (/lucide|heroicons?|feather-icons|font-?awesome|material-icons/i.test(html)) fail(pg, '-', 'a generic icon library');
   BANNED.forEach((b) => { if (new RegExp(`\\b${b.replace(/[-']/g, (c) => '\\' + c)}\\b`).test(text)) fail(pg, '-', `banned word "${b}"`); });
   (text.match(/\$\d{1,3}(?:,\d{3})*/g) || []).forEach((m) => { if (!ALLOWED.has(m)) fail(pg, '-', `price ${m} is not in js/config.js`); });
   for (const [, href] of html.matchAll(/<a\b[^>]*\bhref="([^"]+)"/g)) {
@@ -80,6 +83,23 @@ for (const w of WIDTHS) {
       for (let y = 0; y < h; y += 700) { await page.evaluate((y) => scrollTo(0, y), y); await page.waitForTimeout(90); }
       await page.waitForTimeout(700);
       const over = await page.evaluate(() => document.documentElement.scrollWidth - innerWidth);
+      // house style (CLAUDE.md section 6), read from the computed styles of every element on the page
+      if (w === WIDTHS[0] || w === 1280) {
+        const style = await page.evaluate(() => {
+          const out = [];
+          for (const el of document.querySelectorAll('body *')) {
+            if (!el.getClientRects().length) continue;
+            const cs = getComputedStyle(el), tag = el.tagName.toLowerCase() + (el.className && typeof el.className === 'string' ? '.' + el.className.split(' ')[0] : '');
+            const r = Math.max(...['borderTopLeftRadius', 'borderTopRightRadius', 'borderBottomLeftRadius', 'borderBottomRightRadius'].map((k) => parseFloat(cs[k]) || 0));
+            if (r > 6) out.push(`radius ${r}px on ${tag}`);
+            if (cs.boxShadow !== 'none') out.push(`box-shadow on ${tag}`);
+            if ((cs.backdropFilter && cs.backdropFilter !== 'none') || (cs.webkitBackdropFilter && cs.webkitBackdropFilter !== 'none')) out.push(`backdrop-filter on ${tag}`);
+            if (/\b(Inter|Geist|Space Grotesk)\b/i.test(cs.fontFamily)) out.push(`banned font on ${tag}`);
+          }
+          return [...new Set(out)].slice(0, 6);
+        });
+        style.forEach((x) => fail(pg, w, 'house style: ' + x));
+      }
       if (over > 0) fail(pg, w, `sideways scroll of ${over}px`);
       if (!QUICK) {
         await page.evaluate(() => scrollTo(0, 0)); await page.waitForTimeout(400);

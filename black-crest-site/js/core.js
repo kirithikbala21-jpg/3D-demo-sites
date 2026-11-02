@@ -69,15 +69,6 @@ if (pre) {
   }
 } else root.classList.remove('preload');
 
-/* ---------- Button labels roll up to a duplicate on hover (mouse only; screen readers still hear the label once) ---------- */
-if (fine && !reduce) $$('.btn').forEach((b) => {
-  const t = [...b.childNodes].find((n) => n.nodeType === 3 && n.textContent.trim());
-  if (!t) return;
-  const roll = document.createElement('span'), inner = document.createElement('span');
-  roll.className = 'btn-roll'; roll.dataset.text = t.textContent.trim(); inner.textContent = t.textContent.trim();
-  roll.append(inner); t.replaceWith(roll);
-});
-
 /* ---------- Everything below waits for the first frame, so the hero paints before motion, the Lab and the rest
    are set up. Nothing in the hero depends on it, and hidden reveals have a CSS failsafe. ---------- */
 function boot() {
@@ -94,12 +85,6 @@ function boot() {
     addEventListener('scroll', () => requestAnimationFrame(set), { passive: true }); set();
   }
 
-  /* ---------- Card spotlight borders follow the pointer (a hover effect on cards, not a cursor) ---------- */
-  if (fine && !reduce) $$('.tile').forEach((c) => c.addEventListener('pointermove', (e) => {
-    const r = c.getBoundingClientRect();
-    c.style.setProperty('--mx', (e.clientX - r.left) + 'px'); c.style.setProperty('--my', (e.clientY - r.top) + 'px');
-  }));
-
   /* ---------- Showreel: plays muted while on screen (not with reduced motion); "Play reel" opens it full screen ---------- */
   const reel = $('[data-reel]');
   if (reel) {
@@ -114,26 +99,11 @@ function boot() {
     document.addEventListener('fullscreenchange', exit); reel.addEventListener('webkitendfullscreen', exit);
   }
 
-  /* ---------- Anatomy: numbered spots on a concept screenshot, joined to their cards by hairlines on desktop ---------- */
+  /* ---------- Anatomy: pointing at a numbered point lights its spot on the screenshot ---------- */
   const anat = $('[data-anatomy]');
   if (anat) {
-    const svg = $('.anatomy-lines', anat), dots = $$('.hot', anat), cards = $$('.hot-card', anat);
-    const draw = () => {
-      if (innerWidth < 1024) { svg.innerHTML = ''; return; }
-      const box = anat.getBoundingClientRect();
-      svg.setAttribute('viewBox', `0 0 ${box.width} ${box.height}`);
-      svg.innerHTML = cards.map((c, i) => {
-        const d = dots[i].getBoundingClientRect(), r = c.getBoundingClientRect(), left = r.right < d.left;
-        const x1 = d.left + d.width / 2 - box.left, y1 = d.top + d.height / 2 - box.top, x2 = (left ? r.right : r.left) - box.left, y2 = r.top + r.height / 2 - box.top;
-        const mx = left ? x2 + 28 : x2 - 28;
-        return `<path data-line="${i}" d="M${x1.toFixed(1)} ${y1.toFixed(1)} L${mx.toFixed(1)} ${y2.toFixed(1)} L${x2.toFixed(1)} ${y2.toFixed(1)}"/>`;
-      }).join('');
-    };
-    const on = (i, v) => { dots[i].classList.toggle('is-on', v); cards[i].classList.toggle('is-on', v); const l = svg.querySelector(`[data-line="${i}"]`); if (l) l.classList.toggle('is-on', v); };
-    cards.forEach((c, i) => { c.addEventListener('pointerenter', () => on(i, true)); c.addEventListener('pointerleave', () => on(i, false)); });
-    draw(); addEventListener('resize', draw); addEventListener('load', draw);
-    const img = $('img', anat); if (img && !img.complete) img.addEventListener('load', draw, { once: true });
-    if (window.ScrollTrigger) window.ScrollTrigger.addEventListener('refresh', draw);
+    const dots = $$('.hot', anat), cards = $$('.hot-card', anat);
+    cards.forEach((c, i) => ['pointerenter', 'pointerleave'].forEach((t) => c.addEventListener(t, () => { const on = t === 'pointerenter'; dots[i].classList.toggle('is-on', on); c.classList.toggle('is-on', on); })));
   }
 
   /* ---------- Hover image reveals (work list, "next concept"): a preview follows the pointer on desktop ---------- */
@@ -190,7 +160,7 @@ function boot() {
     range.addEventListener('input', () => { set(); box.classList.add('is-touched'); }); set();
   });
 
-  /* ---------- Home: real-time 3D (the hero crest and the globe), only on capable devices, when the browser is idle ---------- */
+  /* ---------- Home: real-time 3D (the hero card and the concept collection), only on capable devices, when idle ---------- */
   const force3d = /[?&](3d=on|still=1)\b/.test(location.search);
   const gpuOK = () => {
     try {
@@ -208,16 +178,16 @@ function boot() {
   };
   const stage = $('.hero-stage[data-hero3d]');
   if (stage && can3d) {
-    const run = () => import('./hero3d.js').then((m) => m.start(stage, env)).catch((e) => console.warn('3D crest skipped:', e && e.message));
+    const run = () => import('./hero3d.js').then((m) => m.start(stage, env)).catch((e) => console.warn('3D card skipped:', e && e.message));
     /[?&]still=1\b/.test(location.search) ? run() : idle(run);
   }
-  const globe = $('[data-globe]');
-  if (globe && can3d) {
+  const gallery = $('[data-gallery]');
+  if (gallery && can3d && innerWidth >= 900) {
     const io = new IntersectionObserver(([e]) => {
       if (!e.isIntersecting) return; io.disconnect();
-      import('./globe3d.js').then((m) => m.start(globe, env)).catch((err) => console.warn('3D globe skipped:', err && err.message));
-    }, { rootMargin: '400px 0px' });
-    idle(() => io.observe(globe));
+      import('./gallery3d.js').then((m) => m.start(gallery, env)).catch((err) => console.warn('3D gallery skipped:', err && err.message));
+    }, { rootMargin: '500px 0px' });
+    idle(() => io.observe(gallery));
   }
 
   /* ---------- Small things ---------- */

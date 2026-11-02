@@ -106,13 +106,6 @@ export function initMotion({ reduce, tier, fine }) {
     m.addEventListener('mouseenter', () => tween.pause()); m.addEventListener('mouseleave', () => tween.resume());
   });
 
-  // ---- magnetic primary buttons (desktop only, a small pull)
-  if (fine) $$('.btn-gold, [data-magnetic]').forEach((b) => {
-    const xTo = gsap.quickTo(b, 'x', { duration: 0.5 }), yTo = gsap.quickTo(b, 'y', { duration: 0.5 });
-    b.addEventListener('pointermove', (e) => { const r = b.getBoundingClientRect(); xTo((e.clientX - r.left - r.width / 2) * 0.2); yTo((e.clientY - r.top - r.height / 2) * 0.3); });
-    b.addEventListener('pointerleave', () => { xTo(0); yTo(0); });
-  });
-
   // safety net: anything still hidden that is already on screen (fast jumps) is shown at once
   const catchUp = () => { const vh = innerHeight; $$('[data-reveal]').forEach((el) => { if (el.getBoundingClientRect().top < vh && getComputedStyle(el).opacity === '0') gsap.to(el, { opacity: 1, y: 0, duration: 0.5, overwrite: true }); }); };
   ST.addEventListener('scrollEnd', catchUp);

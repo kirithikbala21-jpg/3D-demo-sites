@@ -163,6 +163,8 @@ Every number must be a real commitment, a real price or a real measurement (with
 - Shared footer details (email, "A KB Ventures company", social links): keep them identical across every site.
 - If you improve a house-style pattern on one site, note it in CLAUDE.md so the other sites can use it too, and tell the owner which sites could get the upgrade next.
 
+Sync means facts, not sameness. Only matching information is copied between sites: names, logos, prices, labels, screenshots and footer details. Never copy one site's wording, headlines or look onto another. Each site keeps its own words, audience and feel. Design upgrades from one site are only suggested for the others, never applied without the owner saying yes.
+
 ---
 
 ## 8. Technical standards for every site

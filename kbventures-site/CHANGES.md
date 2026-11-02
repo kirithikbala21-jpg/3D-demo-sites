@@ -95,7 +95,7 @@ New on Home, in this order after the hero: Our businesses, **Latest**, How we bu
 - **Latest:** three true update cards: "21 study guides written for AceGuides", "7 demo websites built for local businesses" and "Contact form now live" (with a link to the contact page).
 - **How we build:** larger cards, each with its icon, heading and two short sentences. A numbered gold node sits on a fine gold line joining the steps (across on desktop, down the left on phones). The cards are equal height.
 - **Why KB Ventures:** four points with line icons: Made in Melbourne, Plain pricing, Fair refunds, Real replies.
-- **Meet the founder:** Kirithik, the short bio and a "Get in touch" button. The photo is read from `founder.photo`. It is empty for now, so a KB monogram fills the round frame and no image ever breaks.
+- **Meet the founder:** a short founder section with a bio and a "Get in touch" button. (Removed on 2 Nov 2026: the house style in CLAUDE.md keeps the site brand only.)
 - **Unchanged:** the hero card, colours, fonts, header and footer. Gold is about 0.2% of the page.
 - **Checked:**
   - Playwright at 1440, 768 and 390: the section order, the previews, no horizontal scroll, no overlaps, layout shift 0, everything fully visible after fading in, no em dashes and no console errors. With reduced motion, nothing fades.

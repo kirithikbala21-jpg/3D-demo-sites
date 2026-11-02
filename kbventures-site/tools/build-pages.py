@@ -29,7 +29,7 @@ def head(title, desc, path, extra='', scripts=(), lenis=True, noindex=False, bas
     late = [f'<link rel="icon" href="{P}img/kb-favicon.svg" type="image/svg+xml">', f'<link rel="icon" href="{P}favicon.ico" sizes="32x32">',
             f'<link rel="icon" href="{P}img/icon-192.png" type="image/png" sizes="192x192">', f'<link rel="icon" href="{P}img/icon-512.png" type="image/png" sizes="512x512">',
             f'<link rel="apple-touch-icon" href="{P}apple-touch-icon.png" sizes="180x180">',
-            f'<link rel="preload" href="{P}fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>', f'<link rel="stylesheet" href="{P}styles.css">']
+            f'<link rel="preload" href="{P}fonts/cormorant-garamond.woff2" as="font" type="font/woff2" crossorigin>', f'<link rel="preload" href="{P}fonts/switzer-400.woff2" as="font" type="font/woff2" crossorigin>', f'<link rel="stylesheet" href="{P}styles.css">']
     if base_script:
         # the 404 page: files are only requested once <base> is set, so nothing is fetched from the wrong folder first
         writes = '\n'.join("    document.write('%s');" % x for x in late)
@@ -113,6 +113,17 @@ def text_link(href, path, label):
 
 
 # ---------- business cards (the same markup main.js builds) ----------
+def pic(stem, w, h, alt='', lazy=True, cls='', high=False, sizes=None):
+    load = ' fetchpriority="high"' if high else (' loading="lazy"' if lazy else '')
+    sz = f' sizes="{sizes}"' if sizes else ''
+    return (f'<picture{f" class={chr(34)}{cls}{chr(34)}" if cls else ""}><source type="image/avif" srcset="{stem}.avif"{sz}><source type="image/webp" srcset="{stem}.webp"{sz}>'
+            f'<img src="{stem}.jpg" width="{w}" height="{h}"{load} decoding="async" alt="{E(alt)}"></picture>')
+
+
+def slug(t):
+    return re.sub(r'[^a-z0-9]+', '-', t.lower()).strip('-')
+
+
 def is_live(b):
     u = str(b.get('url', '')).strip()
     return b.get('status') == 'live' and (u.startswith('https://') or re.match(r'^[\w-]+\.html(#[\w-]+)?$', u) is not None)
@@ -189,15 +200,34 @@ def more_card(level='h3'):
       </article>'''
 
 
+def italic_last(text):
+    """One italic accent per headline: the last word (keeping its full stop)."""
+    head, _, last = text.strip().rpartition(' ')
+    return f'{E(head)} <em>{E(last)}</em>' if head else f'<em>{E(text)}</em>'
+
+
 def biz_grid(always_more=False, level='h3'):
-    cards = [card(b, level) for b in cfg['businesses'] if b.get('name')]
+    """The businesses as objects in lit niches: hover or focus warms one light and dims the others (CSS, on stills
+    rendered by tools/render-kb.mjs). Each niche is a real link to that business."""
+    n = cfg['nav']
+    items = []
+    for b in cfg['businesses']:
+        if not b.get('name'):
+            continue
+        live, preview = is_live(b), is_preview(b)
+        badge = n['live'] if live else n.get('preview', 'Preview') if preview else n['comingSoon']
+        still = pic(f'img/niches/biz-{slug(b.get("shortName") or b["name"])}', 720, 960, '', sizes='(min-width: 760px) 30vw, 46vw')
+        body = f'''{still}
+          <span class="niche-label"><span class="niche-status">{E(badge)}</span><{level} class="niche-name">{E(b['name'])}</{level}><span class="niche-line">{E(b.get('description', ''))}</span></span>'''
+        items.append(f'        <li><a class="kb-niche" href="{E(b["url"])}">{body}</a></li>' if (live or preview)
+                     else f'        <li><div class="kb-niche is-soon">{body}</div></li>')
     if always_more or cfg.get('showMoreComingCard') is True:
-        cards.append(more_card(level))
-    more = ' data-more="always"' if always_more else ''
-    more += f' data-level="{level}"' if level != 'h3' else ''
-    return f'''    <!-- main.js rebuilds these cards from "businesses" in site.config.json; this copy shows when the config cannot load -->
-    <div class="container biz-grid" id="biz-grid" data-count="{len(cards)}"{more}>
-{chr(10).join(cards)}
+        items.append(f'''        <li><div class="kb-niche is-empty"><span class="empty-niche" aria-hidden="true"></span>
+          <span class="niche-label"><span class="niche-status">{E(n['comingSoon'])}</span><{level} class="niche-name">{E(cfg['home']['businesses']['moreComing'])}</{level}></span></div></li>''')
+    return f'''    <div class="container kb-niches">
+      <ul class="niche-row" data-count="{len(items)}">
+{chr(10).join(items)}
+      </ul>
     </div>'''
 
 
@@ -302,24 +332,16 @@ def standard_points():
 
 
 def who_section():
-    """Who's behind it: the founder (photo, or a KB monogram until there is one) with the short About line."""
-    fd, wh, ha = cfg['founder'], cfg['who'], cfg['home']['about']
-    photo = fd.get('photo') or ''
-    # the photo is used once the file exists; until then a KB monogram fills the same round frame (never a broken image)
-    if photo and os.path.isfile(os.path.join(SITE_DIR, photo)):
-        inner = f'<img src="{E(photo)}" width="480" height="480" loading="lazy" decoding="async" alt="{E(fd.get("photoAlt", ""))}">'
-    else:
-        inner = '<span class="founder-mono" aria-hidden="true">KB</span>'
+    """Who we are: brand only (CLAUDE.md: no founder name, photo or personal details). The KB mark and the About line."""
+    wh, ha = cfg['who'], cfg['home']['about']
     return f'''  <section class="section section-founder" id="who" aria-labelledby="who-title">
     <div class="container center">
       <h2 class="h2" id="who-title" data-c="who.title">{E(wh['title'])}</h2>
     </div>
     <div class="container founder-grid">
-      <div class="founder-photo" id="founder-photo">{inner}</div>
+      <div class="founder-photo"><span class="founder-mono" aria-hidden="true">KB</span></div>
       <div class="founder-text">
-        <h3 class="founder-name" data-c="founder.name">{E(fd['name'])}</h3>
-        <p class="lead" data-c="founder.bio">{E(fd['bio'])}</p>
-        <p class="who-about" data-c="home.about.text">{E(ha['text'])}</p>
+        <p class="lead who-about" data-c="home.about.text">{E(ha['text'])}</p>
         <p class="values" data-c="home.about.values">{E(ha['values'])}</p>
         <div class="who-actions">
           <a class="pill pill-secondary" href="about.html" data-c="who.moreLabel">{E(wh['moreLabel'])}</a>
@@ -407,7 +429,7 @@ home_body = f'''<main id="main">
   <section class="hero" id="top" aria-labelledby="hero-title">
     <div class="container hero-grid">
       <div class="hero-text">
-        <h1 class="hero-title" id="hero-title" data-c="company.tagline">{E(C['tagline'])}</h1>
+        <h1 class="hero-title" id="hero-title">{italic_last(C['tagline'])}</h1>
         <p class="hero-intro" data-c="home.hero.intro">{E(hm['hero']['intro'])}</p>
         <p class="hero-sub" data-c="home.hero.line">{E(fill(hm['hero']['line']))}</p>
         <div class="hero-actions">
@@ -416,9 +438,7 @@ home_body = f'''<main id="main">
         </div>
       </div>
       <div class="hero-stage" id="stage">
-        <div class="spotlight" aria-hidden="true"></div>
-        <img class="hero-still" src="img/hero-object.webp" width="1200" height="958" alt="A thin black glass card with a fine gold edge, carrying the KB Ventures mark" fetchpriority="high" decoding="async">
-        <canvas id="scene" aria-hidden="true"></canvas>
+        {pic('img/hero-plaque', 1400, 1520, 'A slim smoked-glass plaque engraved with the KB mark, standing on a basalt plinth under one warm light', lazy=False, cls='hero-still', high=True, sizes='(min-width: 900px) 44vw, 90vw')}
       </div>
     </div>
   </section>
@@ -499,8 +519,7 @@ home_body = f'''<main id="main">
 pages = {}
 pages['index.html'] = page('index.html', 'KB Ventures: many businesses, one standard',
                            'KB Ventures is a Melbourne company that starts and runs businesses, including AceGuides and Black Crest Web Designs.', home_body, 'home',
-                           extra='<link rel="preload" href="img/hero-object.webp" as="image" type="image/webp" fetchpriority="high">\n<script type="importmap">{"imports": {"three": "./vendor/three.module.min.js"}}</script>\n'
-                                 '<script type="application/ld+json" id="org-data">' + json.dumps(ld, separators=(',', ':')) + '</script>',
+                           extra='<script type="application/ld+json" id="org-data">' + json.dumps(ld, separators=(',', ':')) + '</script>',
                            scripts=['<script src="main.js" defer></script>', '<script src="signup.js" defer></script>', '<script type="module" src="hero.js"></script>'])
 
 bp = cfg['businessesPage']
@@ -647,35 +666,68 @@ for key in paused - {x['key'] for g in ag['groups'] for x in g['products']}:
     print(f'warning: aceguides.paused lists "{key}" but no guide has that key')
 
 
-def product_card(x):
-    """One guide: cover (or a matching tile for bundles), level, subject, price, and Buy now (or Coming soon)."""
-    if x.get('cover'):
-        cover = f'<img src="{E(x["cover"])}" width="720" height="960" loading="lazy" decoding="async" alt="{E(x.get("coverAlt", ""))}">'
-    else:
-        cover = f'<div class="cover-tile" aria-hidden="true"><span class="tile-brand">AceGuides</span><span class="tile-line"></span><span class="tile-title">{E(x["subject"])}</span></div>'
-    # every guide needs a price in the config: there is no "price to be confirmed" text
-    price = f'<p class="product-price">{money(x["price"])} <span>{E(ag["currency"])}</span></p>' if x.get('price') else ''
-    notify = (f'<a class="text-link product-notify" href="{E(ag["notifyHref"])}">{E(ag["notify"])}<span class="sr-only">: {E(x["subject"])}, {E(x["level"])}</span></a>')
+def action_html(x):
+    notify = (f'<a class="text-btn product-notify" href="{E(ag["notifyHref"])}">{E(ag["notify"])}<span class="sr-only">: {E(x["subject"])}, {E(x["level"])}</span></a>')
     buyable = x.get('link') and x['key'] not in paused
     if x.get('link') and not buyable:
-        action = f'<button class="pill pill-secondary product-soon product-paused" type="button" disabled>{E(ag["pausedLabel"])}</button>' + notify
+        action = f'<button class="btn btn-quiet product-soon product-paused" type="button" disabled>{E(ag["pausedLabel"])}</button>' + notify
     elif buyable:
-        action = (f'<a class="pill pill-primary product-buy" href="{E(x["link"])}" target="_blank" rel="noopener">{E(ag["buy"])}'
+        action = (f'<a class="btn btn-gold product-buy" href="{E(x["link"])}" target="_blank" rel="noopener">{E(ag["buy"])}'
                   f'<span class="sr-only">: {E(x["subject"])}, {E(x["level"])} {E(ag["newTab"])}</span></a>')
     else:
-        action = f'<button class="pill pill-secondary product-soon" type="button" disabled>{E(ag["comingSoon"])}</button>' + notify
+        action = f'<button class="btn btn-quiet product-soon" type="button" disabled>{E(ag["comingSoon"])}</button>' + notify
     if x['key'] in samples:
-        action += (f'<a class="text-link product-sample" href="{E(samples[x["key"]])}" target="_blank" rel="noopener">{E(ag["sampleLabel"])}'
+        action += (f'<a class="text-btn product-sample" href="{E(samples[x["key"]])}" target="_blank" rel="noopener">{E(ag["sampleLabel"])}'
                    f'<span class="sr-only">: {E(x["subject"])}, {E(x["level"])} {E(ag["newTab"])}</span></a>')
-    return f'''        <li class="card product{'' if buyable else ' is-soon'}" id="{E(x['key'])}">
-          <div class="product-cover">{cover}</div>
-          <div class="product-body">
-            <p class="label">{E(x['level'])}</p>
-            <h3 class="product-name">{E(x['subject'])}</h3>
-            {price}
-            <div class="product-actions">{action}</div>
-          </div>
+    return action, buyable
+
+
+def product_card(x):
+    """One guide: a book in its lit niche. Choosing it opens the guide's detail view."""
+    _, buyable = action_html(x)
+    price = f'{money(x["price"])}' if x.get('price') else ''
+    return f'''        <li class="product{'' if buyable else ' is-soon'}" id="{E(x['key'])}">
+          <a class="kb-niche book" href="#d-{E(x['key'])}" data-dialog="d-{E(x['key'])}" aria-haspopup="dialog">
+            {pic(f"img/niches/{x['key']}", 720, 960, '', sizes='(min-width: 900px) 22vw, 46vw')}
+            <span class="niche-label"><span class="niche-name product-name">{E(x['subject'])}</span><span class="niche-line"><span class="product-level">{E(x['level'])}</span> &middot; <span class="num">{price}</span></span></span>
+          </a>
         </li>'''
+
+
+def product_detail(x):
+    """The detail view: the cover on one side; level, subject, what is inside, price and the Stripe link on the other."""
+    action, _ = action_html(x)
+    inside = ''.join(f'<li>{E(t)}</li>' for t in ag['inside'])
+    vce = f'<p class="detail-vcaa">{E(ag["vcaa"])}</p>' if 'VCE' in x['level'] else ''
+    cover = f'<img src="{E(x["cover"])}" width="720" height="960" loading="lazy" decoding="async" alt="{E(x.get("coverAlt", ""))}">' if x.get('cover') else ''
+    return f'''  <dialog class="guide-detail" id="d-{E(x['key'])}" aria-labelledby="d-{E(x['key'])}-h">
+    <div class="detail-grid">
+      <div class="detail-object">{cover}</div>
+      <div class="detail-copy">
+        <p class="crumbs">AceGuides<span aria-hidden="true">/</span>{E(x['level'])}</p>
+        <h2 class="detail-title" id="d-{E(x['key'])}-h">{italic_last(x['subject'])}</h2>
+        <p class="detail-lead">A printed-quality PDF study guide for {E(x['level'])} {E(x['subject'])}.</p>
+        <p class="facts-label">{E(ag['insideTitle'])}</p>
+        <ul class="facts">{inside}</ul>
+        <p class="detail-price"><span class="num">{money(x['price'])}</span> <small>{E(ag['currency'])}</small></p>
+        <div class="detail-actions">{action}</div>
+        {vce}
+        <a class="text-btn detail-back" href="#{E(x['key'])}" data-close>Back to the collection</a>
+      </div>
+    </div>
+  </dialog>'''
+
+
+def bundle_rows(g):
+    rows = []
+    for x in g['products']:
+        action, buyable = action_html(x)
+        rows.append(f'''        <tr class="st-row{'' if buyable else ' is-soon'}" id="{E(x['key'])}">
+          <th scope="row"><span class="st-title">{E(x['subject'])}</span></th>
+          <td class="st-amt"><span class="num">{money(x['price'])}</span> <small>{E(ag['currency'])}</small></td>
+          <td class="st-go">{action}</td>
+        </tr>''')
+    return ''.join(rows)
 
 
 def products_ld():
@@ -696,9 +748,20 @@ def products_ld():
 groups_html = []
 for gi, g in enumerate(ag['groups']):
     gid = re.sub(r'[^a-z0-9]+', '-', g['title'].lower()).strip('-')
+    if all(not x.get('cover') for x in g['products']):  # the bundles: a statement, not a shelf
+        groups_html.append(f'''  <section class="container shop-group shop-bundles" id="{gid}" aria-labelledby="{gid}-h">
+    <h2 class="h2" id="{gid}-h" data-c="aceguides.groups.{gi}.title">{E(g['title'])}</h2>
+    <table class="st-table"><caption class="sr-only">AceGuides bundles and prices</caption>
+      <thead><tr><th scope="col">Bundle</th><th scope="col">Price</th><th scope="col"><span class="sr-only">Buy</span></th></tr></thead>
+      <tbody>
+{bundle_rows(g)}
+      </tbody>
+    </table>
+  </section>''')
+        continue
     groups_html.append(f'''  <section class="container shop-group" id="{gid}" aria-labelledby="{gid}-h">
     <h2 class="h2" id="{gid}-h" data-c="aceguides.groups.{gi}.title">{E(g['title'])}</h2>
-    <ul class="product-grid">
+    <ul class="book-row">
 {chr(10).join(product_card(x) for x in g['products'])}
     </ul>
   </section>''')
@@ -726,25 +789,23 @@ pages['aceguides.html'] = page('aceguides.html', ag['meta']['title'], ag['meta']
     <p class="shop-policies">{policies}</p>
     <p class="shop-vcaa" data-c="aceguides.vcaa">{E(ag['vcaa'])}</p>
   </div>
+{chr(10).join(product_detail(x) for g in ag['groups'] for x in g['products'] if x.get('cover'))}
 </main>''', 'aceguides', extra=f'<script type="application/ld+json" id="products-data">{products_ld()}</script>')
 
 bc = cfg['blackCrest']
 
 
-def package_card(i, x):
-    """One Black Crest package: name, "From $490" (or the quote text), what is included, and a button to the contact form."""
-    if x.get('price'):
-        price = (f'<p class="pkg-price"><span class="pkg-from" data-c="blackCrest.from">{E(bc["from"])}</span> '
-                 f'<span class="pkg-amount">${x["price"]:,}</span> <span class="pkg-cur" data-c="blackCrest.currency">{E(bc["currency"])}</span></p>')
-    else:
-        price = f'<p class="pkg-price"><span class="pkg-amount pkg-quote" data-c="blackCrest.packages.{i}.priceText">{E(x["priceText"])}</span></p>'
+def package_row(i, x):
+    """One Black Crest package as a statement row: name and what is included, the price, and a calm text button."""
+    amount = (f'<span class="num">${x["price"]:,}</span> <small>{E(x.get("per", bc["currency"]))}</small>' if x.get('price')
+              else f'<span class="st-quote" data-c="blackCrest.packages.{i}.priceText">{E(x["priceText"])}</span>')
     feats = ''.join(f'<li data-c="blackCrest.packages.{i}.features.{j}">{E(f)}</li>' for j, f in enumerate(x['features']))
-    return f'''      <li class="card pkg" id="{E(x['key'])}">
-        <h2 class="pkg-name" data-c="blackCrest.packages.{i}.name">{E(x['name'])}</h2>
-        {price}
-        <ul class="pkg-features">{feats}</ul>
-        <a class="pill {'pill-primary' if i == 1 else 'pill-secondary'} pkg-btn" href="{E(bc['buttonHref'])}"><span data-c="blackCrest.button">{E(bc['button'])}</span><span class="sr-only">: {E(x['name'])}</span></a>
-      </li>'''
+    flag = f' <span class="st-flag">{E(x["flag"])}</span>' if x.get('flag') else ''
+    return f'''        <tr class="st-row" id="{E(x['key'])}">
+          <th scope="row"><h2 class="st-title" data-c="blackCrest.packages.{i}.name">{E(x['name'])}</h2>{flag}<ul class="st-inc">{feats}</ul></th>
+          <td class="st-amt">{amount}</td>
+          <td class="st-go"><a class="text-btn" href="{E(x.get('href', bc['buttonHref']))}">{E(x.get('cta', bc['button']))}<span class="sr-only">: {E(x['name'])}</span></a></td>
+        </tr>'''
 
 
 pages['black-crest.html'] = page('black-crest.html', bc['meta']['title'], bc['meta']['description'], f'''<main id="main" class="page pricing">
@@ -754,9 +815,12 @@ pages['black-crest.html'] = page('black-crest.html', bc['meta']['title'], bc['me
     <p class="lead" data-c="blackCrest.lead">{E(bc['lead'])}</p>
   </div>
   <div class="container">
-    <ul class="pkg-grid">
-{chr(10).join(package_card(i, x) for i, x in enumerate(bc['packages']))}
-    </ul>
+    <table class="st-table"><caption class="sr-only">Black Crest Web Designs packages, in Australian dollars</caption>
+      <thead><tr><th scope="col">Package</th><th scope="col">Price</th><th scope="col"><span class="sr-only">Choose</span></th></tr></thead>
+      <tbody>
+{chr(10).join(package_row(i, x) for i, x in enumerate(bc['packages']))}
+      </tbody>
+    </table>
     <p class="pkg-note" data-c="blackCrest.note">{E(bc['note'])}</p>
   </div>
 {gallery('h2', 'h3')}

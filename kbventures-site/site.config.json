@@ -429,12 +429,7 @@
     ]
   },
   "founder": {
-    "title": "Meet the founder.",
-    "name": "Kirithik",
-    "photo": "",
-    "photoAlt": "Kirithik, founder of KB Ventures",
-    "bio": "Hi, I’m Kirithik, the founder of KB Ventures. I’m based in Melbourne and I start businesses that follow one standard: clear, fair and well made.",
-    "button": "Get in touch"
+    "note": "Brand only: the house style (CLAUDE.md) keeps the founder name, photo and personal details off the site."
   },
   "businessesPage": {
     "title": "Our businesses.",
@@ -521,7 +516,7 @@
     }
   ],
   "who": {
-    "title": "Who’s behind it.",
+    "title": "Who we are.",
     "moreLabel": "More about us",
     "contactLabel": "Get in touch"
   },
@@ -933,43 +928,67 @@
     },
     "label": "Black Crest Web Designs",
     "title": "Website pricing.",
-    "lead": "Three simple packages for local business websites.",
+    "lead": "Clear prices for local business websites, in Australian dollars.",
     "currency": "AUD",
     "from": "From",
     "packages": [
       {
-        "key": "starter",
-        "name": "Starter",
-        "price": 490,
+        "key": "one-page",
+        "name": "One Page",
+        "price": 300,
+        "per": "one-off, AUD",
         "features": [
-          "1-page site",
+          "One polished page",
+          "Designed for phones first",
           "Contact form",
-          "Mobile friendly"
-        ]
+          "Google basics set up",
+          "2 rounds of changes"
+        ],
+        "href": "../black-crest-site/contact.html?need=one-page",
+        "cta": "Choose One Page"
       },
       {
-        "key": "standard",
-        "name": "Standard",
-        "price": 990,
+        "key": "full-website",
+        "name": "Full Website",
+        "price": 700,
+        "per": "one-off, AUD",
+        "flag": "Better value",
         "features": [
-          "Up to 5 pages",
-          "Contact form",
-          "Basic SEO",
-          "1 round of changes"
-        ]
+          "Up to about 5 pages",
+          "Room for a menu, timetable, services or gallery",
+          "Everything in One Page",
+          "2 rounds of changes"
+        ],
+        "href": "../black-crest-site/contact.html?need=full-website",
+        "cta": "Choose Full Website"
+      },
+      {
+        "key": "care-plan",
+        "name": "Care plan",
+        "price": 30,
+        "per": "a month, optional",
+        "features": [
+          "Hosting upkeep",
+          "Small text and photo changes",
+          "Security checks and backups"
+        ],
+        "href": "../black-crest-site/care-plan.html",
+        "cta": "What it covers"
       },
       {
         "key": "custom",
         "name": "Custom",
         "price": null,
-        "priceText": "Quote on request",
+        "priceText": "By quote",
         "features": [
-          "Bigger or special projects"
-        ]
+          "Bigger or unusual projects"
+        ],
+        "href": "../black-crest-site/contact.html?need=not-sure",
+        "cta": "Ask for a quote"
       }
     ],
     "button": "Get a quote",
     "buttonHref": "contact.html?topic=black-crest",
-    "note": "Prices are a starting point. Every project is quoted before any work begins."
+    "note": "Every price is agreed in writing before work starts, and the concept homepage is free."
   }
 }

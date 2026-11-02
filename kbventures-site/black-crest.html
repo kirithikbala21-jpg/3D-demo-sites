@@ -29,7 +29,8 @@
 <link rel="icon" href="img/icon-192.png" type="image/png" sizes="192x192">
 <link rel="icon" href="img/icon-512.png" type="image/png" sizes="512x512">
 <link rel="apple-touch-icon" href="apple-touch-icon.png" sizes="180x180">
-<link rel="preload" href="fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/cormorant-garamond.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/switzer-400.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="styles.css">
 <script>document.documentElement.classList.add('js');</script>
 <script src="vendor/lenis-1.1.18.min.js" defer></script>
@@ -45,30 +46,35 @@
   <div class="container page-head">
     <p class="label pricing-label"><span data-c="blackCrest.label">Black Crest Web Designs</span> <span class="tag" data-c="nav.comingSoon">Coming soon</span></p>
     <h1 class="page-title" data-c="blackCrest.title">Website pricing.</h1>
-    <p class="lead" data-c="blackCrest.lead">Three simple packages for local business websites.</p>
+    <p class="lead" data-c="blackCrest.lead">Clear prices for local business websites, in Australian dollars.</p>
   </div>
   <div class="container">
-    <ul class="pkg-grid">
-      <li class="card pkg" id="starter">
-        <h2 class="pkg-name" data-c="blackCrest.packages.0.name">Starter</h2>
-        <p class="pkg-price"><span class="pkg-from" data-c="blackCrest.from">From</span> <span class="pkg-amount">$490</span> <span class="pkg-cur" data-c="blackCrest.currency">AUD</span></p>
-        <ul class="pkg-features"><li data-c="blackCrest.packages.0.features.0">1-page site</li><li data-c="blackCrest.packages.0.features.1">Contact form</li><li data-c="blackCrest.packages.0.features.2">Mobile friendly</li></ul>
-        <a class="pill pill-secondary pkg-btn" href="contact.html?topic=black-crest"><span data-c="blackCrest.button">Get a quote</span><span class="sr-only">: Starter</span></a>
-      </li>
-      <li class="card pkg" id="standard">
-        <h2 class="pkg-name" data-c="blackCrest.packages.1.name">Standard</h2>
-        <p class="pkg-price"><span class="pkg-from" data-c="blackCrest.from">From</span> <span class="pkg-amount">$990</span> <span class="pkg-cur" data-c="blackCrest.currency">AUD</span></p>
-        <ul class="pkg-features"><li data-c="blackCrest.packages.1.features.0">Up to 5 pages</li><li data-c="blackCrest.packages.1.features.1">Contact form</li><li data-c="blackCrest.packages.1.features.2">Basic SEO</li><li data-c="blackCrest.packages.1.features.3">1 round of changes</li></ul>
-        <a class="pill pill-primary pkg-btn" href="contact.html?topic=black-crest"><span data-c="blackCrest.button">Get a quote</span><span class="sr-only">: Standard</span></a>
-      </li>
-      <li class="card pkg" id="custom">
-        <h2 class="pkg-name" data-c="blackCrest.packages.2.name">Custom</h2>
-        <p class="pkg-price"><span class="pkg-amount pkg-quote" data-c="blackCrest.packages.2.priceText">Quote on request</span></p>
-        <ul class="pkg-features"><li data-c="blackCrest.packages.2.features.0">Bigger or special projects</li></ul>
-        <a class="pill pill-secondary pkg-btn" href="contact.html?topic=black-crest"><span data-c="blackCrest.button">Get a quote</span><span class="sr-only">: Custom</span></a>
-      </li>
-    </ul>
-    <p class="pkg-note" data-c="blackCrest.note">Prices are a starting point. Every project is quoted before any work begins.</p>
+    <table class="st-table"><caption class="sr-only">Black Crest Web Designs packages, in Australian dollars</caption>
+      <thead><tr><th scope="col">Package</th><th scope="col">Price</th><th scope="col"><span class="sr-only">Choose</span></th></tr></thead>
+      <tbody>
+        <tr class="st-row" id="one-page">
+          <th scope="row"><h2 class="st-title" data-c="blackCrest.packages.0.name">One Page</h2><ul class="st-inc"><li data-c="blackCrest.packages.0.features.0">One polished page</li><li data-c="blackCrest.packages.0.features.1">Designed for phones first</li><li data-c="blackCrest.packages.0.features.2">Contact form</li><li data-c="blackCrest.packages.0.features.3">Google basics set up</li><li data-c="blackCrest.packages.0.features.4">2 rounds of changes</li></ul></th>
+          <td class="st-amt"><span class="num">$300</span> <small>one-off, AUD</small></td>
+          <td class="st-go"><a class="text-btn" href="../black-crest-site/contact.html?need=one-page">Choose One Page<span class="sr-only">: One Page</span></a></td>
+        </tr>
+        <tr class="st-row" id="full-website">
+          <th scope="row"><h2 class="st-title" data-c="blackCrest.packages.1.name">Full Website</h2> <span class="st-flag">Better value</span><ul class="st-inc"><li data-c="blackCrest.packages.1.features.0">Up to about 5 pages</li><li data-c="blackCrest.packages.1.features.1">Room for a menu, timetable, services or gallery</li><li data-c="blackCrest.packages.1.features.2">Everything in One Page</li><li data-c="blackCrest.packages.1.features.3">2 rounds of changes</li></ul></th>
+          <td class="st-amt"><span class="num">$700</span> <small>one-off, AUD</small></td>
+          <td class="st-go"><a class="text-btn" href="../black-crest-site/contact.html?need=full-website">Choose Full Website<span class="sr-only">: Full Website</span></a></td>
+        </tr>
+        <tr class="st-row" id="care-plan">
+          <th scope="row"><h2 class="st-title" data-c="blackCrest.packages.2.name">Care plan</h2><ul class="st-inc"><li data-c="blackCrest.packages.2.features.0">Hosting upkeep</li><li data-c="blackCrest.packages.2.features.1">Small text and photo changes</li><li data-c="blackCrest.packages.2.features.2">Security checks and backups</li></ul></th>
+          <td class="st-amt"><span class="num">$30</span> <small>a month, optional</small></td>
+          <td class="st-go"><a class="text-btn" href="../black-crest-site/care-plan.html">What it covers<span class="sr-only">: Care plan</span></a></td>
+        </tr>
+        <tr class="st-row" id="custom">
+          <th scope="row"><h2 class="st-title" data-c="blackCrest.packages.3.name">Custom</h2><ul class="st-inc"><li data-c="blackCrest.packages.3.features.0">Bigger or unusual projects</li></ul></th>
+          <td class="st-amt"><span class="st-quote" data-c="blackCrest.packages.3.priceText">By quote</span></td>
+          <td class="st-go"><a class="text-btn" href="../black-crest-site/contact.html?need=not-sure">Ask for a quote<span class="sr-only">: Custom</span></a></td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="pkg-note" data-c="blackCrest.note">Every price is agreed in writing before work starts, and the concept homepage is free.</p>
   </div>
     <div class="container gallery" data-gallery>
       <div class="gallery-head">

@@ -161,18 +161,6 @@
     ld.textContent = JSON.stringify({ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: items.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) });
   }
 
-  /* ---------- Standard cards: a slight tilt and a soft light that follows the pointer ---------- */
-  if (!reduceMotion && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-    $$('.std-card').forEach((c) => {
-      c.addEventListener('pointermove', (e) => {
-        const r = c.getBoundingClientRect(), x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
-        c.style.setProperty('--mx', (x * 100).toFixed(1) + '%'); c.style.setProperty('--my', (y * 100).toFixed(1) + '%');
-        c.style.setProperty('--rx', ((0.5 - y) * 6).toFixed(2) + 'deg'); c.style.setProperty('--ry', ((x - 0.5) * 8).toFixed(2) + 'deg');
-      });
-      c.addEventListener('pointerleave', () => { c.style.setProperty('--rx', '0deg'); c.style.setProperty('--ry', '0deg'); });
-    });
-  }
-
   /* ---------- Concept sites: a scroll-snap row with arrow buttons (and arrow keys on the row itself) ---------- */
   $$('[data-gallery]').forEach((g) => {
     const track = $('.gallery-track', g), btns = $$('.gallery-btn', g);
@@ -195,6 +183,17 @@
     window.addEventListener('resize', update);
     update();
   });
+
+  /* ---------- AceGuides: each guide opens its detail view (a dialog; Escape closes it, focus returns to the guide) ---------- */
+  $$('[data-dialog]').forEach((a) => a.addEventListener('click', (e) => {
+    const d = document.getElementById(a.dataset.dialog);
+    if (!d || typeof d.showModal !== 'function') return; // without dialog support, #d-key still opens it with CSS
+    e.preventDefault(); d.showModal();
+    d.addEventListener('close', () => a.focus(), { once: true });
+  }));
+  $$('dialog [data-close]').forEach((b) => b.addEventListener('click', (e) => { const d = b.closest('dialog'); if (d && d.open) { e.preventDefault(); d.close(); } }));
+  $$('dialog.guide-detail').forEach((d) => d.addEventListener('click', (e) => { if (e.target === d) d.close(); })); // a click outside the panel
+  { const m = location.hash.match(/^#(d-[\w-]+)$/), d = m && document.getElementById(m[1]); if (d && d.showModal) { history.replaceState(null, '', location.pathname); d.showModal(); } }
 
   /* ---------- FAQ page: filter the questions as you type ---------- */
   const search = $('#faq-search'), none = $('#faq-none');
@@ -275,13 +274,6 @@
         grid.replaceChildren(...cards);
         grid.dataset.count = String(cards.length);
         parallax = $$('[data-parallax]');
-      }
-      // the founder's photo, once the file exists; until then the KB monogram stays (never a broken image)
-      const fp = $('#founder-photo'), photo = cfg.founder && cfg.founder.photo;
-      if (fp && local(photo) && !fp.querySelector('img')) {
-        const im = new Image();
-        im.onload = () => { im.width = 480; im.height = 480; im.alt = cfg.founder.photoAlt || ''; fp.replaceChildren(im); };
-        im.src = BASE + photo.trim();
       }
       const faq = Array.isArray(cfg.faq) ? cfg.faq.filter((f) => f && filled(f.q) && filled(f.a)) : [];
       if (faq.length) {

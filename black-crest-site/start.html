@@ -66,7 +66,7 @@
   <div class="container page-head narrow">
     <p class="label"><span class="idx">01</span><span class="slash" aria-hidden="true">/</span>Start your project</p>
     <h1 class="h1" data-split>Tell us about <em>your business.</em></h1>
-    <p class="lead" data-reveal>The more you share, the closer your free concept will be. Only the first four boxes are needed. We reply within 24 hours.</p>
+    <p class="lead" data-reveal>The more you share, the closer your free concept will be. Only the first four boxes are needed. We reply within 1 business day.</p>
   </div>
   <section class="container narrow" aria-label="Project details" style="padding-bottom:120px">
     <div class="tile" data-reveal>
@@ -149,10 +149,8 @@
           <textarea id="photos" name="photos" aria-describedby="e-photos h-photos"></textarea>
           <p class="field-error" id="e-photos" hidden></p>
         </div>
-        <div class="field">
-          <label for="package">Which package are you thinking of? <span class="hint">(optional)</span></label>
-          <select id="package" name="package"><option>Not sure yet</option><option>One Page ($300)</option><option>Full Website ($700)</option><option>Custom (by quote)</option></select>
-        </div>
+        <fieldset class="choice-grid" data-need><legend>What do you need?</legend><label class="choice"><input type="radio" name="need" value="One Page"><span>One Page ($300)</span></label><label class="choice"><input type="radio" name="need" value="Full Website"><span>Full Website ($700)</span></label><label class="choice"><input type="radio" name="need" value="Something custom"><span>Something custom</span></label><label class="choice"><input type="radio" name="need" value="Not sure yet" checked><span>Not sure yet</span></label></fieldset>
+        <label class="care-check" for="start-care"><input type="checkbox" id="start-care" name="care_plan" value="Yes"><span class="care-box" aria-hidden="true"></span><span class="care-text"><b>Add the care plan</b>: we look after your site after launch (<span data-price="carePlan">$30</span> a month, optional)</span></label>
         <div class="field">
           <label for="message">Anything else <span class="hint">(optional)</span></label>
           

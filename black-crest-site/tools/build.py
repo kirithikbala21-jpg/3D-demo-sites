@@ -310,7 +310,7 @@ def page(path, title, desc, body, noindex=False, ld=(), bare=False, base_script=
     P = '../' * path.count('/')
     top = '' if bare else header(P, path)
     bottom = '' if bare else f'{footer(P, path)}\n{mobile_bar(P)}'
-    t = '\n<div class="toast" id="toast" role="status" hidden><i aria-hidden="true"></i>Message sent. We reply within 24 hours.</div>' if toast else ''
+    t = '\n<div class="toast" id="toast" role="status" hidden><i aria-hidden="true"></i>Message sent. We reply within 1 business day.</div>' if toast else ''
     if path != 'index.html':
         body = re.sub(r'<p class="label">(?!<span class="idx">)([^<]+)</p>', r'<p class="label"><span class="idx">01</span><span class="slash" aria-hidden="true">/</span>\1</p>', body, count=1)
     body = picturise(body, P)
@@ -350,9 +350,9 @@ def cta_final(title, text, primary=('free-concept.html', 'Get a free concept'), 
 
 STATEMENT = [
     ('onePage', 'One Page', 'one-off', 'contact.html?need=one-page', 'Choose One Page', False,
-     'One polished page with everything a local business needs.', ['Writing help', 'Designed for phones first', 'Contact form', 'Google basics set up', 'Fast and secure (HTTPS)', '2 rounds of changes']),
+     'One polished page with everything a local business needs.', ['Writing help', 'Designed for phones first', 'Contact form', 'Google Map of your location', 'Google basics set up', 'Fast and secure (HTTPS)', '2 rounds of changes']),
     ('fullSite', 'Full Website', 'one-off', 'contact.html?need=full-website', 'Choose Full Website', True,
-     'Up to about 5 pages, for a business with more to show.', ['Everything in One Page', 'Up to about 5 pages', 'Room for a menu, timetable, services or gallery', '2 rounds of changes']),
+     'Up to about 5 pages, for a business with more to show.', ['Everything in One Page, Google Map included', 'Up to 5 pages', 'Room for a menu, timetable, services or gallery', '2 rounds of changes']),
 ]
 
 
@@ -361,7 +361,7 @@ def statement(P, level='h3'):
     def row(key, name, per, href, cta, featured, sub, items, amount, cls=''):
         flag = '<span class="st-flag">Better value</span>' if featured else ''
         return f'''<tr class="st-row{cls}">
-            <th scope="row" class="st-name"><{level} class="st-title">{name}</{level}>{flag}<p>{sub}</p></th>
+            <th scope="row" class="st-name"><{level} class="st-title">{name}</{level}>{flag}<p>{sub}</p>{'<p class="st-note">Need more than one page? The Full Website covers up to 5.</p>' if key == 'onePage' else ''}</th>
             <td class="st-inc"><ul>{''.join(f'<li>{x}</li>' for x in items)}</ul></td>
             <td class="st-amt"><span class="odo" data-price="{key}" data-odometer="{money(amount)}">{money(amount)}</span><small>{per}</small></td>
             <td class="st-go"><a class="text-btn" href="{P}{href}">{cta}</a></td>
@@ -376,6 +376,7 @@ def statement(P, level='h3'):
         <tbody>{rows}</tbody>
         <tbody class="st-optional">{care}</tbody>
       </table>
+      <p class="st-honest">We&rsquo;re new and building our first portfolio, so prices start low. The work doesn&rsquo;t.</p>
       <p class="st-foot"><span>Custom work, bigger or unusual projects, is by quote.</span> <a class="text-btn" href="{P}contact.html?need=not-sure">Ask for a quote</a></p>
     </div>'''
 
@@ -389,6 +390,17 @@ def strip_tags(s):
 
 
 # ---------------------------------------------------------------- forms
+NEEDS = [('One Page', f'One Page ({money(ONE)})'), ('Full Website', f'Full Website ({money(FULL)})'), ('Something custom', 'Something custom'), ('Not sure yet', 'Not sure yet')]
+
+
+def need_fields(prefix='n', care=False):
+    """What do you need (choose one), and a separate care plan box. forms.js sends both and puts both in the subject."""
+    radios = ''.join(f'''<label class="choice"><input type="radio" name="need" value="{v}"{" checked" if v == "Not sure yet" else ""}><span>{label}</span></label>''' for v, label in NEEDS)
+    return f'''<fieldset class="choice-grid" data-need><legend>What do you need?</legend>{radios}</fieldset>
+        <label class="care-check" for="{prefix}-care"><input type="checkbox" id="{prefix}-care" name="care_plan" value="Yes"{" checked" if care else ""}><span class="care-box" aria-hidden="true"></span><span class="care-text"><b>Add the care plan</b>: we look after your site after launch (<span data-price="carePlan">{money(CARE)}</span> a month, optional)</span></label>'''
+
+
+
 def form_open(name, subject, P):
     return f'''<form class="form" id="form-{name}" data-form="{name}" action="https://api.web3forms.com/submit" method="POST" data-thanks="{P}thank-you.html" novalidate>
         <input type="hidden" name="access_key" value="{FORM_KEY}">
@@ -451,6 +463,11 @@ FAQS = [
     ('What do I need to give you?', 'Your business name, what you do, where you are, how people should reach you, your hours, your services and prices, and your logo and photos if you have them. We help with the writing.'),
     ("What if I don't like the concept?", "Then you pay nothing. Tell us what isn't right and we can adjust it before you decide, or simply walk away. There is no deposit until you choose to go ahead."),
     ('How do payment and the deposit work?', 'The concept is free. If you go ahead, a 50% deposit starts the build and the balance is due at launch. We email an invoice with the payment details. We never take payments on this website.'),
+    ('Can I change things on my site myself?', 'Small changes are part of the care plan. You can also email us anything, any time. Bigger changes are quoted first.'),
+    ('How do I pay?', 'By bank transfer, from an invoice we email you. We never take payment on this website.'),
+    ('Do you charge GST?', 'We are not registered for GST, so there is no GST on our prices.'),
+    ('What if I change my mind after the deposit?', 'You can stop at any time. The deposit covers the work already done, so it is not refunded, unless no work has started yet. If we cannot finish the work, we refund your deposit in full. See our <a href="{P}terms.html">terms</a>.'),
+    ('Where is my site hosted?', 'On a fast, reputable host we set up for you. Hosting setup is included, and if anything would cost extra, we tell you before you say yes.'),
     ('How long does the care plan last?', 'Month to month, for as long as it is useful to you. There is no lock-in contract.'),
     ('How do I cancel the care plan?', 'Email us before your next month starts. Your site stays yours, and we hand over your files and logins.'),
 ]
@@ -644,7 +661,7 @@ def process_stack(P):
   </section>'''
 
 
-STANDARD_NUMS = [('onePage', None, 'Starting price, written down before any work begins.'), (None, '5', 'Pages, about, in a Full Website.'),
+STANDARD_NUMS = [('onePage', None, 'Starting price, written down before any work begins.'), (None, '5', 'Up to 5 pages in a Full Website.'),
                  (None, '2', 'Rounds of changes, included in every build.'), (None, '0', 'Lock-in contracts. The care plan is month to month.'),
                  (None, '100%', 'Yours. The finished site, the files and the logins.')]
 
@@ -798,7 +815,7 @@ page('index.html', 'Black Crest Web Designs: premium sites for local businesses'
     </div>
   </section>
 
-  {cta_final('See it <em>before</em> you pay.', 'Tell us about your business. We reply within 24 hours and design your homepage for free.', secondary=('contact.html', 'Ask a question'))}
+  {cta_final('See it <em>before</em> you pay.', 'Tell us about your business. We reply within 1 business day and design your homepage for free.', secondary=('contact.html', 'Ask a question'))}
 </main>''', ld=[ORG], vendor=('gsap/Flip.min.js',), pre=True)
 
 
@@ -815,7 +832,7 @@ page('lab.html', 'Concept Lab: Black Crest Web Designs', 'Sketch a homepage for 
       {lab(P, heading=False)}
     </div>
   </section>
-  {cta_final('Rather <em>just talk?</em>', 'Tell us about your business in a few lines. We reply within 24 hours.', secondary=('contact.html', 'Ask a question'))}
+  {cta_final('Rather <em>just talk?</em>', 'Tell us about your business in a few lines. We reply within 1 business day.', secondary=('contact.html', 'Ask a question'))}
 </main>''', vendor=('gsap/Flip.min.js',))
 
 
@@ -844,7 +861,7 @@ page('standard.html', 'The Black Crest Standard: Black Crest Web Designs', 'Ten 
       <ol class="standard-list">{''.join(f'<li data-reveal><span class="n" aria-hidden="true">{i + 1:02d}</span><div><h2 class="h3">{t}</h2><p>{x}</p></div></li>' for i, (t, x) in enumerate(STANDARD))}</ol>
     </div>
   </section>
-  {cta_final('See it <em>before</em> you pay.', 'Tell us about your business. We reply within 24 hours and design your homepage for free.', secondary=('pricing.html', 'See pricing'))}
+  {cta_final('See it <em>before</em> you pay.', 'Tell us about your business. We reply within 1 business day and design your homepage for free.', secondary=('pricing.html', 'See pricing'))}
 </main>''')
 
 
@@ -1058,7 +1075,7 @@ page('credits.html', 'Credits: Black Crest Web Designs', 'Where the photos, data
 
 # ================================================================= Pricing
 P = ''
-INCLUDED = ['Writing help', 'Mobile design', 'Contact form', 'Google basics (SEO setup)', 'Speed', 'Secure HTTPS', 'Handover of your site and logins', '2 rounds of changes']
+INCLUDED = ['Writing help', 'Mobile design', 'Contact form', 'Google Map of your location', 'Google basics (SEO setup)', 'Speed', 'Secure HTTPS', 'Handover of your site and logins', '2 rounds of changes']
 inc_rows = ''.join(f'<tr><th scope="row">{x}</th><td class="yes" data-label="One Page">Included</td><td class="yes" data-label="Full Website">Included</td></tr>' for x in INCLUDED)
 addon_rows = ''.join(f'''<li><span><b>{a['name']}</b><span class="tiny">{a['note']}</span></span><span class="amt"><small>from</small><span data-price="{a['id']}">{money(a['from'])}</span>{' <small>each</small>' if a.get('perUnit') else ''}</span></li>''' for a in ADDONS)
 CMP = [
@@ -1149,6 +1166,9 @@ page('pricing.html', 'Pricing: Black Crest Web Designs', f'One Page website {mon
             <div><p class="tile-label" style="margin:0 0 6px"><span>Estimated total</span></p><p class="tiny" style="margin:0">One-off, in AUD</p></div>
             <div class="ring" aria-hidden="true"><svg viewBox="0 0 40 40"><circle class="track" cx="20" cy="20" r="17"/><circle class="fill" cx="20" cy="20" r="17" pathLength="1"/></svg><span><b>0</b>extras</span></div>
           </div>
+          <p class="calc-count tiny" id="calc-count" aria-live="polite">No extras</p>
+          <div hidden>
+          </div>
           <p class="balance" aria-live="polite"><span class="from">from</span> <span id="calc-total">{money(ONE)}</span></p>
           <p class="muted small" id="calc-month" hidden>plus the care plan, <span data-price="carePlan">{money(CARE)}</span> a month</p>
           <ul id="calc-lines"><li>One Page: {money(ONE)}</li></ul>
@@ -1192,25 +1212,26 @@ page('process.html', 'Process: how Black Crest Web Designs works', 'Four steps: 
       </div>
     </div>
   </section>
-  {cta_final('Ready for <em>step one?</em>', 'Send a short message. We reply within 24 hours.', secondary=('start.html', 'Start your project'))}
+  {cta_final('Ready for <em>step one?</em>', 'Send a short message. We reply within 1 business day.', secondary=('start.html', 'Start your project'))}
 </main>''')
 
 # ================================================================= Free concept (landing page for DMs: no site menu)
 P = ''
-page('free-concept.html', 'Get a free website concept: Black Crest Web Designs', 'We design your new homepage for free. No deposit, no obligation. Reply within 24 hours.', f'''<main id="main" class="landing">
+page('free-concept.html', 'Get a free website concept: Black Crest Web Designs', 'We design your new homepage for free. No deposit, no obligation. Reply within 1 business day.', f'''<main id="main" class="landing">
   <div class="container">
     <div class="landing-head">{brand(P)}</div>
     <h1>See it <em>before you pay.</em></h1>
     <ul class="ticks">
       <li>We design your homepage for free.</li>
       <li>No deposit and no obligation.</li>
-      <li>We reply within 24 hours.</li>
+      <li>We reply within 1 business day.</li>
     </ul>
     <div class="tile">
       {form_open('free-concept', 'Black Crest: free concept request', P)}
         {field('business', 'Business name', required=True, auto='organization', empty='Please tell us your business name.')}
         {field('trade', 'What you do', required=True, placeholder='For example: barbershop in Brunswick', empty='Please tell us what your business does.')}
         {field('contact', 'Email or phone', required=True, auto='email', contact=True, empty='Please add an email address or phone number so we can reply.')}
+        {need_fields('fc')}
         {form_close('Get my free concept', P)}
     </div>
     <p class="back"><a class="link" href="index.html">Visit the main Black Crest site {icon('arrow')}</a></p>
@@ -1223,7 +1244,7 @@ page('start.html', 'Start your project: Black Crest Web Designs', 'Tell us about
   <div class="container page-head narrow">
     <p class="label">Start your project</p>
     <h1 class="h1" data-split>Tell us about <em>your business.</em></h1>
-    <p class="lead" data-reveal>The more you share, the closer your free concept will be. Only the first four boxes are needed. We reply within 24 hours.</p>
+    <p class="lead" data-reveal>The more you share, the closer your free concept will be. Only the first four boxes are needed. We reply within 1 business day.</p>
   </div>
   <section class="container narrow" aria-label="Project details" style="padding-bottom:120px">
     <div class="tile" data-reveal>
@@ -1245,10 +1266,7 @@ page('start.html', 'Start your project: Black Crest Web Designs', 'Tell us about
         </div>
         {field('socials', 'Links to your social pages', textarea=True, hint='Instagram, Facebook, Google listing, or an old website.')}
         {field('photos', 'Photos you have', textarea=True, hint='Describe them: for example, shopfront, team, 20 photos of our work. We will ask you to send them later.')}
-        <div class="field">
-          <label for="package">Which package are you thinking of? <span class="hint">(optional)</span></label>
-          <select id="package" name="package"><option>Not sure yet</option><option>One Page ({money(ONE)})</option><option>Full Website ({money(FULL)})</option><option>Custom (by quote)</option></select>
-        </div>
+        {need_fields('start')}
         {field('message', 'Anything else', textarea=True)}
         {form_close('Send my details', P)}
     </div>
@@ -1278,6 +1296,7 @@ page('care-plan.html', f'Care plan, {money(CARE)} a month: Black Crest Web Desig
         <p class="balance"><span data-price="carePlan" data-count="{CARE}">{money(CARE)}</span> <span class="per">a month</span></p>
         <h2 id="cover-h" class="sr-only">What it covers</h2>
         <ul class="ticks" style="margin-top:22px">{''.join(f'<li><strong>{t}.</strong> {x}</li>' for t, x in COVER)}</ul>
+        <a class="btn btn-gold" style="margin-top:24px" href="contact.html?need=care-plan">Get the care plan</a>
       </div>
       <div class="tile" data-reveal>
         <h2 class="h3">What it does not cover</h2>
@@ -1417,7 +1436,7 @@ page('about.html', 'About: Black Crest Web Designs', 'Black Crest Web Designs ma
         <ul class="ticks" data-reveal>
           <li>A free concept homepage before you pay anything.</li>
           <li>Clear prices, set before we start. No hidden costs.</li>
-          <li>A reply within 24 hours.</li>
+          <li>A reply within 1 business day.</li>
           <li>No lock-in contracts.</li>
           <li>You own your site and your domain.</li>
           <li>No fake reviews or made-up numbers. We show concept sites, and we will earn real reviews.</li>
@@ -1560,12 +1579,11 @@ page('guides/index.html', 'Guides for local business websites: Black Crest', 'Sh
 
 # ================================================================= Contact
 P = ''
-needs = ''.join(f'<label class="choice"><input type="radio" name="need" value="{v}"{" checked" if v == "Not sure" else ""}> {v}</label>' for v in ['One Page', 'Full Website', 'Care plan', 'Not sure'])
-page('contact.html', 'Contact: Black Crest Web Designs', 'Ask a question or request a quote. We reply within 24 hours. Based in Melbourne, Australia.', f'''<main id="main">
+page('contact.html', 'Contact: Black Crest Web Designs', 'Ask a question or request a quote. We reply within 1 business day. Based in Melbourne, Australia.', f'''<main id="main">
   <div class="container page-head">
     <p class="label">Contact</p>
     <h1 class="h1" data-split>Let's talk <em>about your site.</em></h1>
-    <p class="lead" data-reveal>Tell us what you need. We reply within 24 hours.</p>
+    <p class="lead" data-reveal>Tell us what you need. We reply within 1 business day.</p>
     <div class="btn-row" data-reveal style="margin-top:28px">
       <a class="btn btn-ghost" data-email href="mailto:{EMAIL}">{icon('mail')} Email {EMAIL}</a>
       <a class="btn btn-ghost" data-call href="#" hidden>{icon('call')} Call us</a>
@@ -1576,7 +1594,7 @@ page('contact.html', 'Contact: Black Crest Web Designs', 'Ask a question or requ
       {form_open('contact', 'Black Crest: contact form message', P)}
         <input type="hidden" name="quote" value="">
         <p class="prefill" id="prefill-note" hidden></p>
-        <fieldset class="choice-grid"><legend>What do you need?</legend>{needs}</fieldset>
+        {need_fields('contact')}
         <div class="form-row">
           {field('name', 'Your name', required=True, auto='name', empty='Please enter your name.')}
           {field('email', 'Email', 'email', required=True, auto='email', empty='Please enter your email address.')}
@@ -1598,7 +1616,7 @@ page('thank-you.html', 'Thank you: Black Crest Web Designs', 'Thanks for your me
   </div>
   <section class="container" aria-label="What happens next" style="padding-bottom:120px">
     <ol class="reason-list">
-      <li data-reveal><span class="n">01</span><h2 class="h3">We reply within 24 hours</h2><p>By email, or by phone if you asked us to call.</p></li>
+      <li data-reveal><span class="n">01</span><h2 class="h3">We reply within 1 business day</h2><p>By email, or by phone if you asked us to call.</p></li>
       <li data-reveal><span class="n">02</span><h2 class="h3">We ask a few questions</h2><p>Only what we need to design your free concept or answer your question.</p></li>
       <li data-reveal><span class="n">03</span><h2 class="h3">You see it, then decide</h2><p>No deposit and no obligation until you say yes.</p></li>
     </ol>
@@ -1644,12 +1662,13 @@ page('privacy.html', 'Privacy policy: Black Crest Web Designs', 'How Black Crest
 </main>''')
 page('terms.html', 'Terms: Black Crest Web Designs', 'The plain-English terms for working with Black Crest Web Designs: free concept first, 50% deposit, balance at launch, 2 rounds of changes, and you own your site.', f'''<main id="main">
   <article class="container prose" style="padding-bottom:120px">
-    <header class="page-head" style="padding-bottom:8px"><p class="label">Legal</p><h1 class="h1">Terms</h1><p class="byline">Last updated 1 November 2026</p></header>
+    <header class="page-head" style="padding-bottom:8px"><p class="label">Legal</p><h1 class="h1">Terms</h1><p class="byline">Last updated 3 November 2026</p></header>
     <p>These are the terms for websites made by Black Crest Web Designs, a brand of KB Ventures, Melbourne, Australia. We have kept them short and plain. Your written quote sets out the exact price and what is included for your project. Our current packages are One Page ({money(ONE)}) and Full Website ({money(FULL)}).</p>
     <h2>1. The free concept</h2>
     <p>We design a concept homepage for you free of charge. You are under no obligation to go ahead, and you owe nothing if you do not.</p>
     <h2>2. Quote and deposit</h2>
     <p>If you want to go ahead, we email you a written quote. A <strong>50% deposit</strong> starts the build. We send an invoice with the payment details by email. We do not take payments on this website.</p>
+    <p>If you stop after paying the deposit, the deposit covers the work already done and is not refunded, unless no work has started. If we cannot finish the work, we refund your deposit in full.</p>
     <h2>3. Changes</h2>
     <p><strong>Two rounds of changes</strong> are included during the build. Extra changes, or new work outside the quote, are quoted fairly before we do them.</p>
     <h2>4. Balance and launch</h2>

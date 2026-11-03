@@ -23,8 +23,8 @@ export function initForms({ reduce }) {
 /* ---------- Price calculator: animated total and progress ring ---------- */
 function calculator(reduce) {
   const calc = $('#calc'); if (!calc) return;
-  const totalEl = $('#calc-total'), monthEl = $('#calc-month'), list = $('#calc-lines'), ringFill = $('.ring .fill', calc), ringN = $('.ring b', calc);
-  const optionCount = CONFIG.addOns.length + 1;
+  const totalEl = $('#calc-total'), monthEl = $('#calc-month'), list = $('#calc-lines'), ringFill = $('.ring .fill', calc), ringN = $('.ring b', calc), countEl = $('#calc-count');
+  const optionCount = CONFIG.addOns.length; // extras only: the care plan is shown on its own
   let shown = CONFIG.packages.onePage.price, anim = 0;
   const tween = (to) => {
     cancelAnimationFrame(anim);
@@ -39,13 +39,16 @@ function calculator(reduce) {
     const lines = [`${pkg.name}: ${money(pkg.price)}`];
     let total = pkg.price, picked = 0;
     CONFIG.addOns.forEach((a) => {
-      const box = $(`#add-${a.id}`, calc); if (!box || !box.checked) return;
+      const box = $(`#add-${a.id}`, calc); if (!box) return;
+      // extra pages are for the Full Website only (pages beyond its 5): with One Page the box is switched off
+      if (a.fullOnly) { box.disabled = pkgKey !== 'fullSite'; if (box.disabled) box.checked = false; box.closest('label').classList.toggle('is-off', box.disabled); }
+      if (!box.checked) return;
       const qty = a.perUnit ? Number(($(`#qty-${a.id}`, calc) || {}).value || 1) : 1;
       total += a.from * qty; picked++;
       lines.push(`${a.name}${qty > 1 ? ' x ' + qty : ''}: from ${money(a.from * qty)}`);
     });
     const care = $('#add-care', calc).checked;
-    if (care) { lines.push(`${CONFIG.carePlan.name}: ${money(CONFIG.carePlan.pricePerMonth)} a month`); picked++; }
+    if (care) lines.push(`${CONFIG.carePlan.name}: ${money(CONFIG.carePlan.pricePerMonth)} a month`);
     return { pkgKey, total, care, lines, picked };
   };
   const render = () => {
@@ -56,6 +59,7 @@ function calculator(reduce) {
     $$('.qty', calc).forEach((s) => { s.disabled = !$(`#add-${s.dataset.for}`, calc).checked; });
     if (ringFill) ringFill.style.strokeDashoffset = String(1 - q.picked / optionCount);
     if (ringN) ringN.textContent = q.picked;
+    if (countEl) countEl.textContent = `${q.picked ? q.picked + (q.picked === 1 ? ' extra' : ' extras') : 'No extras'}${q.care ? ' + care plan' : ''}`;
   };
   calc.addEventListener('change', render); render();
   $('#calc-send').addEventListener('click', () => {
@@ -89,32 +93,37 @@ function quiz() {
 
 /* ---------- Contact page: fill in a calculator quote, a Concept Lab setup or a quiz review request ---------- */
 function prefillContact() {
+  // every form with the two-part question: "?need=" from the pricing buttons (and "&care=1"), the care plan page
+  const PARAM = { 'one-page': 'One Page', 'full-website': 'Full Website', 'not-sure': 'Something custom', custom: 'Something custom', 'care-plan': 'Not sure yet' };
+  const params = new URLSearchParams(location.search), wanted = params.get('need');
+  const choose = (form, need, care) => {
+    const r = $(`input[name=need][value="${need}"]`, form); if (r) r.checked = true;
+    const c = $('input[name=care_plan]', form); if (c && care != null) c.checked = !!care;
+  };
+  $$('form [data-need]').forEach((f) => { if (wanted) choose(f.form, PARAM[wanted] || 'Not sure yet', wanted === 'care-plan' || params.get('care') === '1'); });
+
   const contact = $('#form-contact'); if (!contact) return;
   const msg = $('textarea[name=message]', contact), subject = $('input[name=subject]', contact), quoteField = $('input[name=quote]', contact), note = $('#prefill-note');
-  const pick = (v) => { const r = $(`input[name=need][value="${v}"]`, contact); if (r) r.checked = true; };
   const json = (k) => { try { return JSON.parse(store.get(k) || 'null'); } catch (_) { return null; } };
   const q = json('bc-quote'), lab = json('bc-lab');
   if (q && location.hash === '#quote') {
-    pick(q.pkgKey === 'fullSite' ? 'Full Website' : 'One Page');
+    choose(contact, q.pkgKey === 'fullSite' ? 'Full Website' : 'One Page', q.care);
     msg.value = `Please send me a quote for:\n- ${q.lines.join('\n- ')}\nEstimated total from ${money(q.total)}${q.care ? ' plus the care plan' : ''}.`;
     quoteField.value = q.lines.join('; ') + `; total from ${money(q.total)}`;
     subject.value = 'Black Crest: quote request from the price calculator';
     note.hidden = false; note.textContent = 'Your calculator choices are filled in below. Add anything else you need.';
   } else if (lab && location.hash === '#lab') {
-    pick('Not sure');
+    choose(contact, 'Not sure yet', false);
     msg.value = `I set this up in the Concept Lab:\n- Trade: ${lab.trade}\n- Business name: ${lab.name}\n- Mood: ${lab.mood}\n- Features: ${lab.features.join(', ') || 'none picked'}\nPlease design my free concept.`;
     quoteField.value = `Lab: ${lab.trade}; ${lab.name}; ${lab.mood}; ${lab.features.join(', ')}`;
     subject.value = 'Black Crest: free concept request from the Concept Lab';
     note.hidden = false; note.textContent = 'Your Concept Lab choices are filled in below. Add your name and email and send.';
   } else if (store.get('bc-review') && location.hash === '#review') {
-    pick('Not sure');
-    const s = store.get('bc-quiz');
-    msg.value = `I took the website quiz${s ? ' (score ' + s + ')' : ''}. Please send me a free mini review of my website: `;
+    choose(contact, 'Not sure yet', false);
+    const sc = store.get('bc-quiz');
+    msg.value = `I took the website quiz${sc ? ' (score ' + sc + ')' : ''}. Please send me a free mini review of my website: `;
     subject.value = 'Black Crest: free mini website review request';
     note.hidden = false; note.textContent = 'Add your website address to the message and we will email you a short review.';
-  } else {
-    const need = new URLSearchParams(location.search).get('need');
-    if (need) pick({ 'one-page': 'One Page', 'full-website': 'Full Website', 'care-plan': 'Care plan' }[need] || 'Not sure');
   }
 }
 
@@ -144,6 +153,12 @@ function sendForms() {
       if ($('input[name=botcheck]', form).checked) { location.href = form.dataset.thanks; return; }
       const data = Object.fromEntries(new FormData(form).entries());
       delete data.redirect; data.botcheck = false;
+      if ($('[data-need]', form)) { // the two-part question: what they need, and the care plan, both spelled out
+        const need = data.need || 'Not sure yet', care = $('input[name=care_plan]', form).checked;
+        data.need = need;
+        data.care_plan = care ? `Yes, add the care plan (${money(CONFIG.carePlan.pricePerMonth)} a month)` : 'No care plan';
+        data.subject = `${data.subject}: ${need}${care ? ' + Care plan' : ' (no care plan)'}`;
+      }
       btn.disabled = true; btn.textContent = 'Sending…'; status.textContent = ''; status.className = 'form-status';
       try {
         const res = await fetch(form.action, { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(data) });

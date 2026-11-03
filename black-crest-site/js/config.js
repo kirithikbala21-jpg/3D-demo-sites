@@ -30,9 +30,8 @@ export const CONFIG = /* CONFIG-START */ {
   },
   "carePlan": { "name": "Care plan", "pricePerMonth": 30 },
   "addOns": [
-    { "id": "extraPage", "name": "Extra page", "from": 80, "perUnit": true, "note": "Each page beyond what your package includes." },
+    { "id": "extraPage", "name": "Extra page", "from": 80, "perUnit": true, "fullOnly": true, "note": "Full Website only: each page beyond the 5 included." },
     { "id": "booking", "name": "Booking button", "from": 50, "note": "Links to the booking app you already use." },
-    { "id": "map", "name": "Google Map", "from": 30, "note": "A map of your location in your contact section." },
     { "id": "logo", "name": "Logo tidy-up", "from": 60, "note": "We clean up the logo you have so it is sharp on screens." },
     { "id": "gbp", "name": "Google Business Profile setup", "from": 80, "note": "We set up or tidy your free Google listing with you." }
   ]

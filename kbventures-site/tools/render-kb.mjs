@@ -1,6 +1,6 @@
 // Renders the KB Ventures stills (a still is what phones, low-power devices, reduced motion and browsers without
 // WebGL see; the galleries always use stills):
-//   img/hero-plaque.{avif,webp,jpg} (1400 x 1520) and hero-plaque-s.* (700 x 760): the smoked-glass plaque (plaque3d.js)
+//   img/hero-plaque.{avif,webp,jpg} (1280 x 1600) and hero-plaque-s.* (640 x 800): the smoked-glass plaque (plaque3d.js)
 //   og.jpg (1200 x 630): the share image, from the same plaque
 //   img/niches/biz-aceguides.*, biz-black-crest.*: the two businesses, each in its lit niche
 //   img/niches/<guide key>.*: every AceGuides guide that has a cover, as a book in its lit niche
@@ -33,15 +33,17 @@ async function blank(w, h) {
 const save = (name, data) => writeFileSync(path.join(tmp, name + '.png'), Buffer.from(data.split(',')[1], 'base64'));
 
 // the plaque
-let p = await blank(700, 760);
+let p = await blank(640, 800);
 await p.evaluate(() => import('./plaque3d.js').then((m) => m.start(document.getElementById('s'))));
 await p.waitForFunction(() => window.__plaqueReady, null, { timeout: 180000 });
 save('hero-plaque', await p.evaluate(() => document.querySelector('#s canvas').toDataURL('image/png'))); await p.close();
 // the niches
 const jobs = [['biz-aceguides', { object: 'book', cover: 'img/aceguides/vce34-english.webp' }], ['biz-black-crest', { object: 'card' }]];
 for (const g of cfg.aceguides.groups) for (const x of g.products) if (x.cover) jobs.push([x.key, { object: 'book', cover: x.cover }]);
+// ONLY_PLAQUE=1 re-renders just the hero plaque (and og.jpg), leaving the niches as they are
+if (process.env.ONLY_PLAQUE) jobs.length = 0;
 for (const [name, opts] of jobs) {
-  p = await blank(360, 480);
+  p = name.startsWith('biz-') ? await blank(560, 600) : await blank(360, 480);
   save(name, await p.evaluate((o) => import('./tools/niche-scene.js').then((m) => m.render(document.getElementById('s'), o)), opts));
   await p.close(); console.log('rendered', name);
 }

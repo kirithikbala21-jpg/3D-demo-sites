@@ -217,7 +217,7 @@ def biz_grid(always_more=False, level='h3'):
             continue
         live, preview = is_live(b), is_preview(b)
         badge = n['live'] if live else n.get('preview', 'Preview') if preview else n['comingSoon']
-        still = pic(f'img/niches/biz-{slug(b.get("shortName") or b["name"])}', 720, 960, '', sizes='(min-width: 760px) 30vw, 46vw')
+        still = pic(f'img/niches/biz-{slug(b.get("shortName") or b["name"])}', 1120, 1200, '', sizes='(min-width: 760px) 46vw, 92vw')
         body = f'''{still}
           <span class="niche-label"><span class="niche-status">{E(badge)}</span><{level} class="niche-name">{E(b['name'])}</{level}><span class="niche-line">{E(b.get('description', ''))}</span>{f'<span class="niche-cta">{E(b.get("previewLabel") if preview else b.get("ctaLabel") or "Visit")}</span>' if (live or preview) else ''}</span>'''
         items.append(f'        <li><a class="kb-niche" href="{E(b["url"])}">{body}</a></li>' if (live or preview)
@@ -439,7 +439,7 @@ home_body = f'''<main id="main">
         </div>
       </div>
       <div class="hero-stage" id="stage">
-        {pic('img/hero-plaque', 1400, 1520, 'A slim smoked-glass plaque engraved with the KB mark, standing on a basalt plinth under one warm light', lazy=False, cls='hero-still', high=True, sizes='(min-width: 900px) 44vw, 90vw')}
+        {pic('img/hero-plaque', 1280, 1600, 'A slim smoked-glass plaque engraved with the KB mark, standing on a basalt plinth under one warm light', lazy=False, cls='hero-still', high=True, sizes='(min-width: 1024px) 640px, 90vw')}
       </div>
     </div>
   </section>
@@ -693,8 +693,16 @@ def product_card(x, eager=False):
           <a class="kb-niche book" href="#d-{E(x['key'])}" data-dialog="d-{E(x['key'])}" aria-haspopup="dialog">
             {pic(f"img/niches/{x['key']}", 720, 960, '', lazy=not eager, sizes='(min-width: 900px) 22vw, 46vw')}
             <span class="niche-label"><span class="niche-name product-name">{E(x['subject'])}</span><span class="niche-line"><span class="product-level">{E(x['level'])}</span> &middot; <span class="num">{price}</span></span></span>
-          </a>
+          </a>{sample_link(x)}
         </li>'''
+
+
+def sample_link(x):
+    """the free sample, right under the guide in the shop (it also sits in the detail view)"""
+    if x['key'] not in samples:
+        return ''
+    return (f'\n          <a class="text-link card-sample" href="{E(samples[x["key"]])}" target="_blank" rel="noopener">{E(ag["sampleLabel"])}'
+            f'<span class="sr-only">: {E(x["subject"])}, {E(x["level"])} {E(ag["newTab"])}</span></a>')
 
 
 def product_detail(x):

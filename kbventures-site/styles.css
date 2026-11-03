@@ -772,7 +772,13 @@ dialog.guide-detail:target { display: block; position: fixed; inset: 4vh 0 auto;
 .step-title, .why-title { font-size: clamp(24px, 2.2vw, 30px); }
 .divider::before { content: none; }
 .divider span { background: var(--gold-champagne); }
-.hero-still img, .hero-stage canvas { -webkit-mask-image: radial-gradient(ellipse 62% 70% at 50% 46%, #000 62%, transparent 100%); mask-image: radial-gradient(ellipse 62% 70% at 50% 46%, #000 62%, transparent 100%); }
+.hero-still img, .hero-stage canvas {
+  /* the lit floor fades out at the sides and the bottom, so it never reads as a box */
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 15%, #000 85%, transparent), radial-gradient(ellipse 72% 66% at 50% 46%, #000 66%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image: linear-gradient(90deg, transparent, #000 15%, #000 85%, transparent), radial-gradient(ellipse 72% 66% at 50% 46%, #000 66%, transparent 100%);
+  mask-composite: intersect;
+}
 @media (min-width: 1024px) { .hero-stage { max-width: 600px; } }
 
 .signup-for { margin: 0 0 12px; font-size: 13px; letter-spacing: .04em; color: var(--gold-champagne); }
@@ -788,3 +794,91 @@ dialog.guide-detail:target { display: block; position: fixed; inset: 4vh 0 auto;
 .shop-about .shop-inside { display: flex; flex-wrap: wrap; gap: 8px; }
 .st-save { display: block; margin-top: 10px; font-size: 11px; font-weight: 500; letter-spacing: .18em; text-transform: uppercase; color: var(--gold-champagne); }
 .st-worth { display: block; margin-top: 4px; font-size: 13.5px; font-weight: 400; color: var(--silver); font-variant-numeric: tabular-nums; }
+
+/* ==========================================================================
+   Fill the space (November 2026): larger type, a wider container on big screens, a larger hero object and
+   brighter, larger business niches, so no section sits as small text in a big empty room
+   ========================================================================== */
+:root { --fs-lead: clamp(17px, .5vw + 14.8px, 22px); --fs-h2: clamp(34px, 4.6vw, 66px); --fs-card: clamp(26px, 2.6vw, 38px); }
+@media (min-width: 1440px) { :root { --container: 1296px; } }   /* 1360px with the gutters */
+body { font-size: clamp(16px, .3vw + 14.6px, 19px); }
+.nav-link { font-size: 15px; }
+.label, .status, .niche-status, .footer-h, .tag, .crumbs, .facts-label, .st-flag, .st-save, .st-table thead th, .st-amt small,
+.detail-price small, .step-num, .values, .shop-jump a, .text-btn { font-size: 13px; }
+.pill, .btn, .send, .menu-cta { font-size: 16px; }
+.text-link, .biz-cta { font-size: 16px; }
+.lead, .dim.lead { font-size: var(--fs-lead); }
+
+/* the hero: a full screen, the words and the plaque centred on the same line, the plaque about twice as big */
+.hero-stage { aspect-ratio: 640 / 800; }
+.hero-grid { min-height: calc(100svh - var(--nav-h)); padding-block: 16px 40px; align-content: center; }
+@media (min-width: 1024px) {
+  .hero-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 48px; min-height: calc(100svh - var(--nav-h)); padding-block: 0; }
+  .hero-stage { width: 100%; max-width: 640px; max-height: calc(100svh - var(--nav-h) - 24px); margin: 0 auto; }
+}
+.hero-intro { max-width: 34ch; font-size: var(--fs-lead); }
+.hero-sub { font-size: 16px; }
+
+/* our businesses: the two niches use the whole container, lit brighter, with names that read across the room */
+@media (min-width: 760px) { .niche-row[data-count="2"] { max-width: none; gap: 32px; } }
+.niche-row[data-count="2"] .kb-niche img { aspect-ratio: 14 / 15; }
+.niche-row[data-count="2"] .niche-label { gap: 8px; padding-top: 22px; }
+.niche-row[data-count="2"] .niche-name { font-size: clamp(32px, 3vw, 44px); }
+.niche-row[data-count="2"] .niche-line { font-size: 18px; color: var(--text-2); }
+.niche-row[data-count="2"] .niche-cta { font-size: 16px; }
+.niche-line { font-size: 15px; }
+
+/* the home sections: bigger titles and text */
+.latest-text { font-size: clamp(20px, 1.8vw, 26px); }
+.step-title, .why-title { font-size: clamp(28px, 2.6vw, 36px); }
+.step-card .dim, .std-card .dim, .std-detail, .faq-a p, .principles li { font-size: clamp(17px, .3vw + 15px, 19px); }
+.faq-q { font-size: clamp(17px, .4vw + 15px, 21px); }
+@media (min-width: 720px) { .founder-grid { grid-template-columns: 300px minmax(0, 1fr); max-width: 1000px; } .founder-photo { width: 300px; } .founder-mono { font-size: 92px; } }
+.steps-big .step-title { font-size: clamp(28px, 2.6vw, 36px); }
+.steps-big .step-card .dim, .why-item .dim { font-size: clamp(17px, .3vw + 15px, 19px); }
+.latest-date { font-size: 14px; }
+.latest-card { gap: 16px; padding-top: 28px; padding-bottom: 28px; }
+.latest-text { font-size: clamp(22px, 2vw, 30px); line-height: 1.3; }
+.gallery-title { font-size: clamp(32px, 3vw, 44px); }
+.gallery-head .dim { font-size: 18px; }
+.std-grid { margin-top: 36px; }
+.std-card { padding-top: 24px; padding-bottom: 24px; }
+.std-card .dim { font-size: clamp(18px, .4vw + 15px, 20px); }
+.steps-big { margin-top: 36px; }
+/* tighter vertical rhythm in the short home sections, with larger words */
+.latest-card { padding-top: 20px; padding-bottom: 8px; gap: 12px; }
+.latest-text { font-size: clamp(24px, 2.2vw, 32px); }
+.latest-grid { margin-top: 36px; }
+.steps-big .step-card { padding-top: 16px; padding-bottom: 8px; }
+.steps-big .step-title { font-size: clamp(30px, 2.8vw, 40px); }
+.section-foot { margin-top: 16px; }
+.std-card { padding-top: 18px; padding-bottom: 8px; }
+.why-item .dim { font-size: clamp(17px, .3vw + 15px, 19px); }
+.why-grid.std-points { margin-top: 28px; padding-top: 20px; }
+.latest-grid { margin-top: 28px; }
+.latest-meta { min-height: 20px; }
+.section > .container > .h2:first-child, .section > .container.center > .h2:first-child { margin-top: 0; }
+@media (max-width: 599px) {
+  .latest-grid, .std-grid { gap: 0; }
+  .why-grid { gap: 20px; }
+}
+@media (max-width: 719px) { :root { --section: 30px; } }
+@media (max-width: 599px) {
+  .latest-card { gap: 10px; padding-top: 16px; padding-bottom: 4px; }
+  .std-card { padding-top: 14px; padding-bottom: 4px; }
+  .founder-grid { gap: 16px; margin-top: 22px; }
+  .founder-text .values { margin-top: 10px; }
+  .founder-photo { width: min(260px, 70vw); }
+  .founder-mono { font-size: 84px; }
+}
+.shop-inside li { font-size: 16px; }
+.shop-about { padding-top: 20px; }
+.shop-inside-label { margin-top: 0; }
+@media (max-width: 599px) {
+  .never-list { gap: 0; margin-top: 20px; }
+  .never-list li, .next-steps li { padding: 8px 0; font-size: 19px; }
+  .next-steps { margin-top: 20px; }
+}
+.card-sample { margin: 2px 2px 0; font-size: 15px; color: var(--text-2); }
+.ms-date { font-size: 13px; }
+.gallery-name { font-size: clamp(22px, 2vw, 28px); }

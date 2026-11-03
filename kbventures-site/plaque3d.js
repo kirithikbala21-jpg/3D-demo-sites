@@ -44,38 +44,44 @@ export async function start(stage, opts = {}) {
   renderer.outputColorSpace = THREE.SRGBColorSpace; renderer.toneMapping = THREE.NeutralToneMapping; renderer.setClearColor(0, 0);
   const canvas = renderer.domElement; canvas.className = 'plaque-canvas'; canvas.setAttribute('aria-hidden', 'true');
   const scene = new THREE.Scene();
-  const pm = new THREE.PMREMGenerator(renderer); scene.environment = pm.fromScene(new RoomEnvironment(), 0.04).texture; scene.environmentIntensity = 0.35; pm.dispose();
+  const pm = new THREE.PMREMGenerator(renderer); scene.environment = pm.fromScene(new RoomEnvironment(), 0.04).texture; scene.environmentIntensity = 0.85; pm.dispose();
   scene.environmentRotation.set(-0.15, 2.4, 0);
   const camera = new THREE.PerspectiveCamera(26, 1, 0.1, 80);
 
   const stone = stoneTexture(512, 5); stone.repeat.set(0.6, 0.6);
   const basalt = new THREE.MeshStandardMaterial({ color: 0x2c2d33, map: stone, roughnessMap: stone, roughness: 0.85, bumpMap: stone, bumpScale: 1.1 });
-  const plinth = new THREE.Mesh(new THREE.BoxGeometry(3.4, 1.1, 1.7), basalt); plinth.position.y = 0.55;
+  const plinth = new THREE.Mesh(new THREE.BoxGeometry(2.9, 1.1, 1.5), basalt); plinth.position.y = 0.55;
   const brushed = brushedTexture();
   const metal = new THREE.MeshPhysicalMaterial({ color: 0x7d8087, metalness: 1, roughness: 0.28, roughnessMap: brushed, anisotropy: 0.7 });
   const object = new THREE.Group();
   const foot = new THREE.Mesh(new THREE.BoxGeometry(2.6, 0.2, 0.42), metal); foot.position.y = 1.2; object.add(foot);
-  const glass = new THREE.MeshPhysicalMaterial({ color: 0x2a2d35, metalness: 0.2, roughness: 0.04, clearcoat: 1, clearcoatRoughness: 0.02, transparent: true, opacity: 0.86, envMapIntensity: 2.2 });
+  const glass = new THREE.MeshPhysicalMaterial({ color: 0x2a2d35, metalness: 0.2, roughness: 0.04, clearcoat: 1, clearcoatRoughness: 0.02, transparent: true, opacity: 0.86, envMapIntensity: 3.2 });
   const pane = new THREE.Mesh(new THREE.ExtrudeGeometry(roundedRect(PW, PH, 0.04), { depth: PT, bevelEnabled: true, bevelThickness: 0.01, bevelSize: 0.01, bevelSegments: 2 }), glass);
   pane.position.set(0, 1.2 + PH / 2 + 0.02, -PT / 2); object.add(pane);
   const cap = new THREE.Mesh(new THREE.BoxGeometry(PW + 0.02, 0.05, PT + 0.03), metal); cap.position.y = 1.2 + PH + 0.04; object.add(cap);
-  const gold = new THREE.MeshPhysicalMaterial({ color: 0xe0bd55, metalness: 1, roughness: 0.24, envMapIntensity: 2.4, alphaMap: await engraving(), transparent: true, alphaTest: 0.35, polygonOffset: true, polygonOffsetFactor: -2 });
+  // the engraving holds a little warm light of its own, so the KB reads as lit gold even away from the lamp
+  const gold = new THREE.MeshPhysicalMaterial({ color: 0xead07a, metalness: 1, roughness: 0.2, envMapIntensity: 4.2, emissive: 0xb8902e, emissiveIntensity: 0.55, alphaMap: await engraving(), transparent: true, alphaTest: 0.35, polygonOffset: true, polygonOffsetFactor: -2 });
   const etch = new THREE.Mesh(faceGeometry(PW - 0.02, PH - 0.02, 0.03), gold); etch.position.set(0, 1.2 + PH / 2 + 0.02, PT / 2 + 0.012); object.add(etch);
   scene.add(plinth, object);
-  const ground = new THREE.Mesh(new THREE.PlaneGeometry(30, 20), new THREE.MeshStandardMaterial({ color: 0x050506, roughness: 0.4, map: stone }));
+  const ground = new THREE.Mesh(new THREE.PlaneGeometry(30, 20), new THREE.MeshStandardMaterial({ color: 0x000000, roughness: 1, map: stone }));
   ground.rotation.x = -Math.PI / 2; ground.position.y = -0.002; scene.add(ground);
-  const floor = softFloor(30, 20, { strength: 0.45, reach: 8, start: -2 }); scene.add(floor);
+  const floor = softFloor(30, 20, { strength: 0.12, reach: 5, start: -2 }); scene.add(floor);
 
-  const lamp = new THREE.SpotLight(WARM, 120, 14, 15 * DEG, 0.7, 1.2); lamp.position.set(0, 9.5, 1.6); lamp.target.position.set(0, 2.2, 0); scene.add(lamp, lamp.target);
+  const lamp = new THREE.SpotLight(WARM, 300, 14, 17 * DEG, 0.7, 1.2); lamp.position.set(0, 9.5, 1.6); lamp.target.position.set(0, 2.2, 0); scene.add(lamp, lamp.target);
   const cone = new THREE.Mesh(new THREE.ConeGeometry(2.1, 6, 48, 1, true), haze()); cone.position.set(0, 6.5, 0.6); scene.add(cone);
-  const rim = new THREE.DirectionalLight(RIM, 0.9); rim.position.set(5, 4, -6); scene.add(rim);
+  const rim = new THREE.DirectionalLight(RIM, 2.4); rim.position.set(5, 4, -6); scene.add(rim);
   const sweep = new THREE.PointLight(0xfff6e5, 0, 10, 1.4); sweep.position.set(-4, 4.6, 1.2); scene.add(sweep);
+  // a warm key raking in low from the far left: it lights the gold KB and the glass edge, and its reflection falls
+  // outside the glass (no hotspot on the face)
+  const key = new THREE.SpotLight(0xfff1dc, 110, 18, 22 * DEG, 0.9, 1.3); key.position.set(-6, 2.8, 2.6); key.target.position.set(0, 2.9, 0); scene.add(key, key.target);
+
 
   const fit = () => {
     const w = Math.max(1, stage.clientWidth), h = Math.max(1, stage.clientHeight);
     renderer.setSize(w, h, false); camera.aspect = w / h;
-    const d = Math.max(7.2 / (2 * Math.tan(camera.fov * DEG / 2)), 5.4 / (2 * Math.tan(camera.fov * DEG / 2) * camera.aspect));
-    camera.position.set(0, 3.3, d); camera.lookAt(0, 2.45, 0); camera.updateProjectionMatrix();
+    // framed close: 5.45 units tall (plinth to cap, with a little air) and 4.3 wide, so the plaque fills the stage
+    const d = Math.max(5.45 / (2 * Math.tan(camera.fov * DEG / 2)), 4.3 / (2 * Math.tan(camera.fov * DEG / 2) * camera.aspect));
+    camera.position.set(0, 3.0, d); camera.lookAt(0, 2.15, 0); camera.updateProjectionMatrix();
   };
   fit(); stage.append(canvas);
 

@@ -91,10 +91,12 @@ Brief: "Audit fixes (2 Nov 2026): paste into Claude Code". Parts A to E, in orde
   - Nothing on `main` links to it. The only mentions left are the CLAUDE.md rule and the check tools that block the name.
   - The files are still visible on GitHub (old commits and the `one-barber-private` branch) until the repo is made private.
 
-## Finish (in progress)
+## Finish (done)
 - **Sync check:** the KB Ventures Black Crest niche matches the Black Crest site: black metal card with the gold crest, "Premium sites for local businesses." and "Taking clients". Every KB Pricing link goes to `../black-crest-site/pricing.html`.
 - **Checks:** both full site checks pass (Black Crest 34 pages, KB 13 pages, at 390, 768, 1280 and 1920 px). Reduced motion keeps every headline visible with no script errors.
 - **Live:** the root redirect, the KB Pricing route, the contact form's two parts, the gym demo's Black Crest bar and Clayton address are live. The One Barber folder returns "page not found".
 - **Demo test suites (GitHub Actions):** they still expected the old facts (Sydney, Brisbane, KB Ventures lines, placeholder licences). They now expect the new ones.
   - The Black Crest bar link and the footer credit link are now 44px tall with 14px text (the demos' own tap-target rule).
   - Tests that depend on the date use a normal week, so holiday notices (Melbourne Cup week) do not move the layout under the cookie bar.
+  - All five demo checks pass on GitHub (barber, café, gym, plumber, salon). The plumber QR test now also uses OpenCV's ArUco-based reader, because the longer case-study link makes modules that are not whole pixels.
+- **Lighthouse (3 November 2026, local copy served with gzip like GitHub Pages):** Black Crest home 94 to 95 mobile and 98 desktop. KB Ventures home 94 mobile and 100 desktop. Accessibility, Best Practices and SEO are 100 on both.

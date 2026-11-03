@@ -40,6 +40,8 @@ const walk = (dir) => readdirSync(dir).forEach((f) => {
 walk(SITE);
 pages.sort((a, b) => (a === 'index.html' ? -1 : b === 'index.html' ? 1 : a.localeCompare(b)));
 
+// pages that only forward elsewhere (a meta refresh) get the file checks, not a browser visit
+const REDIRECTS = new Set(pages.filter((pg) => /http-equiv="refresh"/i.test(readFileSync(path.join(SITE, pg), 'utf8'))));
 const problems = [];
 const fail = (page, w, msg) => problems.push(`${page} @${w}: ${msg}`);
 
@@ -55,7 +57,7 @@ for (const pg of pages) {
     if (x.link && !html.includes(x.link)) fail(pg, '-', `Stripe link for ${x.key} is missing or changed`);
     if (!text.includes(money(x.price))) fail(pg, '-', `price ${money(x.price)} for ${x.key} is missing`);
   });
-  if (pg === 'black-crest.html') { BC_PRICES.forEach((p) => { if (!text.includes(p)) fail(pg, '-', `Black Crest price ${p} is missing`); }); if (/\$(490|990)\b/.test(html)) fail(pg, '-', 'an old Black Crest price ($490 or $990), in the text or the page tags'); }
+  if (pg === 'black-crest.html') { if (!html.includes('../black-crest-site/pricing.html')) fail(pg, '-', 'the old pricing address no longer forwards to Black Crest'); if (/\$(490|990)\b/.test(html)) fail(pg, '-', 'an old Black Crest price ($490 or $990), in the text or the page tags'); }
   for (const [, href] of html.matchAll(/<a\b[^>]*\bhref="([^"]+)"/g)) {
     if (/^(https?:|mailto:|tel:|#|javascript:)/.test(href)) continue;
     const clean = href.split('#')[0].split('?')[0]; if (!clean) continue;
@@ -76,6 +78,7 @@ for (const w of WIDTHS) {
   // forms are never submitted: any request to the form service fails the check
   await ctx.route('**/api.web3forms.com/**', (r) => { fail('-', w, 'a form tried to submit'); r.abort(); });
   for (const pg of pages) {
+    if (REDIRECTS.has(pg)) continue;
     const page = await ctx.newPage();
     page.on('console', (m) => { if (m.type() === 'error') fail(pg, w, 'console: ' + m.text().slice(0, 140)); });
     page.on('pageerror', (e) => fail(pg, w, 'script error: ' + e.message.slice(0, 140)));

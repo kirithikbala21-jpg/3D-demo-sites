@@ -26,6 +26,10 @@
   const localPage = (u) => filled(u) && /^[\w-]+\.html(#[\w-]+)?$/.test(u.trim());
   const linkFor = (u) => (localPage(u) ? BASE + u.trim() : u.trim());
   const isLive = (b) => b && b.status === 'live' && (safeUrl(b.url) || localPage(b.url));
+  // a "preview" business (Black Crest, taking clients) links to its sibling folder and shows its own label
+  const isPreview = (b) => b && b.status === 'preview' && filled(b.url) && /^\.\.\/[\w-]+\/$/.test(b.url.trim());
+  const linked = (b) => isLive(b) || isPreview(b);
+  const tagFor = (b) => (isLive(b) ? '' : `<span class="tag">${esc(isPreview(b) ? (navText.preview || 'Taking clients') : navText.comingSoon)}</span>`);
   const businesses = (cfg) => (Array.isArray(cfg && cfg.businesses) ? cfg.businesses.filter((b) => b && filled(b.name)) : []);
 
   const ICON = {
@@ -55,7 +59,7 @@
         <div class="dd-panel" id="dd-panel" data-lenis-prevent hidden><ul class="dd-list" id="dd-list"></ul></div>
       </div>
       <a class="nav-link" href="${BASE}about.html"${cur('about')}>${esc(t.about)}</a>
-      <a class="nav-link nav-pricing" href="${BASE}black-crest.html"${cur('pricing')}>${esc(t.pricing)}</a>
+      <a class="nav-link nav-pricing" href="${BASE}../black-crest-site/pricing.html"${cur('pricing')}>${esc(t.pricing)}</a>
       <a class="nav-link" href="${BASE}contact.html"${cur('contact')}>${esc(t.contact)}</a>
     </nav>
     <a class="pill pill-primary nav-cta" href="${BASE}contact.html">${esc(t.cta)}</a>
@@ -69,7 +73,7 @@
     <a href="${BASE}how-we-work.html"${cur('how')}>${esc(t.howWeWork)}</a>
     <a href="${BASE}faq.html"${cur('faq')}>${esc(t.faq)}</a>
     <a href="${BASE}partner.html"${cur('partner')}>${esc(t.partner)}</a>
-    <a href="${BASE}black-crest.html"${cur('pricing')}>${esc(t.pricing)}</a>
+    <a href="${BASE}../black-crest-site/pricing.html"${cur('pricing')}>${esc(t.pricing)}</a>
     <a href="${BASE}contact.html"${cur('contact')}>${esc(t.contact)}</a>
   </nav>
   <a class="pill pill-primary menu-cta" href="${BASE}contact.html">${esc(t.cta)}</a>
@@ -88,8 +92,8 @@
     const list = businesses(cfg);
     if (!list.length) return;
     $('#dd-list').innerHTML = list.map((b) => {
-      const body = `<span class="dd-name">${esc(b.name)}${isLive(b) ? '' : `<span class="tag">${esc(navText.comingSoon)}</span>`}</span>${filled(b.description) ? `<span class="dd-desc">${esc(b.description)}</span>` : ''}`;
-      return `<li>${isLive(b) ? `<a class="dd-item" href="${esc(linkFor(b.url))}">${body}</a>` : `<div class="dd-item is-soon">${body}</div>`}</li>`;
+      const body = `<span class="dd-name">${esc(b.name)}${tagFor(b)}</span>${filled(b.description) ? `<span class="dd-desc">${esc(b.description)}</span>` : ''}`;
+      return `<li>${linked(b) ? `<a class="dd-item" href="${esc(linkFor(b.url))}">${body}</a>` : `<div class="dd-item is-soon">${body}</div>`}</li>`;
     }).join('');
     ddFilled = true;
   }
@@ -203,8 +207,8 @@
     const list = businesses(cfg);
     // the footer column is narrow, so a business can give a shorter name for it ("shortName")
     const footName = (b) => (filled(b.shortName) ? b.shortName : b.name);
-    const bizItems = list.map((b) => (isLive(b)
-      ? `<li><a href="${esc(linkFor(b.url))}">${esc(footName(b))}</a></li>`
+    const bizItems = list.map((b) => (linked(b)
+      ? `<li><a href="${esc(linkFor(b.url))}">${esc(footName(b))}</a>${tagFor(b) ? ' ' + tagFor(b) : ''}</li>`
       : `<li><span class="footer-soon">${esc(footName(b))}</span> <span class="tag">${esc(navText.comingSoon)}</span></li>`)).join('');
     // the VCAA line goes wherever the footer mentions AceGuides or VCE
     const vce = list.some((b) => /aceguides|\bvce\b/i.test(b.name)) && filled(f.vceTrademark);
@@ -224,7 +228,7 @@
           <li><a href="${BASE}how-we-work.html"${cur('how')}>${esc(f.howWeWork || 'How we work')}</a></li>
           <li><a href="${BASE}faq.html"${cur('faq')}>${esc(f.faq || 'FAQ')}</a></li>
           <li><a href="${BASE}partner.html"${cur('partner')}>${esc(f.partner || 'Partner with us')}</a></li>
-          <li><a href="${BASE}black-crest.html"${cur('pricing')}>${esc(f.pricing || 'Website pricing')}</a></li>
+          <li><a href="${BASE}../black-crest-site/pricing.html"${cur('pricing')}>${esc(f.pricing || 'Website pricing')}</a></li>
           <li><a href="${BASE}contact.html"${cur('contact')}>${esc(f.contact || 'Contact')}</a></li>
         </ul>
       </nav>

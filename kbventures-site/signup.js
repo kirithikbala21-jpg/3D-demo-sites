@@ -12,6 +12,14 @@
   const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
   const ENDPOINT = 'https://api.web3forms.com/submit';
   const input = $('#s-email'), agree = $('#s-agree'), send = $('#s-send'), sendLabel = $('.btn-label', send), status = $('#s-status');
+  // "Notify me" on a paused AceGuides guide links here with ?notify=<guide name>: the sign-up then says which guide
+  const wanted = (new URLSearchParams(location.search).get('notify') || '').replace(/[^\w &+()-]/g, '').trim().slice(0, 80);
+  if (wanted) {
+    const topic = $('#s-topic'); if (topic) topic.value = 'Notify me: ' + wanted;
+    const note = document.createElement('p'); note.className = 'signup-for'; note.textContent = `We will email you when ${wanted} is back.`;
+    form.prepend(note);
+  }
+  const subjectFor = () => (wanted ? `${T.subject}: Notify me, ${wanted}` : T.subject);
 
   // text, until the config arrives (the config's "signup" block replaces it)
   let T = {
@@ -68,7 +76,7 @@
     if (KB.config) await KB.config; // the key comes from the config: never fall back just because it is still loading
     const address = input.value.trim();
     if (!accessKey) {
-      const url = `mailto:${email}?subject=${encodeURIComponent(T.subject)}&body=${encodeURIComponent(`Please add me to the KB Ventures updates: ${address}`)}`;
+      const url = `mailto:${email}?subject=${encodeURIComponent(subjectFor())}&body=${encodeURIComponent(`Please add me to the KB Ventures updates${wanted ? ' (Notify me: ' + wanted + ')' : ''}: ${address}`)}`;
       setStatus('note', `${withEmail(T.fallback)} <a class="mailto-again" href="${url.replace(/"/g, '%22')}">${esc(T.fallbackLink)}</a>`);
       window.location.href = url;
       return;
@@ -80,7 +88,7 @@
       const res = await fetch(ENDPOINT, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify({ access_key: accessKey, subject: T.subject, from_name: fromName, email: address, topic: $('#s-topic').value || T.topic, botcheck: $('#s-botcheck').checked }),
+        body: JSON.stringify({ access_key: accessKey, subject: subjectFor(), from_name: fromName, email: address, topic: $('#s-topic').value || T.topic, botcheck: $('#s-botcheck').checked }),
         signal: ctl ? ctl.signal : undefined
       });
       const data = await res.json().catch(() => ({}));

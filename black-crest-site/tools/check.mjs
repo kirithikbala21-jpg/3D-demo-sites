@@ -39,6 +39,8 @@ const walk = (dir) => readdirSync(dir).forEach((f) => {
 walk(SITE);
 pages.sort((a, b) => (a === 'index.html' ? -1 : b === 'index.html' ? 1 : a.localeCompare(b)));
 
+// pages that only forward elsewhere (a meta refresh) get the file checks, not a browser visit
+const REDIRECTS = new Set(pages.filter((pg) => /http-equiv="refresh"/i.test(readFileSync(path.join(SITE, pg), 'utf8'))));
 const problems = [];
 const fail = (page, w, msg) => problems.push(`${page} @${w}: ${msg}`);
 
@@ -71,6 +73,7 @@ for (const w of WIDTHS) {
   // forms are never submitted: any request to the form service fails the check
   await ctx.route('**/api.web3forms.com/**', (r) => { fail('-', w, 'a form tried to submit'); r.abort(); });
   for (const pg of pages) {
+    if (REDIRECTS.has(pg)) continue;
     const page = await ctx.newPage();
     page.on('console', (m) => { if (m.type() === 'error') fail(pg, w, 'console: ' + m.text().slice(0, 140)); });
     page.on('pageerror', (e) => fail(pg, w, 'script error: ' + e.message.slice(0, 140)));

@@ -62,11 +62,11 @@
     {
       "name": "Black Crest Web Designs",
       "shortName": "Black Crest",
-      "description": "Fast, good-looking websites for local businesses, with online booking, reviews and maps.",
+      "description": "Premium sites for local businesses.",
       "status": "preview",
       "url": "../black-crest-site/",
       "ctaLabel": "See demos",
-      "previewLabel": "See the preview",
+      "previewLabel": "Visit Black Crest",
       "image": "img/barber-desktop.webp",
       "imageAlt": "Front page of Brass & Blade, a concept barbershop website",
       "imageSize": [
@@ -123,7 +123,7 @@
     "home": "{name} home",
     "comingSoon": "Coming soon",
     "live": "Available now",
-    "preview": "Preview",
+    "preview": "Taking clients",
     "businessesShow": "Show businesses",
     "howWeWork": "How we work",
     "faq": "FAQ",
@@ -256,7 +256,7 @@
     "fallbackLink": "Open the email again",
     "emailLabel": "Email",
     "socialLabel": "Follow",
-    "replyNote": "We usually reply within 2 business days.",
+    "replyNote": "We usually reply within 1 business day.",
     "subject": "New message from KB Ventures website",
     "fromName": "KB Ventures Website",
     "quickTitle": "Quick answers",
@@ -322,7 +322,7 @@
     },
     {
       "q": "How fast do you reply?",
-      "a": "We usually reply within 2 business days. You can use the form on the contact page or email kb.ventures@outlook.com.",
+      "a": "We usually reply within 1 business day. You can use the form on the contact page or email kb.ventures@outlook.com.",
       "links": [
         {
           "text": "contact page",
@@ -376,7 +376,7 @@
     },
     {
       "q": "How do I get a website made?",
-      "a": "Choose Black Crest Web Designs on the contact form and tell us about your business. We will reply within 2 business days to talk about it.",
+      "a": "Choose Black Crest Web Designs on the contact form and tell us about your business. We will reply within 1 business day to talk about it.",
       "links": [
         {
           "text": "contact form",
@@ -417,13 +417,6 @@
       {
         "label": "Black Crest Web Designs",
         "text": "6 concept websites built for local businesses",
-        "date": "Oct 2026"
-      },
-      {
-        "label": "KB Ventures",
-        "text": "Contact form now live",
-        "link": "contact.html",
-        "linkLabel": "Send a message",
         "date": "Oct 2026"
       }
     ]
@@ -478,7 +471,7 @@
     "nextTitle": "What happens next.",
     "next": [
       "You message us.",
-      "We reply within 2 business days.",
+      "We reply within 1 business day.",
       "We talk and see if it fits."
     ]
   },
@@ -543,7 +536,7 @@
   "gallery": {
     "title": "Concept sites.",
     "lead": "Examples of the kind of site we build. They are concepts, not real businesses.",
-    "open": "Open concept site",
+    "open": "See the case study",
     "newTab": "(opens in a new tab)",
     "prev": "Previous concept sites",
     "next": "Next concept sites",
@@ -551,42 +544,42 @@
       {
         "name": "Brass & Blade",
         "label": "Concept site: barbershop",
-        "url": "https://kirithikbala21-jpg.github.io/3D-demo-sites/barber-demo/",
+        "url": "../black-crest-site/work/barber.html",
         "image": "img/previews/barber.webp",
         "alt": "Top of the Brass & Blade concept barbershop website"
       },
       {
         "name": "Ember & Oak",
         "label": "Concept site: cafe",
-        "url": "https://kirithikbala21-jpg.github.io/3D-demo-sites/cafe-demo-v2/",
+        "url": "../black-crest-site/work/cafe.html",
         "image": "img/previews/cafe.webp",
         "alt": "Top of the Ember & Oak concept cafe website"
       },
       {
         "name": "Iron & Ember Athletic Club",
         "label": "Concept site: gym",
-        "url": "https://kirithikbala21-jpg.github.io/3D-demo-sites/gym-demo/",
+        "url": "../black-crest-site/work/gym.html",
         "image": "img/previews/gym.webp",
         "alt": "Top of the Iron & Ember Athletic Club concept gym website"
       },
       {
         "name": "Waverley Plumbing & Gas",
         "label": "Concept site: plumber",
-        "url": "https://kirithikbala21-jpg.github.io/3D-demo-sites/plumber-demo/",
+        "url": "../black-crest-site/work/plumber.html",
         "image": "img/previews/plumber.webp",
         "alt": "Top of the Waverley Plumbing & Gas concept plumber website"
       },
       {
         "name": "Maison Lune",
         "label": "Concept site: hair salon",
-        "url": "https://kirithikbala21-jpg.github.io/3D-demo-sites/salon-demo/",
+        "url": "../black-crest-site/work/salon.html",
         "image": "img/previews/salon.webp",
         "alt": "Top of the Maison Lune concept hair salon website"
       },
       {
         "name": "Torque & Co.",
         "label": "Concept site: auto parts store",
-        "url": "https://kirithikbala21-jpg.github.io/3D-demo-sites/parts-store-demo/",
+        "url": "../black-crest-site/work/parts.html",
         "image": "img/previews/parts.webp",
         "alt": "Top of the Torque & Co. concept auto parts store website"
       }

@@ -945,9 +945,9 @@ if (want('growth')) {
     await q.waitForSelector('#qr svg');
     const r = await q.evaluate(() => ({ h1: document.querySelector('h1').textContent, scan: document.querySelector('.qr-card .lead').textContent, label: document.querySelector('#qr svg').getAttribute('aria-label'), w: Math.round(document.querySelector('#qr svg').getBoundingClientRect().width), btn: !document.querySelector('#qr-print-btn').hidden }));
     ok('reviews page: heading, "Scan to leave a review", a large QR code (>= 240px wide on a phone, with a text label) and a Print button', /Loved your visit/.test(r.h1) && r.scan === 'Scan to leave a review' && /QR code/.test(r.label) && r.w >= 240 && r.btn, JSON.stringify(r));
-    // the QR really decodes to the review URL (OpenCV)
+    // the QR really decodes to the review URL (OpenCV; the ArUco-based detector reads longer URLs whose modules are not whole pixels)
     const png = path.join(TMP, 'qr.png'); await q.locator('#qr svg').screenshot({ path: png });
-    let dec = ''; try { dec = execFileSync('python3', ['-c', 'import cv2,sys;im=cv2.imread(sys.argv[1]);im=cv2.resize(im,None,fx=2,fy=2,interpolation=cv2.INTER_NEAREST);print(cv2.QRCodeDetector().detectAndDecode(im)[0])', png]).toString().trim(); } catch (e) { dec = 'ERR ' + String(e.message).slice(0, 80); }
+    let dec = ''; try { dec = execFileSync('python3', ['-c', 'import cv2,sys;im=cv2.imread(sys.argv[1]);big=cv2.resize(im,None,fx=2,fy=2,interpolation=cv2.INTER_NEAREST);v=cv2.QRCodeDetector().detectAndDecode(big)[0];v=v or cv2.QRCodeDetectorAruco().detectAndDecode(im)[0];print(v)', png]).toString().trim(); } catch (e) { dec = 'ERR ' + String(e.message).slice(0, 80); }
     ok('the QR code on the page decodes to googleReviewUrl (decoded with OpenCV)', dec === cfg.googleReviewUrl, dec);
     // print view: only the heading and the QR code
     await q.emulateMedia({ media: 'print' });

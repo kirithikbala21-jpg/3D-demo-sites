@@ -26,7 +26,7 @@ const HIDE = '.announce,.notice-bar,.open-bar,.open-banner,.open-strip,.cookie,#
 // made-up ratings inside the demos are hidden in these screenshots: the Black Crest site never shows ratings or reviews
 // fonts embedded as data URLs (setContent pages have no origin, so a font URL would be blocked)
 const font = (f) => `url(data:font/woff2;base64,${readFileSync(path.join(SITE, 'fonts', f)).toString('base64')})`;
-const FONTS = `@font-face{font-family:CG;src:${font('cormorant-garamond.woff2')};font-weight:300 700}@font-face{font-family:IN;src:${font('inter.woff2')};font-weight:100 900}`;
+const FONTS = `@font-face{font-family:CG;src:${font('cormorant-garamond.woff2')};font-weight:300 700}@font-face{font-family:IN;src:${font('switzer-400.woff2')};font-weight:100 900}`;
 const CREST = (w) => `<svg viewBox="0 0 48 56" width="${w}" style="overflow:visible"><path d="M24 2.5 43.5 9.2V26c0 12.6-8.1 21.6-19.5 27.5C12.6 47.6 4.5 38.6 4.5 26V9.2Z" fill="none" stroke="#D4AF37" stroke-width="1.6" stroke-linejoin="round"/><path d="M24 7.6 38.6 12.6V26c0 9.6-6 16.6-14.6 21.4C15.4 42.6 9.4 35.6 9.4 26V12.6Z" fill="none" stroke="#D4AF37" stroke-width=".8" opacity=".45"/><text x="24" y="32.6" text-anchor="middle" fill="#E4E6ED" style="font:600 17px CG">BC</text></svg>`;
 
 // A deliberately dated, generic homepage for the "before" side. Made up for the comparison: not a real site.

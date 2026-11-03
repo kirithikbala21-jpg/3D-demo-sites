@@ -1,4 +1,0 @@
-User-agent: *
-Disallow:
-
-Sitemap: https://kirithikbala21-jpg.github.io/3D-demo-sites/the-one-barber-demo/sitemap.xml

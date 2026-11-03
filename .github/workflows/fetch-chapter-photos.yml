@@ -1,0 +1,33 @@
+name: Fetch chapter photos (one-time)
+on:
+  push:
+    paths:
+      - ".github/workflows/fetch-chapter-photos.yml"
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download the 5 photos
+        run: |
+          set -e
+          D=black-crest-site/assets/chapters/originals
+          mkdir -p "$D"
+          get() { curl -fsSL -o "$D/$1.jpg" "https://images.unsplash.com/photo-$2?w=2600&q=85&fm=jpg"; }
+          get barbers 1592647420148-bfcc177e2117
+          get cafes 1610963226542-82be4d83db7a
+          get gyms 1672344048213-76b6e77304bd
+          get trades 1789639859519-6af84dcd4ab7
+          get salons 1641252064345-235d409679eb
+          ls -la "$D"
+      - name: Commit the photos and remove this workflow
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add black-crest-site/assets/chapters/originals
+          git rm .github/workflows/fetch-chapter-photos.yml
+          git commit -m "Add 5 Unsplash chapter photos (barbers, cafes, gyms, trades, salons) and remove the one-time fetch workflow"
+          git push

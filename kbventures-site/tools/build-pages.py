@@ -6,6 +6,7 @@
 # The legal pages in legal/ are written by hand and are not touched.
 import html
 import json
+import urllib.parse
 import os
 import re
 
@@ -77,7 +78,7 @@ def header_fallback(P='', images=True):
 
 
 def footer_fallback(P=''):
-    links = [('businesses.html', 'Businesses'), ('about.html', 'About'), ('how-we-work.html', 'How we work'), ('faq.html', 'FAQ'), ('partner.html', 'Partner with us'), ('black-crest.html', 'Website pricing'),
+    links = [('businesses.html', 'Businesses'), ('about.html', 'About'), ('how-we-work.html', 'How we work'), ('faq.html', 'FAQ'), ('partner.html', 'Partner with us'), ('../black-crest-site/pricing.html', 'Website pricing'),
              ('contact.html', 'Contact'), ('legal/privacy.html', 'Privacy'), ('legal/terms.html', 'Terms'), ('legal/refunds.html', 'Refunds')]
     return f'''<!-- site.js replaces this with the full footer from site.config.json -->
 <footer class="footer" id="site-footer"><div class="container"><div class="footer-bottom">
@@ -218,7 +219,7 @@ def biz_grid(always_more=False, level='h3'):
         badge = n['live'] if live else n.get('preview', 'Preview') if preview else n['comingSoon']
         still = pic(f'img/niches/biz-{slug(b.get("shortName") or b["name"])}', 720, 960, '', sizes='(min-width: 760px) 30vw, 46vw')
         body = f'''{still}
-          <span class="niche-label"><span class="niche-status">{E(badge)}</span><{level} class="niche-name">{E(b['name'])}</{level}><span class="niche-line">{E(b.get('description', ''))}</span></span>'''
+          <span class="niche-label"><span class="niche-status">{E(badge)}</span><{level} class="niche-name">{E(b['name'])}</{level}><span class="niche-line">{E(b.get('description', ''))}</span>{f'<span class="niche-cta">{E(b.get("previewLabel") if preview else b.get("ctaLabel") or "Visit")}</span>' if (live or preview) else ''}</span>'''
         items.append(f'        <li><a class="kb-niche" href="{E(b["url"])}">{body}</a></li>' if (live or preview)
                      else f'        <li><div class="kb-niche is-soon">{body}</div></li>')
     if always_more or cfg.get('showMoreComingCard') is True:
@@ -358,12 +359,12 @@ def gallery(title_level='h3', item_level='h4'):
     items = []
     for i, x in enumerate(g['items']):
         items.append(f'''        <li class="gallery-item">
-          <a class="card gallery-card" href="{E(x['url'])}" target="_blank" rel="noopener">
+          <a class="card gallery-card" href="{E(x['url'])}">
             <div class="mini-browser"><i aria-hidden="true"></i><img src="{E(x['image'])}" width="640" height="400" loading="lazy" decoding="async" alt="{E(x['alt'])}"></div>
             <div class="gallery-text">
               <p class="label" data-c="gallery.items.{i}.label">{E(x['label'])}</p>
               <{item_level} class="gallery-name" data-c="gallery.items.{i}.name">{E(x['name'])}</{item_level}>
-              <span class="gallery-open"><span data-c="gallery.open">{E(g['open'])}</span>{ARROW}<span class="sr-only"> <span data-c="gallery.newTab">{E(g['newTab'])}</span></span></span>
+              <span class="gallery-open"><span data-c="gallery.open">{E(g['open'])}</span>{ARROW}</span>
             </div>
           </a>
         </li>''')
@@ -667,7 +668,9 @@ for key in paused - {x['key'] for g in ag['groups'] for x in g['products']}:
 
 
 def action_html(x):
-    notify = (f'<a class="text-btn product-notify" href="{E(ag["notifyHref"])}">{E(ag["notify"])}<span class="sr-only">: {E(x["subject"])}, {E(x["level"])}</span></a>')
+    who = f'{x["level"]} {x["subject"]}' if x['level'] != 'Bundle' else x['subject']
+    href = ag['notifyHref'].replace('#', '?notify=' + urllib.parse.quote(who) + '#', 1) if '#' in ag['notifyHref'] else ag['notifyHref'] + '?notify=' + urllib.parse.quote(who)
+    notify = (f'<a class="text-btn product-notify" href="{E(href)}">{E(ag["notify"])}<span class="sr-only">: {E(x["subject"])}, {E(x["level"])}</span></a>')
     buyable = x.get('link') and x['key'] not in paused
     if x.get('link') and not buyable:
         action = f'<button class="btn btn-quiet product-soon product-paused" type="button" disabled>{E(ag["pausedLabel"])}</button>' + notify
@@ -682,13 +685,13 @@ def action_html(x):
     return action, buyable
 
 
-def product_card(x):
+def product_card(x, eager=False):
     """One guide: a book in its lit niche. Choosing it opens the guide's detail view."""
     _, buyable = action_html(x)
     price = f'{money(x["price"])}' if x.get('price') else ''
     return f'''        <li class="product{'' if buyable else ' is-soon'}" id="{E(x['key'])}">
           <a class="kb-niche book" href="#d-{E(x['key'])}" data-dialog="d-{E(x['key'])}" aria-haspopup="dialog">
-            {pic(f"img/niches/{x['key']}", 720, 960, '', sizes='(min-width: 900px) 22vw, 46vw')}
+            {pic(f"img/niches/{x['key']}", 720, 960, '', lazy=not eager, sizes='(min-width: 900px) 22vw, 46vw')}
             <span class="niche-label"><span class="niche-name product-name">{E(x['subject'])}</span><span class="niche-line"><span class="product-level">{E(x['level'])}</span> &middot; <span class="num">{price}</span></span></span>
           </a>
         </li>'''
@@ -718,12 +721,24 @@ def product_detail(x):
   </dialog>'''
 
 
+BUNDLE_OF = {'bundle-y10': 'Year 10', 'bundle-y11': 'VCE Units 1 and 2', 'bundle-y12': 'VCE Units 3 and 4'}
+
+
+def bundle_saving(x):
+    """What the bundle saves against buying its guides one by one (all of that year's guides, at their own prices)."""
+    guides = [p for g in ag['groups'] if g['title'] == BUNDLE_OF.get(x['key']) for p in g['products']]
+    if not guides:
+        return ''
+    full = round(sum(p['price'] for p in guides), 2)
+    return f'<span class="st-save">Save {money(round(full - x["price"], 2))}</span><span class="st-worth">{len(guides)} guides, {money(full)} bought separately</span>'
+
+
 def bundle_rows(g):
     rows = []
     for x in g['products']:
         action, buyable = action_html(x)
         rows.append(f'''        <tr class="st-row{'' if buyable else ' is-soon'}" id="{E(x['key'])}">
-          <th scope="row"><span class="st-title">{E(x['subject'])}</span></th>
+          <th scope="row"><span class="st-title">{E(x['subject'])}</span>{bundle_saving(x)}</th>
           <td class="st-amt"><span class="num">{money(x['price'])}</span> <small>{E(ag['currency'])}</small></td>
           <td class="st-go">{action}</td>
         </tr>''')
@@ -745,6 +760,8 @@ def products_ld():
     return json.dumps({'@context': 'https://schema.org', '@graph': items}, ensure_ascii=False, separators=(',', ':'))
 
 
+# "Look inside before you buy" only shows once at least one sample PDF is really there
+samples_note = (f'  <div class="container shop-samples"><p class="dim" data-c="aceguides.samplesNote">{E(ag["samplesNote"])}</p></div>\n' if samples else '')
 groups_html = []
 for gi, g in enumerate(ag['groups']):
     gid = re.sub(r'[^a-z0-9]+', '-', g['title'].lower()).strip('-')
@@ -762,7 +779,7 @@ for gi, g in enumerate(ag['groups']):
     groups_html.append(f'''  <section class="container shop-group" id="{gid}" aria-labelledby="{gid}-h">
     <h2 class="h2" id="{gid}-h" data-c="aceguides.groups.{gi}.title">{E(g['title'])}</h2>
     <ul class="book-row">
-{chr(10).join(product_card(x) for x in g['products'])}
+{chr(10).join(product_card(x, eager=gi == 0) for x in g['products'])}
     </ul>
   </section>''')
 inside = ''.join(f'<li data-c="aceguides.inside.{i}">{E(t)}</li>' for i, t in enumerate(ag['inside']))
@@ -773,16 +790,20 @@ pages['aceguides.html'] = page('aceguides.html', ag['meta']['title'], ag['meta']
   <div class="container page-head shop-head">
     <h1 class="page-title" data-c="aceguides.title">{E(ag['title'])}</h1>
     <p class="lead" data-c="aceguides.lead">{E(ag['lead'])}</p>
+  </div>
+  <nav class="shop-jump" aria-label="Jump to a year"><div class="container"><a href="#year-10">Year 10</a><a href="#vce-units-1-and-2">Units 1&amp;2</a><a href="#vce-units-3-and-4">Units 3&amp;4</a><a href="#bundles">Bundles</a></div></nav>
+{chr(10).join(groups_html)}
+  <div class="container shop-about">
     <p class="label shop-inside-label" data-c="aceguides.insideTitle">{E(ag['insideTitle'])}</p>
     <ul class="shop-inside">{inside}</ul>
+
   </div>
   <div class="container shop-chooser">
     <h2 class="shop-chooser-title" data-c="aceguides.chooser.title">{E(ag['chooser']['title'])}</h2>
     <ul class="principles">{chooser}
     </ul>
   </div>
-  <div class="container shop-samples"><p class="dim" data-c="aceguides.samplesNote">{E(ag['samplesNote'])}</p></div>
-{chr(10).join(groups_html)}
+{samples_note}
   <div class="container shop-foot">
     <p class="shop-delivery" data-c="aceguides.delivery">{E(ag['delivery'])}</p>
     <p>{text_link(E(ag['questionsLink']), 'aceguides.questions', ag['questions'])}</p>
@@ -808,23 +829,23 @@ def package_row(i, x):
         </tr>'''
 
 
-pages['black-crest.html'] = page('black-crest.html', bc['meta']['title'], bc['meta']['description'], f'''<main id="main" class="page pricing">
-  <div class="container page-head">
-    <p class="label pricing-label"><span data-c="blackCrest.label">{E(bc['label'])}</span> <span class="tag" data-c="nav.comingSoon">{E(cfg['nav']['comingSoon'])}</span></p>
-    <h1 class="page-title" data-c="blackCrest.title">{E(bc['title'])}</h1>
-    <p class="lead" data-c="blackCrest.lead">{E(bc['lead'])}</p>
-  </div>
-  <div class="container">
-    <table class="st-table"><caption class="sr-only">Black Crest Web Designs packages, in Australian dollars</caption>
-      <thead><tr><th scope="col">Package</th><th scope="col">Price</th><th scope="col"><span class="sr-only">Choose</span></th></tr></thead>
-      <tbody>
-{chr(10).join(package_row(i, x) for i, x in enumerate(bc['packages']))}
-      </tbody>
-    </table>
-    <p class="pkg-note" data-c="blackCrest.note">{E(bc['note'])}</p>
-  </div>
-{gallery('h2', 'h3')}
-</main>''', 'pricing')
+# the Black Crest prices live on the Black Crest site only: this old address forwards there
+pages['black-crest.html'] = '''<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Website pricing: Black Crest Web Designs</title>
+<link rel="canonical" href="https://kirithikbala21-jpg.github.io/3D-demo-sites/black-crest-site/pricing.html">
+<meta http-equiv="refresh" content="0; url=../black-crest-site/pricing.html">
+<style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#0D0E12;color:#E4E6ED;font:16px/1.6 Arial,sans-serif}a{color:#D4AF37}</style>
+</head>
+<body>
+<p>Black Crest website pricing has moved: <a href="../black-crest-site/pricing.html">see the prices on the Black Crest site</a>.</p>
+</body>
+</html>
+'''
 
 cp = cfg['contactPage']
 opts = ''.join(f'<option>{E(t)}</option>' for t in cp['topics'])

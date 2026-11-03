@@ -774,3 +774,17 @@ dialog.guide-detail:target { display: block; position: fixed; inset: 4vh 0 auto;
 .divider span { background: var(--gold-champagne); }
 .hero-still img, .hero-stage canvas { -webkit-mask-image: radial-gradient(ellipse 62% 70% at 50% 46%, #000 62%, transparent 100%); mask-image: radial-gradient(ellipse 62% 70% at 50% 46%, #000 62%, transparent 100%); }
 @media (min-width: 1024px) { .hero-stage { max-width: 600px; } }
+
+.signup-for { margin: 0 0 12px; font-size: 13px; letter-spacing: .04em; color: var(--gold-champagne); }
+
+/* ---------- AceGuides shop: a sticky jump bar, covers that never sit blank, bundle savings ---------- */
+.shop-jump { position: sticky; top: 0; z-index: 40; margin: 8px 0 0; border-top: 1px solid var(--hairline); border-bottom: 1px solid var(--hairline); background: var(--obsidian); }
+.shop-jump .container { display: flex; gap: 4px 22px; overflow-x: auto; scrollbar-width: none; }
+.shop-jump a { flex: none; display: inline-flex; align-items: center; min-height: 48px; font-size: 12px; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; color: var(--silver); text-decoration: none; }
+.shop-jump a:hover, .shop-jump a:focus-visible { color: var(--platinum); }
+.shop-group { scroll-margin-top: calc(var(--nav-h) + 56px); }
+.book-row .kb-niche img { background: var(--graphite); }
+.shop-about { margin-top: 56px; padding-top: 28px; border-top: 1px solid var(--hairline); }
+.shop-about .shop-inside { display: flex; flex-wrap: wrap; gap: 8px; }
+.st-save { display: block; margin-top: 10px; font-size: 11px; font-weight: 500; letter-spacing: .18em; text-transform: uppercase; color: var(--gold-champagne); }
+.st-worth { display: block; margin-top: 4px; font-size: 13.5px; font-weight: 400; color: var(--silver); font-variant-numeric: tabular-nums; }

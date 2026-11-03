@@ -1,7 +1,7 @@
 // Records the home page showreel: each of the six concept sites (never any other folder) at 1440 x 900, scrolled
 // slowly from the top, captured frame by frame for crisp text, then joined with crossfades by ffmpeg.
 // Output: assets/reel.mp4 (H.264, no audio), assets/reel.webm (VP9) and assets/reel-poster.webp/.avif.
-// Last run: 1 Nov 2026, 23.4 s at 1280 x 800, reel.mp4 2.6 MB.
+// Last run: 3 Nov 2026, 23.4 s at 1280 x 800, reel.mp4 2.6 MB.
 //
 //   1. serve the repo root:   python3 -m http.server 8123 --bind 127.0.0.1
 //   2. run:                   node black-crest-site/tools/record-reel.mjs  [base URL, default http://127.0.0.1:8123/]

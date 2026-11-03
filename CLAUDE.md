@@ -34,6 +34,10 @@ This comes from a reference the owner loved: a perfume brand site with five bott
 3. **One hero object.** Every home page opens on one beautifully lit object, rendered in real-time 3D or as a high-quality still. It is the brand's own object, never a stock icon, mascot or cartoon.
 4. **Cinematic chapters.** Full-screen scenes, one subject per screen, with a slow zoom (scale 1.00 to 1.10), a huge serif title and one caption line. Scrolling crossfades or wipes to the next scene.
 5. **Statement tables.** Prices and comparisons are set like a private-bank statement or a wine list: hairline rules, tabular figures, generous spacing and small caps labels. Never three app-style tier cards.
+6. **Filled sections** (first used on Black Crest and KB Ventures, Nov 2026). Content fills at least 60% of every section's height at 1440 and 390 px.
+   - Text: body 20 to 22px on desktop, labels at least 13px, card titles at least 28px, lines under about 62 characters.
+   - Visuals: at full size, beside the text, never a small thumbnail (for example, a laptop of 760px or more, and a phone of 300px).
+   - Full-screen photo scenes: the photo stays bright (brightness 0.95 or more), darkened only on the bottom 40% where the words sit. Each scene's words fade out before the next scene's fade in.
 
 ---
 

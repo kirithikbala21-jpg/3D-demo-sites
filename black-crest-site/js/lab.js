@@ -67,8 +67,8 @@ export function initLab({ reduce }) {
       $('[data-list]', m).textContent = t.list;
       $('.m-rows', m).innerHTML = t.items.map((x) => `<li><span>${x}</span><span>Your price</span></li>`).join('');
       const img = $('.m-hero img', m);
-      if (lastTrade !== c.trade) img.src = `${base}assets/chapters/${t.img}-${t.img === 'trades' || t.img === 'salons' ? 's' : 'l'}.webp`;
-      $$('.m-gallery i', m).forEach((g, i) => { g.style.backgroundImage = `url("${base}assets/chapters/${['barbers', 'cafes', 'gyms', 'trades', 'salons'].filter((x) => x !== t.img)[i]}-l.webp")`; });
+      if (lastTrade !== c.trade) img.src = `${base}assets/chapters/${t.img}-s.webp`; // the 1200px version is plenty for a preview
+      $$('.m-gallery i', m).forEach((g, i) => { g.style.backgroundImage = `url("${base}assets/chapters/${['barbers', 'cafes', 'gyms', 'trades', 'salons'].filter((x) => x !== t.img)[i]}-s.webp")`; });
       $$('[data-feature]', m).forEach((s) => { s.hidden = !c.features.includes(s.dataset.feature); });
     });
     lastTrade = c.trade;

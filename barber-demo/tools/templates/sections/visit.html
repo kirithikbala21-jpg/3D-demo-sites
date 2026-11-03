@@ -8,7 +8,7 @@
           <address>
             {{contact.street}}<br>{{contact.locality}}<br>
             <a href="tel:{{contact.phoneHref}}">{{contact.phone}}</a><br>
-            <a href="mailto:{{contact.email}}">{{contact.email}}</a>
+            <span class="email-plain">{{contact.email}}</span>
           </address>
           {{{hoursTable}}}
           {{#if socialButtons}}<p class="find-online">{{{socialButtons}}}</p>{{/if}}
@@ -17,7 +17,7 @@
         <div class="visit-side reveal">
           {{> gmap}}
           <ul class="info-list">
-            <li><strong>Trains &amp; buses</strong><span>Central Station is a 9-minute walk. Buses stop on Crown Street, two minutes away.</span></li>
+            <li><strong>Trains &amp; buses</strong><span>Box Hill Central is a 9-minute walk. Buses stop on Crown Street, two minutes away.</span></li>
             <li><strong>Parking</strong><span>Metered street parking on the lane, plus a public car park on Foveaux Street.</span></li>
             <li><strong>Access</strong><span>Step-free entry, a wide aisle to the chairs and an accessible toilet.</span></li>
             <li><strong>Waiting</strong><span>A comfy bench, free tea and water, and a TV that is always on the cricket.</span></li>

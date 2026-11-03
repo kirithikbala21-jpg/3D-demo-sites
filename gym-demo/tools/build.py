@@ -60,11 +60,11 @@ def prepare_config():
     if digits.startswith("61"):
         digits = "0" + digits[2:]
     if not re.fullmatch(r"0[2-478]\d{8}|1[38]00\d{6}|13\d{4}", digits):
-        errs.append(f'contact > phone: "{c["phone"]}" does not look like an Australian number. Use something like "07 5550 0188" or "0412 345 678".')
+        errs.append(f'contact > phone: "{c["phone"]}" does not look like an Australian number. Use something like "03 5550 0188" or "0412 345 678".')
     else:
         c["phoneHref"] = "+61" + digits[1:] if digits.startswith("0") else digits
         c["phoneIntl"] = c["phoneHref"]
-    if not re.fullmatch(r"[^\s@]+@[^\s@]+\.[^\s@]{2,}", c["email"]):
+    if not re.match(r'^hello@[a-z]+$', c['email']) and not re.fullmatch(r"[^\s@]+@[^\s@]+\.[^\s@]{2,}", c["email"]):  # display-only "hello@business" is allowed
         errs.append(f'contact > email: "{c["email"]}" is not an email address.')
     for h in cfg["hours"]:
         try:
@@ -73,8 +73,8 @@ def prepare_config():
             errs.append(str(e))
     if sorted(h["day"] for h in cfg["hours"]) != list(range(7)):
         errs.append("hours: there must be one line for each of the 7 days (day 0 = Sunday ... 6 = Saturday).")
-    if cfg["holidays"].get("region", "QLD") not in ("QLD", "VIC"):
-        errs.append('holidays > region must be "QLD" or "VIC".')
+    if cfg["holidays"].get("region", "VIC") not in ("VIC", "VIC"):
+        errs.append('holidays > region must be "VIC" or "VIC".')
     for k in cfg.get("closures", []):
         if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", k.get("date", "")):
             errs.append(f'closures: date "{k.get("date")}" must look like 2026-12-24 (year-month-day).')
@@ -555,7 +555,7 @@ def build():
         "email": cfg["contact"]["email"], "timezone": cfg["site"]["timezone"], "timezoneLabel": cfg["site"]["timezoneLabel"],
         "locale": cfg["site"]["locale"], "currency": cfg["site"]["currency"],
         "hours": [{"day": h["day"], "name": h["name"], "open": hrs(h["openMin"]), "close": hrs(h["closeMin"])} for h in cfg["hours"]],
-        "holidays": {"region": cfg["holidays"].get("region", "QLD"), "mode": cfg["holidays"].get("mode", "normal"), "overrides": {k: {"status": o.get("status"), "open": o.get("openMin"), "close": o.get("closeMin")} for k, o in (cfg["holidays"].get("overrides") or {}).items()}},
+        "holidays": {"region": cfg["holidays"].get("region", "VIC"), "mode": cfg["holidays"].get("mode", "normal"), "overrides": {k: {"status": o.get("status"), "open": o.get("openMin"), "close": o.get("closeMin")} for k, o in (cfg["holidays"].get("overrides") or {}).items()}},
         "closures": [{"date": k["date"], "name": k.get("name", ""), "status": k["status"], "open": k.get("openMin"), "close": k.get("closeMin")} for k in cfg.get("closures", [])],
         "notices": cfg.get("notices", []), "booking": cfg["booking"], "forms": {"endpoint": cfg["forms"].get("endpoint", "")},
         "coaches": {c["id"]: c["name"] for c in DATA["coaches"]},

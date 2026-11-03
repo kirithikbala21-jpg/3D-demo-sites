@@ -57,3 +57,26 @@ Brief: "Audit fixes (2 Nov 2026): paste into Claude Code". Parts A to E, in orde
 - **Skipped:**
   - Credits: the four new photos are still not in, because images.unsplash.com is blocked here, so there are no photographers to list yet.
   - Barber photo: `barber-demo` has no copy wider than 900 px, so no larger original exists to rebuild from.
+
+## D. Demos (in progress: source changes done, sync re-renders next)
+- **Black Crest bar:** a slim bar at the very bottom of every page of the six demos, "Concept site by Black Crest Web Designs · Get a site like this", linking to `../black-crest-site/free-concept.html`. It sits in normal page flow (never over content), inherits each demo's own font and colours, and is keyboard-reachable with a focus ring.
+- **Footer credit:** now the link "Concept site by Black Crest Web Designs" (was "Concept website by KB Ventures" or "Demo website by KB Ventures").
+- **Moves:**
+  - Barber: Surry Hills, Sydney to Box Hill VIC 3128 (27 Carrington Road), with its map searches, JSON-LD, footer, visit page and clock time zone. Phone 03 5550 0144.
+  - Gym: Fortitude Valley, Brisbane to Clayton VIC 3168 (14 Wellington Road). Time zone Melbourne, phone 03 5550 0177.
+- **Placeholders:**
+  - Example streets are replaced (Flinders Lane, Springvale Road, Kingsway).
+  - Emails are display-only text, "hello@" plus the business name, never a link. The demo build validators accept this form.
+  - Licence and ABN lines read "shown on the real site".
+  - There was no "Photo to come" text in any demo.
+- **Wording:** "Concept site" replaces "unofficial concept demo" and "Unofficial concept redesign" everywhere.
+- **Torque & Co.:** it echoed a real chain (red starburst logo, "Click & Collect in 30 minutes", the same category names), so it now has its own identity:
+  - deep teal and amber, and a hexagon bolt-head mark;
+  - its own top line, category names and rewards line;
+  - the countdown timer and "while stock lasts" are removed (CLAUDE.md bans countdowns);
+  - its icon and share image are re-rendered.
+- **Old café demo:** `cafe-demo/index.html` (and its reviews page) now redirect to `../cafe-demo-v2/`.
+- **Dead links:** the demos' Instagram and Google review links open the matching Black Crest case study.
+- **"Seamless"** is reworded in the barber services and home page.
+- **Black Crest sync:** the case studies show Box Hill VIC and Clayton VIC and the new Torque & Co. palette. Re-rendering the screenshots, gallery stills, showreel and KB previews comes next.
+- **Checked:** all 48 demo pages at 390 and 1280 px: no script errors, no missing files, no sideways scroll, and the bar and credit present.

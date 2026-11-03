@@ -66,7 +66,7 @@ def prepare_config():
     else:
         c["phoneHref"] = "+61" + digits[1:] if digits.startswith("0") else digits
         c["phoneIntl"] = "+61" + digits[1:] if digits.startswith("0") else digits
-    if not re.fullmatch(r"[^\s@]+@[^\s@]+\.[^\s@]{2,}", c["email"]):
+    if not re.match(r'^hello@[a-z]+$', c['email']) and not re.fullmatch(r"[^\s@]+@[^\s@]+\.[^\s@]{2,}", c["email"]):  # display-only "hello@business" is allowed
         errs.append(f'contact > email: "{c["email"]}" is not an email address.')
     c["mapsQuery"] = f'{c["street"]}, {c["locality"]}'
     for h in cfg["hours"]:

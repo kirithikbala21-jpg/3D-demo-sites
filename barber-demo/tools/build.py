@@ -61,13 +61,13 @@ def prepare_config():
     if digits.startswith("61"):
         digits = "0" + digits[2:]
     if not re.fullmatch(r"0[2-478]\d{8}|1[38]00\d{6}|13\d{4}", digits):
-        errs.append(f'contact > phone: "{c["phone"]}" does not look like an Australian number. Use something like "02 5550 0144" or "0412 345 678".')
+        errs.append(f'contact > phone: "{c["phone"]}" does not look like an Australian number. Use something like "03 5550 0144" or "0412 345 678".')
     else:
         c["phoneHref"] = "+61" + digits[1:] if digits.startswith("0") else digits  # what tel: links use (international format)
-    if not re.fullmatch(r"[^\s@]+@[^\s@]+\.[^\s@]{2,}", c["email"]):
+    if not re.match(r'^hello@[a-z]+$', c['email']) and not re.fullmatch(r"[^\s@]+@[^\s@]+\.[^\s@]{2,}", c["email"]):  # display-only "hello@business" is allowed
         errs.append(f'contact > email: "{c["email"]}" is not an email address.')
-    if cfg.get("region") not in ("NSW", "VIC"):
-        errs.append('region: must be "NSW" or "VIC" (decides which public holidays are calculated).')
+    if cfg.get("region") not in ("VIC", "VIC"):
+        errs.append('region: must be "VIC" or "VIC" (decides which public holidays are calculated).')
     for h in cfg["hours"]:
         try:
             h["openMin"], h["closeMin"] = normalise_hours(h, f'hours > {h.get("name")}')
@@ -565,7 +565,7 @@ def build():
         "hasBusyness": bool(cfg.get("busynessEnabled", True) and (cfg.get("busyness") or {}).get("blocks")),
         "hasOpenBanner": cfg.get("openBannerEnabled", True),
         "hasReviewLink": bool(cfg.get("googleReviewUrl")),
-        "suburb": re.split(r"\s+(?:NSW|VIC|QLD|SA|WA|TAS|ACT|NT)\b", cfg["contact"]["locality"])[0],
+        "suburb": re.split(r"\s+(?:VIC|VIC|QLD|SA|WA|TAS|ACT|NT)\b", cfg["contact"]["locality"])[0],
         "hoursInline": hours_inline(),
         "minPrice": int(min(it["price"] for cat in cfg["services"] for it in cat["items"])),
         "photos": photo_slots()[0], "photoCredits": photo_slots()[1],

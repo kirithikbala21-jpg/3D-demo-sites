@@ -8,16 +8,16 @@
   const ico = (id, cls = '') => `<svg class="${cls}" width="48" height="48" aria-hidden="true"><use href="#${id}"/></svg>`;
 
   /* ---------- data ---------- */
-  const CATS = [['Oils and fluids', 'i-oil'], ['Parts and service', 'i-gear'], ['4WD and adventure', 'i-4wd'], ['Paint and panel', 'i-paint'], ['Car care', 'i-care'], ['In-car tech', 'i-tech'], ['Lighting', 'i-light'], ['Tools and garage', 'i-tool'], ['Batteries', 'i-bat'], ['Towing', 'i-tow'], ['Wipers', 'i-wipe'], ['Seat covers', 'i-seat']];
+  const CATS = [['Engine oil', 'i-oil'], ['Service parts', 'i-gear'], ['4WD and touring', 'i-4wd'], ['Paint and body', 'i-paint'], ['Car care', 'i-care'], ['Audio and tech', 'i-tech'], ['Lighting', 'i-light'], ['Workshop tools', 'i-tool'], ['Batteries', 'i-bat'], ['Towing', 'i-tow'], ['Wiper blades', 'i-wipe'], ['Seat covers', 'i-seat']];
   const art = {
-    oil: '<svg viewBox="0 0 60 90" aria-hidden="true"><rect x="22" y="2" width="16" height="12" rx="2" fill="#1a1a1a"/><path d="M14 18h32v64a6 6 0 0 1-6 6H20a6 6 0 0 1-6-6z" fill="#fff" stroke="#1a1a1a" stroke-width="3"/><rect x="14" y="36" width="32" height="26" fill="#EE3123"/><path d="M30 42c4 5 6 8 0 14-6-6-4-9 0-14z" fill="#fff"/></svg>',
-    filter: '<svg viewBox="0 0 70 80" aria-hidden="true"><rect x="8" y="12" width="54" height="62" rx="6" fill="#1a1a1a"/><rect x="8" y="30" width="54" height="22" fill="#EE3123"/><rect x="18" y="4" width="34" height="10" rx="2" fill="#777"/></svg>',
-    battery: '<svg viewBox="0 0 100 70" aria-hidden="true"><rect x="4" y="16" width="92" height="50" rx="4" fill="#1a1a1a"/><rect x="14" y="6" width="14" height="10" fill="#777"/><rect x="72" y="6" width="14" height="10" fill="#777"/><rect x="18" y="30" width="64" height="22" fill="#EE3123"/><path d="M52 32l-10 10h8l-4 8 12-12h-8z" fill="#fff"/></svg>',
-    tool: '<svg viewBox="0 0 100 60" aria-hidden="true"><rect x="6" y="24" width="64" height="12" rx="5" fill="#777"/><circle cx="80" cy="30" r="14" fill="none" stroke="#1a1a1a" stroke-width="9"/><rect x="6" y="24" width="30" height="12" rx="5" fill="#EE3123"/></svg>',
-    wiper: '<svg viewBox="0 0 100 40" aria-hidden="true"><path d="M6 30Q50 -2 94 30" fill="none" stroke="#1a1a1a" stroke-width="6" stroke-linecap="round"/><path d="M6 34Q50 4 94 34" fill="none" stroke="#EE3123" stroke-width="3"/></svg>',
-    pads: '<svg viewBox="0 0 100 60" aria-hidden="true"><path d="M8 40Q50 -4 92 40v12H8z" fill="#1a1a1a"/><path d="M18 40Q50 8 82 40v6H18z" fill="#EE3123"/></svg>',
-    spark: '<svg viewBox="0 0 40 90" aria-hidden="true"><rect x="13" y="2" width="14" height="24" rx="3" fill="#fff" stroke="#1a1a1a" stroke-width="3"/><rect x="9" y="26" width="22" height="22" fill="#777"/><rect x="16" y="48" width="8" height="34" fill="#EE3123"/></svg>',
-    wax: '<svg viewBox="0 0 70 70" aria-hidden="true"><circle cx="35" cy="38" r="28" fill="#1a1a1a"/><rect x="8" y="26" width="54" height="22" fill="#EE3123"/><rect x="14" y="8" width="42" height="10" rx="3" fill="#777"/></svg>'
+    oil: '<svg viewBox="0 0 60 90" aria-hidden="true"><rect x="22" y="2" width="16" height="12" rx="2" fill="#1a1a1a"/><path d="M14 18h32v64a6 6 0 0 1-6 6H20a6 6 0 0 1-6-6z" fill="#fff" stroke="#1a1a1a" stroke-width="3"/><rect x="14" y="36" width="32" height="26" fill="#0E5A5C"/><path d="M30 42c4 5 6 8 0 14-6-6-4-9 0-14z" fill="#fff"/></svg>',
+    filter: '<svg viewBox="0 0 70 80" aria-hidden="true"><rect x="8" y="12" width="54" height="62" rx="6" fill="#1a1a1a"/><rect x="8" y="30" width="54" height="22" fill="#0E5A5C"/><rect x="18" y="4" width="34" height="10" rx="2" fill="#777"/></svg>',
+    battery: '<svg viewBox="0 0 100 70" aria-hidden="true"><rect x="4" y="16" width="92" height="50" rx="4" fill="#1a1a1a"/><rect x="14" y="6" width="14" height="10" fill="#777"/><rect x="72" y="6" width="14" height="10" fill="#777"/><rect x="18" y="30" width="64" height="22" fill="#0E5A5C"/><path d="M52 32l-10 10h8l-4 8 12-12h-8z" fill="#fff"/></svg>',
+    tool: '<svg viewBox="0 0 100 60" aria-hidden="true"><rect x="6" y="24" width="64" height="12" rx="5" fill="#777"/><circle cx="80" cy="30" r="14" fill="none" stroke="#1a1a1a" stroke-width="9"/><rect x="6" y="24" width="30" height="12" rx="5" fill="#0E5A5C"/></svg>',
+    wiper: '<svg viewBox="0 0 100 40" aria-hidden="true"><path d="M6 30Q50 -2 94 30" fill="none" stroke="#1a1a1a" stroke-width="6" stroke-linecap="round"/><path d="M6 34Q50 4 94 34" fill="none" stroke="#0E5A5C" stroke-width="3"/></svg>',
+    pads: '<svg viewBox="0 0 100 60" aria-hidden="true"><path d="M8 40Q50 -4 92 40v12H8z" fill="#1a1a1a"/><path d="M18 40Q50 8 82 40v6H18z" fill="#0E5A5C"/></svg>',
+    spark: '<svg viewBox="0 0 40 90" aria-hidden="true"><rect x="13" y="2" width="14" height="24" rx="3" fill="#fff" stroke="#1a1a1a" stroke-width="3"/><rect x="9" y="26" width="22" height="22" fill="#777"/><rect x="16" y="48" width="8" height="34" fill="#0E5A5C"/></svg>',
+    wax: '<svg viewBox="0 0 70 70" aria-hidden="true"><circle cx="35" cy="38" r="28" fill="#1a1a1a"/><rect x="8" y="26" width="54" height="22" fill="#0E5A5C"/><rect x="14" y="8" width="42" height="10" rx="3" fill="#777"/></svg>'
   };
   const P = [
     { id: 'p1', n: 'Full synthetic engine oil 5W-30, 5L', b: 'Veloce', now: 37, was: 74, a: 'oil' },
@@ -108,7 +108,7 @@
     const a = e.target.closest('[data-add]'); if (a) { addKey(a.dataset.add); toast(PR[a.dataset.add].n + ' added'); return; }
     const j = e.target.closest('[data-job]'); if (j) openJob(j.dataset.job, j);
   });
-  $('#improve-open').onclick = (e) => openDrawer('What I improved', '<ol class="imp"><li>Slim top bar with Click &amp; Collect and a one-tap store picker.</li><li>One wide search bar with a clear garage and cart.</li><li>Hero finder: rego, make/model/year or part type.</li><li>A green "Fits your car" bar and ticks across the whole page.</li><li>One deal banner with a live countdown.</li><li>Shop by job: every part for a job in one tick-list.</li><li>Oil finder: viscosity, quantity and three matching oils.</li><li>Product cards with price, saving, fit and pick-up time.</li><li>Twelve category tiles with simple icons.</li><li>Oil change in four visual steps with one-tap add.</li><li>A 4WD banner with strong contrast.</li><li>Ask a mechanic with sample answers.</li><li>A simple rewards card.</li><li>Rego and service reminders.</li><li>A trust strip for stores, collection, delivery and pay later.</li></ol>', '<button class="btn btn-lg" type="button" id="imp-ok">Close</button>', e.currentTarget);
+  $('#improve-open').onclick = (e) => openDrawer('What this concept shows', '<ol class="imp"><li>Slim top bar with counter pick-up and a one-tap store picker.</li><li>One wide search bar with a clear garage and cart.</li><li>Hero finder: rego, make/model/year or part type.</li><li>A green "Fits your car" bar and ticks across the whole page.</li><li>One clear deal banner, with no fake urgency.</li><li>Shop by job: every part for a job in one tick-list.</li><li>Oil finder: viscosity, quantity and three matching oils.</li><li>Product cards with price, saving, fit and pick-up time.</li><li>Twelve category tiles with simple icons.</li><li>Oil change in four visual steps with one-tap add.</li><li>A 4WD banner with strong contrast.</li><li>Ask a mechanic with sample answers.</li><li>A simple rewards card.</li><li>Rego and service reminders.</li><li>A trust strip for stores, collection, delivery and pay later.</li></ol>', '<button class="btn btn-lg" type="button" id="imp-ok">Close</button>', e.currentTarget);
   document.addEventListener('click', (e) => { if (e.target.id === 'imp-ok') closeDrawer(); });
 
   /* ---------- compare ---------- */
@@ -132,10 +132,6 @@
   /* ---------- search ---------- */
   $('#search-form').onsubmit = (e) => { e.preventDefault(); const q = $('#q').value.trim().toLowerCase(); if (!q) { $('#q').focus(); return; } const hit = P.filter((p) => (p.n + p.b).toLowerCase().includes(q)); toast(hit.length ? `${hit.length} match${hit.length > 1 ? 'es' : ''}: ${hit.map((h) => h.n.split(',')[0]).slice(0, 2).join(', ')}` : 'No match in this demo. Try "oil" or "battery".'); if (hit.length) location.hash = '#featured'; };
 
-  /* ---------- countdown ---------- */
-  const end = Date.now() + (5 * 3600 + 42 * 60) * 1000;
-  const tick = () => { let s = Math.max(0, Math.floor((end - Date.now()) / 1000)); const p = (n) => String(n).padStart(2, '0'); $('#cd-h').textContent = p(Math.floor(s / 3600)); $('#cd-m').textContent = p(Math.floor(s % 3600 / 60)); $('#cd-s').textContent = p(s % 60); };
-  tick(); setInterval(tick, 1000);
 
   /* ---------- simple forms ---------- */
   const em = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;

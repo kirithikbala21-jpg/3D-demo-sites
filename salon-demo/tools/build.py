@@ -65,7 +65,7 @@ def prepare_config():
     else:
         c["phoneHref"] = "+61" + digits[1:] if digits.startswith("0") else digits  # what tel: links use (international format)
         c["phoneIntl"] = "+61" + digits[1:] if digits.startswith("0") else digits
-    if not re.fullmatch(r"[^\s@]+@[^\s@]+\.[^\s@]{2,}", c["email"]):
+    if not re.match(r'^hello@[a-z]+$', c['email']) and not re.fullmatch(r"[^\s@]+@[^\s@]+\.[^\s@]{2,}", c["email"]):  # display-only "hello@business" is allowed
         errs.append(f'contact > email: "{c["email"]}" is not an email address.')
     c["mapsQuery"] = f'{c["street"]}, {c["locality"]}'
     c["locality"] = c["locality"]
@@ -341,7 +341,7 @@ def manifest():
     return json.dumps({
         "name": b["name"] + " (concept demo)", "short_name": b["short"], "id": "./index.html", "start_url": "./index.html", "scope": "./",
         "display": "standalone", "orientation": "portrait", "background_color": t["bg"], "theme_color": t["bg"], "lang": cfg["site"]["locale"],
-        "description": "Unofficial concept website for a fictional hair and beauty salon in Glen Waverley.",
+        "description": "Concept site for a fictional hair and beauty salon in Glen Waverley.",
         "categories": ["business", "lifestyle"], "icons": icons,
     }, indent=1) + "\n"
 
@@ -542,7 +542,7 @@ def build():
         ctx = {**base, "page": {**page, "isHome": home, "isNotFound": page["file"] == "404.html",
                                 "homeHref": "#top" if home else "index.html", "navBase": "" if home else "index.html",
                                 "canonical": cfg["site"]["baseUrl"] + ("" if home else page["file"]),
-                                "fullTitle": cfg["brand"]["name"] + " | " + page["title"] + " (unofficial concept demo)"},
+                                "fullTitle": cfg["brand"]["name"] + " | " + page["title"] + " (concept site)"},
                "currentFile": page["file"]}
         ctx["jsonld"] = jsonld() if page.get("jsonld") else ""
         content = render_nodes(parse((TPL / "pages" / f'{page["template"]}.html').read_text()), [ctx])

@@ -870,7 +870,7 @@ page('standard.html', 'The Black Crest Standard: Black Crest Web Designs', 'Ten 
 LH_DATE = '30 October 2026'
 CASES = {
     'barber': {
-        'place': 'Surry Hills, Sydney NSW', 'line': 'A dark, brass-lit barbershop site where booking a chair is never more than a thumb away.',
+        'place': 'Box Hill VIC', 'line': 'A dark, brass-lit barbershop site where booking a chair is never more than a thumb away.',
         'brief': 'A neighbourhood barbershop that lives on walk-ins and regulars. People find it on their phones, often a block away, and decide in seconds. The site had to feel like the shop and make booking the obvious next step.',
         'built': ['A home page with a slowly turning 3D barber pole and a sticky "Book a chair" bar', 'Services and a full price list, also as a printable PDF', 'Online booking, a barbers page and a membership page', 'A gallery of cuts, a journal and a reviews page', 'A visit page with the map, hours and directions'],
         'swatches': [('#0B0B0C', 'Page'), ('#161617', 'Cards'), ('#F2EBDD', 'Text'), ('#C9A24B', 'Brass'), ('#E4C77A', 'Brass, light')],
@@ -886,7 +886,7 @@ CASES = {
         'decisions': 'Espresso browns instead of black, so the page feels warm. One ember orange marks every action. A single handwritten flourish gives it a signature without hurting legibility.',
         'lh': (82, 100, 100, 69)},
     'gym': {
-        'place': 'Fortitude Valley, Brisbane QLD', 'line': 'A loud, confident gym site built around one goal: getting someone to a free first session.',
+        'place': 'Clayton VIC', 'line': 'A loud, confident gym site built around one goal: getting someone to a free first session.',
         'brief': 'A strength and conditioning gym competing with big chains. Its edge is coaching. The site needed to show the timetable and the coaches, and turn a maybe into a booked free trial.',
         'built': ['A home page with a slowly rotating 3D barbell', 'A weekly class timetable', 'Coaches, memberships and a 7-day free trial form', 'A visit page, a journal and a reviews page', 'A careers page'],
         'swatches': [('#0B0B0C', 'Page'), ('#161618', 'Cards'), ('#F5F1EA', 'Text'), ('#FFE000', 'Accent'), ('#D2CCC2', 'Body text')],
@@ -913,9 +913,9 @@ CASES = {
         'place': None, 'line': 'An auto parts home page that starts with your car, not with a catalogue.',
         'brief': 'An auto parts store home page, redesigned as a concept with a made-up brand. Drivers often know the job but not the part. The page had to help them find parts that fit their car quickly, on a phone.',
         'built': ['A car finder that starts from a number plate', 'Shop by job, with steps for common jobs', 'An oil finder and featured products', 'Shop by category and a cart', 'Rego and service reminders, and a rewards sign-up'],
-        'swatches': [('#EE3123', 'Red'), ('#D91414', 'Buttons'), ('#009546', 'In stock'), ('#1A1A1A', 'Charcoal'), ('#F4F4F4', 'Grey')],
+        'swatches': [('#0E5A5C', 'Teal'), ('#0A4648', 'Buttons'), ('#E39B2D', 'Amber'), ('#009546', 'In stock'), ('#1A1A1A', 'Charcoal')],
         'fonts': [('Lato', 'Headings and body text')],
-        'decisions': 'Retail red for the brand and buttons, green only for good news like stock. One plain typeface keeps dense product information easy to scan.',
+        'decisions': 'Deep teal for the brand and buttons, amber for deals, and green only for good news like stock. Its own identity, a bolt-head mark and plain category names, so it never echoes a real parts chain.',
         'lh': (99, 100, 100, 63)},
 }
 YEAR = '2026'

@@ -24,7 +24,7 @@
           <h3 class="visit-h">Hours</h3>
           {{{hoursTable}}}
           <h3 class="visit-h">Get in touch</h3>
-          <p class="contact-links"><a href="tel:{{contact.phoneHref}}">{{contact.phone}}</a><a href="mailto:{{contact.email}}">{{contact.email}}</a></p>
+          <p class="contact-links"><a href="tel:{{contact.phoneHref}}">{{contact.phone}}</a><span class="email-plain">{{contact.email}}</span></p>
           <ul class="contact-buttons" role="list">
             {{#if googleMapsUrl}}<li><a class="btn btn-ghost" href="{{googleMapsUrl}}" target="_blank" rel="noopener">Find us on Google Maps<span class="sr-only"> (opens in a new tab)</span></a></li>{{/if}}
             {{#if instagramUrl}}<li><a class="btn btn-ghost" href="{{instagramUrl}}" target="_blank" rel="noopener">Follow us on Instagram<span class="sr-only"> (opens in a new tab)</span></a></li>{{/if}}

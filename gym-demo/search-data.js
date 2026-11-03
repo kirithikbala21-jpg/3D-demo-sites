@@ -2,7 +2,7 @@
 export default [
 {
 "title": "Home",
-"text": "Strength coaching, group classes and open gym in Fortitude Valley, Brisbane. A concept demo for a fictional gym with a slowly rotating 3D barbell.",
+"text": "Strength coaching, group classes and open gym in Clayton, Melbourne. A concept demo for a fictional gym with a slowly rotating 3D barbell.",
 "url": "index.html",
 "type": "Page"
 },

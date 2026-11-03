@@ -2,7 +2,7 @@
 export default [
 {
 "title": "Home",
-"text": "Classic cuts, skin fades and hot towel shaves in Surry Hills, Sydney. A concept demo for a fictional barbershop with a 3D barber pole.",
+"text": "Classic cuts, skin fades and hot towel shaves in Box Hill, Melbourne. A concept demo for a fictional barbershop with a 3D barber pole.",
 "url": "index.html",
 "type": "Page"
 },
@@ -74,7 +74,7 @@ export default [
 },
 {
 "title": "Skin Fade",
-"text": "A seamless zero-to-skin blend, a sharp neckline and a straight-razor edge-up. 45 min, popular. Haircuts. $52.00",
+"text": "A smooth zero-to-skin blend, a sharp neckline and a straight-razor edge-up. 45 min, popular. Haircuts. $52.00",
 "url": "services.html#m-skin-fade",
 "type": "Services"
 },

@@ -2,7 +2,7 @@
       <div class="container narrow legal">
         <p class="eyebrow">Privacy</p>
         <h1 id="page-title">{{page.h1}}</h1>
-        <p class="lead">This website is an unofficial concept demo for a fictional salon. It is built to collect as little as possible.</p>
+        <p class="lead">This website is an concept site for a fictional salon. It is built to collect as little as possible.</p>
 
         <h2>What is stored on your device</h2>
         <ul>
@@ -25,7 +25,7 @@
         <p>{{#if photoCredits}}{{photoCredits}}. Photos are stock images used for this concept demo.{{else}}Photos on this site are placeholders.{{/if}}</p>
 
         <h2>Contact</h2>
-        <p>Questions about privacy: <a href="mailto:{{contact.email}}">{{contact.email}}</a> or <a href="tel:{{contact.phoneHref}}">{{contact.phone}}</a>.</p>
+        <p>Questions about privacy: <span class="email-plain">{{contact.email}}</span> or <a href="tel:{{contact.phoneHref}}">{{contact.phone}}</a>.</p>
         <p class="notfound-actions"><a class="btn btn-primary btn-lg" href="index.html">Back to the home page</a></p>
       </div>
     </section>

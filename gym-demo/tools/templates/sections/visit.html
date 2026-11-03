@@ -8,7 +8,7 @@
           <address>
             {{contact.street}}<br>{{contact.locality}}<br>
             <a href="tel:{{contact.phoneHref}}">{{contact.phone}}</a><br>
-            <a href="mailto:{{contact.email}}">{{contact.email}}</a>
+            <span class="email-plain">{{contact.email}}</span>
           </address>
           {{{hoursTable}}}
           {{#if busyOn}}<div class="busy" data-busy hidden></div>{{/if}}
@@ -18,7 +18,7 @@
         <div class="visit-side reveal">
           {{> gmap}}
           <ul class="info-list">
-            <li><strong>Trains &amp; buses</strong><span>Fortitude Valley station is a short walk, with frequent buses on the main streets nearby.</span></li>
+            <li><strong>Trains &amp; buses</strong><span>Clayton station is a short walk, with frequent buses on the main streets nearby.</span></li>
             <li><strong>Parking</strong><span>Metered street parking nearby, plus public car parks within five minutes on foot.</span></li>
             <li><strong>Access</strong><span>Step-free entry, wide aisles, an accessible change room and a lift to the mezzanine.</span></li>
             <li><strong>Bike racks</strong><span>Secure bike racks out the front and a towel service at reception.</span></li>

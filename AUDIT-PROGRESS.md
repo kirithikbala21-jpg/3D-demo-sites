@@ -7,8 +7,8 @@ Brief: "Audit fixes (2 Nov 2026): paste into Claude Code". Parts A to E, in orde
 | A. KB Ventures | Done |
 | B. AceGuides shop | Done |
 | C. Black Crest | Done |
-| D. Demos | Next |
-| E. Repo root and The One Barber | To do |
+| D. Demos | Done |
+| E. Repo root and The One Barber | Done |
 
 ## A. KB Ventures (done)
 - **Pricing:**
@@ -58,7 +58,7 @@ Brief: "Audit fixes (2 Nov 2026): paste into Claude Code". Parts A to E, in orde
   - Credits: the four new photos are still not in, because images.unsplash.com is blocked here, so there are no photographers to list yet.
   - Barber photo: `barber-demo` has no copy wider than 900 px, so no larger original exists to rebuild from.
 
-## D. Demos (in progress: source changes done, sync re-renders next)
+## D. Demos (done)
 - **Black Crest bar:** a slim bar at the very bottom of every page of the six demos, "Concept site by Black Crest Web Designs · Get a site like this", linking to `../black-crest-site/free-concept.html`. It sits in normal page flow (never over content), inherits each demo's own font and colours, and is keyboard-reachable with a focus ring.
 - **Footer credit:** now the link "Concept site by Black Crest Web Designs" (was "Concept website by KB Ventures" or "Demo website by KB Ventures").
 - **Moves:**
@@ -78,5 +78,15 @@ Brief: "Audit fixes (2 Nov 2026): paste into Claude Code". Parts A to E, in orde
 - **Old café demo:** `cafe-demo/index.html` (and its reviews page) now redirect to `../cafe-demo-v2/`.
 - **Dead links:** the demos' Instagram and Google review links open the matching Black Crest case study.
 - **"Seamless"** is reworded in the barber services and home page.
-- **Black Crest sync:** the case studies show Box Hill VIC and Clayton VIC and the new Torque & Co. palette. Re-rendering the screenshots, gallery stills, showreel and KB previews comes next.
+- **Black Crest sync:** the case studies show Box Hill VIC and Clayton VIC and the new Torque & Co. palette. The screenshots, gallery stills, showreel and KB previews are re-rendered from the new demos.
+- **Late fixes:** the barber and gym "Find us" map links still named Surry Hills and Fortitude Valley; they now search Box Hill VIC and Clayton VIC. The image tool now uses the Switzer font file (the old one was removed earlier).
 - **Checked:** all 48 demo pages at 390 and 1280 px: no script errors, no missing files, no sideways scroll, and the bar and credit present.
+
+## E. Repo root and The One Barber (done)
+- **Root page:** `index.html` is a noindex redirect to `black-crest-site/`, with a plain link.
+- **README:** a short, plain description of the folders. "Built with AI" and "hosted free" are gone.
+- **The One Barber:**
+  - Copied first to the branch `one-barber-private` (the folder and its checks workflow are there).
+  - Removed from `main`, with its checks workflow and its `.gitignore` line.
+  - Nothing on `main` links to it. The only mentions left are the CLAUDE.md rule and the check tools that block the name.
+  - The files are still visible on GitHub (old commits and the `one-barber-private` branch) until the repo is made private.

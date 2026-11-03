@@ -23,7 +23,7 @@ Add `?3d=on` to the home page address to skip the device checks when testing.
 
 ## Tools (run from the repo root, with `python3 -m http.server 8123 --bind 127.0.0.1` running there)
 - `python3 black-crest-site/tools/build.py`: writes every page, `style.min.css`, the sitemap and robots.txt. Run it after any change.
-- `node black-crest-site/tools/check.mjs`: checks every page at 390, 768, 1280 and 1920 px (console errors, failed requests, broken links, sideways scrolling, prices, banned words, no the-one-barber links, and the house-style bans in `../CLAUDE.md`). Screenshots land in `tools/screens/`, which git ignores. `--quick` checks two widths without screenshots.
+- `node black-crest-site/tools/check.mjs`: checks every page at 390, 768, 1280 and 1920 px (console errors, failed requests, broken links, sideways scrolling, prices, banned words, no the private real-shop demo links, and the house-style bans in `../CLAUDE.md`). Screenshots land in `tools/screens/`, which git ignores. `--quick` checks two widths without screenshots.
 - `python3 black-crest-site/tools/make-logo.py`: the hallmark (crest outline and BC letter shapes) for the header, favicon and card (needs fontTools).
 - `node black-crest-site/tools/render-still.mjs`: the card stills, `img/og.jpg`, the app icons and `favicon.ico`.
 - `node black-crest-site/tools/render-gallery.mjs`: the gallery stills (whole wall, each niche, each case study niche) and `tools/gallery.json`.

@@ -180,7 +180,7 @@ The home page runs in this order:
   - Section spacing now uses the `--section` and `--section-tight` tokens. `.section-tight` had no rule before.
 - **Links:** the home chapters' "See the concept" now opens the case studies. The footer gains Concept Lab, The Standard and Credits.
 - **`tools/check.mjs`** was written early, because Phase 4 needed it.
-  - Full run: 34 pages at 390, 768, 1280 and 1920, all clear (no console errors, failed requests, broken links, sideways scroll, wrong prices, banned words or the-one-barber links).
+  - Full run: 34 pages at 390, 768, 1280 and 1920, all clear (no console errors, failed requests, broken links, sideways scroll, wrong prices, banned words or the private real-shop demo links).
   - Screenshots go to `tools/screens/` (gitignored).
 - **Phase 5 work that landed in this commit:**
   - `<picture>` with AVIF, WebP and JPEG for every screenshot (`picturise()` in `build.py`).
@@ -232,7 +232,7 @@ The home page runs in this order:
   | Barber case study | Mobile | 86 | 100 | 100 | 100 |
 
 ## Phase 6: testing, Lighthouse, live check (done)
-- **`tools/check.mjs`, final run:** 34 pages at 390, 768, 1280 and 1920 px, all clear: no console errors, failed requests, broken links, sideways scrolling, wrong prices, banned words or the-one-barber links. Full-page screenshots are in `tools/screens/` (gitignored) and were reviewed.
+- **`tools/check.mjs`, final run:** 34 pages at 390, 768, 1280 and 1920 px, all clear: no console errors, failed requests, broken links, sideways scrolling, wrong prices, banned words or the private real-shop demo links. Full-page screenshots are in `tools/screens/` (gitignored) and were reviewed.
 - **Reduced motion:**
   - No preloader, no smooth scrolling, no pinning, and no 3D (stills stay).
   - The reel does not autoplay, and nothing is left hidden.

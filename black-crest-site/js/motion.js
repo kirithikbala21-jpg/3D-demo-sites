@@ -87,6 +87,13 @@ export function initMotion({ reduce, tier, fine }) {
         tl.fromTo(rest, { y: 24, opacity: 0 }, { y: 0, opacity: 1, duration: 0.3, stagger: 0.04, ease: 'power3.out' }, at + 0.3);
       }
       tl.fromTo(rule, { scaleX: 0 }, { scaleX: 1, duration: 0.35, ease: 'power2.out' }, i === 0 ? 0.05 : at + 0.32);
+      if (i < n - 1) {
+        // no ghost text: this scene's words reach opacity 0 before the next scene starts to wipe in, and the scene is
+        // hidden once the next one fully covers it (all of it scrubs back on the way up)
+        const next = i + 0.5;
+        tl.to([title, rule, ...rest], { opacity: 0, duration: 0.12, ease: 'power1.in' }, next - 0.14);
+        tl.set(sc, { autoAlpha: 0 }, next + 0.5);
+      }
     });
     tl.to({}, { duration: 0.4 }); // a short hold on the last scene before the page moves on
   }

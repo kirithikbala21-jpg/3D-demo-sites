@@ -338,12 +338,16 @@ def head_block(label, title, lead='', split=False, level='h2', cls='h2', center=
 
 def cta_final(title, text, primary=('free-concept.html', 'Get a free concept'), secondary=None, P=''):
     sec = f'<a class="btn btn-ghost" href="{P}{secondary[0]}">{secondary[1]}</a>' if secondary else ''
+    card = pic('assets/card-still', 1800, 1400, '', P, sizes='(min-width: 1024px) 46vw, 92vw', small=('assets/card-still-s', 900), cls='cta-card')
     return f'''<section class="cta-final" aria-labelledby="cta-h">
-    <div class="container">
-      <p class="label" data-reveal style="justify-content:center">Next step</p>
-      <h2 id="cta-h" class="display" data-split>{title}</h2>
-      <p data-reveal>{text}</p>
-      <div class="btn-row" data-reveal><a class="btn btn-gold" href="{P}{primary[0]}">{primary[1]}</a>{sec}</div>
+    <div class="container cta-split">
+      <div class="cta-copy">
+        <p class="label" data-reveal>Next step</p>
+        <h2 id="cta-h" class="display" data-split>{title}</h2>
+        <p data-reveal>{text}</p>
+        <div class="btn-row" data-reveal><a class="btn btn-gold" href="{P}{primary[0]}">{primary[1]}</a>{sec}</div>
+      </div>
+      <div class="cta-visual" aria-hidden="true" data-reveal>{card}</div>
     </div>
   </section>'''
 
@@ -535,11 +539,11 @@ def pic(stem, w, h, alt, P='', lazy=True, sizes='100vw', small=None, cls='', hig
 # per-photo exposure trims, so the set reads as one: dark, warm, one light source (see the CSS grade)
 GRADE = {'barbers': 1, 'cafes': .95, 'gyms': .95, 'trades': .82, 'salons': .68}
 CHAPTERS = [
-    ('Barbers', 'barber', 'barbers', (900, 623), None, 'Book a chair in two taps, from the footpath.', 'A barber’s chair in a warm, dark shop'),
-    ('Cafés', 'cafe', 'cafes', (900, 600), None, 'The menu, the hours and the map, before the coffee is poured.', 'Coffee being poured through a glass filter'),
-    ('Gyms', 'gym', 'gyms', (900, 600), None, 'A free-trial form that turns a maybe into a first session.', 'Weights on a gym floor under neon light'),
-    ('Trades', 'plumber', 'trades', (1800, 1200), 1200, 'One big call button, for the day a pipe bursts.', 'Copper pipe fittings laid out on a bench'),
-    ('Salons', 'salon', 'salons', (2000, 1333), 1200, 'A calm service menu, with every price in plain sight.', 'A bright salon interior with styling chairs'),
+    ('Barbers', 'barber', 'barbers', (900, 623), None, 'Book a chair in two taps, from the footpath.', 'A red barber’s chair under a wall of framed paintings'),
+    ('Cafés', 'cafe', 'cafes', (900, 600), None, 'The menu, the hours and the map, before the coffee is poured.', 'Two espresso shots on a chrome coffee machine'),
+    ('Gyms', 'gym', 'gyms', (900, 600), None, 'A free-trial form that turns a maybe into a first session.', 'A dumbbell under a single light'),
+    ('Trades', 'plumber', 'trades', (1800, 1200), 1200, 'One big call button, for the day a pipe bursts.', 'A workshop tool wall lit by a lamp'),
+    ('Salons', 'salon', 'salons', (2000, 1333), 1200, 'A calm service menu, with every price in plain sight.', 'Salon mirrors framed in soft light'),
 ]
 
 
@@ -620,43 +624,78 @@ ANATOMY = [
 
 def anatomy(P):
     dots = ''.join(f'<span class="hot" style="--y:{y}%;--x:{x}%" data-hot="{i}" aria-hidden="true">{i + 1}</span>' for i, (y, x, _, _) in enumerate(ANATOMY))
-    points = ''.join(f'<li class="hot-card" data-hot-card="{i}"><span class="n" aria-hidden="true">0{i + 1}</span><div><h3>{t}</h3><p>{x}</p></div></li>' for i, (_, _, t, x) in enumerate(ANATOMY))
+    points = ''.join(f'<li class="hot-card" data-hot-card="{i}"><span class="n" aria-hidden="true">{i + 1}</span><div><h3>{t}</h3><p>{x}</p></div></li>' for i, (_, _, t, x) in enumerate(ANATOMY))
     return f'''<section class="section anatomy-sec" aria-labelledby="anat-h">
-    <div class="container anatomy" data-anatomy>
-      <div class="anatomy-statement">
-        <p class="label" data-reveal><span class="idx">04</span><span class="slash" aria-hidden="true">/</span>Anatomy</p>
-        <h2 id="anat-h" class="h2" data-split>Every detail <em>earns its place.</em></h2>
+    <div class="container">
+      <div class="section-head split">
+        <div>
+          <p class="label" data-reveal><span class="idx">04</span><span class="slash" aria-hidden="true">/</span>Anatomy</p>
+          <h2 id="anat-h" class="h2" data-split>Every detail <em>earns its place.</em></h2>
+        </div>
         <p class="lead" data-reveal>A concept homepage, taken apart. Each numbered spot turns a visit into a call or a booking.</p>
+      </div>
+      <div class="anatomy" data-anatomy>
         <figure class="anatomy-shot" data-reveal>
-          <div class="hot-wrap"><img src="{P}img/work/plumber-phone.webp" width="600" height="1300" loading="lazy" decoding="async" alt="The Waverley Plumbing concept homepage on a phone, with six numbered spots">{dots}</div>
+          <div class="anat-devices">
+            {laptop('plumber', 'Waverley Plumbing', P)}
+            <div class="phone anat-phone"><div class="hot-wrap"><img src="{P}img/work/plumber-phone.webp" width="600" height="1300" loading="lazy" decoding="async" alt="The Waverley Plumbing concept homepage on a phone, with six numbered spots">{dots}</div></div>
+          </div>
           <figcaption class="tiny">Concept site. Waverley Plumbing is a made-up business.</figcaption>
         </figure>
+        <ol class="anatomy-list">{points}</ol>
       </div>
-      <ol class="anatomy-list">{points}</ol>
     </div>
   </section>'''
 
 
-def stack_cards():
+def browser(img_html, url, live=False):
+    """a quiet browser window: address bar (with a Live tag for a launched site) and the page inside"""
+    tag = '<span class="bw-live"><i aria-hidden="true"></i>Live</span>' if live else ''
+    return f'<div class="bw"><div class="bw-bar"><span class="bw-dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="bw-url">{url}</span>{tag}</div><div class="bw-page">{img_html}</div></div>'
+
+
+STEP_NOTES = {'chat': 'Shown: an example first message.', 'concept': 'Shown: Brass &amp; Blade, a made-up barbershop.',
+              'build': 'Shown: Iron &amp; Ember, a made-up gym.', 'launch': 'Shown: Maison Lune, a made-up salon, live on its own domain.'}
+
+
+def step_visual(k, P):
+    """the moment each step is about, shown as it really looks (each is labelled in the step's text)"""
+    if k == 'chat':
+        return '''<div class="step-visual chat" role="img" aria-label="An example first message from a barbershop owner, and our reply">
+              <p class="chat-head"><b>New message</b><span>Black Crest Web Designs</span></p>
+              <p class="chat-msg">Hi, I run a barbershop in Box Hill. Walk-ins and bookings, open six days. Can you make us a site?</p>
+              <p class="chat-msg chat-us">Thanks! Your free concept homepage is usually ready within 5 business days. Any photos or links you like?</p>
+            </div>'''
+    if k == 'concept':
+        return f'<div class="step-visual">{laptop("barber", "Brass &amp; Blade", P)}</div>'
+    if k == 'build':
+        return f'<div class="step-visual">{duo("gym", P, parallax="0")}</div>'
+    shot = (f'<img src="{P}img/work/salon-desktop-1600.webp" srcset="{P}img/work/salon-desktop-800.webp 800w, {P}img/work/salon-desktop-1600.webp 1600w" '
+            f'sizes="(min-width: 1024px) 540px, 92vw" width="1600" height="1000" loading="lazy" decoding="async" alt="The Maison Lune concept site open in a browser, marked Live">')
+    return f'<div class="step-visual">{browser(shot, "yourbusiness.com.au", live=True)}</div>'
+
+
+def stack_cards(P=''):
     return '<ol class="stack">' + ''.join(f'''<li class="stack-card" style="--i:{i}">
           <div class="stack-inner">
-            <span class="stack-n" aria-hidden="true">0{i + 1}</span>
-            <div class="stack-copy"><span class="chip chip-plain">{w}</span><h3 class="h3">{t}</h3><p>{x}</p></div>
-            <div class="stack-illo illo-wrap">{illo(k)}</div>
+            <div class="stack-copy"><span class="stack-n" aria-hidden="true">0{i + 1}</span><span class="chip chip-plain">{w}</span><h3 class="h3">{t}</h3><p>{x}</p><p class="tiny step-note">{STEP_NOTES[k]}</p></div>
+            {step_visual(k, P)}
           </div>
         </li>''' for i, (t, k, w, x) in enumerate(STEPS)) + '</ol>'
 
 
 def process_stack(P):
-    return f'''<section class="section process-sec has-grid" aria-labelledby="how-h">
-    <div class="container process-split">
-      <div class="process-head">
-        <p class="label" data-reveal><span class="idx">06</span><span class="slash" aria-hidden="true">/</span>Process</p>
-        <h2 id="how-h" class="h2" data-split>Four steps. <em>No surprises.</em></h2>
-        <p class="lead" data-reveal>You see your homepage before you pay anything. This is everything that happens after that.</p>
-        <a class="link" data-reveal href="{P}process.html">The full process {icon('arrow')}</a>
+    return f'''<section class="section-tight process-sec has-grid" aria-labelledby="how-h">
+    <div class="container">
+      <div class="section-head split process-head">
+        <div>
+          <p class="label" data-reveal><span class="idx">06</span><span class="slash" aria-hidden="true">/</span>Process</p>
+          <h2 id="how-h" class="h2" data-split>Four steps. <em>No surprises.</em></h2>
+        </div>
+        <div><p class="lead" data-reveal>You see your homepage before you pay anything. This is everything that happens after that.</p>
+        <a class="link" data-reveal href="{P}process.html">The full process {icon('arrow')}</a></div>
       </div>
-      {stack_cards()}
+      {stack_cards(P)}
     </div>
   </section>'''
 
@@ -672,7 +711,7 @@ def standard_band(P):
     <div class="container">
       <div class="standard-head">
         <p class="label" data-reveal><span class="idx">07</span><span class="slash" aria-hidden="true">/</span>The Black Crest Standard</p>
-        <h2 id="std-h" class="h3" data-reveal>Promises you can hold us to.</h2>
+        <h2 id="std-h" class="h2" data-split>Promises you can <em>hold us to.</em></h2>
       </div>
       <ul class="standard-nums">{items}</ul>
       <a class="link" data-reveal href="{P}standard.html">Read the full standard {icon('arrow')}</a>
@@ -701,10 +740,10 @@ def collection(P):
     </div>
     <div class="container reel-row">
       <div class="reel-copy">
-        <p class="label" data-reveal>Showreel</p>
-        <p class="h3" data-reveal>See them <em>move.</em></p>
-        <p data-reveal>Twenty-three silent seconds across all six concepts.</p>
-        <p data-reveal><button class="text-btn" type="button" data-reel-play>Play reel</button></p>
+        <div><p class="label" data-reveal>Showreel</p>
+        <p class="h2" data-reveal>See them <em>move.</em></p></div>
+        <div><p data-reveal>Twenty-three silent seconds across all six concepts.</p>
+        <p data-reveal><button class="text-btn" type="button" data-reel-play>Play reel</button></p></div>
       </div>
       <figure class="reel" data-reveal>
         <div class="laptop"><div class="laptop-screen">
@@ -767,11 +806,15 @@ page('index.html', 'Black Crest Web Designs: premium sites for local businesses'
 
   <section class="section-tight ba-sec" aria-labelledby="ba-h">
     <div class="container ba-split">
-      <div>
-        <p class="label" data-reveal><span class="idx">05</span><span class="slash" aria-hidden="true">/</span>Before and after</p>
-        <h2 id="ba-h" class="h2" data-split>From dated <em>to sharp.</em></h2>
-        <p class="lead" data-reveal>Same business, two first impressions. Drag the handle, or use the arrow keys.</p>
-        <div class="compare-meta" data-reveal><span class="chip">Example, not a real customer</span><span class="tiny">Both sides are mock-ups made for this comparison.</span></div>
+      <div class="section-head split">
+        <div>
+          <p class="label" data-reveal><span class="idx">05</span><span class="slash" aria-hidden="true">/</span>Before and after</p>
+          <h2 id="ba-h" class="h2" data-split>From dated <em>to sharp.</em></h2>
+        </div>
+        <div>
+          <p class="lead" data-reveal>Same business, two first impressions. Drag the handle, or use the arrow keys.</p>
+          <div class="compare-meta" data-reveal><span class="chip">Example, not a real customer</span><span class="tiny">Both sides are mock-ups made for this comparison.</span></div>
+        </div>
       </div>
       <div class="compare" data-reveal data-compare>
         <img src="img/compare-before.webp" width="1600" height="1000" loading="lazy" decoding="async" alt="Before: a dated, cluttered barbershop homepage with small text and no clear booking button">
@@ -800,11 +843,13 @@ page('index.html', 'Black Crest Web Designs: premium sites for local businesses'
 
   <section class="section offer-sec" aria-labelledby="case-h">
     <div class="container offer-split">
-      <div><p class="label" data-reveal><span class="idx">10</span><span class="slash" aria-hidden="true">/</span>An honest offer</p><h2 id="case-h" class="h2" data-split>Be our first <em>case study.</em></h2></div>
-      <div data-reveal>
-        <p class="lead">We are new, so there are no customer reviews to show yet, and we will never invent any. The first few local shops we work with get a discount, in return for an honest quote about the experience and permission to show their site here.</p>
-        <a class="btn btn-ghost" href="contact.html">Ask about the offer</a>
+      <div class="offer-copy">
+        <p class="label" data-reveal><span class="idx">10</span><span class="slash" aria-hidden="true">/</span>An honest offer</p>
+        <h2 id="case-h" class="h2" data-split>Be our first <em>case study.</em></h2>
+        <p class="lead" data-reveal>We are new, so there are no customer reviews to show yet, and we will never invent any. The first few local shops we work with get a discount, in return for an honest quote about the experience and permission to show their site here.</p>
+        <p data-reveal><a class="btn btn-ghost" href="contact.html">Ask about the offer</a></p>
       </div>
+      <figure class="offer-visual" data-reveal>{duo('barber', P, parallax='0.04')}<figcaption class="tiny">Your site could sit here. Shown: Brass &amp; Blade, a made-up barbershop concept.</figcaption></figure>
     </div>
   </section>
 
@@ -1054,9 +1099,8 @@ P = ''
 _NEW_CREDIT = ', '.join(f'<a class="link" href="{v["credit"][1]}" rel="noopener">{v["credit"][0]}</a> ({k.capitalize().replace("Cafes", "Cafés")})' for k, v in NEW_PHOTOS.items())
 CREDIT_ROWS = [
     ('Trade chapter photos (home page)', 'All five are from Unsplash, under the Unsplash License. '
-     + (f'Photographers: {_NEW_CREDIT}. ' if NEW_PHOTOS else '')
-     + ('The Barbers photo comes from the barber concept site; its photographer was not recorded when it was first collected and will be added here when found.' if NEW_PHOTOS else
-        'They come from the source photos of the matching concept sites. The photographers were not recorded when the photos were first collected; they will be added here when found.')),
+     + (f'Photographers: {_NEW_CREDIT}.' if NEW_PHOTOS else '')
+     + ('' if 'barbers' in NEW_PHOTOS else ' The Barbers photo comes from the barber concept site; its photographer was not recorded when it was first collected and will be added here when found.')),
     ('Concept site screenshots and the showreel', 'Captured by Black Crest from our own six concept sites.'),
     ('The 3D card, the concept collection and their stills', 'Made by Black Crest with Three.js: the card from the Black Crest hallmark, the stone and brushed metal drawn in code, and the phones showing screenshots of our own concepts.'),
     ('Typefaces', 'Cormorant Garamond, under the SIL Open Font License, and Switzer by the Indian Type Foundry, under the ITF Free Font License (Fontshare). Both are served from this site.'),

@@ -1,14 +1,14 @@
 """Builds the trade chapter photos from originals the owner uploads.
 
-Put the four Unsplash photos (Unsplash License) in black-crest-site/assets/chapters/originals/ as
-cafes.jpg, gyms.jpg, trades.jpg and salons.jpg, then run:
+Put the five Unsplash photos (Unsplash License) in black-crest-site/assets/chapters/originals/ as
+barbers.jpg, cafes.jpg, gyms.jpg, trades.jpg and salons.jpg, then run:
 
     python3 black-crest-site/tools/make-chapters.py
     python3 black-crest-site/tools/build.py
 
 It writes <name>-l (2400 px wide) and <name>-s (1200 px wide) as AVIF, WebP and JPEG into assets/chapters/, and
 tools/chapters.json, which build.py reads for the image sizes, the focal point (so the subject stays in frame on
-phones) and the photo credits. The barber photo stays as it is. Photos missing from originals/ are skipped.
+phones) and the photo credits. Photos missing from originals/ are skipped.
 """
 import json
 import os
@@ -17,10 +17,11 @@ from PIL import Image, ImageOps
 SITE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CH = os.path.join(SITE, 'assets', 'chapters')
 PHOTOS = {
-    'cafes': {'focus': '28% 72%', 'credit': ('Samiul Islam', 'https://unsplash.com/photos/A0lDAEXlLNk')},   # the two espresso shots, lower left
-    'gyms': {'focus': '50% 60%', 'credit': ('Paweł Bulwan', 'https://unsplash.com/photos/JWK2H-2qz1Y')},    # the dumbbell
-    'trades': {'focus': '55% 45%', 'credit': ('Ali Kaan Uçar', 'https://unsplash.com/photos/j8UApawyq_c')}, # the lamp-lit tool wall
-    'salons': {'focus': '50% 40%', 'credit': ('Sean Boyd', 'https://unsplash.com/photos/9Snkrx_UU6A')},     # the lit mirrors
+    'barbers': {'focus': '46% 62%', 'credit': ('André Reis', 'https://unsplash.com/photos/1_DAlXy0wng')},        # the red chair under the paintings
+    'cafes': {'focus': '40% 74%', 'credit': ('Samiul Islam', 'https://unsplash.com/photos/A0lDAEXlLNk')},   # the two espresso shots, lower left
+    'gyms': {'focus': '55% 55%', 'credit': ('Paweł Bulwan', 'https://unsplash.com/photos/JWK2H-2qz1Y')},    # the dumbbell
+    'trades': {'focus': '50% 48%', 'credit': ('Ali Kaan Uçar', 'https://unsplash.com/photos/j8UApawyq_c')}, # the lamp-lit tool wall
+    'salons': {'focus': '24% 50%', 'credit': ('Sean Boyd', 'https://unsplash.com/photos/9Snkrx_UU6A')},     # the lit mirrors
 }
 out = {}
 for name, meta in PHOTOS.items():

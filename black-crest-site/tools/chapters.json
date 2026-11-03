@@ -1,0 +1,62 @@
+{
+ "barbers": {
+  "size": [
+   2400,
+   1661
+  ],
+  "small": 1200,
+  "focus": "46% 62%",
+  "credit": [
+   "André Reis",
+   "https://unsplash.com/photos/1_DAlXy0wng"
+  ]
+ },
+ "cafes": {
+  "size": [
+   2400,
+   1600
+  ],
+  "small": 1200,
+  "focus": "40% 74%",
+  "credit": [
+   "Samiul Islam",
+   "https://unsplash.com/photos/A0lDAEXlLNk"
+  ]
+ },
+ "gyms": {
+  "size": [
+   2400,
+   1495
+  ],
+  "small": 1200,
+  "focus": "55% 55%",
+  "credit": [
+   "Paweł Bulwan",
+   "https://unsplash.com/photos/JWK2H-2qz1Y"
+  ]
+ },
+ "trades": {
+  "size": [
+   2400,
+   1800
+  ],
+  "small": 1200,
+  "focus": "50% 48%",
+  "credit": [
+   "Ali Kaan Uçar",
+   "https://unsplash.com/photos/j8UApawyq_c"
+  ]
+ },
+ "salons": {
+  "size": [
+   2400,
+   1350
+  ],
+  "small": 1200,
+  "focus": "24% 50%",
+  "credit": [
+   "Sean Boyd",
+   "https://unsplash.com/photos/9Snkrx_UU6A"
+  ]
+ }
+}

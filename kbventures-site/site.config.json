@@ -404,6 +404,13 @@
     "items": [
       {
         "label": "AceGuides",
+        "text": "Free samples for every guide",
+        "date": "Nov 2026",
+        "link": "aceguides.html",
+        "linkLabel": "Look inside"
+      },
+      {
+        "label": "AceGuides",
         "text": "AceGuides study guides are now on sale",
         "date": "Oct 2026",
         "link": "aceguides.html",
@@ -638,10 +645,32 @@
     ],
     "pausedLabel": "Being updated, back soon",
     "newTab": "(opens in a new tab)",
-    "samples": [],
+    "samples": [
+      "y10-maths",
+      "y10-science",
+      "y10-english",
+      "y10-history",
+      "y10-economics",
+      "y11-english",
+      "y11-methods",
+      "y11-biology",
+      "y11-chemistry",
+      "y11-physics",
+      "y11-business",
+      "y11-economics",
+      "y11-history",
+      "y12-english",
+      "y12-methods",
+      "y12-biology",
+      "y12-chemistry",
+      "y12-physics",
+      "y12-business",
+      "y12-economics",
+      "y12-history"
+    ],
     "samplePath": "aceguides/samples/{key}.pdf",
-    "sampleLabel": "Free sample",
-    "samplesNote": "Look inside before you buy, where a sample is available.",
+    "sampleLabel": "Free sample (PDF)",
+    "samplesNote": "Look inside before you buy: every guide has a free sample (PDF).",
     "groups": [
       {
         "title": "Year 10",

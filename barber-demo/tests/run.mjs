@@ -32,7 +32,7 @@ const NO_WEBGL = () => { const g = HTMLCanvasElement.prototype.getContext; HTMLC
 const QUIET = () => { try { sessionStorage.setItem('eo-seen', '1'); localStorage.setItem('eo-cookie', 'no'); } catch (e) { /* ignore */ } };
 /** Fixed visitor clock: a Date that starts at the given instant and keeps ticking. */
 const FAKE = (t) => { const R = Date, off = t - R.now(); class F extends R { constructor(...a) { if (a.length) super(...a); else super(R.now() + off); } static now() { return R.now() + off; } } window.Date = F; };
-const at = (iso) => Date.parse(iso + '+11:00'); // Sydney is UTC+11 (daylight saving) from 4 October 2026
+const at = (iso) => Date.parse(iso + '+11:00'); // Melbourne is UTC+11 (daylight saving) from 4 October 2026
 async function newPage(opts = {}, { webgl = true, quiet = true, extraInit, clock = null, host = null } = {}) {
   const ctx = await browser.newContext({ locale: 'en-AU', ...opts });
   if (clock) await ctx.addInitScript(FAKE, at(clock));
@@ -202,7 +202,7 @@ if (want('func')) {
   // Visit: hours + map
   p = await newPage({ viewport: { width: 1440, height: 900 } }, { webgl: false });
   await p.goto(base + 'visit.html'); await p.waitForTimeout(600);
-  ok("today's hours row is highlighted (Sydney time zone)", (await p.locator('.hours tr.is-today').count()) === 1);
+  ok("today's hours row is highlighted (Melbourne time zone)", (await p.locator('.hours tr.is-today').count()) === 1);
   const gm = p.locator('.gmap iframe');
   ok('visit: Google map embed is lazy, titled and sized', (await gm.count()) === 1 && (await gm.getAttribute('loading')) === 'lazy' && /maps\.google\.com\/maps\?q=.*output=embed/.test(await gm.getAttribute('src')) && !!(await gm.getAttribute('title')) && !!(await gm.getAttribute('width')) && !!(await gm.getAttribute('height')));
   await p.locator('details').first().locator('summary').click();
@@ -226,7 +226,7 @@ if (want('func')) {
   ok('book: chosen time is marked', (await p.locator('.slot[aria-pressed=true]').count()) === 1);
   await p.fill('#f-name', 'Sam Rivera'); await p.fill('#f-phone', 'abc'); await p.locator('#f-phone').blur();
   ok('book: bad phone message', (await p.locator('#e-phone').textContent()).includes("Australian phone"));
-  await p.fill('#f-phone', '02 5550 0123'); await p.locator('#book-form button[type=submit]').click();
+  await p.fill('#f-phone', '03 5550 0123'); await p.locator('#book-form button[type=submit]').click();
   ok('book: confirmation screen with demo notice', (await p.locator('#form-success').isVisible()) && (await p.locator('#form-success').textContent()).includes('This is a demo, no real booking was made'), await p.locator('#ok-detail').textContent());
   ok('book: booking saved to localStorage', (await p.evaluate(() => JSON.parse(localStorage.getItem('bb-bookings') || '[]').length)) === 1);
   await done(p);
@@ -263,10 +263,10 @@ if (want('func')) {
   await t.click(); await p.locator('#mobile-nav a', { hasText: 'Visit' }).click(); await p.waitForURL(/visit\.html/);
   ok('mobile menu link navigates to the page', p.url().endsWith('visit.html'));
   // Counters, preloader speed, cookie bar, header, back to top, smooth scroll
-  p = await newPage({ viewport: { width: 1440, height: 900 } }, { quiet: false });
+  p = await newPage({ viewport: { width: 1440, height: 900 } }, { quiet: false, clock: '2026-10-20T12:00:00' }); // a normal week, so no holiday notice pushes the hero down
   await p.goto(base + 'index.html'); await p.waitForSelector('html[data-ready-at]', { state: 'attached', timeout: 25000 });
   let readyAt = Number(await p.evaluate(() => document.documentElement.dataset.readyAt));
-  for (let i = 0; i < 2 && readyAt > 1100; i++) { const q = await newPage({ viewport: { width: 1440, height: 900 } }, { quiet: false }); await q.goto(base + 'index.html'); await q.waitForSelector('html[data-ready-at]', { state: 'attached', timeout: 15000 }); readyAt = Math.min(readyAt, Number(await q.evaluate(() => document.documentElement.dataset.readyAt))); await done(q); } // best of three: this sandbox renders 3D in software and can be slow under load
+  for (let i = 0; i < 2 && readyAt > 1100; i++) { const q = await newPage({ viewport: { width: 1440, height: 900 } }, { quiet: false, clock: '2026-10-20T12:00:00' } ); await q.goto(base + 'index.html'); await q.waitForSelector('html[data-ready-at]', { state: 'attached', timeout: 15000 }); readyAt = Math.min(readyAt, Number(await q.evaluate(() => document.documentElement.dataset.readyAt))); await done(q); } // best of three: this sandbox renders 3D in software and can be slow under load
   ok('preloader starts fading out by 1.1 s after navigation (fade 0.4 s, so gone within 1.5 s)', readyAt <= 1100, `${readyAt} ms`);
   ok('cookie bar has Decline and does not cover hero buttons', await p.evaluate(() => { const c = document.getElementById('cookie'); if (!c || c.hidden) return true; const r = c.getBoundingClientRect(); return [...document.querySelectorAll('.hero-cta a')].every((a) => { const b = a.getBoundingClientRect(); return b.bottom < r.top || b.top > r.bottom || b.right < r.left || b.left > r.right; }) && !!c.querySelector('[data-cookie=no]'); }));
   await p.locator('[data-cookie=no]').click();
@@ -312,7 +312,7 @@ if (want('func')) {
   await p.goto(base + 'index.html'); await p.waitForTimeout(600);
   ok('home: Find us has the map, the hours table and a live status', (await p.locator('#find-us .gmap iframe').count()) === 1 && (await p.locator('#find-us .hours').count()) === 1 && /^(Open now|Closed|Opens)/.test(await p.locator('#open-status-3').textContent()), await p.locator('#open-status-3').textContent());
   ok('home: reviews look like a review feed and stay labelled as samples', (await p.locator('.review.gr .gr-avatar').count()) === 3 && (await p.locator('.review.gr .stars[aria-label]').count()) === 3 && (await p.locator('#reviews').textContent()).includes('Sample reviews for demo purposes'));
-  ok('footer has the quiet KB Ventures line', (await p.locator('.site-footer').textContent()).includes('Concept website by KB Ventures. Want one for your business?'));
+  ok('footer has the Black Crest credit', (await p.locator('.site-footer').textContent()).includes('Concept site by Black Crest Web Designs'));
   await p.goto(base + '404.html');
   ok('custom 404 page is themed and offers a way home', (await p.locator('h1').textContent()).includes('not found') && (await p.locator('a[href="index.html"]').count()) > 0);
   await done(p);
@@ -423,17 +423,17 @@ if (want('hardening')) {
   for (const tz of ['America/Los_Angeles', 'Asia/Tokyo', 'Europe/London']) {
     const p = await newPage({ viewport: { width: 1280, height: 800 }, timezoneId: tz }, { ...light, clock: TUE + T }); await p.goto(base + 'index.html'); await p.waitForTimeout(800);
     const t = norm(await p.locator('#open-status').textContent());
-    ok(`visitor in ${tz} sees Sydney's hours: Tue 12:00 in Sydney is open`, t.startsWith('Open now, closes at 7pm'), t);
+    ok(`visitor in ${tz} sees Melbourne's hours: Tue 12:00 in Melbourne is open`, t.startsWith('Open now, closes at 7pm'), t);
     await done(p);
   }
-  // 2. NSW public holidays: Labour Day is the first Monday of October (5 Oct 2026), a Monday the shop normally opens
+  // 2. VIC public holidays: Melbourne Cup Day is the first Tuesday of November (3 Nov 2026), a day the shop normally opens
   {
-    const p = await newPage({ viewport: { width: 1280, height: 800 } }, { ...light, clock: '2026-10-05' + T }); await p.goto(base + 'index.html'); await p.waitForTimeout(800);
-    ok('Labour Day (NSW, first Monday of October): chip says closed for Labour Day', /^Closed today for Labour Day\. Opens tomorrow at 9am/.test(norm(await p.locator('#open-status').textContent())), norm(await p.locator('#open-status').textContent()));
+    const p = await newPage({ viewport: { width: 1280, height: 800 } }, { ...light, clock: '2026-11-03' + T }); await p.goto(base + 'index.html'); await p.waitForTimeout(800);
+    ok('Melbourne Cup Day (VIC, first Tuesday of November): chip says closed for Melbourne Cup Day', /^Closed today for Melbourne Cup Day\. Opens tomorrow at 9am/.test(norm(await p.locator('#open-status').textContent())), norm(await p.locator('#open-status').textContent()));
     await done(p);
-    const q = await newPage({ viewport: { width: 1280, height: 800 } }, { ...light, clock: '2026-09-30' + T }); await q.goto(base + 'index.html'); await q.waitForTimeout(800);
+    const q = await newPage({ viewport: { width: 1280, height: 800 } }, { ...light, clock: '2026-10-28' + T }); await q.goto(base + 'index.html'); await q.waitForTimeout(800);
     const bar = await q.evaluate(() => ({ hidden: document.querySelector('#notice-bar').hidden, text: document.querySelector('#notice-bar').innerText.replace(/\s+/g, ' ').trim() }));
-    ok('holiday banner appears the week before: "Closed Monday for Labour Day."', !bar.hidden && /Closed Monday for Labour Day\./.test(bar.text), bar.text);
+    ok('holiday banner appears the week before: "Closed Tuesday for Melbourne Cup Day."', !bar.hidden && /Closed Tuesday for Melbourne Cup Day\./.test(bar.text), bar.text);
     await done(q);
     const r = await newPage({ viewport: { width: 1280, height: 800 } }, { ...light, clock: '2026-10-20' + T }); await r.goto(base + 'index.html'); await r.waitForTimeout(500);
     ok('no banner when nothing is coming up', await r.evaluate(() => document.querySelector('#notice-bar').hidden));
@@ -511,7 +511,7 @@ if (want('hardening')) {
     await p.evaluate(() => { const f = document.querySelector('#book-form'); f.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true })); f.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true })); });
     await p.waitForSelector('.form-fail', { timeout: 8000 });
     const fb = await p.evaluate(() => ({ html: document.querySelector('.form-fail').innerText, tel: document.querySelector('.form-fail a').getAttribute('href'), formShown: !document.querySelector('#book-form').hidden, name: document.querySelector('#f-name').value, btn: document.querySelector('#book-form button[type=submit]').disabled }));
-    ok('failed submit: two rapid submits make ONE request; the visitor sees the phone fallback, keeps their details and can retry', calls === 1 && /call us on/i.test(fb.html) && fb.tel === 'tel:+61255500144' && fb.formShown && fb.name === 'Sam Rivera' && !fb.btn, JSON.stringify([calls, fb]));
+    ok('failed submit: two rapid submits make ONE request; the visitor sees the phone fallback, keeps their details and can retry', calls === 1 && /call us on/i.test(fb.html) && fb.tel === 'tel:+61355500144' && fb.formShown && fb.name === 'Sam Rivera' && !fb.btn, JSON.stringify([calls, fb]));
     mode = 'ok'; await p.click('#book-form button[type=submit]'); await p.waitForSelector('#form-success:not([hidden])', { timeout: 8000 });
     const okTxt = norm(await p.locator('#form-success').textContent());
     ok('successful submit shows the confirmation (not the demo wording) with a reference and the phone number to call', calls === 2 && /Thanks, your request is with us/.test(okTxt) && !/This is a demo/.test(okTxt) && /BB-/.test(okTxt), okTxt.slice(0, 200));
@@ -592,8 +592,8 @@ if (want('growth')) {
   // 1. Google review: footer button, home section, QR page, print view
   {
     const p = await newPage(D, { ...light, clock: TUE + T }); await go(p, 'index.html');
-    const f = await p.evaluate(() => ({ btn: [...document.querySelectorAll('.footer-review')].map((a) => [a.href, a.target, a.rel]), loved: !!document.querySelector('#loved a[href="https://g.page/r/DEMO/review"]'), lovedQr: !!document.querySelector('#loved a[href="reviews.html"]'), link: !!document.querySelector('.footer-legal a[href="reviews.html"]') }));
-    ok('Google review: footer button, the "Loved your visit? Tell us" home section and the footer Reviews link all point at the config URL, new tab, rel=noopener', f.btn.length === 1 && f.btn[0][0] === 'https://g.page/r/DEMO/review' && f.btn[0][1] === '_blank' && /noopener/.test(f.btn[0][2]) && f.loved && f.lovedQr && f.link, JSON.stringify(f));
+    const f = await p.evaluate(() => ({ btn: [...document.querySelectorAll('.footer-review')].map((a) => [a.href, a.target, a.rel]), loved: !!document.querySelector('#loved a[href="https://kirithikbala21-jpg.github.io/3D-demo-sites/black-crest-site/work/barber.html"]'), lovedQr: !!document.querySelector('#loved a[href="reviews.html"]'), link: !!document.querySelector('.footer-legal a[href="reviews.html"]') }));
+    ok('Google review: footer button, the "Loved your visit? Tell us" home section and the footer Reviews link all point at the config URL, new tab, rel=noopener', f.btn.length === 1 && f.btn[0][0] === 'https://kirithikbala21-jpg.github.io/3D-demo-sites/black-crest-site/work/barber.html' && f.btn[0][1] === '_blank' && /noopener/.test(f.btn[0][2]) && f.loved && f.lovedQr && f.link, JSON.stringify(f));
     await go(p, 'reviews.html');
     const q = await p.evaluate(() => ({ svg: !!document.querySelector('#qr-host svg'), cap: document.querySelector('.qr-caption').textContent.trim(), h: document.querySelector('#qr-title').textContent, print: !!document.querySelector('#print-qr') }));
     ok('reviews.html: large QR drawn in the browser, "Scan to leave a review" caption, Print this button', q.svg && q.cap === 'Scan to leave a review' && /Google review/.test(q.h) && q.print, JSON.stringify(q));
@@ -652,7 +652,7 @@ if (want('growth')) {
     ok('reminders: "nope" is still rejected', /valid email/.test(await p.textContent('#book-form .rm-err')));
     await p.locator('#book-form .rm-field input[value=text]').evaluate((i) => i.click());
     const t1 = await p.evaluate(() => ({ label: document.querySelector('#book-form .rm-label').textContent, type: document.querySelector('#book-form .rm-input').type, val: document.querySelector('#book-form .rm-input').value }));
-    await p.fill('#book-form .rm-input', '02 5550 0100'); await submit();
+    await p.fill('#book-form .rm-input', '03 5550 0100'); await submit();
     ok('reminders: Text switches the field to a mobile number; a landline is rejected', t1.label === 'Mobile number' && t1.type === 'tel' && /Australian mobile/.test(await p.textContent('#book-form .rm-err')));
     await p.fill('#book-form .rm-input', '0412 345 678'); await submit(); await p.waitForSelector('#form-success:not([hidden])');
     const ok1 = norm(await p.textContent('#ok-detail'));
@@ -728,7 +728,7 @@ if (want('growth')) {
       if (got.hidden || got.t !== want1) bad.push(`${t}: ${JSON.stringify(got)}`);
       await done(p);
     }
-    ok('open banner (Sydney time, even for a visitor in Los Angeles): Open now / Closed, opens tomorrow / Opens today', !bad.length, bad.join(' | '));
+    ok('open banner (Melbourne time, even for a visitor in Los Angeles): Open now / Closed, opens tomorrow / Opens today', !bad.length, bad.join(' | '));
     const p = await newPage(M, { ...light, clock: TUE + T }); const miss = [];
     for (const f of PAGES) { await go(p, f); if (!(await p.evaluate(() => { const b = document.querySelector('#open-banner'); return b && !b.hidden && b.textContent.trim().length > 5; }))) miss.push(f); }
     ok('the open banner shows on every page', !miss.length, miss.join(','));
@@ -743,10 +743,10 @@ if (want('growth')) {
   {
     const p = await newPage(D, { webgl: false, clock: TUE + T }); await go(p, 'index.html');
     const h = await p.evaluate(() => ({ h1: document.querySelector('#hero-title').textContent.replace(/\s+/g, ' ').trim(), btns: document.querySelectorAll('.hero a.btn').length, big: Math.round(document.querySelector('.btn-hero').getBoundingClientRect().height), dir: (() => { const a = [...document.querySelectorAll('.hero-cta a')].find((x) => /directions/i.test(x.textContent)); return a && [a.href, a.target, a.rel]; })(), facts: document.querySelector('.hero-facts').textContent.replace(/\s+/g, ' '), photo: !!document.querySelector('.hero-photo img'), phone: (() => { const a = document.querySelector('.header-phone'); const r = a.getBoundingClientRect(); return [a.getAttribute('href'), r.width > 0, Math.round(r.height)]; })() }));
-    ok('hero: H1 names the suburb factually ("Barbershop in Surry Hills, Sydney"), no superlatives', /Barbershop in Surry Hills, Sydney/.test(h.h1) && !/best|friendliest|number one|#1|award/i.test(h.h1), h.h1);
+    ok('hero: H1 names the suburb factually ("Barbershop in Box Hill, Melbourne"), no superlatives', /Barbershop in Box Hill, Melbourne/.test(h.h1) && !/best|friendliest|number one|#1|award/i.test(h.h1), h.h1);
     ok('hero: ONE big main button (Book a chair, 60px+), the rest are plain links; "Get directions" opens googleMapsUrl in a new tab', h.btns === 1 && h.big >= 60 && h.dir && h.dir[0] === cfg.googleMapsUrl && h.dir[1] === '_blank' && /noopener/.test(h.dir[2]), JSON.stringify(h));
     ok('hero: hours and prices are visible, and a real photo is behind it', /Hours/.test(h.facts) && /Tue/.test(h.facts) && /Cuts from \$\d+/.test(h.facts) && h.photo, h.facts);
-    ok('tap-to-call: header phone link visible and 44px+ on desktop', h.phone[0] === 'tel:' + '+61255500144' && h.phone[1] && h.phone[2] >= 44, JSON.stringify(h.phone));
+    ok('tap-to-call: header phone link visible and 44px+ on desktop', h.phone[0] === 'tel:' + '+61355500144' && h.phone[1] && h.phone[2] >= 44, JSON.stringify(h.phone));
     await p.mouse.move(600, 400); await p.mouse.wheel(0, 300); await p.waitForTimeout(1500);
     const hp = await p.evaluate(() => ({ photo: getComputedStyle(document.querySelector('.hero-photo')).transform, panel: getComputedStyle(document.querySelector('.hero-panel')).transform, layers: 3 }));
     ok('parallax: the photo layer and the brass panel layer move (at different speeds) when scrolling; content stays still', hp.photo !== 'none' && hp.photo !== hp.panel, JSON.stringify(hp));

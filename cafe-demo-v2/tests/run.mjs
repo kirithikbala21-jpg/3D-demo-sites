@@ -30,6 +30,8 @@ const results = [];
 const ok = (name, cond, extra = '') => { results.push({ name, pass: !!cond }); console.log(`${cond ? 'PASS' : 'FAIL'} ${name}${extra ? '  ' + extra : ''}`); };
 const NO_WEBGL = () => { const g = HTMLCanvasElement.prototype.getContext; HTMLCanvasElement.prototype.getContext = function (t, ...a) { if (/webgl/.test(t)) return null; return g.call(this, t, ...a); }; };
 const QUIET = () => { try { sessionStorage.setItem('eo-seen', '1'); localStorage.setItem('eo-cookie', 'no'); } catch (e) { /* ignore */ } };
+// a normal Tuesday in Melbourne, so holiday notices (Melbourne Cup week and so on) never change these layouts
+const NORMAL_DAY = () => { const R = Date, off = Date.parse('2026-10-20T12:00:00+11:00') - R.now(); class F extends R { constructor(...a) { if (a.length) super(...a); else super(R.now() + off); } static now() { return R.now() + off; } } window.Date = F; };
 async function newPage(opts = {}, { webgl = true, quiet = true, extraInit } = {}) {
   const ctx = await browser.newContext(opts);
   if (quiet) await ctx.addInitScript(QUIET);
@@ -135,7 +137,7 @@ if (want('links')) {
 /* ---------------------------------------------------------------- behaviour */
 if (want('func')) {
   // Desktop
-  let p = await newPage({ viewport: { width: 1440, height: 900 } });
+  let p = await newPage({ viewport: { width: 1440, height: 900 } }, { extraInit: NORMAL_DAY });
   await p.goto(base + 'index.html'); await p.waitForTimeout(3500);
   ok('home: exactly one h1', (await p.locator('h1').count()) === 1);
   ok('home: 3D scene loaded from the self-hosted library', (await p.locator('#stage.has-3d').count()) === 1);
@@ -299,9 +301,9 @@ if (want('func')) {
   }
 
   // Find us, status chip in another time zone, reviews, footer line
-  p = await newPage({ viewport: { width: 1440, height: 900 }, timezoneId: 'America/New_York' }, { webgl: false });
+  p = await newPage({ viewport: { width: 1440, height: 900 }, timezoneId: 'America/New_York' }, { webgl: false, extraInit: NORMAL_DAY });
   await p.goto(base + 'index.html'); await p.waitForTimeout(800);
-  const fu = await p.evaluate(() => { const f = document.querySelector('#find-us iframe'); const sec = document.querySelector('#find-us'); const nl = document.querySelector('#join'); return { src: f && f.getAttribute('src'), title: f && f.title, w: f && f.getAttribute('width'), h: f && f.getAttribute('height'), lazy: f && f.loading, ref: f && f.referrerPolicy, link: [...sec.querySelectorAll('a')].some((a) => /Open in Google Maps/.test(a.textContent) && /google\.com\/maps/.test(a.href)), before: !!(sec.compareDocumentPosition(nl) & Node.DOCUMENT_POSITION_FOLLOWING), table: !!sec.querySelector('table.hours'), addr: /12 Example Street/.test(sec.textContent), chip: sec.querySelector('[data-open-status]').textContent };
+  const fu = await p.evaluate(() => { const f = document.querySelector('#find-us iframe'); const sec = document.querySelector('#find-us'); const nl = document.querySelector('#join'); return { src: f && f.getAttribute('src'), title: f && f.title, w: f && f.getAttribute('width'), h: f && f.getAttribute('height'), lazy: f && f.loading, ref: f && f.referrerPolicy, link: [...sec.querySelectorAll('a')].some((a) => /Open in Google Maps/.test(a.textContent) && /google\.com\/maps/.test(a.href)), before: !!(sec.compareDocumentPosition(nl) & Node.DOCUMENT_POSITION_FOLLOWING), table: !!sec.querySelector('table.hours'), addr: /41 Flinders Lane/.test(sec.textContent), chip: sec.querySelector('[data-open-status]').textContent };
   });
   ok('find us: Google map iframe (no key), lazy, titled, sized, referrer policy, link, before the newsletter', /^https:\/\/maps\.google\.com\/maps\?q=Federation%20Square%2C%20Melbourne%20VIC&output=embed$/.test(fu.src) && fu.title && fu.w && fu.h && fu.lazy === 'lazy' && fu.ref === 'no-referrer-when-downgrade' && fu.link && fu.before && fu.table && fu.addr, JSON.stringify(fu));
   ok('find us: open/closed chip follows café time and says so for a visitor in New York', /^(Open now|Closed now) \u00b7 .*\(Melbourne time\)$/.test(fu.chip), fu.chip);
@@ -311,7 +313,7 @@ if (want('func')) {
   ok('find us: no time-zone note for a visitor in Melbourne', !/Melbourne time/.test(await p.locator('#find-us [data-open-status]').textContent()), await p.locator('#find-us [data-open-status]').textContent());
   const rv = await p.evaluate(() => [...document.querySelectorAll('.review')].map((r) => ({ av: !!r.querySelector('.review-avatar') && getComputedStyle(r.querySelector('.review-avatar')).borderRadius === '50%', st: r.querySelector('.stars').getAttribute('aria-label'), date: /ago/.test(r.querySelector('.review-date').textContent), name: !!r.querySelector('.review-who strong') })));
   ok('reviews: card with round avatar, name, 5-star label and "ago" date; sample label kept; no real-rating claims', rv.length === 3 && rv.every((r) => r.av && r.st === '5 out of 5 stars' && r.date && r.name) && /Sample reviews for demo purposes/.test(await p.locator('#reviews').textContent()) && !/google rating|reviews on google|\d\.\d.*stars/i.test(await p.locator('#reviews').textContent()));
-  ok('footer: concept-website line plus the original not-a-real-business line', /Concept website by KB Ventures\. Want one for your business\?/.test(await p.locator('.site-footer').innerText()) && /Concept demo by KB Ventures\. Not a real business\./.test(await p.locator('.site-footer').innerText()));
+  ok('footer: the Black Crest credit plus the not-a-real-business line', /Concept site by Black Crest Web Designs/.test(await p.locator('.site-footer').innerText()) && /Concept site by Black Crest Web Designs\. Not a real business\./.test(await p.locator('.site-footer').innerText()));
   await done(p);
   p = await newPage({ viewport: { width: 1280, height: 900 }, javaScriptEnabled: false }, { quiet: false });
   await p.goto(base + 'index.html');
@@ -764,7 +766,7 @@ if (want('growth')) {
     ok('reviews page at 390px: the QR code is large (300px or more) and nothing scrolls sideways', w.qr >= 280 && w.sw <= w.cw, JSON.stringify(w));
     await done(m);
     const h = await page(MOB, TUE + 'T10:00:00');
-    const love = await h.evaluate(() => ({ love: !!document.querySelector('#love a[href^="https://g.page"]'), foot: !!document.querySelector('.footer-social a[href^="https://g.page"]'), rel: [...document.querySelectorAll('a[target=_blank]')].every((a) => /noopener/.test(a.rel)) }));
+    const love = await h.evaluate(() => ({ love: !!document.querySelector('#love a[href*="black-crest-site/work/cafe.html"]'), foot: !!document.querySelector('.footer-social a[href*="black-crest-site/work/cafe.html"]'), rel: [...document.querySelectorAll('a[target=_blank]')].every((a) => /noopener/.test(a.rel)) }));
     ok('home: "Loved your visit? Tell us" section and a footer "Leave us a Google review" button, all new-tab links use rel=noopener', love.love && love.foot && love.rel, JSON.stringify(love));
     await done(h);
   }

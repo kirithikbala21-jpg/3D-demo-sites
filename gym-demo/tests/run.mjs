@@ -39,7 +39,8 @@ const NO_WEBGL = () => { const g = HTMLCanvasElement.prototype.getContext; HTMLC
 const QUIET = () => { try { sessionStorage.setItem('vc-seen', '1'); localStorage.setItem('vc-cookie', 'no'); } catch (e) { /* ignore */ } };
 /** Fixed visitor clock: a Date that starts at the given instant and keeps ticking. */
 const FAKE = (t) => { const R = Date, off = t - R.now(); class F extends R { constructor(...a) { if (a.length) super(...a); else super(R.now() + off); } static now() { return R.now() + off; } } window.Date = F; };
-const at = (iso) => Date.parse(iso + '+10:00'); // Brisbane is UTC+10 all year (no daylight saving)
+// Melbourne is UTC+10, or UTC+11 in daylight saving: pick the offset that shows this wall-clock time in Melbourne
+const at = (iso) => { for (const off of ['+11:00', '+10:00']) { const t = Date.parse(iso + off); if (new Intl.DateTimeFormat('en-GB', { timeZone: 'Australia/Melbourne', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).format(t) === (iso.slice(11, 16) || '00:00')) return t; } return Date.parse(iso + '+10:00'); };
 const TUE = '2026-10-20', SAT = '2026-10-24';
 async function newPage(opts = {}, { webgl = true, quiet = true, extraInit, host = base, clock = null } = {}) {
   const ctx = await browser.newContext(opts);
@@ -182,7 +183,7 @@ if (want('func')) {
   // Desktop home
   let p = await newPage({ viewport: { width: 1440, height: 900 } });
   await p.goto(p.base + 'index.html'); await p.waitForTimeout(3500);
-  ok('home: exactly one h1, with the factual headline that names the suburb', (await p.locator('h1').count()) === 1 && (await p.locator('h1').textContent()).trim() === 'Strength coaching and group classes in Fortitude Valley');
+  ok('home: exactly one h1, with the factual headline that names the suburb', (await p.locator('h1').count()) === 1 && (await p.locator('h1').textContent()).trim() === 'Strength coaching and group classes in Clayton');
   ok('home hero: ONE big "Start your free trial" button goes to the trial form; the visit section is reached from the page itself', (await p.locator('.hero-cta a').count()) === 1 && (await p.locator('.hero-cta a').first().textContent()) === 'Start your free trial' && (await p.locator('.hero-cta a').first().getAttribute('href')) === 'trial.html');
   ok('home: sections appear in the requested order', JSON.stringify(await p.evaluate(() => [...document.querySelectorAll('main > section')].map((s) => s.id))) === JSON.stringify(['', 'offer', 'banner', 'facilities', 'timetable', 'coaches', 'results', 'review', 'plans', 'visit', 'join']), JSON.stringify(await p.evaluate(() => [...document.querySelectorAll('main > section')].map((s) => s.id))));
   ok('home: announcement says "First week free. No lock-in."', (await p.locator('#announce').textContent()).includes('First week free. No lock-in.'));
@@ -282,18 +283,18 @@ if (want('func')) {
   // Visit: hours + map + live status in the gym's time zone
   p = await newPage({ viewport: { width: 1440, height: 900 } }, { webgl: false });
   await p.goto(p.base + 'visit.html'); await p.waitForTimeout(600);
-  ok("today's hours row is highlighted (Brisbane time zone)", (await p.locator('.hours tr.is-today').count()) === 1);
+  ok("today's hours row is highlighted (Melbourne time zone)", (await p.locator('.hours tr.is-today').count()) === 1);
   const gm = p.locator('.gmap iframe');
   ok('visit: Google map embed is lazy, titled and sized, with an Open in Google Maps link', (await gm.count()) === 1 && (await gm.getAttribute('loading')) === 'lazy' && /^https:\/\/maps\.google\.com\/maps\?q=.*output=embed$/.test(await gm.getAttribute('src')) && !/key=/.test(await gm.getAttribute('src')) && !!(await gm.getAttribute('title')) && !!(await gm.getAttribute('width')) && !!(await gm.getAttribute('height')) && (await p.locator('a', { hasText: 'Open in Google Maps' }).count()) === 1);
   await p.locator('details').first().locator('summary').click();
   ok('FAQ opens', await p.locator('details').first().evaluate((d) => d.open));
   ok('visit: one h1 and the hours table lists seven days', (await p.locator('h1').count()) === 1 && (await p.locator('.hours tbody tr').count()) === 7);
   await done(p);
-  for (const [tz, expect] of [['America/New_York', true], ['Australia/Brisbane', false]]) {
+  for (const [tz, expect] of [['America/New_York', true], ['Australia/Melbourne', false]]) {
     p = await newPage({ viewport: { width: 1440, height: 900 }, timezoneId: tz }, { webgl: false });
     await p.goto(p.base + 'visit.html'); await p.waitForTimeout(500);
     const t = await p.locator('#open-status-2').textContent();
-    ok(`open-now chip ${expect ? 'adds "(Brisbane time)" for a visitor in ' + tz : 'has no suffix for a visitor in Brisbane'}`, /^(Open now|Closed)/.test(t) && t.includes('(Brisbane time)') === expect, t);
+    ok(`open-now chip ${expect ? 'adds "(Melbourne time)" for a visitor in ' + tz : 'has no suffix for a visitor in Melbourne'}`, /^(Open now|Closed)/.test(t) && t.includes('(Melbourne time)') === expect, t);
     await done(p);
   }
 
@@ -326,7 +327,7 @@ if (want('func')) {
   ok('trial: chosen time is marked', (await p.locator('.slot[aria-pressed=true]').count()) === 1);
   await p.fill('#f-name', 'Sam Rivera'); await p.fill('#f-phone', 'abc'); await p.locator('#f-phone').blur();
   ok('trial: bad phone message', (await p.locator('#e-phone').textContent()).includes("doesn't look"));
-  await p.fill('#f-phone', '07 5550 0123'); await p.locator('#trial-form button[type=submit]').click();
+  await p.fill('#f-phone', '03 5550 0123'); await p.locator('#trial-form button[type=submit]').click();
   const okText = await p.locator('#form-success').textContent();
   ok('trial: confirmation screen with the demo notice and a booking reference', (await p.locator('#form-success').isVisible()) && okText.includes('This is a demo, no real booking was made') && /VC-[A-Z0-9]{5}/.test(okText), await p.locator('#ok-detail').textContent());
   const saved = await p.evaluate(() => JSON.parse(localStorage.getItem('vc-bookings') || '[]'));
@@ -398,8 +399,8 @@ if (want('func')) {
   const footLabels = await p.evaluate(() => [...document.querySelectorAll('.site-footer a')].map((a) => a.textContent.trim()));
   ok('menu labels match the footer labels (and Home is among them)', navLabels.length >= 9 && navLabels.includes('Home') && navLabels.every((l) => footLabels.includes(l)), JSON.stringify(navLabels.filter((l) => !footLabels.includes(l))));
   const foot = await p.locator('.site-footer').textContent();
-  ok('footer has the exact demo line and the "Demo website by KB Ventures" line', foot.includes('Concept demo by KB Ventures. Not a real business.') && foot.includes('Demo website by KB Ventures'));
-  ok('footer address and phone use the fictional contact details', foot.includes('22 Example Street') && foot.includes('Fortitude Valley QLD 4006') && foot.includes('07 5550 0188') && foot.includes('hello@example.com'));
+  ok('footer has the exact demo line and the Black Crest credit', foot.includes('Concept site by Black Crest Web Designs. Not a real business.') && foot.includes('Concept site by Black Crest Web Designs'));
+  ok('footer address and phone use the fictional contact details', foot.includes('14 Wellington Road') && foot.includes('Clayton VIC 3168') && foot.includes('03 5550 0177') && foot.includes('hello@ironandember'));
   const hs = async (f, w) => { await p.setViewportSize({ width: w, height: 900 }); await p.goto(p.base + f); return p.evaluate(() => { const px = (s) => { const e = document.querySelector(s); return e ? Math.round(parseFloat(getComputedStyle(e).fontSize)) : null; }; return { h1: px('h1'), h2: px('#offer-title, #roles-title, #plans-title, #book-title, #visit-title, #faq-title'), h3: px('.coach-body h3, .plan h3, .roles h3'), h4: px('.cr-main h3'), body: px('body'), fam: getComputedStyle(document.querySelector('h1')).fontFamily.split(',')[0].replace(/"/g, ''), bfam: getComputedStyle(document.body).fontFamily.split(',')[0].replace(/"/g, '') }; }); };
   const a = await hs('classes.html', 1440), a2 = await hs('index.html', 1440), a3 = await hs('coaches.html', 1440), b = await hs('classes.html', 390), b2 = await hs('index.html', 390);
   ok('heading scale at 1440: inner h1 56, h2 40, h3 28, h4 20 (class names), body 17px (the home hero headline is display type)', a.h1 === 56 && a2.h2 === 40 && a3.h3 === 28 && a.h4 === 20 && a.body === 17, JSON.stringify({ a, a2, a3 }));
@@ -467,12 +468,12 @@ if (want('func')) {
   }
   p = await newPage({ viewport: { width: 1440, height: 900 } }, { webgl: false });
   await p.goto(p.base + 'index.html'); await p.waitForTimeout(600);
-  ok('home: Visit us has the lazy map, the hours table, a live status, address and phone', (await p.locator('#visit .gmap iframe').count()) === 1 && (await p.locator('#visit .hours').count()) === 1 && /^(Open now|Closed)/.test(await p.locator('#open-status-3').textContent()) && (await p.locator('#visit address').textContent()).includes('07 5550 0188'), await p.locator('#open-status-3').textContent());
+  ok('home: Visit us has the lazy map, the hours table, a live status, address and phone', (await p.locator('#visit .gmap iframe').count()) === 1 && (await p.locator('#visit .hours').count()) === 1 && /^(Open now|Closed)/.test(await p.locator('#open-status-3').textContent()) && (await p.locator('#visit address').textContent()).includes('03 5550 0177'), await p.locator('#open-status-3').textContent());
   await p.locator('#visit [data-visit-open]').click();
   ok('visit form: "Schedule a visit" opens a dialog', await p.locator('#visit-modal').isVisible() && (await p.locator('#visit-modal-title').textContent()) === 'Schedule a visit');
   await p.locator('#visit-form button[type=submit]').click();
   ok('visit form: empty submit shows name, phone, day and time errors', (await p.locator('#visit-form .error').allTextContents()).filter(Boolean).length === 4);
-  await p.fill('#v-name', 'Sam Rivera'); await p.fill('#v-phone', '07 5550 0123'); await p.selectOption('#v-day', 'Saturday'); await p.selectOption('#v-time', { index: 1 }); await p.locator('#visit-form button[type=submit]').click();
+  await p.fill('#v-name', 'Sam Rivera'); await p.fill('#v-phone', '03 5550 0123'); await p.selectOption('#v-day', 'Saturday'); await p.selectOption('#v-time', { index: 1 }); await p.locator('#visit-form button[type=submit]').click();
   ok('visit form: confirmation says it is a demo and nothing was sent; saved to localStorage vc-visits', await p.locator('#visit-done').isVisible() && /demo, nothing was sent/.test(await p.locator('#visit-done').textContent()) && (await p.evaluate(() => JSON.parse(localStorage.getItem('vc-visits') || '[]').length)) === 1);
   await p.keyboard.press('Escape');
   ok('visit form: Escape closes it and focus returns to the button', !(await p.locator('#visit-modal').isVisible()) && (await p.evaluate(() => document.activeElement.hasAttribute('data-visit-open'))));
@@ -615,7 +616,7 @@ if (want('perf')) {
   ok('site.webmanifest is generated with theme and background #0b0b0c and a maskable icon', mf.theme_color === '#0b0b0c' && mf.background_color === '#0b0b0c' && mf.icons.some((i) => i.purpose === 'maskable') && mf.lang === 'en-AU');
   const sm = fs.readFileSync(path.join(SITE, 'sitemap.xml'), 'utf8');
   ok('sitemap lists every page except 404', PAGES.filter((f) => f !== '404.html').every((f) => sm.includes(f === 'index.html' ? 'gym-demo/</loc>' : f)) && !sm.includes('404'));
-  ok('site.config baseUrl and time zone are set for the demo', cfg.site.baseUrl === 'https://kirithikbala21-jpg.github.io/3D-demo-sites/gym-demo/' && cfg.site.timezone === 'Australia/Brisbane' && cfg.site.noindex === true);
+  ok('site.config baseUrl and time zone are set for the demo', cfg.site.baseUrl === 'https://kirithikbala21-jpg.github.io/3D-demo-sites/gym-demo/' && cfg.site.timezone === 'Australia/Melbourne' && cfg.site.noindex === true);
   ok('removed features stay removed: no shop, cart or sound code in the folder', !fs.existsSync(path.join(SITE, 'js/cart.js')) && !fs.existsSync(path.join(SITE, 'js/sound.js')) && !fs.existsSync(path.join(SITE, 'shop.html')) && !fs.existsSync(path.join(SITE, 'book.html')));
 }
 
@@ -631,18 +632,18 @@ if (want('hardening')) {
     return `http://localhost:${srv.address().port}/`;
   };
   const VISIT = '#visit-form';
-  // 1. the gym's clock (Brisbane), not the visitor's
+  // 1. the gym's clock (Melbourne), not the visitor's
   for (const tz of ['America/Los_Angeles', 'Europe/London']) {
     const p = await newPage({ viewport: { width: 390, height: 844 }, timezoneId: tz }, { webgl: false, clock: TUE + 'T12:00:00' }); await p.goto(p.base + 'index.html'); await p.waitForTimeout(500);
     const t = norm(await p.textContent('#open-status'));
-    ok(`visitor in ${tz} sees Brisbane's hours: Tue 12:00 in Brisbane is open until 10pm`, /^Open now, closes at 10pm/.test(t), t);
+    ok(`visitor in ${tz} sees Melbourne's hours: Tue 12:00 in Melbourne is open until 10pm`, /^Open now, closes at 10pm/.test(t), t);
     await done(p);
   }
   {
-    const p = await newPage({ viewport: { width: 390, height: 844 }, timezoneId: 'Australia/Brisbane' }, { webgl: false, clock: '2026-04-03T09:00:00' }); await p.goto(p.base + 'index.html'); await p.waitForTimeout(500);
+    const p = await newPage({ viewport: { width: 390, height: 844 }, timezoneId: 'Australia/Melbourne' }, { webgl: false, clock: '2026-04-03T09:00:00' }); await p.goto(p.base + 'index.html'); await p.waitForTimeout(500);
     ok('Good Friday uses the special hours from the config (open until 1pm)', /^Open now, closes at 1pm/.test(norm(await p.textContent('#open-status'))), norm(await p.textContent('#open-status')));
     await done(p);
-    const q = await newPage({ viewport: { width: 390, height: 844 }, timezoneId: 'Australia/Brisbane' }, { webgl: false, clock: '2026-12-25T10:00:00' }); await q.goto(q.base + 'index.html'); await q.waitForTimeout(500);
+    const q = await newPage({ viewport: { width: 390, height: 844 }, timezoneId: 'Australia/Melbourne' }, { webgl: false, clock: '2026-12-25T10:00:00' }); await q.goto(q.base + 'index.html'); await q.waitForTimeout(500);
     ok('Christmas Day is closed: "Closed today for Christmas Day"', /^Closed today for Christmas Day\. Opens tomorrow/.test(norm(await q.textContent('#open-status'))), norm(await q.textContent('#open-status')));
     await done(q);
   }
@@ -920,7 +921,7 @@ if (want('growth')) {
       await done(p); return r; }));
     ok('busy times: a line and a 7-day SVG chart appear near the visit section, wording is "usually"/"typically" and "not live"', tue.shown && /(Usually|Typically)/.test(tue.text) && /not live/.test(tue.text) && !/right now|live data|real-time/i.test(tue.text.replace('not live', '')) && /Typical busy times/.test(tue.title), tue.text);
     ok('busy times line reads "Usually quieter ..." and never claims to be live', /Usually quieter on \w+day (at \w+|\w+s)\./.test(tue.text), tue.text);
-    ok('busy times: today is highlighted and moves with the (Brisbane) day: Tuesday column differs from Saturday', tue.hlx !== sat.hlx && tue.hlx > 0 && sat.hlx > tue.hlx, `${tue.hlx} vs ${sat.hlx}`);
+    ok('busy times: today is highlighted and moves with the (Melbourne) day: Tuesday column differs from Saturday', tue.hlx !== sat.hlx && tue.hlx > 0 && sat.hlx > tue.hlx, `${tue.hlx} vs ${sat.hlx}`);
     ok('busy times chart text stays 12px or more on a phone and the page does not scroll sideways', tue.fonts.every((f) => f * tue.scale >= 12) && !tue.overflow, `${tue.fonts[0]} x ${tue.scale}`);
     const e = await configured((c) => { c.busyness = { blocks: [], week: {} }; }, 'nobusy');
     ok('empty busyness table: no busy-times box anywhere (home, visit, trial)', ['index.html', 'visit.html', 'trial.html'].every((f) => !/data-busy/.test(fs.readFileSync(path.join(e.dir, f), 'utf8'))));
@@ -937,7 +938,7 @@ if (want('growth')) {
       const txt = norm(await p.textContent('.open-bar')); if (!re.test(txt)) bad.push(`${t}: ${txt}`);
       await done(p);
     }
-    ok('open banner on every page follows the gym hours in Brisbane time (visitor in Los Angeles): open, closed, before opening, Saturday evening', !bad.length, bad.join(' | '));
+    ok('open banner on every page follows the gym hours in Melbourne time (visitor in Los Angeles): open, closed, before opening, Saturday evening', !bad.length, bad.join(' | '));
     const e = await configured((c) => { c.openBannerEnabled = false; }, 'nobanner');
     ok('openBannerEnabled false removes the banner', !/open-bar/.test(fs.readFileSync(path.join(e.dir, 'classes.html'), 'utf8')));
     const pages = PAGES.filter((f) => f !== '404.html');
@@ -952,9 +953,9 @@ if (want('growth')) {
       const call = hero.querySelector('.hero-call'), dir = hero.querySelector('.hero-dir'), btn = [...hero.querySelectorAll('.hero-cta .btn')];
       return { h1: hero.querySelector('h1').textContent.trim(), btns: btn.map((b) => [b.textContent.trim(), Math.round(b.getBoundingClientRect().height)]), call: call && [call.getAttribute('href'), vis(call), call.textContent.trim(), Math.round(call.getBoundingClientRect().height)], dir: dir && [dir.href, dir.target, dir.rel, vis(dir)], facts: hero.querySelector('.hero-facts').textContent.trim(), rating: !!hero.querySelector('.g-rating'), img: !!hero.querySelector('.hero-photo img') && hero.querySelector('.hero-photo img').naturalWidth > 0, layers: ['.hero-photo', '.hero-stage', '.hero-main'].length };
     });
-    ok(`hero (${label}): H1 states what and where, factually: "${cfg.brand.city}" is in it, nothing invented`, /Strength coaching and group classes in Fortitude Valley/.test(h.h1), h.h1);
+    ok(`hero (${label}): H1 states what and where, factually: "${cfg.brand.city}" is in it, nothing invented`, /Strength coaching and group classes in Clayton/.test(h.h1), h.h1);
     ok(`hero (${label}): ONE big main button ("Start your free trial", 64px tall)`, h.btns.length === 1 && /free trial/i.test(h.btns[0][0]) && h.btns[0][1] >= 60, JSON.stringify(h.btns));
-    ok(`hero (${label}): tap-to-call link is visible, 44px+ tall, tel: with the number`, h.call && h.call[0] === 'tel:+61755500188' && h.call[1] && /07 5550 0188/.test(h.call[2]) && h.call[3] >= 44, JSON.stringify(h.call));
+    ok(`hero (${label}): tap-to-call link is visible, 44px+ tall, tel: with the number`, h.call && h.call[0] === 'tel:+61355500177' && h.call[1] && /03 5550 0177/.test(h.call[2]) && h.call[3] >= 44, JSON.stringify(h.call));
     ok(`hero (${label}): "Get directions" opens googleMapsUrl in a new tab`, h.dir && h.dir[0] === cfg.googleMapsUrl && h.dir[1] === '_blank' && /noopener/.test(h.dir[2]) && h.dir[3], JSON.stringify(h.dir));
     ok(`hero (${label}): opening hours and the starting price are visible, the real photo loaded, rating badge present (demo note stays)`, /Mon .* Fri 5am .* 10pm/.test(h.facts) && /Memberships from \$89 a month/.test(h.facts) && h.img && h.rating && /Demo number/.test(await p.textContent('.hero .g-rating')), h.facts);
     const px = await p.evaluate(async () => { const hero = document.querySelector('.hero'); const on = hero.classList.contains('hero-px'); scrollTo(0, 300); for (let i = 0; i < 30 && !parseFloat(hero.style.getPropertyValue('--hp1')); i++) await new Promise((r) => setTimeout(r, 100)); return { on, p1: parseFloat(hero.style.getPropertyValue('--hp1')), p2: parseFloat(hero.style.getPropertyValue('--hp2')), p3: parseFloat(hero.style.getPropertyValue('--hp3')) }; });

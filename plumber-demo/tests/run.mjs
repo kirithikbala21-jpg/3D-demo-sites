@@ -251,7 +251,7 @@ if (want('links')) {
       seen.add(h);
       if (h.startsWith('tel:')) { tels.add(h); continue; }
       if (h.startsWith('mailto:')) { if (!/^mailto:[^@]+@[^@]+\.[a-z]+$/.test(h)) bad.push(f + ' ' + h); continue; }
-      if (/^https?:/.test(h)) { if (!/google\.com\/maps|^https:\/\/g\.page\/|^https:\/\/www\.(instagram|facebook)\.com\//.test(h)) bad.push(f + ' external ' + h); continue; }
+      if (/^https?:/.test(h)) { if (!/google\.com\/maps|^https:\/\/g\.page\/|^https:\/\/www\.(instagram|facebook)\.com\/|^https:\/\/kirithikbala21-jpg\.github\.io\/3D-demo-sites\/black-crest-site\//.test(h)) bad.push(f + ' external ' + h); continue; }
       const [file, hash] = h.split('#');
       const target = file || f;
       if (!fs.existsSync(path.join(SITE, target))) { bad.push(`${f}: missing file ${h}`); continue; }
@@ -279,11 +279,11 @@ if (want('links')) {
   const mins = [...body.matchAll(/within (\d+) minutes/g)].map((m) => Number(m[1]));
   const etaMax = Math.max(...D.suburbs.map((s) => Number(s.eta.split(' to ')[1])));
   ok('consistency: every response-time claim is 60 minutes and no suburb ETA is slower', mins.length >= 2 && mins.every((n) => n === cfg.service.arriveMinutes || n === cfg.service.callbackMinutes) && etaMax <= cfg.service.arriveMinutes, mins.join(','));
-  ok('consistency: licence, ABN, address, email and hours appear in the footer', ['Lic. 000000', 'ABN 00 000 000 000', cfg.contact.street, cfg.contact.email, 'Mon to Fri 7am to 8pm', 'Sat to Sun 8am to 5pm'].every((s) => body.includes(s)));
+  ok('consistency: licence, ABN, address, email and hours appear in the footer', ['Licence number shown on the real site', 'ABN shown on the real site', cfg.contact.street, cfg.contact.email, 'Mon to Fri 7am to 8pm', 'Sat to Sun 8am to 5pm'].every((s) => body.includes(s)));
   for (const f of PAGES) {
     await open(p, f);
     const t = await p.evaluate(() => ({ a: document.querySelector('.footer-end').innerText, robots: document.querySelector('meta[name=robots]')?.content }));
-    if (!t.a.includes('Demo website by KB Ventures') || !t.a.includes('Concept demo. Names, prices and reviews are fictional.') || t.robots !== 'noindex') { ok(`footer demo lines and noindex on ${f}`, false, JSON.stringify(t)); }
+    if (!t.a.includes('Concept site by Black Crest Web Designs') || !t.a.includes('Concept demo. Names, prices and reviews are fictional.') || t.robots !== 'noindex') { ok(`footer demo lines and noindex on ${f}`, false, JSON.stringify(t)); }
   }
   ok('footer has both demo lines and every page is noindex', true);
   // prices on the cards and in the table agree (one source: site.config.json (services))
@@ -396,7 +396,7 @@ if (want('func')) {
     await open(p);
     const h = await p.evaluate(() => { const g = (s) => document.querySelector(s).getBoundingClientRect(); const btns = [...document.querySelectorAll('.hero-cta a')]; return { h1: document.querySelector('h1').textContent.trim(), sub: document.querySelector('.hero .lead').textContent.trim(), b1: btns[0].textContent.replace(/\s+/g, ' ').trim(), href1: btns[0].getAttribute('href'), b2: btns[1].textContent.trim(), href2: btns[1].getAttribute('href'), c1: getComputedStyle(btns[0]).backgroundColor, h1b: g('h1').bottom, ctaB: g('.hero-cta').bottom, imgT: g('.hero-visual').top, badges: [...document.querySelectorAll('.badges li')].map((l) => l.textContent.trim()), pill: document.querySelector('#avail').textContent.trim() }; });
     ok('hero: exact headline, subline and two buttons (orange Call now tel link, outlined Get a free quote)', h.h1 === 'Glen Waverley plumbers who turn up when they say they will.' && h.sub === 'Licensed, insured, 24/7 emergency across south-east Melbourne. Upfront prices before we start.' && h.b1.startsWith('Call now') && h.href1 === 'tel:' + PHONE_HREF && h.b2 === 'Get a free quote' && h.href2 === '#quote' && h.c1 === 'rgb(255, 106, 19)', JSON.stringify(h));
-    ok('hero: four trust badges', h.badges.join('|') === 'LicensedLic. 000000 [demo]|InsuredCertificate [demo]|Gas fitting licensedLic. 000000 [demo]|Upfront pricingFixed price before we start', h.badges.join('|'));
+    ok('hero: four trust badges', h.badges.join('|') === 'LicensedLicence number shown on the real site|InsuredCertificate [demo]|Gas fitting licensedLicence number shown on the real site|Upfront pricingFixed price before we start', h.badges.join('|'));
     ok('hero on a phone: headline and buttons come before the image, the buttons are on the first screen', h.h1b < h.imgT && h.ctaB < h.imgT && h.ctaB < 1000, JSON.stringify([h.h1b, h.ctaB, h.imgT]));
     await done(p);
   }
@@ -592,7 +592,7 @@ if (want('func')) {
     await p.keyboard.press('Enter');
     ok('keyboard: Enter closes it again', !(await p.locator('.faq').nth(2).evaluate((e) => e.open)));
     const ans = await p.evaluate(() => [...document.querySelectorAll('.faq p')].map((e) => e.textContent));
-    ok('FAQ answers agree with the rest of the site ($199 call-out, $169 gas check, 12 months, 60 minutes, 8am to 5pm weekends)', /\$199/.test(ans[0]) && /Lic\. 000000/.test(ans[1]) && /8am to 5pm/.test(ans[2]) && /\$169/.test(ans[3]) && /60 minutes/.test(ans[4]) && /12-month/.test(ans[5]) && /Afterpay/.test(ans[7]));
+    ok('FAQ answers agree with the rest of the site ($199 call-out, $169 gas check, 12 months, 60 minutes, 8am to 5pm weekends)', /\$199/.test(ans[0]) && /Licence number shown on the real site/.test(ans[1]) && /8am to 5pm/.test(ans[2]) && /\$169/.test(ans[3]) && /60 minutes/.test(ans[4]) && /12-month/.test(ans[5]) && /Afterpay/.test(ans[7]));
     await done(p);
   }
 
@@ -602,7 +602,7 @@ if (want('func')) {
     await open(p);
     const r = await p.evaluate(() => { const row = document.querySelector('.reviews-row'), t = document.querySelector('.team-row'); const cs = getComputedStyle(row), ts = getComputedStyle(t); const c0 = row.children[0].getBoundingClientRect(); return { rn: row.children.length, snap: cs.scrollSnapType, ox: cs.overflowX, scroll: row.scrollWidth > row.clientWidth, peek: c0.right < innerWidth - 20 && row.children[1].getBoundingClientRect().left < innerWidth - 8, tn: t.children.length, tsnap: ts.scrollSnapType, tscroll: t.scrollWidth > t.clientWidth, rating: document.querySelector('.rating-num').textContent.trim(), stars: document.querySelectorAll('.review .stars').length, tag: document.querySelector('.sample-tag').textContent.trim(), tabindex: row.getAttribute('tabindex'), team: [...document.querySelectorAll('.member')].map((m) => m.textContent.replace(/\s+/g, ' ').trim()) }; });
     ok('reviews: six reviews in a snap-scrolling swipe row with the next card peeking; 4.9 summary labelled "Sample reviews. Fictional."', r.rn === 6 && /x/.test(r.snap) && r.scroll && r.peek && r.rating === cfg.reviewsSummary.rating && r.stars === 6 && r.tag === 'Sample reviews. Fictional.', JSON.stringify(r));
-    ok('team: five plumbers in a swipe row, each with role, years and the licence placeholder', r.tn === 5 && /x/.test(r.tsnap) && r.tscroll && r.team.every((t) => /years experience/.test(t) && /Lic\. 000000/.test(t)), JSON.stringify(r.team));
+    ok('team: five plumbers in a swipe row, each with role, years and the licence placeholder', r.tn === 5 && /x/.test(r.tsnap) && r.tscroll && r.team.every((t) => /years experience/.test(t) && /Licence number shown on the real site/.test(t)), JSON.stringify(r.team));
     await done(p);
     const d = await newPage(DESKTOP);
     await open(d);

@@ -228,9 +228,9 @@ if (want('axe')) {
         const noLabel = [...document.querySelectorAll('input:not([type=hidden]):not([type=submit]),select,textarea')].filter((el) => !(el.labels && el.labels.length) && !el.getAttribute('aria-label')).map((e) => e.id || e.name);
         return { h1: document.querySelectorAll('h1').length, skip, noAlt, noLabel, main: document.querySelectorAll('main').length, header: !!document.querySelector('header'), footer: !!document.querySelector('footer'), lang: document.documentElement.lang, title: document.title, skipLink: !!document.querySelector('a.skip-link[href="#main"]') };
       });
-      if (r.h1 !== 1 || r.skip || r.noAlt || r.noLabel.length || r.main !== 1 || !r.header || !r.footer || r.lang !== 'en-AU' || !r.skipLink || !/unofficial concept demo/i.test(r.title)) bad.push(f + ' ' + JSON.stringify(r));
+      if (r.h1 !== 1 || r.skip || r.noAlt || r.noLabel.length || r.main !== 1 || !r.header || !r.footer || r.lang !== 'en-AU' || !r.skipLink || !/concept site/i.test(r.title)) bad.push(f + ' ' + JSON.stringify(r));
     }
-    ok('every page: one h1, heading order never skips, alt on images, labels on fields, landmarks, skip link, lang en-AU, "unofficial concept demo" in <title>', !bad.length, bad.join(' | '));
+    ok('every page: one h1, heading order never skips, alt on images, labels on fields, landmarks, skip link, lang en-AU, "concept site" in <title>', !bad.length, bad.join(' | '));
     await open(p);
     const outlines = [];
     for (let i = 0; i < 14; i++) { await p.keyboard.press('Tab'); outlines.push(await p.evaluate(() => { const e = document.activeElement; const cs = getComputedStyle(e); return e === document.body ? 'body' : (cs.outlineStyle !== 'none' && parseFloat(cs.outlineWidth) >= 2) ? 'ok' : e.tagName + '.' + e.className; })); }
@@ -316,7 +316,7 @@ if (want('links')) {
   const txt = await p.evaluate(() => { const m = document.querySelector('main').cloneNode(true); m.querySelectorAll('.g-rating').forEach((e) => e.remove()); return m.textContent; }); // the Google badge shows the owner's own rating from config
   ok('no superlatives, no star ratings, no aggregate score in the page copy (apart from the owner-set Google badge)', !/\b(best in|number one|#1|award|world.class|\d\.\d\s*(\/|stars)|★|stars?\b)/i.test(txt) && !/4\.9/.test(txt));
   ok('reviews are labelled "Sample content for this demo" and use first names only', /Sample content for this demo/i.test(txt) && (await p.locator('.review').count()) >= 4);
-  ok('footer carries the unofficial concept demo label and "Demo website by KB Ventures"', (await p.textContent('footer')).includes('Unofficial concept demo. Names, prices and reviews are fictional.') && (await p.textContent('footer')).includes('Demo website by KB Ventures'));
+  ok('footer carries the concept site label and the Black Crest credit', (await p.textContent('footer')).includes('Concept site. Names, prices and reviews are fictional.') && (await p.textContent('footer')).includes('Concept site by Black Crest Web Designs'));
   await done(p);
 }
 

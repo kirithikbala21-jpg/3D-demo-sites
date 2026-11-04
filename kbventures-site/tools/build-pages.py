@@ -24,7 +24,7 @@ def fill(s):
 
 def head(title, desc, path, extra='', scripts=(), lenis=True, noindex=False, base_script=False, P='', first=''):
     canon = SITE + path
-    ogalt = 'A digital render of the KB Ventures plaque, smoked glass in a bronze frame engraved KB, beside the line: Many businesses. One standard.'
+    ogalt = 'A digital render of the KB Ventures plaque, champagne-gold KB engraved in smoked glass in a brushed platinum frame, beside the line: Many businesses. One standard.'
     s = ['<!doctype html>', '<html lang="en-AU">', '<head>', '<meta charset="utf-8">',
          '<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">'] + ([first] if first else [])
     late = [f'<link rel="icon" href="{P}img/kb-favicon.svg" type="image/svg+xml">', f'<link rel="icon" href="{P}favicon.ico" sizes="32x32">',
@@ -141,7 +141,7 @@ def hero_picture():
             f'<source type="image/avif" srcset="{hero_set("avif")}" sizes="100vw" width="2752" height="1536">'
             f'<source type="image/webp" srcset="{hero_set("webp")}" sizes="100vw" width="2752" height="1536">'
             f'<img class="hero-img" src="{HERO}-1920.jpg" srcset="{hero_set("jpg")}" sizes="100vw" width="2752" height="1536" '
-            f'fetchpriority="high" decoding="async" alt="Digital render of the KB Ventures plaque: smoked glass in a bronze frame, engraved KB, on a plinth under one light"></picture>')
+            f'fetchpriority="high" decoding="async" alt="Digital render of the KB Ventures plaque: champagne-gold KB engraved in smoked glass, in a brushed platinum frame, under one cool light"></picture>')
 
 
 HERO_PRELOAD = (f'<link rel="preload" as="image" type="image/avif" media="{STACK}" imagesrcset="{hero_set("avif", True)}" imagesizes="100vw" fetchpriority="high">\n'
@@ -245,6 +245,10 @@ def biz_grid(always_more=False, level='h3'):
         live, preview = is_live(b), is_preview(b)
         badge = n['live'] if live else n.get('preview', 'Preview') if preview else n['comingSoon']
         still = pic(f'img/niches/biz-{slug(b.get("shortName") or b["name"])}', 1120, 1200, '', sizes='(min-width: 760px) 46vw, 92vw')
+        if slug(b.get("shortName") or b["name"]) == 'black-crest':
+            # the card's own film from the Black Crest site, played only while the niche is hovered or focused on a desktop
+            still = (f'<span class="niche-media">{still}<video class="niche-video" muted loop playsinline disablepictureinpicture preload="none" '
+                     f'aria-hidden="true" tabindex="-1" data-video="../black-crest-site/assets/video/bc-hero-mobile"></video></span>')
         body = f'''{still}
           <span class="niche-label"><span class="niche-status">{E(badge)}</span><{level} class="niche-name">{E(b['name'])}</{level}><span class="niche-line">{E(b.get('description', ''))}</span>{f'<span class="niche-cta">{E(b.get("previewLabel") if preview else b.get("ctaLabel") or "Visit")}</span>' if (live or preview) else ''}</span>'''
         items.append(f'        <li><a class="kb-niche" href="{E(b["url"])}">{body}</a></li>' if (live or preview)
@@ -457,6 +461,7 @@ home_body = f'''<main id="main">
   <section class="hero hero-render" id="top" aria-labelledby="hero-title">
     <div class="hero-media" data-hero-media>
       <div class="hero-zoom">{hero_picture()}</div>
+      <video class="hero-video" autoplay muted loop playsinline disablepictureinpicture preload="none" aria-hidden="true" tabindex="-1" data-video="img/video/kb-hero" data-poster="img/video/kb-hero-poster"></video>
     </div>
     <div class="container hero-grid">
       <div class="hero-text">

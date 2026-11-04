@@ -1,6 +1,11 @@
 """Web versions of the KB Ventures hero render (a digital render of the brand plaque, not a photo).
 
-Source (kept as is):   img/renders/originals/kb-plaque-hero.png    2752 x 1536, the plaque on its plinth, right of centre
+Source (kept as is):   img/renders/originals/kb-plaque-hero-platinum.png   2752 x 1536: the plaque in a brushed platinum frame,
+                       champagne-gold KB engraved in smoked glass, a cool white spotlight, obsidian background.
+                       (The older bronze render is kept in originals/legacy/ and is not used.)
+Colour: the source carries a navy cast; it is matched channel by channel to the hero video's poster
+(img/video/kb-hero-poster.jpg, made from the same render), so the still is neutral obsidian and the film fades in
+over it without a colour jump.
 Writes:
   img/renders/kb-plaque-hero-{2752,1920,1280,800}.{avif,webp,jpg}   the 16:9 hero, for wide screens
   img/renders/kb-plaque-hero-4x5-{1080,720}.{avif,webp,jpg}          the 4:5 phone crop, centred on the plaque
@@ -11,13 +16,15 @@ Writes:
     python3 kbventures-site/tools/make-renders.py
 """
 import os
+import numpy as np
 from PIL import Image, ImageDraw, ImageFont
 
 SITE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(SITE, 'img', 'renders')
-SRC = os.path.join(OUT, 'originals', 'kb-plaque-hero.png')
+SRC = os.path.join(OUT, 'originals', 'kb-plaque-hero-platinum.png')
+REF = os.path.join(SITE, 'img', 'video', 'kb-hero-poster.jpg')
 BC_SRC = os.path.join(SITE, '..', 'black-crest-site', 'assets', 'renders', 'originals', 'card-hero.png')
-CENTRE_X = 1945                       # the plaque and plinth, horizontally (source pixels)
+CENTRE_X = 1870                       # the plaque and plinth, horizontally (source pixels)
 BC_TIGHT = (1330, 150, 2630, 1543)    # the Black Crest card on its plinth (14:15, as the niche next to it)
 
 
@@ -28,6 +35,11 @@ def save(im, stem):
 
 
 src = Image.open(SRC).convert('RGB')
+if os.path.exists(REF):
+    a = np.asarray(src).astype(np.float32); r = np.asarray(Image.open(REF).convert('RGB')).astype(np.float32)
+    for c in range(3):
+        a[..., c] = (a[..., c] - a[..., c].mean()) * (r[..., c].std() / a[..., c].std()) + r[..., c].mean()
+    src = Image.fromarray(np.clip(a, 0, 255).astype(np.uint8))
 W, H = src.size
 for w in (2752, 1920, 1280, 800):
     save(src if w == W else src.resize((w, round(H * w / W)), Image.LANCZOS), os.path.join(OUT, f'kb-plaque-hero-{w}'))

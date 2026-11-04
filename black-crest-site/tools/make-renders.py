@@ -17,10 +17,11 @@ from PIL import Image, ImageDraw, ImageFont
 SITE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(SITE, 'assets', 'renders')
 SRC = os.path.join(OUT, 'originals', 'card-hero.png')
-KB_SRC = os.path.join(SITE, '..', 'kbventures-site', 'img', 'renders', 'originals', 'kb-plaque-hero.png')
+# the KB Ventures plaque as KB's own tool made it (the platinum render, colour-matched): kept in sync with that site
+KB_SRC = os.path.join(SITE, '..', 'kbventures-site', 'img', 'renders', 'kb-plaque-hero-2752.jpg')
 CENTRE_X = 1960                       # the card and plinth, horizontally (source pixels)
 TIGHT = (1330, 150, 2630, 1543)       # the card on its plinth with the spotlight above (14:15)
-KB_SMALL = (1250, 200, 2650, 1425)    # the plaque on its plinth (8:7)
+KB_SMALL = (1170, 230, 2570, 1455)    # the platinum plaque on its plinth (8:7)
 
 
 def save(im, stem):

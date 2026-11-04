@@ -285,4 +285,44 @@
     revealAll();
     onScroll();
   }); else { revealAll(); onScroll(); }
+
+  /* ---------- Hero film and the Black Crest niche film ----------
+     Never for reduced motion, Save-Data or a 2G connection: then the still shows. The files are picked here
+     (<source media> is not honoured everywhere): the 4:5 phone film for the stacked phone layout, the 16:9 film
+     otherwise; Safari (and every iPhone browser) gets the H.264 mp4 first. Films are muted, inline, decoration only. */
+  var conn = navigator.connection;
+  var lean = reduceMotion || !!(conn && (conn.saveData || /(^|-)2g$/.test(conn.effectiveType || '')));
+  function setSources(v, base) {
+    while (v.firstChild) v.removeChild(v.firstChild);
+    var apple = /Apple/.test(navigator.vendor || '');
+    var list = apple ? [['mp4', 'video/mp4'], ['webm', 'video/webm']] : [['webm', 'video/webm'], ['mp4', 'video/mp4']];
+    list.forEach(function (x) { var s = document.createElement('source'); s.src = base + '.' + x[0]; s.type = x[1]; v.appendChild(s); });
+    v.muted = true; v.defaultMuted = true; v.playsInline = true; v.load();
+  }
+  function tryPlay(v) { var p = v.play(); if (p && p.catch) p.catch(function () {}); }
+  var hv = document.querySelector('.hero-video');
+  if (hv && !lean && 'IntersectionObserver' in window) {
+    var hero = hv.closest('.hero'), phone = window.matchMedia('(max-width: 719px), (max-aspect-ratio: 1/1)'), seen = true;
+    var play = function () { if (seen && !document.hidden) tryPlay(hv); };
+    var pick = function () { var m = phone.matches; hv.poster = hv.dataset.poster + (m ? '-mobile' : '') + '.jpg'; setSources(hv, hv.dataset.video + (m ? '-mobile' : '-1080')); play(); };
+    hv.addEventListener('playing', function () { hero.classList.add('has-video'); });
+    new IntersectionObserver(function (e) { seen = e[0].isIntersecting; if (seen) play(); else hv.pause(); }).observe(hero);
+    document.addEventListener('visibilitychange', function () { if (document.hidden) hv.pause(); else play(); });
+    if (phone.addEventListener) phone.addEventListener('change', function () { hero.classList.remove('has-video'); pick(); });
+    // start once the still has painted, so the film never holds back the first view
+    var still = hero.querySelector('.hero-img');
+    var start = function () { requestAnimationFrame(function () { setTimeout(pick, 0); }); };
+    if (still && !still.complete) still.addEventListener('load', start, { once: true }); else start();
+  }
+  // the Black Crest niche: plays only while hovered or focused, on a desktop with a mouse; phones keep the still
+  var desk = window.matchMedia('(hover: hover) and (pointer: fine)');
+  document.querySelectorAll('.niche-video').forEach(function (v) {
+    if (lean) return;
+    var niche = v.closest('.kb-niche');
+    var on = function () { if (!desk.matches) return; if (!v.firstChild) setSources(v, v.dataset.video); tryPlay(v); };
+    var off = function () { v.pause(); niche.classList.remove('is-playing'); };
+    v.addEventListener('playing', function () { if (niche.matches(':hover, :focus-visible, :focus-within')) niche.classList.add('is-playing'); });
+    niche.addEventListener('pointerenter', on); niche.addEventListener('focus', on);
+    niche.addEventListener('pointerleave', off); niche.addEventListener('blur', off);
+  });
 })();

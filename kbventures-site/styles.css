@@ -21,7 +21,7 @@
   --radius-pill: 2px;
 
   /* surface and shine */
-  --bg-deep: #0A0C12;
+  --bg-deep: #0D0E12;        /* obsidian */
   --light: 168, 186, 222;
   --edge: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, .55) 50%, rgba(255, 255, 255, 0));
   --sheen: linear-gradient(115deg, rgba(255, 255, 255, 0) 30%, rgba(255, 255, 255, .045) 45%, rgba(255, 255, 255, .01) 52%, rgba(255, 255, 255, 0) 62%);
@@ -60,7 +60,7 @@ html.lenis,html.lenis body{height:auto}.lenis.lenis-smooth{scroll-behavior:auto!
 *, *::before, *::after { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; background: var(--bg-deep); color-scheme: dark; scroll-padding-top: calc(var(--nav-h) + 8px); }
 body { position: relative; margin: 0; background: transparent; color: var(--text-platinum); font: 400 16px/1.65 var(--font); font-variant-numeric: tabular-nums; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; overflow-x: clip; }
-body::before { content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none; background: radial-gradient(120% 90% at 50% 40%, rgba(0, 0, 0, 0) 52%, rgba(0, 0, 0, .55) 100%), radial-gradient(90% 55% at 50% 0%, rgba(var(--light), .055), rgba(var(--light), 0) 70%), linear-gradient(180deg, #0C0F17 0%, var(--bg-deep) 45%, #08090E 100%); }
+body::before { content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none; background: radial-gradient(120% 90% at 50% 40%, rgba(0, 0, 0, 0) 52%, rgba(0, 0, 0, .55) 100%), radial-gradient(90% 55% at 50% 0%, rgba(var(--light), .055), rgba(var(--light), 0) 70%), linear-gradient(180deg, #111216 0%, var(--bg-deep) 45%, #08090B 100%); }
 /* fine film grain over everything (4%), which also dithers the gradients so they don't band */
 body::after { content: ""; position: fixed; inset: 0; z-index: 90; pointer-events: none; background: url("img/grain.png") repeat; background-size: 96px 96px; opacity: .04; mix-blend-mode: overlay; }
 img { display: block; max-width: 100%; height: auto; }
@@ -130,7 +130,7 @@ main { padding-top: var(--nav-h); }
 .dd-btn[aria-expanded="true"] .chev { transform: rotate(180deg); }
 .nav-fallback { display: inline-flex; }
 .dd { position: relative; }
-.dd-panel { position: absolute; top: calc(100% + 8px); left: 50%; width: 360px; padding: 8px; transform: translateX(-50%); border: 1px solid rgba(138, 143, 158, .26); border-radius: 2px; background: rgba(18, 20, 26, .98); }
+.dd-panel { position: absolute; top: calc(100% + 8px); left: 50%; width: 360px; padding: 8px; transform: translateX(-50%); border: 1px solid rgba(138, 143, 158, .26); border-radius: 2px; background: rgba(22, 23, 28, .98); }
 .dd-panel[hidden] { display: none; }
 .dd-panel::before { content: ""; position: absolute; left: 0; right: 0; top: -10px; height: 10px; } /* keeps hover alive across the gap */
 .dd-list { margin: 0; padding: 0; list-style: none; }
@@ -654,7 +654,7 @@ a.biz:hover .biz-cta { }
 .product-cover img, .cover-tile { display: block; width: 100%; height: auto; aspect-ratio: 3 / 4; border-radius: 2px; border: 1px solid rgba(255, 255, 255, .1); object-fit: cover; }
 .product.is-soon .product-cover { opacity: .6; }
 /* bundles have no cover yet: a tile in the same style as the covers */
-.cover-tile { position: relative; display: flex; flex-direction: column; justify-content: center; gap: 12px; padding: 18px; overflow: hidden; background: radial-gradient(90% 55% at 50% -5%, #2a3347 0%, #151821 45%, #0b0c10 100%); }
+.cover-tile { position: relative; display: flex; flex-direction: column; justify-content: center; gap: 12px; padding: 18px; overflow: hidden; background: radial-gradient(90% 55% at 50% -5%, #2C2F38 0%, #16171C 45%, #0B0B0D 100%); }
 .tile-brand { position: absolute; top: 14px; left: 18px; font-size: 10px; font-weight: 500; letter-spacing: .3em; text-transform: uppercase; color: #9aa0ae; }
 .tile-line { width: 40px; height: 1px; background: linear-gradient(90deg, #8e7424, #e7c867, #8e7424); }
 .tile-title { font-size: clamp(16px, 1.8vw, 22px); font-weight: 200; line-height: 1.15; letter-spacing: -.01em; color: var(--text-platinum); }
@@ -886,28 +886,44 @@ body { font-size: clamp(16px, .3vw + 14.6px, 19px); }
 /* ==========================================================================
    Hero render (Nov 2026): the KB plaque, a digital render, full bleed. Wide screens: the words sit in its dark left
    side, clear of the plaque, in a hero one screen tall (never taller than 1000px). Phones and portrait screens:
-   the 4:5 crop on top and the words below on solid navy. Motion: one very slow zoom, nothing else.
+   the 4:5 crop on top and the words below on solid obsidian.
    ========================================================================== */
 .hero-render { position: relative; isolation: isolate; background: var(--bg-deep); }
-.hero-media { position: relative; overflow: hidden; aspect-ratio: 4 / 5; background: #0a0c12; }
-.hero-media::after { content: ""; position: absolute; inset: auto 0 0; height: 18%; background: linear-gradient(180deg, rgba(10, 12, 18, 0), var(--bg-deep)); pointer-events: none; }
+.hero-media { position: relative; overflow: hidden; aspect-ratio: 4 / 5; background: var(--obsidian); }
+.hero-media::after { content: ""; position: absolute; inset: auto 0 0; height: 18%; background: linear-gradient(180deg, rgba(13, 14, 18, 0), var(--obsidian)); pointer-events: none; }
 .hero-zoom { position: absolute; inset: 0; transform-origin: 50% 55%; animation: kb-hero-zoom 24s ease-in-out infinite alternate; }
 .hero-zoom picture { display: contents; }
 .hero-img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 50%; }
 @keyframes kb-hero-zoom { from { transform: scale(1); } to { transform: scale(1.03); } }
 .hero-render .hero-grid { display: block; min-height: 0; padding-block: 24px 48px; }
 @media (min-width: 720px) and (min-aspect-ratio: 1001/1000) {
-  .hero-render { height: clamp(560px, 100svh, 1000px); overflow: hidden; background: #0a0c12; }
+  .hero-render { height: clamp(560px, 100svh, 1000px); overflow: hidden; background: var(--obsidian); }
   .hero-media { position: absolute; inset: 0; z-index: -1; aspect-ratio: auto; }
   /* a soft shade under the nav, so its links read clearly over the spotlight */
-  .hero-media::after { content: ""; inset: 0 0 auto; height: 160px; background: linear-gradient(180deg, rgba(10, 12, 18, .72), rgba(10, 12, 18, 0)); }
+  .hero-media::after { content: ""; inset: 0 0 auto; height: 160px; background: linear-gradient(180deg, rgba(13, 14, 18, .72), rgba(13, 14, 18, 0)); }
   .hero-zoom { transform-origin: 72% 55%; }
-  .hero-img { object-position: 70% 50%; }
+  .hero-img { object-position: 76% 50%; }
   .hero-render .hero-grid { display: grid; align-content: center; height: 100%; min-height: 0; padding-block: var(--nav-h) 0; }
-  .hero-render .hero-text { max-width: min(38vw, 620px); }
+  .hero-render .hero-text { max-width: min(34vw, 560px); }
   .hero-render .hero-title { font-size: clamp(44px, 5vw, 80px); }
 }
-@media (prefers-reduced-motion: reduce) { .hero-zoom { animation: none; } }
+/* the looping film sits over the still and fades in once it plays; then the still's slow zoom stops */
+.hero-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 50%; opacity: 0; transition: opacity .9s var(--ease); pointer-events: none; }
+.has-video .hero-video { opacity: 1; }
+.has-video .hero-zoom { animation: none; }
+@media (min-width: 720px) and (min-aspect-ratio: 1001/1000) {
+  .hero-video { object-position: 76% 50%; }
+  /* the hero melts into the page: a soft fade to obsidian across the bottom 18% */
+  .hero-media::before { content: ""; position: absolute; z-index: 1; inset: auto 0 0; height: 18%; background: linear-gradient(180deg, rgba(13, 14, 18, 0), var(--obsidian)); pointer-events: none; }
+}
+/* over the hero the nav stays transparent, with platinum links, until the page scrolls */
+[data-page="home"] .nav:not(.is-scrolled) .nav-link { color: var(--platinum); }
+/* Our businesses: the Black Crest niche can play the card's film (desktop, on hover or focus) */
+.niche-media { position: relative; display: block; }
+.niche-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border: 1px solid var(--hairline); opacity: 0; transition: opacity .6s var(--ease); pointer-events: none; }
+.kb-niche.is-playing .niche-video { opacity: 1; }
+@media (min-width: 720px) and (max-width: 1199px) and (min-aspect-ratio: 1001/1000) { .hero-render .hero-text { max-width: 32vw; } }
+@media (prefers-reduced-motion: reduce) { .hero-zoom { animation: none; } .hero-video, .niche-video { display: none; } }
 /* Credits: a ruled list, label left and words right */
 .credits-list { margin: 8px 0 0; border-top: 1px solid var(--hairline); }
 .credits-list > div { display: grid; gap: 6px 40px; padding: 22px 0; border-bottom: 1px solid var(--hairline); }

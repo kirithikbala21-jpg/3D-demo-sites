@@ -1545,7 +1545,7 @@ page('about.html', 'About: Black Crest Web Designs', 'Black Crest Web Designs ma
           <p class="muted" style="margin-top:14px">Black Crest Web Designs is a brand of KB Ventures, a Melbourne company that starts and runs small businesses to one standard: clear, fair and well made.</p>
           <a class="link" href="{KB_SITE}">Visit KB Ventures {icon('arrow')}</a>
         </div>
-        <div class="kb-tile-mark">{pic('assets/renders/kb-plaque-small', 640, 560, 'Digital render of the KB Ventures plaque: smoked glass in a bronze frame, engraved KB', P, sizes='(min-width: 720px) 280px, 80vw')}</div>
+        <div class="kb-tile-mark">{pic('assets/renders/kb-plaque-small', 640, 560, 'Digital render of the KB Ventures plaque: champagne-gold KB engraved in smoked glass, in a brushed platinum frame', P, sizes='(min-width: 720px) 280px, 80vw')}</div>
       </div>
     </div>
   </section>

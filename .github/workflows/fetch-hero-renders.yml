@@ -1,0 +1,27 @@
+name: Fetch hero renders (one-time)
+on:
+  push:
+    paths:
+      - ".github/workflows/fetch-hero-renders.yml"
+permissions:
+  contents: write
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download the 2 renders
+        run: |
+          set -e
+          mkdir -p black-crest-site/assets/renders kbventures-site/img/renders
+          curl -fsSL -o black-crest-site/assets/renders/card-hero.png "https://d8j0ntlcm91z4.cloudfront.net/user_3LXtppjvmgwLL2PwfaswhUTJQPf/hf_20261104_034855_25e87440-d424-4868-a4b5-04248e5540fe.png"
+          curl -fsSL -o kbventures-site/img/renders/kb-plaque-hero.png "https://d8j0ntlcm91z4.cloudfront.net/user_3LXtppjvmgwLL2PwfaswhUTJQPf/hf_20261104_034956_c6bfeaf3-8612-4927-ae2a-aac0201a8273.png"
+          ls -la black-crest-site/assets/renders kbventures-site/img/renders
+      - name: Commit and remove this workflow
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add black-crest-site/assets/renders kbventures-site/img/renders
+          git rm .github/workflows/fetch-hero-renders.yml
+          git commit -m "Add hero renders (Black Crest card, KB plaque) and remove the one-time fetch workflow"
+          git push

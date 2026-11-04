@@ -1,0 +1,26 @@
+name: Fetch KB platinum render (one-time)
+on:
+  push:
+    paths:
+      - ".github/workflows/fetch-kb-platinum.yml"
+permissions:
+  contents: write
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download the render
+        run: |
+          set -e
+          mkdir -p kbventures-site/img/renders
+          curl -fsSL -o kbventures-site/img/renders/kb-plaque-hero-platinum.png "https://d8j0ntlcm91z4.cloudfront.net/user_3LXtppjvmgwLL2PwfaswhUTJQPf/hf_20261104_043308_1d1dc4fb-5806-46f4-88c8-1f7a0f7ab486.png"
+          ls -la kbventures-site/img/renders
+      - name: Commit and remove this workflow
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add kbventures-site/img/renders
+          git rm .github/workflows/fetch-kb-platinum.yml
+          git commit -m "Add KB plaque render in platinum (matches the KB palette) and remove the one-time fetch workflow"
+          git push

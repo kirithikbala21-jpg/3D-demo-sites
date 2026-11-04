@@ -899,7 +899,8 @@ body { font-size: clamp(16px, .3vw + 14.6px, 19px); }
 @media (min-width: 720px) and (min-aspect-ratio: 1001/1000) {
   .hero-render { height: clamp(560px, 100svh, 1000px); overflow: hidden; background: #0a0c12; }
   .hero-media { position: absolute; inset: 0; z-index: -1; aspect-ratio: auto; }
-  .hero-media::after { content: none; }
+  /* a soft shade under the nav, so its links read clearly over the spotlight */
+  .hero-media::after { content: ""; inset: 0 0 auto; height: 160px; background: linear-gradient(180deg, rgba(10, 12, 18, .72), rgba(10, 12, 18, 0)); }
   .hero-zoom { transform-origin: 72% 55%; }
   .hero-img { object-position: 70% 50%; }
   .hero-render .hero-grid { display: grid; align-content: center; height: 100%; min-height: 0; padding-block: var(--nav-h) 0; }

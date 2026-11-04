@@ -485,7 +485,8 @@ thead .col-us { color: var(--gold-2); }
 @media (min-width: 720px) and (min-aspect-ratio: 1001/1000) {
   .hero-render { display: grid; align-items: center; height: clamp(560px, 100svh, 1000px); padding: var(--header-h) 0 0; background: #0b0b0d; overflow: hidden; }
   .hero-media { position: absolute; inset: 0; z-index: -1; aspect-ratio: auto; }
-  .hero-media::after { content: none; }
+  /* a soft shade under the header, so the nav reads clearly over the spotlight */
+  .hero-media::after { content: ""; inset: 0 0 auto; height: 180px; background: linear-gradient(180deg, rgba(8, 9, 11, .72), rgba(8, 9, 11, 0)); }
   .hero-zoom { transform-origin: 72% 55%; }
   .hero-img { object-position: 70% 50%; }
   .hero-copy { padding-top: 0; padding-bottom: 0; }

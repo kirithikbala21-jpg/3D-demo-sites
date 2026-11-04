@@ -346,7 +346,8 @@ def head_block(label, title, lead='', split=False, level='h2', cls='h2', center=
 
 def cta_final(title, text, primary=('free-concept.html', 'Get a free concept'), secondary=None, P=''):
     sec = f'<a class="btn btn-ghost" href="{P}{secondary[0]}">{secondary[1]}</a>' if secondary else ''
-    card = pic('assets/renders/card-tight', 1120, 1200, '', P, sizes='(min-width: 1024px) 40vw, 92vw', cls='cta-card')
+    card = (f'<div class="cta-media">{pic(VIDEO + "-poster-mobile", 864, 1080, "", P, sizes="360px")}'
+            f'<video class="cta-video" muted loop playsinline disablepictureinpicture preload="none" aria-hidden="true" tabindex="-1" data-video="{P}{VIDEO}-mobile"></video></div>')
     return f'''<section class="cta-final" aria-labelledby="cta-h">
     <div class="container cta-split">
       <div class="cta-copy">
@@ -565,6 +566,16 @@ def hero_picture(P=''):
             f'<source type="image/webp" srcset="{hero_set("webp", P)}" sizes="100vw" width="2752" height="1536">'
             f'<img class="hero-img" src="{P}{HERO}-1920.jpg" srcset="{hero_set("jpg", P)}" sizes="100vw" width="2752" height="1536" '
             f'fetchpriority="high" decoding="async" alt="Digital render of the Black Crest card: black brushed metal with a gold crest, on a basalt plinth under one light"></picture>')
+
+
+VIDEO = 'assets/video/bc-hero'
+
+
+def hero_video(P=''):
+    """The looping hero video (10 s, silent). It has no files in the HTML: js/core.js picks the phone (4:5) or wide
+    (16:9) files and poster, and skips the video for reduced motion, Save-Data and 2G. Until it plays, the still shows."""
+    return (f'<video class="hero-video" autoplay muted loop playsinline disablepictureinpicture preload="none" aria-hidden="true" tabindex="-1" '
+            f'data-video="{P}{VIDEO}" data-poster="{P}{VIDEO}-poster"></video>')
 
 
 HERO_PRELOAD = (f'<link rel="preload" as="image" type="image/avif" media="{STACK}" imagesrcset="{hero_set("avif", "", True)}" imagesizes="100vw" fetchpriority="high">\n'
@@ -813,6 +824,7 @@ page('index.html', 'Black Crest Web Designs: premium sites for local businesses'
   <section class="hero hero-render" aria-labelledby="hero-h">
     <div class="hero-media" data-hero-media>
       <div class="hero-zoom">{hero_picture(P)}<span class="hero-sweep" aria-hidden="true"></span></div>
+      {hero_video(P)}
     </div>
     <div class="container hero-copy">
       <p class="label">Black Crest Web Designs &middot; Melbourne</p>

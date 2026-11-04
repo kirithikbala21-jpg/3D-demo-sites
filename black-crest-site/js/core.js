@@ -191,7 +191,7 @@ function boot() {
   if (hm && !reduce) {
     const img = $('img', hm), sweep = $('.hero-sweep', hm), stack = matchMedia('(max-width: 719px), (max-aspect-ratio: 1/1)');
     // [image width, height, card left, top, right, bottom, object-position x, y], in source pixels
-    const WIDE = [2752, 1536, 1544, 462, 2350, 1084, 0.7, 0.5], PHONE = [1228, 1536, 198, 462, 1004, 1084, 0.5, 0.5];
+    const WIDE = [2752, 1536, 1544, 462, 2350, 1084, 0.74, 0.5], PHONE = [1228, 1536, 198, 462, 1004, 1084, 0.5, 0.5];
     const place = () => {
       const [iw, ih, l, t, r, b, px, py] = stack.matches ? PHONE : WIDE;
       const w = hm.offsetWidth, h = hm.offsetHeight, k = Math.max(w / iw, h / ih), ox = (w - iw * k) * px, oy = (h - ih * k) * py;
@@ -205,6 +205,42 @@ function boot() {
     const drift = () => { ticking = false; const y = stack.matches ? 0 : Math.min(40, Math.max(0, scrollY * 0.08)); hm.style.transform = y ? `translate3d(0, ${y.toFixed(1)}px, 0)` : ''; };
     addEventListener('scroll', () => { if (!ticking && scrollY < innerHeight * 1.2) { ticking = true; requestAnimationFrame(drift); } }, { passive: true });
   }
+  /* ---------- Hero video: the looping film of the card, over the still ----------
+     Never for reduced motion, Save-Data or a 2G connection: then the still (with its CSS zoom and sweep) stays.
+     The files are chosen here, not by <source media>, which not every browser honours: the 4:5 phone film for the
+     stacked phone layout, the 16:9 film otherwise. It fades in only once it really plays, pauses when the hero is
+     off screen or the tab is hidden, and is decoration only (aria-hidden, out of the tab order). */
+  const conn = navigator.connection;
+  const lean = reduce || !!(conn && (conn.saveData || /(^|-)2g$/.test(conn.effectiveType || '')));
+  const sources = (v, base) => {
+    v.querySelectorAll('source').forEach((x) => x.remove());
+    // Safari (and every iPhone browser) gets the H.264 mp4 first; others the smaller WebM, with the mp4 as fallback
+    const apple = /Apple/.test(navigator.vendor || '');
+    (apple ? [['mp4', 'video/mp4'], ['webm', 'video/webm']] : [['webm', 'video/webm'], ['mp4', 'video/mp4']]).forEach(([ext, type]) => { const el = document.createElement('source'); el.src = `${base}.${ext}`; el.type = type; v.append(el); });
+    v.muted = true; v.defaultMuted = true; v.playsInline = true; v.load();
+  };
+  const hv = $('.hero-video');
+  if (hv && !lean) {
+    const hero = hv.closest('.hero'), phone = matchMedia('(max-width: 719px), (max-aspect-ratio: 1/1)');
+    let seen = true;
+    const play = () => { if (seen && !document.hidden) { const p = hv.play(); if (p && p.catch) p.catch(() => {}); } };
+    const pick = () => { const m = phone.matches; hv.poster = hv.dataset.poster + (m ? '-mobile' : '') + '.jpg'; sources(hv, hv.dataset.video + (m ? '-mobile' : '-1080')); play(); };
+    hv.addEventListener('playing', () => hero.classList.add('has-video'));
+    new IntersectionObserver(([e]) => { seen = e.isIntersecting; if (seen) play(); else hv.pause(); }).observe(hero);
+    document.addEventListener('visibilitychange', () => { if (document.hidden) hv.pause(); else play(); });
+    phone.addEventListener('change', () => { hero.classList.remove('has-video'); pick(); });
+    pick();
+  }
+  /* ---------- The small film in the final call to action: loads and plays only while it is on screen ---------- */
+  $$('.cta-video').forEach((v) => {
+    if (lean) return;
+    const box = v.closest('.cta-media');
+    v.addEventListener('playing', () => box.classList.add('is-playing'));
+    new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) { if (!v.querySelector('source')) sources(v, v.dataset.video); const p = v.play(); if (p && p.catch) p.catch(() => {}); } else v.pause();
+    }, { rootMargin: '120px 0px' }).observe(box);
+  });
+
   const stage = $('.hero-stage[data-hero3d]');
   if (stage && can3d) {
     const run = () => import('./hero3d.js').then((m) => m.start(stage, env)).catch((e) => console.warn('3D card skipped:', e && e.message));

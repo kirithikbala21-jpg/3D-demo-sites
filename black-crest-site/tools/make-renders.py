@@ -7,6 +7,7 @@ Writes:
   assets/renders/card-tight.{avif,webp,jpg}                           the card on its plinth, tight (final call to action)
   assets/renders/kb-plaque-small.{avif,webp,jpg}                      a small crop of the KB Ventures render ("Part of KB Ventures")
   img/og.jpg                                                          the share image, 1200 x 630
+  assets/video/bc-hero-poster{,-mobile}.{avif,webp}                  the video posters, smaller formats
 
     python3 black-crest-site/tools/make-renders.py
 """
@@ -61,6 +62,14 @@ d.text((64, 214), 'BLACK CREST WEB DESIGNS', font=sans, fill=(212, 175, 55))
 for i, line in enumerate(('Premium sites', 'for local', 'businesses.')):
     d.text((60, 250 + i * 72), line, font=serif, fill=(228, 230, 237))
 og.save(os.path.join(SITE, 'img', 'og.jpg'), quality=86, optimize=True, progressive=True)
+
+# the video posters (assets/video, made with the hero videos) also as AVIF and WebP, for the small video in the
+# final call to action, where the poster shows until the video is on screen
+VIDEO = os.path.join(SITE, 'assets', 'video')
+for name in ('bc-hero-poster-mobile', 'bc-hero-poster'):
+    jp = os.path.join(VIDEO, name + '.jpg')
+    if os.path.exists(jp):
+        im = Image.open(jp).convert('RGB'); im.save(os.path.join(VIDEO, name + '.avif'), quality=55); im.save(os.path.join(VIDEO, name + '.webp'), quality=78, method=6)
 
 for f in sorted(os.listdir(OUT)):
     if '.' in f:

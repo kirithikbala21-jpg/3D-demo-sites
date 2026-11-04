@@ -22,11 +22,11 @@ def fill(s):
     return s.replace('{name}', C['name']).replace('{location}', C['location']).replace('{email}', C['email'])
 
 
-def head(title, desc, path, extra='', scripts=(), lenis=True, noindex=False, base_script=False, P=''):
+def head(title, desc, path, extra='', scripts=(), lenis=True, noindex=False, base_script=False, P='', first=''):
     canon = SITE + path
-    ogalt = 'KB Ventures logo. Study guides and websites, made in Melbourne.'
+    ogalt = 'A digital render of the KB Ventures plaque, smoked glass in a bronze frame engraved KB, beside the line: Many businesses. One standard.'
     s = ['<!doctype html>', '<html lang="en-AU">', '<head>', '<meta charset="utf-8">',
-         '<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">']
+         '<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">'] + ([first] if first else [])
     late = [f'<link rel="icon" href="{P}img/kb-favicon.svg" type="image/svg+xml">', f'<link rel="icon" href="{P}favicon.ico" sizes="32x32">',
             f'<link rel="icon" href="{P}img/icon-192.png" type="image/png" sizes="192x192">', f'<link rel="icon" href="{P}img/icon-512.png" type="image/png" sizes="512x512">',
             f'<link rel="apple-touch-icon" href="{P}apple-touch-icon.png" sizes="180x180">',
@@ -79,7 +79,7 @@ def header_fallback(P='', images=True):
 
 def footer_fallback(P=''):
     links = [('businesses.html', 'Businesses'), ('about.html', 'About'), ('how-we-work.html', 'How we work'), ('faq.html', 'FAQ'), ('partner.html', 'Partner with us'), ('../black-crest-site/pricing.html', 'Website pricing'),
-             ('contact.html', 'Contact'), ('legal/privacy.html', 'Privacy'), ('legal/terms.html', 'Terms'), ('legal/refunds.html', 'Refunds')]
+             ('contact.html', 'Contact'), ('legal/privacy.html', 'Privacy'), ('legal/terms.html', 'Terms'), ('legal/refunds.html', 'Refunds'), ('credits.html', 'Credits')]
     return f'''<!-- site.js replaces this with the full footer from site.config.json -->
 <footer class="footer" id="site-footer"><div class="container"><div class="footer-bottom">
   <p>{' &middot; '.join(f'<a href="{P}{h}">{t}</a>' for h, t in links)} &middot; <a href="mailto:{C['email']}">{C['email']}</a></p>
@@ -119,6 +119,33 @@ def pic(stem, w, h, alt='', lazy=True, cls='', high=False, sizes=None):
     sz = f' sizes="{sizes}"' if sizes else ''
     return (f'<picture{f" class={chr(34)}{cls}{chr(34)}" if cls else ""}><source type="image/avif" srcset="{stem}.avif"{sz}><source type="image/webp" srcset="{stem}.webp"{sz}>'
             f'<img src="{stem}.jpg" width="{w}" height="{h}"{load} decoding="async" alt="{E(alt)}"></picture>')
+
+
+# The hero render (a digital render of the KB plaque, made by tools/make-renders.py). Phones and portrait screens get
+# the 4:5 crop with the words below it; wider screens get the 16:9 render with the words in its dark left side.
+STACK = '(max-width: 719px), (max-aspect-ratio: 1/1)'
+WIDE = '(min-width: 720px) and (min-aspect-ratio: 1001/1000)'
+HERO = 'img/renders/kb-plaque-hero'
+
+
+def hero_set(ext, phone=False):
+    return ', '.join(f'{HERO}-4x5-{w}.{ext} {w}w' for w in (720, 1080)) if phone else ', '.join(f'{HERO}-{w}.{ext} {w}w' for w in (800, 1280, 1920, 2752))
+
+
+def hero_picture():
+    ph = f'media="{STACK}" sizes="100vw" width="1080" height="1350"'
+    return (f'<picture>'
+            f'<source {ph} type="image/avif" srcset="{hero_set("avif", True)}">'
+            f'<source {ph} type="image/webp" srcset="{hero_set("webp", True)}">'
+            f'<source {ph} srcset="{hero_set("jpg", True)}">'
+            f'<source type="image/avif" srcset="{hero_set("avif")}" sizes="100vw" width="2752" height="1536">'
+            f'<source type="image/webp" srcset="{hero_set("webp")}" sizes="100vw" width="2752" height="1536">'
+            f'<img class="hero-img" src="{HERO}-1920.jpg" srcset="{hero_set("jpg")}" sizes="100vw" width="2752" height="1536" '
+            f'fetchpriority="high" decoding="async" alt="Digital render of the KB Ventures plaque: smoked glass in a bronze frame, engraved KB, on a plinth under one light"></picture>')
+
+
+HERO_PRELOAD = (f'<link rel="preload" as="image" type="image/avif" media="{STACK}" imagesrcset="{hero_set("avif", True)}" imagesizes="100vw" fetchpriority="high">\n'
+                f'<link rel="preload" as="image" type="image/avif" media="{WIDE}" imagesrcset="{hero_set("avif")}" imagesizes="100vw" fetchpriority="high">')
 
 
 def slug(t):
@@ -427,7 +454,10 @@ ld = {"@context": "https://schema.org", "@type": "Organization", "name": C['name
       "sameAs": [v for v in cfg['socials'].values() if v]}
 
 home_body = f'''<main id="main">
-  <section class="hero" id="top" aria-labelledby="hero-title">
+  <section class="hero hero-render" id="top" aria-labelledby="hero-title">
+    <div class="hero-media" data-hero-media>
+      <div class="hero-zoom">{hero_picture()}</div>
+    </div>
     <div class="container hero-grid">
       <div class="hero-text">
         <h1 class="hero-title" id="hero-title">{italic_last(C['tagline'])}</h1>
@@ -437,9 +467,6 @@ home_body = f'''<main id="main">
           <a class="pill pill-primary" href="#businesses" data-c="home.hero.primary">{E(hm['hero']['primary'])}</a>
           <a class="pill pill-secondary" href="contact.html" data-c="home.hero.secondary">{E(hm['hero']['secondary'])}</a>
         </div>
-      </div>
-      <div class="hero-stage" id="stage">
-        {pic('img/hero-plaque', 1280, 1600, 'A slim smoked-glass plaque engraved with the KB mark, standing on a basalt plinth under one warm light', lazy=False, cls='hero-still', high=True, sizes='(min-width: 1024px) 640px, 90vw')}
       </div>
     </div>
   </section>
@@ -520,8 +547,8 @@ home_body = f'''<main id="main">
 pages = {}
 pages['index.html'] = page('index.html', 'KB Ventures: many businesses, one standard',
                            'KB Ventures is a Melbourne company that starts and runs businesses, including AceGuides and Black Crest Web Designs.', home_body, 'home',
-                           extra='<script type="application/ld+json" id="org-data">' + json.dumps(ld, separators=(',', ':')) + '</script>',
-                           scripts=['<script src="main.js" defer></script>', '<script src="signup.js" defer></script>', '<script type="module" src="hero.js"></script>'])
+                           first=HERO_PRELOAD, extra='<script type="application/ld+json" id="org-data">' + json.dumps(ld, separators=(',', ':')) + '</script>',
+                           scripts=['<script src="main.js" defer></script>', '<script src="signup.js" defer></script>'])
 
 bp = cfg['businessesPage']
 pages['businesses.html'] = page('businesses.html', 'Our businesses: KB Ventures', 'The businesses started and run by KB Ventures. Each business has its own website.', f'''<main id="main" class="page">
@@ -951,6 +978,26 @@ nf_html = head('Page not found: KB Ventures', f"{nf['title']} {nf['text']}", '40
 </body>
 </html>
 '''
+CREDITS = [
+    ('Hero imagery', 'Hero imagery: digital render made for KB Ventures. The plaque is a render of the brand mark, not a photograph of a real object.'),
+    ('Black Crest card', 'The Black Crest card in Our businesses is a crop of the Black Crest hero render, a digital render made for Black Crest Web Designs.'),
+    ('Guide niches', 'The guides in their lit niches are made by KB Ventures with Three.js, using the real AceGuides covers.'),
+    ('Concept site previews', 'Screenshots of the six concept sites by Black Crest Web Designs.'),
+    ('Typefaces', 'Cormorant Garamond, under the SIL Open Font License, and Switzer by the Indian Type Foundry, under the ITF Free Font License. Both are served from this site.'),
+    ('Code libraries', 'Lenis 1.1.18 and Three.js 0.170.0, both under the MIT License and served from this site.'),
+]
+pages['credits.html'] = page('credits.html', 'Credits: KB Ventures', 'Where the imagery, typefaces and code libraries on the KB Ventures site come from.', f'''<main id="main" class="page">
+  <div class="container page-head">
+    <h1 class="page-title">Credits.</h1>
+    <p class="lead">Where the imagery, typefaces and code on this site come from.</p>
+  </div>
+  <div class="container">
+    <dl class="credits-list">
+{chr(10).join(f'      <div><dt>{E(k)}</dt><dd>{E(v)}</dd></div>' for k, v in CREDITS)}
+    </dl>
+  </div>
+</main>''', 'credits')
+
 pages['404.html'] = nf_html
 
 for name, content in pages.items():

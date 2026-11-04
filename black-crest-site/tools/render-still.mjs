@@ -1,7 +1,7 @@
 // Renders the stills and images made from the 3D card and the hallmark:
 //   assets/card-still.{avif,webp,jpg} (1800 x 1400) and card-still-s.* (900 x 700): what phones, low-power devices,
 //     reduced motion and browsers without WebGL see in place of the real-time card (js/hero3d.js with ?still=1)
-//   img/og.jpg (1200 x 630): the share image, from the same card
+//   (img/og.jpg is made by tools/make-renders.py from the hero render)
 //   img/icon-192.png, icon-512.png, icon-maskable-512.png, apple-touch-icon.png and favicon.ico: the hallmark
 //
 //   1. serve the repo root:   python3 -m http.server 8123 --bind 127.0.0.1
@@ -54,21 +54,9 @@ def save(im, stem):
 save(card, site + '/assets/card-still'); save(card.resize((card.width // 2, card.height // 2), Image.LANCZOS), site + '/assets/card-still-s')
 print('card still', card.size)
 
-# og.jpg: the words on the left, the card on the right
-og = Image.new('RGBA', (1200, 630), BG)
-c = card.crop(card.getbbox()); h = 520; c = c.resize((round(c.width * h / c.height), h), Image.LANCZOS)
-og.alpha_composite(c, (1200 - c.width + 40, 70))
-d = ImageDraw.Draw(og)
-serif = ImageFont.truetype(site + '/fonts/cormorant-garamond.woff2', 74); serif.set_variation_by_name('Medium')
-sans = ImageFont.truetype(site + '/fonts/switzer-500.woff2', 20)
-d.text((80, 150), 'BLACK CREST WEB DESIGNS', font=sans, fill=(169, 174, 186))
-d.line((80, 192, 136, 192), fill=(212, 175, 55), width=2)
-for i, line in enumerate(['Premium sites', 'for local', 'businesses']):
-    d.text((80, 222 + i * 80), line, font=serif, fill=(228, 230, 237))
-d.text((80, 520), 'Melbourne  ·  A free concept homepage first', font=sans, fill=(138, 143, 158))
-og.convert('RGB').save(site + '/img/og.jpg', quality=86, optimize=True, progressive=True)
+# og.jpg now comes from the hero render (tools/make-renders.py), so it is not written here
 for n in ('icon-512', 'icon-192', 'icon-maskable-512', 'apple-touch-icon'):
     Image.open(f'{tmp}/{n}.png').convert('RGB').save(f'{site}/img/{n}.png', optimize=True)
 Image.open(f'{tmp}/favicon-64.png').convert('RGB').save(site + '/favicon.ico', sizes=[(16, 16), (32, 32), (48, 48)])
-print('og.jpg and icons')
+print('icons')
 `], { stdio: 'inherit' });

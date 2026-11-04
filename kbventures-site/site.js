@@ -237,6 +237,7 @@
           <li><a href="${BASE}legal/privacy.html"${cur('privacy')}>${esc(f.privacy || 'Privacy')}</a></li>
           <li><a href="${BASE}legal/terms.html"${cur('terms')}>${esc(f.terms || 'Terms')}</a></li>
           <li><a href="${BASE}legal/refunds.html"${cur('refunds')}>${esc(f.refunds || 'Refunds')}</a></li>
+          <li><a href="${BASE}credits.html"${cur('credits')}>${esc(f.credits || 'Credits')}</a></li>
         </ul>
       </nav>
     </div>

@@ -253,6 +253,9 @@ svg[viewBox="0 0 24 24"] { fill: none; stroke: currentColor; stroke-width: 1.6; 
 
 .tile h3 { margin-bottom: 12px; }
 .tile p:last-child { margin-bottom: 0; }
+.kb-tile { display: grid; gap: 24px; align-items: center; }
+@media (min-width: 720px) { .kb-tile { grid-template-columns: minmax(0, 1fr) 260px; gap: 36px; } }
+.kb-tile-mark img { display: block; width: 100%; height: auto; border: 1px solid var(--hair); }
 .tile-label { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 12px; margin-bottom: 20px; font-size: 13px; font-weight: 500; letter-spacing: .28em; text-transform: uppercase; color: var(--silver); }
 .chip { display: inline-flex; align-items: center; min-height: 24px; padding: 0 10px; border: 1px solid var(--gold-soft); border-radius: 2px; color: var(--gold-2); font-size: 13px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; white-space: nowrap; }
 .chip-plain { border-color: var(--hair-2); color: var(--silver-2); }
@@ -449,40 +452,50 @@ thead .col-us { color: var(--gold-2); }
 .cta-final p { max-width: 36ch; margin: 30px 0 36px; color: var(--silver-2); font-size: clamp(18px, 1.6vw, 22px); }
 /* the card still has a wide dark margin: crop in so the card itself fills the column */
 .cta-visual { position: relative; margin: 0; }
-.cta-visual img { display: block; width: 150%; max-width: none; height: auto; margin: -16% 0 -8% -29%; -webkit-mask-image: linear-gradient(180deg, #000 78%, transparent); mask-image: linear-gradient(180deg, #000 78%, transparent); }
+.cta-visual img { display: block; width: 100%; max-width: 560px; height: auto; margin-left: auto; border: 1px solid var(--hair); }
 @media (max-width: 1023px) { .cta-visual { order: -1; max-width: 560px; margin: 0 auto -24px; } }
 
 /* ==========================================================================
    5. Pages
    ========================================================================== */
 
-/* ---------- Hero: the 3D crest right, the words left, the price card over the bottom edge ---------- */
-.hero { position: relative; isolation: isolate; display: grid; padding: 8px 0 0; }
-.hero::before { content: none; }
-.hero-stage { position: relative; height: clamp(260px, 74vw, 480px); margin: 0 auto; width: 100%; pointer-events: none; }
-.hero-stage .card-still img, .hero-stage canvas { position: absolute; inset: 0; width: 100% !important; height: 100% !important; object-fit: contain; }
-.hero-stage .card-still img { transition: opacity 1s var(--ease-out); }
-.hero-stage canvas { opacity: 0; transition: opacity 1.2s var(--ease-out); }
-.hero-stage.is-live canvas { opacity: 1; }
-.hero-stage.is-live .card-still img { opacity: 0; }
-.hero-copy { padding-top: 8px; padding-bottom: 56px; }
+/* ---------- Hero: the render of the card, full bleed; the words in its dark left side ----------
+   Wide screens: the 16:9 render fills the hero (100vh, never taller than 1000px) and the words stay in the left 40%,
+   clear of the card. Phones and portrait screens: the 4:5 crop sits on top and the words follow on solid basalt. */
+.hero { position: relative; isolation: isolate; }
+.hero-render { display: block; margin-top: calc(var(--header-h) * -1); padding: 0; background: var(--basalt); } /* the render runs under the transparent header */
+.hero-media { position: relative; overflow: hidden; aspect-ratio: 4 / 5; background: #0b0b0d; }
+.hero-media::after { content: ""; position: absolute; inset: auto 0 0; height: 18%; background: linear-gradient(180deg, rgba(22, 23, 28, 0), var(--basalt)); pointer-events: none; }
+.hero-zoom { position: absolute; inset: 0; transform-origin: 50% 55%; }
+.hero-zoom picture { display: contents; }
+.hero-img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 50%; }
+.hero-sweep { position: absolute; display: none; overflow: hidden; pointer-events: none; mix-blend-mode: screen; }
+.hero-sweep.is-on { display: block; }
+.hero-sweep::before { content: ""; position: absolute; top: -10%; bottom: -10%; left: -60%; width: 50%; background: linear-gradient(100deg, rgba(255, 238, 210, 0) 0%, rgba(255, 238, 210, 0) 25%, rgba(255, 238, 210, .13) 50%, rgba(255, 238, 210, 0) 75%, rgba(255, 238, 210, 0) 100%); transform: translateX(0); animation: card-sweep 9s cubic-bezier(.45, 0, .25, 1) 2s infinite; }
+@keyframes card-sweep { 0% { transform: translateX(0); } 24% { transform: translateX(340%); } 100% { transform: translateX(340%); } }
+@keyframes hero-zoom { from { transform: scale(1); } to { transform: scale(1.04); } }
+.hero-zoom { animation: hero-zoom 18s ease-in-out infinite alternate; }
+.hero-copy { padding-top: 28px; padding-bottom: 56px; }
 .hero-statement { display: flex; flex-wrap: wrap; gap: 6px 14px; margin: 32px 0 0; padding: 14px 0; border-top: 1px solid var(--hair-2); border-bottom: 1px solid var(--hair-2); font-size: 13px; font-weight: 500; letter-spacing: .18em; text-transform: uppercase; color: var(--silver-2); font-variant-numeric: tabular-nums; }
 .hero-statement span { color: var(--gold-2); }
 .hero-statement i { font-style: normal; color: var(--silver); }
 .hero h1 { font-size: clamp(3.2rem, 13vw, 8.6rem); line-height: .9; letter-spacing: -.035em; max-width: 9ch; }
 .hero .lead { margin: 24px 0 30px; max-width: 30ch; }
 .scroll-cue { display: none; }
-@media (min-width: 1024px) {
-  .hero { min-height: max(680px, 100svh); align-items: center; padding: var(--header-h) 0 0; }
-  .hero-stage { position: absolute; z-index: -1; top: calc(var(--header-h) + 2vh); bottom: 4vh; left: 44%; right: 0; width: auto; height: auto; }
-  .hero-copy { padding: 0 var(--gutter); }
-  .hero-copy > * { max-width: 48%; }
-  .hero h1 { font-size: clamp(4rem, 6.6vw, 8rem); max-width: 11ch; }
-  .hero .lead { font-size: 20px; }
+@media (min-width: 720px) and (min-aspect-ratio: 1001/1000) {
+  .hero-render { display: grid; align-items: center; height: clamp(560px, 100svh, 1000px); padding: var(--header-h) 0 0; background: #0b0b0d; overflow: hidden; }
+  .hero-media { position: absolute; inset: 0; z-index: -1; aspect-ratio: auto; }
+  .hero-media::after { content: none; }
+  .hero-zoom { transform-origin: 72% 55%; }
+  .hero-img { object-position: 70% 50%; }
+  .hero-copy { padding-top: 0; padding-bottom: 0; }
+  .hero-copy > * { max-width: min(38vw, 640px); }
+  .hero h1 { font-size: clamp(3.4rem, 5.6vw, 7rem); max-width: 11ch; }
+  .hero .lead { font-size: clamp(18px, 1.5vw, 22px); }
   .scroll-cue { position: absolute; left: var(--gutter); bottom: 28px; display: flex; align-items: center; gap: 12px; font-size: 13px; letter-spacing: .3em; text-transform: uppercase; color: var(--silver); }
   .scroll-cue i { width: 1px; height: 40px; background: linear-gradient(var(--gold), transparent); animation: cue 2.4s var(--ease) infinite; transform-origin: 50% 0; }
 }
-@media (min-width: 1440px) { .hero-copy { padding: 0; } }
+@media (min-width: 1440px) { .hero-copy { padding-left: var(--gutter); padding-right: var(--gutter); } }
 @keyframes cue { 0% { transform: scaleY(0); } 50% { transform: scaleY(1); } 100% { transform: scaleY(1); opacity: 0; } }
 
 /* ---------- Trade chapters: pinned full-screen scenes on desktop, stacked cards elsewhere ---------- */
@@ -1031,6 +1044,9 @@ html.lenis, html.lenis body { height: auto; }
   .draw-line { transform: none; }
   .brand .crest-outline { stroke-dashoffset: 0; }
   .grain, .progress, .hero::after, #intro, .scroll-cue { display: none !important; }
+  .hero-zoom { animation: none !important; transform: none !important; }
+  .hero-sweep { display: none !important; }
+  .hero-media { transform: none !important; }
   .marquee-track { transform: none; }
   ::view-transition-old(root), ::view-transition-new(root) { animation: none; }
 }

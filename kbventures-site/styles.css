@@ -882,3 +882,34 @@ body { font-size: clamp(16px, .3vw + 14.6px, 19px); }
 .card-sample { margin: 2px 2px 0; font-size: 15px; color: var(--text-2); }
 .ms-date { font-size: 13px; }
 .gallery-name { font-size: clamp(22px, 2vw, 28px); }
+
+/* ==========================================================================
+   Hero render (Nov 2026): the KB plaque, a digital render, full bleed. Wide screens: the words sit in its dark left
+   side, clear of the plaque, in a hero one screen tall (never taller than 1000px). Phones and portrait screens:
+   the 4:5 crop on top and the words below on solid navy. Motion: one very slow zoom, nothing else.
+   ========================================================================== */
+.hero-render { position: relative; isolation: isolate; background: var(--bg-deep); }
+.hero-media { position: relative; overflow: hidden; aspect-ratio: 4 / 5; background: #0a0c12; }
+.hero-media::after { content: ""; position: absolute; inset: auto 0 0; height: 18%; background: linear-gradient(180deg, rgba(10, 12, 18, 0), var(--bg-deep)); pointer-events: none; }
+.hero-zoom { position: absolute; inset: 0; transform-origin: 50% 55%; animation: kb-hero-zoom 24s ease-in-out infinite alternate; }
+.hero-zoom picture { display: contents; }
+.hero-img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 50%; }
+@keyframes kb-hero-zoom { from { transform: scale(1); } to { transform: scale(1.03); } }
+.hero-render .hero-grid { display: block; min-height: 0; padding-block: 24px 48px; }
+@media (min-width: 720px) and (min-aspect-ratio: 1001/1000) {
+  .hero-render { height: clamp(560px, 100svh, 1000px); overflow: hidden; background: #0a0c12; }
+  .hero-media { position: absolute; inset: 0; z-index: -1; aspect-ratio: auto; }
+  .hero-media::after { content: none; }
+  .hero-zoom { transform-origin: 72% 55%; }
+  .hero-img { object-position: 70% 50%; }
+  .hero-render .hero-grid { display: grid; align-content: center; height: 100%; min-height: 0; padding-block: var(--nav-h) 0; }
+  .hero-render .hero-text { max-width: min(38vw, 620px); }
+  .hero-render .hero-title { font-size: clamp(44px, 5vw, 80px); }
+}
+@media (prefers-reduced-motion: reduce) { .hero-zoom { animation: none; } }
+/* Credits: a ruled list, label left and words right */
+.credits-list { margin: 8px 0 0; border-top: 1px solid var(--hairline); }
+.credits-list > div { display: grid; gap: 6px 40px; padding: 22px 0; border-bottom: 1px solid var(--hairline); }
+@media (min-width: 760px) { .credits-list > div { grid-template-columns: 240px minmax(0, 1fr); } }
+.credits-list dt { font-family: var(--serif); font-size: clamp(22px, 2vw, 28px); font-weight: 500; color: var(--platinum); }
+.credits-list dd { margin: 0; max-width: 62ch; font-size: clamp(17px, .3vw + 15px, 19px); line-height: 1.65; color: var(--text-2); }

@@ -176,6 +176,27 @@ function boot() {
     const go = () => ('requestIdleCallback' in window ? requestIdleCallback(fn, { timeout: 1500 }) : setTimeout(fn, 200));
     if (document.readyState === 'complete') go(); else addEventListener('load', go, { once: true });
   };
+  /* ---------- Hero render: a slight parallax on scroll (40px at most) and one soft light sweep across the card ----------
+     The sweep sits exactly over the card: its box is worked out from the render's size, the crop on screen
+     (object-fit: cover) and where the card is in the source image. Off with reduced motion (the zoom is CSS). */
+  const hm = $('[data-hero-media]');
+  if (hm && !reduce) {
+    const img = $('img', hm), sweep = $('.hero-sweep', hm), stack = matchMedia('(max-width: 719px), (max-aspect-ratio: 1/1)');
+    // [image width, height, card left, top, right, bottom, object-position x, y], in source pixels
+    const WIDE = [2752, 1536, 1544, 462, 2350, 1084, 0.7, 0.5], PHONE = [1228, 1536, 198, 462, 1004, 1084, 0.5, 0.5];
+    const place = () => {
+      const [iw, ih, l, t, r, b, px, py] = stack.matches ? PHONE : WIDE;
+      const w = hm.offsetWidth, h = hm.offsetHeight, k = Math.max(w / iw, h / ih), ox = (w - iw * k) * px, oy = (h - ih * k) * py;
+      Object.assign(sweep.style, { left: ox + l * k + 'px', top: oy + t * k + 'px', width: (r - l) * k + 'px', height: (b - t) * k + 'px', clipPath: `inset(0 round ${Math.round((r - l) * k * 0.022)}px)` });
+      sweep.classList.add('is-on');
+    };
+    if (img.complete) place(); else img.addEventListener('load', place, { once: true });
+    addEventListener('resize', place, { passive: true }); stack.addEventListener('change', place);
+    let ticking = false;
+    // phones: the words sit below the image, so it does not drift
+    const drift = () => { ticking = false; const y = stack.matches ? 0 : Math.min(40, Math.max(0, scrollY * 0.08)); hm.style.transform = y ? `translate3d(0, ${y.toFixed(1)}px, 0)` : ''; };
+    addEventListener('scroll', () => { if (!ticking && scrollY < innerHeight * 1.2) { ticking = true; requestAnimationFrame(drift); } }, { passive: true });
+  }
   const stage = $('.hero-stage[data-hero3d]');
   if (stage && can3d) {
     const run = () => import('./hero3d.js').then((m) => m.start(stage, env)).catch((e) => console.warn('3D card skipped:', e && e.message));

@@ -19,7 +19,7 @@
 <meta property="og:image" content="https://kirithikbala21-jpg.github.io/3D-demo-sites/black-crest-site/img/og.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="A black brushed-titanium card engraved in gold with the Black Crest hallmark, beside the line: Premium sites for local businesses.">
+<meta property="og:image:alt" content="A digital render of the Black Crest card, black brushed metal with a gold crest on a basalt plinth, beside the line: Premium sites for local businesses.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="About: Black Crest Web Designs">
 <meta name="twitter:description" content="Black Crest Web Designs makes premium websites for local businesses in Melbourne. Plain English, clear prices, and you own your site. A KB Ventures company.">
@@ -31,10 +31,10 @@
 <link rel="preload" href="fonts/cormorant-garamond.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/switzer-400.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="style.min.css">
-<script src="vendor/gsap/gsap.min.js" defer></script>
-<script src="vendor/gsap/ScrollTrigger.min.js" defer></script>
-<script src="vendor/gsap/SplitText.min.js" defer></script>
-<script src="vendor/lenis/lenis.min.js" defer></script>
+<script src="vendor/gsap/gsap.min.js" defer fetchpriority="low"></script>
+<script src="vendor/gsap/ScrollTrigger.min.js" defer fetchpriority="low"></script>
+<script src="vendor/gsap/SplitText.min.js" defer fetchpriority="low"></script>
+<script src="vendor/lenis/lenis.min.js" defer fetchpriority="low"></script>
 <script type="module" src="js/core.js"></script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"ProfessionalService","@id":"https://kirithikbala21-jpg.github.io/3D-demo-sites/black-crest-site/#business","name":"Black Crest Web Designs","slogan":"Premium sites for local businesses","description":"Fast, good-looking websites for local businesses in Melbourne. A free concept homepage first, clear prices, and you own your site.","url":"https://kirithikbala21-jpg.github.io/3D-demo-sites/black-crest-site/","email":"kb.ventures@outlook.com","image":"https://kirithikbala21-jpg.github.io/3D-demo-sites/black-crest-site/img/og.jpg","logo":"https://kirithikbala21-jpg.github.io/3D-demo-sites/black-crest-site/img/icon-512.png","address":{"@type":"PostalAddress","addressLocality":"Melbourne","addressRegion":"VIC","addressCountry":"AU"},"areaServed":{"@type":"City","name":"Melbourne"},"parentOrganization":{"@type":"Organization","name":"KB Ventures","url":"https://kirithikbala21-jpg.github.io/3D-demo-sites/kbventures-site/"},"makesOffer":[{"@type":"Offer","name":"One Page website","price":"300.00","priceCurrency":"AUD","url":"https://kirithikbala21-jpg.github.io/3D-demo-sites/black-crest-site/pricing.html"},{"@type":"Offer","name":"Full Website (up to about 5 pages)","price":"700.00","priceCurrency":"AUD","url":"https://kirithikbala21-jpg.github.io/3D-demo-sites/black-crest-site/pricing.html"},{"@type":"Offer","name":"Care plan","price":"30.00","priceCurrency":"AUD","url":"https://kirithikbala21-jpg.github.io/3D-demo-sites/black-crest-site/care-plan.html","priceSpecification":{"@type":"UnitPriceSpecification","price":"30.00","priceCurrency":"AUD","unitText":"month"}}]}</script>
 </head>
@@ -111,11 +111,14 @@
   </section>
   <section class="section" aria-labelledby="kb-h">
     <div class="container narrow">
-      <div class="tile" data-reveal>
-        <p class="label">A KB Ventures company</p>
-        <h2 id="kb-h" class="h3">Part of something bigger.</h2>
-        <p class="muted" style="margin-top:14px">Black Crest Web Designs is a brand of KB Ventures, a Melbourne company that starts and runs small businesses to one standard: clear, fair and well made.</p>
-        <a class="link" href="../kbventures-site/">Visit KB Ventures <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      <div class="tile kb-tile" data-reveal>
+        <div class="kb-tile-copy">
+          <p class="label">A KB Ventures company</p>
+          <h2 id="kb-h" class="h3">Part of something bigger.</h2>
+          <p class="muted" style="margin-top:14px">Black Crest Web Designs is a brand of KB Ventures, a Melbourne company that starts and runs small businesses to one standard: clear, fair and well made.</p>
+          <a class="link" href="../kbventures-site/">Visit KB Ventures <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+        <div class="kb-tile-mark"><picture><source type="image/avif" srcset="assets/renders/kb-plaque-small.avif" sizes="(min-width: 720px) 280px, 80vw"><source type="image/webp" srcset="assets/renders/kb-plaque-small.webp" sizes="(min-width: 720px) 280px, 80vw"><img src="assets/renders/kb-plaque-small.jpg" width="640" height="560" loading="lazy" decoding="async" alt="Digital render of the KB Ventures plaque: smoked glass in a bronze frame, engraved KB"></picture></div>
       </div>
     </div>
   </section>

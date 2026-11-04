@@ -234,7 +234,7 @@ PRELOADER = f'''<div class="preloader" id="preloader" aria-hidden="true">
 </div>'''
 
 
-def head(title, desc, path, P, noindex=False, ld=(), base_script=False, extra='', vendor=()):
+def head(title, desc, path, P, noindex=False, ld=(), base_script=False, extra='', vendor=(), first=''):
     canon = SITE + path
     og = SITE + 'img/og.jpg'
     lds = ''.join(f'\n<script type="application/ld+json">{json.dumps(x, ensure_ascii=False, separators=(",", ":"))}</script>' for x in ld)
@@ -245,7 +245,7 @@ def head(title, desc, path, P, noindex=False, ld=(), base_script=False, extra=''
 <head>
 <meta charset="utf-8">
 <script>(function(d){{d.classList.add('js');try{{if(!sessionStorage.getItem('bc-pre')&&!matchMedia('(prefers-reduced-motion: reduce)').matches)d.classList.add('preload')}}catch(e){{}}}})(document.documentElement)</script>
-{base}<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+{base}<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">{chr(10) + first if first else ''}
 <title>{E(title)}</title>
 <meta name="description" content="{E(desc)}">
 {'<meta name="robots" content="noindex,follow">' if noindex else ''}
@@ -261,7 +261,7 @@ def head(title, desc, path, P, noindex=False, ld=(), base_script=False, extra=''
 <meta property="og:image" content="{og}">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="A black brushed-titanium card engraved in gold with the Black Crest hallmark, beside the line: Premium sites for local businesses.">
+<meta property="og:image:alt" content="A digital render of the Black Crest card, black brushed metal with a gold crest on a basalt plinth, beside the line: Premium sites for local businesses.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{E(title)}">
 <meta name="twitter:description" content="{E(desc)}">
@@ -273,10 +273,10 @@ def head(title, desc, path, P, noindex=False, ld=(), base_script=False, extra=''
 <link rel="preload" href="{P}fonts/cormorant-garamond.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="{P}fonts/switzer-400.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="{P}style.min.css">{extra}
-<script src="{P}vendor/gsap/gsap.min.js" defer></script>
-<script src="{P}vendor/gsap/ScrollTrigger.min.js" defer></script>
-<script src="{P}vendor/gsap/SplitText.min.js" defer></script>
-<script src="{P}vendor/lenis/lenis.min.js" defer></script>{''.join(f'<script src="{P}vendor/{v}" defer></script>' for v in vendor)}
+<script src="{P}vendor/gsap/gsap.min.js" defer fetchpriority="low"></script>
+<script src="{P}vendor/gsap/ScrollTrigger.min.js" defer fetchpriority="low"></script>
+<script src="{P}vendor/gsap/SplitText.min.js" defer fetchpriority="low"></script>
+<script src="{P}vendor/lenis/lenis.min.js" defer fetchpriority="low"></script>{''.join(f'<script src="{P}vendor/{v}" defer fetchpriority="low"></script>' for v in vendor)}
 <script type="module" src="{P}js/core.js"></script>{lds}
 </head>'''
 
@@ -306,7 +306,7 @@ def picturise(html, P):
 pages = {}
 
 
-def page(path, title, desc, body, noindex=False, ld=(), bare=False, base_script=False, extra='', toast=False, vendor=(), pre=False):
+def page(path, title, desc, body, noindex=False, ld=(), bare=False, base_script=False, extra='', toast=False, vendor=(), pre=False, first=''):
     P = '../' * path.count('/')
     top = '' if bare else header(P, path)
     bottom = '' if bare else f'{footer(P, path)}\n{mobile_bar(P)}'
@@ -314,7 +314,7 @@ def page(path, title, desc, body, noindex=False, ld=(), bare=False, base_script=
     if path != 'index.html':
         body = re.sub(r'<p class="label">(?!<span class="idx">)([^<]+)</p>', r'<p class="label"><span class="idx">01</span><span class="slash" aria-hidden="true">/</span>\1</p>', body, count=1)
     body = picturise(body, P)
-    pages[path] = f'''{head(title, desc, path if path != 'index.html' else '', P, noindex, ld, base_script, extra, vendor)}
+    pages[path] = f'''{head(title, desc, path if path != 'index.html' else '', P, noindex, ld, base_script, extra, vendor, first)}
 <body>
 <a class="skip" href="#main">Skip to content</a>
 <div class="grain" aria-hidden="true"></div>
@@ -338,7 +338,7 @@ def head_block(label, title, lead='', split=False, level='h2', cls='h2', center=
 
 def cta_final(title, text, primary=('free-concept.html', 'Get a free concept'), secondary=None, P=''):
     sec = f'<a class="btn btn-ghost" href="{P}{secondary[0]}">{secondary[1]}</a>' if secondary else ''
-    card = pic('assets/card-still', 1800, 1400, '', P, sizes='(min-width: 1024px) 46vw, 92vw', small=('assets/card-still-s', 900), cls='cta-card')
+    card = pic('assets/renders/card-tight', 1120, 1200, '', P, sizes='(min-width: 1024px) 40vw, 92vw', cls='cta-card')
     return f'''<section class="cta-final" aria-labelledby="cta-h">
     <div class="container cta-split">
       <div class="cta-copy">
@@ -534,6 +534,33 @@ def pic(stem, w, h, alt, P='', lazy=True, sizes='100vw', small=None, cls='', hig
     return (f'<picture{f" class={chr(34)}{cls}{chr(34)}" if cls else ""}><source type="image/avif" srcset="{ss("avif")}" sizes="{sizes}">'
             f'<source type="image/webp" srcset="{ss("webp")}" sizes="{sizes}">'
             f'<img src="{P}{stem}.jpg" width="{w}" height="{h}" {load} decoding="async" alt="{alt}"></picture>')
+
+
+# The hero render (a digital render of the brand card, made by tools/make-renders.py). Phones and portrait screens
+# get the 4:5 crop with the words below it; wider screens get the 16:9 render with the words in its dark left side.
+STACK = '(max-width: 719px), (max-aspect-ratio: 1/1)'
+WIDE = '(min-width: 720px) and (min-aspect-ratio: 1001/1000)'
+HERO = 'assets/renders/card-hero'
+
+
+def hero_set(ext, P='', phone=False):
+    return ', '.join(f'{P}{HERO}-4x5-{w}.{ext} {w}w' for w in (720, 1080)) if phone else ', '.join(f'{P}{HERO}-{w}.{ext} {w}w' for w in (800, 1280, 1920, 2752))
+
+
+def hero_picture(P=''):
+    ph = f'media="{STACK}" sizes="100vw" width="1080" height="1350"'
+    return (f'<picture>'
+            f'<source {ph} type="image/avif" srcset="{hero_set("avif", P, True)}">'
+            f'<source {ph} type="image/webp" srcset="{hero_set("webp", P, True)}">'
+            f'<source {ph} srcset="{hero_set("jpg", P, True)}">'
+            f'<source type="image/avif" srcset="{hero_set("avif", P)}" sizes="100vw" width="2752" height="1536">'
+            f'<source type="image/webp" srcset="{hero_set("webp", P)}" sizes="100vw" width="2752" height="1536">'
+            f'<img class="hero-img" src="{P}{HERO}-1920.jpg" srcset="{hero_set("jpg", P)}" sizes="100vw" width="2752" height="1536" '
+            f'fetchpriority="high" decoding="async" alt="Digital render of the Black Crest card: black brushed metal with a gold crest, on a basalt plinth under one light"></picture>')
+
+
+HERO_PRELOAD = (f'<link rel="preload" as="image" type="image/avif" media="{STACK}" imagesrcset="{hero_set("avif", "", True)}" imagesizes="100vw" fetchpriority="high">\n'
+                f'<link rel="preload" as="image" type="image/avif" media="{WIDE}" imagesrcset="{hero_set("avif")}" imagesizes="100vw" fetchpriority="high">')
 
 
 # per-photo exposure trims, so the set reads as one: dark, warm, one light source (see the CSS grade)
@@ -775,9 +802,9 @@ def melbourne(P):
 
 P = ''
 page('index.html', 'Black Crest Web Designs: premium sites for local businesses', f'Premium websites for Melbourne barbers, cafes, gyms, salons and trades. We design your homepage first, free. One Page {money(ONE)}, Full Website {money(FULL)}.', f'''<main id="main">
-  <section class="hero" aria-labelledby="hero-h">
-    <div class="hero-stage" data-hero3d>
-      {pic('assets/card-still', 1800, 1400, '', P, lazy=False, sizes='(min-width: 1024px) 52vw, 92vw', small=('assets/card-still-s', 900), cls='card-still', high=True)}
+  <section class="hero hero-render" aria-labelledby="hero-h">
+    <div class="hero-media" data-hero-media>
+      <div class="hero-zoom">{hero_picture(P)}<span class="hero-sweep" aria-hidden="true"></span></div>
     </div>
     <div class="container hero-copy">
       <p class="label">Black Crest Web Designs &middot; Melbourne</p>
@@ -861,7 +888,7 @@ page('index.html', 'Black Crest Web Designs: premium sites for local businesses'
   </section>
 
   {cta_final('See it <em>before</em> you pay.', 'Tell us about your business. We reply within 1 business day and design your homepage for free.', secondary=('contact.html', 'Ask a question'))}
-</main>''', ld=[ORG], vendor=('gsap/Flip.min.js',), pre=True)
+</main>''', ld=[ORG], vendor=('gsap/Flip.min.js',), pre=True, first=HERO_PRELOAD)
 
 
 # ================================================================= Concept Lab
@@ -1101,6 +1128,7 @@ CREDIT_ROWS = [
     ('Trade chapter photos (home page)', 'All five are from Unsplash, under the Unsplash License. '
      + (f'Photographers: {_NEW_CREDIT}.' if NEW_PHOTOS else '')
      + ('' if 'barbers' in NEW_PHOTOS else ' The Barbers photo comes from the barber concept site; its photographer was not recorded when it was first collected and will be added here when found.')),
+    ('Hero imagery', 'Hero imagery: digital render made for Black Crest Web Designs. The card and the KB Ventures plaque are renders of the brand marks, not photographs of real objects.'),
     ('Concept site screenshots and the showreel', 'Captured by Black Crest from our own six concept sites.'),
     ('The 3D card, the concept collection and their stills', 'Made by Black Crest with Three.js: the card from the Black Crest hallmark, the stone and brushed metal drawn in code, and the phones showing screenshots of our own concepts.'),
     ('Typefaces', 'Cormorant Garamond, under the SIL Open Font License, and Switzer by the Indian Type Foundry, under the ITF Free Font License (Fontshare). Both are served from this site.'),
@@ -1490,11 +1518,14 @@ page('about.html', 'About: Black Crest Web Designs', 'Black Crest Web Designs ma
   </section>
   <section class="section" aria-labelledby="kb-h">
     <div class="container narrow">
-      <div class="tile" data-reveal>
-        <p class="label">A KB Ventures company</p>
-        <h2 id="kb-h" class="h3">Part of something bigger.</h2>
-        <p class="muted" style="margin-top:14px">Black Crest Web Designs is a brand of KB Ventures, a Melbourne company that starts and runs small businesses to one standard: clear, fair and well made.</p>
-        <a class="link" href="{KB_SITE}">Visit KB Ventures {icon('arrow')}</a>
+      <div class="tile kb-tile" data-reveal>
+        <div class="kb-tile-copy">
+          <p class="label">A KB Ventures company</p>
+          <h2 id="kb-h" class="h3">Part of something bigger.</h2>
+          <p class="muted" style="margin-top:14px">Black Crest Web Designs is a brand of KB Ventures, a Melbourne company that starts and runs small businesses to one standard: clear, fair and well made.</p>
+          <a class="link" href="{KB_SITE}">Visit KB Ventures {icon('arrow')}</a>
+        </div>
+        <div class="kb-tile-mark">{pic('assets/renders/kb-plaque-small', 640, 560, 'Digital render of the KB Ventures plaque: smoked glass in a bronze frame, engraved KB', P, sizes='(min-width: 720px) 280px, 80vw')}</div>
       </div>
     </div>
   </section>
@@ -1742,7 +1773,7 @@ page('404.html', 'Page not found: Black Crest Web Designs', 'This page could not
       <p class="lead" data-reveal>The address may be mistyped, or the page may have moved. These will get you back on track.</p>
       <div class="btn-row" data-reveal><a class="btn btn-gold" href="index.html">Go to the home page</a><a class="btn btn-ghost" href="work.html">See the work</a></div>
     </div>
-    <div class="nf-card" aria-hidden="true">{pic('assets/card-still', 1800, 1400, '', '', sizes='(min-width: 1024px) 40vw, 80vw', small=('assets/card-still-s', 900))}</div>
+    <div class="nf-card" aria-hidden="true">{pic('assets/renders/card-tight', 1120, 1200, '', '', sizes='(min-width: 1024px) 34vw, 80vw')}</div>
   </div>
 </main>''', noindex=True, base_script=True)
 

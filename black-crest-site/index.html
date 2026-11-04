@@ -4,6 +4,8 @@
 <meta charset="utf-8">
 <script>(function(d){d.classList.add('js');try{if(!sessionStorage.getItem('bc-pre')&&!matchMedia('(prefers-reduced-motion: reduce)').matches)d.classList.add('preload')}catch(e){}})(document.documentElement)</script>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<link rel="preload" as="image" type="image/avif" media="(max-width: 719px), (max-aspect-ratio: 1/1)" imagesrcset="assets/renders/card-hero-4x5-720.avif 720w, assets/renders/card-hero-4x5-1080.avif 1080w" imagesizes="100vw" fetchpriority="high">
+<link rel="preload" as="image" type="image/avif" media="(min-width: 720px) and (min-aspect-ratio: 1001/1000)" imagesrcset="assets/renders/card-hero-800.avif 800w, assets/renders/card-hero-1280.avif 1280w, assets/renders/card-hero-1920.avif 1920w, assets/renders/card-hero-2752.avif 2752w" imagesizes="100vw" fetchpriority="high">
 <title>Black Crest Web Designs: premium sites for local businesses</title>
 <meta name="description" content="Premium websites for Melbourne barbers, cafes, gyms, salons and trades. We design your homepage first, free. One Page $300, Full Website $700.">
 
@@ -19,7 +21,7 @@
 <meta property="og:image" content="https://kirithikbala21-jpg.github.io/3D-demo-sites/black-crest-site/img/og.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="A black brushed-titanium card engraved in gold with the Black Crest hallmark, beside the line: Premium sites for local businesses.">
+<meta property="og:image:alt" content="A digital render of the Black Crest card, black brushed metal with a gold crest on a basalt plinth, beside the line: Premium sites for local businesses.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Black Crest Web Designs: premium sites for local businesses">
 <meta name="twitter:description" content="Premium websites for Melbourne barbers, cafes, gyms, salons and trades. We design your homepage first, free. One Page $300, Full Website $700.">
@@ -31,10 +33,10 @@
 <link rel="preload" href="fonts/cormorant-garamond.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/switzer-400.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="style.min.css">
-<script src="vendor/gsap/gsap.min.js" defer></script>
-<script src="vendor/gsap/ScrollTrigger.min.js" defer></script>
-<script src="vendor/gsap/SplitText.min.js" defer></script>
-<script src="vendor/lenis/lenis.min.js" defer></script><script src="vendor/gsap/Flip.min.js" defer></script>
+<script src="vendor/gsap/gsap.min.js" defer fetchpriority="low"></script>
+<script src="vendor/gsap/ScrollTrigger.min.js" defer fetchpriority="low"></script>
+<script src="vendor/gsap/SplitText.min.js" defer fetchpriority="low"></script>
+<script src="vendor/lenis/lenis.min.js" defer fetchpriority="low"></script><script src="vendor/gsap/Flip.min.js" defer fetchpriority="low"></script>
 <script type="module" src="js/core.js"></script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"ProfessionalService","@id":"https://kirithikbala21-jpg.github.io/3D-demo-sites/black-crest-site/#business","name":"Black Crest Web Designs","slogan":"Premium sites for local businesses","description":"Fast, good-looking websites for local businesses in Melbourne. A free concept homepage first, clear prices, and you own your site.","url":"https://kirithikbala21-jpg.github.io/3D-demo-sites/black-crest-site/","email":"kb.ventures@outlook.com","image":"https://kirithikbala21-jpg.github.io/3D-demo-sites/black-crest-site/img/og.jpg","logo":"https://kirithikbala21-jpg.github.io/3D-demo-sites/black-crest-site/img/icon-512.png","address":{"@type":"PostalAddress","addressLocality":"Melbourne","addressRegion":"VIC","addressCountry":"AU"},"areaServed":{"@type":"City","name":"Melbourne"},"parentOrganization":{"@type":"Organization","name":"KB Ventures","url":"https://kirithikbala21-jpg.github.io/3D-demo-sites/kbventures-site/"},"makesOffer":[{"@type":"Offer","name":"One Page website","price":"300.00","priceCurrency":"AUD","url":"https://kirithikbala21-jpg.github.io/3D-demo-sites/black-crest-site/pricing.html"},{"@type":"Offer","name":"Full Website (up to about 5 pages)","price":"700.00","priceCurrency":"AUD","url":"https://kirithikbala21-jpg.github.io/3D-demo-sites/black-crest-site/pricing.html"},{"@type":"Offer","name":"Care plan","price":"30.00","priceCurrency":"AUD","url":"https://kirithikbala21-jpg.github.io/3D-demo-sites/black-crest-site/care-plan.html","priceSpecification":{"@type":"UnitPriceSpecification","price":"30.00","priceCurrency":"AUD","unitText":"month"}}]}</script>
 </head>
@@ -71,9 +73,9 @@
   </div>
 </div>
 <main id="main">
-  <section class="hero" aria-labelledby="hero-h">
-    <div class="hero-stage" data-hero3d>
-      <picture class="card-still"><source type="image/avif" srcset="assets/card-still-s.avif 900w, assets/card-still.avif 1800w" sizes="(min-width: 1024px) 52vw, 92vw"><source type="image/webp" srcset="assets/card-still-s.webp 900w, assets/card-still.webp 1800w" sizes="(min-width: 1024px) 52vw, 92vw"><img src="assets/card-still.jpg" width="1800" height="1400" fetchpriority="high" decoding="async" alt=""></picture>
+  <section class="hero hero-render" aria-labelledby="hero-h">
+    <div class="hero-media" data-hero-media>
+      <div class="hero-zoom"><picture><source media="(max-width: 719px), (max-aspect-ratio: 1/1)" sizes="100vw" width="1080" height="1350" type="image/avif" srcset="assets/renders/card-hero-4x5-720.avif 720w, assets/renders/card-hero-4x5-1080.avif 1080w"><source media="(max-width: 719px), (max-aspect-ratio: 1/1)" sizes="100vw" width="1080" height="1350" type="image/webp" srcset="assets/renders/card-hero-4x5-720.webp 720w, assets/renders/card-hero-4x5-1080.webp 1080w"><source media="(max-width: 719px), (max-aspect-ratio: 1/1)" sizes="100vw" width="1080" height="1350" srcset="assets/renders/card-hero-4x5-720.jpg 720w, assets/renders/card-hero-4x5-1080.jpg 1080w"><source type="image/avif" srcset="assets/renders/card-hero-800.avif 800w, assets/renders/card-hero-1280.avif 1280w, assets/renders/card-hero-1920.avif 1920w, assets/renders/card-hero-2752.avif 2752w" sizes="100vw" width="2752" height="1536"><source type="image/webp" srcset="assets/renders/card-hero-800.webp 800w, assets/renders/card-hero-1280.webp 1280w, assets/renders/card-hero-1920.webp 1920w, assets/renders/card-hero-2752.webp 2752w" sizes="100vw" width="2752" height="1536"><img class="hero-img" src="assets/renders/card-hero-1920.jpg" srcset="assets/renders/card-hero-800.jpg 800w, assets/renders/card-hero-1280.jpg 1280w, assets/renders/card-hero-1920.jpg 1920w, assets/renders/card-hero-2752.jpg 2752w" sizes="100vw" width="2752" height="1536" fetchpriority="high" decoding="async" alt="Digital render of the Black Crest card: black brushed metal with a gold crest, on a basalt plinth under one light"></picture><span class="hero-sweep" aria-hidden="true"></span></div>
     </div>
     <div class="container hero-copy">
       <p class="label">Black Crest Web Designs &middot; Melbourne</p>
@@ -395,7 +397,7 @@
         <p data-reveal>Tell us about your business. We reply within 1 business day and design your homepage for free.</p>
         <div class="btn-row" data-reveal><a class="btn btn-gold" href="free-concept.html">Get a free concept</a><a class="btn btn-ghost" href="contact.html">Ask a question</a></div>
       </div>
-      <div class="cta-visual" aria-hidden="true" data-reveal><picture class="cta-card"><source type="image/avif" srcset="assets/card-still-s.avif 900w, assets/card-still.avif 1800w" sizes="(min-width: 1024px) 46vw, 92vw"><source type="image/webp" srcset="assets/card-still-s.webp 900w, assets/card-still.webp 1800w" sizes="(min-width: 1024px) 46vw, 92vw"><img src="assets/card-still.jpg" width="1800" height="1400" loading="lazy" decoding="async" alt=""></picture></div>
+      <div class="cta-visual" aria-hidden="true" data-reveal><picture class="cta-card"><source type="image/avif" srcset="assets/renders/card-tight.avif" sizes="(min-width: 1024px) 40vw, 92vw"><source type="image/webp" srcset="assets/renders/card-tight.webp" sizes="(min-width: 1024px) 40vw, 92vw"><img src="assets/renders/card-tight.jpg" width="1120" height="1200" loading="lazy" decoding="async" alt=""></picture></div>
     </div>
   </section>
 </main>

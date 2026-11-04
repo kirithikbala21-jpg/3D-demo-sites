@@ -49,7 +49,7 @@ if (pre) {
   if (!root.classList.contains('preload')) pre.remove();
   else {
     store.set('bc-pre', '1');
-    const out = $('[data-pre-count]', pre), t0 = performance.now(), heroImg = $('.hero-stage img');
+    const out = $('[data-pre-count]', pre), t0 = 0, heroImg = $('.hero-img'); // 1.4 s at most, counted from the start of the visit
     const jobs = [
       document.fonts ? document.fonts.ready : Promise.resolve(),
       heroImg && !heroImg.complete ? new Promise((r) => { heroImg.addEventListener('load', r, { once: true }); heroImg.addEventListener('error', r, { once: true }); }) : Promise.resolve(),
@@ -88,6 +88,9 @@ function boot() {
   /* ---------- Showreel: plays muted while on screen (not with reduced motion); "Play reel" opens it full screen ---------- */
   const reel = $('[data-reel]');
   if (reel) {
+    // its poster frame loads when the reel comes near the screen, not with the hero
+    const setPoster = () => { if (reel.dataset.poster && !reel.poster) reel.poster = reel.dataset.poster; };
+    if ('IntersectionObserver' in window) { const pio = new IntersectionObserver(([e]) => { if (e.isIntersecting) { pio.disconnect(); setPoster(); } }, { rootMargin: '900px 0px' }); pio.observe(reel); } else setPoster();
     if (!reduce) new IntersectionObserver(([e]) => { if (e.isIntersecting) { reel.preload = 'auto'; reel.play().catch(() => {}); } else reel.pause(); }, { threshold: 0.2 }).observe(reel);
     const btn = $('[data-reel-play]');
     if (btn) btn.addEventListener('click', () => {
@@ -122,7 +125,12 @@ function boot() {
   }
 
   /* ---------- Concept Lab (home and lab.html) ---------- */
-  if ($('[data-lab]')) import('./lab.js').then((m) => m.initLab(env));
+  // the Lab draws its preview (and fetches its photos) only when it comes near the screen, so the hero loads first
+  const labEl = $('[data-lab]');
+  if (labEl) {
+    const startLab = () => import('./lab.js').then((m) => m.initLab(env));
+    if ('IntersectionObserver' in window) { const lio = new IntersectionObserver(([e]) => { if (e.isIntersecting) { lio.disconnect(); startLab(); } }, { rootMargin: '900px 0px' }); lio.observe(labEl); } else startLab();
+  }
 
   /* ---------- How it works: the pinned visual follows the step in view ---------- */
   const story = $('[data-story]');

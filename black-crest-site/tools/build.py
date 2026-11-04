@@ -234,6 +234,18 @@ PRELOADER = f'''<div class="preloader" id="preloader" aria-hidden="true">
 </div>'''
 
 
+def scripts_after_hero(P, vendor=()):
+    """The motion libraries and js/core.js start once the hero render has painted (or at once on pages without one),
+    so they never hold back the first view. They run in the same order as before; everything is readable without them."""
+    files = [f'{P}vendor/gsap/gsap.min.js', f'{P}vendor/gsap/ScrollTrigger.min.js', f'{P}vendor/gsap/SplitText.min.js', f'{P}vendor/lenis/lenis.min.js'] + [f'{P}vendor/{v}' for v in vendor]
+    return ('<script>(function(){var L=' + json.dumps(files) + ',C=' + json.dumps(P + 'js/core.js') + ',d=document,done=0;'
+            'function go(){if(done)return;done=1;var n=L.length,i;function core(){var m=d.createElement("script");m.type="module";m.src=C;d.head.appendChild(m)}'
+            'if(!n)return core();for(i=0;i<n;i++){var s=d.createElement("script");s.src=L[i];s.async=false;if(i===n-1)s.onload=s.onerror=core;d.head.appendChild(s)}}'
+            'function after(){requestAnimationFrame(function(){setTimeout(go,0)})}'
+            'function ready(){var h=d.querySelector(".hero-img");if(h&&!h.complete){h.addEventListener("load",after,{once:true});h.addEventListener("error",go,{once:true});setTimeout(go,3000)}else after()}'
+            'if(d.readyState==="loading")d.addEventListener("DOMContentLoaded",ready,{once:true});else ready()})();</script>')
+
+
 def head(title, desc, path, P, noindex=False, ld=(), base_script=False, extra='', vendor=(), first=''):
     canon = SITE + path
     og = SITE + 'img/og.jpg'
@@ -273,11 +285,7 @@ def head(title, desc, path, P, noindex=False, ld=(), base_script=False, extra=''
 <link rel="preload" href="{P}fonts/cormorant-garamond.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="{P}fonts/switzer-400.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="{P}style.min.css">{extra}
-<script src="{P}vendor/gsap/gsap.min.js" defer fetchpriority="low"></script>
-<script src="{P}vendor/gsap/ScrollTrigger.min.js" defer fetchpriority="low"></script>
-<script src="{P}vendor/gsap/SplitText.min.js" defer fetchpriority="low"></script>
-<script src="{P}vendor/lenis/lenis.min.js" defer fetchpriority="low"></script>{''.join(f'<script src="{P}vendor/{v}" defer fetchpriority="low"></script>' for v in vendor)}
-<script type="module" src="{P}js/core.js"></script>{lds}
+{scripts_after_hero(P, vendor)}{lds}
 </head>'''
 
 
@@ -774,7 +782,7 @@ def collection(P):
       </div>
       <figure class="reel" data-reveal>
         <div class="laptop"><div class="laptop-screen">
-          <video data-reel muted loop playsinline preload="none" width="1280" height="800" poster="{P}assets/reel-poster.webp" aria-label="A short silent reel scrolling through the six concept sites">
+          <video data-reel muted loop playsinline preload="none" width="1280" height="800" data-poster="{P}assets/reel-poster.webp" aria-label="A short silent reel scrolling through the six concept sites">
             <source src="{P}assets/reel.webm" type="video/webm"><source src="{P}assets/reel.mp4" type="video/mp4">
           </video>
         </div><div class="laptop-base" aria-hidden="true"></div></div>

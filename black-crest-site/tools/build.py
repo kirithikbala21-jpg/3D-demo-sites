@@ -17,7 +17,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 SITE_DIR = os.path.dirname(HERE)
 REPO = os.path.dirname(SITE_DIR)
 SITE = 'https://kirithikbala21-jpg.github.io/3D-demo-sites/black-crest-site/'
-KB_SITE = '../kbventures-site/'
+KB_SITE = 'https://kbventures.com.au/'  # KB Ventures has its own site and domain now
 LASTMOD = '2026-11-01'
 E = html.escape
 
@@ -207,7 +207,7 @@ def footer(P, here):
       </div>
     </div>
     <div class="footer-bottom">
-      <p>&copy; <span data-year>2026</span> Black Crest Web Designs, a <a href="{P}{KB_SITE}">KB Ventures</a> company.</p>
+      <p>&copy; <span data-year>2026</span> Black Crest Web Designs, a <a href="{KB_SITE}">KB Ventures</a> company.</p>
       <p>No cookies. No tracking. Prices in AUD.</p>
       <button class="to-top" type="button" data-top>Back to top <span aria-hidden="true">&uarr;</span></button>
     </div>
@@ -453,7 +453,7 @@ ORG = {
     'url': SITE, 'email': EMAIL, 'image': SITE + 'img/og.jpg', 'logo': SITE + 'img/icon-512.png',
     'address': {'@type': 'PostalAddress', 'addressLocality': 'Melbourne', 'addressRegion': 'VIC', 'addressCountry': 'AU'},
     'areaServed': {'@type': 'City', 'name': 'Melbourne'},
-    'parentOrganization': {'@type': 'Organization', 'name': 'KB Ventures', 'url': 'https://kirithikbala21-jpg.github.io/3D-demo-sites/kbventures-site/'},
+    'parentOrganization': {'@type': 'Organization', 'name': 'KB Ventures', 'url': KB_SITE},
     'makesOffer': [
         {'@type': 'Offer', 'name': 'One Page website', 'price': f'{ONE:.2f}', 'priceCurrency': CONFIG['currency'], 'url': SITE + 'pricing.html'},
         {'@type': 'Offer', 'name': 'Full Website (up to about 5 pages)', 'price': f'{FULL:.2f}', 'priceCurrency': CONFIG['currency'], 'url': SITE + 'pricing.html'},

@@ -2,7 +2,9 @@
 
 The company "lobby": Home, About, Contact, legal pages and a 404 page, in plain HTML, CSS and JS. No build step, no trackers, no CDNs: the fonts and Lenis smooth scroll are copied into this folder. The design system (colours, type, spacing, rules) and the notes from the reference page are in `brand.md`.
 
-Live: https://kirithikbala21-jpg.github.io/3D-demo-sites/kbventures-site/
+**Moved (Nov 2026).** KB Ventures now lives in its own repo and at https://kbventures.com.au/. Every page in this folder redirects to the same page there (canonical, meta refresh, a `location.replace` script and `noindex`). Nothing here is deleted, but make changes in the new repo, not here. `tools/build-pages.py` is switched off so it can't overwrite the redirects.
+
+Live: https://kbventures.com.au/
 
 ## Pages
 - `index.html`: Home (hero, Our businesses, How we build, Our standard, About, Quick questions, Get in touch)

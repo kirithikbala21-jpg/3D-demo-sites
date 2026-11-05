@@ -4,6 +4,10 @@
 # share previews and visitors without JavaScript see (and the FAQ structured data) matches it:
 #   python3 kbventures-site/tools/build-pages.py
 # The legal pages in legal/ are written by hand and are not touched.
+import sys
+# Retired (Nov 2026): KB Ventures now lives in its own repo and at https://kbventures.com.au/. Every page in this
+# folder is a redirect to the same page there; rebuilding would wipe those redirects, so this script stops here.
+sys.exit('kbventures-site/ is retired: edit and build the site in the kbventures-site repo (https://kbventures.com.au/).')
 import html
 import json
 import urllib.parse

@@ -23,7 +23,7 @@
     return v == null ? m : v;
   });
   // a business is live once its status is "live" and it has an address: a full https:// one, or a page of this site
-  const localPage = (u) => filled(u) && /^[\w-]+\.html(#[\w-]+)?$/.test(u.trim());
+  const localPage = (u) => filled(u) && /^[\w-]+(#[\w-]+)?$/.test(u.trim());
   const linkFor = (u) => (localPage(u) ? BASE + u.trim() : u.trim());
   const isLive = (b) => b && b.status === 'live' && (safeUrl(b.url) || localPage(b.url));
   // a "preview" business (Black Crest, taking clients) links to its own site (a full https:// address) and shows its own label
@@ -55,28 +55,28 @@
     <a class="brand" href="${BASE}" aria-label="${esc(fill(t.home || '{name} home', cfg, { name }))}">${wordmark('brand-word')}<img class="brand-mark" src="${BASE}img/kb-favicon.svg" width="32" height="32" alt=""></a>
     <nav class="nav-links" aria-label="Main">
       <div class="dd" id="dd">
-        <a class="nav-link dd-link" href="${BASE}businesses.html"${cur('businesses')}>${esc(t.businesses)}</a><button class="dd-btn" type="button" aria-expanded="false" aria-controls="dd-panel" aria-label="${esc(t.businessesShow)}">${ICON.chevron}</button>
+        <a class="nav-link dd-link" href="${BASE}businesses"${cur('businesses')}>${esc(t.businesses)}</a><button class="dd-btn" type="button" aria-expanded="false" aria-controls="dd-panel" aria-label="${esc(t.businessesShow)}">${ICON.chevron}</button>
         <div class="dd-panel" id="dd-panel" data-lenis-prevent hidden><ul class="dd-list" id="dd-list"></ul></div>
       </div>
-      <a class="nav-link" href="${BASE}about.html"${cur('about')}>${esc(t.about)}</a>
-      <a class="nav-link nav-pricing" href="https://kirithikbala21-jpg.github.io/3D-demo-sites/black-crest-site/pricing.html"${cur('pricing')}>${esc(t.pricing)}</a>
-      <a class="nav-link" href="${BASE}contact.html"${cur('contact')}>${esc(t.contact)}</a>
+      <a class="nav-link" href="${BASE}about"${cur('about')}>${esc(t.about)}</a>
+      <a class="nav-link nav-pricing" href="https://blackcrest.kbventures.com.au/pricing"${cur('pricing')}>${esc(t.pricing)}</a>
+      <a class="nav-link" href="${BASE}contact"${cur('contact')}>${esc(t.contact)}</a>
     </nav>
-    <a class="pill pill-primary nav-cta" href="${BASE}contact.html">${esc(t.cta)}</a>
+    <a class="pill pill-primary nav-cta" href="${BASE}contact">${esc(t.cta)}</a>
     <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu"><span class="menu-icon" aria-hidden="true"></span><span class="sr-only">${esc(t.menu)}</span></button>
   </div>
 </header>
 <div class="menu" id="menu" data-lenis-prevent hidden>
   <nav aria-label="Menu">
-    <a href="${BASE}businesses.html"${cur('businesses')}>${esc(t.businesses)}</a>
-    <a href="${BASE}about.html"${cur('about')}>${esc(t.about)}</a>
-    <a href="${BASE}how-we-work.html"${cur('how')}>${esc(t.howWeWork)}</a>
-    <a href="${BASE}faq.html"${cur('faq')}>${esc(t.faq)}</a>
-    <a href="${BASE}partner.html"${cur('partner')}>${esc(t.partner)}</a>
-    <a href="https://kirithikbala21-jpg.github.io/3D-demo-sites/black-crest-site/pricing.html"${cur('pricing')}>${esc(t.pricing)}</a>
-    <a href="${BASE}contact.html"${cur('contact')}>${esc(t.contact)}</a>
+    <a href="${BASE}businesses"${cur('businesses')}>${esc(t.businesses)}</a>
+    <a href="${BASE}about"${cur('about')}>${esc(t.about)}</a>
+    <a href="${BASE}how-we-work"${cur('how')}>${esc(t.howWeWork)}</a>
+    <a href="${BASE}faq"${cur('faq')}>${esc(t.faq)}</a>
+    <a href="${BASE}partner"${cur('partner')}>${esc(t.partner)}</a>
+    <a href="https://blackcrest.kbventures.com.au/pricing"${cur('pricing')}>${esc(t.pricing)}</a>
+    <a href="${BASE}contact"${cur('contact')}>${esc(t.contact)}</a>
   </nav>
-  <a class="pill pill-primary menu-cta" href="${BASE}contact.html">${esc(t.cta)}</a>
+  <a class="pill pill-primary menu-cta" href="${BASE}contact">${esc(t.cta)}</a>
 </div>`;
   }
   const DEFAULT_NAV = { businesses: 'Businesses', businessesShow: 'Show businesses', about: 'About', contact: 'Contact', howWeWork: 'How we work', faq: 'FAQ', partner: 'Partner with us', pricing: 'Pricing', cta: 'Get in touch', menu: 'Menu', close: 'Close', home: '{name} home', comingSoon: 'Coming soon' };
@@ -224,20 +224,20 @@
       ${list.length ? `<nav class="footer-col" aria-labelledby="footer-biz"><h2 class="footer-h" id="footer-biz">${esc(f.businesses || 'Businesses')}</h2><ul class="footer-list">${bizItems}</ul></nav>` : ''}
       <nav class="footer-col" aria-labelledby="footer-company"><h2 class="footer-h" id="footer-company">${esc(f.company || 'Company')}</h2>
         <ul class="footer-list">
-          <li><a href="${BASE}about.html"${cur('about')}>${esc(f.about || 'About')}</a></li>
-          <li><a href="${BASE}how-we-work.html"${cur('how')}>${esc(f.howWeWork || 'How we work')}</a></li>
-          <li><a href="${BASE}faq.html"${cur('faq')}>${esc(f.faq || 'FAQ')}</a></li>
-          <li><a href="${BASE}partner.html"${cur('partner')}>${esc(f.partner || 'Partner with us')}</a></li>
-          <li><a href="https://kirithikbala21-jpg.github.io/3D-demo-sites/black-crest-site/pricing.html"${cur('pricing')}>${esc(f.pricing || 'Website pricing')}</a></li>
-          <li><a href="${BASE}contact.html"${cur('contact')}>${esc(f.contact || 'Contact')}</a></li>
+          <li><a href="${BASE}about"${cur('about')}>${esc(f.about || 'About')}</a></li>
+          <li><a href="${BASE}how-we-work"${cur('how')}>${esc(f.howWeWork || 'How we work')}</a></li>
+          <li><a href="${BASE}faq"${cur('faq')}>${esc(f.faq || 'FAQ')}</a></li>
+          <li><a href="${BASE}partner"${cur('partner')}>${esc(f.partner || 'Partner with us')}</a></li>
+          <li><a href="https://blackcrest.kbventures.com.au/pricing"${cur('pricing')}>${esc(f.pricing || 'Website pricing')}</a></li>
+          <li><a href="${BASE}contact"${cur('contact')}>${esc(f.contact || 'Contact')}</a></li>
         </ul>
       </nav>
       <nav class="footer-col" aria-labelledby="footer-legal"><h2 class="footer-h" id="footer-legal">${esc(f.legal || 'Legal')}</h2>
         <ul class="footer-list">
-          <li><a href="${BASE}legal/privacy.html"${cur('privacy')}>${esc(f.privacy || 'Privacy')}</a></li>
-          <li><a href="${BASE}legal/terms.html"${cur('terms')}>${esc(f.terms || 'Terms')}</a></li>
-          <li><a href="${BASE}legal/refunds.html"${cur('refunds')}>${esc(f.refunds || 'Refunds')}</a></li>
-          <li><a href="${BASE}credits.html"${cur('credits')}>${esc(f.credits || 'Credits')}</a></li>
+          <li><a href="${BASE}legal/privacy"${cur('privacy')}>${esc(f.privacy || 'Privacy')}</a></li>
+          <li><a href="${BASE}legal/terms"${cur('terms')}>${esc(f.terms || 'Terms')}</a></li>
+          <li><a href="${BASE}legal/refunds"${cur('refunds')}>${esc(f.refunds || 'Refunds')}</a></li>
+          <li><a href="${BASE}credits"${cur('credits')}>${esc(f.credits || 'Credits')}</a></li>
         </ul>
       </nav>
     </div>

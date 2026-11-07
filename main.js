@@ -100,7 +100,7 @@
   }
 
   /* ---------- FAQ accordions ---------- */
-  // An answer's links are named by their text: { "text": "Refunds page", "href": "legal/refunds.html" }
+  // An answer's links are named by their text: { "text": "Refunds page", "href": "legal/refunds" }
   function answerNodes(item) {
     const out = []; let rest = item.a;
     const links = (Array.isArray(item.links) ? item.links : []).filter((l) => l && filled(l.text) && filled(l.href));

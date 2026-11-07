@@ -59,12 +59,15 @@ for (const pg of pages) {
     if (x.link && !html.includes(x.link)) fail(pg, '-', `Stripe link for ${x.key} is missing or changed`);
     if (!text.includes(money(x.price))) fail(pg, '-', `price ${money(x.price)} for ${x.key} is missing`);
   });
-  if (pg === 'black-crest.html') { if (!html.includes('https://kirithikbala21-jpg.github.io/3D-demo-sites/black-crest-site/pricing.html')) fail(pg, '-', 'the old pricing address no longer forwards to Black Crest'); if (/\$(490|990)\b/.test(html)) fail(pg, '-', 'an old Black Crest price ($490 or $990), in the text or the page tags'); }
+  if (pg === 'black-crest.html') { if (!html.includes('https://blackcrest.kbventures.com.au/pricing')) fail(pg, '-', 'the old pricing address no longer forwards to Black Crest'); if (/\$(490|990)\b/.test(html)) fail(pg, '-', 'an old Black Crest price ($490 or $990), in the text or the page tags'); }
   for (const [, href] of html.matchAll(/<a\b[^>]*\bhref="([^"]+)"/g)) {
     if (/^(https?:|mailto:|tel:|#|javascript:)/.test(href)) continue;
     const clean = href.split('#')[0].split('?')[0]; if (!clean) continue;
+    // clean addresses (/about, /legal/terms) point at about.html, legal/terms.html; the site is served from the domain root
     let target = path.resolve(path.dirname(path.join(SITE, pg)), clean);
-    if (clean.endsWith('/')) target = path.join(target, 'index.html');
+    if (clean.startsWith('/')) { const f = path.join(SITE, clean); target = clean === '/' ? path.join(SITE, 'index.html') : existsSync(f) && statSync(f).isFile() ? f : f.replace(/\/$/, '') + '.html'; }
+    else if (clean.endsWith('/')) target = path.join(target, 'index.html');
+    if (/\.html$/.test(clean)) fail(pg, '-', `link still ends in .html: ${href}`);
     if (!target.startsWith(REPO)) { fail(pg, '-', `link leaves the site: ${href}`); continue; }
     if (!existsSync(target)) fail(pg, '-', `broken link: ${href}`);
   }
@@ -87,7 +90,7 @@ for (const w of WIDTHS) {
     page.on('requestfailed', (r) => { if (!/\.(mp4|webm)$/.test(r.url())) fail(pg, w, 'request failed: ' + r.url()); });
     page.on('response', (r) => { if (r.status() >= 400) fail(pg, w, `HTTP ${r.status()}: ${r.url()}`); });
     try {
-      await page.goto(BASE + pg, { waitUntil: 'load', timeout: 45000 });
+      await page.goto(BASE + (pg === 'index.html' ? '' : pg.replace(/\.html$/, '')), { waitUntil: 'load', timeout: 45000 });
       // scroll through so every reveal runs, then back to the top
       const h = await page.evaluate(() => document.documentElement.scrollHeight);
       for (let y = 0; y < h; y += 700) { await page.evaluate((y) => scrollTo(0, y), y); await page.waitForTimeout(90); }

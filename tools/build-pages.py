@@ -15,7 +15,7 @@ REPO = os.path.dirname(SITE_DIR)
 cfg = json.load(open(os.path.join(SITE_DIR, 'site.config.json'), encoding='utf-8'))
 SITE = cfg['siteUrl']
 # Black Crest Web Designs has its own site; every link to it uses this full address
-BC = 'https://kirithikbala21-jpg.github.io/3D-demo-sites/black-crest-site/'
+BC = 'https://blackcrest.kbventures.com.au/'
 E = html.escape
 C = cfg['company']
 
@@ -25,7 +25,7 @@ def fill(s):
 
 
 def head(title, desc, path, extra='', scripts=(), lenis=True, noindex=False, base_script=False, P='', first=''):
-    canon = SITE + path
+    canon = SITE + (path[:-5] if path.endswith('.html') else path)
     ogalt = 'A digital render of the KB Ventures plaque, champagne-gold KB engraved in smoked glass in a brushed platinum frame, beside the line: Many businesses. One standard.'
     s = ['<!doctype html>', '<html lang="en-AU">', '<head>', '<meta charset="utf-8">',
          '<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">'] + ([first] if first else [])
@@ -71,20 +71,20 @@ def head(title, desc, path, extra='', scripts=(), lenis=True, noindex=False, bas
 
 
 def header_fallback(P='', images=True):
-    home = P or './'
+    home = '/'
     brand = (f'<span class="wm brand-word"><img src="{P}img/kb-wordmark.svg" width="360" height="120" alt=""></span><img class="brand-mark" src="{P}img/kb-favicon.svg" width="32" height="32" alt=""><span class="sr-only">KB Ventures home</span>'
              if images else 'KB Ventures')
     return f'''<a class="skip" href="#main">Skip to content</a>
 <!-- site.js replaces this with the full top bar from site.config.json (this copy is what shows without JavaScript) -->
-<header class="nav" id="site-header"><div class="container nav-inner"><a class="brand{'' if images else ' nav-link'}" href="{home}">{brand}</a><a class="nav-link nav-fallback" href="{P}contact.html">Contact</a></div></header>'''
+<header class="nav" id="site-header"><div class="container nav-inner"><a class="brand{'' if images else ' nav-link'}" href="{home}">{brand}</a><a class="nav-link nav-fallback" href="/contact">Contact</a></div></header>'''
 
 
 def footer_fallback(P=''):
-    links = [('businesses.html', 'Businesses'), ('about.html', 'About'), ('how-we-work.html', 'How we work'), ('faq.html', 'FAQ'), ('partner.html', 'Partner with us'), (BC + 'pricing.html', 'Website pricing'),
-             ('contact.html', 'Contact'), ('legal/privacy.html', 'Privacy'), ('legal/terms.html', 'Terms'), ('legal/refunds.html', 'Refunds'), ('credits.html', 'Credits')]
+    links = [('/businesses', 'Businesses'), ('/about', 'About'), ('/how-we-work', 'How we work'), ('/faq', 'FAQ'), ('/partner', 'Partner with us'), (BC + 'pricing', 'Website pricing'),
+             ('/contact', 'Contact'), ('/legal/privacy', 'Privacy'), ('/legal/terms', 'Terms'), ('/legal/refunds', 'Refunds'), ('/credits', 'Credits')]
     return f'''<!-- site.js replaces this with the full footer from site.config.json -->
 <footer class="footer" id="site-footer"><div class="container"><div class="footer-bottom">
-  <p>{' &middot; '.join(f'<a href="{P}{h}">{t}</a>' for h, t in links)} &middot; <a href="mailto:{C['email']}">{C['email']}</a></p>
+  <p>{' &middot; '.join(f'<a href="{h}">{t}</a>' for h, t in links)} &middot; <a href="mailto:{C['email']}">{C['email']}</a></p>
   <p>{E(fill(cfg['footer']['copyright']).replace('{year}', '2026'))}</p>
   <p>{E(cfg['footer']['vceTrademark'])}</p>
 </div></div></footer>'''
@@ -150,13 +150,18 @@ HERO_PRELOAD = (f'<link rel="preload" as="image" type="image/avif" media="{STACK
                 f'<link rel="preload" as="image" type="image/avif" media="{WIDE}" imagesrcset="{hero_set("avif")}" imagesizes="100vw" fetchpriority="high">')
 
 
+def local(u):
+    u = str(u).strip()
+    return E(u if re.match(r'^(https?:|mailto:|/|#)', u) else '/' + u)
+
+
 def slug(t):
     return re.sub(r'[^a-z0-9]+', '-', t.lower()).strip('-')
 
 
 def is_live(b):
     u = str(b.get('url', '')).strip()
-    return b.get('status') == 'live' and (u.startswith('https://') or re.match(r'^[\w-]+\.html(#[\w-]+)?$', u) is not None)
+    return b.get('status') == 'live' and (u.startswith('https://') or re.match(r'^[\w-]+(#[\w-]+)?$', u) is not None)
 
 
 def picture(b):
@@ -205,7 +210,7 @@ def card(b, level='h3'):
     n = cfg['nav']
     live, preview = is_live(b), is_preview(b)
     link = live or preview
-    tag, cls, href = ('a', 'biz-live' + (' biz-preview' if preview else ''), f' href="{E(b["url"])}"') if link else ('article', 'biz-soon', '')
+    tag, cls, href = ('a', 'biz-live' + (' biz-preview' if preview else ''), f' href="{local(b["url"])}"') if link else ('article', 'biz-soon', '')
     label = b.get('previewLabel') if preview else b.get('ctaLabel')
     foot = f'<span class="biz-cta">{E(label or "Visit")}{ARROW}</span>' if link else f'<p class="quiet">{E(n["comingSoon"])}</p>'
     badge = n['live'] if live else n.get('preview', 'Preview') if preview else n['comingSoon']
@@ -253,7 +258,7 @@ def biz_grid(always_more=False, level='h3'):
                      f'aria-hidden="true" tabindex="-1" data-video="img/video/bc-hero-mobile" data-poster="img/video/bc-hero-poster-mobile.jpg"></video></span>')
         body = f'''{still}
           <span class="niche-label"><span class="niche-status">{E(badge)}</span><{level} class="niche-name">{E(b['name'])}</{level}><span class="niche-line">{E(b.get('description', ''))}</span>{f'<span class="niche-cta">{E(b.get("previewLabel") if preview else b.get("ctaLabel") or "Visit")}</span>' if (live or preview) else ''}</span>'''
-        items.append(f'        <li><a class="kb-niche" href="{E(b["url"])}">{body}</a></li>' if (live or preview)
+        items.append(f'        <li><a class="kb-niche" href="{local(b["url"])}">{body}</a></li>' if (live or preview)
                      else f'        <li><div class="kb-niche is-soon">{body}</div></li>')
     if always_more or cfg.get('showMoreComingCard') is True:
         items.append(f'''        <li><div class="kb-niche is-empty"><span class="empty-niche" aria-hidden="true"></span>
@@ -275,7 +280,7 @@ def answer_html(f):
             out += E(rest)
             break
         i, l = min(hits, key=lambda h: h[0])
-        out += E(rest[:i]) + f'<a href="{E(l["href"])}">{E(l["text"])}</a>'
+        out += E(rest[:i]) + f'<a href="{local(l["href"])}">{E(l["text"])}</a>'
         rest = rest[i + len(l['text']):]
     return out
 
@@ -338,7 +343,7 @@ def latest_section():
     lt = cfg['latest']
     cards = []
     for i, x in enumerate(lt['items']):
-        link = f'\n          {text_link(E(x["link"]), f"latest.items.{i}.linkLabel", x.get("linkLabel") or "Find out more")}' if x.get('link') else ''
+        link = f'\n          {text_link(local(x["link"]), f"latest.items.{i}.linkLabel", x.get("linkLabel") or "Find out more")}' if x.get('link') else ''
         date = f'<span class="latest-date" data-c="latest.items.{i}.date">{E(x["date"])}</span>' if x.get('date') else ''
         cards.append(f'''        <article class="card latest-card">
           <p class="latest-meta"><span class="label" data-c="latest.items.{i}.label">{E(x['label'])}</span>{date}</p>
@@ -378,8 +383,8 @@ def who_section():
         <p class="lead who-about" data-c="home.about.text">{E(ha['text'])}</p>
         <p class="values" data-c="home.about.values">{E(ha['values'])}</p>
         <div class="who-actions">
-          <a class="pill pill-secondary" href="about.html" data-c="who.moreLabel">{E(wh['moreLabel'])}</a>
-          <a class="pill pill-primary" href="contact.html" data-c="who.contactLabel">{E(wh['contactLabel'])}</a>
+          <a class="pill pill-secondary" href="/about" data-c="who.moreLabel">{E(wh['moreLabel'])}</a>
+          <a class="pill pill-primary" href="/contact" data-c="who.contactLabel">{E(wh['contactLabel'])}</a>
         </div>
       </div>
     </div>
@@ -392,7 +397,7 @@ def gallery(title_level='h3', item_level='h4'):
     items = []
     for i, x in enumerate(g['items']):
         items.append(f'''        <li class="gallery-item">
-          <a class="card gallery-card" href="{E(x['url'])}">
+          <a class="card gallery-card" href="{local(x['url'])}">
             <div class="mini-browser"><i aria-hidden="true"></i><img src="{E(x['image'])}" width="640" height="400" loading="lazy" decoding="async" alt="{E(x['alt'])}"></div>
             <div class="gallery-text">
               <p class="label" data-c="gallery.items.{i}.label">{E(x['label'])}</p>
@@ -435,7 +440,7 @@ def signup_section():
           <p class="field-error" id="e-s-email" hidden></p>
           <div class="check">
             <input id="s-agree" name="agree" type="checkbox" required aria-describedby="e-s-agree">
-            <label for="s-agree"><span data-c="signup.agreeBefore">{E(sg['agreeBefore'])}</span> <a href="legal/privacy.html" target="_blank" rel="noopener"><span data-c="signup.agreeLink">{E(sg['agreeLink'])}</span><span class="sr-only"> (opens in a new tab)</span></a></label>
+            <label for="s-agree"><span data-c="signup.agreeBefore">{E(sg['agreeBefore'])}</span> <a href="/legal/privacy" target="_blank" rel="noopener"><span data-c="signup.agreeLink">{E(sg['agreeLink'])}</span><span class="sr-only"> (opens in a new tab)</span></a></label>
           </div>
           <p class="field-error" id="e-s-agree" hidden></p>
           <p class="form-status" id="s-status" role="status" aria-live="polite"></p>
@@ -472,7 +477,7 @@ home_body = f'''<main id="main">
         <p class="hero-sub" data-c="home.hero.line">{E(fill(hm['hero']['line']))}</p>
         <div class="hero-actions">
           <a class="pill pill-primary" href="#businesses" data-c="home.hero.primary">{E(hm['hero']['primary'])}</a>
-          <a class="pill pill-secondary" href="contact.html" data-c="home.hero.secondary">{E(hm['hero']['secondary'])}</a>
+          <a class="pill pill-secondary" href="/contact" data-c="home.hero.secondary">{E(hm['hero']['secondary'])}</a>
         </div>
       </div>
     </div>
@@ -487,7 +492,7 @@ home_body = f'''<main id="main">
     </div>
 {biz_grid()}
 {gallery('h3', 'h4')}
-    <div class="container section-foot">{text_link('businesses.html', 'home.businesses.viewAll', hm['businesses']['viewAll'])}</div>
+    <div class="container section-foot">{text_link('/businesses', 'home.businesses.viewAll', hm['businesses']['viewAll'])}</div>
   </section>
 
 {DIV}
@@ -502,7 +507,7 @@ home_body = f'''<main id="main">
     </div>
     <div class="container">
 {steps4()}
-      <div class="section-foot">{text_link('how-we-work.html', 'home.build.link', hm['build']['link'])}</div>
+      <div class="section-foot">{text_link('/how-we-work', 'home.build.link', hm['build']['link'])}</div>
     </div>
   </section>
 
@@ -530,7 +535,7 @@ home_body = f'''<main id="main">
     </div>
     <div class="container narrow">
 {faq_box(3, 'h')}
-      <div class="section-foot">{text_link('faq.html', 'home.faq.link', hm['faq']['link'])}</div>
+      <div class="section-foot">{text_link('/faq', 'home.faq.link', hm['faq']['link'])}</div>
     </div>
   </section>
 
@@ -546,7 +551,7 @@ home_body = f'''<main id="main">
       <h2 class="h2" id="contact-title" data-c="home.contact.title">{E(hm['contact']['title'])}</h2>
       <p class="lead" data-c="home.contact.lead">{E(hm['contact']['lead'])}</p>
       <a class="email-big" data-email href="mailto:{C['email']}">{C['email']}</a>
-      <a class="pill pill-primary" href="contact.html" data-c="home.contact.button">{E(hm['contact']['button'])}</a>
+      <a class="pill pill-primary" href="/contact" data-c="home.contact.button">{E(hm['contact']['button'])}</a>
     </div>
   </section>
 </main>'''
@@ -565,7 +570,7 @@ pages['businesses.html'] = page('businesses.html', 'Our businesses: KB Ventures'
   </div>
 {biz_grid(always_more=True, level='h2')}
 {gallery('h2', 'h3')}
-  <div class="container page-end"><a class="pill pill-primary" href="contact.html" data-c="businessesPage.button">{E(bp['button'])}</a></div>
+  <div class="container page-end"><a class="pill pill-primary" href="/contact" data-c="businessesPage.button">{E(bp['button'])}</a></div>
 </main>''', 'businesses')
 
 hw = cfg['howWeWork']
@@ -593,7 +598,7 @@ pages['how-we-work.html'] = page('how-we-work.html', 'How we work: KB Ventures',
     <h2 class="h2" data-c="howWeWork.standardsTitle">{E(hw['standardsTitle'])}</h2>
 {std_cards(detail=True)}
   </div>
-  <div class="container page-end"><a class="pill pill-primary" href="contact.html" data-c="howWeWork.button">{E(hw['button'])}</a></div>
+  <div class="container page-end"><a class="pill pill-primary" href="/contact" data-c="howWeWork.button">{E(hw['button'])}</a></div>
 </main>''', 'how')
 
 fp = cfg['faqPage']
@@ -603,7 +608,7 @@ def faq_none():
     t, l = fp['noMatch'], fp.get('noMatchLink', '')
     if l and l in t:
         i = t.index(l)
-        return E(t[:i]) + f'<a href="contact.html">{E(l)}</a>' + E(t[i + len(l):])
+        return E(t[:i]) + f'<a href="/contact">{E(l)}</a>' + E(t[i + len(l):])
     return E(t)
 
 
@@ -621,7 +626,7 @@ pages['faq.html'] = page('faq.html', 'Questions: KB Ventures', 'Answers to commo
   </div>
   <div class="container narrow page-end faq-more">
     <p class="lead" data-c="faqPage.more">{E(fp['more'])}</p>
-    <a class="pill pill-primary" href="contact.html" data-c="faqPage.button">{E(fp['button'])}</a>
+    <a class="pill pill-primary" href="/contact" data-c="faqPage.button">{E(fp['button'])}</a>
   </div>
 </main>''', 'faq', extra=f'<script type="application/ld+json" id="faq-data">{faq_ld()}</script>')
 
@@ -635,7 +640,7 @@ pages['partner.html'] = page('partner.html', 'Partner with us: KB Ventures', 'KB
       <p class="lead" data-c="partner.lead">{E(pt['lead'])}</p>
       <ul class="principles">{points}
       </ul>
-      <a class="pill pill-primary" href="contact.html?topic=partnership" data-c="partner.button">{E(pt['button'])}</a>
+      <a class="pill pill-primary" href="/contact?topic=partnership" data-c="partner.button">{E(pt['button'])}</a>
     </div>
   </div>
   <div class="container page-sub">
@@ -648,7 +653,7 @@ pages['partner.html'] = page('partner.html', 'Partner with us: KB Ventures', 'KB
     <ol class="next-steps">{''.join(f'{chr(10)}      <li><span class="step-node" aria-hidden="true">{i + 1:02d}</span><span data-c="partner.next.{i}">{E(x)}</span></li>' for i, x in enumerate(pt['next']))}
     </ol>
   </div>
-  <div class="container page-end"><a class="pill pill-primary" href="contact.html?topic=partnership" data-c="partner.button">{E(pt['button'])}</a></div>
+  <div class="container page-end"><a class="pill pill-primary" href="/contact?topic=partnership" data-c="partner.button">{E(pt['button'])}</a></div>
 </main>''', 'partner')
 
 ab = cfg['about']
@@ -672,7 +677,7 @@ pages['about.html'] = page('about.html', 'About KB Ventures', ab['text'], f'''<m
     <ul class="never-list">{never}
     </ul>
   </div>
-  <div class="container page-end"><a class="pill pill-primary" href="contact.html" data-c="about.button">{E(ab['button'])}</a></div>
+  <div class="container page-end"><a class="pill pill-primary" href="/contact" data-c="about.button">{E(ab['button'])}</a></div>
 </main>''', 'about')
 
 ag = cfg['aceguides']
@@ -704,7 +709,7 @@ for key in paused - {x['key'] for g in ag['groups'] for x in g['products']}:
 def action_html(x):
     who = f'{x["level"]} {x["subject"]}' if x['level'] != 'Bundle' else x['subject']
     href = ag['notifyHref'].replace('#', '?notify=' + urllib.parse.quote(who) + '#', 1) if '#' in ag['notifyHref'] else ag['notifyHref'] + '?notify=' + urllib.parse.quote(who)
-    notify = (f'<a class="text-btn product-notify" href="{E(href)}">{E(ag["notify"])}<span class="sr-only">: {E(x["subject"])}, {E(x["level"])}</span></a>')
+    notify = (f'<a class="text-btn product-notify" href="{local(href)}">{E(ag["notify"])}<span class="sr-only">: {E(x["subject"])}, {E(x["level"])}</span></a>')
     buyable = x.get('link') and x['key'] not in paused
     if x.get('link') and not buyable:
         action = f'<button class="btn btn-quiet product-soon product-paused" type="button" disabled>{E(ag["pausedLabel"])}</button>' + notify
@@ -827,7 +832,7 @@ for gi, g in enumerate(ag['groups']):
 inside = ''.join(f'<li data-c="aceguides.inside.{i}">{E(t)}</li>' for i, t in enumerate(ag['inside']))
 chooser = ''.join(f'''
       <li><strong data-c="aceguides.chooser.items.{i}.title">{E(x['title'])}</strong>: <span data-c="aceguides.chooser.items.{i}.text">{E(x['text'])}</span></li>''' for i, x in enumerate(ag['chooser']['items']))
-policies = ' &middot; '.join(f'<a href="{E(x["href"])}">{E(x["text"])}</a>' for x in ag['policies'])
+policies = ' &middot; '.join(f'<a href="{local(x["href"])}">{E(x["text"])}</a>' for x in ag['policies'])
 pages['aceguides.html'] = page('aceguides.html', ag['meta']['title'], ag['meta']['description'], f'''<main id="main" class="page shop">
   <div class="container page-head shop-head">
     <h1 class="page-title" data-c="aceguides.title">{E(ag['title'])}</h1>
@@ -848,7 +853,7 @@ pages['aceguides.html'] = page('aceguides.html', ag['meta']['title'], ag['meta']
 {samples_note}
   <div class="container shop-foot">
     <p class="shop-delivery" data-c="aceguides.delivery">{E(ag['delivery'])}</p>
-    <p>{text_link(E(ag['questionsLink']), 'aceguides.questions', ag['questions'])}</p>
+    <p>{text_link(local(ag['questionsLink']), 'aceguides.questions', ag['questions'])}</p>
     <p class="shop-policies">{policies}</p>
     <p class="shop-vcaa" data-c="aceguides.vcaa">{E(ag['vcaa'])}</p>
   </div>
@@ -867,7 +872,7 @@ def package_row(i, x):
     return f'''        <tr class="st-row" id="{E(x['key'])}">
           <th scope="row"><h2 class="st-title" data-c="blackCrest.packages.{i}.name">{E(x['name'])}</h2>{flag}<ul class="st-inc">{feats}</ul></th>
           <td class="st-amt">{amount}</td>
-          <td class="st-go"><a class="text-btn" href="{E(x.get('href', bc['buttonHref']))}">{E(x.get('cta', bc['button']))}<span class="sr-only">: {E(x['name'])}</span></a></td>
+          <td class="st-go"><a class="text-btn" href="{local(x.get('href', bc['buttonHref']))}">{E(x.get('cta', bc['button']))}<span class="sr-only">: {E(x['name'])}</span></a></td>
         </tr>'''
 
 
@@ -879,12 +884,12 @@ pages['black-crest.html'] = '''<!doctype html>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex">
 <title>Website pricing: Black Crest Web Designs</title>
-<link rel="canonical" href="https://kirithikbala21-jpg.github.io/3D-demo-sites/black-crest-site/pricing.html">
-<meta http-equiv="refresh" content="0; url=https://kirithikbala21-jpg.github.io/3D-demo-sites/black-crest-site/pricing.html">
+<link rel="canonical" href="https://blackcrest.kbventures.com.au/pricing">
+<meta http-equiv="refresh" content="0; url=https://blackcrest.kbventures.com.au/pricing">
 <style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#0D0E12;color:#E4E6ED;font:16px/1.6 Arial,sans-serif}a{color:#D4AF37}</style>
 </head>
 <body>
-<p>Black Crest website pricing has moved: <a href="https://kirithikbala21-jpg.github.io/3D-demo-sites/black-crest-site/pricing.html">see the prices on the Black Crest site</a>.</p>
+<p>Black Crest website pricing has moved: <a href="https://blackcrest.kbventures.com.au/pricing">see the prices on the Black Crest site</a>.</p>
 </body>
 </html>
 '''
@@ -936,7 +941,7 @@ pages['contact.html'] = page('contact.html', 'Contact KB Ventures', f"Questions,
           <div class="field">
             <div class="check">
               <input id="f-agree" name="agree" type="checkbox" required aria-describedby="e-agree">
-              <label for="f-agree"><span data-c="contactPage.agreeBefore">{E(cp['agreeBefore'])}</span> <a href="legal/privacy.html" target="_blank" rel="noopener"><span data-c="contactPage.agreeLink">{E(cp['agreeLink'])}</span><span class="sr-only"> (opens in a new tab)</span></a></label>
+              <label for="f-agree"><span data-c="contactPage.agreeBefore">{E(cp['agreeBefore'])}</span> <a href="/legal/privacy" target="_blank" rel="noopener"><span data-c="contactPage.agreeLink">{E(cp['agreeLink'])}</span><span class="sr-only"> (opens in a new tab)</span></a></label>
             </div>
             <p class="field-error" id="e-agree" hidden></p>
           </div>
@@ -949,7 +954,7 @@ pages['contact.html'] = page('contact.html', 'Contact KB Ventures', f"Questions,
       <section class="quick" aria-labelledby="quick-title">
         <h2 class="quick-title" id="quick-title" data-c="contactPage.quickTitle">{E(cp['quickTitle'])}</h2>
 {faq_box(3, 'c')}
-        <div class="section-foot section-foot-start">{text_link('faq.html', 'contactPage.quickLink', cp['quickLink'])}</div>
+        <div class="section-foot section-foot-start">{text_link('/faq', 'contactPage.quickLink', cp['quickLink'])}</div>
       </section>
       </div>
       <aside class="card contact-aside" aria-label="Other ways to reach us">
@@ -974,8 +979,8 @@ nf_html = head('Page not found: KB Ventures', f"{nf['title']} {nf['text']}", '40
     <h1 class="h2 nf-title" data-c="notFound.title">{E(nf['title'])}</h1>
     <p class="lead" data-c="notFound.text">{E(nf['text'])}</p>
     <div class="nf-actions">
-      <a class="pill pill-primary" href="./" data-c="notFound.home">{E(nf['home'])}</a>
-      <a class="pill pill-secondary" href="contact.html" data-c="notFound.contact">{E(nf['contact'])}</a>
+      <a class="pill pill-primary" href="/" data-c="notFound.home">{E(nf['home'])}</a>
+      <a class="pill pill-secondary" href="/contact" data-c="notFound.contact">{E(nf['contact'])}</a>
     </div>
   </div>
 </main>

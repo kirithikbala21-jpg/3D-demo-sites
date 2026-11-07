@@ -25,7 +25,7 @@
   "licence": "Licence number shown on the real site"
  },
  "site": {
-  "baseUrl": "https://kirithikbala21-jpg.github.io/3D-demo-sites/plumber-demo/",
+  "baseUrl": "https://demos.kbventures.com.au/plumber-demo/",
   "folder": "plumber-demo",
   "noindex": true,
   "currency": "AUD",
@@ -115,9 +115,9 @@
   "endpoint": "",
   "note": "Paste your Formspree, Basin or Getform address between the quote marks to make the quote form send real emails. While it is empty the form only validates, shows a confirmation and keeps the request in this browser (localStorage key wp-quotes). Photo uploads need a form service that accepts files."
  },
- "googleReviewUrl": "https://kirithikbala21-jpg.github.io/3D-demo-sites/black-crest-site/work/plumber.html",
+ "googleReviewUrl": "https://blackcrest.kbventures.com.au/work/plumber",
  "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=14%20Example%20Road%2C%20Glen%20Waverley%20VIC%203150",
- "instagramUrl": "https://kirithikbala21-jpg.github.io/3D-demo-sites/black-crest-site/work/plumber.html",
+ "instagramUrl": "https://blackcrest.kbventures.com.au/work/plumber",
  "facebookUrl": "",
  "googleRating": 4.9,
  "googleReviewCount": 212,

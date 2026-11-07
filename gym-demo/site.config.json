@@ -22,7 +22,7 @@
   "mapsQuery": "Clayton VIC"
  },
  "site": {
-  "baseUrl": "https://kirithikbala21-jpg.github.io/3D-demo-sites/gym-demo/",
+  "baseUrl": "https://demos.kbventures.com.au/gym-demo/",
   "folder": "gym-demo",
   "noindex": true,
   "currency": "AUD",
@@ -108,9 +108,9 @@
   "endpoint": "",
   "note": "Paste your Formspree (or similar) address between the quote marks to make the trial, visit, gift, newsletter and careers forms send real emails. Leave empty to keep the demo behaviour."
  },
- "googleReviewUrl": "https://kirithikbala21-jpg.github.io/3D-demo-sites/black-crest-site/work/gym.html",
+ "googleReviewUrl": "https://blackcrest.kbventures.com.au/work/gym",
  "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Iron%20%26%20Ember%20Clayton%20VIC",
- "instagramUrl": "https://kirithikbala21-jpg.github.io/3D-demo-sites/black-crest-site/work/gym.html",
+ "instagramUrl": "https://blackcrest.kbventures.com.au/work/gym",
  "facebookUrl": "",
  "googleRating": 4.8,
  "googleReviewCount": 120,

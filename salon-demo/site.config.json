@@ -20,7 +20,7 @@
   "abn": "shown on the real site"
  },
  "site": {
-  "baseUrl": "https://kirithikbala21-jpg.github.io/3D-demo-sites/salon-demo/",
+  "baseUrl": "https://demos.kbventures.com.au/salon-demo/",
   "folder": "salon-demo",
   "noindex": true,
   "currency": "AUD",
@@ -99,9 +99,9 @@
   "endpoint": "",
   "note": "Paste your Formspree (or similar) address between the quote marks to make the booking and voucher forms send real emails. Leave empty to keep the demo behaviour."
  },
- "googleReviewUrl": "https://kirithikbala21-jpg.github.io/3D-demo-sites/black-crest-site/work/salon.html",
+ "googleReviewUrl": "https://blackcrest.kbventures.com.au/work/salon",
  "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=21%20Example%20Street%2C%20Glen%20Waverley%20VIC%203150",
- "instagramUrl": "https://kirithikbala21-jpg.github.io/3D-demo-sites/black-crest-site/work/salon.html",
+ "instagramUrl": "https://blackcrest.kbventures.com.au/work/salon",
  "facebookUrl": "",
  "googleRating": 4.9,
  "googleReviewCount": 120,

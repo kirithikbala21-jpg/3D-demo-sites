@@ -24,7 +24,7 @@
   "lon": 151.2063
  },
  "site": {
-  "baseUrl": "https://kirithikbala21-jpg.github.io/3D-demo-sites/barber-demo/",
+  "baseUrl": "https://demos.kbventures.com.au/barber-demo/",
   "noindex": true,
   "currency": "AUD",
   "timezone": "Australia/Melbourne",
@@ -103,9 +103,9 @@
   "endpoint": "",
   "note": "Paste your Formspree (or similar) address between the quote marks to make the booking, careers, newsletter and gift-card forms send real emails. Leave empty to keep the demo behaviour."
  },
- "googleReviewUrl": "https://kirithikbala21-jpg.github.io/3D-demo-sites/black-crest-site/work/barber.html",
+ "googleReviewUrl": "https://blackcrest.kbventures.com.au/work/barber",
  "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Brass+%26+Blade+Barbershop+Box+Hill+VIC",
- "instagramUrl": "https://kirithikbala21-jpg.github.io/3D-demo-sites/black-crest-site/work/barber.html",
+ "instagramUrl": "https://blackcrest.kbventures.com.au/work/barber",
  "facebookUrl": "",
  "googleRating": 4.9,
  "googleReviewCount": 120,

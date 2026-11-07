@@ -766,7 +766,7 @@ if (want('growth')) {
     ok('reviews page at 390px: the QR code is large (300px or more) and nothing scrolls sideways', w.qr >= 280 && w.sw <= w.cw, JSON.stringify(w));
     await done(m);
     const h = await page(MOB, TUE + 'T10:00:00');
-    const love = await h.evaluate(() => ({ love: !!document.querySelector('#love a[href*="black-crest-site/work/cafe.html"]'), foot: !!document.querySelector('.footer-social a[href*="black-crest-site/work/cafe.html"]'), rel: [...document.querySelectorAll('a[target=_blank]')].every((a) => /noopener/.test(a.rel)) }));
+    const love = await h.evaluate(() => ({ love: !!document.querySelector('#love a[href*="blackcrest.kbventures.com.au/work/cafe"]'), foot: !!document.querySelector('.footer-social a[href*="blackcrest.kbventures.com.au/work/cafe"]'), rel: [...document.querySelectorAll('a[target=_blank]')].every((a) => /noopener/.test(a.rel)) }));
     ok('home: "Loved your visit? Tell us" section and a footer "Leave us a Google review" button, all new-tab links use rel=noopener', love.love && love.foot && love.rel, JSON.stringify(love));
     await done(h);
   }

@@ -24,7 +24,7 @@
   "lon": 144.969
  },
  "site": {
-  "baseUrl": "https://kirithikbala21-jpg.github.io/3D-demo-sites/cafe-demo-v2/",
+  "baseUrl": "https://demos.kbventures.com.au/cafe-demo-v2/",
   "noindex": true,
   "currency": "AUD",
   "timezone": "Australia/Melbourne",
@@ -357,9 +357,9 @@
   "endpoint": "",
   "note": "Paste your Formspree (or similar) address between the quote marks to make the reservation, enquiry, careers, wholesale, newsletter and gift card forms send real emails. Leave empty to keep the demo behaviour."
  },
- "googleReviewUrl": "https://kirithikbala21-jpg.github.io/3D-demo-sites/black-crest-site/work/cafe.html",
+ "googleReviewUrl": "https://blackcrest.kbventures.com.au/work/cafe",
  "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Federation%20Square%2C%20Melbourne%20VIC",
- "instagramUrl": "https://kirithikbala21-jpg.github.io/3D-demo-sites/black-crest-site/work/cafe.html",
+ "instagramUrl": "https://blackcrest.kbventures.com.au/work/cafe",
  "facebookUrl": "",
  "googleRating": 4.9,
  "googleReviewCount": 120,

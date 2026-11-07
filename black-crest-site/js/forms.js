@@ -65,7 +65,7 @@ function calculator(reduce) {
   $('#calc-send').addEventListener('click', () => {
     const q = read();
     store.set('bc-quote', JSON.stringify({ pkgKey: q.pkgKey, total: q.total, care: q.care, lines: q.lines }));
-    location.href = 'contact.html#quote';
+    location.href = 'contact#quote';
   });
 }
 

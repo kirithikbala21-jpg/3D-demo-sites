@@ -16,7 +16,7 @@ import re
 HERE = os.path.dirname(os.path.abspath(__file__))
 SITE_DIR = os.path.dirname(HERE)
 REPO = os.path.dirname(SITE_DIR)
-SITE = 'https://kirithikbala21-jpg.github.io/3D-demo-sites/black-crest-site/'
+SITE = 'https://blackcrest.kbventures.com.au/'  # its own domain; pages use clean addresses (/pricing, not /pricing.html)
 KB_SITE = 'https://kbventures.com.au/'  # KB Ventures has its own site and domain now
 LASTMOD = '2026-11-01'
 E = html.escape
@@ -130,27 +130,31 @@ def duo(slug, P, parallax='0.06', lazy=True, phone_slug=None):
     return f'<div class="devices duo" data-parallax="{parallax}">{laptop(slug, d[2], P, lazy)}{phone(p[0], p[2], P, lazy)}</div>'
 
 
+# the six concept demos live in their own folders of the repo, outside this site's own folder, so link to their full addresses
+DEMO_HOST = 'https://kirithikbala21-jpg.github.io/3D-demo-sites/'
+
+
 def open_demo(d, P, cls='btn btn-ghost'):
-    return f'<a class="{cls}" href="{P}../{d[1]}/" target="_blank" rel="noopener">Open the concept {icon("ext")}<span class="sr-only"> {d[2]} (opens in a new tab)</span></a>'
+    return f'<a class="{cls}" href="{DEMO_HOST}{d[1]}/" target="_blank" rel="noopener">Open the concept {icon("ext")}<span class="sr-only"> {d[2]} (opens in a new tab)</span></a>'
 
 
 # ---------------------------------------------------------------- page parts
-NAV = [('work.html', 'Work'), ('process.html', 'Process'), ('pricing.html', 'Pricing'), ('about.html', 'About'), ('faq.html', 'FAQ'), ('contact.html', 'Contact')]
-TRADES = [('for-barbers.html', 'Barbers', 'barber', 'Bookings, prices and the cuts that sell the chair.'),
-          ('for-cafes.html', 'Cafes', 'cafe', 'Menu, hours and a map, before they leave the house.'),
-          ('for-gyms.html', 'Gyms', 'gym', 'Timetables, memberships and an easy first class.'),
-          ('for-tradies.html', 'Tradies', 'tradie', 'The call, the quote and the suburbs you cover.'),
-          ('for-salons.html', 'Salons', 'salon', 'Services, prices and bookings at any hour.')]
+NAV = [('work', 'Work'), ('process', 'Process'), ('pricing', 'Pricing'), ('about', 'About'), ('faq', 'FAQ'), ('contact', 'Contact')]
+TRADES = [('for-barbers', 'Barbers', 'barber', 'Bookings, prices and the cuts that sell the chair.'),
+          ('for-cafes', 'Cafes', 'cafe', 'Menu, hours and a map, before they leave the house.'),
+          ('for-gyms', 'Gyms', 'gym', 'Timetables, memberships and an easy first class.'),
+          ('for-tradies', 'Tradies', 'tradie', 'The call, the quote and the suburbs you cover.'),
+          ('for-salons', 'Salons', 'salon', 'Services, prices and bookings at any hour.')]
 FOOTER = [
-    ('Services', [('pricing.html', 'Pricing'), ('care-plan.html', 'Care plan'), ('process.html', 'Process'), ('work.html', 'Work'), ('lab.html', 'Concept Lab'), ('start.html', 'Start your project')]),
+    ('Services', [('pricing', 'Pricing'), ('care-plan', 'Care plan'), ('process', 'Process'), ('work', 'Work'), ('lab', 'Concept Lab'), ('start', 'Start your project')]),
     ('Trades', [(h, t) for h, t, _, _ in TRADES]),
-    ('Resources', [('faq.html', 'FAQ'), ('guides/', 'Guides'), ('quiz.html', 'Website quiz'), ('free-concept.html', 'Free concept'), ('qr.html', 'Printable QR code')]),
-    ('Company', [('about.html', 'About'), ('standard.html', 'The Standard'), ('contact.html', 'Contact'), ('credits.html', 'Credits'), ('privacy.html', 'Privacy'), ('terms.html', 'Terms')]),
+    ('Resources', [('faq', 'FAQ'), ('guides/', 'Guides'), ('quiz', 'Website quiz'), ('free-concept', 'Free concept'), ('qr', 'Printable QR code')]),
+    ('Company', [('about', 'About'), ('standard', 'The Standard'), ('contact', 'Contact'), ('credits', 'Credits'), ('privacy', 'Privacy'), ('terms', 'Terms')]),
 ]
 
 
 def brand(P):
-    return (f'<a class="brand" href="{P}index.html">{crest()}'
+    return (f'<a class="brand" href="/">{crest()}'
             '<span class="brand-name"><b>Black Crest</b> <small>Web Designs</small></span><span class="sr-only"> home</span></a>')
 
 
@@ -159,20 +163,20 @@ def cur(name, here):
 
 
 # the full-screen menu: label, page, preview image shown on desktop hover
-MENU = [('Work', 'work.html', 'barber'), ('Concept Lab', 'lab.html', 'salon'), ('Process', 'process.html', 'cafe'), ('Pricing', 'pricing.html', 'plumber'),
-        ('Standard', 'standard.html', 'gym'), ('About', 'about.html', 'parts'), ('FAQ', 'faq.html', 'cafe'), ('Contact', 'contact.html', 'barber')]
-INLINE_NAV = [('work.html', 'Work'), ('pricing.html', 'Pricing'), ('contact.html', 'Contact')]
+MENU = [('Work', 'work', 'barber'), ('Concept Lab', 'lab', 'salon'), ('Process', 'process', 'cafe'), ('Pricing', 'pricing', 'plumber'),
+        ('Standard', 'standard', 'gym'), ('About', 'about', 'parts'), ('FAQ', 'faq', 'cafe'), ('Contact', 'contact', 'barber')]
+INLINE_NAV = [('work', 'Work'), ('pricing', 'Pricing'), ('contact', 'Contact')]
 
 
 def header(P, here):
     links = ''.join(f'<li><a href="{P}{h}"{cur(h, here)}>{t}</a></li>' for h, t in INLINE_NAV)
     mlinks = ''.join(f'<li><a href="{P}{h}"{cur(h, here)} data-preview="{P}img/work/{img}-desktop-800.webp"><span class="n" aria-hidden="true">0{i + 1}</span>{t}</a></li>' for i, (t, h, img) in enumerate(MENU))
-    sub = ''.join(f'<a href="{P}{h}">{t}</a>' for h, t in [('care-plan.html', 'Care plan'), ('start.html', 'Start your project'), ('guides/', 'Guides'), ('quiz.html', 'Website quiz')] + [(h, t) for h, t, _, _ in TRADES])
+    sub = ''.join(f'<a href="{P}{h}">{t}</a>' for h, t in [('care-plan', 'Care plan'), ('start', 'Start your project'), ('guides/', 'Guides'), ('quiz', 'Website quiz')] + [(h, t) for h, t, _, _ in TRADES])
     return f'''<header class="site-header">
   <div class="container header-inner">
     {brand(P)}
     <nav aria-label="Main"><ul class="nav-links">{links}</ul></nav>
-    <a class="btn btn-gold btn-sm header-cta" href="{P}free-concept.html">Get a free concept</a>
+    <a class="btn btn-gold btn-sm header-cta" href="{P}free-concept">Get a free concept</a>
     <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu"><span class="menu-label" aria-hidden="true">Menu</span><span class="menu-icon" aria-hidden="true"></span><span class="sr-only">Open menu</span></button>
   </div>
 </header>
@@ -184,7 +188,7 @@ def header(P, here):
       <a class="link" data-email href="mailto:{EMAIL}">{EMAIL}</a>
       <p class="tiny" data-clock>Melbourne</p>
       <p class="tiny"><span class="avail-dot" aria-hidden="true"></span><span data-availability>{E(CONFIG['availability'])}</span></p>
-      <a class="btn btn-gold" href="{P}free-concept.html">Get a free concept</a>
+      <a class="btn btn-gold" href="{P}free-concept">Get a free concept</a>
     </aside>
   </div>
 </div>'''
@@ -218,7 +222,7 @@ def footer(P, here):
 
 def mobile_bar(P):
     return f'''<div class="mobile-bar" role="region" aria-label="Quick actions">
-  <a class="btn btn-gold" href="{P}free-concept.html">Get a free concept</a>
+  <a class="btn btn-gold" href="{P}free-concept">Get a free concept</a>
   <a class="btn btn-ghost icon-btn" data-call href="#" hidden aria-label="Call us">{icon('call')}</a>
   <a class="btn btn-ghost icon-btn" data-email href="mailto:{EMAIL}" aria-label="Email us">{icon('mail')}</a>
 </div>'''
@@ -246,8 +250,15 @@ def scripts_after_hero(P, vendor=()):
             'if(d.readyState==="loading")d.addEventListener("DOMContentLoaded",ready,{once:true});else ready()})();</script>')
 
 
+def clean(p):
+    """The address a page is served at: /about for about.html, / for index.html, /guides/ for guides/index.html."""
+    if p in ('', 'index.html'):
+        return ''
+    return p[:-10] if p.endswith('/index.html') else p[:-5] if p.endswith('.html') else p
+
+
 def head(title, desc, path, P, noindex=False, ld=(), base_script=False, extra='', vendor=(), first=''):
-    canon = SITE + path
+    canon = SITE + clean(path)
     og = SITE + 'img/og.jpg'
     lds = ''.join(f'\n<script type="application/ld+json">{json.dumps(x, ensure_ascii=False, separators=(",", ":"))}</script>' for x in ld)
     base = ('<script>(function(){var m=location.pathname.match(/^(.*\\/black-crest-site\\/)/);'
@@ -256,6 +267,7 @@ def head(title, desc, path, P, noindex=False, ld=(), base_script=False, extra=''
 <html lang="en-AU">
 <head>
 <meta charset="utf-8">
+<script>if(/github\\.io$/.test(location.hostname))location.replace("{canon}"+location.search+location.hash)</script>
 <script>(function(d){{d.classList.add('js');try{{if(!sessionStorage.getItem('bc-pre')&&!matchMedia('(prefers-reduced-motion: reduce)').matches)d.classList.add('preload')}}catch(e){{}}}})(document.documentElement)</script>
 {base}<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">{chr(10) + first if first else ''}
 <title>{E(title)}</title>
@@ -344,7 +356,7 @@ def head_block(label, title, lead='', split=False, level='h2', cls='h2', center=
     </div>'''
 
 
-def cta_final(title, text, primary=('free-concept.html', 'Get a free concept'), secondary=None, P=''):
+def cta_final(title, text, primary=('free-concept', 'Get a free concept'), secondary=None, P=''):
     sec = f'<a class="btn btn-ghost" href="{P}{secondary[0]}">{secondary[1]}</a>' if secondary else ''
     card = (f'<div class="cta-media">{pic(VIDEO + "-poster-mobile", 864, 1080, "", P, sizes="360px")}'
             f'<video class="cta-video" muted loop playsinline disablepictureinpicture preload="none" aria-hidden="true" tabindex="-1" data-video="{P}{VIDEO}-mobile"></video></div>')
@@ -362,9 +374,9 @@ def cta_final(title, text, primary=('free-concept.html', 'Get a free concept'), 
 
 
 STATEMENT = [
-    ('onePage', 'One Page', 'one-off', 'contact.html?need=one-page', 'Choose One Page', False,
+    ('onePage', 'One Page', 'one-off', 'contact?need=one-page', 'Choose One Page', False,
      'One polished page with everything a local business needs.', ['Writing help', 'Designed for phones first', 'Contact form', 'Google Map of your location', 'Google basics set up', 'Fast and secure (HTTPS)', '2 rounds of changes']),
-    ('fullSite', 'Full Website', 'one-off', 'contact.html?need=full-website', 'Choose Full Website', True,
+    ('fullSite', 'Full Website', 'one-off', 'contact?need=full-website', 'Choose Full Website', True,
      'Up to about 5 pages, for a business with more to show.', ['Everything in One Page, Google Map included', 'Up to 5 pages', 'Room for a menu, timetable, services or gallery', '2 rounds of changes']),
 ]
 
@@ -380,7 +392,7 @@ def statement(P, level='h3'):
             <td class="st-go"><a class="text-btn" href="{P}{href}">{cta}</a></td>
           </tr>'''
     rows = ''.join(row(k, n, per, h, c, f, sub, items, PKG[k]['price']) for k, n, per, h, c, f, sub, items in STATEMENT)
-    care = row('carePlan', 'Care plan', 'a month', 'care-plan.html', 'What it covers', False, 'Optional. We look after your site once it is live.',
+    care = row('carePlan', 'Care plan', 'a month', 'care-plan', 'What it covers', False, 'Optional. We look after your site once it is live.',
                ['Hosting upkeep', 'Small text and photo changes', 'Security checks and backups', 'Priority replies'], CARE, ' st-after')
     return f'''<div class="statement-wrap" data-reveal>
       <table class="st-table">
@@ -390,7 +402,7 @@ def statement(P, level='h3'):
         <tbody class="st-optional">{care}</tbody>
       </table>
       <p class="st-honest">We&rsquo;re new and building our first portfolio, so prices start low. The work doesn&rsquo;t.</p>
-      <p class="st-foot"><span>Custom work, bigger or unusual projects, is by quote.</span> <a class="text-btn" href="{P}contact.html?need=not-sure">Ask for a quote</a></p>
+      <p class="st-foot"><span>Custom work, bigger or unusual projects, is by quote.</span> <a class="text-btn" href="{P}contact?need=not-sure">Ask for a quote</a></p>
     </div>'''
 
 
@@ -415,12 +427,12 @@ def need_fields(prefix='n', care=False):
 
 
 def form_open(name, subject, P):
-    return f'''<form class="form" id="form-{name}" data-form="{name}" action="https://api.web3forms.com/submit" method="POST" data-thanks="{P}thank-you.html" novalidate>
+    return f'''<form class="form" id="form-{name}" data-form="{name}" action="https://api.web3forms.com/submit" method="POST" data-thanks="{P}thank-you" novalidate>
         <input type="hidden" name="access_key" value="{FORM_KEY}">
         <input type="hidden" name="subject" value="{E(subject)}">
         <input type="hidden" name="from_name" value="Black Crest Website">
         <input type="hidden" name="form" value="{E(name)}">
-        <input type="hidden" name="redirect" value="{SITE}thank-you.html">
+        <input type="hidden" name="redirect" value="{SITE}thank-you">
         <div class="hp" aria-hidden="true"><label>Leave this box empty <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off"></label></div>'''
 
 
@@ -439,7 +451,7 @@ def field(fid, label, kind='text', required=False, hint='', auto='', textarea=Fa
 
 
 def form_close(button, P):
-    return f'''<p class="privacy-line">We only use your details to reply to you. See our <a href="{P}privacy.html">privacy policy</a>.</p>
+    return f'''<p class="privacy-line">We only use your details to reply to you. See our <a href="{P}privacy">privacy policy</a>.</p>
         <button class="btn btn-gold" type="submit">{button}</button>
         <p class="form-status" role="status" aria-live="polite"></p>
       </form>'''
@@ -455,9 +467,9 @@ ORG = {
     'areaServed': {'@type': 'City', 'name': 'Melbourne'},
     'parentOrganization': {'@type': 'Organization', 'name': 'KB Ventures', 'url': KB_SITE},
     'makesOffer': [
-        {'@type': 'Offer', 'name': 'One Page website', 'price': f'{ONE:.2f}', 'priceCurrency': CONFIG['currency'], 'url': SITE + 'pricing.html'},
-        {'@type': 'Offer', 'name': 'Full Website (up to about 5 pages)', 'price': f'{FULL:.2f}', 'priceCurrency': CONFIG['currency'], 'url': SITE + 'pricing.html'},
-        {'@type': 'Offer', 'name': 'Care plan', 'price': f'{CARE:.2f}', 'priceCurrency': CONFIG['currency'], 'url': SITE + 'care-plan.html',
+        {'@type': 'Offer', 'name': 'One Page website', 'price': f'{ONE:.2f}', 'priceCurrency': CONFIG['currency'], 'url': SITE + 'pricing'},
+        {'@type': 'Offer', 'name': 'Full Website (up to about 5 pages)', 'price': f'{FULL:.2f}', 'priceCurrency': CONFIG['currency'], 'url': SITE + 'pricing'},
+        {'@type': 'Offer', 'name': 'Care plan', 'price': f'{CARE:.2f}', 'priceCurrency': CONFIG['currency'], 'url': SITE + 'care-plan',
          'priceSpecification': {'@type': 'UnitPriceSpecification', 'price': f'{CARE:.2f}', 'priceCurrency': CONFIG['currency'], 'unitText': 'month'}},
     ],
 }
@@ -468,7 +480,7 @@ STEPS = [
     ('Launch', 'launch', 'Usually 1 to 2 days after you approve it', 'You pay the balance. We connect your domain, switch on HTTPS and check every page on phones and computers. Then we hand it over: the site, the domain and the logins are yours.'),
 ]
 FAQS = [
-    ('How much does a website cost?', f'A One Page site is {money(ONE)}. A Full Website, up to about 5 pages, is {money(FULL)}. The care plan is optional at {money(CARE)} a month, and bigger projects are quoted. The only other cost is your own domain name, about $20 a year. See <a href="{{P}}pricing.html">pricing</a>.'),
+    ('How much does a website cost?', f'A One Page site is {money(ONE)}. A Full Website, up to about 5 pages, is {money(FULL)}. The care plan is optional at {money(CARE)} a month, and bigger projects are quoted. The only other cost is your own domain name, about $20 a year. See <a href="{{P}}pricing">pricing</a>.'),
     ('How long does it take?', 'Your free concept homepage is usually ready within 5 business days of our first chat. The build usually takes 1 to 2 weeks after the deposit, and launch takes 1 to 2 days once you approve the preview.'),
     ('Who owns the website?', 'You do. Once the balance is paid, the finished site is yours. Your domain name is registered in your name, so it is always yours too.'),
     ('Can I ask for changes?', 'Yes. Two rounds of changes are included while we build. After launch, small text and photo changes are part of the care plan. Anything bigger is quoted fairly before we start it.'),
@@ -479,7 +491,7 @@ FAQS = [
     ('Can I change things on my site myself?', 'Small changes are part of the care plan. You can also email us anything, any time. Bigger changes are quoted first.'),
     ('How do I pay?', 'By bank transfer, from an invoice we email you. We never take payment on this website.'),
     ('Do you charge GST?', 'We are not registered for GST, so there is no GST on our prices.'),
-    ('What if I change my mind after the deposit?', 'You can stop at any time. The deposit covers the work already done, so it is not refunded, unless no work has started yet. If we cannot finish the work, we refund your deposit in full. See our <a href="{P}terms.html">terms</a>.'),
+    ('What if I change my mind after the deposit?', 'You can stop at any time. The deposit covers the work already done, so it is not refunded, unless no work has started yet. If we cannot finish the work, we refund your deposit in full. See our <a href="{P}terms">terms</a>.'),
     ('Where is my site hosted?', 'On a fast, reputable host we set up for you. Hosting setup is included, and if anything would cost extra, we tell you before you say yes.'),
     ('How long does the care plan last?', 'Month to month, for as long as it is useful to you. There is no lock-in contract.'),
     ('How do I cancel the care plan?', 'Email us before your next month starts. Your site stays yours, and we hand over your files and logins.'),
@@ -614,7 +626,7 @@ def chapters(P):
           <i class="chapter-rule" aria-hidden="true"></i>
           <p class="chapter-cap">{cap}</p>
           <p class="chapter-meta"><span class="chip chip-plain">Concept site</span> {d[2]}</p>
-          <a class="link" href="{P}work/{slug}.html">See the concept {icon('arrow')}<span class="sr-only">: {d[2]}</span></a>
+          <a class="link" href="{P}work/{slug}">See the concept {icon('arrow')}<span class="sr-only">: {d[2]}</span></a>
         </div>
       </article>''')
     return f'''<section class="chapters" aria-labelledby="chapters-h" data-chapters>
@@ -654,7 +666,7 @@ def lab(P, idx='03', level='h2', heading=True):
           <div class="lab-laptop"><div class="lab-screen" data-lab-screen></div><div class="laptop-base"></div></div>
           <div class="lab-phone"><div class="lab-screen" data-lab-screen></div></div>
         </div>
-        <noscript><p class="lab-nojs">The Concept Lab needs JavaScript to draw its preview. You can still <a href="{P}free-concept.html">ask for a free concept</a>.</p></noscript>
+        <noscript><p class="lab-nojs">The Concept Lab needs JavaScript to draw its preview. You can still <a href="{P}free-concept">ask for a free concept</a>.</p></noscript>
       </div>'''
 
 
@@ -739,7 +751,7 @@ def process_stack(P):
           <h2 id="how-h" class="h2" data-split>Four steps. <em>No surprises.</em></h2>
         </div>
         <div><p class="lead" data-reveal>You see your homepage before you pay anything. This is everything that happens after that.</p>
-        <a class="link" data-reveal href="{P}process.html">The full process {icon('arrow')}</a></div>
+        <a class="link" data-reveal href="{P}process">The full process {icon('arrow')}</a></div>
       </div>
       {stack_cards(P)}
     </div>
@@ -760,7 +772,7 @@ def standard_band(P):
         <h2 id="std-h" class="h2" data-split>Promises you can <em>hold us to.</em></h2>
       </div>
       <ul class="standard-nums">{items}</ul>
-      <a class="link" data-reveal href="{P}standard.html">Read the full standard {icon('arrow')}</a>
+      <a class="link" data-reveal href="{P}standard">Read the full standard {icon('arrow')}</a>
     </div>
   </section>'''
 
@@ -770,7 +782,7 @@ GALLERY = json.load(open(os.path.join(HERE, 'gallery.json'), encoding='utf-8'))
 
 def collection(P):
     items = ''.join(f'''<li style="--l:{g['left']}%;--t:{g['top']}%;--w:{g['right'] - g['left']}%;--h:{g['bottom'] - g['top']}%">
-          <a class="niche" data-niche="{i}" href="{P}work/{d[0]}.html">
+          <a class="niche" data-niche="{i}" href="{P}work/{d[0]}">
             {pic(f'assets/gallery/niche-{d[0]}', 840, 1120, '', P, sizes='(min-width: 900px) 1px, 46vw', cls='niche-still')}
             <span class="niche-label"><b>{d[2]}</b><small>Concept site &middot; {d[3]}</small></span>
           </a></li>''' for i, (d, g) in enumerate(zip(DEMOS, GALLERY)))
@@ -831,8 +843,8 @@ page('index.html', 'Black Crest Web Designs: premium sites for local businesses'
       <h1 id="hero-h">Premium sites for <em>local</em> businesses</h1>
       <p class="lead">We design your homepage first, free. You decide after.</p>
       <div class="btn-row">
-        <a class="btn btn-gold" href="free-concept.html">Get a free concept</a>
-        <a class="btn btn-ghost" href="work.html">See the work</a>
+        <a class="btn btn-gold" href="free-concept">Get a free concept</a>
+        <a class="btn btn-ghost" href="work">See the work</a>
       </div>
       <p class="hero-statement">One page from <span data-price="onePage">{money(ONE)}</span> <i aria-hidden="true">&middot;</i> Full website <span data-price="fullSite">{money(FULL)}</span> <i aria-hidden="true">&middot;</i> Concept free</p>
     </div>
@@ -882,7 +894,7 @@ page('index.html', 'Black Crest Web Designs: premium sites for local businesses'
     <div class="container">
       {head_block('Pricing', '<span id="price-h">Clear prices. <em>Set before we start.</em></span>', 'One price per package, agreed in writing before any work begins. Bigger projects are quoted.', split=True, idx='08')}
       {statement(P)}
-      <p class="pricing-more" data-reveal><a class="text-btn" href="pricing.html">Pricing, add-ons and the calculator</a></p>
+      <p class="pricing-more" data-reveal><a class="text-btn" href="pricing">Pricing, add-ons and the calculator</a></p>
     </div>
   </section>
 
@@ -894,7 +906,7 @@ page('index.html', 'Black Crest Web Designs: premium sites for local businesses'
         <p class="label" data-reveal><span class="idx">10</span><span class="slash" aria-hidden="true">/</span>An honest offer</p>
         <h2 id="case-h" class="h2" data-split>Be our first <em>case study.</em></h2>
         <p class="lead" data-reveal>We are new, so there are no customer reviews to show yet, and we will never invent any. The first few local shops we work with get a discount, in return for an honest quote about the experience and permission to show their site here.</p>
-        <p data-reveal><a class="btn btn-ghost" href="contact.html">Ask about the offer</a></p>
+        <p data-reveal><a class="btn btn-ghost" href="contact">Ask about the offer</a></p>
       </div>
       <figure class="offer-visual" data-reveal>{duo('barber', P, parallax='0.04')}<figcaption class="tiny">Your site could sit here. Shown: Brass &amp; Blade, a made-up barbershop concept.</figcaption></figure>
     </div>
@@ -903,11 +915,11 @@ page('index.html', 'Black Crest Web Designs: premium sites for local businesses'
   <section class="section-tight band" aria-labelledby="faq-h">
     <div class="container faq-split">
       {head_block('FAQ', '<span id="faq-h">Straight <em>answers.</em></span>', 'The questions everyone asks before they start.', idx='11')}
-      <div data-reveal>{faq_list(FAQS[:5], P)}<p style="margin-top:22px"><a class="link" href="faq.html">All questions {icon('arrow')}</a></p></div>
+      <div data-reveal>{faq_list(FAQS[:5], P)}<p style="margin-top:22px"><a class="link" href="faq">All questions {icon('arrow')}</a></p></div>
     </div>
   </section>
 
-  {cta_final('See it <em>before</em> you pay.', 'Tell us about your business. We reply within 1 business day and design your homepage for free.', secondary=('contact.html', 'Ask a question'))}
+  {cta_final('See it <em>before</em> you pay.', 'Tell us about your business. We reply within 1 business day and design your homepage for free.', secondary=('contact', 'Ask a question'))}
 </main>''', ld=[ORG], vendor=('gsap/Flip.min.js',), pre=True, first=HERO_PRELOAD)
 
 
@@ -924,7 +936,7 @@ page('lab.html', 'Concept Lab: Black Crest Web Designs', 'Sketch a homepage for 
       {lab(P, heading=False)}
     </div>
   </section>
-  {cta_final('Rather <em>just talk?</em>', 'Tell us about your business in a few lines. We reply within 1 business day.', secondary=('contact.html', 'Ask a question'))}
+  {cta_final('Rather <em>just talk?</em>', 'Tell us about your business in a few lines. We reply within 1 business day.', secondary=('contact', 'Ask a question'))}
 </main>''', vendor=('gsap/Flip.min.js',))
 
 
@@ -953,7 +965,7 @@ page('standard.html', 'The Black Crest Standard: Black Crest Web Designs', 'Ten 
       <ol class="standard-list">{''.join(f'<li data-reveal><span class="n" aria-hidden="true">{i + 1:02d}</span><div><h2 class="h3">{t}</h2><p>{x}</p></div></li>' for i, (t, x) in enumerate(STANDARD))}</ol>
     </div>
   </section>
-  {cta_final('See it <em>before</em> you pay.', 'Tell us about your business. We reply within 1 business day and design your homepage for free.', secondary=('pricing.html', 'See pricing'))}
+  {cta_final('See it <em>before</em> you pay.', 'Tell us about your business. We reply within 1 business day and design your homepage for free.', secondary=('pricing', 'See pricing'))}
 </main>''')
 
 
@@ -1034,7 +1046,7 @@ def case_page(i, d):
     <div class="container detail-grid">
       <div class="detail-object" data-wipe>{pic(f'assets/gallery/detail-{slug}', 1040, 1280, f'The {name} concept on a laptop and a phone, standing in a lit stone niche', P, lazy=False, sizes='(min-width: 1024px) 46vw, 92vw', high=True)}</div>
       <div class="detail-copy">
-        <p class="crumbs"><a href="{P}work.html">Work</a><span aria-hidden="true">/</span>{trade}</p>
+        <p class="crumbs"><a href="{P}work">Work</a><span aria-hidden="true">/</span>{trade}</p>
         <h1 id="case-name" class="display" data-split>{italic_last(name)}</h1>
         <p class="lead" data-reveal>{c['line']}</p>
         <dl class="facts" data-reveal>
@@ -1043,8 +1055,8 @@ def case_page(i, d):
           <div><dt>Location</dt><dd>{place}</dd></div>
           <div><dt>Year</dt><dd class="num">{YEAR}</dd></div>
         </dl>
-        <div class="detail-actions" data-reveal><a class="btn btn-gold" href="{P}../{folder}/" target="_blank" rel="noopener">Visit the live concept<span class="sr-only"> (opens in a new tab)</span></a>
-        <a class="text-btn" href="{P}index.html#work-h">Back to the collection</a></div>
+        <div class="detail-actions" data-reveal><a class="btn btn-gold" href="{DEMO_HOST}{folder}/" target="_blank" rel="noopener">Visit the live concept<span class="sr-only"> (opens in a new tab)</span></a>
+        <a class="text-btn" href="/#work-h">Back to the collection</a></div>
       </div>
     </div>
   </section>
@@ -1096,13 +1108,13 @@ def case_page(i, d):
   </section>
 
   <nav class="case-next" aria-label="Next concept">
-    <a class="container next-link" href="{P}work/{nxt[0]}.html" data-hover-img="{P}img/work/{nxt[0]}-desktop-800.webp">
+    <a class="container next-link" href="{P}work/{nxt[0]}" data-hover-img="{P}img/work/{nxt[0]}-desktop-800.webp">
       <span class="label">Next concept</span>
       <span class="next-name">{nxt[2]} <span class="arrow">{icon('arrow')}</span></span>
       <span class="tiny">{nxt[3]} &middot; concept site</span>
     </a>
   </nav>
-  {cta_final('Want one like <em>this?</em>', 'We design your homepage concept for free, so you can see it before you decide.', secondary=('lab.html', 'Try the Concept Lab'), P=P)}
+  {cta_final('Want one like <em>this?</em>', 'We design your homepage concept for free, so you can see it before you decide.', secondary=('lab', 'Try the Concept Lab'), P=P)}
 </main>'''
 
 
@@ -1111,11 +1123,11 @@ for i, d in enumerate(DEMOS):
          f'{strip_tags(d[2])} is a concept {d[3].lower()} website by Black Crest Web Designs, for a made-up business. The brief, what we built, colours, type and measured speed.',
          case_page(i, d), ld=[{'@context': 'https://schema.org', '@type': 'CreativeWork', 'name': f'{strip_tags(d[2])} (concept site)',
                                 'description': f'A concept website for a made-up {d[3].lower()}, designed and built by Black Crest Web Designs. Not a real client.',
-                                'url': SITE + f'work/{d[0]}.html', 'image': SITE + f'img/work/{d[0]}-desktop-1600.jpg', 'dateCreated': YEAR,
+                                'url': SITE + f'work/{d[0]}', 'image': SITE + f'img/work/{d[0]}-desktop-1600.jpg', 'dateCreated': YEAR,
                                 'creator': {'@id': SITE + '#business'}, 'isPartOf': {'@type': 'WebSite', 'name': 'Black Crest Web Designs', 'url': SITE}}])
 
 P = ''
-rows = ''.join(f'''<li><a class="work-line" href="work/{d[0]}.html" data-hover-img="img/work/{d[0]}-desktop-800.webp">
+rows = ''.join(f'''<li><a class="work-line" href="work/{d[0]}" data-hover-img="img/work/{d[0]}-desktop-800.webp">
           <span class="n" aria-hidden="true">0{i + 1}</span>
           <span class="w-name">{d[2]}</span>
           <span class="w-meta"><span>{d[3]}</span><span>{CASES[d[0]]['place'] or 'Online store'}</span></span>
@@ -1135,10 +1147,10 @@ page('work.html', 'Work: concept sites by Black Crest Web Designs', 'Six concept
   <section class="section-tight band" aria-labelledby="try-h">
     <div class="container offer-split">
       <div><p class="label" data-reveal><span class="idx">02</span><span class="slash" aria-hidden="true">/</span>Concept Lab</p><h2 id="try-h" class="h2" data-split>Try the <em>Concept Lab.</em></h2></div>
-      <div data-reveal><p class="lead">Pick your trade, a mood and the features you need, and watch a homepage sketch itself. Then send it to us as the start of your free concept.</p><a class="btn btn-gold" href="lab.html">Open the Concept Lab</a></div>
+      <div data-reveal><p class="lead">Pick your trade, a mood and the features you need, and watch a homepage sketch itself. Then send it to us as the start of your free concept.</p><a class="btn btn-gold" href="lab">Open the Concept Lab</a></div>
     </div>
   </section>
-  {cta_final('Want one like <em>this?</em>', 'We design your homepage concept for free, so you can see it first.', secondary=('pricing.html', 'See pricing'))}
+  {cta_final('Want one like <em>this?</em>', 'We design your homepage concept for free, so you can see it first.', secondary=('pricing', 'See pricing'))}
 </main>''')
 
 # ================================================================= Credits
@@ -1178,7 +1190,7 @@ CMP = [
 ]
 cmp_rows = ''.join(f'<tr><th scope="row">{r}</th><td data-label="DIY builder">{a}</td><td data-label="Typical agency">{b}</td><td class="col-us" data-label="Black Crest">{c}</td></tr>' for r, a, b, c in CMP)
 calc_addons = ''.join(f'''<label class="opt" for="add-{a['id']}"><input type="checkbox" id="add-{a['id']}" value="{a['id']}"><span class="opt-text"><b>{a['name']}</b><span class="tiny">{a['note']}</span></span>{f'<select class="qty" data-for="{a["id"]}" id="qty-{a["id"]}" aria-label="How many extra pages">' + ''.join(f'<option value="{n}">{n}</option>' for n in range(1, 6)) + '</select>' if a.get('perUnit') else ''}<span class="amt">from <span data-price="{a['id']}">{money(a['from'])}</span></span></label>''' for a in ADDONS)
-PRICE_LD = {'@context': 'https://schema.org', '@type': 'OfferCatalog', 'name': 'Black Crest Web Designs pricing', 'url': SITE + 'pricing.html',
+PRICE_LD = {'@context': 'https://schema.org', '@type': 'OfferCatalog', 'name': 'Black Crest Web Designs pricing', 'url': SITE + 'pricing',
             'itemListElement': ORG['makesOffer'] + [{'@type': 'Offer', 'name': a['name'], 'priceCurrency': CONFIG['currency'],
                                                      'priceSpecification': {'@type': 'PriceSpecification', 'minPrice': f"{a['from']:.2f}", 'priceCurrency': CONFIG['currency']}} for a in ADDONS]}
 page('pricing.html', 'Pricing: Black Crest Web Designs', f'One Page website {money(ONE)}. Full Website (up to about 5 pages) {money(FULL)}. Optional care plan {money(CARE)} a month. No hidden costs, and a price calculator.', f'''<main id="main">
@@ -1271,7 +1283,7 @@ page('pricing.html', 'Pricing: Black Crest Web Designs', f'One Page website {mon
     </div>
   </section>
 
-  {cta_final('Start with a <em>free</em> concept.', 'See your new homepage first. Decide after.', secondary=('process.html', 'How it works'))}
+  {cta_final('Start with a <em>free</em> concept.', 'See your new homepage first. Decide after.', secondary=('process', 'How it works'))}
 </main>''', ld=[PRICE_LD])
 
 # ================================================================= Process
@@ -1304,7 +1316,7 @@ page('process.html', 'Process: how Black Crest Web Designs works', 'Four steps: 
       </div>
     </div>
   </section>
-  {cta_final('Ready for <em>step one?</em>', 'Send a short message. We reply within 1 business day.', secondary=('start.html', 'Start your project'))}
+  {cta_final('Ready for <em>step one?</em>', 'Send a short message. We reply within 1 business day.', secondary=('start', 'Start your project'))}
 </main>''')
 
 # ================================================================= Free concept (landing page for DMs: no site menu)
@@ -1326,7 +1338,7 @@ page('free-concept.html', 'Get a free website concept: Black Crest Web Designs',
         {need_fields('fc')}
         {form_close('Get my free concept', P)}
     </div>
-    <p class="back"><a class="link" href="index.html">Visit the main Black Crest site {icon('arrow')}</a></p>
+    <p class="back"><a class="link" href="/">Visit the main Black Crest site {icon('arrow')}</a></p>
   </div>
 </main>''', noindex=True, bare=True)
 
@@ -1388,7 +1400,7 @@ page('care-plan.html', f'Care plan, {money(CARE)} a month: Black Crest Web Desig
         <p class="balance"><span data-price="carePlan" data-count="{CARE}">{money(CARE)}</span> <span class="per">a month</span></p>
         <h2 id="cover-h" class="sr-only">What it covers</h2>
         <ul class="ticks" style="margin-top:22px">{''.join(f'<li><strong>{t}.</strong> {x}</li>' for t, x in COVER)}</ul>
-        <a class="btn btn-gold" style="margin-top:24px" href="contact.html?need=care-plan">Get the care plan</a>
+        <a class="btn btn-gold" style="margin-top:24px" href="contact?need=care-plan">Get the care plan</a>
       </div>
       <div class="tile" data-reveal>
         <h2 class="h3">What it does not cover</h2>
@@ -1454,7 +1466,7 @@ for path, (art, slug, trade, h1, lead, reasons, feats) in TRADE_PAGES.items():
         <p class="label">For {trade.lower()}</p>
         <h1 class="h1" data-split>{h1}</h1>
         <p class="lead" data-reveal>{lead} We work with {trade.lower()} across Melbourne and its suburbs.</p>
-        <div class="btn-row" data-reveal style="margin-top:32px"><a class="btn btn-gold" href="free-concept.html">Get a free concept</a><a class="btn btn-ghost" href="pricing.html">See pricing</a></div>
+        <div class="btn-row" data-reveal style="margin-top:32px"><a class="btn btn-gold" href="free-concept">Get a free concept</a><a class="btn btn-ghost" href="pricing">See pricing</a></div>
       </div>
       <div class="illo-wrap" data-reveal>{illo(art)}</div>
     </div>
@@ -1478,7 +1490,7 @@ for path, (art, slug, trade, h1, lead, reasons, feats) in TRADE_PAGES.items():
       <div data-reveal>{duo(slug, P, '0.06')}</div>
     </div>
   </section>
-  {cta_final('See your site <em>before</em> you pay.', 'We design a free concept homepage for your business. No deposit, no obligation.', secondary=('work.html', 'See all concept sites'))}
+  {cta_final('See your site <em>before</em> you pay.', 'We design a free concept homepage for your business. No deposit, no obligation.', secondary=('work', 'See all concept sites'))}
 </main>''')
 
 # ================================================================= FAQ
@@ -1487,13 +1499,13 @@ page('faq.html', 'FAQ: Black Crest Web Designs', 'Answers about cost, timing, wh
   <div class="container page-head">
     <p class="label">FAQ</p>
     <h1 class="h1" data-split>Straight <em>answers.</em></h1>
-    <p class="lead" data-reveal>Cost, timing, ownership and how we work. Something else? <a class="inline-link" href="contact.html">Ask us</a>.</p>
+    <p class="lead" data-reveal>Cost, timing, ownership and how we work. Something else? <a class="inline-link" href="contact">Ask us</a>.</p>
   </div>
   <section class="container faq-split" aria-label="Questions" style="padding-bottom:40px">
     <div class="section-head"><p class="label" data-reveal>{len(FAQS)} questions</p><p class="lead" data-reveal>Tap a question to open it. Every answer uses the same prices and promises as the rest of the site.</p></div>
     <div data-reveal>{faq_list(FAQS, P)}</div>
   </section>
-  {cta_final('Still <em>deciding?</em>', 'A free concept is the easiest way to see if we are the right fit.', secondary=('contact.html', 'Ask a question'))}
+  {cta_final('Still <em>deciding?</em>', 'A free concept is the easiest way to see if we are the right fit.', secondary=('contact', 'Ask a question'))}
 </main>''', ld=[faq_ld()])
 
 # ================================================================= About
@@ -1517,7 +1529,7 @@ page('about.html', 'About: Black Crest Web Designs', 'Black Crest Web Designs ma
   <section class="section" aria-labelledby="how-h">
     <div class="container showcase">
       <div>{head_block('How we work', '<span id="how-h">See it first. <em>Decide after.</em></span>', 'We design your homepage for free before you pay anything. If you like it, a 50% deposit starts the build and the balance is due at launch. Two rounds of changes are included.')}
-        <a class="link" data-reveal href="process.html">The full process {icon('arrow')}</a></div>
+        <a class="link" data-reveal href="process">The full process {icon('arrow')}</a></div>
       <div class="illo-wrap" data-reveal>{illo('concept')}</div>
     </div>
   </section>
@@ -1583,7 +1595,7 @@ page('quiz.html', 'Is your website costing you customers? A 1-minute quiz', 'Six
       <p data-band="low">Your website is likely costing you customers. The good news: all of this can be fixed.</p>
       <ul class="ticks" id="quiz-tips" style="margin:18px 0 24px"></ul>
       <p class="muted">Want a second opinion? We will look at your site and email you a free mini review.</p>
-      <a class="btn btn-gold" id="quiz-review" href="contact.html#review">Get a free mini review</a>
+      <a class="btn btn-gold" id="quiz-review" href="contact#review">Get a free mini review</a>
     </div>
   </section>
 </main>''')
@@ -1595,7 +1607,7 @@ GUIDE_H1 = {  # headlines stay at 2 to 6 words; the full title is still the page
     '5 things every barber website needs': '5 things every <em>barber site</em> needs',
 }
 GUIDES = [
-    ('barber-website-checklist.html', '5 things every barber website needs', 'Five simple things that turn a barber website into booked chairs: booking, prices, real photos, hours and speed.', '''
+    ('barber-website-checklist', '5 things every barber website needs', 'Five simple things that turn a barber website into booked chairs: booking, prices, real photos, hours and speed.', '''
       <p>A barber website has one job: help someone who wants a cut today pick you and book. Most people find a barber on their phone, so every one of these is about making that quick.</p>
       <h2>1. A booking button you cannot miss</h2>
       <p>Put a <strong>Book now</strong> button at the top of every page, linking to the booking app you already use. On a phone, keep it within easy reach of the thumb. If you take walk-ins, say so clearly too.</p>
@@ -1609,7 +1621,7 @@ GUIDES = [
       <p>If your site takes too long to load, people go back and tap the next barber. Keep images compressed, avoid heavy page builders, and test your site on your own phone using mobile data, not just Wi-Fi.</p>
       <h2>A quick checklist</h2>
       <ul><li>Book now button near the top</li><li>Prices for every service</li><li>Recent photos of your work</li><li>Hours, address, map and parking</li><li>Loads quickly on mobile data</li></ul>'''),
-    ('cafe-google-business-profile.html', 'Why your cafe needs a Google Business Profile', 'What a Google Business Profile is, why it matters for cafes, and how to set one up and keep it useful.', '''
+    ('cafe-google-business-profile', 'Why your cafe needs a Google Business Profile', 'What a Google Business Profile is, why it matters for cafes, and how to set one up and keep it useful.', '''
       <p>When someone searches for a cafe near them, Google often shows a map with a short list of places before any websites. Those listings come from <strong>Google Business Profiles</strong>. If your cafe does not have one, or it is out of date, you may be missing people who are already looking for coffee nearby.</p>
       <h2>What it is</h2>
       <p>A Google Business Profile is a free listing for your business that can appear in Google Search and Google Maps. It can show your name, address, opening hours, phone number, website, photos, a link to your menu, and reviews from customers.</p>
@@ -1621,7 +1633,7 @@ GUIDES = [
       <ul><li>Set <strong>special hours</strong> for public holidays and closures.</li><li>Add a link to your menu on your own website.</li><li>Upload new photos every few months.</li><li>Reply to reviews politely, good and bad.</li><li>Make sure your name, address and phone number match your website exactly.</li></ul>
       <h2>Your website and your profile work together</h2>
       <p>Your profile gets you seen. Your website answers the next questions: the full menu, what makes you different, and how to order or book. Link them to each other, and keep the details the same in both places.</p>'''),
-    ('small-business-website-cost.html', 'How much should a small business website cost?', 'An honest look at what a small business website costs in Australia: DIY builders, freelancers and agencies, what changes the price, and the ongoing costs.', '''
+    ('small-business-website-cost', 'How much should a small business website cost?', 'An honest look at what a small business website costs in Australia: DIY builders, freelancers and agencies, what changes the price, and the ongoing costs.', '''
       <p>The honest answer: it depends on what you need. A one-page site for a local barber is a very different job to an online shop with hundreds of products. Here is how the main options compare, and what to ask before you pay anyone.</p>
       <h2>Your three main options</h2>
       <h3>Do it yourself with a website builder</h3>
@@ -1637,14 +1649,14 @@ GUIDES = [
       <h2>Questions to ask before you pay</h2>
       <ul><li>Who owns the finished site and the domain?</li><li>What exactly is included, and what costs extra?</li><li>How many rounds of changes do I get?</li><li>Are there ongoing fees, and can I cancel?</li><li>Can I see the design before I pay?</li></ul>
       <h2>Where Black Crest sits</h2>
-      <p>Our One Page sites are {ONE_P}, a Full Website (up to about 5 pages) is {FULL_P}, and the care plan is optional at {CARE_P} a month. You see a free concept homepage before you pay anything, and you own the finished site. See our <a href="../pricing.html">pricing</a> for the details.</p>'''),
+      <p>Our One Page sites are {ONE_P}, a Full Website (up to about 5 pages) is {FULL_P}, and the care plan is optional at {CARE_P} a month. You see a free concept homepage before you pay anything, and you own the finished site. See our <a href="../pricing">pricing</a> for the details.</p>'''),
 ]
 for slug, title, desc, body in GUIDES:
     P = '../'
     body = body.replace('{ONE_P}', money(ONE)).replace('{FULL_P}', money(FULL)).replace('{CARE_P}', money(CARE))
     art = {'@context': 'https://schema.org', '@type': 'Article', 'headline': title, 'description': desc, 'url': SITE + 'guides/' + slug, 'image': SITE + 'img/og.jpg',
            'publisher': {'@id': SITE + '#business', '@type': 'ProfessionalService', 'name': 'Black Crest Web Designs'}, 'author': {'@type': 'Organization', 'name': 'Black Crest Web Designs'}}
-    page('guides/' + slug, f'{title}: Black Crest guides', desc, f'''<main id="main">
+    page('guides/' + slug + '.html', f'{title}: Black Crest guides', desc, f'''<main id="main">
   <article class="container prose" style="padding-bottom:120px">
     <header class="page-head" style="padding-bottom:20px">
       <p class="label"><a class="crumb" href="./">Guides</a></p>
@@ -1655,7 +1667,7 @@ for slug, title, desc, body in GUIDES:
     <div class="tile callout">
       <h2 class="h3" style="margin:0 0 12px">Want a hand with yours?</h2>
       <p>We design a free concept homepage for your business, so you can see it before you pay.</p>
-      <div class="btn-row"><a class="btn btn-gold" href="../free-concept.html">Get a free concept</a><a class="btn btn-ghost" href="./">More guides</a></div>
+      <div class="btn-row"><a class="btn btn-gold" href="../free-concept">Get a free concept</a><a class="btn btn-ghost" href="./">More guides</a></div>
     </div>
   </article>
 </main>''', ld=[art])
@@ -1715,7 +1727,7 @@ page('thank-you.html', 'Thank you: Black Crest Web Designs', 'Thanks for your me
       <li data-reveal><span class="n">02</span><h2 class="h3">We ask a few questions</h2><p>Only what we need to design your free concept or answer your question.</p></li>
       <li data-reveal><span class="n">03</span><h2 class="h3">You see it, then decide</h2><p>No deposit and no obligation until you say yes.</p></li>
     </ol>
-    <div class="btn-row" style="margin-top:40px"><a class="btn btn-gold" href="work.html">See the concept sites</a><a class="btn btn-ghost" href="index.html">Back to home</a></div>
+    <div class="btn-row" style="margin-top:40px"><a class="btn btn-gold" href="work">See the concept sites</a><a class="btn btn-ghost" href="/">Back to home</a></div>
   </section>
 </main>''', noindex=True, toast=True)
 
@@ -1727,7 +1739,7 @@ page('qr.html', 'Printable QR code: Black Crest Web Designs', 'A printable QR co
       <div style="display:flex;justify-content:center">{brand(P)}</div>
       <h1 class="h1" style="font-size:clamp(40px,7vw,64px);margin-top:30px">Scan for a free <em>website concept.</em></h1>
       <div class="qr-code"><img src="img/qr-free-concept.svg" width="320" height="320" alt="QR code that opens the Black Crest free concept page"></div>
-      <p class="muted">Or visit:<br><span style="word-break:break-all">{SITE}free-concept.html</span></p>
+      <p class="muted">Or visit:<br><span style="word-break:break-all">{SITE}free-concept</span></p>
       <div class="btn-row no-print" style="justify-content:center;margin-top:24px"><button class="btn btn-gold" type="button" data-print>Print this page</button></div>
     </div>
   </div>
@@ -1775,7 +1787,7 @@ page('terms.html', 'Terms: Black Crest Web Designs', 'The plain-English terms fo
     <h2>7. What you provide</h2>
     <p>You confirm that you have the right to use the text, logos and photos you send us.</p>
     <h2>8. Care plan</h2>
-    <p>The care plan is optional and billed monthly at {money(CARE)} a month. It is month to month with no lock-in: email us before your next month starts to cancel. What it covers is listed on the <a href="care-plan.html">care plan page</a>.</p>
+    <p>The care plan is optional and billed monthly at {money(CARE)} a month. It is month to month with no lock-in: email us before your next month starts to cancel. What it covers is listed on the <a href="care-plan">care plan page</a>.</p>
     <h2>9. Your rights</h2>
     <p>Nothing in these terms limits your rights under the Australian Consumer Law.</p>
     <h2>Questions</h2>
@@ -1791,7 +1803,7 @@ page('404.html', 'Page not found: Black Crest Web Designs', 'This page could not
       <p class="label"><span class="idx">404</span><span class="slash" aria-hidden="true">/</span>Not found</p>
       <h1 class="h1" data-split>This page isn’t <em>on the map.</em></h1>
       <p class="lead" data-reveal>The address may be mistyped, or the page may have moved. These will get you back on track.</p>
-      <div class="btn-row" data-reveal><a class="btn btn-gold" href="index.html">Go to the home page</a><a class="btn btn-ghost" href="work.html">See the work</a></div>
+      <div class="btn-row" data-reveal><a class="btn btn-gold" href="/">Go to the home page</a><a class="btn btn-ghost" href="work">See the work</a></div>
     </div>
     <div class="nf-card" aria-hidden="true">{pic('assets/renders/card-tight', 1120, 1200, '', '', sizes='(min-width: 1024px) 34vw, 80vw')}</div>
   </div>
@@ -1821,10 +1833,10 @@ with open(os.path.join(SITE_DIR, 'sitemap.xml'), 'w', encoding='utf-8') as fh:
     for p in pages:
         if p in SKIP:
             continue
-        fh.write(f'  <url><loc>{SITE + ("" if p == "index.html" else p.replace("index.html", ""))}</loc><lastmod>{LASTMOD}</lastmod></url>\n')
+        fh.write(f'  <url><loc>{SITE + clean(p)}</loc><lastmod>{LASTMOD}</lastmod></url>\n')
     fh.write('</urlset>\n')
 with open(os.path.join(SITE_DIR, 'robots.txt'), 'w', encoding='utf-8') as fh:
-    fh.write(f'# free-concept.html, thank-you.html, qr.html and 404.html carry a noindex tag instead of a Disallow,\n# so search engines can read it.\nUser-agent: *\nAllow: /\n\nSitemap: {SITE}sitemap.xml\n')
+    fh.write(f'# free-concept, thank-you, qr and 404 carry a noindex tag instead of a Disallow,\n# so search engines can read it.\nUser-agent: *\nAllow: /\n\nSitemap: {SITE}sitemap.xml\n')
 with open(os.path.join(SITE_DIR, 'manifest.webmanifest'), 'w', encoding='utf-8') as fh:
     json.dump({'name': 'Black Crest Web Designs', 'short_name': 'Black Crest', 'description': 'Premium sites for local businesses.', 'lang': 'en-AU',
                'start_url': './', 'scope': './', 'display': 'standalone', 'background_color': '#0D0E12', 'theme_color': '#0D0E12',

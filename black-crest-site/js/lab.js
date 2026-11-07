@@ -86,6 +86,6 @@ export function initLab({ reduce }) {
   $('[data-lab-send]', lab).addEventListener('click', () => {
     const c = read();
     store.set('bc-lab', JSON.stringify({ trade: TRADES[c.trade].label, name: c.name || 'not set yet', mood: MOODS[c.mood].label, features: c.features.map((f) => FEATURES[f]) }));
-    location.href = base + 'contact.html#lab';
+    location.href = base + 'contact#lab';
   });
 }

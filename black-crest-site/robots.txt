@@ -1,6 +1,6 @@
-# free-concept.html, thank-you.html, qr.html and 404.html carry a noindex tag instead of a Disallow,
+# free-concept, thank-you, qr and 404 carry a noindex tag instead of a Disallow,
 # so search engines can read it.
 User-agent: *
 Allow: /
 
-Sitemap: https://kirithikbala21-jpg.github.io/3D-demo-sites/black-crest-site/sitemap.xml
+Sitemap: https://blackcrest.kbventures.com.au/sitemap.xml

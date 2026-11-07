@@ -4,8 +4,8 @@
 //   CLAUDE.md section 6 (em dashes, icon libraries, corners over 6px, shadows, backdrop blur, Inter, Geist, Space Grotesk).
 // Full-page screenshots go to tools/screens/ (ignored by git) for a visual review.
 //
-//   1. serve the repo root:   python3 -m http.server 8123 --bind 127.0.0.1
-//   2. run:                   node black-crest-site/tools/check.mjs [--quick] [base URL]
+//   1. serve this folder like Cloudflare Pages does (clean URLs, /x.html redirects to /x), e.g. cfserve.py <this folder> 8123
+//   2. run:                   node tools/check.mjs [--quick] [base URL, default http://127.0.0.1:8123/]
 //      --quick checks 390 and 1280 only, without screenshots.
 // Never submits a form.
 import { createRequire } from 'module';
@@ -18,7 +18,9 @@ const SITE = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const REPO = path.join(SITE, '..');
 const args = process.argv.slice(2);
 const QUICK = args.includes('--quick');
-const BASE = (args.find((a) => a.startsWith('http')) || 'http://127.0.0.1:8123/') + 'black-crest-site/';
+const BASE = (args.find((a) => a.startsWith('http')) || 'http://127.0.0.1:8123/');
+// the address a page is served at: about.html is /about, index.html is /, guides/index.html is /guides/
+const clean = (pg) => pg === 'index.html' ? '' : pg.endsWith('/index.html') ? pg.slice(0, -10) : pg.replace(/\.html$/, '');
 const WIDTHS = QUICK ? [390, 1280] : [390, 768, 1280, 1920];
 const SHOTS = path.join(SITE, 'tools', 'screens');
 if (!QUICK) mkdirSync(SHOTS, { recursive: true });
@@ -55,10 +57,11 @@ for (const pg of pages) {
   (text.match(/\$\d{1,3}(?:,\d{3})*/g) || []).forEach((m) => { if (!ALLOWED.has(m)) fail(pg, '-', `price ${m} is not in js/config.js`); });
   for (const [, href] of html.matchAll(/<a\b[^>]*\bhref="([^"]+)"/g)) {
     if (/^(https?:|mailto:|tel:|#|javascript:)/.test(href)) continue;
-    const clean = href.split('#')[0].split('?')[0]; if (!clean) continue;
-    let target = path.resolve(path.dirname(path.join(SITE, pg)), clean);
-    if (clean.endsWith('/')) target = path.join(target, 'index.html');
-    if (!target.startsWith(REPO)) { fail(pg, '-', `link leaves the repo: ${href}`); continue; }
+    const noHash = href.split('#')[0].split('?')[0]; if (!noHash) continue;
+    if (/\.html$/.test(noHash)) { fail(pg, '-', `link still ends in .html: ${href}`); continue; }
+    let target = noHash.startsWith('/') ? path.join(SITE, noHash) : path.resolve(path.dirname(path.join(SITE, pg)), noHash);
+    if (noHash.endsWith('/')) target = path.join(target, 'index.html'); else if (existsSync(target + '.html')) target += '.html';
+    if (!target.startsWith(SITE)) { fail(pg, '-', `link leaves the site: ${href}`); continue; }
     if (!existsSync(target)) fail(pg, '-', `broken link: ${href}`);
   }
 }
@@ -80,7 +83,7 @@ for (const w of WIDTHS) {
     page.on('requestfailed', (r) => { if (!/\.(mp4|webm)$/.test(r.url())) fail(pg, w, 'request failed: ' + r.url()); });
     page.on('response', (r) => { if (r.status() >= 400) fail(pg, w, `HTTP ${r.status()}: ${r.url()}`); });
     try {
-      await page.goto(BASE + pg, { waitUntil: 'load', timeout: 45000 });
+      await page.goto(BASE + clean(pg), { waitUntil: 'load', timeout: 45000 });
       // scroll through so every reveal runs, then back to the top
       const h = await page.evaluate(() => document.documentElement.scrollHeight);
       for (let y = 0; y < h; y += 700) { await page.evaluate((y) => scrollTo(0, y), y); await page.waitForTimeout(90); }

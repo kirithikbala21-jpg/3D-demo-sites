@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://demos.kbventures.com.au/barber-demo/</loc></url>
-  <url><loc>https://demos.kbventures.com.au/barber-demo/services</loc></url>
-  <url><loc>https://demos.kbventures.com.au/barber-demo/barbers</loc></url>
-  <url><loc>https://demos.kbventures.com.au/barber-demo/book</loc></url>
-  <url><loc>https://demos.kbventures.com.au/barber-demo/shop</loc></url>
-  <url><loc>https://demos.kbventures.com.au/barber-demo/membership</loc></url>
-  <url><loc>https://demos.kbventures.com.au/barber-demo/journal</loc></url>
-  <url><loc>https://demos.kbventures.com.au/barber-demo/visit</loc></url>
-  <url><loc>https://demos.kbventures.com.au/barber-demo/reviews</loc></url>
-  <url><loc>https://demos.kbventures.com.au/barber-demo/careers</loc></url>
-  <url><loc>https://demos.kbventures.com.au/barber-demo/legal</loc></url>
+  <url><loc>https://barberdemo.kbventures.com.au/</loc></url>
+  <url><loc>https://barberdemo.kbventures.com.au/services</loc></url>
+  <url><loc>https://barberdemo.kbventures.com.au/barbers</loc></url>
+  <url><loc>https://barberdemo.kbventures.com.au/book</loc></url>
+  <url><loc>https://barberdemo.kbventures.com.au/shop</loc></url>
+  <url><loc>https://barberdemo.kbventures.com.au/membership</loc></url>
+  <url><loc>https://barberdemo.kbventures.com.au/journal</loc></url>
+  <url><loc>https://barberdemo.kbventures.com.au/visit</loc></url>
+  <url><loc>https://barberdemo.kbventures.com.au/reviews</loc></url>
+  <url><loc>https://barberdemo.kbventures.com.au/careers</loc></url>
+  <url><loc>https://barberdemo.kbventures.com.au/legal</loc></url>
 </urlset>

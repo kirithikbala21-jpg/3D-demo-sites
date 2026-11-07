@@ -616,7 +616,7 @@ if (want('perf')) {
   ok('site.webmanifest is generated with theme and background #0b0b0c and a maskable icon', mf.theme_color === '#0b0b0c' && mf.background_color === '#0b0b0c' && mf.icons.some((i) => i.purpose === 'maskable') && mf.lang === 'en-AU');
   const sm = fs.readFileSync(path.join(SITE, 'sitemap.xml'), 'utf8');
   ok('sitemap lists every page except 404', PAGES.filter((f) => f !== '404.html').every((f) => sm.includes(f === 'index.html' ? 'gym-demo/</loc>' : f)) && !sm.includes('404'));
-  ok('site.config baseUrl and time zone are set for the demo', cfg.site.baseUrl === 'https://demos.kbventures.com.au/gym-demo/' && cfg.site.timezone === 'Australia/Melbourne' && cfg.site.noindex === true);
+  ok('site.config baseUrl and time zone are set for the demo', cfg.site.baseUrl === 'https://gymdemo.kbventures.com.au/' && cfg.site.timezone === 'Australia/Melbourne' && cfg.site.noindex === true);
   ok('removed features stay removed: no shop, cart or sound code in the folder', !fs.existsSync(path.join(SITE, 'js/cart.js')) && !fs.existsSync(path.join(SITE, 'js/sound.js')) && !fs.existsSync(path.join(SITE, 'shop.html')) && !fs.existsSync(path.join(SITE, 'book.html')));
 }
 

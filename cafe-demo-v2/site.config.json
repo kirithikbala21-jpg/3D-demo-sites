@@ -24,7 +24,7 @@
   "lon": 144.969
  },
  "site": {
-  "baseUrl": "https://demos.kbventures.com.au/cafe-demo-v2/",
+  "baseUrl": "https://cafedemo.kbventures.com.au/",
   "noindex": true,
   "currency": "AUD",
   "timezone": "Australia/Melbourne",

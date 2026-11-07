@@ -1,4 +1,4 @@
 User-agent: *
 Disallow:
 
-Sitemap: https://demos.kbventures.com.au/cafe-demo-v2/sitemap.xml
+Sitemap: https://cafedemo.kbventures.com.au/sitemap.xml

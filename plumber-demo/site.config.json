@@ -25,7 +25,7 @@
   "licence": "Licence number shown on the real site"
  },
  "site": {
-  "baseUrl": "https://demos.kbventures.com.au/plumber-demo/",
+  "baseUrl": "https://plumberdemo.kbventures.com.au/",
   "folder": "plumber-demo",
   "noindex": true,
   "currency": "AUD",

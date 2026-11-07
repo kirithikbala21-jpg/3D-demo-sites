@@ -1,4 +1,4 @@
 User-agent: *
 Disallow:
 
-Sitemap: https://demos.kbventures.com.au/gym-demo/sitemap.xml
+Sitemap: https://gymdemo.kbventures.com.au/sitemap.xml

@@ -24,7 +24,7 @@
   "lon": 151.2063
  },
  "site": {
-  "baseUrl": "https://demos.kbventures.com.au/barber-demo/",
+  "baseUrl": "https://barberdemo.kbventures.com.au/",
   "noindex": true,
   "currency": "AUD",
   "timezone": "Australia/Melbourne",

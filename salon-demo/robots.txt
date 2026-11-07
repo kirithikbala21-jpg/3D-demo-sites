@@ -1,4 +1,4 @@
 User-agent: *
 Disallow:
 
-Sitemap: https://demos.kbventures.com.au/salon-demo/sitemap.xml
+Sitemap: https://salondemo.kbventures.com.au/sitemap.xml

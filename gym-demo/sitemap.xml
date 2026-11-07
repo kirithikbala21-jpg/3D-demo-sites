@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://demos.kbventures.com.au/gym-demo/</loc></url>
-  <url><loc>https://demos.kbventures.com.au/gym-demo/classes</loc></url>
-  <url><loc>https://demos.kbventures.com.au/gym-demo/coaches</loc></url>
-  <url><loc>https://demos.kbventures.com.au/gym-demo/trial</loc></url>
-  <url><loc>https://demos.kbventures.com.au/gym-demo/membership</loc></url>
-  <url><loc>https://demos.kbventures.com.au/gym-demo/journal</loc></url>
-  <url><loc>https://demos.kbventures.com.au/gym-demo/visit</loc></url>
-  <url><loc>https://demos.kbventures.com.au/gym-demo/careers</loc></url>
-  <url><loc>https://demos.kbventures.com.au/gym-demo/reviews</loc></url>
-  <url><loc>https://demos.kbventures.com.au/gym-demo/legal</loc></url>
+  <url><loc>https://gymdemo.kbventures.com.au/</loc></url>
+  <url><loc>https://gymdemo.kbventures.com.au/classes</loc></url>
+  <url><loc>https://gymdemo.kbventures.com.au/coaches</loc></url>
+  <url><loc>https://gymdemo.kbventures.com.au/trial</loc></url>
+  <url><loc>https://gymdemo.kbventures.com.au/membership</loc></url>
+  <url><loc>https://gymdemo.kbventures.com.au/journal</loc></url>
+  <url><loc>https://gymdemo.kbventures.com.au/visit</loc></url>
+  <url><loc>https://gymdemo.kbventures.com.au/careers</loc></url>
+  <url><loc>https://gymdemo.kbventures.com.au/reviews</loc></url>
+  <url><loc>https://gymdemo.kbventures.com.au/legal</loc></url>
 </urlset>

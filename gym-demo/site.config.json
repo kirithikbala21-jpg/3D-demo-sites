@@ -22,7 +22,7 @@
   "mapsQuery": "Clayton VIC"
  },
  "site": {
-  "baseUrl": "https://demos.kbventures.com.au/gym-demo/",
+  "baseUrl": "https://gymdemo.kbventures.com.au/",
   "folder": "gym-demo",
   "noindex": true,
   "currency": "AUD",

@@ -164,7 +164,7 @@ This resizes, converts to WebP, writes the alt text and credit and rebuilds. Com
 
 ## 10. Domain name, https and what to do if the site goes down
 
-**Hosting.** The site is plain files on **GitHub Pages** (free). Today: `https://kirithikbala21-jpg.github.io/3D-demo-sites/plumber-demo/`. No database, no server.
+**Hosting.** The site is plain files on **GitHub Pages** (free). Today: `https://plumberdemo.kbventures.com.au/`. No database, no server.
 
 **Connecting a real domain (for example waverleyplumbing.com.au):**
 1. Buy it from a registrar (VentraIP, Crazy Domains, GoDaddy, Namecheap). `.com.au` needs an ABN.

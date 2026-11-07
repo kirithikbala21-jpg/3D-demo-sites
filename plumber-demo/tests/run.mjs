@@ -790,7 +790,7 @@ if (want('perf')) {
   ok('icons: icon.svg + favicon.ico + apple-touch 180 + 192 + 512 + maskable 512', fs.existsSync(path.join(SITE, 'img/icon.svg')) && fs.readFileSync(path.join(SITE, 'favicon.ico')).readUInt16LE(2) === 1 && png('img/apple-touch-icon.png')[0] === 180 && png('img/icon-192.png')[0] === 192 && png('img/icon-512.png')[0] === 512 && png('img/icon-maskable-512.png')[0] === 512 && fs.statSync(path.join(SITE, 'img/apple-touch-icon.png')).size > 1500);
   const mf = JSON.parse(rd('site.webmanifest'));
   ok('site.webmanifest is generated with theme #0b2545 and a maskable icon', mf.theme_color === '#0b2545' && mf.background_color === '#0b2545' && mf.icons.some((i) => i.purpose === 'maskable') && mf.lang === 'en-AU');
-  ok('site.config baseUrl, time zone and noindex are set for the demo', cfg.site.baseUrl === 'https://demos.kbventures.com.au/plumber-demo/' && cfg.site.timezone === 'Australia/Melbourne' && cfg.site.noindex === true);
+  ok('site.config baseUrl, time zone and noindex are set for the demo', cfg.site.baseUrl === 'https://plumberdemo.kbventures.com.au/' && cfg.site.timezone === 'Australia/Melbourne' && cfg.site.noindex === true);
   ok('no preloader, intro or 3D code: none in the folder', !/preloader|three\.module/.test(rd('index.html')) && !fs.existsSync(path.join(SITE, 'scene.js')));
   const gen = execFileSync('python3', [path.join(SITE, 'tools/build.py')], { env: { ...process.env } }).toString();
   const same = PAGES.every((f) => fs.existsSync(path.join(SITE, f)));

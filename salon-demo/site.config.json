@@ -20,7 +20,7 @@
   "abn": "shown on the real site"
  },
  "site": {
-  "baseUrl": "https://demos.kbventures.com.au/salon-demo/",
+  "baseUrl": "https://salondemo.kbventures.com.au/",
   "folder": "salon-demo",
   "noindex": true,
   "currency": "AUD",

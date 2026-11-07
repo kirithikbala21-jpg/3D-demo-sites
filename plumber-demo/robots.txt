@@ -1,4 +1,4 @@
 User-agent: *
 Disallow:
 
-Sitemap: https://demos.kbventures.com.au/plumber-demo/sitemap.xml
+Sitemap: https://plumberdemo.kbventures.com.au/sitemap.xml

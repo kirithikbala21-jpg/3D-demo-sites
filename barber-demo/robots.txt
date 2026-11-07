@@ -1,4 +1,4 @@
 User-agent: *
 Disallow:
 
-Sitemap: https://demos.kbventures.com.au/barber-demo/sitemap.xml
+Sitemap: https://barberdemo.kbventures.com.au/sitemap.xml

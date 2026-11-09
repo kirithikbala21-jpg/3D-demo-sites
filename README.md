@@ -4,12 +4,12 @@ The company "lobby": Home, About, Contact, legal pages and a 404 page, in plain 
 
 Live: https://kbventures.com.au/ (Cloudflare Pages, deployed from this repo's `main` branch).
 
-This repo was moved out of `3D-demo-sites/kbventures-site/` in November 2026. Every link and file path is relative, so the site works at the domain root, on a `*.pages.dev` preview address, and in a sub-folder. Black Crest Web Designs has its own site; links to it use the full address in `site.config.json` and `tools/build-pages.py` (search for `black-crest-site` when it moves to blackcrest.kbventures.com.au). The Black Crest card film in Our businesses is a copy, in `img/video/bc-hero-mobile.*`.
+This repo was moved out of `3D-demo-sites/kbventures-site/` in November 2026. Every link and file path is relative, so the site works at the domain root, on a `*.pages.dev` preview address, and in a sub-folder. KB Web Designs has its own site; links to it use the full address in `site.config.json` and `tools/build-pages.py` (search for `black-crest-site` when it moves to web.kbventures.com.au). The KB card film in Our businesses is a copy, in `img/video/bc-hero-mobile.*`.
 
 ## Pages
 - `index.html`: Home (hero, Our businesses, How we build, Our standard, About, Quick questions, Get in touch)
-- `aceguides.html`: the AceGuides shop (see "AceGuides shop" below)
-- `black-crest.html`: Black Crest Web Designs website pricing (see "Black Crest pricing" below). "Pricing" in the top bar and phone menu, "Website pricing" in the footer.
+- `aceguides.html`: the KB Study Guides shop (see "KB Study Guides shop" below)
+- `black-crest.html`: KB Web Designs website pricing (see "KB Web Designs pricing" below). "Pricing" in the top bar and phone menu, "Website pricing" in the footer.
 - `businesses.html`, `how-we-work.html`, `faq.html`, `partner.html`, `about.html`, `contact.html` (the contact form), `404.html`
 - `legal/privacy.html`, `legal/terms.html`, `legal/refunds.html`
 
@@ -22,15 +22,15 @@ The pages read `site.config.json` in the browser, so a change shows up as soon a
 - `site.js`: shared by every page. It draws the **top bar, phone menu and footer** from the config, so they change in one place. It also runs smooth scrolling (Lenis, on Home, About and Contact), the bar's hide-on-scroll, the Businesses dropdown, and fills in page text, email links and social icons. Each page holds a small plain copy of the bar and footer that shows only without JavaScript.
 - `main.js`: page effects for Home and the inner pages (business cards and FAQ accordions from the config, the tilt on the standard cards, parallax, fade-ups). `tools/build-pages.py`: rebuilds the pages from the config (see above). `contact.js`: the contact form. `legal/legal.js`: the brand list and ABN line on the legal pages.
 - `styles.css`: all styles. `brand.md`: the design system.
-- The hero is a digital render of the KB plaque (`img/renders/`, source in `img/renders/originals/`), made web-ready by `tools/make-renders.py`. It also makes `og.jpg` and the Black Crest card crop in Our businesses.
+- The hero is a digital render of the KB plaque (`img/renders/`, source in `img/renders/originals/`), made web-ready by `tools/make-renders.py`. It also makes `og.jpg` and the KB card crop in Our businesses.
 - `404.html`: works at any address. It reads the site folder from the address, or falls back to `BASE` at its top (keep that equal to `basePath` in the config). A byte-for-byte copy sits at the repo root (`/404.html`), because GitHub Pages only uses the root one for this project site. If you change one, copy it over the other.
 - `sitemap.xml` and `robots.txt`: all public pages. (The repo-root `robots.txt` also points at this sitemap.)
-- `img/aceguides/`: AceGuides covers (720x960 WebP), made by `tools/make-covers.py`. `img/<demo>-*.webp`: demo screenshots, made by `tools/screenshot-demos.mjs` (one is used on the Black Crest Web Designs card).
+- `img/aceguides/`: KB Study Guides covers (720x960 WebP), made by `tools/make-covers.py`. `img/<demo>-*.webp`: demo screenshots, made by `tools/screenshot-demos.mjs` (one is used on the KB Web Designs card).
 - Logo files in `img/`, used exactly as supplied: `kb-wordmark.svg` (the top bar from 720px wide, and the footer), `kb-favicon.svg` (the top bar on phones, the About section and the browser-tab icon), and the white and black one-colour versions. Icons made from the mark: `favicon.ico`, `favicon-32.png`, `apple-touch-icon.png`, `img/icon-192.png`, `img/icon-512.png`. `og.jpg` is the share image.
 - `fonts/`: Cormorant Garamond (SIL Open Font License) for headings and Switzer (ITF Free Font License, `switzer-LICENSE.txt`) for text, the house fonts from `../CLAUDE.md`. `vendor/`: Lenis 1.1.18 and Three.js 0.170.0 (see `vendor/VERSIONS.md`).
 
 ## House style and stills
-The site follows `CLAUDE.md` (Gallery Noir). The businesses on Home and the Businesses page, and the guides in the AceGuides shop, are shown as objects in lit stone niches: still images rendered by `node tools/render-kb.mjs` (it was written for the old 3D-demo-sites layout, with a local server on port 8123 at that repo's root), which also renders the hero plaque still and `og.jpg`. Re-run it after adding a guide with a cover or a business. Each guide opens a detail view (a dialog; Escape closes it). `node tools/check.mjs` checks every page, including that every AceGuides price and Stripe link matches the config.
+The site follows `CLAUDE.md` (Gallery Noir). The businesses on Home and the Businesses page, and the guides in the KB Study Guides shop, are shown as objects in lit stone niches: still images rendered by `node tools/render-kb.mjs` (it was written for the old 3D-demo-sites layout, with a local server on port 8123 at that repo's root), which also renders the hero plaque still and `og.jpg`. Re-run it after adding a guide with a cover or a business. Each guide opens a detail view (a dialog; Escape closes it). `node tools/check.mjs` checks every page, including that every KB Study Guides price and Stripe link matches the config.
 
 ## Add a business
 Add one entry to `businesses` in `site.config.json`. Nothing else needs changing: the Home card, the footer list and the Businesses dropdown are all built from this list.
@@ -38,13 +38,13 @@ Add one entry to `businesses` in `site.config.json`. Nothing else needs changing
 { "name": "New business", "description": "One line about it.", "status": "coming-soon", "url": "", "ctaLabel": "Visit",
   "image": "img/new-business.webp", "imageAlt": "What the picture shows", "imageSize": [1280, 800] }
 ```
-- `shortName` (optional): a shorter name used only in the footer's narrow Businesses column (for example "Black Crest" for Black Crest Web Designs). Everywhere else shows `name`.
+- `shortName` (optional): a shorter name used only in the footer's narrow Businesses column (for example "KB Web Designs" for KB Web Designs). Everywhere else shows `name`.
 - `status`: `"coming-soon"` or `"live"`. A business counts as live only when the status is `"live"` **and** `url` is a full `https://` address or a page in this folder (like `"aceguides.html"`). Then its card becomes one big link with an "Available now" badge (`nav.live`) and `ctaLabel` with an arrow, and its footer and dropdown entries become links. While coming soon, the card is not a link, has no hover lift, and says "Coming soon".
-- `image`: one picture (shown filling the card's picture area; add `"imageFrame": "browser"` to show it in a browser frame), or a list of up to five (shown as a fanned stack, like AceGuides), with `imageAlt` as one text or a matching list. Images must be in `img/`. Use WebP and give `imageSize` as `[width, height]`.
+- `image`: one picture (shown filling the card's picture area; add `"imageFrame": "browser"` to show it in a browser frame), or a list of up to five (shown as a fanned stack, like KB Study Guides), with `imageAlt` as one text or a matching list. Images must be in `img/`. Use WebP and give `imageSize` as `[width, height]`.
 - **The "More coming" card:** it always shows on the Businesses page. On Home it shows only when `"showMoreComingCard": true`; set it to `false` to hide it there. Its title is `home.businesses.moreComing`.
 - Keep `description` to one short line: the main site carries only these. Everything else about a business goes on its own site.
 
-## AceGuides shop (`aceguides.html`)
+## KB Study Guides shop (`aceguides.html`)
 Everything on the page comes from the `aceguides` block in `site.config.json`; run `tools/build-pages.py` after any change.
 - `groups`: the four headings ("Year 10", "VCE Units 1 and 2", "VCE Units 3 and 4", "Bundles"), each with a list of `products`:
 ```json
@@ -60,12 +60,12 @@ Everything on the page comes from the `aceguides` block in `site.config.json`; r
 - **Free samples:** put the PDF in `aceguides/samples/` named after the guide's key (the same keys as the Stripe metadata, like `y10-maths.pdf` or `y11-english.pdf`), then add the key to `samples`, for example `"samples": ["y10-maths"]`. The card then shows a "Free sample" link that opens the PDF in a new tab. A key is only shown when its file is really there: if it is listed but the file is missing, the build prints a warning and leaves the link out. The list is empty for now, so no sample links show. `samplesNote` is the line above the guides.
 - `inside`, `chooser`, `delivery`, `questions`, `policies` and `vcaa` hold the rest of the page text. `meta` holds the page title and description.
 
-## Black Crest pricing (`black-crest.html`)
+## KB Web Designs pricing (`black-crest.html`)
 All of it is in the `blackCrest` block of `site.config.json`; run `tools/build-pages.py` after a change.
 - `packages`: one entry per card, with `name`, `price` (a number, shown as "From $490 AUD") and `features`. For a package without a set price, use `"price": null` and `priceText` (for example "Quote on request").
-- `button` and `buttonHref`: every package button goes to `contact.html?topic=black-crest`, which picks Black Crest Web Designs in the form.
+- `button` and `buttonHref`: every package button goes to `contact.html?topic=black-crest`, which picks KB Web Designs in the form.
 - `note`: the line under the packages. `label`, `title`, `lead` and `meta` hold the rest. The page shows the Coming soon tag (`nav.comingSoon`) and the Concept sites gallery.
-- Black Crest stays Coming soon on Home: its card is not a link until its `status` is `"live"`.
+- KB Web Designs stays Coming soon on Home: its card is not a link until its `status` is `"live"`.
 
 ## Home page sections (all in `site.config.json`)
 Home runs: hero, Our businesses (with the Concept sites gallery), Latest, How we build, Our standard, Who’s behind it, Quick questions, Get updates, Get in touch.
@@ -114,7 +114,7 @@ The privacy, terms and refunds pages live in `legal/`. Their names, email, state
 - **Update the date:** whenever you change the wording of any legal page, set `legal.lastUpdated` (for example `"12 March 2027"`). It appears under each page title.
 - **ABN:** see Company details above (`company.abn`).
 - `legal.tradingName`, `legal.brands`, `legal.contactEmail` and `legal.state` fill the matching words in the pages. Never add a personal name, age, home address or phone number.
-- `legalBaseUrl` is the public address of the `legal/` folder. The AceGuides and Black Crest Web Designs sites should link their footers to `legalBaseUrl + "privacy.html"`, `"terms.html"` and `"refunds.html"`, so every brand uses these same pages.
+- `legalBaseUrl` is the public address of the `legal/` folder. The KB Study Guides and KB Web Designs sites should link their footers to `legalBaseUrl + "privacy.html"`, `"terms.html"` and `"refunds.html"`, so every brand uses these same pages.
 - The footer's Company column on every page links Privacy, Terms and Refunds; the labels are `footer.privacy`, `footer.terms` and `footer.refunds`. The page labels "Last updated" and "In plain English" are in `legalText`.
 - The pages are plain English and are not legal advice. Have them checked before relying on them for a large business.
 

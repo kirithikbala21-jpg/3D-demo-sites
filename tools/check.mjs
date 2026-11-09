@@ -1,6 +1,6 @@
 // KB Ventures site check (adapted from black-crest-site/tools/check.mjs): opens every page at 390, 768, 1280 and 1920 px wide and fails on
 //   console errors, failed requests, broken internal links, sideways scrolling,
-//   AceGuides prices or Stripe links that differ from site.config.json, old Black Crest prices, banned words, any link to the-one-barber, and the house-style bans in
+//   KB Study Guides prices or Stripe links that differ from site.config.json, old KB Web Designs prices, banned words, any link to the-one-barber, and the house-style bans in
 //   CLAUDE.md section 6 (em dashes, icon libraries, corners over 6px, shadows, backdrop blur, Inter, Geist, Space Grotesk).
 // Full-page screenshots go to tools/screens/ (ignored by git) for a visual review.
 //
@@ -27,9 +27,9 @@ if (!QUICK) mkdirSync(SHOTS, { recursive: true });
 
 const CFG = JSON.parse(readFileSync(path.join(SITE, 'site.config.json'), 'utf8'));
 const money = (n) => '$' + Number(n).toFixed(2);
-// AceGuides: every price and Stripe link on the shop must be exactly the one in the config (prices live in Stripe)
+// KB Study Guides: every price and Stripe link on the shop must be exactly the one in the config (prices live in Stripe)
 const GUIDES = CFG.aceguides.groups.flatMap((g) => g.products);
-// Black Crest prices, as locked in CLAUDE.md
+// KB Web Designs prices, as locked in CLAUDE.md
 const BC_PRICES = ['$300', '$700', '$30'];
 const BANNED = ['elevate', 'unlock', 'unleash', 'seamless', 'cutting-edge', 'game-changer', 'game changer', 'empower', 'journey', 'delve', 'robust', 'leverage', 'supercharge', 'next-level', 'world-class', 'revolutionise', 'revolutionize', 'transform your', "in today's digital age", 'look no further', 'take your business to the next level'];
 
@@ -59,7 +59,7 @@ for (const pg of pages) {
     if (x.link && !html.includes(x.link)) fail(pg, '-', `Stripe link for ${x.key} is missing or changed`);
     if (!text.includes(money(x.price))) fail(pg, '-', `price ${money(x.price)} for ${x.key} is missing`);
   });
-  if (pg === 'black-crest.html') { if (!html.includes('https://blackcrest.kbventures.com.au/pricing')) fail(pg, '-', 'the old pricing address no longer forwards to Black Crest'); if (/\$(490|990)\b/.test(html)) fail(pg, '-', 'an old Black Crest price ($490 or $990), in the text or the page tags'); }
+  if (pg === 'black-crest.html') { if (!html.includes('https://web.kbventures.com.au/pricing')) fail(pg, '-', 'the old pricing address no longer forwards to KB Web Designs'); if (/\$(490|990)\b/.test(html)) fail(pg, '-', 'an old KB Web Designs price ($490 or $990), in the text or the page tags'); }
   for (const [, href] of html.matchAll(/<a\b[^>]*\bhref="([^"]+)"/g)) {
     if (/^(https?:|mailto:|tel:|#|javascript:)/.test(href)) continue;
     const clean = href.split('#')[0].split('?')[0]; if (!clean) continue;

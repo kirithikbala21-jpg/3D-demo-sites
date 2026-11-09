@@ -219,7 +219,7 @@ a.biz:focus-visible { outline-offset: 3px; border-radius: 2px; }
 @media (min-width: 1024px) { .biz-visual { height: 270px; } }
 .biz-content { flex: 1; display: flex; flex-direction: column; justify-content: space-between; gap: 24px; padding: 24px 24px 20px; }
 @media (min-width: 1024px) { .biz-content { padding: 28px 36px 24px; } }
-/* AceGuides: five covers fanned like a hand of cards, lit from above */
+/* KB Study Guides: five covers fanned like a hand of cards, lit from above */
 .cover-stack { position: absolute; left: 50%; bottom: 30px; width: 0; height: 0; transform: translate3d(0, var(--px, 0px), 0) rotateX(10deg); transform-style: preserve-3d; }
 .cover { position: absolute; left: 0; bottom: 0; max-width: none; width: clamp(78px, 7.6vw, 108px); height: auto; aspect-ratio: 3 / 4; border-radius: 2px; border: 1px solid rgba(255, 255, 255, .14); transform-origin: 50% 120%; transform: translateX(-50%) translateX(var(--x)) rotate(var(--r)) translateY(var(--y)); transition: transform var(--slow) var(--ease); background: #101217; }
 .cover:nth-child(1) { --x: -150%; --r: -13deg; --y: 18px; z-index: 1; }
@@ -233,7 +233,7 @@ a.biz:hover .cover:nth-child(1) { --x: -164%; --r: -15deg; }
 a.biz:hover .cover:nth-child(2) { --x: -84%; --r: -7.5deg; }
 a.biz:hover .cover:nth-child(4) { --x: 84%; --r: 7.5deg; }
 a.biz:hover .cover:nth-child(5) { --x: 164%; --r: 15deg; }
-/* Black Crest Web Designs: one framed site floating in the panel */
+/* KB Web Designs: one framed site floating in the panel */
 .float-shot { position: absolute; left: 50%; bottom: -40px; width: min(84%, 420px); transform: translate3d(-50%, var(--px, 0px), 0) rotateX(12deg) rotateZ(-2deg); transform-origin: 50% 100%; transition: transform var(--slow) var(--ease); }
 .biz-body .dim { margin-top: 12px; max-width: 38ch; font-size: 15px; line-height: 1.65; }
 .biz-foot { display: flex; align-items: center; height: 60px; padding-top: 16px; border-top: 1px solid rgba(138, 143, 158, .14); }
@@ -637,7 +637,7 @@ select.input option { background: #1A1C23; color: var(--text-platinum); }
 .biz-live .biz-cta { min-height: 40px; padding: 0 16px; border-radius: 2px; background: linear-gradient(180deg, rgba(255, 255, 255, .06), rgba(255, 255, 255, .01)); transition: box-shadow var(--fast) var(--ease); }
 a.biz:hover .biz-cta { }
 
-/* ---------- AceGuides shop ---------- */
+/* ---------- KB Study Guides shop ---------- */
 .shop-inside-label { margin-top: 28px; }
 .shop-inside { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 0; padding: 0; list-style: none; }
 .shop-inside li { padding: 7px 14px; border-radius: 2px; font-size: 14px; color: var(--text-2); }
@@ -676,7 +676,7 @@ a.biz:hover .biz-cta { }
 .shop-samples { margin-top: 40px; }
 .product-sample { font-size: 13px; }
 
-/* ---------- Black Crest pricing ---------- */
+/* ---------- KB Web Designs pricing ---------- */
 .pricing-label { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; margin-bottom: 14px; }
 .pkg-grid { display: grid; gap: 16px; margin: 36px 0 0; padding: 0; list-style: none; }
 @media (min-width: 900px) { .pkg-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; } }
@@ -783,7 +783,7 @@ dialog.guide-detail:target { display: block; position: fixed; inset: 4vh 0 auto;
 
 .signup-for { margin: 0 0 12px; font-size: 13px; letter-spacing: .04em; color: var(--gold-champagne); }
 
-/* ---------- AceGuides shop: a sticky jump bar, covers that never sit blank, bundle savings ---------- */
+/* ---------- KB Study Guides shop: a sticky jump bar, covers that never sit blank, bundle savings ---------- */
 .shop-jump { position: sticky; top: 0; z-index: 40; margin: 8px 0 0; border-top: 1px solid var(--hairline); border-bottom: 1px solid var(--hairline); background: var(--obsidian); }
 .shop-jump .container { display: flex; gap: 4px 22px; overflow-x: auto; scrollbar-width: none; }
 .shop-jump a { flex: none; display: inline-flex; align-items: center; min-height: 48px; font-size: 12px; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; color: var(--silver); text-decoration: none; }
@@ -918,7 +918,7 @@ body { font-size: clamp(16px, .3vw + 14.6px, 19px); }
 }
 /* over the hero the nav stays transparent, with platinum links, until the page scrolls */
 [data-page="home"] .nav:not(.is-scrolled) .nav-link { color: var(--platinum); }
-/* Our businesses: the Black Crest niche can play the card's film (desktop, on hover or focus) */
+/* Our businesses: the KB Web Designs niche can play the card's film (desktop, on hover or focus) */
 .niche-media { position: relative; display: block; }
 .niche-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border: 1px solid var(--hairline); opacity: 0; transition: opacity .6s var(--ease); pointer-events: none; }
 .kb-niche.is-playing .niche-video { opacity: 1; }

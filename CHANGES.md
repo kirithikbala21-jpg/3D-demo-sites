@@ -4,46 +4,46 @@
 - Product structured data: the paused guides are OutOfStock, and the other 21 stay InStock.
 - Guide keys now match the `guide` metadata on the Stripe payment links: `y10-economics-business` became `y10-economics`, and the bundles became `bundle-y10`, `bundle-y11` and `bundle-y12`.
 
-# Changes: free samples, Black Crest pricing, phone fixes (29 October 2026)
+# Changes: free samples, KB Web Designs pricing, phone fixes (29 October 2026)
 
-## AceGuides shop
+## KB Study Guides shop
 - The shop fixes from the last round (all Year 10 guides on sale, bundle prices, the new delivery line, "6 concept websites") were already live and are unchanged.
 - **Free samples:** a guide card shows a "Free sample" link (new tab) when its key is in `aceguides.samples` and `aceguides/samples/<key>.pdf` exists. The list is empty, so no links show yet. A new line above the guides: "Look inside before you buy, where a sample is available."
 
-## Black Crest pricing (new page `black-crest.html`)
+## KB Web Designs pricing (new page `black-crest.html`)
 - Starter (from $490), Standard (from $990) and Custom (quote on request), with what each includes, all from `blackCrest` in the config.
-- "Prices are a starting point. Every project is quoted before any work begins." Each "Get a quote" button opens the contact form with Black Crest Web Designs chosen.
-- The page is marked Coming soon and shows the Concept sites gallery. No customers are claimed. Black Crest is still Coming soon on Home.
+- "Prices are a starting point. Every project is quoted before any work begins." Each "Get a quote" button opens the contact form with KB Web Designs chosen.
+- The page is marked Coming soon and shows the Concept sites gallery. No customers are claimed. KB Web Designs is still Coming soon on Home.
 - "Pricing" was added to the top bar (it fits from 720px, with room to spare) and the phone menu, and "Website pricing" to the footer. Added to the sitemap.
 
 ## Phone fixes (checked at 360, 390 and 768 on every page)
 - There was no horizontal scrolling, no overlapping text, no cut-off cards, and the phone menu opened and closed properly everywhere, before and after.
 - Tap targets made at least 44 x 44px: the KB logo in the top bar (was 32px wide), the Businesses dropdown arrow (was 30px wide), short footer links like About, FAQ and Terms (were 26 to 38px wide), and the Privacy Policy tick-box rows on the Get updates and contact forms (were 21 to 24px tall). Only the sizes changed, not how the forms work.
 
-# Changes: AceGuides fixes (29 October 2026)
+# Changes: KB Study Guides fixes (29 October 2026)
 - **Year 10 English, History, Economics and Business, and the Year 10 bundle** now have Buy now buttons (Stripe, new tab, rel noopener). Every guide can be bought now.
 - **Bundle prices:** Year 10 $29.99, VCE Units 1 and 2 $69.99, VCE Units 3 and 4 $89.99. "See price at checkout" and "Price to be confirmed" are gone, and the Product structured data now covers all 24 guides with these prices.
 - **Delivery line:** "Emailed to you within a few hours of payment."
 - **Latest:** "6 concept websites built for local businesses". **About milestones:** "6 concept websites built".
 - All of this lives in `site.config.json` and the pages were rebuilt from it. Checked: the 4 new Stripe links open (HTTP 200) at the right price, and all page tests pass at 1440, 768 and 390.
 
-# Changes: the AceGuides shop (29 October 2026)
+# Changes: the KB Study Guides shop (29 October 2026)
 
-## New page: AceGuides (`aceguides.html`)
-- **Top:** "AceGuides.", "Study guides for Year 10 and VCE students." and the six things inside every guide.
+## New page: KB Study Guides (`aceguides.html`)
+- **Top:** "KB Study Guides.", "Study guides for Year 10 and VCE students." and the six things inside every guide.
 - **Not sure which to choose?** A short guide to the three levels.
 - **Guides:** grouped under Year 10, VCE Units 1 and 2, VCE Units 3 and 4, and Bundles. Each card has the cover, subject, level, price in AUD and "Buy now", which opens the Stripe payment link in a new tab (rel noopener).
   - Prices are $9.99 (Year 10), $14.99 (Units 1 and 2) and $19.99 (Units 3 and 4).
   - The two VCE bundles have no price in the config, so they say "See price at checkout".
   - Year 10 English, History, Economics and Business, and the Year 10 bundle have no payment link yet. They show a disabled "Coming soon" button and a "Notify me" link to the Home sign-up.
-- **Under the guides:** "Delivered by email after payment.", "Questions? Contact us" (opens the contact form with AceGuides chosen), the Refunds, Terms and Privacy links, and the VCAA trademark line.
+- **Under the guides:** "Delivered by email after payment.", "Questions? Contact us" (opens the contact form with KB Study Guides chosen), the Refunds, Terms and Privacy links, and the VCAA trademark line.
 - **Search and sharing:** a title, description, share tags, canonical address, a sitemap entry, and Product structured data for the 18 guides that have both a link and a price.
 
 ## Connected to the rest of the site
-- **AceGuides is live:** the Home and Businesses card says "Available now" and has a "Shop guides" button. The footer and the Businesses dropdown link to the shop with no Coming soon tag. Black Crest Web Designs is still Coming soon.
-- **Latest:** a new first item, "AceGuides study guides are now on sale" (Oct 2026), linking to the shop. **About milestones:** "AceGuides study guides on sale".
-- **FAQ:** "When does AceGuides open?" is replaced by "How do I buy an AceGuides guide?". The sign-up text and the "How do I get updates?" answer no longer say AceGuides is opening soon.
-- `contact.html?topic=aceguides` preselects AceGuides.
+- **KB Study Guides is live:** the Home and Businesses card says "Available now" and has a "Shop guides" button. The footer and the Businesses dropdown link to the shop with no Coming soon tag. KB Web Designs is still Coming soon.
+- **Latest:** a new first item, "KB Study Guides study guides are now on sale" (Oct 2026), linking to the shop. **About milestones:** "KB Study Guides study guides on sale".
+- **FAQ:** "When does KB Study Guides open?" is replaced by "How do I buy an KB study guide?". The sign-up text and the "How do I get updates?" answer no longer say KB Study Guides is opening soon.
+- `contact.html?topic=aceguides` preselects KB Study Guides.
 
 ## Checked
 - **Stripe:** all 20 Buy now links open a live Stripe checkout (HTTP 200) for the matching guide at the matching price.
@@ -89,10 +89,10 @@
 New on Home, in this order after the hero: Our businesses, **Latest**, How we build, **Why KB Ventures**, Our standard, **Meet the founder**, About, Quick questions, Get in touch. Everything comes from `site.config.json`.
 
 - **"See inside" previews in the business cards:**
-  - AceGuides shows three of the real study guide covers already in `img/aceguides/` (Year 10 Maths, VCE Biology 3&4, VCE English 3&4).
-  - Black Crest Web Designs shows the top of barber-demo, cafe-demo-v2 and gym-demo in small browser frames. They were captured at 1440px wide by the new `tools/make-previews.mjs` and saved as 640 x 400 WebP files in `img/previews/` (about 20 KB each).
+  - KB Study Guides shows three of the real study guide covers already in `img/aceguides/` (Year 10 Maths, VCE Biology 3&4, VCE English 3&4).
+  - KB Web Designs shows the top of barber-demo, cafe-demo-v2 and gym-demo in small browser frames. They were captured at 1440px wide by the new `tools/make-previews.mjs` and saved as 640 x 400 WebP files in `img/previews/` (about 20 KB each).
   - The cards keep their "Coming soon" status and description lines. Every preview has alt text, lazy loading and a set width and height.
-- **Latest:** three true update cards: "21 study guides written for AceGuides", "7 demo websites built for local businesses" and "Contact form now live" (with a link to the contact page).
+- **Latest:** three true update cards: "21 study guides written for KB Study Guides", "7 demo websites built for local businesses" and "Contact form now live" (with a link to the contact page).
 - **How we build:** larger cards, each with its icon, heading and two short sentences. A numbered gold node sits on a fine gold line joining the steps (across on desktop, down the left on phones). The cards are equal height.
 - **Why KB Ventures:** four points with line icons: Made in Melbourne, Plain pricing, Fair refunds, Real replies.
 - **Meet the founder:** a short founder section with a bio and a "Get in touch" button. (Removed on 2 Nov 2026: the house style in CLAUDE.md keeps the site brand only.)
@@ -113,12 +113,12 @@ New on Home, in this order after the hero: Our businesses, **Latest**, How we bu
 
 ---
 
-# Earlier: the website business is now Black Crest Web Designs (29 October 2026)
+# Earlier: the website business is now KB Web Designs (29 October 2026)
 
-- **New name:** the website-building business is now "Black Crest Web Designs" everywhere in this folder. That covers the config, the Home and Businesses cards, the Businesses dropdown, the footer, FAQ answer 2 and its structured data, the contact form's "What's it about?" list, the meta descriptions, the legal pages (including the terms' "Website services (Black Crest Web Designs)" section and the brand list), the README, the brand notes, code comments and earlier entries in this file.
-- **Unchanged:** its one-line description, "coming-soon" status, empty URL, "See demos" label and card format. AceGuides, the hero card, colours and layout are untouched. The legal pages' "Last updated" was already today (29 October 2026).
-- **Short form:** a new optional `shortName` field. Black Crest Web Designs has `"shortName": "Black Crest"`, used only in the footer's narrow Businesses column so the name fits on one line. Everywhere else shows the full name.
-- **Contact link:** `contact.html?topic=black-crest` preselects Black Crest Web Designs.
+- **New name:** the website-building business is now "KB Web Designs" everywhere in this folder. That covers the config, the Home and Businesses cards, the Businesses dropdown, the footer, FAQ answer 2 and its structured data, the contact form's "What's it about?" list, the meta descriptions, the legal pages (including the terms' "Website services (KB Web Designs)" section and the brand list), the README, the brand notes, code comments and earlier entries in this file.
+- **Unchanged:** its one-line description, "coming-soon" status, empty URL, "See demos" label and card format. KB Study Guides, the hero card, colours and layout are untouched. The legal pages' "Last updated" was already today (29 October 2026).
+- **Short form:** a new optional `shortName` field. KB Web Designs has `"shortName": "KB Web Designs"`, used only in the footer's narrow Businesses column so the name fits on one line. Everywhere else shows the full name.
+- **Contact link:** `contact.html?topic=black-crest` preselects KB Web Designs.
 - **Checked:**
   - a search of this folder for the previous names, in any capitalisation, finds nothing;
   - the full Playwright suite passed at 1440, 768 and 390 on every page: no console errors, no broken links, and the dropdown, footer and contact topics show the new name;
@@ -135,16 +135,16 @@ New on Home, in this order after the hero: Our businesses, **Latest**, How we bu
 
 ---
 
-# Earlier: the website business is now Black Crest Web Designs (29 October 2026)
+# Earlier: the website business is now KB Web Designs (29 October 2026)
 
-- **New name:** the website-building business is renamed "Black Crest Web Designs" everywhere in this folder. That covers the config, the Home and Businesses cards, the Businesses dropdown, the footer list, the FAQ answers (and their structured data), the contact form's "What's it about?" list, the meta descriptions, the legal pages, the README, the brand notes, code comments and earlier entries in this file.
-- **Kept the same:** its description, "coming-soon" status, empty URL and "See demos" label. AceGuides is untouched. KB Ventures stays the trading name on the legal pages.
-- **Legal pages:** the terms' "Website services (Black Crest Web Designs)" section, the brand list and descriptions are updated. "Last updated" is now 29 October 2026, and the sitemap dates for the changed pages match.
-- **Contact form:** `contact.html?topic=black-crest` now preselects Black Crest Web Designs.
+- **New name:** the website-building business is renamed "KB Web Designs" everywhere in this folder. That covers the config, the Home and Businesses cards, the Businesses dropdown, the footer list, the FAQ answers (and their structured data), the contact form's "What's it about?" list, the meta descriptions, the legal pages, the README, the brand notes, code comments and earlier entries in this file.
+- **Kept the same:** its description, "coming-soon" status, empty URL and "See demos" label. KB Study Guides is untouched. KB Ventures stays the trading name on the legal pages.
+- **Legal pages:** the terms' "Website services (KB Web Designs)" section, the brand list and descriptions are updated. "Last updated" is now 29 October 2026, and the sitemap dates for the changed pages match.
+- **Contact form:** `contact.html?topic=black-crest` now preselects KB Web Designs.
 - **No URLs changed:** no file or link used the old name, so nothing else needed updating.
 - **Checked:**
   - a search for the old name in any spelling finds nothing in `kbventures-site/`;
-  - Playwright at 1440, 768 and 390 on every page: no console errors and no broken links. The dropdown, footer and contact topics show Black Crest Web Designs, and the old name appears in no rendered page.
+  - Playwright at 1440, 768 and 390 on every page: no console errors and no broken links. The dropdown, footer and contact topics show KB Web Designs, and the old name appears in no rendered page.
 
 ---
 
@@ -389,7 +389,7 @@ Also checked:
   - **Refunds:** instant digital delivery; a fix or full refund for faulty, won't-open or not-as-described files; a reply within 3 business days; no change-of-mind refunds after download; Australian Consumer Law rights; how to ask.
 
 ## Config
-- New `legal` block (exactly as given), plus `legalBaseUrl` so the AceGuides and Black Crest Web Designs sites can link to these same pages. The labels (Privacy, Terms, Refunds, Last updated, In plain English) are in `footer`.
+- New `legal` block (exactly as given), plus `legalBaseUrl` so the KB Study Guides and KB Web Designs sites can link to these same pages. The labels (Privacy, Terms, Refunds, Last updated, In plain English) are in `footer`.
 - The ABN now lives in `legal.abn` (the old top-level `abn` field is gone). While it is empty, no ABN line appears anywhere.
 - `legal/legal.js` fills the trading name, brands, email, state, ABN and date from the config.
 
@@ -408,7 +408,7 @@ Also checked:
 
 The logo work (nav mark, footer logo, favicons, share image) is untouched. No facts, prices, reviews or numbers were invented.
 
-## AceGuides covers
+## KB Study Guides covers
 - New `tools/make-covers.py` (the supplied script) makes 21 study-guide covers in `img/aceguides/`: Year 10, VCE Units 1 & 2 and VCE Units 3 & 4. Each is 720x960 WebP at quality 82, 256 KB for all 21. The full-size PNGs go to a temporary folder and are never saved in the repo.
 - The covers use the site's own font (Geist, embedded in the script) instead of Inter, so they match the page.
 - The footer now says: "VCE® is a registered trademark of the VCAA."
@@ -420,8 +420,8 @@ The logo work (nav mark, footer logo, favicons, share image) is untouched. No fa
 
 ## Visuals
 - **What we run:** each card has a picture panel above its text.
-  - AceGuides: a fanned 3D stack of five covers (Year 10 Maths, Year 10 Science, VCE Biology 3&4, VCE English 3&4, VCE Maths Methods 3&4). They spread a little on hover and move slightly as you scroll. The alt text says what each cover is.
-  - Black Crest Web Designs: a floating framed screenshot of the Brass & Blade concept site.
+  - KB Study Guides: a fanned 3D stack of five covers (Year 10 Maths, Year 10 Science, VCE Biology 3&4, VCE English 3&4, VCE Maths Methods 3&4). They spread a little on hover and move slightly as you scroll. The alt text says what each cover is.
+  - KB Web Designs: a floating framed screenshot of the Brass & Blade concept site.
   - No prices, ratings or labels are added to either.
 - **How it works:** three steps (Preview, Feedback, Go live), each with a thin line icon and the existing wording. A hairline joins them and draws itself as you scroll (side by side on desktop, top to bottom on phones).
 - **Concept websites:** the browser frame is about 30% bigger. All screenshots were retaken with the clock frozen, plus a new tall 1440x2200 shot of each demo. When you hover over a card or tab to it, the tall shot scrolls slowly down inside the frame, then back again.
@@ -508,7 +508,7 @@ Structure, copy, colours, the 3D hero card, the glossy cards and the demo row ar
 - **Section spacing:** 112px between sections on desktop, 64px on phones.
 - **Hero:** about 88% of the screen height. The text block and the 3D card sit on one centreline, and the dead space under the button is gone.
   - Fitting the headline into 3 lines at 1440 needs about 740px. So the text column is about two-thirds wide, and the card's stage overlaps back toward it without touching the words.
-- **"What we run" cards:** equal height, with the status at the top, name and text in the middle, and one quiet line at the bottom. The AceGuides card shows "Guides launching soon" while `aceguidesShopUrl` is empty, and a "See the guides" button once it is filled in.
+- **"What we run" cards:** equal height, with the status at the top, name and text in the middle, and one quiet line at the bottom. The KB Study Guides card shows "Guides launching soon" while `aceguidesShopUrl` is empty, and a "See the guides" button once it is filled in.
 
 ## Hero card
 - **Light streak:** a narrow, bright, soft-edged streak (bright core, soft shoulders, faint halo) now crosses the face diagonally every 7 seconds, replacing the grey patch.
@@ -601,7 +601,7 @@ The "What we run" and demo cards now have a brighter 1px top edge fading to the 
 - The 3D was checked in headless Chromium with software rendering, not on a physical phone or GPU.
 - iPhones need a permission prompt for tilt, so there the card only drifts.
 - Unused files still in the folder, because this session may not run `rm`: the Barlow Condensed, Inter, Instrument Serif and Schibsted Grotesk fonts, and `vendor/addons/` (RoomEnvironment, replaced by the custom studio).
-- The repo's top-level `404.html` is still empty, and the AceGuides shop link is still blank.
+- The repo's top-level `404.html` is still empty, and the KB Study Guides shop link is still blank.
 
 ---
 
@@ -653,4 +653,4 @@ This builds on the dark redesign from earlier the same day. The palette, copy, d
 - The 3D was checked in headless Chromium with software rendering. Real GPUs render it more smoothly, but it has not been looked at on a physical phone.
 - Phone tilt works on Android. iPhones ask for permission before a site can read motion, so on an iPhone the object only does its idle movement.
 - Files no page uses any more were not deleted, because this session was asked not to run `rm`: the Barlow Condensed, Inter, Instrument Serif and Schibsted Grotesk fonts. (`hero.js`, `scene.js`, Three.js and `RoomEnvironment` are in use again.)
-- The repo's top-level `404.html` is still empty, and the AceGuides shop link is still blank.
+- The repo's top-level `404.html` is still empty, and the KB Study Guides shop link is still blank.

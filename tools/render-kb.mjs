@@ -2,7 +2,7 @@
 // WebGL see; the galleries always use stills):
 //   (og.jpg and biz-black-crest.* are made by tools/make-renders.py from the hero renders)
 //   img/niches/biz-aceguides.*, biz-black-crest.*: the two businesses, each in its lit niche
-//   img/niches/<guide key>.*: every AceGuides guide that has a cover, as a book in its lit niche
+//   img/niches/<guide key>.*: every KB study guide that has a cover, as a book in its lit niche
 //
 //   1. serve the repo root:   python3 -m http.server 8123 --bind 127.0.0.1
 //   2. run:                   node kbventures-site/tools/render-kb.mjs  [base URL, default http://127.0.0.1:8123/]
@@ -34,7 +34,7 @@ const save = (name, data) => writeFileSync(path.join(tmp, name + '.png'), Buffer
 // (the hero is now a digital render: img/renders, made by tools/make-renders.py)
 let p;
 // the niches
-// biz-black-crest comes from the Black Crest render (tools/make-renders.py), so it matches that site
+// biz-black-crest comes from the KB Web Designs render (tools/make-renders.py), so it matches that site
 const jobs = [['biz-aceguides', { object: 'book', cover: 'img/aceguides/vce34-english.webp' }]];
 for (const g of cfg.aceguides.groups) for (const x of g.products) if (x.cover) jobs.push([x.key, { object: 'book', cover: x.cover }]);
 for (const [name, opts] of jobs) {

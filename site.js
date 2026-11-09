@@ -26,7 +26,7 @@
   const localPage = (u) => filled(u) && /^[\w-]+(#[\w-]+)?$/.test(u.trim());
   const linkFor = (u) => (localPage(u) ? BASE + u.trim() : u.trim());
   const isLive = (b) => b && b.status === 'live' && (safeUrl(b.url) || localPage(b.url));
-  // a "preview" business (Black Crest, taking clients) links to its own site (a full https:// address) and shows its own label
+  // a "preview" business (KB Web Designs, taking clients) links to its own site (a full https:// address) and shows its own label
   const isPreview = (b) => b && b.status === 'preview' && safeUrl(b.url);
   const linked = (b) => isLive(b) || isPreview(b);
   const tagFor = (b) => (isLive(b) ? '' : `<span class="tag">${esc(isPreview(b) ? (navText.preview || 'Taking clients') : navText.comingSoon)}</span>`);
@@ -59,7 +59,7 @@
         <div class="dd-panel" id="dd-panel" data-lenis-prevent hidden><ul class="dd-list" id="dd-list"></ul></div>
       </div>
       <a class="nav-link" href="${BASE}about"${cur('about')}>${esc(t.about)}</a>
-      <a class="nav-link nav-pricing" href="https://blackcrest.kbventures.com.au/pricing"${cur('pricing')}>${esc(t.pricing)}</a>
+      <a class="nav-link nav-pricing" href="https://web.kbventures.com.au/pricing"${cur('pricing')}>${esc(t.pricing)}</a>
       <a class="nav-link" href="${BASE}contact"${cur('contact')}>${esc(t.contact)}</a>
     </nav>
     <a class="pill pill-primary nav-cta" href="${BASE}contact">${esc(t.cta)}</a>
@@ -73,7 +73,7 @@
     <a href="${BASE}how-we-work"${cur('how')}>${esc(t.howWeWork)}</a>
     <a href="${BASE}faq"${cur('faq')}>${esc(t.faq)}</a>
     <a href="${BASE}partner"${cur('partner')}>${esc(t.partner)}</a>
-    <a href="https://blackcrest.kbventures.com.au/pricing"${cur('pricing')}>${esc(t.pricing)}</a>
+    <a href="https://web.kbventures.com.au/pricing"${cur('pricing')}>${esc(t.pricing)}</a>
     <a href="${BASE}contact"${cur('contact')}>${esc(t.contact)}</a>
   </nav>
   <a class="pill pill-primary menu-cta" href="${BASE}contact">${esc(t.cta)}</a>
@@ -210,7 +210,7 @@
     const bizItems = list.map((b) => (linked(b)
       ? `<li><a href="${esc(linkFor(b.url))}">${esc(footName(b))}</a>${tagFor(b) ? ' ' + tagFor(b) : ''}</li>`
       : `<li><span class="footer-soon">${esc(footName(b))}</span> <span class="tag">${esc(navText.comingSoon)}</span></li>`)).join('');
-    // the VCAA line goes wherever the footer mentions AceGuides or VCE
+    // the VCAA line goes wherever the footer mentions KB Study Guides or VCE
     const vce = list.some((b) => /aceguides|\bvce\b/i.test(b.name)) && filled(f.vceTrademark);
     const cur = (p) => (page === p ? ' aria-current="page"' : '');
     return `<footer class="footer" id="site-footer">
@@ -228,7 +228,7 @@
           <li><a href="${BASE}how-we-work"${cur('how')}>${esc(f.howWeWork || 'How we work')}</a></li>
           <li><a href="${BASE}faq"${cur('faq')}>${esc(f.faq || 'FAQ')}</a></li>
           <li><a href="${BASE}partner"${cur('partner')}>${esc(f.partner || 'Partner with us')}</a></li>
-          <li><a href="https://blackcrest.kbventures.com.au/pricing"${cur('pricing')}>${esc(f.pricing || 'Website pricing')}</a></li>
+          <li><a href="https://web.kbventures.com.au/pricing"${cur('pricing')}>${esc(f.pricing || 'Website pricing')}</a></li>
           <li><a href="${BASE}contact"${cur('contact')}>${esc(f.contact || 'Contact')}</a></li>
         </ul>
       </nav>

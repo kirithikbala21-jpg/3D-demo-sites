@@ -14,8 +14,8 @@ SITE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 REPO = os.path.dirname(SITE_DIR)
 cfg = json.load(open(os.path.join(SITE_DIR, 'site.config.json'), encoding='utf-8'))
 SITE = cfg['siteUrl']
-# Black Crest Web Designs has its own site; every link to it uses this full address
-BC = 'https://blackcrest.kbventures.com.au/'
+# KB Web Designs has its own site; every link to it uses this full address
+BC = 'https://web.kbventures.com.au/'
 E = html.escape
 C = cfg['company']
 
@@ -251,9 +251,9 @@ def biz_grid(always_more=False, level='h3'):
             continue
         live, preview = is_live(b), is_preview(b)
         badge = n['live'] if live else n.get('preview', 'Preview') if preview else n['comingSoon']
-        still = pic(f'img/niches/biz-{slug(b.get("shortName") or b["name"])}', 1120, 1200, '', sizes='(min-width: 760px) 46vw, 92vw')
+        still = pic(f'img/niches/biz-{ {"kb-study-guides":"aceguides","kb-web-designs":"black-crest"}.get(slug(b.get("shortName") or b["name"]), slug(b.get("shortName") or b["name"]))}', 1120, 1200, '', sizes='(min-width: 760px) 46vw, 92vw')
         if slug(b.get("shortName") or b["name"]) == 'black-crest':
-            # the card's own film from the Black Crest site, played only while the niche is hovered or focused on a desktop
+            # the card's own film from the KB Web Designs site, played only while the niche is hovered or focused on a desktop
             still = (f'<span class="niche-media">{still}<video class="niche-video" muted loop playsinline disablepictureinpicture preload="none" '
                      f'aria-hidden="true" tabindex="-1" data-video="img/video/bc-hero-mobile" data-poster="img/video/bc-hero-poster-mobile.jpg"></video></span>')
         body = f'''{still}
@@ -558,7 +558,7 @@ home_body = f'''<main id="main">
 
 pages = {}
 pages['index.html'] = page('index.html', 'KB Ventures: many businesses, one standard',
-                           'KB Ventures is a Melbourne company that starts and runs businesses, including AceGuides and Black Crest Web Designs.', home_body, 'home',
+                           'KB Ventures is a Melbourne company that starts and runs businesses, including KB Study Guides and KB Web Designs.', home_body, 'home',
                            first=HERO_PRELOAD, extra='<script type="application/ld+json" id="org-data">' + json.dumps(ld, separators=(',', ':')) + '</script>',
                            scripts=['<script src="main.js" defer></script>', '<script src="signup.js" defer></script>'])
 
@@ -754,7 +754,7 @@ def product_detail(x):
     <div class="detail-grid">
       <div class="detail-object">{cover}</div>
       <div class="detail-copy">
-        <p class="crumbs">AceGuides<span aria-hidden="true">/</span>{E(x['level'])}</p>
+        <p class="crumbs">KB Study Guides<span aria-hidden="true">/</span>{E(x['level'])}</p>
         <h2 class="detail-title" id="d-{E(x['key'])}-h">{italic_last(x['subject'])}</h2>
         <p class="detail-lead">A printed-quality PDF study guide for {E(x['level'])} {E(x['subject'])}.</p>
         <p class="facts-label">{E(ag['insideTitle'])}</p>
@@ -799,8 +799,8 @@ def products_ld():
         for x in g['products']:
             if not (x.get('link') and x.get('price')):
                 continue
-            name = f'AceGuides {x["subject"]} ({x["level"]})'
-            items.append({'@type': 'Product', 'name': name, 'brand': {'@type': 'Brand', 'name': 'AceGuides'},
+            name = f'KB Study Guides {x["subject"]} ({x["level"]})'
+            items.append({'@type': 'Product', 'name': name, 'brand': {'@type': 'Brand', 'name': 'KB Study Guides'},
                           'description': f'{x["subject"]} study guide for {x["level"]} students: ' + ', '.join(i.lower() for i in ag['inside'][:-1]) + ' and ' + ag['inside'][-1].lower() + '.',
                           'image': SITE + x['cover'] if x.get('cover') else SITE + 'og.jpg',
                           'offers': {'@type': 'Offer', 'price': f'{x["price"]:.2f}', 'priceCurrency': ag['currency'], 'availability': 'https://schema.org/OutOfStock' if x['key'] in paused else 'https://schema.org/InStock', 'url': x['link']}})
@@ -815,7 +815,7 @@ for gi, g in enumerate(ag['groups']):
     if all(not x.get('cover') for x in g['products']):  # the bundles: a statement, not a shelf
         groups_html.append(f'''  <section class="container shop-group shop-bundles" id="{gid}" aria-labelledby="{gid}-h">
     <h2 class="h2" id="{gid}-h" data-c="aceguides.groups.{gi}.title">{E(g['title'])}</h2>
-    <table class="st-table"><caption class="sr-only">AceGuides bundles and prices</caption>
+    <table class="st-table"><caption class="sr-only">KB Study Guides bundles and prices</caption>
       <thead><tr><th scope="col">Bundle</th><th scope="col">Price</th><th scope="col"><span class="sr-only">Buy</span></th></tr></thead>
       <tbody>
 {bundle_rows(g)}
@@ -864,7 +864,7 @@ bc = cfg['blackCrest']
 
 
 def package_row(i, x):
-    """One Black Crest package as a statement row: name and what is included, the price, and a calm text button."""
+    """One KB Web Designs package as a statement row: name and what is included, the price, and a calm text button."""
     amount = (f'<span class="num">${x["price"]:,}</span> <small>{E(x.get("per", bc["currency"]))}</small>' if x.get('price')
               else f'<span class="st-quote" data-c="blackCrest.packages.{i}.priceText">{E(x["priceText"])}</span>')
     feats = ''.join(f'<li data-c="blackCrest.packages.{i}.features.{j}">{E(f)}</li>' for j, f in enumerate(x['features']))
@@ -876,20 +876,20 @@ def package_row(i, x):
         </tr>'''
 
 
-# the Black Crest prices live on the Black Crest site only: this old address forwards there
+# the KB Web Designs prices live on the KB Web Designs site only: this old address forwards there
 pages['black-crest.html'] = '''<!doctype html>
 <html lang="en-AU">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex">
-<title>Website pricing: Black Crest Web Designs</title>
-<link rel="canonical" href="https://blackcrest.kbventures.com.au/pricing">
-<meta http-equiv="refresh" content="0; url=https://blackcrest.kbventures.com.au/pricing">
+<title>Website pricing: KB Web Designs</title>
+<link rel="canonical" href="https://web.kbventures.com.au/pricing">
+<meta http-equiv="refresh" content="0; url=https://web.kbventures.com.au/pricing">
 <style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#0D0E12;color:#E4E6ED;font:16px/1.6 Arial,sans-serif}a{color:#D4AF37}</style>
 </head>
 <body>
-<p>Black Crest website pricing has moved: <a href="https://blackcrest.kbventures.com.au/pricing">see the prices on the Black Crest site</a>.</p>
+<p>KB Web Designs website pricing has moved: <a href="https://web.kbventures.com.au/pricing">see the prices on the KB Web Designs site</a>.</p>
 </body>
 </html>
 '''
@@ -992,9 +992,9 @@ nf_html = head('Page not found: KB Ventures', f"{nf['title']} {nf['text']}", '40
 '''
 CREDITS = [
     ('Hero imagery', 'Hero imagery: digital render made for KB Ventures. The plaque is a render of the brand mark, not a photograph of a real object.'),
-    ('Black Crest card', 'The Black Crest card in Our businesses is a crop of the Black Crest hero render, a digital render made for Black Crest Web Designs.'),
-    ('Guide niches', 'The guides in their lit niches are made by KB Ventures with Three.js, using the real AceGuides covers.'),
-    ('Concept site previews', 'Screenshots of the six concept sites by Black Crest Web Designs.'),
+    ('KB card', 'The KB card in Our businesses is a crop of the KB Web Designs hero render, a digital render made for KB Web Designs.'),
+    ('Guide niches', 'The guides in their lit niches are made by KB Ventures with Three.js, using the real KB Study Guides covers.'),
+    ('Concept site previews', 'Screenshots of the six concept sites by KB Web Designs.'),
     ('Typefaces', 'Cormorant Garamond, under the SIL Open Font License, and Switzer by the Indian Type Foundry, under the ITF Free Font License. Both are served from this site.'),
     ('Code libraries', 'Lenis 1.1.18 and Three.js 0.170.0, both under the MIT License and served from this site.'),
 ]

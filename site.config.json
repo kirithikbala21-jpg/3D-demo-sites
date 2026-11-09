@@ -13,7 +13,7 @@
   },
   "businesses": [
     {
-      "name": "AceGuides",
+      "name": "KB Study Guides",
       "description": "Revision guides for Year 10 and VCE students, with bundles for each year level.",
       "status": "live",
       "url": "aceguides",
@@ -26,11 +26,11 @@
         "img/aceguides/vce34-maths-methods.webp"
       ],
       "imageAlt": [
-        "AceGuides Year 10 Maths study guide cover",
-        "AceGuides Year 10 Science study guide cover",
-        "AceGuides VCE Biology Units 3 & 4 study guide cover",
-        "AceGuides VCE English Units 3 & 4 study guide cover",
-        "AceGuides VCE Maths Methods Units 3 & 4 study guide cover"
+        "KB Study Guides Year 10 Maths study guide cover",
+        "KB Study Guides Year 10 Science study guide cover",
+        "KB Study Guides VCE Biology Units 3 & 4 study guide cover",
+        "KB Study Guides VCE English Units 3 & 4 study guide cover",
+        "KB Study Guides VCE Maths Methods Units 3 & 4 study guide cover"
       ],
       "imageSize": [
         720,
@@ -46,27 +46,27 @@
         "items": [
           {
             "src": "img/aceguides/year10-maths.webp",
-            "alt": "AceGuides Year 10 Maths study guide cover"
+            "alt": "KB Study Guides Year 10 Maths study guide cover"
           },
           {
             "src": "img/aceguides/vce34-biology.webp",
-            "alt": "AceGuides VCE Biology Units 3 & 4 study guide cover"
+            "alt": "KB Study Guides VCE Biology Units 3 & 4 study guide cover"
           },
           {
             "src": "img/aceguides/vce34-english.webp",
-            "alt": "AceGuides VCE English Units 3 & 4 study guide cover"
+            "alt": "KB Study Guides VCE English Units 3 & 4 study guide cover"
           }
         ]
       }
     },
     {
-      "name": "Black Crest Web Designs",
-      "shortName": "Black Crest",
+      "name": "KB Web Designs",
+      "shortName": "KB Web Designs",
       "description": "Premium sites for local businesses.",
       "status": "preview",
-      "url": "https://blackcrest.kbventures.com.au/",
+      "url": "https://web.kbventures.com.au/",
       "ctaLabel": "See demos",
-      "previewLabel": "Visit Black Crest",
+      "previewLabel": "Visit KB Web Designs",
       "image": "img/barber-desktop.webp",
       "imageAlt": "Front page of Brass & Blade, a concept barbershop website",
       "imageSize": [
@@ -106,8 +106,8 @@
   "legal": {
     "tradingName": "KB Ventures",
     "brands": [
-      "AceGuides",
-      "Black Crest Web Designs"
+      "KB Study Guides",
+      "KB Web Designs"
     ],
     "contactEmail": "kb.ventures@outlook.com",
     "state": "Victoria, Australia",
@@ -230,8 +230,8 @@
     "topic": "What’s it about?",
     "topics": [
       "General question",
-      "AceGuides",
-      "Black Crest Web Designs",
+      "KB Study Guides",
+      "KB Web Designs",
       "Partnership",
       "Other"
     ],
@@ -312,7 +312,7 @@
     },
     {
       "q": "Which business should I contact about what?",
-      "a": "AceGuides is for study guides for Year 10 and VCE students. Black Crest Web Designs is for websites for local businesses. If you are not sure, choose General question on the contact form and we will point you the right way.",
+      "a": "KB Study Guides is for study guides for Year 10 and VCE students. KB Web Designs is for websites for local businesses. If you are not sure, choose General question on the contact form and we will point you the right way.",
       "links": [
         {
           "text": "contact form",
@@ -365,18 +365,18 @@
       ]
     },
     {
-      "q": "How do I buy an AceGuides guide?",
-      "a": "Choose your guide on the AceGuides page and pay securely with Stripe. We email the guide to you after payment.",
+      "q": "How do I buy an KB study guide?",
+      "a": "Choose your guide on the KB Study Guides page and pay securely with Stripe. We email the guide to you after payment.",
       "links": [
         {
-          "text": "AceGuides page",
+          "text": "KB Study Guides page",
           "href": "aceguides"
         }
       ]
     },
     {
       "q": "How do I get a website made?",
-      "a": "Choose Black Crest Web Designs on the contact form and tell us about your business. We will reply within 1 business day to talk about it.",
+      "a": "Choose KB Web Designs on the contact form and tell us about your business. We will reply within 1 business day to talk about it.",
       "links": [
         {
           "text": "contact form",
@@ -390,7 +390,7 @@
     },
     {
       "q": "How do I get updates?",
-      "a": "Sign up for updates on the home page. We will email you about new AceGuides guides and when a new business launches.",
+      "a": "Sign up for updates on the home page. We will email you about new KB study guides and when a new business launches.",
       "links": [
         {
           "text": "Sign up for updates",
@@ -403,26 +403,26 @@
     "title": "Latest.",
     "items": [
       {
-        "label": "AceGuides",
+        "label": "KB Study Guides",
         "text": "Free samples for every guide",
         "date": "Nov 2026",
         "link": "aceguides",
         "linkLabel": "Look inside"
       },
       {
-        "label": "AceGuides",
-        "text": "AceGuides study guides are now on sale",
+        "label": "KB Study Guides",
+        "text": "KB Study Guides study guides are now on sale",
         "date": "Oct 2026",
         "link": "aceguides",
         "linkLabel": "Shop guides"
       },
       {
-        "label": "AceGuides",
-        "text": "21 study guides written for AceGuides",
+        "label": "KB Study Guides",
+        "text": "21 study guides written for KB Study Guides",
         "date": "Oct 2026"
       },
       {
-        "label": "Black Crest Web Designs",
+        "label": "KB Web Designs",
         "text": "6 concept websites built for local businesses",
         "date": "Oct 2026"
       }
@@ -522,7 +522,7 @@
   },
   "signup": {
     "title": "Get updates.",
-    "text": "Be first to know about new AceGuides guides and when new businesses launch.",
+    "text": "Be first to know about new KB study guides and when new businesses launch.",
     "emailLabel": "Email",
     "button": "Notify me",
     "sending": "Sending…",
@@ -551,42 +551,42 @@
       {
         "name": "Brass & Blade",
         "label": "Concept site: barbershop",
-        "url": "https://blackcrest.kbventures.com.au/work/barber",
+        "url": "https://web.kbventures.com.au/work/barber",
         "image": "img/previews/barber.webp",
         "alt": "Top of the Brass & Blade concept barbershop website"
       },
       {
         "name": "Ember & Oak",
         "label": "Concept site: cafe",
-        "url": "https://blackcrest.kbventures.com.au/work/cafe",
+        "url": "https://web.kbventures.com.au/work/cafe",
         "image": "img/previews/cafe.webp",
         "alt": "Top of the Ember & Oak concept cafe website"
       },
       {
         "name": "Iron & Ember Athletic Club",
         "label": "Concept site: gym",
-        "url": "https://blackcrest.kbventures.com.au/work/gym",
+        "url": "https://web.kbventures.com.au/work/gym",
         "image": "img/previews/gym.webp",
         "alt": "Top of the Iron & Ember Athletic Club concept gym website"
       },
       {
         "name": "Waverley Plumbing & Gas",
         "label": "Concept site: plumber",
-        "url": "https://blackcrest.kbventures.com.au/work/plumber",
+        "url": "https://web.kbventures.com.au/work/plumber",
         "image": "img/previews/plumber.webp",
         "alt": "Top of the Waverley Plumbing & Gas concept plumber website"
       },
       {
         "name": "Maison Lune",
         "label": "Concept site: hair salon",
-        "url": "https://blackcrest.kbventures.com.au/work/salon",
+        "url": "https://web.kbventures.com.au/work/salon",
         "image": "img/previews/salon.webp",
         "alt": "Top of the Maison Lune concept hair salon website"
       },
       {
         "name": "Torque & Co.",
         "label": "Concept site: auto parts store",
-        "url": "https://blackcrest.kbventures.com.au/work/parts",
+        "url": "https://web.kbventures.com.au/work/parts",
         "image": "img/previews/parts.webp",
         "alt": "Top of the Torque & Co. concept auto parts store website"
       }
@@ -601,11 +601,11 @@
       },
       {
         "date": "Oct 2026",
-        "text": "21 AceGuides study guides written"
+        "text": "21 KB Study Guides study guides written"
       },
       {
         "date": "Oct 2026",
-        "text": "Black Crest Web Designs named"
+        "text": "KB Web Designs named"
       },
       {
         "date": "Oct 2026",
@@ -617,12 +617,12 @@
       },
       {
         "date": "Oct 2026",
-        "text": "AceGuides study guides on sale"
+        "text": "KB Study Guides study guides on sale"
       }
     ]
   },
   "aceguides": {
-    "title": "AceGuides.",
+    "title": "KB Study Guides.",
     "lead": "Study guides for Year 10 and VCE students.",
     "insideTitle": "Inside every guide",
     "inside": [
@@ -682,7 +682,7 @@
             "price": 9.99,
             "link": "https://buy.stripe.com/eVq28seoOgbWaeIcSy4Rq0o",
             "cover": "img/aceguides/year10-maths.webp",
-            "coverAlt": "AceGuides Year 10 Maths study guide cover"
+            "coverAlt": "KB Study Guides Year 10 Maths study guide cover"
           },
           {
             "key": "y10-science",
@@ -691,7 +691,7 @@
             "price": 9.99,
             "link": "https://buy.stripe.com/7sYbJ280q2l6gD6g4K4Rq0p",
             "cover": "img/aceguides/year10-science.webp",
-            "coverAlt": "AceGuides Year 10 Science study guide cover"
+            "coverAlt": "KB Study Guides Year 10 Science study guide cover"
           },
           {
             "key": "y10-english",
@@ -700,7 +700,7 @@
             "price": 9.99,
             "link": "https://buy.stripe.com/9B6eVea8y8Ju5Ys2dU4Rq0l",
             "cover": "img/aceguides/year10-english.webp",
-            "coverAlt": "AceGuides Year 10 English study guide cover"
+            "coverAlt": "KB Study Guides Year 10 English study guide cover"
           },
           {
             "key": "y10-history",
@@ -709,7 +709,7 @@
             "price": 9.99,
             "link": "https://buy.stripe.com/6oUcN6a8y3pa72wf0G4Rq0k",
             "cover": "img/aceguides/year10-history.webp",
-            "coverAlt": "AceGuides Year 10 History study guide cover"
+            "coverAlt": "KB Study Guides Year 10 History study guide cover"
           },
           {
             "key": "y10-economics",
@@ -718,7 +718,7 @@
             "price": 9.99,
             "link": "https://buy.stripe.com/dRm4gAgwW5xi0E8aKq4Rq0j",
             "cover": "img/aceguides/year10-economics-business.webp",
-            "coverAlt": "AceGuides Year 10 Economics and Business study guide cover"
+            "coverAlt": "KB Study Guides Year 10 Economics and Business study guide cover"
           }
         ]
       },
@@ -732,7 +732,7 @@
             "price": 14.99,
             "link": "https://buy.stripe.com/fZu5kE3Ka9NyaeI9Gm4Rq0q",
             "cover": "img/aceguides/vce12-english.webp",
-            "coverAlt": "AceGuides VCE English Units 1 & 2 study guide cover"
+            "coverAlt": "KB Study Guides VCE English Units 1 & 2 study guide cover"
           },
           {
             "key": "y11-methods",
@@ -741,7 +741,7 @@
             "price": 14.99,
             "link": "https://buy.stripe.com/8x2fZi0xY9Ny5Ys8Ci4Rq0r",
             "cover": "img/aceguides/vce12-maths-methods.webp",
-            "coverAlt": "AceGuides VCE Mathematical Methods Units 1 & 2 study guide cover"
+            "coverAlt": "KB Study Guides VCE Mathematical Methods Units 1 & 2 study guide cover"
           },
           {
             "key": "y11-biology",
@@ -750,7 +750,7 @@
             "price": 14.99,
             "link": "https://buy.stripe.com/8x214o4Oe0cY0E805M4Rq0s",
             "cover": "img/aceguides/vce12-biology.webp",
-            "coverAlt": "AceGuides VCE Biology Units 1 & 2 study guide cover"
+            "coverAlt": "KB Study Guides VCE Biology Units 1 & 2 study guide cover"
           },
           {
             "key": "y11-chemistry",
@@ -759,7 +759,7 @@
             "price": 14.99,
             "link": "https://buy.stripe.com/aFa3cw0xY7FqeuYdWC4Rq0t",
             "cover": "img/aceguides/vce12-chemistry.webp",
-            "coverAlt": "AceGuides VCE Chemistry Units 1 & 2 study guide cover"
+            "coverAlt": "KB Study Guides VCE Chemistry Units 1 & 2 study guide cover"
           },
           {
             "key": "y11-physics",
@@ -768,7 +768,7 @@
             "price": 14.99,
             "link": "https://buy.stripe.com/bJe8wQ6Wm5xi86A8Ci4Rq0u",
             "cover": "img/aceguides/vce12-physics.webp",
-            "coverAlt": "AceGuides VCE Physics Units 1 & 2 study guide cover"
+            "coverAlt": "KB Study Guides VCE Physics Units 1 & 2 study guide cover"
           },
           {
             "key": "y11-business",
@@ -777,7 +777,7 @@
             "price": 14.99,
             "link": "https://buy.stripe.com/00w00kgwWbVG9aE2dU4Rq0v",
             "cover": "img/aceguides/vce12-business-management.webp",
-            "coverAlt": "AceGuides VCE Business Management Units 1 & 2 study guide cover"
+            "coverAlt": "KB Study Guides VCE Business Management Units 1 & 2 study guide cover"
           },
           {
             "key": "y11-economics",
@@ -786,7 +786,7 @@
             "price": 14.99,
             "link": "https://buy.stripe.com/7sYbJ2cgG4te4UobOu4Rq0w",
             "cover": "img/aceguides/vce12-economics.webp",
-            "coverAlt": "AceGuides VCE Economics Units 1 & 2 study guide cover"
+            "coverAlt": "KB Study Guides VCE Economics Units 1 & 2 study guide cover"
           },
           {
             "key": "y11-history",
@@ -795,7 +795,7 @@
             "price": 14.99,
             "link": "https://buy.stripe.com/6oUdRaa8y3paeuYbOu4Rq0x",
             "cover": "img/aceguides/vce12-modern-history.webp",
-            "coverAlt": "AceGuides VCE Modern History Units 1 & 2 study guide cover"
+            "coverAlt": "KB Study Guides VCE Modern History Units 1 & 2 study guide cover"
           }
         ]
       },
@@ -809,7 +809,7 @@
             "price": 19.99,
             "link": "https://buy.stripe.com/fZu28s1C25xi1IcaKq4Rq0y",
             "cover": "img/aceguides/vce34-english.webp",
-            "coverAlt": "AceGuides VCE English Units 3 & 4 study guide cover"
+            "coverAlt": "KB Study Guides VCE English Units 3 & 4 study guide cover"
           },
           {
             "key": "y12-methods",
@@ -818,7 +818,7 @@
             "price": 19.99,
             "link": "https://buy.stripe.com/dRmcN6eoO4te3QkcSy4Rq0z",
             "cover": "img/aceguides/vce34-maths-methods.webp",
-            "coverAlt": "AceGuides VCE Mathematical Methods Units 3 & 4 study guide cover"
+            "coverAlt": "KB Study Guides VCE Mathematical Methods Units 3 & 4 study guide cover"
           },
           {
             "key": "y12-biology",
@@ -827,7 +827,7 @@
             "price": 19.99,
             "link": "https://buy.stripe.com/fZu6oI80q4tecmQ4m24Rq0A",
             "cover": "img/aceguides/vce34-biology.webp",
-            "coverAlt": "AceGuides VCE Biology Units 3 & 4 study guide cover"
+            "coverAlt": "KB Study Guides VCE Biology Units 3 & 4 study guide cover"
           },
           {
             "key": "y12-chemistry",
@@ -836,7 +836,7 @@
             "price": 19.99,
             "link": "https://buy.stripe.com/aFa00kfsS6Bm0E819Q4Rq0B",
             "cover": "img/aceguides/vce34-chemistry.webp",
-            "coverAlt": "AceGuides VCE Chemistry Units 3 & 4 study guide cover"
+            "coverAlt": "KB Study Guides VCE Chemistry Units 3 & 4 study guide cover"
           },
           {
             "key": "y12-physics",
@@ -845,7 +845,7 @@
             "price": 19.99,
             "link": "https://buy.stripe.com/14A6oI0xY1h24UoaKq4Rq0C",
             "cover": "img/aceguides/vce34-physics.webp",
-            "coverAlt": "AceGuides VCE Physics Units 3 & 4 study guide cover"
+            "coverAlt": "KB Study Guides VCE Physics Units 3 & 4 study guide cover"
           },
           {
             "key": "y12-business",
@@ -854,7 +854,7 @@
             "price": 19.99,
             "link": "https://buy.stripe.com/6oU5kEdkK9Ny1Ic8Ci4Rq0D",
             "cover": "img/aceguides/vce34-business-management.webp",
-            "coverAlt": "AceGuides VCE Business Management Units 3 & 4 study guide cover"
+            "coverAlt": "KB Study Guides VCE Business Management Units 3 & 4 study guide cover"
           },
           {
             "key": "y12-economics",
@@ -863,7 +863,7 @@
             "price": 19.99,
             "link": "https://buy.stripe.com/8x228sa8y3padqUbOu4Rq0E",
             "cover": "img/aceguides/vce34-economics.webp",
-            "coverAlt": "AceGuides VCE Economics Units 3 & 4 study guide cover"
+            "coverAlt": "KB Study Guides VCE Economics Units 3 & 4 study guide cover"
           },
           {
             "key": "y12-history",
@@ -872,7 +872,7 @@
             "price": 19.99,
             "link": "https://buy.stripe.com/cNi28sa8y9Ny9aEdWC4Rq0F",
             "cover": "img/aceguides/vce34-revolutions.webp",
-            "coverAlt": "AceGuides VCE History: Revolutions Units 3 & 4 study guide cover"
+            "coverAlt": "KB Study Guides VCE History: Revolutions Units 3 & 4 study guide cover"
           }
         ]
       },
@@ -920,7 +920,7 @@
         "href": "legal/privacy"
       }
     ],
-    "vcaa": "VCE® is a registered trademark of the VCAA. AceGuides is not affiliated with or endorsed by the VCAA.",
+    "vcaa": "VCE® is a registered trademark of the VCAA. KB Study Guides is not affiliated with or endorsed by the VCAA.",
     "chooser": {
       "title": "Not sure which to choose?",
       "items": [
@@ -939,16 +939,16 @@
       ]
     },
     "meta": {
-      "title": "AceGuides study guides: KB Ventures",
-      "description": "AceGuides study guides for Year 10 and VCE students: clear explanations, worked examples, a practice exam with full worked solutions, a revision plan and a one-page summary."
+      "title": "KB Study Guides study guides: KB Ventures",
+      "description": "KB Study Guides study guides for Year 10 and VCE students: clear explanations, worked examples, a practice exam with full worked solutions, a revision plan and a one-page summary."
     }
   },
   "blackCrest": {
     "meta": {
-      "title": "Website pricing: Black Crest Web Designs",
-      "description": "Black Crest Web Designs website prices for local businesses: One Page $300, Full Website $700, an optional care plan at $30 a month, and custom work by quote."
+      "title": "Website pricing: KB Web Designs",
+      "description": "KB Web Designs website prices for local businesses: One Page $300, Full Website $700, an optional care plan at $30 a month, and custom work by quote."
     },
-    "label": "Black Crest Web Designs",
+    "label": "KB Web Designs",
     "title": "Website pricing.",
     "lead": "Clear prices for local business websites, in Australian dollars.",
     "currency": "AUD",
@@ -966,7 +966,7 @@
           "Google basics set up",
           "2 rounds of changes"
         ],
-        "href": "https://blackcrest.kbventures.com.au/contact?need=one-page",
+        "href": "https://web.kbventures.com.au/contact?need=one-page",
         "cta": "Choose One Page"
       },
       {
@@ -981,7 +981,7 @@
           "Everything in One Page",
           "2 rounds of changes"
         ],
-        "href": "https://blackcrest.kbventures.com.au/contact?need=full-website",
+        "href": "https://web.kbventures.com.au/contact?need=full-website",
         "cta": "Choose Full Website"
       },
       {
@@ -994,7 +994,7 @@
           "Small text and photo changes",
           "Security checks and backups"
         ],
-        "href": "https://blackcrest.kbventures.com.au/care-plan",
+        "href": "https://web.kbventures.com.au/care-plan",
         "cta": "What it covers"
       },
       {
@@ -1005,7 +1005,7 @@
         "features": [
           "Bigger or unusual projects"
         ],
-        "href": "https://blackcrest.kbventures.com.au/contact?need=not-sure",
+        "href": "https://web.kbventures.com.au/contact?need=not-sure",
         "cta": "Ask for a quote"
       }
     ],

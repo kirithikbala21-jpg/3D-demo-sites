@@ -12,7 +12,7 @@
   const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
   const ENDPOINT = 'https://api.web3forms.com/submit';
   const input = $('#s-email'), agree = $('#s-agree'), send = $('#s-send'), sendLabel = $('.btn-label', send), status = $('#s-status');
-  // "Notify me" on a paused AceGuides guide links here with ?notify=<guide name>: the sign-up then says which guide
+  // "Notify me" on a paused KB study guide links here with ?notify=<guide name>: the sign-up then says which guide
   const wanted = (new URLSearchParams(location.search).get('notify') || '').replace(/[^\w &+()-]/g, '').trim().slice(0, 80);
   if (wanted) {
     const topic = $('#s-topic'); if (topic) topic.value = 'Notify me: ' + wanted;

@@ -184,7 +184,7 @@
     update();
   });
 
-  /* ---------- AceGuides: each guide opens its detail view (a dialog; Escape closes it, focus returns to the guide) ---------- */
+  /* ---------- KB Study Guides: each guide opens its detail view (a dialog; Escape closes it, focus returns to the guide) ---------- */
   $$('[data-dialog]').forEach((a) => a.addEventListener('click', (e) => {
     const d = document.getElementById(a.dataset.dialog);
     if (!d || typeof d.showModal !== 'function') return; // without dialog support, #d-key still opens it with CSS
@@ -286,7 +286,7 @@
     onScroll();
   }); else { revealAll(); onScroll(); }
 
-  /* ---------- Hero film and the Black Crest niche film ----------
+  /* ---------- Hero film and the KB Web Designs niche film ----------
      Never for reduced motion, Save-Data or a 2G connection: then the still shows. The files are picked here
      (<source media> is not honoured everywhere): the 4:5 phone film for the stacked phone layout, the 16:9 film
      otherwise; Safari (and every iPhone browser) gets the H.264 mp4 first. Films are muted, inline, decoration only. */
@@ -314,7 +314,7 @@
     var start = function () { requestAnimationFrame(function () { setTimeout(pick, 0); }); };
     if (still && !still.complete) still.addEventListener('load', start, { once: true }); else start();
   }
-  // the Black Crest niche: plays only while hovered or focused, on a desktop with a mouse; phones keep the still
+  // the KB Web Designs niche: plays only while hovered or focused, on a desktop with a mouse; phones keep the still
   var desk = window.matchMedia('(hover: hover) and (pointer: fine)');
   document.querySelectorAll('.niche-video').forEach(function (v) {
     if (lean) return;

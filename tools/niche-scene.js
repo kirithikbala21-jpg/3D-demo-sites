@@ -1,6 +1,6 @@
 // Tool-only scene (loaded by tools/render-kb.mjs, never by the site): one arched niche in a basalt wall, lit by a
-// warm spotlight with a faint haze, holding either a printed AceGuides guide (its real cover as the book cover) or
-// the Black Crest titanium card. Each render becomes a still image for the lit niche galleries on the site.
+// warm spotlight with a faint haze, holding either a printed KB study guide (its real cover as the book cover) or
+// the KB Web Designs titanium card. Each render becomes a still image for the lit niche galleries on the site.
 import * as THREE from '../vendor/three/three.module.min.js';
 import { RoomEnvironment } from '../vendor/three/addons/RoomEnvironment.js';
 import { roundedRect, faceGeometry, brushedTexture, stoneTexture, softFloor, WARM } from '../kit.js';
@@ -26,7 +26,7 @@ async function book(cover) {
   const W = 1.12, H = W * 4 / 3, D = 0.12;
   const pages = new THREE.MeshStandardMaterial({ map: pagesTexture(), roughness: 0.9 });
   const pagesTop = new THREE.MeshStandardMaterial({ map: pagesTexture(), roughness: 0.9 }); pagesTop.map.rotation = Math.PI / 2;
-  const spine = new THREE.MeshStandardMaterial({ color: 0xe8dfc8, roughness: 0.55 }); // AceGuides deep ivory
+  const spine = new THREE.MeshStandardMaterial({ color: 0xe8dfc8, roughness: 0.55 }); // KB Study Guides deep ivory
   const front = new THREE.MeshStandardMaterial({ map: await load(cover), roughness: 0.45 });
   const back = new THREE.MeshStandardMaterial({ color: 0x1b1c20, roughness: 0.6 });
   // box faces: +x, -x, +y, -y, +z (front), -z (back)
@@ -43,12 +43,12 @@ async function card() {
   const body = new THREE.Mesh(new THREE.ExtrudeGeometry(roundedRect(W, H, 0.06), { depth: T, bevelEnabled: true, bevelThickness: 0.003, bevelSize: 0.004, bevelSegments: 2 }), edge);
   body.position.z = -T / 2; g.add(body);
   const front = new THREE.Mesh(faceGeometry(W - 0.01, H - 0.01, 0.055), face); front.position.z = T / 2 + 0.004; g.add(front);
-  // the engraving, as on the Black Crest hero card
+  // the engraving, as on the KB Web Designs hero card
   try { await document.fonts.load('600 40px "Cormorant Garamond"'); } catch (_) {}
   const c = document.createElement('canvas'); c.width = 1712; c.height = 1080; const x = c.getContext('2d'); x.fillStyle = x.strokeStyle = '#fff';
   x.lineWidth = 3; x.beginPath(); x.roundRect(60, 60, 1592, 960, 34); x.stroke();
   x.save(); x.translate(146, 140); x.scale(6.75, 6.75); x.lineWidth = 1.5; x.stroke(new Path2D(CREST)); x.fill(new Path2D(LETTERS)); x.restore();
-  x.font = '600 92px "Cormorant Garamond", Georgia, serif'; if ('letterSpacing' in x) x.letterSpacing = '32px'; x.fillText('BLACK CREST', 146, 864);
+  x.font = '600 92px "Cormorant Garamond", Georgia, serif'; if ('letterSpacing' in x) x.letterSpacing = '32px'; x.fillText('KB WEB DESIGNS', 146, 864);
   const t = new THREE.CanvasTexture(c); t.anisotropy = 8;
   const gold = new THREE.MeshPhysicalMaterial({ color: 0xd4af37, metalness: 1, roughness: 0.3, alphaMap: t, transparent: true, alphaTest: 0.35 });
   const etch = new THREE.Mesh(faceGeometry(W - 0.01, H - 0.01, 0.055), gold); etch.position.z = T / 2 + 0.006; g.add(etch);

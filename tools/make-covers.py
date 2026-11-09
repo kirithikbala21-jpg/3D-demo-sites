@@ -1,7 +1,7 @@
-# Makes the AceGuides study-guide cover images in ../img/aceguides/ (720px wide .webp, quality 82).
+# Makes the KB Study Guides study-guide cover images in ../img/aceguides/ (720px wide .webp, quality 82).
 # Run from anywhere:  python3 kbventures-site/tools/make-covers.py
 # Needs: pip install playwright pillow   (it uses Playwright's Chromium, or the one in /opt/pw-browsers if that is missing)
-# The covers use the site's own font (Geist, loaded from fonts/geist-latin.woff2, weights 100-900), so they match the page.
+# The covers use the site's own font (Geist, loaded from fonts/switzer-500.woff2, weights 100-900), so they match the page.
 # Full-size PNGs go to a temporary folder and are never saved in the repo.
 import re, os, base64, tempfile, glob
 from playwright.sync_api import sync_playwright
@@ -10,7 +10,7 @@ from PIL import Image
 HERE = os.path.dirname(os.path.abspath(__file__))
 SITE = os.path.dirname(HERE)
 OUT = os.path.join(SITE, 'img', 'aceguides')
-FONT = base64.b64encode(open(os.path.join(SITE, 'fonts', 'geist-latin.woff2'), 'rb').read()).decode()
+FONT = base64.b64encode(open(os.path.join(SITE, 'fonts', 'switzer-500.woff2'), 'rb').read()).decode()
 
 y10=["Maths","Science","English","History","Economics & Business"]
 vce=["English","Maths Methods","Biology","Chemistry","Physics","Business Management","Economics",("Modern History","Revolutions")]
@@ -20,23 +20,23 @@ for s in vce:
     items.append(("VCE Units 1 & 2",a,"vce12")); items.append(("VCE Units 3 & 4",b,"vce34"))
 def slug(t): return re.sub(r'[^a-z0-9]+','-',t.lower()).strip('-')
 TPL='''<!doctype html><meta charset=utf-8><style>
-@font-face{font-family:Geist;font-style:normal;font-weight:100 900;src:url(data:font/woff2;base64,__FONT__) format("woff2")}
+@font-face{font-family:Switzer;font-style:normal;font-weight:400 500;src:url(data:font/woff2;base64,__FONT__) format("woff2")}
 *{box-sizing:border-box;margin:0}
-body{width:900px;height:1200px;background:#0D0E12;font-family:Geist;color:#E4E6ED;position:relative;overflow:hidden}
+body{width:900px;height:1200px;background:#0D0E12;font-family:Switzer;color:#E4E6ED;position:relative;overflow:hidden}
 .bg{position:absolute;inset:0;background:radial-gradient(ellipse 90% 55% at 50% -5%,#2a3347 0%,#151821 45%,#0B0C10 100%)}
 .sheen{position:absolute;inset:0;background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.05) 42%,transparent 54%)}
 .grain{position:absolute;inset:0;opacity:.05;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/></filter><rect width='160' height='160' filter='url(%23n)'/></svg>")}
 .edge{position:absolute;inset:14px;border-radius:34px;border:1.5px solid transparent;background:linear-gradient(180deg,rgba(228,230,237,.75),rgba(138,143,158,.15) 55%,rgba(212,175,55,.65)) border-box;-webkit-mask:linear-gradient(#000 0 0) padding-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
 .top{position:absolute;left:84px;right:84px;top:96px;display:flex;justify-content:space-between;font-size:20px;letter-spacing:.34em;text-transform:uppercase;color:#9AA0AE;font-weight:500}
 .gold{position:absolute;left:84px;top:150px;width:90px;height:2px;background:linear-gradient(90deg,#8E7424,#E7C867,#8E7424)}
-.mono{position:absolute;right:-40px;bottom:120px;font-size:820px;font-weight:100;line-height:1;color:transparent;-webkit-text-stroke:1.2px rgba(160,166,182,.22);letter-spacing:-.05em}
-.title{position:absolute;left:84px;right:84px;top:420px;font-weight:200;font-size:__FS__px;line-height:1.06;letter-spacing:-.02em;padding-bottom:28px;background:linear-gradient(180deg,#FFFFFF,#B9BECA);-webkit-background-clip:text;color:transparent}
+.mono{position:absolute;right:50px;bottom:150px;font-size:480px;font-weight:500;line-height:1;color:transparent;-webkit-text-stroke:1.2px rgba(160,166,182,.22);letter-spacing:-.05em}
+.title{position:absolute;left:84px;right:84px;top:420px;font-weight:500;font-size:__FS__px;line-height:1.06;letter-spacing:-.02em;padding-bottom:28px;background:linear-gradient(180deg,#FFFFFF,#B9BECA);-webkit-background-clip:text;color:transparent}
 .sub{position:absolute;left:84px;bottom:150px;font-size:22px;letter-spacing:.3em;text-transform:uppercase;color:#E4E6ED;font-weight:400}
 .line{position:absolute;left:84px;right:84px;bottom:118px;height:1px;background:rgba(138,143,158,.35)}
 .foot{position:absolute;left:84px;right:84px;bottom:70px;font-size:18px;letter-spacing:.3em;text-transform:uppercase;color:#8A8F9E}
 </style><div class=bg></div><div class=sheen></div><div class=grain></div><div class=edge></div>
-<div class=top><span>AceGuides</span><span>__TAG__</span></div><div class=gold></div>
-<div class=mono>A</div><div class=title>__TITLE__</div><div class=sub>__LEVEL__</div><div class=line></div><div class=foot>Study guide</div>'''
+<div class=top><span>KB Study Guides</span><span>__TAG__</span></div><div class=gold></div>
+<div class=mono>KB</div><div class=title>__TITLE__</div><div class=sub>__LEVEL__</div><div class=line></div><div class=foot>Study guide</div>'''
 os.makedirs(OUT,exist_ok=True)
 tmp=tempfile.mkdtemp(prefix='kb-covers-')
 with sync_playwright() as p:

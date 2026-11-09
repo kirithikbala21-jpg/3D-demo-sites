@@ -1,4 +1,4 @@
-// Makes the small website previews for the Black Crest Web Designs card ("See inside") and the Concept sites gallery:
+// Makes the small website previews for the KB Web Designs card ("See inside") and the Concept sites gallery:
 // the top of each demo site, captured at 1440px wide with the clock frozen and the live banners hidden, cropped to
 // the first screen and saved as small WebP files in ../img/previews/ (640 x 400). The demo folders are only opened,
 // never changed.

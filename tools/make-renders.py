@@ -9,8 +9,8 @@ over it without a colour jump.
 Writes:
   img/renders/kb-plaque-hero-{2752,1920,1280,800}.{avif,webp,jpg}   the 16:9 hero, for wide screens
   img/renders/kb-plaque-hero-4x5-{1080,720}.{avif,webp,jpg}          the 4:5 phone crop, centred on the plaque
-  img/niches/biz-black-crest.{avif,webp,jpg}                         the Black Crest card on its plinth, cropped from the
-                                                                     Black Crest render, so "Our businesses" matches that site
+  img/niches/biz-black-crest.{avif,webp,jpg}                         the KB card on its plinth, cropped from the
+                                                                     KB Web Designs render, so "Our businesses" matches that site
   og.jpg                                                             the share image, 1200 x 630
 
     python3 kbventures-site/tools/make-renders.py
@@ -25,7 +25,7 @@ SRC = os.path.join(OUT, 'originals', 'kb-plaque-hero-platinum.png')
 REF = os.path.join(SITE, 'img', 'video', 'kb-hero-poster.jpg')
 BC_SRC = os.path.join(SITE, '..', 'black-crest-site', 'assets', 'renders', 'originals', 'card-hero.png')
 CENTRE_X = 1870                       # the plaque and plinth, horizontally (source pixels)
-BC_TIGHT = (1330, 150, 2630, 1543)    # the Black Crest card on its plinth (14:15, as the niche next to it)
+BC_TIGHT = (1330, 150, 2630, 1543)    # the KB card on its plinth (14:15, as the niche next to it)
 
 
 def save(im, stem):

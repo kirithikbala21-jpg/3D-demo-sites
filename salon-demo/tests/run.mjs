@@ -316,7 +316,7 @@ if (want('links')) {
   const txt = await p.evaluate(() => { const m = document.querySelector('main').cloneNode(true); m.querySelectorAll('.g-rating').forEach((e) => e.remove()); return m.textContent; }); // the Google badge shows the owner's own rating from config
   ok('no superlatives, no star ratings, no aggregate score in the page copy (apart from the owner-set Google badge)', !/\b(best in|number one|#1|award|world.class|\d\.\d\s*(\/|stars)|★|stars?\b)/i.test(txt) && !/4\.9/.test(txt));
   ok('reviews are labelled "Sample content for this demo" and use first names only', /Sample content for this demo/i.test(txt) && (await p.locator('.review').count()) >= 4);
-  ok('footer carries the concept site label and the Black Crest credit', (await p.textContent('footer')).includes('Concept site. Names, prices and reviews are fictional.') && (await p.textContent('footer')).includes('Concept site by Black Crest Web Designs'));
+  ok('footer carries the concept site label and the KB Web Designs credit', (await p.textContent('footer')).includes('Concept site. Names, prices and reviews are fictional.') && (await p.textContent('footer')).includes('Concept site by KB Web Designs'));
   await done(p);
 }
 

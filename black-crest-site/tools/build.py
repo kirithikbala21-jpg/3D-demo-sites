@@ -1,4 +1,4 @@
-"""Writes every page of the Black Crest Web Designs site as plain HTML.
+"""Writes every page of the KB Web Designs site as plain HTML.
 
 The site itself has no build step: these are static files. This script only exists so the header, footer,
 phone bar and prices stay the same on every page. Run it after changing any text or price:
@@ -16,7 +16,7 @@ import re
 HERE = os.path.dirname(os.path.abspath(__file__))
 SITE_DIR = os.path.dirname(HERE)
 REPO = os.path.dirname(SITE_DIR)
-SITE = 'https://blackcrest.kbventures.com.au/'  # its own domain; pages use clean addresses (/pricing, not /pricing.html)
+SITE = 'https://web.kbventures.com.au/'  # its own domain; pages use clean addresses (/pricing, not /pricing.html)
 KB_SITE = 'https://kbventures.com.au/'  # KB Ventures has its own site and domain now
 LASTMOD = '2026-11-01'
 E = html.escape
@@ -57,7 +57,7 @@ LOGO = json.load(open(os.path.join(HERE, 'logo.json'), encoding='utf-8'))
 
 
 def crest(cls='crest'):
-    """The Black Crest hallmark: one fine crest outline with an engraved "BC" (letter outlines, made by tools/make-logo.py)."""
+    """The KB hallmark: one fine crest outline with an engraved "KB" (letter outlines, made by tools/make-logo.py)."""
     return (f'<svg class="{cls}" viewBox="0 0 40 48" aria-hidden="true" focusable="false">'
             f'<path class="crest-outline" pathLength="1" d="{LOGO['crest']}"/><path class="crest-letters" d="{LOGO['letters']}"/></svg>')
 
@@ -155,7 +155,7 @@ FOOTER = [
 
 def brand(P):
     return (f'<a class="brand" href="/">{crest()}'
-            '<span class="brand-name"><b>Black Crest</b> <small>Web Designs</small></span><span class="sr-only"> home</span></a>')
+            '<span class="brand-name"><b>KB</b> <small>Web Designs</small></span><span class="sr-only"> home</span></a>')
 
 
 def cur(name, here):
@@ -211,12 +211,12 @@ def footer(P, here):
       </div>
     </div>
     <div class="footer-bottom">
-      <p>&copy; <span data-year>2026</span> Black Crest Web Designs, a <a href="{KB_SITE}">KB Ventures</a> company.</p>
+      <p>&copy; <span data-year>2026</span> KB Web Designs, a <a href="{KB_SITE}">KB Ventures</a> company.</p>
       <p>No cookies. No tracking. Prices in AUD.</p>
       <button class="to-top" type="button" data-top>Back to top <span aria-hidden="true">&uarr;</span></button>
     </div>
   </div>
-  <p class="footer-word" aria-hidden="true" data-word="BLACK CREST"></p>
+  <p class="footer-word" aria-hidden="true" data-word="KB WEB DESIGNS"></p>
 </footer>'''
 
 
@@ -233,7 +233,7 @@ PRELOADER = f'''<div class="preloader" id="preloader" aria-hidden="true">
   <div class="pre-mid">
     <svg class="pre-crest" viewBox="0 0 40 48" focusable="false"><path pathLength="1" d="{LOGO['crest']}"/><path class="pre-letters" d="{LOGO['letters']}"/></svg>
     <p class="pre-count"><span data-pre-count>000</span></p>
-    <p class="pre-name">Black Crest Web Designs</p>
+    <p class="pre-name">KB Web Designs</p>
   </div>
 </div>'''
 
@@ -277,7 +277,7 @@ def head(title, desc, path, P, noindex=False, ld=(), base_script=False, extra=''
 <meta name="theme-color" content="#0D0E12">
 <meta name="color-scheme" content="dark">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="Black Crest Web Designs">
+<meta property="og:site_name" content="KB Web Designs">
 <meta property="og:locale" content="en_AU">
 <meta property="og:title" content="{E(title)}">
 <meta property="og:description" content="{E(desc)}">
@@ -285,7 +285,7 @@ def head(title, desc, path, P, noindex=False, ld=(), base_script=False, extra=''
 <meta property="og:image" content="{og}">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="A digital render of the Black Crest card, black brushed metal with a gold crest on a basalt plinth, beside the line: Premium sites for local businesses.">
+<meta property="og:image:alt" content="A digital render of the KB card, black brushed metal with a gold crest on a basalt plinth, beside the line: Premium sites for local businesses.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{E(title)}">
 <meta name="twitter:description" content="{E(desc)}">
@@ -396,7 +396,7 @@ def statement(P, level='h3'):
                ['Hosting upkeep', 'Small text and photo changes', 'Security checks and backups', 'Priority replies'], CARE, ' st-after')
     return f'''<div class="statement-wrap" data-reveal>
       <table class="st-table">
-        <caption class="sr-only">Black Crest packages and prices, in Australian dollars</caption>
+        <caption class="sr-only">KB Web Designs packages and prices, in Australian dollars</caption>
         <thead><tr><th scope="col">Package</th><th scope="col">Includes</th><th scope="col">Price, AUD</th><th scope="col"><span class="sr-only">Choose</span></th></tr></thead>
         <tbody>{rows}</tbody>
         <tbody class="st-optional">{care}</tbody>
@@ -430,7 +430,7 @@ def form_open(name, subject, P):
     return f'''<form class="form" id="form-{name}" data-form="{name}" action="https://api.web3forms.com/submit" method="POST" data-thanks="{P}thank-you" novalidate>
         <input type="hidden" name="access_key" value="{FORM_KEY}">
         <input type="hidden" name="subject" value="{E(subject)}">
-        <input type="hidden" name="from_name" value="Black Crest Website">
+        <input type="hidden" name="from_name" value="KB Web Designs Website">
         <input type="hidden" name="form" value="{E(name)}">
         <input type="hidden" name="redirect" value="{SITE}thank-you">
         <div class="hp" aria-hidden="true"><label>Leave this box empty <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off"></label></div>'''
@@ -460,7 +460,7 @@ def form_close(button, P):
 # ================================================================= shared content
 ORG = {
     '@context': 'https://schema.org', '@type': 'ProfessionalService', '@id': SITE + '#business',
-    'name': 'Black Crest Web Designs', 'slogan': 'Premium sites for local businesses',
+    'name': 'KB Web Designs', 'slogan': 'Premium sites for local businesses',
     'description': 'Fast, good-looking websites for local businesses in Melbourne. A free concept homepage first, clear prices, and you own your site.',
     'url': SITE, 'email': EMAIL, 'image': SITE + 'img/og.jpg', 'logo': SITE + 'img/icon-512.png',
     'address': {'@type': 'PostalAddress', 'addressLocality': 'Melbourne', 'addressRegion': 'VIC', 'addressCountry': 'AU'},
@@ -577,7 +577,7 @@ def hero_picture(P=''):
             f'<source type="image/avif" srcset="{hero_set("avif", P)}" sizes="100vw" width="2752" height="1536">'
             f'<source type="image/webp" srcset="{hero_set("webp", P)}" sizes="100vw" width="2752" height="1536">'
             f'<img class="hero-img" src="{P}{HERO}-1920.jpg" srcset="{hero_set("jpg", P)}" sizes="100vw" width="2752" height="1536" '
-            f'fetchpriority="high" decoding="async" alt="Digital render of the Black Crest card: black brushed metal with a gold crest, on a basalt plinth under one light"></picture>')
+            f'fetchpriority="high" decoding="async" alt="Digital render of the KB card: black brushed metal with a gold crest, on a basalt plinth under one light"></picture>')
 
 
 VIDEO = 'assets/video/bc-hero'
@@ -720,7 +720,7 @@ def step_visual(k, P):
     """the moment each step is about, shown as it really looks (each is labelled in the step's text)"""
     if k == 'chat':
         return '''<div class="step-visual chat" role="img" aria-label="An example first message from a barbershop owner, and our reply">
-              <p class="chat-head"><b>New message</b><span>Black Crest Web Designs</span></p>
+              <p class="chat-head"><b>New message</b><span>KB Web Designs</span></p>
               <p class="chat-msg">Hi, I run a barbershop in Box Hill. Walk-ins and bookings, open six days. Can you make us a site?</p>
               <p class="chat-msg chat-us">Thanks! Your free concept homepage is usually ready within 5 business days. Any photos or links you like?</p>
             </div>'''
@@ -768,7 +768,7 @@ def standard_band(P):
     return f'''<section class="section-tight standard-band" aria-labelledby="std-h">
     <div class="container">
       <div class="standard-head">
-        <p class="label" data-reveal><span class="idx">07</span><span class="slash" aria-hidden="true">/</span>The Black Crest Standard</p>
+        <p class="label" data-reveal><span class="idx">07</span><span class="slash" aria-hidden="true">/</span>The KB Standard</p>
         <h2 id="std-h" class="h2" data-split>Promises you can <em>hold us to.</em></h2>
       </div>
       <ul class="standard-nums">{items}</ul>
@@ -832,14 +832,14 @@ def melbourne(P):
 
 
 P = ''
-page('index.html', 'Black Crest Web Designs: premium sites for local businesses', f'Premium websites for Melbourne barbers, cafes, gyms, salons and trades. We design your homepage first, free. One Page {money(ONE)}, Full Website {money(FULL)}.', f'''<main id="main">
+page('index.html', 'KB Web Designs: premium sites for local businesses', f'Premium websites for Melbourne barbers, cafes, gyms, salons and trades. We design your homepage first, free. One Page {money(ONE)}, Full Website {money(FULL)}.', f'''<main id="main">
   <section class="hero hero-render" aria-labelledby="hero-h">
     <div class="hero-media" data-hero-media>
       <div class="hero-zoom">{hero_picture(P)}<span class="hero-sweep" aria-hidden="true"></span></div>
       {hero_video(P)}
     </div>
     <div class="container hero-copy">
-      <p class="label">Black Crest Web Designs &middot; Melbourne</p>
+      <p class="label">KB Web Designs &middot; Melbourne</p>
       <h1 id="hero-h">Premium sites for <em>local</em> businesses</h1>
       <p class="lead">We design your homepage first, free. You decide after.</p>
       <div class="btn-row">
@@ -925,7 +925,7 @@ page('index.html', 'Black Crest Web Designs: premium sites for local businesses'
 
 # ================================================================= Concept Lab
 P = ''
-page('lab.html', 'Concept Lab: Black Crest Web Designs', 'Sketch a homepage for your business in a minute: pick your trade, a mood and the features you need, then send it to us as the start of your free concept.', f'''<main id="main">
+page('lab.html', 'Concept Lab: KB Web Designs', 'Sketch a homepage for your business in a minute: pick your trade, a mood and the features you need, then send it to us as the start of your free concept.', f'''<main id="main">
   <div class="container page-head">
       <p class="label"><span class="idx">01</span><span class="slash" aria-hidden="true">/</span>Concept Lab</p>
       <h1 class="h1" data-split>Sketch it <em>yourself.</em></h1>
@@ -940,7 +940,7 @@ page('lab.html', 'Concept Lab: Black Crest Web Designs', 'Sketch a homepage for 
 </main>''', vendor=('gsap/Flip.min.js',))
 
 
-# ================================================================= The Black Crest Standard
+# ================================================================= The KB Standard
 STANDARD = [
     ('A free concept, first', 'We design your homepage before you pay anything. If it is not right for you, you walk away and owe nothing.'),
     ('One price, in writing', f'Every price is agreed in writing before work starts. One Page is {money(ONE)}, a Full Website is {money(FULL)}, bigger projects are quoted.'),
@@ -954,9 +954,9 @@ STANDARD = [
     ('Honest words only', 'No made-up reviews, invented numbers or borrowed logos, on your site or on ours.'),
 ]
 P = ''
-page('standard.html', 'The Black Crest Standard: Black Crest Web Designs', 'Ten commitments we make on every website: a free concept first, one written price, half at launch, two rounds of changes, and you own the finished site.', f'''<main id="main">
+page('standard.html', 'The KB Standard: KB Web Designs', 'Ten commitments we make on every website: a free concept first, one written price, half at launch, two rounds of changes, and you own the finished site.', f'''<main id="main">
   <div class="container page-head">
-      <p class="label"><span class="idx">01</span><span class="slash" aria-hidden="true">/</span>The Black Crest Standard</p>
+      <p class="label"><span class="idx">01</span><span class="slash" aria-hidden="true">/</span>The KB Standard</p>
       <h1 class="h1" data-split>Ten promises, <em>in writing.</em></h1>
       <p class="lead" data-reveal>These hold for every project, whatever the size. If we ever fall short of one, tell us at <a class="link" data-email href="mailto:{EMAIL}">{EMAIL}</a>.</p>
   </div>
@@ -1119,12 +1119,12 @@ def case_page(i, d):
 
 
 for i, d in enumerate(DEMOS):
-    page(f'work/{d[0]}.html', f'{strip_tags(d[2])}: concept case study by Black Crest Web Designs',
-         f'{strip_tags(d[2])} is a concept {d[3].lower()} website by Black Crest Web Designs, for a made-up business. The brief, what we built, colours, type and measured speed.',
+    page(f'work/{d[0]}.html', f'{strip_tags(d[2])}: concept case study by KB Web Designs',
+         f'{strip_tags(d[2])} is a concept {d[3].lower()} website by KB Web Designs, for a made-up business. The brief, what we built, colours, type and measured speed.',
          case_page(i, d), ld=[{'@context': 'https://schema.org', '@type': 'CreativeWork', 'name': f'{strip_tags(d[2])} (concept site)',
-                                'description': f'A concept website for a made-up {d[3].lower()}, designed and built by Black Crest Web Designs. Not a real client.',
+                                'description': f'A concept website for a made-up {d[3].lower()}, designed and built by KB Web Designs. Not a real client.',
                                 'url': SITE + f'work/{d[0]}', 'image': SITE + f'img/work/{d[0]}-desktop-1600.jpg', 'dateCreated': YEAR,
-                                'creator': {'@id': SITE + '#business'}, 'isPartOf': {'@type': 'WebSite', 'name': 'Black Crest Web Designs', 'url': SITE}}])
+                                'creator': {'@id': SITE + '#business'}, 'isPartOf': {'@type': 'WebSite', 'name': 'KB Web Designs', 'url': SITE}}])
 
 P = ''
 rows = ''.join(f'''<li><a class="work-line" href="work/{d[0]}" data-hover-img="img/work/{d[0]}-desktop-800.webp">
@@ -1134,7 +1134,7 @@ rows = ''.join(f'''<li><a class="work-line" href="work/{d[0]}" data-hover-img="i
           <img class="w-thumb" src="img/work/{d[0]}-desktop-800.webp" width="800" height="500" loading="lazy" decoding="async" alt="">
           <span class="w-go" aria-hidden="true">{icon('arrow')}</span>
         </a></li>''' for i, d in enumerate(DEMOS))
-page('work.html', 'Work: concept sites by Black Crest Web Designs', 'Six concept websites for made-up local businesses: a barbershop, café, gym, plumber, salon and auto parts store. Each has a case study.', f'''<main id="main">
+page('work.html', 'Work: concept sites by KB Web Designs', 'Six concept websites for made-up local businesses: a barbershop, café, gym, plumber, salon and auto parts store. Each has a case study.', f'''<main id="main">
   <div class="container page-head">
     <p class="label"><span class="idx">01</span><span class="slash" aria-hidden="true">/</span>Work</p>
     <h1 class="h1" data-split>Six concepts. <em>No templates.</em></h1>
@@ -1160,13 +1160,13 @@ CREDIT_ROWS = [
     ('Trade chapter photos (home page)', 'All five are from Unsplash, under the Unsplash License. '
      + (f'Photographers: {_NEW_CREDIT}.' if NEW_PHOTOS else '')
      + ('' if 'barbers' in NEW_PHOTOS else ' The Barbers photo comes from the barber concept site; its photographer was not recorded when it was first collected and will be added here when found.')),
-    ('Hero imagery', 'Hero imagery: digital render made for Black Crest Web Designs. The card and the KB Ventures plaque are renders of the brand marks, not photographs of real objects.'),
-    ('Concept site screenshots and the showreel', 'Captured by Black Crest from our own six concept sites.'),
-    ('The 3D card, the concept collection and their stills', 'Made by Black Crest with Three.js: the card from the Black Crest hallmark, the stone and brushed metal drawn in code, and the phones showing screenshots of our own concepts.'),
+    ('Hero imagery', 'Hero imagery: digital render made for KB Web Designs. The card and the KB Ventures plaque are renders of the brand marks, not photographs of real objects.'),
+    ('Concept site screenshots and the showreel', 'Captured by KB Web Designs from our own six concept sites.'),
+    ('The 3D card, the concept collection and their stills', 'Made by KB Web Designs with Three.js: the card from the KB hallmark, the stone and brushed metal drawn in code, and the phones showing screenshots of our own concepts.'),
     ('Typefaces', 'Cormorant Garamond, under the SIL Open Font License, and Switzer by the Indian Type Foundry, under the ITF Free Font License (Fontshare). Both are served from this site.'),
     ('Code libraries', 'GSAP 3.14.2 (ScrollTrigger, SplitText, Flip) under the GSAP standard licence, Lenis 1.3.27 (MIT) and Three.js 0.170.0 (MIT), all served from this site.'),
 ]
-page('credits.html', 'Credits: Black Crest Web Designs', 'Where the photos, data, typefaces and code libraries on the Black Crest Web Designs site come from.', f'''<main id="main">
+page('credits.html', 'Credits: KB Web Designs', 'Where the photos, data, typefaces and code libraries on the KB Web Designs site come from.', f'''<main id="main">
   <div class="container page-head">
     <p class="label"><span class="idx">01</span><span class="slash" aria-hidden="true">/</span>Credits</p>
     <h1 class="h1" data-split>Credit where <em>it’s due.</em></h1>
@@ -1188,12 +1188,12 @@ CMP = [
     ('Effort', 'You do the design, writing and setup yourself', 'Briefs, meetings and sign-offs', 'A short chat and your details. We write, design and build'),
     ('Ownership', 'Your site lives on their platform. Leaving usually means rebuilding', 'Depends on the contract. Check who owns the files', 'You own the finished site and your domain'),
 ]
-cmp_rows = ''.join(f'<tr><th scope="row">{r}</th><td data-label="DIY builder">{a}</td><td data-label="Typical agency">{b}</td><td class="col-us" data-label="Black Crest">{c}</td></tr>' for r, a, b, c in CMP)
+cmp_rows = ''.join(f'<tr><th scope="row">{r}</th><td data-label="DIY builder">{a}</td><td data-label="Typical agency">{b}</td><td class="col-us" data-label="KB Web Designs">{c}</td></tr>' for r, a, b, c in CMP)
 calc_addons = ''.join(f'''<label class="opt" for="add-{a['id']}"><input type="checkbox" id="add-{a['id']}" value="{a['id']}"><span class="opt-text"><b>{a['name']}</b><span class="tiny">{a['note']}</span></span>{f'<select class="qty" data-for="{a["id"]}" id="qty-{a["id"]}" aria-label="How many extra pages">' + ''.join(f'<option value="{n}">{n}</option>' for n in range(1, 6)) + '</select>' if a.get('perUnit') else ''}<span class="amt">from <span data-price="{a['id']}">{money(a['from'])}</span></span></label>''' for a in ADDONS)
-PRICE_LD = {'@context': 'https://schema.org', '@type': 'OfferCatalog', 'name': 'Black Crest Web Designs pricing', 'url': SITE + 'pricing',
+PRICE_LD = {'@context': 'https://schema.org', '@type': 'OfferCatalog', 'name': 'KB Web Designs pricing', 'url': SITE + 'pricing',
             'itemListElement': ORG['makesOffer'] + [{'@type': 'Offer', 'name': a['name'], 'priceCurrency': CONFIG['currency'],
                                                      'priceSpecification': {'@type': 'PriceSpecification', 'minPrice': f"{a['from']:.2f}", 'priceCurrency': CONFIG['currency']}} for a in ADDONS]}
-page('pricing.html', 'Pricing: Black Crest Web Designs', f'One Page website {money(ONE)}. Full Website (up to about 5 pages) {money(FULL)}. Optional care plan {money(CARE)} a month. No hidden costs, and a price calculator.', f'''<main id="main">
+page('pricing.html', 'Pricing: KB Web Designs', f'One Page website {money(ONE)}. Full Website (up to about 5 pages) {money(FULL)}. Optional care plan {money(CARE)} a month. No hidden costs, and a price calculator.', f'''<main id="main">
   <div class="container page-head">
     <p class="label">Pricing</p>
     <h1 class="h1" data-split>Clear prices. <em>No hidden costs.</em></h1>
@@ -1243,10 +1243,10 @@ page('pricing.html', 'Pricing: Black Crest Web Designs', f'One Page website {mon
       <div class="statement" data-reveal>
         <div class="statement-head"><span>Statement &middot; <b>Website options</b></span><span>Melbourne &middot; AUD</span></div>
         <div class="table-wrap"><table class="stack-table">
-          <caption class="sr-only">A DIY builder, a typical Melbourne agency and Black Crest</caption>
-          <thead><tr><th scope="col"><span class="sr-only">Compared on</span></th><th scope="col">DIY builder (Wix or Squarespace)</th><th scope="col">Typical Melbourne agency</th><th scope="col" class="col-us">Black Crest</th></tr></thead>
+          <caption class="sr-only">A DIY builder, a typical Melbourne agency and KB Web Designs</caption>
+          <thead><tr><th scope="col"><span class="sr-only">Compared on</span></th><th scope="col">DIY builder (Wix or Squarespace)</th><th scope="col">Typical Melbourne agency</th><th scope="col" class="col-us">KB Web Designs</th></tr></thead>
           <tbody>{cmp_rows}</tbody></table></div>
-        <div class="statement-foot"><span>*Typical market range; prices vary.</span><span>Black Crest prices are fixed before work begins.</span></div>
+        <div class="statement-foot"><span>*Typical market range; prices vary.</span><span>KB Web Designs prices are fixed before work begins.</span></div>
       </div>
     </div>
   </section>
@@ -1288,7 +1288,7 @@ page('pricing.html', 'Pricing: Black Crest Web Designs', f'One Page website {mon
 
 # ================================================================= Process
 P = ''
-page('process.html', 'Process: how Black Crest Web Designs works', 'Four steps: chat, free concept homepage, build and launch. Free concept first, 50% deposit to start, balance at launch, 2 rounds of changes included.', f'''<main id="main">
+page('process.html', 'Process: how KB Web Designs works', 'Four steps: chat, free concept homepage, build and launch. Free concept first, 50% deposit to start, balance at launch, 2 rounds of changes included.', f'''<main id="main">
   <div class="container page-head">
     <p class="label">Process</p>
     <h1 class="h1" data-split>Four steps. <em>No surprises.</em></h1>
@@ -1321,7 +1321,7 @@ page('process.html', 'Process: how Black Crest Web Designs works', 'Four steps: 
 
 # ================================================================= Free concept (landing page for DMs: no site menu)
 P = ''
-page('free-concept.html', 'Get a free website concept: Black Crest Web Designs', 'We design your new homepage for free. No deposit, no obligation. Reply within 1 business day.', f'''<main id="main" class="landing">
+page('free-concept.html', 'Get a free website concept: KB Web Designs', 'We design your new homepage for free. No deposit, no obligation. Reply within 1 business day.', f'''<main id="main" class="landing">
   <div class="container">
     <div class="landing-head">{brand(P)}</div>
     <h1>See it <em>before you pay.</em></h1>
@@ -1331,20 +1331,20 @@ page('free-concept.html', 'Get a free website concept: Black Crest Web Designs',
       <li>We reply within 1 business day.</li>
     </ul>
     <div class="tile">
-      {form_open('free-concept', 'Black Crest: free concept request', P)}
+      {form_open('free-concept', 'KB Web Designs: free concept request', P)}
         {field('business', 'Business name', required=True, auto='organization', empty='Please tell us your business name.')}
         {field('trade', 'What you do', required=True, placeholder='For example: barbershop in Brunswick', empty='Please tell us what your business does.')}
         {field('contact', 'Email or phone', required=True, auto='email', contact=True, empty='Please add an email address or phone number so we can reply.')}
         {need_fields('fc')}
         {form_close('Get my free concept', P)}
     </div>
-    <p class="back"><a class="link" href="/">Visit the main Black Crest site {icon('arrow')}</a></p>
+    <p class="back"><a class="link" href="/">Visit the main KB Web Designs site {icon('arrow')}</a></p>
   </div>
 </main>''', noindex=True, bare=True)
 
 # ================================================================= Start your project
 P = ''
-page('start.html', 'Start your project: Black Crest Web Designs', 'Tell us about your business so we can design your free concept homepage: your trade, suburb, hours, services, colours and links.', f'''<main id="main">
+page('start.html', 'Start your project: KB Web Designs', 'Tell us about your business so we can design your free concept homepage: your trade, suburb, hours, services, colours and links.', f'''<main id="main">
   <div class="container page-head narrow">
     <p class="label">Start your project</p>
     <h1 class="h1" data-split>Tell us about <em>your business.</em></h1>
@@ -1352,7 +1352,7 @@ page('start.html', 'Start your project: Black Crest Web Designs', 'Tell us about
   </div>
   <section class="container narrow" aria-label="Project details" style="padding-bottom:120px">
     <div class="tile" data-reveal>
-      {form_open('start', 'Black Crest: new project details (start form)', P)}
+      {form_open('start', 'KB Web Designs: new project details (start form)', P)}
         <div class="form-row">
           {field('business', 'Business name', required=True, auto='organization', empty='Please tell us your business name.')}
           {field('trade', 'Trade or type of business', required=True, placeholder='For example: cafe', empty='Please tell us what kind of business it is.')}
@@ -1387,7 +1387,7 @@ COVER = [
     ('Priority replies', 'Care plan requests go to the front of the queue.'),
 ]
 NOT_COVER = ['New pages or new sections (we quote these first)', 'Redesigns or a new look', 'Writing large amounts of new content from scratch', 'Your domain name renewal, which you pay directly (about $20 a year)', 'Other services you sign up to, like booking apps or email accounts', 'Unused changes do not roll over to the next month']
-page('care-plan.html', f'Care plan, {money(CARE)} a month: Black Crest Web Designs', f'Our optional care plan is {money(CARE)} a month: hosting upkeep, small text and photo changes, security checks, backups and priority replies. Cancel any time.', f'''<main id="main">
+page('care-plan.html', f'Care plan, {money(CARE)} a month: KB Web Designs', f'Our optional care plan is {money(CARE)} a month: hosting upkeep, small text and photo changes, security checks, backups and priority replies. Cancel any time.', f'''<main id="main">
   <div class="container page-head">
     <p class="label">Care plan</p>
     <h1 class="h1" data-split>Looked after, <em>every month.</em></h1>
@@ -1413,7 +1413,7 @@ page('care-plan.html', f'Care plan, {money(CARE)} a month: Black Crest Web Desig
     <div class="container narrow">
       {head_block('Request a change', '<span id="req-h">Need something <em>updated?</em></span>', 'Tell us what to change. We confirm by email before we do it.')}
       <div class="tile" data-reveal>
-        {form_open('care-change', 'Black Crest: care plan change request', P)}
+        {form_open('care-change', 'KB Web Designs: care plan change request', P)}
           <div class="form-row">
             {field('name', 'Your name', required=True, auto='name', empty='Please enter your name.')}
             {field('email', 'Email', 'email', required=True, auto='email', empty='Please enter your email address.')}
@@ -1459,7 +1459,7 @@ for path, (art, slug, trade, h1, lead, reasons, feats) in TRADE_PAGES.items():
     d = DEMO[slug]
     rs = ''.join(f'<li data-reveal><span class="n">0{i + 1}</span><h3>{t}</h3><p>{x}</p></li>' for i, (t, x) in enumerate(reasons))
     plain = re.sub(r'<[^>]+>', '', h1).rstrip('.')
-    page(path, f'{plain} in Melbourne: Black Crest Web Designs', f'{lead} Websites for {trade.lower()} in Melbourne and its suburbs. One Page {money(ONE)}, Full Website {money(FULL)}, free concept first.', f'''<main id="main">
+    page(path, f'{plain} in Melbourne: KB Web Designs', f'{lead} Websites for {trade.lower()} in Melbourne and its suburbs. One Page {money(ONE)}, Full Website {money(FULL)}, free concept first.', f'''<main id="main">
   <div class="container page-head">
     <div class="trade-hero">
       <div>
@@ -1495,7 +1495,7 @@ for path, (art, slug, trade, h1, lead, reasons, feats) in TRADE_PAGES.items():
 
 # ================================================================= FAQ
 P = ''
-page('faq.html', 'FAQ: Black Crest Web Designs', 'Answers about cost, timing, who owns the site, changes, domain and hosting, deposits, the free concept and the care plan.', f'''<main id="main">
+page('faq.html', 'FAQ: KB Web Designs', 'Answers about cost, timing, who owns the site, changes, domain and hosting, deposits, the free concept and the care plan.', f'''<main id="main">
   <div class="container page-head">
     <p class="label">FAQ</p>
     <h1 class="h1" data-split>Straight <em>answers.</em></h1>
@@ -1510,11 +1510,11 @@ page('faq.html', 'FAQ: Black Crest Web Designs', 'Answers about cost, timing, wh
 
 # ================================================================= About
 P = ''
-page('about.html', 'About: Black Crest Web Designs', 'Black Crest Web Designs makes premium websites for local businesses in Melbourne. Plain English, clear prices, and you own your site. A KB Ventures company.', f'''<main id="main">
+page('about.html', 'About: KB Web Designs', 'KB Web Designs makes premium websites for local businesses in Melbourne. Plain English, clear prices, and you own your site. A KB Ventures company.', f'''<main id="main">
   <div class="container page-head">
     <p class="label">About</p>
     <h1 class="h1" data-split>Studio quality. <em>Local prices.</em></h1>
-    <p class="lead" data-reveal>Black Crest Web Designs makes fast, good-looking websites for the local businesses that keep a suburb going: barbers, cafes, gyms, salons and tradies.</p>
+    <p class="lead" data-reveal>KB Web Designs makes fast, good-looking websites for the local businesses that keep a suburb going: barbers, cafes, gyms, salons and tradies.</p>
   </div>
   <section class="section band" aria-labelledby="stand-h">
     <div class="container">
@@ -1554,7 +1554,7 @@ page('about.html', 'About: Black Crest Web Designs', 'Black Crest Web Designs ma
         <div class="kb-tile-copy">
           <p class="label">A KB Ventures company</p>
           <h2 id="kb-h" class="h3">Part of something bigger.</h2>
-          <p class="muted" style="margin-top:14px">Black Crest Web Designs is a brand of KB Ventures, a Melbourne company that starts and runs small businesses to one standard: clear, fair and well made.</p>
+          <p class="muted" style="margin-top:14px">KB Web Designs is a brand of KB Ventures, a Melbourne company that starts and runs small businesses to one standard: clear, fair and well made.</p>
           <a class="link" href="{KB_SITE}">Visit KB Ventures {icon('arrow')}</a>
         </div>
         <div class="kb-tile-mark">{pic('assets/renders/kb-plaque-small', 640, 560, 'Digital render of the KB Ventures plaque: champagne-gold KB engraved in smoked glass, in a brushed platinum frame', P, sizes='(min-width: 720px) 280px, 80vw')}</div>
@@ -1648,20 +1648,20 @@ GUIDES = [
       <ul><li><strong>Domain name:</strong> about $20 a year for most addresses. It should be registered in your name.</li><li><strong>Hosting:</strong> anything from free to a monthly fee, depending on the site and the host.</li><li><strong>Updates:</strong> either your own time, or a care plan with whoever built the site.</li></ul>
       <h2>Questions to ask before you pay</h2>
       <ul><li>Who owns the finished site and the domain?</li><li>What exactly is included, and what costs extra?</li><li>How many rounds of changes do I get?</li><li>Are there ongoing fees, and can I cancel?</li><li>Can I see the design before I pay?</li></ul>
-      <h2>Where Black Crest sits</h2>
+      <h2>Where KB Web Designs sits</h2>
       <p>Our One Page sites are {ONE_P}, a Full Website (up to about 5 pages) is {FULL_P}, and the care plan is optional at {CARE_P} a month. You see a free concept homepage before you pay anything, and you own the finished site. See our <a href="../pricing">pricing</a> for the details.</p>'''),
 ]
 for slug, title, desc, body in GUIDES:
     P = '../'
     body = body.replace('{ONE_P}', money(ONE)).replace('{FULL_P}', money(FULL)).replace('{CARE_P}', money(CARE))
     art = {'@context': 'https://schema.org', '@type': 'Article', 'headline': title, 'description': desc, 'url': SITE + 'guides/' + slug, 'image': SITE + 'img/og.jpg',
-           'publisher': {'@id': SITE + '#business', '@type': 'ProfessionalService', 'name': 'Black Crest Web Designs'}, 'author': {'@type': 'Organization', 'name': 'Black Crest Web Designs'}}
-    page('guides/' + slug + '.html', f'{title}: Black Crest guides', desc, f'''<main id="main">
+           'publisher': {'@id': SITE + '#business', '@type': 'ProfessionalService', 'name': 'KB Web Designs'}, 'author': {'@type': 'Organization', 'name': 'KB Web Designs'}}
+    page('guides/' + slug + '.html', f'{title}: KB Web Designs guides', desc, f'''<main id="main">
   <article class="container prose" style="padding-bottom:120px">
     <header class="page-head" style="padding-bottom:20px">
       <p class="label"><a class="crumb" href="./">Guides</a></p>
       <h1 class="h1" style="font-size:clamp(42px,7vw,76px)">{GUIDE_H1.get(title, title)}</h1>
-      <p class="byline">Black Crest Web Designs</p>
+      <p class="byline">KB Web Designs</p>
     </header>
     {body}
     <div class="tile callout">
@@ -1673,7 +1673,7 @@ for slug, title, desc, body in GUIDES:
 </main>''', ld=[art])
 P = '../'
 gcards = ''.join(f'''<li><a href="{s}"><span class="n">0{i + 1}</span><span class="t">{t}</span><span class="x">{d}</span><span class="ic">{icon("ne")}</span></a></li>''' for i, (s, t, d, _) in enumerate(GUIDES))
-page('guides/index.html', 'Guides for local business websites: Black Crest', 'Short, practical guides for local businesses: what a barber website needs, Google Business Profiles for cafes, and what a website should cost.', f'''<main id="main">
+page('guides/index.html', 'Guides for local business websites: KB Web Designs', 'Short, practical guides for local businesses: what a barber website needs, Google Business Profiles for cafes, and what a website should cost.', f'''<main id="main">
   <div class="container page-head">
     <p class="label">Guides</p>
     <h1 class="h1" data-split>Short, <em>useful</em> guides.</h1>
@@ -1686,7 +1686,7 @@ page('guides/index.html', 'Guides for local business websites: Black Crest', 'Sh
 
 # ================================================================= Contact
 P = ''
-page('contact.html', 'Contact: Black Crest Web Designs', 'Ask a question or request a quote. We reply within 1 business day. Based in Melbourne, Australia.', f'''<main id="main">
+page('contact.html', 'Contact: KB Web Designs', 'Ask a question or request a quote. We reply within 1 business day. Based in Melbourne, Australia.', f'''<main id="main">
   <div class="container page-head">
     <p class="label">Contact</p>
     <h1 class="h1" data-split>Let's talk <em>about your site.</em></h1>
@@ -1698,7 +1698,7 @@ page('contact.html', 'Contact: Black Crest Web Designs', 'Ask a question or requ
   </div>
   <section class="container narrow" aria-label="Contact form" style="padding-bottom:120px">
     <div class="tile" data-reveal>
-      {form_open('contact', 'Black Crest: contact form message', P)}
+      {form_open('contact', 'KB Web Designs: contact form message', P)}
         <input type="hidden" name="quote" value="">
         <p class="prefill" id="prefill-note" hidden></p>
         {need_fields('contact')}
@@ -1715,7 +1715,7 @@ page('contact.html', 'Contact: Black Crest Web Designs', 'Ask a question or requ
 
 # ================================================================= Thank you
 P = ''
-page('thank-you.html', 'Thank you: Black Crest Web Designs', 'Thanks for your message. Here is what happens next.', f'''<main id="main">
+page('thank-you.html', 'Thank you: KB Web Designs', 'Thanks for your message. Here is what happens next.', f'''<main id="main">
   <div class="container page-head">
     <p class="label">Message received</p>
     <h1 class="h1" data-split>Thank you. <em>It's with us.</em></h1>
@@ -1733,12 +1733,12 @@ page('thank-you.html', 'Thank you: Black Crest Web Designs', 'Thanks for your me
 
 # ================================================================= QR (printable)
 P = ''
-page('qr.html', 'Printable QR code: Black Crest Web Designs', 'A printable QR code that opens the Black Crest free concept page.', f'''<main id="main">
+page('qr.html', 'Printable QR code: KB Web Designs', 'A printable QR code that opens the KB Web Designs free concept page.', f'''<main id="main">
   <div class="container page-head">
     <div class="qr-sheet">
       <div style="display:flex;justify-content:center">{brand(P)}</div>
       <h1 class="h1" style="font-size:clamp(40px,7vw,64px);margin-top:30px">Scan for a free <em>website concept.</em></h1>
-      <div class="qr-code"><img src="img/qr-free-concept.svg" width="320" height="320" alt="QR code that opens the Black Crest free concept page"></div>
+      <div class="qr-code"><img src="img/qr-free-concept.svg" width="320" height="320" alt="QR code that opens the KB Web Designs free concept page"></div>
       <p class="muted">Or visit:<br><span style="word-break:break-all">{SITE}free-concept</span></p>
       <div class="btn-row no-print" style="justify-content:center;margin-top:24px"><button class="btn btn-gold" type="button" data-print>Print this page</button></div>
     </div>
@@ -1747,10 +1747,10 @@ page('qr.html', 'Printable QR code: Black Crest Web Designs', 'A printable QR co
 
 # ================================================================= Privacy and terms
 P = ''
-page('privacy.html', 'Privacy policy: Black Crest Web Designs', 'How Black Crest Web Designs (a KB Ventures company) handles your information. No cookies, no tracking, no analytics.', f'''<main id="main">
+page('privacy.html', 'Privacy policy: KB Web Designs', 'How KB Web Designs (a KB Ventures company) handles your information. No cookies, no tracking, no analytics.', f'''<main id="main">
   <article class="container prose" style="padding-bottom:120px">
     <header class="page-head" style="padding-bottom:8px"><p class="label">Legal</p><h1 class="h1">Privacy policy</h1><p class="byline">Last updated 1 November 2026</p></header>
-    <p>Black Crest Web Designs is a brand of KB Ventures, based in Melbourne, Australia. This policy explains, in plain English, what we collect and what we do with it. "We" and "us" mean Black Crest Web Designs and KB Ventures.</p>
+    <p>KB Web Designs is a brand of KB Ventures, based in Melbourne, Australia. This policy explains, in plain English, what we collect and what we do with it. "We" and "us" mean KB Web Designs and KB Ventures.</p>
     <h2>What we collect</h2>
     <p>Only what you choose to send us through a form or by email: for example your name, business name, email address, phone number and the details of your project.</p>
     <h2>How we use it</h2>
@@ -1767,10 +1767,10 @@ page('privacy.html', 'Privacy policy: Black Crest Web Designs', 'How Black Crest
     <p>We aim to follow the Australian Privacy Principles in the <em>Privacy Act 1988</em> (Cth). If you are unhappy with how we handled your information, email us first. If we cannot fix it, you can contact the Office of the Australian Information Commissioner at <a href="https://www.oaic.gov.au/" rel="noopener">oaic.gov.au</a>.</p>
   </article>
 </main>''')
-page('terms.html', 'Terms: Black Crest Web Designs', 'The plain-English terms for working with Black Crest Web Designs: free concept first, 50% deposit, balance at launch, 2 rounds of changes, and you own your site.', f'''<main id="main">
+page('terms.html', 'Terms: KB Web Designs', 'The plain-English terms for working with KB Web Designs: free concept first, 50% deposit, balance at launch, 2 rounds of changes, and you own your site.', f'''<main id="main">
   <article class="container prose" style="padding-bottom:120px">
     <header class="page-head" style="padding-bottom:8px"><p class="label">Legal</p><h1 class="h1">Terms</h1><p class="byline">Last updated 3 November 2026</p></header>
-    <p>These are the terms for websites made by Black Crest Web Designs, a brand of KB Ventures, Melbourne, Australia. We have kept them short and plain. Your written quote sets out the exact price and what is included for your project. Our current packages are One Page ({money(ONE)}) and Full Website ({money(FULL)}).</p>
+    <p>These are the terms for websites made by KB Web Designs, a brand of KB Ventures, Melbourne, Australia. We have kept them short and plain. Your written quote sets out the exact price and what is included for your project. Our current packages are One Page ({money(ONE)}) and Full Website ({money(FULL)}).</p>
     <h2>1. The free concept</h2>
     <p>We design a concept homepage for you free of charge. You are under no obligation to go ahead, and you owe nothing if you do not.</p>
     <h2>2. Quote and deposit</h2>
@@ -1797,7 +1797,7 @@ page('terms.html', 'Terms: Black Crest Web Designs', 'The plain-English terms fo
 
 # ================================================================= 404
 P = ''
-page('404.html', 'Page not found: Black Crest Web Designs', 'This page could not be found.', f'''<main id="main" class="nf">
+page('404.html', 'Page not found: KB Web Designs', 'This page could not be found.', f'''<main id="main" class="nf">
   <div class="container nf-split">
     <div>
       <p class="label"><span class="idx">404</span><span class="slash" aria-hidden="true">/</span>Not found</p>
@@ -1818,7 +1818,7 @@ _css = re.sub(r'/\*.*?\*/', '', _css, flags=re.S)
 _css = re.sub(r'\s+', ' ', _css)
 _css = re.sub(r'\s*([{};,>])\s*', r'\1', _css).replace(';}', '}').strip()
 with open(os.path.join(SITE_DIR, 'style.min.css'), 'w', encoding='utf-8') as fh:
-    fh.write('/* Black Crest Web Designs. Built from style.css by tools/build.py: edit style.css, not this file. */\n' + _css + '\n')
+    fh.write('/* KB Web Designs. Built from style.css by tools/build.py: edit style.css, not this file. */\n' + _css + '\n')
 
 # ================================================================= write files
 for path, content in pages.items():
@@ -1838,7 +1838,7 @@ with open(os.path.join(SITE_DIR, 'sitemap.xml'), 'w', encoding='utf-8') as fh:
 with open(os.path.join(SITE_DIR, 'robots.txt'), 'w', encoding='utf-8') as fh:
     fh.write(f'# free-concept, thank-you, qr and 404 carry a noindex tag instead of a Disallow,\n# so search engines can read it.\nUser-agent: *\nAllow: /\n\nSitemap: {SITE}sitemap.xml\n')
 with open(os.path.join(SITE_DIR, 'manifest.webmanifest'), 'w', encoding='utf-8') as fh:
-    json.dump({'name': 'Black Crest Web Designs', 'short_name': 'Black Crest', 'description': 'Premium sites for local businesses.', 'lang': 'en-AU',
+    json.dump({'name': 'KB Web Designs', 'short_name': 'KB Web', 'description': 'Premium sites for local businesses.', 'lang': 'en-AU',
                'start_url': './', 'scope': './', 'display': 'standalone', 'background_color': '#0D0E12', 'theme_color': '#0D0E12',
                'icons': [{'src': 'img/icon-192.png', 'sizes': '192x192', 'type': 'image/png'},
                          {'src': 'img/icon-512.png', 'sizes': '512x512', 'type': 'image/png'},

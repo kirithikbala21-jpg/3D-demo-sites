@@ -8,7 +8,7 @@
   "city": "Melbourne",
   "tagline": "Classic cuts, sharp fades and hot towel shaves in the heart of Box Hill. Walk in, or book your chair.",
   "description": "Brass & Blade is a fictional barbershop used as a concept demo: classic cuts, skin fades, hot towel shaves, memberships and a spinning 3D barber pole.",
-  "demoFooter": "This is a made-up business. The website is a concept designed by Black Crest Web Designs.",
+  "demoFooter": "This is a made-up business. The website is a concept designed by KB Web Designs.",
   "established": 2014
  },
  "contact": {
@@ -103,9 +103,9 @@
   "endpoint": "",
   "note": "Paste your Formspree (or similar) address between the quote marks to make the booking, careers, newsletter and gift-card forms send real emails. Leave empty to keep the demo behaviour."
  },
- "googleReviewUrl": "https://blackcrest.kbventures.com.au/work/barber",
+ "googleReviewUrl": "https://web.kbventures.com.au/work/barber",
  "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Brass+%26+Blade+Barbershop+Box+Hill+VIC",
- "instagramUrl": "https://blackcrest.kbventures.com.au/work/barber",
+ "instagramUrl": "https://web.kbventures.com.au/work/barber",
  "facebookUrl": "",
  "googleRating": 4.9,
  "googleReviewCount": 120,

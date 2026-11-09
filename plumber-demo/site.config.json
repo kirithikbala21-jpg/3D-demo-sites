@@ -9,7 +9,7 @@
   "established": 2009,
   "plumbers": 6,
   "city": "Melbourne",
-  "demoFooter": "This is a made-up business. The website is a concept designed by Black Crest Web Designs.",
+  "demoFooter": "This is a made-up business. The website is a concept designed by KB Web Designs.",
   "demoNotice": "Concept demo. Names, prices and reviews are fictional."
  },
  "contact": {
@@ -115,9 +115,9 @@
   "endpoint": "",
   "note": "Paste your Formspree, Basin or Getform address between the quote marks to make the quote form send real emails. While it is empty the form only validates, shows a confirmation and keeps the request in this browser (localStorage key wp-quotes). Photo uploads need a form service that accepts files."
  },
- "googleReviewUrl": "https://blackcrest.kbventures.com.au/work/plumber",
+ "googleReviewUrl": "https://web.kbventures.com.au/work/plumber",
  "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=14%20Example%20Road%2C%20Glen%20Waverley%20VIC%203150",
- "instagramUrl": "https://blackcrest.kbventures.com.au/work/plumber",
+ "instagramUrl": "https://web.kbventures.com.au/work/plumber",
  "facebookUrl": "",
  "googleRating": 4.9,
  "googleReviewCount": 212,

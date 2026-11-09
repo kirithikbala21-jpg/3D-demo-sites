@@ -1,4 +1,4 @@
-// Black Crest Web Designs: the entry module for every page.
+// KB Web Designs: the entry module for every page.
 // Works out the device tier, then starts the menu, motion, forms and the page's own pieces.
 import { CONFIG } from './config.js';
 import { initMotion } from './motion.js';

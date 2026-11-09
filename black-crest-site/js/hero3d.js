@@ -1,4 +1,4 @@
-// The home page hero: a black brushed-titanium member's card with the Black Crest hallmark engraved in gold, floating
+// The home page hero: a black brushed-titanium member's card with the KB hallmark engraved in gold, floating
 // above a polished black floor that holds a soft, blurred reflection. A warm key light, a faint cool rim light and a
 // slow light sweep across the face. It turns a few degrees on its own, leans towards the pointer, and on scroll turns
 // edge-on and slides back. Rendering pauses off screen and in hidden tabs.
@@ -31,7 +31,7 @@ async function engraving() {
   g.textBaseline = 'alphabetic';
   g.font = `600 ${Math.round(ch * 0.085)}px "Cormorant Garamond", Georgia, serif`;
   if ('letterSpacing' in g) g.letterSpacing = `${Math.round(ch * 0.03)}px`;
-  g.fillText('BLACK CREST', cw * 0.085, ch * 0.8);
+  g.fillText('KB WEB DESIGNS', cw * 0.085, ch * 0.8);
   g.font = `500 ${Math.round(ch * 0.032)}px "Switzer", Arial, sans-serif`;
   if ('letterSpacing' in g) g.letterSpacing = `${Math.round(ch * 0.016)}px`;
   g.fillText('WEB DESIGNS · MELBOURNE', cw * 0.088, ch * 0.88);

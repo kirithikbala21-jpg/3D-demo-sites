@@ -1,4 +1,4 @@
-"""Makes the Black Crest hallmark: one slim crest outline with a small engraved "BC" inside, like a jeweller's
+"""Makes the KB hallmark: one slim crest outline with a small engraved "KB" inside, like a jeweller's
 hallmark. The letters are real outlines from Cormorant Garamond (weight 500), so the mark looks the same everywhere,
 with or without fonts.
 
@@ -28,20 +28,20 @@ if 'fvar' in font:
 glyphs, cmap = font.getGlyphSet(), font.getBestCmap()
 # measure first, then draw scaled: letters 15 units wide, centred at (20, 24.4)
 x, b = 0, [1e9, 1e9, -1e9, -1e9]
-for ch in 'BC':
+for ch in 'KB':
     g = cmap[ord(ch)]; bp = BoundsPen(glyphs); glyphs[g].draw(TransformPen(bp, (1, 0, 0, -1, x, 0)))
     a1, a2, a3, a4 = bp.bounds; b = [min(b[0], a1), min(b[1], a2), max(b[2], a3), max(b[3], a4)]
     x += glyphs[g].width + 30
 s = 15 / (b[2] - b[0]); tx = 20 - (b[0] + b[2]) / 2 * s; ty = 24.4 - (b[1] + b[3]) / 2 * s
 pen, x = SVGPathPen(glyphs, ntos=lambda v: f'{v:.2f}'.rstrip('0').rstrip('.')), 0
-for ch in 'BC':
+for ch in 'KB':
     g = cmap[ord(ch)]; glyphs[g].draw(TransformPen(pen, (s, 0, 0, -s, tx + x * s, ty))); x += glyphs[g].width + 30
 LETTERS = pen.getCommands()
 
 with open(os.path.join(SITE, 'tools', 'logo.json'), 'w') as fh:
     json.dump({'viewBox': '0 0 40 48', 'crest': CREST, 'letters': LETTERS}, fh)
 with open(os.path.join(SITE, 'js', 'logo-mark.js'), 'w') as fh:
-    fh.write('// The Black Crest hallmark in a 40 x 48 box: the crest outline and the "BC" letters (Cormorant Garamond 500 outlines).\n'
+    fh.write('// The KB hallmark in a 40 x 48 box: the crest outline and the "KB" letters (Cormorant Garamond 500 outlines).\n'
              '// Made by tools/make-logo.py.\n'
              f'export const CREST = {json.dumps(CREST)};\nexport const LETTERS = {json.dumps(LETTERS)};\n')
 with open(os.path.join(SITE, 'img', 'favicon.svg'), 'w') as fh:

@@ -313,7 +313,7 @@ if (want('func')) {
   ok('find us: no time-zone note for a visitor in Melbourne', !/Melbourne time/.test(await p.locator('#find-us [data-open-status]').textContent()), await p.locator('#find-us [data-open-status]').textContent());
   const rv = await p.evaluate(() => [...document.querySelectorAll('.review')].map((r) => ({ av: !!r.querySelector('.review-avatar') && getComputedStyle(r.querySelector('.review-avatar')).borderRadius === '50%', st: r.querySelector('.stars').getAttribute('aria-label'), date: /ago/.test(r.querySelector('.review-date').textContent), name: !!r.querySelector('.review-who strong') })));
   ok('reviews: card with round avatar, name, 5-star label and "ago" date; sample label kept; no real-rating claims', rv.length === 3 && rv.every((r) => r.av && r.st === '5 out of 5 stars' && r.date && r.name) && /Sample reviews for demo purposes/.test(await p.locator('#reviews').textContent()) && !/google rating|reviews on google|\d\.\d.*stars/i.test(await p.locator('#reviews').textContent()));
-  ok('footer: the Black Crest credit plus the not-a-real-business line', /Concept site by Black Crest Web Designs/.test(await p.locator('.site-footer').innerText()) && /Concept site by Black Crest Web Designs\. Not a real business\./.test(await p.locator('.site-footer').innerText()));
+  ok('footer: the KB Web Designs credit plus the not-a-real-business line', /Concept site by KB Web Designs/.test(await p.locator('.site-footer').innerText()) && /Concept site by KB Web Designs\. Not a real business\./.test(await p.locator('.site-footer').innerText()));
   await done(p);
   p = await newPage({ viewport: { width: 1280, height: 900 }, javaScriptEnabled: false }, { quiet: false });
   await p.goto(base + 'index.html');
@@ -766,7 +766,7 @@ if (want('growth')) {
     ok('reviews page at 390px: the QR code is large (300px or more) and nothing scrolls sideways', w.qr >= 280 && w.sw <= w.cw, JSON.stringify(w));
     await done(m);
     const h = await page(MOB, TUE + 'T10:00:00');
-    const love = await h.evaluate(() => ({ love: !!document.querySelector('#love a[href*="blackcrest.kbventures.com.au/work/cafe"]'), foot: !!document.querySelector('.footer-social a[href*="blackcrest.kbventures.com.au/work/cafe"]'), rel: [...document.querySelectorAll('a[target=_blank]')].every((a) => /noopener/.test(a.rel)) }));
+    const love = await h.evaluate(() => ({ love: !!document.querySelector('#love a[href*="web.kbventures.com.au/work/cafe"]'), foot: !!document.querySelector('.footer-social a[href*="web.kbventures.com.au/work/cafe"]'), rel: [...document.querySelectorAll('a[target=_blank]')].every((a) => /noopener/.test(a.rel)) }));
     ok('home: "Loved your visit? Tell us" section and a footer "Leave us a Google review" button, all new-tab links use rel=noopener', love.love && love.foot && love.rel, JSON.stringify(love));
     await done(h);
   }

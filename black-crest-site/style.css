@@ -1,4 +1,4 @@
-/* Black Crest Web Designs: one stylesheet for every page. Phone first. */
+/* KB Web Designs: one stylesheet for every page. Phone first. */
 
 /* ==========================================================================
    1. Tokens
@@ -784,7 +784,7 @@ thead .col-us { color: var(--gold-2); }
 .bw-page img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; object-position: top; }
 @media (min-width: 1024px) { .stack { gap: 24px; } }
 
-/* ---------- The Black Crest Standard band ---------- */
+/* ---------- The KB Standard band ---------- */
 .standard-band { background: var(--deep); border-top: 1px solid var(--hair); border-bottom: 1px solid var(--hair); }
 .standard-head { margin-bottom: 48px; }
 .standard-head .label { margin: 0 0 22px; }
@@ -807,7 +807,7 @@ thead .col-us { color: var(--gold-2); }
 .offer-visual figcaption { margin-top: 18px; }
 .cta-final { isolation: isolate; }
 
-/* ---------- The Black Crest Standard page ---------- */
+/* ---------- The KB Standard page ---------- */
 .standard-list { display: grid; gap: 0; margin: 0; padding: 0; list-style: none; counter-reset: none; }
 .standard-list li { display: grid; grid-template-columns: 64px 1fr; gap: 20px; padding: 32px 0; border-top: 1px solid var(--hair-2); }
 @media (min-width: 900px) { .standard-list li { grid-template-columns: 2fr 10fr; padding: 44px 0; } .standard-list li div { display: grid; grid-template-columns: 5fr 7fr; gap: 40px; } }

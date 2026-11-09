@@ -3,4 +3,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://blackcrest.kbventures.com.au/sitemap.xml
+Sitemap: https://web.kbventures.com.au/sitemap.xml

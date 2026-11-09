@@ -110,19 +110,19 @@ function prefillContact() {
     choose(contact, q.pkgKey === 'fullSite' ? 'Full Website' : 'One Page', q.care);
     msg.value = `Please send me a quote for:\n- ${q.lines.join('\n- ')}\nEstimated total from ${money(q.total)}${q.care ? ' plus the care plan' : ''}.`;
     quoteField.value = q.lines.join('; ') + `; total from ${money(q.total)}`;
-    subject.value = 'Black Crest: quote request from the price calculator';
+    subject.value = 'KB Web Designs: quote request from the price calculator';
     note.hidden = false; note.textContent = 'Your calculator choices are filled in below. Add anything else you need.';
   } else if (lab && location.hash === '#lab') {
     choose(contact, 'Not sure yet', false);
     msg.value = `I set this up in the Concept Lab:\n- Trade: ${lab.trade}\n- Business name: ${lab.name}\n- Mood: ${lab.mood}\n- Features: ${lab.features.join(', ') || 'none picked'}\nPlease design my free concept.`;
     quoteField.value = `Lab: ${lab.trade}; ${lab.name}; ${lab.mood}; ${lab.features.join(', ')}`;
-    subject.value = 'Black Crest: free concept request from the Concept Lab';
+    subject.value = 'KB Web Designs: free concept request from the Concept Lab';
     note.hidden = false; note.textContent = 'Your Concept Lab choices are filled in below. Add your name and email and send.';
   } else if (store.get('bc-review') && location.hash === '#review') {
     choose(contact, 'Not sure yet', false);
     const sc = store.get('bc-quiz');
     msg.value = `I took the website quiz${sc ? ' (score ' + sc + ')' : ''}. Please send me a free mini review of my website: `;
-    subject.value = 'Black Crest: free mini website review request';
+    subject.value = 'KB Web Designs: free mini website review request';
     note.hidden = false; note.textContent = 'Add your website address to the message and we will email you a short review.';
   }
 }

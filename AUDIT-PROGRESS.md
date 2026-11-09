@@ -6,7 +6,7 @@ Brief: "Audit fixes (2 Nov 2026): paste into Claude Code". Parts A to E, in orde
 | --- | --- |
 | A. KB Ventures | Done |
 | B. AceGuides shop | Done |
-| C. Black Crest | Done |
+| C. KB Web Designs | Done |
 | D. Demos | Done |
 | E. Repo root and The One Barber | Done |
 
@@ -15,13 +15,13 @@ Brief: "Audit fixes (2 Nov 2026): paste into Claude Code". Parts A to E, in orde
   - `black-crest.html` is now a noindex redirect (meta refresh plus a plain link) to `../black-crest-site/pricing.html`.
   - Every Pricing and Website pricing link (header, phone menu, footer, no-JS footer) goes straight there.
   - The page is out of the sitemap.
-- **Black Crest label:** "Taking clients" (was PREVIEW) on Home, Businesses, the Businesses menu and the footer (which said "Coming soon"). The link text is "Visit Black Crest", and the line is the Black Crest tagline, "Premium sites for local businesses." (sync).
-- **Concept site cards** open the matching Black Crest case study (`../black-crest-site/work/<slug>.html`), labelled "See the case study".
+- **KB Web Designs label:** "Taking clients" (was PREVIEW) on Home, Businesses, the Businesses menu and the footer (which said "Coming soon"). The link text is "Visit KB Web Designs", and the line is the KB Web Designs tagline, "Premium sites for local businesses." (sync).
+- **Concept site cards** open the matching KB Web Designs case study (`../black-crest-site/work/<slug>.html`), labelled "See the case study".
 - **"Notify me"** on paused guides links to the sign-up with `?notify=<guide>`. The form shows "We will email you when Year 10 History is back." and sends topic "Notify me: Year 10 History" (also in the email subject).
 - **Reply time:** "within 1 business day" on Home, Contact, FAQ, Partner and Refunds (was 2 or 3).
 - **Latest:** "Contact form now live" is removed. No samples item, because there are no samples yet.
 - **Privacy:** new sentences on Web3Forms, Google Drive (the buyer's email is shared with Google) and the email provider for receipts and delivery. Last updated: 3 November 2026 (privacy and refunds; terms keep their own date).
-- **Sync:** the Black Crest niche shows the titanium card with the new hallmark, the tagline and "Taking clients".
+- **Sync:** the KB Web Designs niche shows the titanium card with the new hallmark, the tagline and "Taking clients".
 - **Check tool:** redirect pages get the file checks but no browser visit (they navigate away).
 
 ## B. AceGuides shop (done)
@@ -34,7 +34,7 @@ Brief: "Audit fixes (2 Nov 2026): paste into Claude Code". Parts A to E, in orde
 - **Samples:** there is no `kbventures-site/aceguides/samples/` folder, so there are no samples. The "Look inside before you buy" line is hidden until a sample PDF exists, and is shown automatically once one is listed in `samples`.
 - Prices and Stripe links are unchanged (checked by `tools/check.mjs`).
 
-## C. Black Crest (done)
+## C. KB Web Designs (done)
 - **Contact form:** "What do you need?" is now two parts on the contact, free-concept and start forms (start's old package menu is replaced):
   - choose one of One Page ($300), Full Website ($700), Something custom, Not sure yet;
   - a separate "Add the care plan" box, unticked by default, styled to match (sharp, hairline, gold tick, gold focus ring).
@@ -59,8 +59,8 @@ Brief: "Audit fixes (2 Nov 2026): paste into Claude Code". Parts A to E, in orde
   - Barber photo: `barber-demo` has no copy wider than 900 px, so no larger original exists to rebuild from.
 
 ## D. Demos (done)
-- **Black Crest bar:** a slim bar at the very bottom of every page of the six demos, "Concept site by Black Crest Web Designs · Get a site like this", linking to `../black-crest-site/free-concept.html`. It sits in normal page flow (never over content), inherits each demo's own font and colours, and is keyboard-reachable with a focus ring.
-- **Footer credit:** now the link "Concept site by Black Crest Web Designs" (was "Concept website by KB Ventures" or "Demo website by KB Ventures").
+- **KB Web Designs bar:** a slim bar at the very bottom of every page of the six demos, "Concept site by KB Web Designs · Get a site like this", linking to `../black-crest-site/free-concept.html`. It sits in normal page flow (never over content), inherits each demo's own font and colours, and is keyboard-reachable with a focus ring.
+- **Footer credit:** now the link "Concept site by KB Web Designs" (was "Concept website by KB Ventures" or "Demo website by KB Ventures").
 - **Moves:**
   - Barber: Surry Hills, Sydney to Box Hill VIC 3128 (27 Carrington Road), with its map searches, JSON-LD, footer, visit page and clock time zone. Phone 03 5550 0144.
   - Gym: Fortitude Valley, Brisbane to Clayton VIC 3168 (14 Wellington Road). Time zone Melbourne, phone 03 5550 0177.
@@ -76,9 +76,9 @@ Brief: "Audit fixes (2 Nov 2026): paste into Claude Code". Parts A to E, in orde
   - the countdown timer and "while stock lasts" are removed (CLAUDE.md bans countdowns);
   - its icon and share image are re-rendered.
 - **Old café demo:** `cafe-demo/index.html` (and its reviews page) now redirect to `../cafe-demo-v2/`.
-- **Dead links:** the demos' Instagram and Google review links open the matching Black Crest case study.
+- **Dead links:** the demos' Instagram and Google review links open the matching KB Web Designs case study.
 - **"Seamless"** is reworded in the barber services and home page.
-- **Black Crest sync:** the case studies show Box Hill VIC and Clayton VIC and the new Torque & Co. palette. The screenshots, gallery stills, showreel and KB previews are re-rendered from the new demos.
+- **KB Web Designs sync:** the case studies show Box Hill VIC and Clayton VIC and the new Torque & Co. palette. The screenshots, gallery stills, showreel and KB previews are re-rendered from the new demos.
 - **Late fixes:** the barber and gym "Find us" map links still named Surry Hills and Fortitude Valley; they now search Box Hill VIC and Clayton VIC. The image tool now uses the Switzer font file (the old one was removed earlier).
 - **Checked:** all 48 demo pages at 390 and 1280 px: no script errors, no missing files, no sideways scroll, and the bar and credit present.
 
@@ -92,11 +92,11 @@ Brief: "Audit fixes (2 Nov 2026): paste into Claude Code". Parts A to E, in orde
   - The files are still visible on GitHub (old commits and the `one-barber-private` branch) until the repo is made private.
 
 ## Finish (done)
-- **Sync check:** the KB Ventures Black Crest niche matches the Black Crest site: black metal card with the gold crest, "Premium sites for local businesses." and "Taking clients". Every KB Pricing link goes to `../black-crest-site/pricing.html`.
-- **Checks:** both full site checks pass (Black Crest 34 pages, KB 13 pages, at 390, 768, 1280 and 1920 px). Reduced motion keeps every headline visible with no script errors.
-- **Live:** the root redirect, the KB Pricing route, the contact form's two parts, the gym demo's Black Crest bar and Clayton address are live. The One Barber folder returns "page not found".
+- **Sync check:** the KB Ventures KB Web Designs niche matches the KB Web Designs site: black metal card with the gold crest, "Premium sites for local businesses." and "Taking clients". Every KB Pricing link goes to `../black-crest-site/pricing.html`.
+- **Checks:** both full site checks pass (KB Web Designs 34 pages, KB 13 pages, at 390, 768, 1280 and 1920 px). Reduced motion keeps every headline visible with no script errors.
+- **Live:** the root redirect, the KB Pricing route, the contact form's two parts, the gym demo's KB Web Designs bar and Clayton address are live. The One Barber folder returns "page not found".
 - **Demo test suites (GitHub Actions):** they still expected the old facts (Sydney, Brisbane, KB Ventures lines, placeholder licences). They now expect the new ones.
-  - The Black Crest bar link and the footer credit link are now 44px tall with 14px text (the demos' own tap-target rule).
+  - The KB Web Designs bar link and the footer credit link are now 44px tall with 14px text (the demos' own tap-target rule).
   - Tests that depend on the date use a normal week, so holiday notices (Melbourne Cup week) do not move the layout under the cookie bar.
   - All five demo checks pass on GitHub (barber, café, gym, plumber, salon). The plumber QR test now also uses OpenCV's ArUco-based reader, because the longer case-study link makes modules that are not whole pixels.
-- **Lighthouse (3 November 2026, local copy served with gzip like GitHub Pages):** Black Crest home 94 to 95 mobile and 98 desktop. KB Ventures home 94 mobile and 100 desktop. Accessibility, Best Practices and SEO are 100 on both.
+- **Lighthouse (3 November 2026, local copy served with gzip like GitHub Pages):** KB Web Designs home 94 to 95 mobile and 98 desktop. KB Ventures home 94 mobile and 100 desktop. Accessibility, Best Practices and SEO are 100 on both.

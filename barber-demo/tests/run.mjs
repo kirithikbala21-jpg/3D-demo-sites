@@ -312,7 +312,7 @@ if (want('func')) {
   await p.goto(base + 'index.html'); await p.waitForTimeout(600);
   ok('home: Find us has the map, the hours table and a live status', (await p.locator('#find-us .gmap iframe').count()) === 1 && (await p.locator('#find-us .hours').count()) === 1 && /^(Open now|Closed|Opens)/.test(await p.locator('#open-status-3').textContent()), await p.locator('#open-status-3').textContent());
   ok('home: reviews look like a review feed and stay labelled as samples', (await p.locator('.review.gr .gr-avatar').count()) === 3 && (await p.locator('.review.gr .stars[aria-label]').count()) === 3 && (await p.locator('#reviews').textContent()).includes('Sample reviews for demo purposes'));
-  ok('footer has the Black Crest credit', (await p.locator('.site-footer').textContent()).includes('Concept site by Black Crest Web Designs'));
+  ok('footer has the KB Web Designs credit', (await p.locator('.site-footer').textContent()).includes('Concept site by KB Web Designs'));
   await p.goto(base + '404.html');
   ok('custom 404 page is themed and offers a way home', (await p.locator('h1').textContent()).includes('not found') && (await p.locator('a[href="index.html"]').count()) > 0);
   await done(p);
@@ -592,8 +592,8 @@ if (want('growth')) {
   // 1. Google review: footer button, home section, QR page, print view
   {
     const p = await newPage(D, { ...light, clock: TUE + T }); await go(p, 'index.html');
-    const f = await p.evaluate(() => ({ btn: [...document.querySelectorAll('.footer-review')].map((a) => [a.href, a.target, a.rel]), loved: !!document.querySelector('#loved a[href="https://blackcrest.kbventures.com.au/work/barber"]'), lovedQr: !!document.querySelector('#loved a[href="reviews.html"]'), link: !!document.querySelector('.footer-legal a[href="reviews.html"]') }));
-    ok('Google review: footer button, the "Loved your visit? Tell us" home section and the footer Reviews link all point at the config URL, new tab, rel=noopener', f.btn.length === 1 && f.btn[0][0] === 'https://blackcrest.kbventures.com.au/work/barber' && f.btn[0][1] === '_blank' && /noopener/.test(f.btn[0][2]) && f.loved && f.lovedQr && f.link, JSON.stringify(f));
+    const f = await p.evaluate(() => ({ btn: [...document.querySelectorAll('.footer-review')].map((a) => [a.href, a.target, a.rel]), loved: !!document.querySelector('#loved a[href="https://web.kbventures.com.au/work/barber"]'), lovedQr: !!document.querySelector('#loved a[href="reviews.html"]'), link: !!document.querySelector('.footer-legal a[href="reviews.html"]') }));
+    ok('Google review: footer button, the "Loved your visit? Tell us" home section and the footer Reviews link all point at the config URL, new tab, rel=noopener', f.btn.length === 1 && f.btn[0][0] === 'https://web.kbventures.com.au/work/barber' && f.btn[0][1] === '_blank' && /noopener/.test(f.btn[0][2]) && f.loved && f.lovedQr && f.link, JSON.stringify(f));
     await go(p, 'reviews.html');
     const q = await p.evaluate(() => ({ svg: !!document.querySelector('#qr-host svg'), cap: document.querySelector('.qr-caption').textContent.trim(), h: document.querySelector('#qr-title').textContent, print: !!document.querySelector('#print-qr') }));
     ok('reviews.html: large QR drawn in the browser, "Scan to leave a review" caption, Print this button', q.svg && q.cap === 'Scan to leave a review' && /Google review/.test(q.h) && q.print, JSON.stringify(q));

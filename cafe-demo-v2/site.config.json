@@ -8,8 +8,8 @@
   "city": "Melbourne",
   "tagline": "Slow mornings. Small-batch coffee. Roasted out the back, poured right here.",
   "description": "Ember & Oak Coffee is a fictional café used as a concept demo: small-batch coffee, all-day dining, private events and a cinematic 3D hero.",
-  "demoFooter": "This is a made-up business. The website is a concept designed by Black Crest Web Designs.",
-  "conceptLine": "Concept site by Black Crest Web Designs"
+  "demoFooter": "This is a made-up business. The website is a concept designed by KB Web Designs.",
+  "conceptLine": "Concept site by KB Web Designs"
  },
  "contact": {
   "street": "41 Flinders Lane",
@@ -357,9 +357,9 @@
   "endpoint": "",
   "note": "Paste your Formspree (or similar) address between the quote marks to make the reservation, enquiry, careers, wholesale, newsletter and gift card forms send real emails. Leave empty to keep the demo behaviour."
  },
- "googleReviewUrl": "https://blackcrest.kbventures.com.au/work/cafe",
+ "googleReviewUrl": "https://web.kbventures.com.au/work/cafe",
  "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Federation%20Square%2C%20Melbourne%20VIC",
- "instagramUrl": "https://blackcrest.kbventures.com.au/work/cafe",
+ "instagramUrl": "https://web.kbventures.com.au/work/cafe",
  "facebookUrl": "",
  "googleRating": 4.9,
  "googleReviewCount": 120,

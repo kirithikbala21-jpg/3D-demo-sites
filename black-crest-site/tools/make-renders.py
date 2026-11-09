@@ -1,4 +1,4 @@
-"""Web versions of the Black Crest hero render (a digital render of the brand card, not a photo).
+"""Web versions of the KB hero render (a digital render of the brand card, not a photo).
 
 Source (kept as is):   assets/renders/originals/card-hero.png      2752 x 1536, the card on its plinth, right of centre
 Writes:
@@ -59,7 +59,7 @@ try:
 except Exception:
     pass
 sans = ImageFont.truetype(os.path.join(SITE, 'fonts', 'switzer-500.woff2'), 19)
-d.text((64, 214), 'BLACK CREST WEB DESIGNS', font=sans, fill=(212, 175, 55))
+d.text((64, 214), 'KB WEB DESIGNS', font=sans, fill=(212, 175, 55))
 for i, line in enumerate(('Premium sites', 'for local', 'businesses.')):
     d.text((60, 250 + i * 72), line, font=serif, fill=(228, 230, 237))
 og.save(os.path.join(SITE, 'img', 'og.jpg'), quality=86, optimize=True, progressive=True)

@@ -1,6 +1,6 @@
-# Black Crest Web Designs
+# KB Web Designs
 
-The website for Black Crest Web Designs, a KB Ventures company: premium sites for local businesses in Melbourne.
+The website for KB Web Designs, a KB Ventures company: premium sites for local businesses in Melbourne.
 Plain HTML, CSS and JavaScript. No frameworks, no build step on the server, no cookies, no tracking, no analytics.
 
 Live: https://kirithikbala21-jpg.github.io/3D-demo-sites/black-crest-site/

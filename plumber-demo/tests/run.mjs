@@ -251,7 +251,7 @@ if (want('links')) {
       seen.add(h);
       if (h.startsWith('tel:')) { tels.add(h); continue; }
       if (h.startsWith('mailto:')) { if (!/^mailto:[^@]+@[^@]+\.[a-z]+$/.test(h)) bad.push(f + ' ' + h); continue; }
-      if (/^https?:/.test(h)) { if (!/google\.com\/maps|^https:\/\/g\.page\/|^https:\/\/www\.(instagram|facebook)\.com\/|^https:\/\/blackcrest\.kbventures\.com\.au\//.test(h)) bad.push(f + ' external ' + h); continue; }
+      if (/^https?:/.test(h)) { if (!/google\.com\/maps|^https:\/\/g\.page\/|^https:\/\/www\.(instagram|facebook)\.com\/|^https:\/\/web.kbventures.com.au\//.test(h)) bad.push(f + ' external ' + h); continue; }
       const [file, hash] = h.split('#');
       const target = file || f;
       if (!fs.existsSync(path.join(SITE, target))) { bad.push(`${f}: missing file ${h}`); continue; }
@@ -283,7 +283,7 @@ if (want('links')) {
   for (const f of PAGES) {
     await open(p, f);
     const t = await p.evaluate(() => ({ a: document.querySelector('.footer-end').innerText, robots: document.querySelector('meta[name=robots]')?.content }));
-    if (!t.a.includes('Concept site by Black Crest Web Designs') || !t.a.includes('Concept demo. Names, prices and reviews are fictional.') || t.robots !== 'noindex') { ok(`footer demo lines and noindex on ${f}`, false, JSON.stringify(t)); }
+    if (!t.a.includes('Concept site by KB Web Designs') || !t.a.includes('Concept demo. Names, prices and reviews are fictional.') || t.robots !== 'noindex') { ok(`footer demo lines and noindex on ${f}`, false, JSON.stringify(t)); }
   }
   ok('footer has both demo lines and every page is noindex', true);
   // prices on the cards and in the table agree (one source: site.config.json (services))

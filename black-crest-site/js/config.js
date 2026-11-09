@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Black Crest Web Designs: every value the owner edits lives here.
+   KB Web Designs: every value the owner edits lives here.
 
    - currency, email: shown across the site. There is no phone number on purpose:
      leave "phone" empty and every call button stays hidden.

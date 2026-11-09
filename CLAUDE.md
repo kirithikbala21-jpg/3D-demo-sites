@@ -34,7 +34,7 @@ This comes from a reference the owner loved: a perfume brand site with five bott
 3. **One hero object.** Every home page opens on one beautifully lit object, rendered in real-time 3D or as a high-quality still. It is the brand's own object, never a stock icon, mascot or cartoon.
 4. **Cinematic chapters.** Full-screen scenes, one subject per screen, with a slow zoom (scale 1.00 to 1.10), a huge serif title and one caption line. Scrolling crossfades or wipes to the next scene.
 5. **Statement tables.** Prices and comparisons are set like a private-bank statement or a wine list: hairline rules, tabular figures, generous spacing and small caps labels. Never three app-style tier cards.
-6. **Filled sections** (first used on Black Crest and KB Ventures, Nov 2026). Content fills at least 60% of every section's height at 1440 and 390 px.
+6. **Filled sections** (first used on KB Web Designs and KB Ventures, Nov 2026). Content fills at least 60% of every section's height at 1440 and 390 px.
    - Text: body 20 to 22px on desktop, labels at least 13px, card titles at least 28px, lines under about 62 characters.
    - Visuals: at full size, beside the text, never a small thumbnail (for example, a laptop of 760px or more, and a phone of 300px).
    - Full-screen photo scenes: the photo stays bright (brightness 0.95 or more), darkened only on the bottom 40% where the words sit. Each scene's words fade out before the next scene's fade in.
@@ -150,9 +150,9 @@ Every number must be a real commitment, a real price or a real measurement (with
 
 | Brand | Folder | Accent | Hero object | Notes |
 |---|---|---|---|---|
-| **KB Ventures** (parent company) | `kbventures-site/` | Champagne gold `#D4AF37` | A slim plaque of smoked glass and brushed metal with a fine engraved "KB" mark, standing upright on a basalt plinth under one spotlight | Its businesses are shown in a lit niche gallery: AceGuides (a printed guide on a stand, using the real covers) and Black Crest (the black metal card). "Many businesses. One standard." Brand only, no founder name or photo. |
-| **Black Crest Web Designs** | `black-crest-site/` | Gold `#D4AF37` | A black brushed-titanium member's card with a gold-engraved fine-line crest | Concept sites are shown as lit niches, each holding a phone that displays that concept. Prices: One Page $300, Full Website $700, Care plan $30 a month, Custom by quote. "Premium sites for local businesses." |
-| **AceGuides** | its pages in `kbventures-site/` | Deep ivory `#E8DFC8` with a thin gold line | The guides as printed books standing in lit niches, using the real covers as the book cover texture | Prices live in Stripe. Never change prices in the site without the owner. Keep "VCE® is a registered trademark of the VCAA." near anything that says VCE. |
+| **KB Ventures** (parent company) | `kbventures-site/` | Champagne gold `#D4AF37` | A slim plaque of smoked glass and brushed metal with a fine engraved "KB" mark, standing upright on a basalt plinth under one spotlight | Its businesses are shown in a lit niche gallery: KB Study Guides (a printed guide on a stand, using the real covers) and KB Web Designs (the black metal card). "Many businesses. One standard." Brand only, no founder name or photo. |
+| **KB Web Designs** (formerly Black Crest) | `black-crest-site/` (live at web.kbventures.com.au) | Gold `#D4AF37` | A black brushed-titanium member's card with a gold-engraved fine-line crest | Concept sites are shown as lit niches, each holding a phone that displays that concept. Prices: One Page $300, Full Website $700, Care plan $30 a month, Custom by quote. "Premium sites for local businesses." |
+| **KB Study Guides** (formerly AceGuides) | its pages in `kbventures-site/` | Deep ivory `#E8DFC8` with a thin gold line | The guides as printed books standing in lit niches, using the real covers as the book cover texture | Prices live in Stripe. Never change prices in the site without the owner. Keep "VCE® is a registered trademark of the VCAA." near anything that says VCE. |
 
 **Client concept and demo sites** (`barber-demo`, `cafe-demo-v2`, `gym-demo`, `plumber-demo`, `salon-demo`, `parts-store-demo`, and any new ones):
 - They belong to their (made-up or real) client's brand, so they keep the client's own colours and fonts.
@@ -162,8 +162,8 @@ Every number must be a real commitment, a real price or a real measurement (with
 **The One Barber is a real shop.** Never show, link, screenshot or mention `the-one-barber-demo` on any other site.
 
 **Keep the sites in sync.** Whenever you change one brand's site, also update everything that shows that brand somewhere else, in the same task:
-- KB Ventures shows Black Crest and AceGuides in its business gallery. If a Black Crest or AceGuides logo, hero object, tagline, price, label (PREVIEW or AVAILABLE NOW) or screenshot changes, update the KB Ventures version to match.
-- Black Crest shows screenshots of the concept demos. If a demo changes, re-take its screenshots and stills for the Black Crest alcoves, case study and showreel.
+- KB Ventures shows KB Web Designs and KB Study Guides in its business gallery. If a KB Web Designs or KB Study Guides logo, hero object, tagline, price, label (PREVIEW or AVAILABLE NOW) or screenshot changes, update the KB Ventures version to match.
+- KB Web Designs shows screenshots of the concept demos. If a demo changes, re-take its screenshots and stills for the KB Web Designs alcoves, case study and showreel.
 - Shared footer details (email, "A KB Ventures company", social links): keep them identical across every site.
 - If you improve a house-style pattern on one site, note it in CLAUDE.md so the other sites can use it too, and tell the owner which sites could get the upgrade next.
 
@@ -220,3 +220,9 @@ How to use them:
 - **This file always wins.** If a skill suggests something this file bans (a font, colour, rounded corners, glass panels, bouncy motion, icon sets, em dashes), follow this file.
 - Before saying a site task is finished, run `/impeccable audit` and `/impeccable polish` on the changed pages, and `review-animations` on any new motion, as well as the checks in section 9.
 - Don't switch on Impeccable's edit hook unless the owner says yes.
+
+---
+
+## 11. Names (changed 9 Nov 2026)
+
+Everything is one family: **KB Ventures**, **KB Web Designs** (was Black Crest Web Designs) and **KB Study Guides** (was AceGuides). Folder names and URL paths (`black-crest-site/`, `aceguides.html`) stay as they are. The shield logo shows "KB". KB Web Designs lives at web.kbventures.com.au.

@@ -1,4 +1,4 @@
-// Makes every image the Black Crest site uses, in ../img/:
+// Makes every image the KB Web Designs site uses, in ../img/:
 //   work/<demo>.webp      phone screenshots of the six concept demos (the demo folders are only opened, never changed)
 //   compare-before.webp   a deliberately dated, generic homepage mockup (made here, not a real site)
 //   compare-after.webp    the Brass & Blade concept homepage
@@ -23,7 +23,7 @@ const TMP = mkdtempSync(path.join(tmpdir(), 'bc-img-'));
 mkdirSync(path.join(IMG, 'work'), { recursive: true });
 const DEMOS = { barber: 'barber-demo', cafe: 'cafe-demo-v2', gym: 'gym-demo', plumber: 'plumber-demo', salon: 'salon-demo', parts: 'parts-store-demo' };
 const HIDE = '.announce,.notice-bar,.open-bar,.open-banner,.open-strip,.cookie,#cookie,.nojs-banner,.preloader,.toast,.progress,.demo-bar,.demo-banner,.g-rating,.g-rating-text,.g-rating-demo,.hero-rating,.footer-rating,.rating-summary,.stars{display:none!important}html{--ticker-h:0px!important}';
-// made-up ratings inside the demos are hidden in these screenshots: the Black Crest site never shows ratings or reviews
+// made-up ratings inside the demos are hidden in these screenshots: the KB Web Designs site never shows ratings or reviews
 // fonts embedded as data URLs (setContent pages have no origin, so a font URL would be blocked)
 const font = (f) => `url(data:font/woff2;base64,${readFileSync(path.join(SITE, 'fonts', f)).toString('base64')})`;
 const FONTS = `@font-face{font-family:CG;src:${font('cormorant-garamond.woff2')};font-weight:300 700}@font-face{font-family:IN;src:${font('switzer-400.woff2')};font-weight:100 900}`;

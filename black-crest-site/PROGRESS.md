@@ -1,11 +1,11 @@
 # Version 4 (house style, 2 Nov 2026)
 
-Brief: "Everything to do, in one go (Black Crest v4, house style and KB Ventures)". Parts A, B and C, then a final check.
+Brief: "Everything to do, in one go (KB Web Designs v4, house style and KB Ventures)". Parts A, B and C, then a final check.
 
 | Part | State |
 | --- | --- |
 | A. `CLAUDE.md` house style at the repo root | Done (commit 2945a34) |
-| B. Black Crest v4 | Done |
+| B. KB Web Designs v4 | Done |
 | C. KB Ventures site | Done (commit e7d6f41, see `kbventures-site/PROGRESS.md`) |
 | Final check and report | In progress |
 
@@ -41,9 +41,9 @@ The final check: section 9 on both sites, Lighthouse on BC home, BC pricing and 
 
 ---
 
-# Black Crest v3: progress
+# KB Web Designs v3: progress
 
-Brief: "Black Crest Web Designs: Version 3 master brief" (pasted by the owner on 1 November 2026).
+Brief: "KB Web Designs: Version 3 master brief" (pasted by the owner on 1 November 2026).
 Work happens in `black-crest-site/` only. Each phase is committed and pushed to `main` when done.
 
 ## Status
@@ -102,7 +102,7 @@ Work happens in `black-crest-site/` only. Each phase is committed and pushed to 
   - The menu traps focus while open and closes on Escape.
   - Desktop shows 3 inline links, the gold button and Menu.
   - Concept Lab and Standard joined the menu in Phase 3.
-- **Footer:** the Melbourne clock, the availability line (from `config.js`), back to top, and a giant BLACK CREST wordmark cropped at the bottom edge.
+- **Footer:** the Melbourne clock, the availability line (from `config.js`), back to top, and a giant KB WEB DESIGNS wordmark cropped at the bottom edge.
 - **Banned words (2.3):** searched the whole folder, excluding `vendor/`. None found, and no emoji or sparkle icons.
 - **Tested:**
   - At 390 and 1440, 13 pages: libraries load, with no console errors or failed requests and no sideways scrolling.
@@ -141,7 +141,7 @@ The home page runs in this order:
   - "Directions" from the brief's list is swapped for "The job, in one tap", because that concept shows no directions link.
 - **Before/after:** a gold disc handle with a "Drag" hint, arrow keys, `aria-valuenow`, and "Example, not a real customer".
 - **Process:** stacked sticky cards (Chat, Free concept, Build, Launch), each with a gold numeral, a timeframe chip and an illustration, on the hairline grid.
-- **The Black Crest Standard band:** odometers for $300 (from config), 5, 2, 0 and 100%, linking to the new `standard.html` (10 commitments).
+- **The KB Standard band:** odometers for $300 (from config), 5, 2, 0 and 100%, linking to the new `standard.html` (10 commitments).
 - **Pricing:** three account cards with masked numbers and odometer prices. The featured card has a gold edge and a light sweep. The hairline grid is on.
 - **Globe** (`js/globe3d.js`):
   - Land dots come from `js/globe-points.js`, made once by `tools/make-globe-points.mjs` from Natural Earth via world-atlas and d3-geo at build time. No tiles or APIs.

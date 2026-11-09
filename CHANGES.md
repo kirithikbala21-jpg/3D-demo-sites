@@ -41,7 +41,7 @@
 
 ## Connected to the rest of the site
 - **KB Study Guides is live:** the Home and Businesses card says "Available now" and has a "Shop guides" button. The footer and the Businesses dropdown link to the shop with no Coming soon tag. KB Web Designs is still Coming soon.
-- **Latest:** a new first item, "KB Study Guides study guides are now on sale" (Oct 2026), linking to the shop. **About milestones:** "KB Study Guides study guides on sale".
+- **Latest:** a new first item, "KB study guides are now on sale" (Oct 2026), linking to the shop. **About milestones:** "KB study guides on sale".
 - **FAQ:** "When does KB Study Guides open?" is replaced by "How do I buy an KB study guide?". The sign-up text and the "How do I get updates?" answer no longer say KB Study Guides is opening soon.
 - `contact.html?topic=aceguides` preselects KB Study Guides.
 

@@ -43,7 +43,7 @@
 <!-- site.js replaces this with the full top bar from site.config.json (this copy is what shows without JavaScript) -->
 <header class="nav" id="site-header"><div class="container nav-inner"><a class="brand" href="/"><span class="wm brand-word"><img src="img/kb-wordmark.svg" width="360" height="120" alt=""></span><img class="brand-mark" src="img/kb-favicon.svg" width="32" height="32" alt=""><span class="sr-only">KB Ventures home</span></a><a class="nav-link nav-fallback" href="/contact">Contact</a></div></header>
 
-<main id="main" class="page shop">
+<main id="main" class="page shop shelf-world">
   <div class="container page-head shop-head">
     <h1 class="page-title" data-c="aceguides.title">KB Study Guides.</h1>
     <p class="lead" data-c="aceguides.lead">Study guides for Year 10 and VCE students.</p>
@@ -51,163 +51,187 @@
   <nav class="shop-jump" aria-label="Jump to a year"><div class="container"><a href="#year-10">Year 10</a><a href="#vce-units-1-and-2">Units 1&amp;2</a><a href="#vce-units-3-and-4">Units 3&amp;4</a><a href="#bundles">Bundles</a></div></nav>
   <section class="container shop-group" id="year-10" aria-labelledby="year-10-h">
     <h2 class="h2" id="year-10-h" data-c="aceguides.groups.0.title">Year 10</h2>
-    <ul class="book-row">
-        <li class="product" id="y10-maths">
-          <a class="kb-niche book" href="#d-y10-maths" data-dialog="d-y10-maths" aria-haspopup="dialog">
-            <picture><source type="image/avif" srcset="img/niches/y10-maths.avif" sizes="(min-width: 900px) 22vw, 46vw"><source type="image/webp" srcset="img/niches/y10-maths.webp" sizes="(min-width: 900px) 22vw, 46vw"><img src="img/niches/y10-maths.jpg" width="720" height="960" decoding="async" alt=""></picture>
-            <span class="niche-label"><span class="niche-name product-name">Maths</span><span class="niche-line"><span class="product-level">Year 10</span> &middot; <span class="num">$9.99</span></span></span>
+    <p class="shelf-hint">Tap a guide to see its cover, a free sample and the price.</p>
+    <ul class="shelf" role="list">
+        <li class="spine-slot" id="y10-maths" style="--h: 100%">
+          <a class="spine" href="#d-y10-maths" data-dialog="d-y10-maths" aria-haspopup="dialog">
+            <span class="spine-band" aria-hidden="true"></span>
+            <span class="spine-title product-name">Maths</span>
+            <span class="spine-foot"><span class="spine-level product-level">Year 10</span><span class="spine-price num">$9.99</span></span>
+            <span class="sr-only">, Year 10. Open for the cover, the free sample and how to buy.</span>
           </a>
-          <a class="text-link card-sample" href="aceguides/samples/y10-maths.pdf" target="_blank" rel="noopener">Free sample (PDF)<span class="sr-only">: Maths, Year 10 (opens in a new tab)</span></a>
         </li>
-        <li class="product" id="y10-science">
-          <a class="kb-niche book" href="#d-y10-science" data-dialog="d-y10-science" aria-haspopup="dialog">
-            <picture><source type="image/avif" srcset="img/niches/y10-science.avif" sizes="(min-width: 900px) 22vw, 46vw"><source type="image/webp" srcset="img/niches/y10-science.webp" sizes="(min-width: 900px) 22vw, 46vw"><img src="img/niches/y10-science.jpg" width="720" height="960" decoding="async" alt=""></picture>
-            <span class="niche-label"><span class="niche-name product-name">Science</span><span class="niche-line"><span class="product-level">Year 10</span> &middot; <span class="num">$9.99</span></span></span>
+        <li class="spine-slot" id="y10-science" style="--h: 94%">
+          <a class="spine" href="#d-y10-science" data-dialog="d-y10-science" aria-haspopup="dialog">
+            <span class="spine-band" aria-hidden="true"></span>
+            <span class="spine-title product-name">Science</span>
+            <span class="spine-foot"><span class="spine-level product-level">Year 10</span><span class="spine-price num">$9.99</span></span>
+            <span class="sr-only">, Year 10. Open for the cover, the free sample and how to buy.</span>
           </a>
-          <a class="text-link card-sample" href="aceguides/samples/y10-science.pdf" target="_blank" rel="noopener">Free sample (PDF)<span class="sr-only">: Science, Year 10 (opens in a new tab)</span></a>
         </li>
-        <li class="product" id="y10-english">
-          <a class="kb-niche book" href="#d-y10-english" data-dialog="d-y10-english" aria-haspopup="dialog">
-            <picture><source type="image/avif" srcset="img/niches/y10-english.avif" sizes="(min-width: 900px) 22vw, 46vw"><source type="image/webp" srcset="img/niches/y10-english.webp" sizes="(min-width: 900px) 22vw, 46vw"><img src="img/niches/y10-english.jpg" width="720" height="960" decoding="async" alt=""></picture>
-            <span class="niche-label"><span class="niche-name product-name">English</span><span class="niche-line"><span class="product-level">Year 10</span> &middot; <span class="num">$9.99</span></span></span>
+        <li class="spine-slot" id="y10-english" style="--h: 97%">
+          <a class="spine" href="#d-y10-english" data-dialog="d-y10-english" aria-haspopup="dialog">
+            <span class="spine-band" aria-hidden="true"></span>
+            <span class="spine-title product-name">English</span>
+            <span class="spine-foot"><span class="spine-level product-level">Year 10</span><span class="spine-price num">$9.99</span></span>
+            <span class="sr-only">, Year 10. Open for the cover, the free sample and how to buy.</span>
           </a>
-          <a class="text-link card-sample" href="aceguides/samples/y10-english.pdf" target="_blank" rel="noopener">Free sample (PDF)<span class="sr-only">: English, Year 10 (opens in a new tab)</span></a>
         </li>
-        <li class="product is-soon" id="y10-history">
-          <a class="kb-niche book" href="#d-y10-history" data-dialog="d-y10-history" aria-haspopup="dialog">
-            <picture><source type="image/avif" srcset="img/niches/y10-history.avif" sizes="(min-width: 900px) 22vw, 46vw"><source type="image/webp" srcset="img/niches/y10-history.webp" sizes="(min-width: 900px) 22vw, 46vw"><img src="img/niches/y10-history.jpg" width="720" height="960" decoding="async" alt=""></picture>
-            <span class="niche-label"><span class="niche-name product-name">History</span><span class="niche-line"><span class="product-level">Year 10</span> &middot; <span class="num">$9.99</span></span></span>
+        <li class="spine-slot is-soon" id="y10-history" style="--h: 91%">
+          <a class="spine" href="#d-y10-history" data-dialog="d-y10-history" aria-haspopup="dialog">
+            <span class="spine-band" aria-hidden="true"></span>
+            <span class="spine-title product-name">History</span>
+            <span class="spine-foot"><span class="spine-level product-level">Year 10</span><span class="spine-price num">Back soon</span></span>
+            <span class="sr-only">, Year 10. Open for the cover, the free sample and how to buy.</span>
           </a>
-          <a class="text-link card-sample" href="aceguides/samples/y10-history.pdf" target="_blank" rel="noopener">Free sample (PDF)<span class="sr-only">: History, Year 10 (opens in a new tab)</span></a>
         </li>
-        <li class="product is-soon" id="y10-economics">
-          <a class="kb-niche book" href="#d-y10-economics" data-dialog="d-y10-economics" aria-haspopup="dialog">
-            <picture><source type="image/avif" srcset="img/niches/y10-economics.avif" sizes="(min-width: 900px) 22vw, 46vw"><source type="image/webp" srcset="img/niches/y10-economics.webp" sizes="(min-width: 900px) 22vw, 46vw"><img src="img/niches/y10-economics.jpg" width="720" height="960" decoding="async" alt=""></picture>
-            <span class="niche-label"><span class="niche-name product-name">Economics and Business</span><span class="niche-line"><span class="product-level">Year 10</span> &middot; <span class="num">$9.99</span></span></span>
+        <li class="spine-slot is-soon" id="y10-economics" style="--h: 98%">
+          <a class="spine" href="#d-y10-economics" data-dialog="d-y10-economics" aria-haspopup="dialog">
+            <span class="spine-band" aria-hidden="true"></span>
+            <span class="spine-title product-name is-long">Economics and Business</span>
+            <span class="spine-foot"><span class="spine-level product-level">Year 10</span><span class="spine-price num">Back soon</span></span>
+            <span class="sr-only">, Year 10. Open for the cover, the free sample and how to buy.</span>
           </a>
-          <a class="text-link card-sample" href="aceguides/samples/y10-economics.pdf" target="_blank" rel="noopener">Free sample (PDF)<span class="sr-only">: Economics and Business, Year 10 (opens in a new tab)</span></a>
         </li>
     </ul>
   </section>
   <section class="container shop-group" id="vce-units-1-and-2" aria-labelledby="vce-units-1-and-2-h">
     <h2 class="h2" id="vce-units-1-and-2-h" data-c="aceguides.groups.1.title">VCE Units 1 and 2</h2>
-    <ul class="book-row">
-        <li class="product" id="y11-english">
-          <a class="kb-niche book" href="#d-y11-english" data-dialog="d-y11-english" aria-haspopup="dialog">
-            <picture><source type="image/avif" srcset="img/niches/y11-english.avif" sizes="(min-width: 900px) 22vw, 46vw"><source type="image/webp" srcset="img/niches/y11-english.webp" sizes="(min-width: 900px) 22vw, 46vw"><img src="img/niches/y11-english.jpg" width="720" height="960" loading="lazy" decoding="async" alt=""></picture>
-            <span class="niche-label"><span class="niche-name product-name">English</span><span class="niche-line"><span class="product-level">VCE Units 1 and 2</span> &middot; <span class="num">$14.99</span></span></span>
+    <p class="shelf-hint">Tap a guide to see its cover, a free sample and the price.</p>
+    <ul class="shelf" role="list">
+        <li class="spine-slot" id="y11-english" style="--h: 100%">
+          <a class="spine" href="#d-y11-english" data-dialog="d-y11-english" aria-haspopup="dialog">
+            <span class="spine-band" aria-hidden="true"></span>
+            <span class="spine-title product-name">English</span>
+            <span class="spine-foot"><span class="spine-level product-level">Units 1&amp;2</span><span class="spine-price num">$14.99</span></span>
+            <span class="sr-only">, VCE Units 1 and 2. Open for the cover, the free sample and how to buy.</span>
           </a>
-          <a class="text-link card-sample" href="aceguides/samples/y11-english.pdf" target="_blank" rel="noopener">Free sample (PDF)<span class="sr-only">: English, VCE Units 1 and 2 (opens in a new tab)</span></a>
         </li>
-        <li class="product" id="y11-methods">
-          <a class="kb-niche book" href="#d-y11-methods" data-dialog="d-y11-methods" aria-haspopup="dialog">
-            <picture><source type="image/avif" srcset="img/niches/y11-methods.avif" sizes="(min-width: 900px) 22vw, 46vw"><source type="image/webp" srcset="img/niches/y11-methods.webp" sizes="(min-width: 900px) 22vw, 46vw"><img src="img/niches/y11-methods.jpg" width="720" height="960" loading="lazy" decoding="async" alt=""></picture>
-            <span class="niche-label"><span class="niche-name product-name">Mathematical Methods</span><span class="niche-line"><span class="product-level">VCE Units 1 and 2</span> &middot; <span class="num">$14.99</span></span></span>
+        <li class="spine-slot" id="y11-methods" style="--h: 94%">
+          <a class="spine" href="#d-y11-methods" data-dialog="d-y11-methods" aria-haspopup="dialog">
+            <span class="spine-band" aria-hidden="true"></span>
+            <span class="spine-title product-name is-long">Mathematical Methods</span>
+            <span class="spine-foot"><span class="spine-level product-level">Units 1&amp;2</span><span class="spine-price num">$14.99</span></span>
+            <span class="sr-only">, VCE Units 1 and 2. Open for the cover, the free sample and how to buy.</span>
           </a>
-          <a class="text-link card-sample" href="aceguides/samples/y11-methods.pdf" target="_blank" rel="noopener">Free sample (PDF)<span class="sr-only">: Mathematical Methods, VCE Units 1 and 2 (opens in a new tab)</span></a>
         </li>
-        <li class="product" id="y11-biology">
-          <a class="kb-niche book" href="#d-y11-biology" data-dialog="d-y11-biology" aria-haspopup="dialog">
-            <picture><source type="image/avif" srcset="img/niches/y11-biology.avif" sizes="(min-width: 900px) 22vw, 46vw"><source type="image/webp" srcset="img/niches/y11-biology.webp" sizes="(min-width: 900px) 22vw, 46vw"><img src="img/niches/y11-biology.jpg" width="720" height="960" loading="lazy" decoding="async" alt=""></picture>
-            <span class="niche-label"><span class="niche-name product-name">Biology</span><span class="niche-line"><span class="product-level">VCE Units 1 and 2</span> &middot; <span class="num">$14.99</span></span></span>
+        <li class="spine-slot" id="y11-biology" style="--h: 97%">
+          <a class="spine" href="#d-y11-biology" data-dialog="d-y11-biology" aria-haspopup="dialog">
+            <span class="spine-band" aria-hidden="true"></span>
+            <span class="spine-title product-name">Biology</span>
+            <span class="spine-foot"><span class="spine-level product-level">Units 1&amp;2</span><span class="spine-price num">$14.99</span></span>
+            <span class="sr-only">, VCE Units 1 and 2. Open for the cover, the free sample and how to buy.</span>
           </a>
-          <a class="text-link card-sample" href="aceguides/samples/y11-biology.pdf" target="_blank" rel="noopener">Free sample (PDF)<span class="sr-only">: Biology, VCE Units 1 and 2 (opens in a new tab)</span></a>
         </li>
-        <li class="product" id="y11-chemistry">
-          <a class="kb-niche book" href="#d-y11-chemistry" data-dialog="d-y11-chemistry" aria-haspopup="dialog">
-            <picture><source type="image/avif" srcset="img/niches/y11-chemistry.avif" sizes="(min-width: 900px) 22vw, 46vw"><source type="image/webp" srcset="img/niches/y11-chemistry.webp" sizes="(min-width: 900px) 22vw, 46vw"><img src="img/niches/y11-chemistry.jpg" width="720" height="960" loading="lazy" decoding="async" alt=""></picture>
-            <span class="niche-label"><span class="niche-name product-name">Chemistry</span><span class="niche-line"><span class="product-level">VCE Units 1 and 2</span> &middot; <span class="num">$14.99</span></span></span>
+        <li class="spine-slot" id="y11-chemistry" style="--h: 91%">
+          <a class="spine" href="#d-y11-chemistry" data-dialog="d-y11-chemistry" aria-haspopup="dialog">
+            <span class="spine-band" aria-hidden="true"></span>
+            <span class="spine-title product-name">Chemistry</span>
+            <span class="spine-foot"><span class="spine-level product-level">Units 1&amp;2</span><span class="spine-price num">$14.99</span></span>
+            <span class="sr-only">, VCE Units 1 and 2. Open for the cover, the free sample and how to buy.</span>
           </a>
-          <a class="text-link card-sample" href="aceguides/samples/y11-chemistry.pdf" target="_blank" rel="noopener">Free sample (PDF)<span class="sr-only">: Chemistry, VCE Units 1 and 2 (opens in a new tab)</span></a>
         </li>
-        <li class="product" id="y11-physics">
-          <a class="kb-niche book" href="#d-y11-physics" data-dialog="d-y11-physics" aria-haspopup="dialog">
-            <picture><source type="image/avif" srcset="img/niches/y11-physics.avif" sizes="(min-width: 900px) 22vw, 46vw"><source type="image/webp" srcset="img/niches/y11-physics.webp" sizes="(min-width: 900px) 22vw, 46vw"><img src="img/niches/y11-physics.jpg" width="720" height="960" loading="lazy" decoding="async" alt=""></picture>
-            <span class="niche-label"><span class="niche-name product-name">Physics</span><span class="niche-line"><span class="product-level">VCE Units 1 and 2</span> &middot; <span class="num">$14.99</span></span></span>
+        <li class="spine-slot" id="y11-physics" style="--h: 98%">
+          <a class="spine" href="#d-y11-physics" data-dialog="d-y11-physics" aria-haspopup="dialog">
+            <span class="spine-band" aria-hidden="true"></span>
+            <span class="spine-title product-name">Physics</span>
+            <span class="spine-foot"><span class="spine-level product-level">Units 1&amp;2</span><span class="spine-price num">$14.99</span></span>
+            <span class="sr-only">, VCE Units 1 and 2. Open for the cover, the free sample and how to buy.</span>
           </a>
-          <a class="text-link card-sample" href="aceguides/samples/y11-physics.pdf" target="_blank" rel="noopener">Free sample (PDF)<span class="sr-only">: Physics, VCE Units 1 and 2 (opens in a new tab)</span></a>
         </li>
-        <li class="product" id="y11-business">
-          <a class="kb-niche book" href="#d-y11-business" data-dialog="d-y11-business" aria-haspopup="dialog">
-            <picture><source type="image/avif" srcset="img/niches/y11-business.avif" sizes="(min-width: 900px) 22vw, 46vw"><source type="image/webp" srcset="img/niches/y11-business.webp" sizes="(min-width: 900px) 22vw, 46vw"><img src="img/niches/y11-business.jpg" width="720" height="960" loading="lazy" decoding="async" alt=""></picture>
-            <span class="niche-label"><span class="niche-name product-name">Business Management</span><span class="niche-line"><span class="product-level">VCE Units 1 and 2</span> &middot; <span class="num">$14.99</span></span></span>
+        <li class="spine-slot" id="y11-business" style="--h: 95%">
+          <a class="spine" href="#d-y11-business" data-dialog="d-y11-business" aria-haspopup="dialog">
+            <span class="spine-band" aria-hidden="true"></span>
+            <span class="spine-title product-name is-long">Business Management</span>
+            <span class="spine-foot"><span class="spine-level product-level">Units 1&amp;2</span><span class="spine-price num">$14.99</span></span>
+            <span class="sr-only">, VCE Units 1 and 2. Open for the cover, the free sample and how to buy.</span>
           </a>
-          <a class="text-link card-sample" href="aceguides/samples/y11-business.pdf" target="_blank" rel="noopener">Free sample (PDF)<span class="sr-only">: Business Management, VCE Units 1 and 2 (opens in a new tab)</span></a>
         </li>
-        <li class="product" id="y11-economics">
-          <a class="kb-niche book" href="#d-y11-economics" data-dialog="d-y11-economics" aria-haspopup="dialog">
-            <picture><source type="image/avif" srcset="img/niches/y11-economics.avif" sizes="(min-width: 900px) 22vw, 46vw"><source type="image/webp" srcset="img/niches/y11-economics.webp" sizes="(min-width: 900px) 22vw, 46vw"><img src="img/niches/y11-economics.jpg" width="720" height="960" loading="lazy" decoding="async" alt=""></picture>
-            <span class="niche-label"><span class="niche-name product-name">Economics</span><span class="niche-line"><span class="product-level">VCE Units 1 and 2</span> &middot; <span class="num">$14.99</span></span></span>
+        <li class="spine-slot" id="y11-economics" style="--h: 92%">
+          <a class="spine" href="#d-y11-economics" data-dialog="d-y11-economics" aria-haspopup="dialog">
+            <span class="spine-band" aria-hidden="true"></span>
+            <span class="spine-title product-name">Economics</span>
+            <span class="spine-foot"><span class="spine-level product-level">Units 1&amp;2</span><span class="spine-price num">$14.99</span></span>
+            <span class="sr-only">, VCE Units 1 and 2. Open for the cover, the free sample and how to buy.</span>
           </a>
-          <a class="text-link card-sample" href="aceguides/samples/y11-economics.pdf" target="_blank" rel="noopener">Free sample (PDF)<span class="sr-only">: Economics, VCE Units 1 and 2 (opens in a new tab)</span></a>
         </li>
-        <li class="product" id="y11-history">
-          <a class="kb-niche book" href="#d-y11-history" data-dialog="d-y11-history" aria-haspopup="dialog">
-            <picture><source type="image/avif" srcset="img/niches/y11-history.avif" sizes="(min-width: 900px) 22vw, 46vw"><source type="image/webp" srcset="img/niches/y11-history.webp" sizes="(min-width: 900px) 22vw, 46vw"><img src="img/niches/y11-history.jpg" width="720" height="960" loading="lazy" decoding="async" alt=""></picture>
-            <span class="niche-label"><span class="niche-name product-name">Modern History</span><span class="niche-line"><span class="product-level">VCE Units 1 and 2</span> &middot; <span class="num">$14.99</span></span></span>
+        <li class="spine-slot" id="y11-history" style="--h: 99%">
+          <a class="spine" href="#d-y11-history" data-dialog="d-y11-history" aria-haspopup="dialog">
+            <span class="spine-band" aria-hidden="true"></span>
+            <span class="spine-title product-name">Modern History</span>
+            <span class="spine-foot"><span class="spine-level product-level">Units 1&amp;2</span><span class="spine-price num">$14.99</span></span>
+            <span class="sr-only">, VCE Units 1 and 2. Open for the cover, the free sample and how to buy.</span>
           </a>
-          <a class="text-link card-sample" href="aceguides/samples/y11-history.pdf" target="_blank" rel="noopener">Free sample (PDF)<span class="sr-only">: Modern History, VCE Units 1 and 2 (opens in a new tab)</span></a>
         </li>
     </ul>
   </section>
   <section class="container shop-group" id="vce-units-3-and-4" aria-labelledby="vce-units-3-and-4-h">
     <h2 class="h2" id="vce-units-3-and-4-h" data-c="aceguides.groups.2.title">VCE Units 3 and 4</h2>
-    <ul class="book-row">
-        <li class="product" id="y12-english">
-          <a class="kb-niche book" href="#d-y12-english" data-dialog="d-y12-english" aria-haspopup="dialog">
-            <picture><source type="image/avif" srcset="img/niches/y12-english.avif" sizes="(min-width: 900px) 22vw, 46vw"><source type="image/webp" srcset="img/niches/y12-english.webp" sizes="(min-width: 900px) 22vw, 46vw"><img src="img/niches/y12-english.jpg" width="720" height="960" loading="lazy" decoding="async" alt=""></picture>
-            <span class="niche-label"><span class="niche-name product-name">English</span><span class="niche-line"><span class="product-level">VCE Units 3 and 4</span> &middot; <span class="num">$19.99</span></span></span>
+    <p class="shelf-hint">Tap a guide to see its cover, a free sample and the price.</p>
+    <ul class="shelf" role="list">
+        <li class="spine-slot" id="y12-english" style="--h: 100%">
+          <a class="spine" href="#d-y12-english" data-dialog="d-y12-english" aria-haspopup="dialog">
+            <span class="spine-band" aria-hidden="true"></span>
+            <span class="spine-title product-name">English</span>
+            <span class="spine-foot"><span class="spine-level product-level">Units 3&amp;4</span><span class="spine-price num">$19.99</span></span>
+            <span class="sr-only">, VCE Units 3 and 4. Open for the cover, the free sample and how to buy.</span>
           </a>
-          <a class="text-link card-sample" href="aceguides/samples/y12-english.pdf" target="_blank" rel="noopener">Free sample (PDF)<span class="sr-only">: English, VCE Units 3 and 4 (opens in a new tab)</span></a>
         </li>
-        <li class="product" id="y12-methods">
-          <a class="kb-niche book" href="#d-y12-methods" data-dialog="d-y12-methods" aria-haspopup="dialog">
-            <picture><source type="image/avif" srcset="img/niches/y12-methods.avif" sizes="(min-width: 900px) 22vw, 46vw"><source type="image/webp" srcset="img/niches/y12-methods.webp" sizes="(min-width: 900px) 22vw, 46vw"><img src="img/niches/y12-methods.jpg" width="720" height="960" loading="lazy" decoding="async" alt=""></picture>
-            <span class="niche-label"><span class="niche-name product-name">Mathematical Methods</span><span class="niche-line"><span class="product-level">VCE Units 3 and 4</span> &middot; <span class="num">$19.99</span></span></span>
+        <li class="spine-slot" id="y12-methods" style="--h: 94%">
+          <a class="spine" href="#d-y12-methods" data-dialog="d-y12-methods" aria-haspopup="dialog">
+            <span class="spine-band" aria-hidden="true"></span>
+            <span class="spine-title product-name is-long">Mathematical Methods</span>
+            <span class="spine-foot"><span class="spine-level product-level">Units 3&amp;4</span><span class="spine-price num">$19.99</span></span>
+            <span class="sr-only">, VCE Units 3 and 4. Open for the cover, the free sample and how to buy.</span>
           </a>
-          <a class="text-link card-sample" href="aceguides/samples/y12-methods.pdf" target="_blank" rel="noopener">Free sample (PDF)<span class="sr-only">: Mathematical Methods, VCE Units 3 and 4 (opens in a new tab)</span></a>
         </li>
-        <li class="product" id="y12-biology">
-          <a class="kb-niche book" href="#d-y12-biology" data-dialog="d-y12-biology" aria-haspopup="dialog">
-            <picture><source type="image/avif" srcset="img/niches/y12-biology.avif" sizes="(min-width: 900px) 22vw, 46vw"><source type="image/webp" srcset="img/niches/y12-biology.webp" sizes="(min-width: 900px) 22vw, 46vw"><img src="img/niches/y12-biology.jpg" width="720" height="960" loading="lazy" decoding="async" alt=""></picture>
-            <span class="niche-label"><span class="niche-name product-name">Biology</span><span class="niche-line"><span class="product-level">VCE Units 3 and 4</span> &middot; <span class="num">$19.99</span></span></span>
+        <li class="spine-slot" id="y12-biology" style="--h: 97%">
+          <a class="spine" href="#d-y12-biology" data-dialog="d-y12-biology" aria-haspopup="dialog">
+            <span class="spine-band" aria-hidden="true"></span>
+            <span class="spine-title product-name">Biology</span>
+            <span class="spine-foot"><span class="spine-level product-level">Units 3&amp;4</span><span class="spine-price num">$19.99</span></span>
+            <span class="sr-only">, VCE Units 3 and 4. Open for the cover, the free sample and how to buy.</span>
           </a>
-          <a class="text-link card-sample" href="aceguides/samples/y12-biology.pdf" target="_blank" rel="noopener">Free sample (PDF)<span class="sr-only">: Biology, VCE Units 3 and 4 (opens in a new tab)</span></a>
         </li>
-        <li class="product" id="y12-chemistry">
-          <a class="kb-niche book" href="#d-y12-chemistry" data-dialog="d-y12-chemistry" aria-haspopup="dialog">
-            <picture><source type="image/avif" srcset="img/niches/y12-chemistry.avif" sizes="(min-width: 900px) 22vw, 46vw"><source type="image/webp" srcset="img/niches/y12-chemistry.webp" sizes="(min-width: 900px) 22vw, 46vw"><img src="img/niches/y12-chemistry.jpg" width="720" height="960" loading="lazy" decoding="async" alt=""></picture>
-            <span class="niche-label"><span class="niche-name product-name">Chemistry</span><span class="niche-line"><span class="product-level">VCE Units 3 and 4</span> &middot; <span class="num">$19.99</span></span></span>
+        <li class="spine-slot" id="y12-chemistry" style="--h: 91%">
+          <a class="spine" href="#d-y12-chemistry" data-dialog="d-y12-chemistry" aria-haspopup="dialog">
+            <span class="spine-band" aria-hidden="true"></span>
+            <span class="spine-title product-name">Chemistry</span>
+            <span class="spine-foot"><span class="spine-level product-level">Units 3&amp;4</span><span class="spine-price num">$19.99</span></span>
+            <span class="sr-only">, VCE Units 3 and 4. Open for the cover, the free sample and how to buy.</span>
           </a>
-          <a class="text-link card-sample" href="aceguides/samples/y12-chemistry.pdf" target="_blank" rel="noopener">Free sample (PDF)<span class="sr-only">: Chemistry, VCE Units 3 and 4 (opens in a new tab)</span></a>
         </li>
-        <li class="product" id="y12-physics">
-          <a class="kb-niche book" href="#d-y12-physics" data-dialog="d-y12-physics" aria-haspopup="dialog">
-            <picture><source type="image/avif" srcset="img/niches/y12-physics.avif" sizes="(min-width: 900px) 22vw, 46vw"><source type="image/webp" srcset="img/niches/y12-physics.webp" sizes="(min-width: 900px) 22vw, 46vw"><img src="img/niches/y12-physics.jpg" width="720" height="960" loading="lazy" decoding="async" alt=""></picture>
-            <span class="niche-label"><span class="niche-name product-name">Physics</span><span class="niche-line"><span class="product-level">VCE Units 3 and 4</span> &middot; <span class="num">$19.99</span></span></span>
+        <li class="spine-slot" id="y12-physics" style="--h: 98%">
+          <a class="spine" href="#d-y12-physics" data-dialog="d-y12-physics" aria-haspopup="dialog">
+            <span class="spine-band" aria-hidden="true"></span>
+            <span class="spine-title product-name">Physics</span>
+            <span class="spine-foot"><span class="spine-level product-level">Units 3&amp;4</span><span class="spine-price num">$19.99</span></span>
+            <span class="sr-only">, VCE Units 3 and 4. Open for the cover, the free sample and how to buy.</span>
           </a>
-          <a class="text-link card-sample" href="aceguides/samples/y12-physics.pdf" target="_blank" rel="noopener">Free sample (PDF)<span class="sr-only">: Physics, VCE Units 3 and 4 (opens in a new tab)</span></a>
         </li>
-        <li class="product" id="y12-business">
-          <a class="kb-niche book" href="#d-y12-business" data-dialog="d-y12-business" aria-haspopup="dialog">
-            <picture><source type="image/avif" srcset="img/niches/y12-business.avif" sizes="(min-width: 900px) 22vw, 46vw"><source type="image/webp" srcset="img/niches/y12-business.webp" sizes="(min-width: 900px) 22vw, 46vw"><img src="img/niches/y12-business.jpg" width="720" height="960" loading="lazy" decoding="async" alt=""></picture>
-            <span class="niche-label"><span class="niche-name product-name">Business Management</span><span class="niche-line"><span class="product-level">VCE Units 3 and 4</span> &middot; <span class="num">$19.99</span></span></span>
+        <li class="spine-slot" id="y12-business" style="--h: 95%">
+          <a class="spine" href="#d-y12-business" data-dialog="d-y12-business" aria-haspopup="dialog">
+            <span class="spine-band" aria-hidden="true"></span>
+            <span class="spine-title product-name is-long">Business Management</span>
+            <span class="spine-foot"><span class="spine-level product-level">Units 3&amp;4</span><span class="spine-price num">$19.99</span></span>
+            <span class="sr-only">, VCE Units 3 and 4. Open for the cover, the free sample and how to buy.</span>
           </a>
-          <a class="text-link card-sample" href="aceguides/samples/y12-business.pdf" target="_blank" rel="noopener">Free sample (PDF)<span class="sr-only">: Business Management, VCE Units 3 and 4 (opens in a new tab)</span></a>
         </li>
-        <li class="product" id="y12-economics">
-          <a class="kb-niche book" href="#d-y12-economics" data-dialog="d-y12-economics" aria-haspopup="dialog">
-            <picture><source type="image/avif" srcset="img/niches/y12-economics.avif" sizes="(min-width: 900px) 22vw, 46vw"><source type="image/webp" srcset="img/niches/y12-economics.webp" sizes="(min-width: 900px) 22vw, 46vw"><img src="img/niches/y12-economics.jpg" width="720" height="960" loading="lazy" decoding="async" alt=""></picture>
-            <span class="niche-label"><span class="niche-name product-name">Economics</span><span class="niche-line"><span class="product-level">VCE Units 3 and 4</span> &middot; <span class="num">$19.99</span></span></span>
+        <li class="spine-slot" id="y12-economics" style="--h: 92%">
+          <a class="spine" href="#d-y12-economics" data-dialog="d-y12-economics" aria-haspopup="dialog">
+            <span class="spine-band" aria-hidden="true"></span>
+            <span class="spine-title product-name">Economics</span>
+            <span class="spine-foot"><span class="spine-level product-level">Units 3&amp;4</span><span class="spine-price num">$19.99</span></span>
+            <span class="sr-only">, VCE Units 3 and 4. Open for the cover, the free sample and how to buy.</span>
           </a>
-          <a class="text-link card-sample" href="aceguides/samples/y12-economics.pdf" target="_blank" rel="noopener">Free sample (PDF)<span class="sr-only">: Economics, VCE Units 3 and 4 (opens in a new tab)</span></a>
         </li>
-        <li class="product" id="y12-history">
-          <a class="kb-niche book" href="#d-y12-history" data-dialog="d-y12-history" aria-haspopup="dialog">
-            <picture><source type="image/avif" srcset="img/niches/y12-history.avif" sizes="(min-width: 900px) 22vw, 46vw"><source type="image/webp" srcset="img/niches/y12-history.webp" sizes="(min-width: 900px) 22vw, 46vw"><img src="img/niches/y12-history.jpg" width="720" height="960" loading="lazy" decoding="async" alt=""></picture>
-            <span class="niche-label"><span class="niche-name product-name">History: Revolutions</span><span class="niche-line"><span class="product-level">VCE Units 3 and 4</span> &middot; <span class="num">$19.99</span></span></span>
+        <li class="spine-slot" id="y12-history" style="--h: 99%">
+          <a class="spine" href="#d-y12-history" data-dialog="d-y12-history" aria-haspopup="dialog">
+            <span class="spine-band" aria-hidden="true"></span>
+            <span class="spine-title product-name is-long">History: Revolutions</span>
+            <span class="spine-foot"><span class="spine-level product-level">Units 3&amp;4</span><span class="spine-price num">$19.99</span></span>
+            <span class="sr-only">, VCE Units 3 and 4. Open for the cover, the free sample and how to buy.</span>
           </a>
-          <a class="text-link card-sample" href="aceguides/samples/y12-history.pdf" target="_blank" rel="noopener">Free sample (PDF)<span class="sr-only">: History: Revolutions, VCE Units 3 and 4 (opens in a new tab)</span></a>
         </li>
     </ul>
   </section>

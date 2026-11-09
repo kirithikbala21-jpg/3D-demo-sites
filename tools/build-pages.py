@@ -735,16 +735,24 @@ def action_html(x):
     return action, buyable
 
 
-def product_card(x, eager=False):
-    """One guide: a book in its lit niche. Choosing it opens the guide's detail view."""
+LEVEL_CODE = {'Year 10': 'Year 10', 'VCE Units 1 and 2': 'Units 1&2', 'VCE Units 3 and 4': 'Units 3&4'}
+
+
+def product_card(x, eager=False, i=0):
+    """One guide: a book spine on the shelf. Choosing it opens the guide's detail view (cover, price, sample, Buy)."""
     _, buyable = action_html(x)
-    price = f'{money(x["price"])}' if x.get('price') else ''
-    return f'''        <li class="product{'' if buyable else ' is-soon'}" id="{E(x['key'])}">
-          <a class="kb-niche book" href="#d-{E(x['key'])}" data-dialog="d-{E(x['key'])}" aria-haspopup="dialog">
-            {pic(f"img/niches/{x['key']}", 720, 960, '', lazy=not eager, sizes='(min-width: 900px) 22vw, 46vw')}
-            <span class="niche-label"><span class="niche-name product-name">{E(x['subject'])}</span><span class="niche-line"><span class="product-level">{E(x['level'])}</span> &middot; <span class="num">{price}</span></span></span>
-          </a>{sample_link(x)}
-        </li>'''
+    price = money(x['price']) if x.get('price') else ''
+    foot = price if buyable else 'Back soon'
+    code = LEVEL_CODE.get(x['level'], x['level'])
+    h = (100, 94, 97, 91, 98, 95, 92, 99)[i % 8]
+    return f"""        <li class="spine-slot{'' if buyable else ' is-soon'}" id="{E(x['key'])}" style="--h: {h}%">
+          <a class="spine" href="#d-{E(x['key'])}" data-dialog="d-{E(x['key'])}" aria-haspopup="dialog">
+            <span class="spine-band" aria-hidden="true"></span>
+            <span class="spine-title product-name{' is-long' if len(x['subject']) > 17 else ''}">{E(x['subject'])}</span>
+            <span class="spine-foot"><span class="spine-level product-level">{E(code)}</span><span class="spine-price num">{foot}</span></span>
+            <span class="sr-only">, {E(x['level'])}. Open for the cover, the free sample and how to buy.</span>
+          </a>
+        </li>"""
 
 
 def sample_link(x):
@@ -836,15 +844,16 @@ for gi, g in enumerate(ag['groups']):
         continue
     groups_html.append(f'''  <section class="container shop-group" id="{gid}" aria-labelledby="{gid}-h">
     <h2 class="h2" id="{gid}-h" data-c="aceguides.groups.{gi}.title">{E(g['title'])}</h2>
-    <ul class="book-row">
-{chr(10).join(product_card(x, eager=gi == 0) for x in g['products'])}
+    <p class="shelf-hint">Tap a guide to see its cover, a free sample and the price.</p>
+    <ul class="shelf" role="list">
+{chr(10).join(product_card(x, eager=gi == 0, i=i) for i, x in enumerate(g['products']))}
     </ul>
   </section>''')
 inside = ''.join(f'<li data-c="aceguides.inside.{i}">{E(t)}</li>' for i, t in enumerate(ag['inside']))
 chooser = ''.join(f'''
       <li><strong data-c="aceguides.chooser.items.{i}.title">{E(x['title'])}</strong>: <span data-c="aceguides.chooser.items.{i}.text">{E(x['text'])}</span></li>''' for i, x in enumerate(ag['chooser']['items']))
 policies = ' &middot; '.join(f'<a href="{local(x["href"])}">{E(x["text"])}</a>' for x in ag['policies'])
-pages['aceguides.html'] = page('aceguides.html', ag['meta']['title'], ag['meta']['description'], f'''<main id="main" class="page shop">
+pages['aceguides.html'] = page('aceguides.html', ag['meta']['title'], ag['meta']['description'], f'''<main id="main" class="page shop shelf-world">
   <div class="container page-head shop-head">
     <h1 class="page-title" data-c="aceguides.title">{E(ag['title'])}</h1>
     <p class="lead" data-c="aceguides.lead">{E(ag['lead'])}</p>

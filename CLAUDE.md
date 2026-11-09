@@ -4,6 +4,8 @@ This file lives at the root of the `3D-demo-sites` repo. **Claude Code: read it 
 
 The owner is a young founder. Explain what you did in short, simple words at the end of each task.
 
+> **Per-brand looks (owner, 9 Nov 2026).** The owner chose a new look for each brand. Where a brand's row in section 7 names its own look, that look replaces sections 1 to 3 for that brand; everything else here (motion care, imagery honesty, banned items, technical standards, checks) still applies. Each redesigned brand keeps its product facts in `PRODUCT.md` and its chosen direction in `.impeccable/surfaces/`.
+
 ---
 
 ## 1. The look in one paragraph
@@ -150,9 +152,9 @@ Every number must be a real commitment, a real price or a real measurement (with
 
 | Brand | Folder | Accent | Hero object | Notes |
 |---|---|---|---|---|
-| **KB Ventures** (parent company) | `kbventures-site/` | Champagne gold `#D4AF37` | A slim plaque of smoked glass and brushed metal with a fine engraved "KB" mark, standing upright on a basalt plinth under one spotlight | Its businesses are shown in a lit niche gallery: KB Study Guides (a printed guide on a stand, using the real covers) and KB Web Designs (the black metal card). "Many businesses. One standard." Brand only, no founder name or photo. |
+| **KB Ventures** (parent company) | `kbventures-site/` (this repo) | Champagne gold `#D4AF37` | The KB plaque (smoked glass, brushed platinum frame, champagne-gold KB), shown in a round frame inside a guilloche rosette | **Look (Nov 2026 redesign): an engraved certificate, like a banknote issued in a series.** Deep ink ground, champagne-gold guilloche engraving drawn in code (`tools/make-guilloche.py`, `img/engraving/`), Bodoni Moda headings with one italic champagne accent, ivory text, outlined champagne buttons. Home: the businesses listed as numbered denominations (No. 1 KB Study Guides, No. 2 KB Web Designs, the next one reserved). Keep the plaque and its video, the KB wordmark and "Many businesses. One standard." Brand only, no founder name or photo. |
 | **KB Web Designs** | `black-crest-site/` | Gold `#D4AF37` | A black brushed-titanium member's card with a gold-engraved fine-line crest | Concept sites are shown as lit niches, each holding a phone that displays that concept. Prices: One Page $300, Full Website $700, Care plan $30 a month, Custom by quote. "Premium sites for local businesses." |
-| **KB Study Guides** | its pages in `kbventures-site/` | Deep ivory `#E8DFC8` with a thin gold line | The guides as printed books standing in lit niches, using the real covers as the book cover texture | Prices live in Stripe. Never change prices in the site without the owner. Keep "VCE® is a registered trademark of the VCAA." near anything that says VCE. |
+| **KB Study Guides** | its pages in this repo (`aceguides.html`) | Graphite spines with the covers' gold line | The guides as book spines on oak shelves | **Look (Nov 2026 redesign): a bookshelf in daylight, its own world.** Light cool wall, oak planks, every guide a graphite spine with its gold line; tap one for the cover, price, free sample and Buy (daylight detail panel). Switzer for titles and prices. Prices live in Stripe. Never change prices in the site without the owner. Keep "VCE® is a registered trademark of the VCAA." near anything that says VCE. |
 
 **Client concept and demo sites** (`barber-demo`, `cafe-demo-v2`, `gym-demo`, `plumber-demo`, `salon-demo`, `parts-store-demo`, and any new ones):
 - They belong to their (made-up or real) client's brand, so they keep the client's own colours and fonts.

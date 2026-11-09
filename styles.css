@@ -991,3 +991,73 @@ body::before { content: ""; position: fixed; inset: 0; z-index: -1; pointer-even
 .page-title, .nf-code { background: none !important; -webkit-text-fill-color: currentColor; color: var(--text-platinum); }
 .founder-mono { background: none !important; -webkit-text-fill-color: currentColor; color: #E2C77A; }
 .note-rosette { opacity: .85; }
+
+/* ==========================================================
+   KB Study Guides (Nov 2026 redesign): a bookshelf in daylight.
+   Its own look, separate from the KB Ventures certificate: a light wall, oak shelves, and every guide standing as a
+   spine in the real cover's graphite with its gold line. Tap a spine and the guide opens with its cover, price,
+   free sample and Buy button (the detail dialog).
+   ========================================================== */
+.shelf-world { --wall: #EEF0EC; --wall-2: #E2E6E1; --oak: #B9895A; --oak-edge: #8F6640; --ink-2: #16181D; --spine: #1C1F25; --gold-line: #C9A84C;
+  background: var(--wall); color: var(--ink-2); padding-bottom: 96px; }
+.shelf-world .page-head { padding-top: calc(var(--nav-h) + 48px); }
+.shelf-world .page-title { color: var(--ink-2) !important; -webkit-text-fill-color: var(--ink-2); font-family: var(--font); font-weight: 600; letter-spacing: -.02em; font-size: clamp(40px, 5.4vw, 72px); }
+.shelf-world .lead, .shelf-world .dim, .shelf-world p { color: #3A3E46; }
+.shelf-world .h2 { color: var(--ink-2); font-family: var(--font); font-weight: 600; letter-spacing: -.01em; font-size: clamp(26px, 2.6vw, 36px); }
+.shelf-world a { color: inherit; }
+.shelf-world .shop-jump { background: var(--wall-2); border-color: rgba(22, 24, 29, .12); }
+.shelf-world .shop-jump a { color: var(--ink-2); }
+.shop-group { margin-top: clamp(48px, 6vw, 80px); }
+.shelf-hint { margin: 10px 0 18px; font-size: 15px; color: #565B64 !important; }
+/* the shelf: spines standing on an oak plank */
+.shelf { display: flex; align-items: flex-end; gap: 6px; margin: 0; padding: 0 0 0 10px; list-style: none; border-bottom: 14px solid var(--oak); box-shadow: none; position: relative; }
+.shelf::after { content: ""; position: absolute; left: 0; right: 0; bottom: -14px; height: 3px; background: var(--oak-edge); }
+.spine-slot { height: clamp(250px, 24vw, 320px); display: flex; align-items: flex-end; }
+.spine { display: grid; grid-template-rows: auto 1fr auto; justify-items: center; width: clamp(54px, 5.2vw, 70px); height: var(--h, 100%); padding: 14px 0 12px; background: var(--spine); color: #EEF0F4; text-decoration: none; border-radius: 2px 2px 0 0; transition: background-color .25s var(--ease); }
+.spine-band { width: 60%; height: 2px; margin: 4px 0 14px; background: var(--gold-line); }
+.spine-title { writing-mode: vertical-rl; font: 600 clamp(15px, 1.25vw, 18px)/1 var(--font); letter-spacing: .02em; white-space: nowrap; overflow: hidden; }
+.spine-foot { display: grid; justify-items: center; gap: 6px; margin-top: 12px; }
+.spine-level { font: 500 10.5px/1.1 var(--font); letter-spacing: .06em; text-transform: uppercase; color: #C9CDD6; text-align: center; max-width: 52px; }
+.spine-price { font: 600 13px/1 var(--font); color: #F3DDA0; font-variant-numeric: tabular-nums; }
+.spine:hover, .spine:focus-visible { background: #2A2E37; }
+.spine:hover .spine-title, .spine:focus-visible .spine-title { text-decoration: underline; text-underline-offset: 4px; }
+.spine:focus-visible { outline: 3px solid #1D5FD1; outline-offset: 3px; }
+.spine-slot.is-soon .spine { background: #7D828C; }
+.spine-slot.is-soon .spine-price { color: #EEF0F4; font-size: 10px; letter-spacing: .04em; text-transform: uppercase; writing-mode: horizontal-tb; max-width: 52px; text-align: center; }
+/* phones: the shelf scrolls sideways inside itself; the page never does */
+@media (max-width: 719px) {
+  .shelf { overflow-x: auto; scroll-snap-type: x proximity; padding-right: 24px; scrollbar-width: none; }
+  .spine-slot { flex: 0 0 auto; scroll-snap-align: start; height: 240px; }
+  .spine { width: 56px; }
+}
+/* bundles, the guide list and the small print, on the daylight wall */
+.shelf-world .st-table th, .shelf-world .st-table td { border-color: rgba(22, 24, 29, .14); color: var(--ink-2); }
+.shelf-world .st-save { color: #7A5A12; }
+.shelf-world .shop-about, .shelf-world .shop-chooser, .shelf-world .shop-foot { color: var(--ink-2); }
+.shelf-world .shop-chooser-title { color: var(--ink-2); }
+.shelf-world .btn-gold { background: var(--ink-2); color: #fff; border-color: var(--ink-2); }
+.shelf-world .text-btn, .shelf-world .text-link { color: var(--ink-2); }
+
+/* the shop's own header band (the light wall would swallow a transparent bar), titles, and a daylight detail view */
+[data-page="aceguides"] .nav { background: #0B0C0F; border-bottom-color: rgba(201, 168, 76, .22); }
+.spine-title.is-long { font-size: clamp(12.5px, 1vw, 14px); }
+.shelf-world .st-title { color: var(--ink-2); font-family: var(--font); font-weight: 600; letter-spacing: -.01em; }
+.shelf-world .st-amt, .shelf-world .st-amt .num { color: var(--ink-2); }
+.shelf-world .st-worth { color: #565B64; }
+.shelf-world .guide-detail { background: #F7F8F5; color: var(--ink-2); border-color: rgba(22, 24, 29, .14); }
+.shelf-world .guide-detail::backdrop { background: rgba(22, 24, 29, .55); }
+.shelf-world .detail-title { color: var(--ink-2); font-family: var(--font); font-weight: 600; font-style: normal; letter-spacing: -.02em; }
+.shelf-world .detail-title em { font-style: normal; color: inherit; }
+.shelf-world .crumbs, .shelf-world .facts-label, .shelf-world .detail-price small { color: #565B64; }
+.shelf-world .detail-lead { color: #3A3E46; }
+.shelf-world .facts { border-color: rgba(22, 24, 29, .14); }
+.shelf-world .facts li { border-color: rgba(22, 24, 29, .14); color: var(--ink-2); }
+.shelf-world .detail-price, .shelf-world .detail-price .num { color: var(--ink-2); }
+.shelf-world .detail-vcaa { color: #565B64; }
+
+.shelf-world .btn-quiet, .shelf-world .product-soon { color: #4A4F58; border-color: rgba(22, 24, 29, .2); background: transparent; opacity: 1; }
+.shelf-world .shop-inside li, .shelf-world .principles li { color: var(--ink-2); border-color: rgba(22, 24, 29, .16); background: transparent; }
+.shelf-world .shop-chooser-title { color: var(--ink-2); font-family: var(--font); font-weight: 600; letter-spacing: -.01em; }
+.shelf-world .label { color: #565B64; }
+@media (max-width: 719px) { .spine-title.is-long { font-size: 11.5px; } }
+.shelf-world .principles strong { color: var(--ink-2); font-weight: 600; }

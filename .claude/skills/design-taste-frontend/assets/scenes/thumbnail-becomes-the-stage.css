@@ -1,0 +1,330 @@
+/* tasteskill / scenes / thumbnail-becomes-the-stage.css
+   Without .is-live (reduced motion, no script, a failed CDN, phone set to 'rest') the scene is two plain
+   blocks: the statement over a row of thumbnails on the page's ground, then the chapter picture full
+   bleed with its heading, the note under it and the feature notes at its foot, in a single flow column, so
+   a heading that wraps pushes the note down instead of running into it. That second block is exactly the
+   scene's last frame. With .is-live the stage holds and thumbnail-becomes-the-stage.js writes the geometry
+   into custom properties on the elements that use them (--kh-t transform, --kh-o opacity, --kh-clip,
+   --kh-win-o, --kh-band); every live default below is the p = 0 value, so nothing depends on a script
+   having run at a given point.
+   Weights follow the page: --display-weight (the statement; 500 here when the page sets none) and
+   --strong-weight (the feature names; 600 here when the page sets none). A weight the page has not
+   loaded is never faked: the nearest loaded one shows. */
+
+[data-scene="thumbnail-becomes-the-stage"] { font-synthesis-weight: none; }
+
+[data-scene="thumbnail-becomes-the-stage"] {
+  --kh-gutter: var(--margin, clamp(16px, 2.8vw, 40px));
+  --kh-ground: var(--ground, var(--bg, #eceeeb));
+  --kh-ink: var(--ink, #15171a);
+  --kh-paper: var(--paper, #f3f4f1);
+  --kh-night: #0b0d0f;                    /* under the pictures while they load */
+  --kh-size: clamp(40px, 8vw, 132px);     /* the statement and the heading: one size, never scaled (--kh-fit set by the script for over-long lines) */
+  --kh-thumb: 17%;                        /* thumbnail width, share of the row (option: thumb) */
+  --kh-thumb-use: var(--kh-thumb);
+  --kh-gap: 12px;
+  --kh-n: 3;                              /* thumbnails in the row (set by the script; :has() below without it) */
+  --kh-radius: var(--radius, 0px);        /* option: radius */
+  --kh-shade: 0.3;                        /* flat scrim over the picture (option: shade) */
+  --kh-band-alpha: calc(1 - 0.25 / (1 - var(--kh-shade))); /* flat band under the feature notes (option: band); follows the
+                                             shade, so the notes keep the same ground: 0.64 at shade 0.3, 0.72 at 0.12 */
+  --kh-row-bottom: clamp(24px, 3.6svh, 40px);
+  --kh-foot: clamp(24px, 4.4svh, 40px);
+  --kh-top: 26.67svh;                     /* where the statement block starts */
+  --kh-head: 15svh;                       /* where the heading settles */
+  --kh-note-gap: 24px;                    /* heading to note */
+  --kh-fcols: 4;
+  background: var(--kh-ground);
+  color: var(--kh-ink);
+}
+
+/* ---------- the finished composition (default) ---------- */
+[data-scene="thumbnail-becomes-the-stage"] > .scene-stage {
+  display: flex;
+  flex-direction: column;
+  min-height: 200svh;
+}
+[data-scene="thumbnail-becomes-the-stage"] .kh-statement-box {
+  flex: 1 0 auto;
+  box-sizing: border-box;
+  padding: var(--kh-top) var(--kh-gutter) 48px;
+  text-align: center;
+}
+[data-scene="thumbnail-becomes-the-stage"] .kh-statement {
+  margin: 0;
+  max-width: none;
+  font-family: var(--font-display, inherit);
+  font-weight: var(--display-weight, 500);
+  font-size: calc(var(--kh-size) * var(--kh-fit, 1));
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--kh-ink);
+  text-wrap: balance;
+}
+[data-scene="thumbnail-becomes-the-stage"] .kh-line,
+[data-scene="thumbnail-becomes-the-stage"] .kh-mask,
+[data-scene="thumbnail-becomes-the-stage"] .kh-in { display: block; }
+[data-scene="thumbnail-becomes-the-stage"] .kh-mask { overflow: hidden; padding-bottom: 0.1em; margin-bottom: -0.1em; }
+/* line 1's paper copy (made by the script) is drawn only while the scene runs */
+[data-scene="thumbnail-becomes-the-stage"] .kh-paper-ink { display: none; }
+
+[data-scene="thumbnail-becomes-the-stage"] .kh-row {
+  flex: none;
+  display: flex;
+  justify-content: center;
+  gap: var(--kh-gap);
+  padding: 0 var(--kh-gutter) var(--kh-row-bottom);
+}
+[data-scene="thumbnail-becomes-the-stage"] .kh-row:has(> :last-child:nth-child(1)) { --kh-n: 1; }
+[data-scene="thumbnail-becomes-the-stage"] .kh-row:has(> :last-child:nth-child(2)) { --kh-n: 2; }
+[data-scene="thumbnail-becomes-the-stage"] .kh-row:has(> :last-child:nth-child(4)) { --kh-n: 4; }
+[data-scene="thumbnail-becomes-the-stage"] .kh-row:has(> :last-child:nth-child(5)) { --kh-n: 5; }
+[data-scene="thumbnail-becomes-the-stage"] .kh-sat,
+[data-scene="thumbnail-becomes-the-stage"] .kh-slot {
+  flex: none;
+  width: min(var(--kh-thumb-use), calc((100% - (var(--kh-n) - 1) * var(--kh-gap)) / var(--kh-n)));
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: var(--kh-radius);
+  background: var(--kh-night);
+}
+[data-scene="thumbnail-becomes-the-stage"] .kh-sat img,
+[data-scene="thumbnail-becomes-the-stage"] .kh-slot img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* block 2: the chapter, one flow column over the picture (heading, note, then the notes at the foot) */
+[data-scene="thumbnail-becomes-the-stage"] .kh-window {
+  position: relative;
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  row-gap: var(--kh-note-gap);
+  min-height: max(100svh, 480px);
+  overflow: hidden;
+  background: var(--kh-night);
+  color: var(--kh-paper);
+}
+[data-scene="thumbnail-becomes-the-stage"] .kh-media { position: absolute; inset: 0; }
+[data-scene="thumbnail-becomes-the-stage"] .kh-media picture,
+[data-scene="thumbnail-becomes-the-stage"] .kh-media img,
+[data-scene="thumbnail-becomes-the-stage"] .kh-media video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+}
+[data-scene="thumbnail-becomes-the-stage"] .kh-shade {
+  position: absolute;
+  inset: 0;
+  background: rgb(8 10 12 / var(--kh-shade));
+}
+[data-scene="thumbnail-becomes-the-stage"] .kh-statement-box--paper {
+  position: relative;
+  flex: none;
+  padding: var(--kh-head) var(--kh-gutter) 0;
+  text-align: left;
+  pointer-events: none;
+}
+[data-scene="thumbnail-becomes-the-stage"] .kh-statement-box--paper .kh-statement { color: var(--kh-paper); }
+[data-scene="thumbnail-becomes-the-stage"] .kh-statement-box--paper .kh-line + .kh-line { display: none; }
+
+/* a page that left the paper copy out (the script clones it) still keeps the note clear of the top without script */
+[data-scene="thumbnail-becomes-the-stage"]:not(.is-live) .kh-window:not(:has(> .kh-statement-box--paper)) { padding-top: var(--kh-head); }
+[data-scene="thumbnail-becomes-the-stage"] .kh-chapter { display: contents; }
+[data-scene="thumbnail-becomes-the-stage"] .kh-chapter a { pointer-events: auto; }
+[data-scene="thumbnail-becomes-the-stage"] .kh-note {
+  position: relative;
+  max-width: 34ch;
+  margin: 0 var(--kh-gutter) 48px;
+  font-family: var(--font-text, inherit);
+  font-size: clamp(17px, 1.35vw, 21px);
+  line-height: 1.35;
+  text-wrap: balance;
+  color: var(--kh-paper);
+}
+[data-scene="thumbnail-becomes-the-stage"] .kh-features {
+  position: relative;
+  margin: auto var(--kh-gutter) var(--kh-foot);
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(max(190px, calc((100% - (var(--kh-fcols) - 1) * 24px) / var(--kh-fcols))), 1fr));
+  gap: 18px 24px;
+  isolation: isolate;
+  color: var(--kh-paper);
+}
+/* the band: a flat step in tone behind the notes (it draws in from the left while the scene runs) */
+[data-scene="thumbnail-becomes-the-stage"] .kh-features::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: -30px;
+  bottom: calc(-1 * var(--kh-foot));
+  left: calc(-1 * var(--kh-gutter));
+  right: calc(-1 * var(--kh-gutter));
+  background: rgb(8 10 12 / var(--kh-band-alpha));
+  transform-origin: 0 50%;
+}
+[data-scene="thumbnail-becomes-the-stage"] .kh-features li { margin: 0; }
+/* four notes are shown; any further ones stay in the list for screen readers only */
+[data-scene="thumbnail-becomes-the-stage"] .kh-features li:nth-child(n+5) {
+  position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+}
+[data-scene="thumbnail-becomes-the-stage"] .kh-features h3 {
+  margin: 0 0 6px;
+  font-family: var(--font-text, inherit);
+  font-size: 17px;
+  font-weight: var(--strong-weight, 600);
+  line-height: 1.25;
+  letter-spacing: -0.005em;
+}
+[data-scene="thumbnail-becomes-the-stage"] .kh-features p {
+  margin: 0;
+  max-width: 36ch;
+  font-family: var(--font-text, inherit);
+  font-size: 16px;
+  text-wrap: pretty;
+  line-height: 1.45;
+  color: var(--kh-paper);
+  opacity: 0.9;
+}
+
+@media (max-width: 1100px) {
+  [data-scene="thumbnail-becomes-the-stage"] { --kh-fcols: 2; }
+}
+
+/* ---------- live: the held stage ---------- */
+html.js [data-scene="thumbnail-becomes-the-stage"].is-live > .scene-stage {
+  display: block;
+  min-height: 0;
+  background: var(--kh-ground);
+}
+[data-scene="thumbnail-becomes-the-stage"].is-live .kh-statement-box {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: var(--kh-top) var(--kh-gutter) 0;
+  text-align: center;
+}
+/* the statement lies above the window: the keyhole opens behind it, never over it */
+[data-scene="thumbnail-becomes-the-stage"].is-live .kh-statement-box:not(.kh-statement-box--paper) { z-index: 4; pointer-events: none; }
+[data-scene="thumbnail-becomes-the-stage"].is-live .kh-line {
+  width: max-content;
+  margin-inline: auto;
+  white-space: nowrap;
+  transform: var(--kh-t, none);
+  opacity: var(--kh-o, 1);
+  visibility: var(--kh-vis, visible);
+  will-change: transform, opacity;
+}
+/* line 1 in paper, laid exactly on its ink letters and clipped by the script to the window behind them */
+[data-scene="thumbnail-becomes-the-stage"].is-live .kh-in { position: relative; }
+[data-scene="thumbnail-becomes-the-stage"].is-live .kh-paper-ink {
+  display: block;
+  position: absolute;
+  inset: 0;
+  color: var(--kh-paper);
+  white-space: nowrap;
+  clip-path: inset(100%);
+  pointer-events: none;
+  user-select: none;
+}
+[data-scene="thumbnail-becomes-the-stage"].is-live .kh-row {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: var(--kh-row-bottom);
+  z-index: 2;
+  padding: 0 var(--kh-gutter);
+  transform: var(--kh-t, none);
+  will-change: transform;
+}
+[data-scene="thumbnail-becomes-the-stage"].is-live .kh-sat {
+  transform: var(--kh-t, none);
+  transform-origin: 100% 50%;
+  opacity: var(--kh-o, 0);
+  will-change: transform, opacity;
+}
+[data-scene="thumbnail-becomes-the-stage"].is-live .kh-slot ~ .kh-sat { transform-origin: 0 50%; }
+[data-scene="thumbnail-becomes-the-stage"].is-live .kh-slot { background: transparent; }
+[data-scene="thumbnail-becomes-the-stage"].is-live .kh-slot-poster { display: none; }
+[data-scene="thumbnail-becomes-the-stage"].is-live .kh-window {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: block;
+  height: auto;
+  min-height: 0;
+  clip-path: var(--kh-clip, inset(100%));
+  opacity: var(--kh-win-o, 0);
+}
+[data-scene="thumbnail-becomes-the-stage"].is-live .kh-media {
+  transform: var(--kh-t, none);
+  transform-origin: 50% 50%;
+  will-change: transform;
+}
+[data-scene="thumbnail-becomes-the-stage"].is-live .kh-shade { opacity: var(--kh-o, 0); }
+/* the window's own copy is for the finished composition; while the scene runs, line 1's nested paper copy
+   takes its part (it keeps its layout, which the script reads for the gutter) */
+[data-scene="thumbnail-becomes-the-stage"].is-live .kh-statement-box--paper {
+  position: absolute;
+  padding: var(--kh-top) var(--kh-gutter) 0;
+  text-align: center;
+  visibility: hidden;
+}
+[data-scene="thumbnail-becomes-the-stage"].is-live .kh-statement-box--paper .kh-line { visibility: hidden; }
+/* the paper copy keeps the ink copy's layout exactly: its other lines hold their place, unseen */
+[data-scene="thumbnail-becomes-the-stage"].is-live .kh-statement-box--paper .kh-line + .kh-line { display: block; visibility: hidden; }
+[data-scene="thumbnail-becomes-the-stage"].is-live .kh-chapter { display: block; position: absolute; inset: 0; pointer-events: none; }
+/* the note sits under the one-line heading, where the finished composition's flow puts it */
+[data-scene="thumbnail-becomes-the-stage"].is-live .kh-note {
+  position: absolute;
+  top: calc(var(--kh-head) + var(--kh-size) * var(--kh-fit, 1) + var(--kh-note-gap));
+  left: var(--kh-gutter);
+  margin: 0;
+  opacity: var(--kh-o, 0);
+  transform: var(--kh-t, translate3d(0, 8px, 0));
+  will-change: transform, opacity;
+}
+[data-scene="thumbnail-becomes-the-stage"].is-live .kh-features {
+  position: absolute;
+  left: var(--kh-gutter);
+  right: var(--kh-gutter);
+  bottom: var(--kh-foot);
+  margin: 0;
+}
+[data-scene="thumbnail-becomes-the-stage"].is-live .kh-features::before { transform: scaleX(var(--kh-band, 0)); }
+[data-scene="thumbnail-becomes-the-stage"].is-live .kh-features li {
+  opacity: var(--kh-o, 0);
+  transform: var(--kh-t, translate3d(0, 24px, 0));
+  will-change: transform, opacity;
+}
+
+/* ---------- phones ---------- */
+@media (max-width: 767px) {
+  [data-scene="thumbnail-becomes-the-stage"] {
+    --kh-size: clamp(30px, 10.4vw, 52px);
+    --kh-thumb-use: 100%;
+    --kh-gutter: var(--margin, 16px);
+    --kh-row-bottom: max(24px, 6svh);
+    --kh-foot: 24px;
+    --kh-top: 32svh;
+    --kh-note-gap: 16px;
+    --kh-fcols: 2;
+  }
+  /* live on a phone the keyhole starts at half the width and the neighbours run off the edges, like a film strip */
+  [data-scene="thumbnail-becomes-the-stage"].is-live .kh-sat,
+  [data-scene="thumbnail-becomes-the-stage"].is-live .kh-slot { width: var(--kh-thumb-phone, 50%); }
+  [data-scene="thumbnail-becomes-the-stage"] .kh-note { font-size: 16px; }
+  [data-scene="thumbnail-becomes-the-stage"] .kh-features { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  /* while the scene runs, the phone shows the first two notes; the others stay in the list for screen readers */
+  [data-scene="thumbnail-becomes-the-stage"].is-live .kh-features li:nth-child(n+3) { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  [data-scene="thumbnail-becomes-the-stage"] .kh-features::before { top: -22px; }
+  [data-scene="thumbnail-becomes-the-stage"] .kh-features h3 { font-size: 15px; margin-bottom: 4px; }
+  [data-scene="thumbnail-becomes-the-stage"] .kh-features p { font-size: 14px; line-height: 1.4; }
+}

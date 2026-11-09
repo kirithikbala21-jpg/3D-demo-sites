@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Thaw, a film by Saltmark</title>
+<meta name="description" content="Saltmark is a two-person documentary studio. Thaw watched one waterfall every morning for a year.">
+<script>document.documentElement.classList.add('js')</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..700&display=swap">
+<link rel="preconnect" href="https://fastly.picsum.photos" crossorigin>
+<link rel="preload" as="image" crossorigin="anonymous" media="(min-width: 768px) and (orientation: landscape)" imagesrcset="https://picsum.photos/id/509/1920/1080 1920w, https://picsum.photos/id/509/3200/1800 3200w" imagesizes="100vw">
+<link rel="preload" as="image" crossorigin="anonymous" media="(max-width: 767px), (orientation: portrait)" imagesrcset="https://picsum.photos/id/509/1000/1250 1000w, https://picsum.photos/id/509/1600/2000 1600w" imagesizes="100vw">
+<link rel="stylesheet" href="../stage.css">
+<link rel="stylesheet" href="../scatter-and-lock.css">
+<style>
+  :root {
+    --ground: #e8e7e2;
+    --ink: #0d100f;
+    --font-display: 'Archivo', system-ui, sans-serif;
+    --font-text: 'Archivo', system-ui, sans-serif;
+    --gutter: clamp(16px, 6vw, 86px);
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html { background: var(--ground); }
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font: 400 18px/1.55 var(--font-text);
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; }
+
+  .bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 24px var(--gutter) 0;
+  }
+  .bar strong { font: 700 22px/1 var(--font-display); letter-spacing: -0.02em; }
+  .bar nav { display: flex; align-items: center; gap: 28px; font-size: 16px; }
+  .bar nav a { text-decoration: none; }
+  .bar nav a:not(.book):hover { text-decoration: underline; text-underline-offset: 4px; }
+  .bar .book { padding: 12px 20px; background: var(--ink); color: var(--ground); font-weight: 600; }
+  .bar .book:hover { background: #2a2d2b; }
+
+  .intro {
+    display: grid;
+    align-content: end;
+    gap: 36px;
+    padding: clamp(120px, 22vh, 220px) var(--gutter) 9vh;
+  }
+  @media (min-width: 1100px) and (min-height: 700px) { .intro { min-height: 76svh; padding-top: 0; } }
+  .intro h1 {
+    margin: 0;
+    max-width: 12.5em;
+    font: 600 clamp(30px, 7.6vw, 118px)/0.96 var(--font-display);
+    letter-spacing: -0.035em;
+  }
+  .intro p { margin: 0 0 0 auto; max-width: 30em; font-size: clamp(18px, 1.5vw, 22px); }
+
+  /* The word sits on the dark pool and the moss right of the spray at the foot of the falls (every letter
+     at least 3.5:1 against the brightest fifth of the pixels behind it), inside one row band of the grid.
+     At 9.75cqi its letters fit the 7 columns: two cuts, both in the white between letters (T|h, a|w).
+     On the 4:5 art it stays in the middle 60% of the width: that is all a phone keeps of it at the end. */
+  [data-scene="scatter-and-lock"] { --sl-gutter: var(--gutter); --sl-word-size: 9.75cqi; --sl-word-x: 52%; --sl-word-y: 87.5%; }
+  [data-scene="scatter-and-lock"] .sl-word { font-stretch: 125%; font-weight: 700; letter-spacing: -0.01em; }
+  @media (max-width: 767px), (orientation: portrait) {
+    [data-scene="scatter-and-lock"] { --sl-word-size: 13cqi; --sl-word-x: 52%; --sl-word-y: 74%; }
+  }
+
+  /* The screenings rise over the held last frame of the scene (see .sl-still in scatter-and-lock.css). */
+  .after {
+    background: var(--ground);
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    gap: 48px var(--gutter);
+    padding: 160px var(--gutter) 200px;
+  }
+  .after h2 {
+    margin: 0;
+    font: 600 clamp(34px, 4.6vw, 72px)/1 var(--font-display);
+    letter-spacing: -0.03em;
+  }
+  .after .copy { display: grid; gap: 28px; align-content: start; max-width: 34em; }
+  .after p { margin: 0; }
+  .dates { display: grid; gap: 14px; margin: 0; padding: 0; list-style: none; }
+  .dates li { display: flex; justify-content: space-between; gap: 16px; padding: 16px 20px; background: #d9d9d2; }
+  .dates span:last-child { font-variant-numeric: tabular-nums; }
+  .action {
+    justify-self: start;
+    display: inline-block;
+    padding: 16px 28px;
+    background: var(--ink);
+    color: var(--ground);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .action:hover { background: #2a2d2b; }
+
+  footer {
+    padding: 0 var(--gutter) 40px;
+    display: grid;
+    gap: 20px;
+  }
+  footer .name {
+    margin: 0;
+    font: 700 22.4vw/0.8 var(--font-display);
+    letter-spacing: -0.05em;
+  }
+  footer .small { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 32px; font-size: 15px; }
+
+  @media (max-width: 767px) {
+    .bar nav { gap: 18px; font-size: 15px; }
+    .bar nav a:nth-child(-n+2) { display: none; }
+    .intro { gap: 24px; padding-top: 18vh; }
+    .intro p { margin: 0; }
+    .after { grid-template-columns: 1fr; padding: 96px var(--gutter) 168px; }
+  }
+</style>
+</head>
+<body>
+<header class="bar">
+  <strong>Saltmark</strong>
+  <nav aria-label="Main">
+    <a href="#films">Films</a>
+    <a href="#screenings">Screenings</a>
+    <a href="#studio">Studio</a>
+    <a class="book" href="#screenings">Book seats</a>
+  </nav>
+</header>
+
+<main>
+  <section class="intro">
+    <h1>Saltmark makes slow films about cold water</h1>
+    <p>Two people, one camera and a van. Our new film watched a single waterfall every morning for a whole year.</p>
+  </section>
+
+  <section class="scene" id="films" data-scene="scatter-and-lock" data-options='{"hold":2.5,"cols":7,"rows":4}' aria-labelledby="sl-h">
+    <div class="scene-stage">
+      <header class="sl-title">
+        <h2 class="sl-headline" id="sl-h">A year spent behind one waterfall</h2>
+      </header>
+      <div class="sl-field">
+        <div class="sl-frame">
+          <div class="sl-solid">
+            <div class="sl-art">
+              <picture>
+                <source media="(max-width: 767px), (orientation: portrait)" srcset="https://picsum.photos/id/509/1000/1250 1000w, https://picsum.photos/id/509/1600/2000 1600w" sizes="100vw">
+                <img class="sl-img" src="https://picsum.photos/id/509/1920/1080" srcset="https://picsum.photos/id/509/1920/1080 1920w, https://picsum.photos/id/509/3200/1800 3200w" sizes="100vw" alt="A tall white waterfall pouring into a dark blue pool between banks of bright green moss, seen from the cave behind it" crossorigin="anonymous" fetchpriority="high">
+              </picture>
+              <span class="sl-word">Thaw</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="sl-caption">Filmed from the cave behind the falls, from one thaw to the next, then cut into ninety-four minutes.</p>
+    </div>
+  </section>
+  <div class="sl-still" data-scene="scatter-and-lock">
+    <div class="sl-still-pic" aria-hidden="true">
+      <div class="sl-art">
+        <picture>
+          <source media="(max-width: 767px), (orientation: portrait)" srcset="https://picsum.photos/id/509/1000/1250 1000w, https://picsum.photos/id/509/1600/2000 1600w" sizes="100vw">
+          <img class="sl-img" src="https://picsum.photos/id/509/1920/1080" srcset="https://picsum.photos/id/509/1920/1080 1920w, https://picsum.photos/id/509/3200/1800 3200w" sizes="100vw" alt="" crossorigin="anonymous">
+        </picture>
+        <span class="sl-word">Thaw</span>
+      </div>
+    </div>
+
+  <section class="after" id="screenings" aria-labelledby="after-h">
+    <h2 id="after-h">Thaw opens on 14&nbsp;November</h2>
+    <div class="copy">
+      <p>Ninety-four minutes, no narration, one waterfall and the light that moves through it. The first screenings are at the Harbour Picture House in Wellmouth, and both of us will stay afterwards to talk about how it was made.</p>
+      <ul class="dates">
+        <li><span>Friday 14 November</span><span>19:30</span></li>
+        <li><span>Saturday 15 November</span><span>14:00 and 19:30</span></li>
+        <li><span>Sunday 16 November</span><span>16:00</span></li>
+      </ul>
+      <a class="action" href="mailto:seats@saltmark.example?subject=Seats%20for%20Thaw&amp;body=Hello%2C%20I%20would%20like%20to%20book%20seats%20for%20Thaw%20on%3A%20">Book seats by email</a>
+    </div>
+  </section>
+  </div>
+</main>
+
+<footer id="studio">
+  <p class="name">Saltmark</p>
+  <div class="small">
+    <span>A documentary studio on the north shore, since 2016.</span>
+    <span>Photograph by Jeff Sheldon, via Unsplash.</span>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.min.js"></script>
+<script src="../stage.js"></script>
+<script src="../scatter-and-lock.js"></script>
+<script>Stage.smooth(); Stage.init();</script>
+</body>
+</html>

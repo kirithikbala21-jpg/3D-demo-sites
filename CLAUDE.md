@@ -206,3 +206,17 @@ Sync means facts, not sameness. Only matching information is copied between site
    - the real scores;
    - anything you couldn't do;
    - anything only he can do.
+
+---
+
+## 10. Design skills (added 9 Nov 2026)
+
+This repo has three free design skill sets in `.claude/skills/` (versions in `.claude/skills/SKILLS-VERSIONS.md`):
+- **Taste** (`design-taste-frontend`): design direction, so pages don't look like generic AI sites.
+- **Emil Kowalski** (`emil-design-eng`, `animate`, `improve-animations`, `review-animations` and more): when and how to animate, and when to keep still.
+- **Impeccable** (`/impeccable audit`, `/impeccable polish`, `/impeccable critique` and more): checks and a final polish pass.
+
+How to use them:
+- **This file always wins.** If a skill suggests something this file bans (a font, colour, rounded corners, glass panels, bouncy motion, icon sets, em dashes), follow this file.
+- Before saying a site task is finished, run `/impeccable audit` and `/impeccable polish` on the changed pages, and `review-animations` on any new motion, as well as the checks in section 9.
+- Don't switch on Impeccable's edit hook unless the owner says yes.

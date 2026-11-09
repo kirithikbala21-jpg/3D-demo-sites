@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Flint, stone stairs cut by hand</title>
+<meta name="description" content="Flint is a workshop of six masons in Porto building staircases, steps and thresholds from Portuguese limestone and granite.">
+<script>document.documentElement.classList.add('js')</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&display=swap">
+<link rel="stylesheet" href="../stage.css">
+<link rel="stylesheet" href="../wordmark-under-strain.css">
+<style>
+  :root {
+    --ground: #eeeeeb;
+    --ink: #1f1f1f;
+    --font-display: "Archivo", system-ui, sans-serif;
+    --font-text: "Archivo", system-ui, sans-serif;
+    --gutter: max(16px, 4vw);
+  }
+  * { box-sizing: border-box; }
+  html { background: var(--ground); }
+  body { margin: 0; background: var(--ground); color: var(--ink); font: 400 18px/1.55 var(--font-text); -webkit-font-smoothing: antialiased; }
+  a { color: inherit; }
+  img { display: block; width: 100%; height: auto; }
+
+  .bar { display: flex; align-items: center; gap: 40px; padding: 24px var(--gutter); }
+  .bar__name { font: 800 24px/1 var(--font-display); letter-spacing: -.02em; text-decoration: none; margin-right: auto; }
+  .bar nav { display: flex; gap: 28px; }
+  .bar nav a { text-decoration: none; }
+  .bar__action { padding: 12px 20px; background: var(--ink); color: var(--ground); text-decoration: none; font-weight: 600; }
+
+  .hero { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 0 24px; padding: 96px var(--gutter) 0; }
+  .hero h1 { grid-column: 1 / 9; margin: 0; font: 800 clamp(44px, 7.6vw, 124px)/.94 var(--font-display); letter-spacing: -.035em; }
+  .hero p { grid-column: 9 / 13; align-self: end; margin: 0; max-width: 34ch; font-size: 21px; line-height: 1.5; }
+  .hero figure { grid-column: 1 / 13; margin: 88px 0 0; }
+  .hero img { aspect-ratio: 16 / 9; object-fit: cover; }
+
+  .work { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 0 24px; padding: 200px var(--gutter) 200px; }
+  .work h2 { grid-column: 1 / 8; margin: 0; font: 800 clamp(34px, 4.4vw, 64px)/1 var(--font-display); letter-spacing: -.03em; }
+  .work > p { grid-column: 9 / 13; margin: 8px 0 0; }
+  .work figure { margin: 0; }
+  .work figure:nth-of-type(1) { grid-column: 1 / 8; margin-top: 96px; }
+  .work figure:nth-of-type(2) { grid-column: 9 / 13; margin-top: 280px; }
+  .work figure:nth-of-type(1) img { aspect-ratio: 4 / 3; object-fit: cover; }
+  .work figure:nth-of-type(2) img { aspect-ratio: 3 / 4; object-fit: cover; }
+  .work figure:nth-of-type(3) { grid-column: 1 / 13; margin-top: 160px; }
+  .work figure:nth-of-type(3) img { aspect-ratio: 21 / 9; object-fit: cover; }
+  .work figcaption { margin-top: 14px; font-size: 16px; line-height: 1.45; }
+
+  .close { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 32px 24px; padding: 120px var(--gutter) 64px; background: var(--ground); }
+  .close h2 { grid-column: 1 / 7; margin: 0; font: 800 36px/1.05 var(--font-display); letter-spacing: -.02em; }
+  .close .close__visit { grid-column: 1 / 7; margin: 0; max-width: 40ch; }
+  .close .close__small { grid-column: 9 / 13; grid-row: 1 / 3; margin: 0; font-size: 16px; line-height: 1.5; align-self: end; }
+
+  @media (max-width: 767px) {
+    .bar { gap: 16px; padding: 18px var(--gutter); }
+    .bar nav { display: none; }
+    .bar__action { padding: 10px 14px; font-size: 16px; }
+    .hero { display: block; padding-top: 48px; }
+    .hero p { margin-top: 24px; font-size: 18px; }
+    .hero figure { margin: 48px calc(-1 * var(--gutter)) 0; }
+    .hero img { aspect-ratio: 4 / 5; }
+    .work { display: block; padding: 120px var(--gutter); }
+    .work > p { margin-top: 20px; }
+    .work figure:nth-of-type(1) { margin-top: 48px; }
+    .work figure:nth-of-type(2) { margin-top: 40px; width: 72%; margin-left: auto; }
+    .work figure:nth-of-type(3) { margin-top: 40px; }
+    .work figure:nth-of-type(3) img { aspect-ratio: 4 / 3; }
+    .close { display: block; padding: 96px var(--gutter) 48px; }
+    .close .close__visit { margin-top: 16px; }
+    .close .close__small { margin-top: 48px; }
+  }
+</style>
+</head>
+<body>
+<header class="bar">
+  <a class="bar__name" href="#">Flint</a>
+  <nav aria-label="Main"><a href="#work">Work</a><a href="#yard">Visit the yard</a></nav>
+  <a class="bar__action" href="#contact">Start a project</a>
+</header>
+
+<main>
+  <section class="hero" aria-labelledby="hero-title">
+    <h1 id="hero-title">Stone stairs, cut by hand</h1>
+    <p>Flint is a workshop of six masons in Porto building staircases, steps and thresholds from Portuguese limestone and granite, eight commissions a year.</p>
+    <figure>
+      <picture>
+        <source media="(max-width: 767px)" srcset="https://picsum.photos/id/276/800/1000" width="800" height="1000">
+        <img src="https://picsum.photos/id/276/1600/900" width="1600" height="900" alt="A wide stone stairway rising into thick fog">
+      </picture>
+    </figure>
+  </section>
+
+  <section class="work" id="work" aria-labelledby="work-title">
+    <h2 id="work-title">Every stair is drawn on site and cut in our yard</h2>
+    <p>We measure the room, draw each tread at full size and cut it from a single block. A staircase takes six to fourteen weeks from the first visit to the last stone, and it is fitted by the people who cut it.</p>
+    <figure>
+      <img src="https://picsum.photos/id/240/1200/900" width="1200" height="900" loading="lazy" alt="Wide pale stone steps beside a white wall, a figure sitting at the top">
+      <figcaption>Garden steps for a house in Foz do Douro, granite, 2025.</figcaption>
+    </figure>
+    <figure>
+      <img src="https://picsum.photos/id/954/600/800" width="600" height="800" loading="lazy" alt="A narrow opening in a white wall showing a pale staircase">
+      <figcaption>A narrow limestone stair for a flat in Bonfim, 2024.</figcaption>
+    </figure>
+    <figure>
+      <img src="https://picsum.photos/id/78/1600/900" width="1600" height="900" loading="lazy" alt="A carved wooden double door set in an old stone facade">
+      <figcaption>A new granite threshold under an old door in Miragaia, 2023.</figcaption>
+    </figure>
+  </section>
+
+  <section class="scene ws" id="contact" data-scene="wordmark-under-strain" data-options='{}' aria-labelledby="ws-title">
+    <div class="scene-stage">
+      <div class="ws-top">
+        <p>Commissions for spring 2027 are open. Tell us about the room and we will come and measure it.</p>
+        <p>Porto, since 2009</p>
+      </div>
+      <h2 class="ws-word" id="ws-title">
+        <span class="ws-sr">FLINT</span>
+        <span class="ws-stack" aria-hidden="true">
+          <span class="ws-copy" style="--i:0" data-text="FLINT"></span>
+          <span class="ws-copy" style="--i:1" data-text="FLINT"></span>
+          <span class="ws-copy" style="--i:2" data-text="FLINT"></span>
+          <span class="ws-copy" style="--i:3" data-text="FLINT"></span>
+          <span class="ws-copy" style="--i:4" data-text="FLINT"></span>
+          <span class="ws-copy ws-copy--front" style="--i:5">FL<span class="ws-l ws-slot">I</span>NT</span>
+        </span>
+      </h2>
+      <a class="ws-drop" href="mailto:hello@flint-stone.pt?subject=A%20new%20staircase&amp;body=Where%20the%20stair%20goes%3A%0AFloor%20to%20floor%20height%3A%0AStone%20we%20like%3A"><span class="ws-drop__label">Start a project</span></a>
+      <div class="ws-meta">
+        <a href="mailto:hello@flint-stone.pt">hello@flint-stone.pt</a>
+        <span>Rua do Bonjardim 980, Porto</span>
+        <a href="#yard">Visit the yard</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="close" id="yard" aria-labelledby="yard-title">
+  <h2 id="yard-title">Visit the yard</h2>
+  <p class="close__visit">Thursday to Saturday, 9:00 to 17:00. Bring a drawing, a photograph, or only the measurements of the room, and walk the stone before you choose it.</p>
+  <p class="close__small">Photographs by davide ragusa, Elisabetta Foco, Todd Quackenbush and Paul Evans on Unsplash. Flint Stonework is an invented studio for this demo.</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.min.js"></script>
+<script src="../stage.js"></script>
+<script src="../wordmark-under-strain.js"></script>
+<script>Stage.smooth(); Stage.init();</script>
+</body>
+</html>

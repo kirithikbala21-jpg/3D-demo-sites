@@ -1,0 +1,329 @@
+/* tasteskill / scenes / shaped-window-over-fixed-world.css — a shape-shifting window over a fixed world.
+   By default (no script, reduced motion, a failed CDN, a phone set to 'rest') the section is one screen:
+   the title and caption on the page ground, one wide window cut into it, and the chapter word and the
+   lede inside the window over flat scrims. Under .is-live the stage is held and the script draws the
+   two offset windows, the merge and the push (see the .js file for the DOM and the options).
+   Page tokens: --ground (shutter and section), --ink (title, caption), --font-display (title, word),
+   --sw-light (type on the photo; the script picks the lighter of ground and ink when it is unset),
+   --sw-focus (object-position of the photo, default 50% 50%).
+   Weights follow the page: --display-weight (the title and the word; 650 and 800 here when the page
+   sets none) and --strong-weight (the link; 600 here when the page sets none). A weight the page has
+   not loaded is never faked: the nearest loaded one shows. */
+
+[data-scene="shaped-window-over-fixed-world"] { font-synthesis-weight: none; }
+
+[data-scene="shaped-window-over-fixed-world"] {
+  position: relative;
+  color: var(--ink, #111);
+  background: var(--ground, #f4f3ef);
+}
+
+/* ---------- the finished composition ---------- */
+
+[data-scene="shaped-window-over-fixed-world"] .sw-stage {
+  position: relative;
+  height: 100svh;
+  min-height: 640px;
+  overflow: clip;
+  background: var(--ground, #f4f3ef);
+}
+[data-scene="shaped-window-over-fixed-world"] .sw-world,
+[data-scene="shaped-window-over-fixed-world"] .sw-type,
+[data-scene="shaped-window-over-fixed-world"] .sw-shutter {
+  position: absolute;
+  inset: 0;
+}
+/* the halves overhang the stage by 4px (EDGE in the script): an edge shared with the photo below
+   would let the photo bleed through the anti-aliasing as a hairline */
+[data-scene="shaped-window-over-fixed-world"] .sw-half {
+  position: absolute;
+  inset: -4px;
+}
+[data-scene="shaped-window-over-fixed-world"] .sw-world { overflow: hidden; }
+[data-scene="shaped-window-over-fixed-world"] .sw-world picture { display: block; width: 100%; height: 100%; }
+[data-scene="shaped-window-over-fixed-world"] .sw-world-media {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--sw-focus, 50% 50%);  /* the picture's focal point, if it is not centred */
+}
+
+/* the shutter: two halves of flat ground; the left one reaches 2px past the centre so they overlap
+   and no seam can open above or below the window */
+[data-scene="shaped-window-over-fixed-world"] .sw-half { background: var(--ground, #f4f3ef); }
+[data-scene="shaped-window-over-fixed-world"] .sw-half--l {
+  clip-path: polygon(0 0, calc(50% + 2px) 0, calc(50% + 2px) 36%, 4% 36%, 4% 96%, calc(50% + 2px) 96%, calc(50% + 2px) 100%, 0 100%);
+}
+[data-scene="shaped-window-over-fixed-world"] .sw-half--r {
+  clip-path: polygon(100% 0, 50% 0, 50% 36%, 96% 36%, 96% 96%, 50% 96%, 50% 100%, 100% 100%);
+}
+
+/* type on the ground */
+[data-scene="shaped-window-over-fixed-world"] .sw-intro {
+  position: absolute;
+  left: 4%;
+  top: 10%;
+  width: 52%;
+  margin: 0;
+}
+[data-scene="shaped-window-over-fixed-world"] .sw-title {
+  margin: 0;
+  font-family: var(--font-display, inherit);
+  font-weight: var(--display-weight, 650);
+  font-size: clamp(36px, 4.4vw, 72px);
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+  color: var(--ink, #111);
+}
+[data-scene="shaped-window-over-fixed-world"] .sw-caption {
+  position: absolute;
+  left: 64%;
+  width: 28%;
+  bottom: 69%;
+  margin: 0;
+  font-size: clamp(16px, 1.25vw, 19px);
+  line-height: 1.4;
+  text-wrap: pretty;
+  color: var(--ink, #111);
+}
+
+/* type in the world */
+[data-scene="shaped-window-over-fixed-world"] .sw-type { pointer-events: none; }
+[data-scene="shaped-window-over-fixed-world"] .sw-type a { pointer-events: auto; }
+[data-scene="shaped-window-over-fixed-world"] .sw-word {
+  --sw-advance: 0.5;     /* advance per letter of the display face, in em (about 0.5 for a condensed face) */
+  --sw-cap-gap: 0.07em;  /* line-box top to cap-top at this line-height (the script measures it when live) */
+  position: absolute;
+  left: 4%;
+  width: 92%;
+  top: calc(40% - var(--sw-cap-gap));
+  margin: 0;
+  font-family: var(--font-display, inherit);
+  font-weight: var(--display-weight, 800);
+  font-stretch: 62%;
+  text-transform: uppercase;
+  /* fitted to 88% of the width, but held to the upper band of the window so it stays on the sky */
+  font-size: min(calc(88vw / (var(--chars, 8) * var(--sw-advance))), 19svh);
+  line-height: 0.86;
+  letter-spacing: 0;
+  white-space: nowrap;
+  text-align: center;
+  color: var(--sw-light, var(--ground, #f4f3ef));
+}
+/* flat translucent fills with soft edges (a blurred flat band, never a gradient). The band is drawn by
+   ::before, so while the scrim fades only its opacity changes and the blur is drawn once, not per frame */
+[data-scene="shaped-window-over-fixed-world"] .sw-scrim {
+  position: absolute;
+  left: -10%;
+  right: -10%;
+}
+[data-scene="shaped-window-over-fixed-world"] .sw-scrim::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--sw-scrim-fill, rgb(16 13 10 / 0.38));
+  filter: blur(var(--sw-scrim-blur, 40px));
+}
+[data-scene="shaped-window-over-fixed-world"] .sw-scrim--top { top: 30%; height: 40%; }
+[data-scene="shaped-window-over-fixed-world"] .sw-scrim--bottom { bottom: -12%; height: 46%; --sw-scrim-fill: rgb(16 13 10 / 0.55); }
+[data-scene="shaped-window-over-fixed-world"] .sw-lede {
+  position: absolute;
+  left: 6%;
+  bottom: 8%;
+  max-width: 40ch;
+  font-size: clamp(17px, 1.4vw, 22px);
+  line-height: 1.4;
+  color: var(--sw-light, var(--ground, #f4f3ef));
+  isolation: isolate;
+}
+/* a second flat band that hugs the lede: the bottom scrim alone leaves it under 5:1 wherever its lines
+   cross a bright part of the photo (live and finished alike) */
+[data-scene="shaped-window-over-fixed-world"] .sw-lede::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: -45% -22% -40% -14%;
+  background: rgb(16 13 10 / 0.5);
+  filter: blur(36px);
+  pointer-events: none;
+}
+[data-scene="shaped-window-over-fixed-world"] .sw-lede p { margin: 0 0 0.8em; text-wrap: pretty; }
+[data-scene="shaped-window-over-fixed-world"] .sw-link {
+  color: inherit;
+  font-weight: var(--strong-weight, 600);
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.22em;
+}
+[data-scene="shaped-window-over-fixed-world"] .sw-prop { display: none; }
+
+/* narrow screens (phones, and anything narrower than 1.1:1 such as a portrait tablet): the title and
+   caption stacked on the ground, the window below them */
+@media (max-width: 767px), (max-aspect-ratio: 11/10) {
+  [data-scene="shaped-window-over-fixed-world"] .sw-half--l {
+    clip-path: polygon(0 0, calc(50% + 2px) 0, calc(50% + 2px) 38%, 6% 38%, 6% 96%, calc(50% + 2px) 96%, calc(50% + 2px) 100%, 0 100%);
+  }
+  [data-scene="shaped-window-over-fixed-world"] .sw-half--r {
+    clip-path: polygon(100% 0, 50% 0, 50% 38%, 94% 38%, 94% 96%, 50% 96%, 50% 100%, 100% 100%);
+  }
+  [data-scene="shaped-window-over-fixed-world"] .sw-shutter {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 7svh 6% 0;
+  }
+  [data-scene="shaped-window-over-fixed-world"] .sw-intro,
+  [data-scene="shaped-window-over-fixed-world"] .sw-caption {
+    position: relative;
+    inset: auto;
+    width: auto;
+  }
+  [data-scene="shaped-window-over-fixed-world"] .sw-title { font-size: clamp(32px, 9vw, 72px); }
+  [data-scene="shaped-window-over-fixed-world"] .sw-caption { max-width: 34rem; font-size: clamp(16px, 2.2vw, 20px); }
+  [data-scene="shaped-window-over-fixed-world"] .sw-word {
+    left: 7%;
+    width: 86%;
+    top: calc(45% - var(--sw-cap-gap));
+    font-size: min(calc(86vw / (var(--chars, 8) * var(--sw-advance))), 17svh);
+  }
+  [data-scene="shaped-window-over-fixed-world"] .sw-scrim--top { top: 36%; height: 30%; }
+  [data-scene="shaped-window-over-fixed-world"] .sw-lede {
+    left: calc(6% + 18px);
+    right: calc(6% + 18px);
+    bottom: calc(4% + 16px);
+    max-width: 34rem;
+    font-size: clamp(16px, 2.2vw, 20px);
+    line-height: 1.45;
+  }
+}
+
+/* ---------- live: the held stage ---------- */
+
+/* The stage is the large viewport (stage.css uses 100svh): on a phone whose toolbar slides away, an svh
+   stage would leave a band of ground under the full-bleed photo. The script stops ScrollTrigger from
+   re-measuring on that toolbar resize (ignoreMobileResize). */
+html.js .scene[data-scene="shaped-window-over-fixed-world"].is-live { height: calc((var(--hold, 2) + 1) * 100lvh); }
+html.js .scene[data-scene="shaped-window-over-fixed-world"].is-live > .scene-stage { height: 100lvh; }
+[data-scene="shaped-window-over-fixed-world"].is-live .sw-stage { min-height: 0; }
+[data-scene="shaped-window-over-fixed-world"].is-live .sw-world {
+  /* a box 1/worldScale of the stage, so at the start scale it exactly covers */
+  inset: calc((100% - 100% / var(--sw-s0, 0.8)) / 2);
+  overflow: visible;
+  will-change: transform;
+}
+[data-scene="shaped-window-over-fixed-world"].is-live .sw-world-media { will-change: transform; }
+
+/* The title stands over the low window and the caption under the high one, each on ground no window
+   edge ever reaches: the title above the band the windows level to (--sw-top), the caption below it
+   (--sw-bottom). The low window rises to meet the title and the high one comes down to the caption. Both
+   lie above the props (whose solid parts the script keeps 16px clear of them) and fade as the push
+   begins. */
+[data-scene="shaped-window-over-fixed-world"].is-live .sw-intro {
+  left: var(--sw-low-x, 22.22%);
+  width: var(--sw-hole-w, 27%);
+  top: auto;
+  bottom: calc(100% - var(--sw-top, 18.5%) + var(--sw-gap, 28px));
+  z-index: 2;
+}
+[data-scene="shaped-window-over-fixed-world"].is-live .sw-title { font-size: min(4.2vw, 6.6svh, 68px); }
+/* the caption hangs under the high window against the bar, so the outer corner stays free for the prop */
+[data-scene="shaped-window-over-fixed-world"].is-live .sw-caption {
+  left: var(--sw-cap-x, 50.6%);
+  width: var(--sw-cap-w, 22vw);
+  top: calc(var(--sw-bottom, 81.5%) + var(--sw-gap, 28px));
+  bottom: auto;
+  z-index: 2;
+}
+/* a caption that does not fit under the windows is left out (its key fact is repeated in the lede) */
+[data-scene="shaped-window-over-fixed-world"].is-live.sw--no-caption .sw-caption { display: none; }
+/* the shutter's own box is empty where the windows are: it lets the pointer (and the page checks) through
+   to the place behind them, and only its words take it */
+[data-scene="shaped-window-over-fixed-world"].is-live .sw-shutter { pointer-events: none; }
+[data-scene="shaped-window-over-fixed-world"].is-live :is(.sw-intro, .sw-caption) { pointer-events: auto; }
+
+/* the merged window during the push: four flat bars of ground the script adds and places, each on its
+   own layer so the compositor scales them with crisp edges and nothing is repainted per frame */
+[data-scene="shaped-window-over-fixed-world"] .sw-frame { position: absolute; inset: 0; visibility: hidden; pointer-events: none; }
+[data-scene="shaped-window-over-fixed-world"] .sw-bar { position: absolute; background: var(--ground, #f4f3ef); will-change: transform; }
+
+/* the word is promoted by the script only while it moves (0.5-0.885), so it is sharp at rest */
+[data-scene="shaped-window-over-fixed-world"].is-live .sw-word { left: 4%; width: 92%; }
+/* layers that first appear late in the push are promoted from the start, so their first raster
+   happens at load and not mid-scroll (flat blurred fills and a paragraph: no visible softening) */
+[data-scene="shaped-window-over-fixed-world"].is-live .sw-scrim { opacity: 0; will-change: opacity; }
+[data-scene="shaped-window-over-fixed-world"].is-live .sw-lede { will-change: transform, opacity; }
+[data-scene="shaped-window-over-fixed-world"].is-live .sw-scrim--top { top: -20%; height: 62%; }
+[data-scene="shaped-window-over-fixed-world"].is-live .sw-scrim--bottom { bottom: -20%; height: 62%; }
+/* the lede and anything set in it (a link, a chip) stay inside the stage at every width */
+[data-scene="shaped-window-over-fixed-world"].is-live .sw-lede { left: 4%; bottom: 7%; max-width: min(40ch, 92%); overflow-wrap: break-word; }
+[data-scene="shaped-window-over-fixed-world"].is-live .sw-lede > * { max-width: 100%; }
+
+/* the props: the foreground plane, in front of the shutter in the bottom corners. The one on the high
+   window's side is the tall one. A photograph keyed by the script stays hidden until it is keyed. */
+[data-scene="shaped-window-over-fixed-world"].is-live .sw-prop {
+  display: block;
+  position: absolute;
+  z-index: 1;
+  width: auto;
+  max-width: none;
+  pointer-events: none;
+  user-select: none;
+  /* their own layers: the push scales and throws them every frame, and repainting two large cut-outs
+     inside the shutter on each of those frames is what made the push drop frames */
+  will-change: transform;
+}
+/* a page sizes and places them with --sw-prop-l-h, --sw-prop-l-x, --sw-prop-l-y (height, left, bottom)
+   and the same for -r- (right), on the section; a tall prop may run past the top of the stage */
+[data-scene="shaped-window-over-fixed-world"].is-live .sw-prop--l {
+  left: var(--sw-prop-l-x, -3%);
+  bottom: var(--sw-prop-l-y, -4%);
+  height: var(--sw-prop-l-h, var(--sw-prop-low, 46%));
+}
+[data-scene="shaped-window-over-fixed-world"].is-live .sw-prop--r {
+  right: var(--sw-prop-r-x, -3%);
+  bottom: var(--sw-prop-r-y, -2%);
+  height: var(--sw-prop-r-h, var(--sw-prop-high, 62%));
+}
+[data-scene="shaped-window-over-fixed-world"].is-live.sw--high-left .sw-prop--l {
+  bottom: var(--sw-prop-l-y, -2%);
+  height: var(--sw-prop-l-h, var(--sw-prop-high, 62%));
+}
+[data-scene="shaped-window-over-fixed-world"].is-live.sw--high-left .sw-prop--r {
+  bottom: var(--sw-prop-r-y, -4%);
+  height: var(--sw-prop-r-h, var(--sw-prop-low, 46%));
+}
+[data-scene="shaped-window-over-fixed-world"].is-live .sw-prop[data-key]:not(.is-keyed) { visibility: hidden; }
+[data-scene="shaped-window-over-fixed-world"].is-live .sw-prop.is-off { display: none; }
+
+/* narrow screens (phones, and anything narrower than 1.1:1 such as a portrait tablet): the script
+   switches to the same geometry with the same query */
+@media (max-width: 767px), (max-aspect-ratio: 11/10) {
+  [data-scene="shaped-window-over-fixed-world"].is-live .sw-shutter { display: block; padding: 0; }
+  [data-scene="shaped-window-over-fixed-world"].is-live .sw-intro {
+    position: absolute;
+    top: auto;
+    left: var(--sw-x0, 7.4%);
+    width: var(--sw-span-w, 85.2%);
+    bottom: calc(100% - var(--sw-high-top, 22%) + var(--sw-gap, 28px));
+  }
+  [data-scene="shaped-window-over-fixed-world"].is-live .sw-title { font-size: min(10.6vw, 6.4svh, 84px); }
+  [data-scene="shaped-window-over-fixed-world"].is-live .sw-caption { display: none; }
+  [data-scene="shaped-window-over-fixed-world"].is-live .sw-word { left: 7%; width: 86%; }
+  /* the top band ends well above the horizon and fades out slowly, so its edge never reads as a
+     lighter stripe over the peaks */
+  [data-scene="shaped-window-over-fixed-world"].is-live .sw-scrim--top { top: -14%; height: 40%; --sw-scrim-blur: 60px; }
+  [data-scene="shaped-window-over-fixed-world"].is-live .sw-scrim--bottom { bottom: -10%; height: 52%; }
+  /* the stage is 100lvh: lift the lede by the toolbar's share so it always sits above the toolbar */
+  [data-scene="shaped-window-over-fixed-world"].is-live .sw-lede {
+    left: 24px;
+    right: 24px;
+    bottom: calc(100lvh - 100svh + 7svh);
+    max-width: 34rem;
+    font-size: clamp(16px, 2.2vw, 20px);
+    line-height: 1.45;
+  }
+  /* props at about 0.55 of their wide size, so they cover little of the slim windows */
+  [data-scene="shaped-window-over-fixed-world"].is-live { --sw-prop-high: 34%; --sw-prop-low: 25%; }
+}

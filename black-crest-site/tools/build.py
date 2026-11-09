@@ -216,7 +216,6 @@ def footer(P, here):
       <button class="to-top" type="button" data-top>Back to top <span aria-hidden="true">&uarr;</span></button>
     </div>
   </div>
-  <p class="footer-word" aria-hidden="true" data-word="KB WEB DESIGNS"></p>
 </footer>'''
 
 
@@ -294,7 +293,7 @@ def head(title, desc, path, P, noindex=False, ld=(), base_script=False, extra=''
 <link rel="icon" href="{P}favicon.ico" sizes="32x32">
 <link rel="apple-touch-icon" href="{P}img/apple-touch-icon.png">
 <link rel="manifest" href="{P}manifest.webmanifest">
-<link rel="preload" href="{P}fonts/cormorant-garamond.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="{P}fonts/marcellus-sc-400.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="{P}fonts/switzer-400.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="{P}style.min.css">{extra}
 {scripts_after_hero(P, vendor)}{lds}
@@ -359,7 +358,7 @@ def head_block(label, title, lead='', split=False, level='h2', cls='h2', center=
 def cta_final(title, text, primary=('free-concept', 'Get a free concept'), secondary=None, P=''):
     sec = f'<a class="btn btn-ghost" href="{P}{secondary[0]}">{secondary[1]}</a>' if secondary else ''
     card = (f'<div class="cta-media">{pic(VIDEO + "-poster-mobile", 864, 1080, "", P, sizes="360px")}'
-            f'<video class="cta-video" muted loop playsinline disablepictureinpicture preload="none" aria-hidden="true" tabindex="-1" data-video="{P}{VIDEO}-mobile"></video></div>')
+            f'<video class="cta-video" muted loop playsinline disablepictureinpicture preload="none" poster="{P}{VIDEO}-poster-mobile.jpg" aria-hidden="true" tabindex="-1" data-video="{P}{VIDEO}-mobile"></video></div>')
     return f'''<section class="cta-final" aria-labelledby="cta-h">
     <div class="container cta-split">
       <div class="cta-copy">
@@ -832,95 +831,115 @@ def melbourne(P):
 
 
 P = ''
-page('index.html', 'KB Web Designs: premium sites for local businesses', f'Premium websites for Melbourne barbers, cafes, gyms, salons and trades. We design your homepage first, free. One Page {money(ONE)}, Full Website {money(FULL)}.', f'''<main id="main">
-  <section class="hero hero-render" aria-labelledby="hero-h">
-    <div class="hero-media" data-hero-media>
-      <div class="hero-zoom">{hero_picture(P)}<span class="hero-sweep" aria-hidden="true"></span></div>
-      {hero_video(P)}
+# ================================================================= Home: the shop window, lettered in gold leaf
+# A redesign (Nov 2026): the page is a black glass shop window at night, sign-written in gold leaf. Plates (pictures)
+# come from tools/make-plates.py; their sources are in assets/plates/SOURCES.json.
+PL = 'assets/plates/'
+
+
+def plate(stem, widths, w, h, alt, P='', sizes='100vw', cls='', lazy=True, high=False, png=False):
+    """A plate as <picture>: AVIF, WebP, then JPEG (or PNG for cut-outs), at the widths make-plates.py writes."""
+    def ss(ext):
+        return ', '.join(f'{P}{PL}{stem}-{x}.{ext} {x}w' for x in widths)
+    fb = 'png' if png else 'jpg'
+    load = 'fetchpriority="high"' if high else ('loading="lazy"' if lazy else '')
+    return (f'<picture><source type="image/avif" srcset="{ss("avif")}" sizes="{sizes}"><source type="image/webp" srcset="{ss("webp")}" sizes="{sizes}">'
+            f'<img{f" class={chr(34)}{cls}{chr(34)}" if cls else ""} src="{P}{PL}{stem}-{widths[-1]}.{fb}" srcset="{ss(fb)}" sizes="{sizes}" width="{w}" height="{h}" {load} decoding="async" alt="{alt}"></picture>')
+
+
+GL_PRELOAD = (f'<link rel="preload" as="image" type="image/avif" imagesrcset="{PL}street-1280.avif 1280w, {PL}street-1920.avif 1920w, {PL}street-2752.avif 2752w" imagesizes="100vw" fetchpriority="high">')
+
+GL_TRADES = [('for-barbers', 'Barbers', 'barbers', 'Bookings, prices and the cuts that sell the chair.'),
+             ('for-cafes', 'Cafes', 'cafes', 'Menu, hours and a map, before they leave the house.'),
+             ('for-gyms', 'Gyms', 'gyms', 'Timetables, memberships and an easy first class.')]
+GL_WORK = [('barber', 'Brass &amp; Blade', 'Barber'), ('cafe', 'Ember &amp; Oak', 'Cafe'), ('gym', 'Iron &amp; Ember', 'Gym'),
+           ('plumber', 'Waverley Plumbing', 'Plumber'), ('salon', 'Maison Lune', 'Salon'), ('parts', 'Torque &amp; Co.', 'Auto parts')]
+GL_STEPS = [('Free concept', 'We design your homepage first, usually within 5 business days. You pay nothing to see it.'),
+            ('Deposit', 'If you like it, a 50% deposit starts the build.'),
+            ('Build', 'One to two weeks, with 2 rounds of changes.'),
+            ('Launch', 'The balance is due at launch. The site, the domain and the logins are yours.')]
+
+
+def gl_hero(P=''):
+    card = plate('card', (560, 1120), 1120, 1032, '', P, sizes='(min-width: 720px) 24vw, 100vw', cls='gl-card-img', lazy=False)
+    return f"""<section class="hero gl-hero" aria-labelledby="hero-h">
+    <div class="gl-street" aria-hidden="true">{plate('street', (1280, 1920, 2752), 2752, 1256, '', P, cls='hero-img', lazy=False, high=True)}</div>
+    <div class="gl-card" aria-hidden="true">{card}{hero_video(P)}</div>
+    <div class="container gl-window">
+      <div class="gl-crest">{plate('hero-crest', (180, 360), 360, 409, '', P, sizes='96px', lazy=False, png=True)}</div>
+      <h1 id="hero-h" class="gilt gl-h1">Premium sites for local businesses.</h1>
+      <p class="gl-lead">We design your homepage first, free. <span class="gl-lead-prices">One Page <span data-price="onePage">{money(ONE)}</span>. Full Website <span data-price="fullSite">{money(FULL)}</span>.</span></p>
+      <div class="gl-actions"><a class="btn btn-gold" href="{P}free-concept">Get my free concept</a><a class="text-btn" href="#work">See the work</a></div>
+      <p class="gl-reply">Replies within 1 business day. Melbourne.</p>
     </div>
-    <div class="container hero-copy">
-      <p class="label">KB Web Designs &middot; Melbourne</p>
-      <h1 id="hero-h">Premium sites for <em>local</em> businesses</h1>
-      <p class="lead">We design your homepage first, free. You decide after.</p>
-      <div class="btn-row">
-        <a class="btn btn-gold" href="free-concept">Get a free concept</a>
-        <a class="btn btn-ghost" href="work">See the work</a>
-      </div>
-      <p class="hero-statement">One page from <span data-price="onePage">{money(ONE)}</span> <i aria-hidden="true">&middot;</i> Full website <span data-price="fullSite">{money(FULL)}</span> <i aria-hidden="true">&middot;</i> Concept free</p>
-    </div>
-    <p class="scroll-cue" aria-hidden="true"><i></i>Scroll</p>
-  </section>
+    <button class="gl-film" type="button" data-film-toggle aria-pressed="false" hidden>Pause film</button>
+  </section>"""
 
-  {collection(P)}
 
-  {chapters(P)}
-
-  <section class="section lab-sec" id="lab" aria-labelledby="lab-h">
+def gl_trades(P=''):
+    tiles = ''.join(f"""<li><a class="gl-tile" href="{P}{h}">{plate('tile-' + img, (670, 1340), 1340, 436, '', P, sizes='(min-width: 900px) 31vw, 100vw')}
+        <span class="gl-tile-name gilt">{t}</span><span class="gl-tile-line">{line}</span></a></li>""" for h, t, img, line in GL_TRADES)
+    return f"""<section class="gl-sec gl-trades" aria-labelledby="trades-h">
     <div class="container">
-      {lab(P)}
+      <h2 id="trades-h" class="gilt gl-h2">Made for your kind of shop.</h2>
+      <ul class="gl-tiles" role="list">{tiles}</ul>
+      <p class="gl-also">Also for <a class="link" href="{P}for-salons">salons</a> and <a class="link" href="{P}for-tradies">tradies</a>. The shopfronts above are illustrations, not real businesses.</p>
     </div>
-  </section>
+  </section>"""
 
-  {anatomy(P)}
 
-  <section class="section-tight ba-sec" aria-labelledby="ba-h">
-    <div class="container ba-split">
-      <div class="section-head split">
-        <div>
-          <p class="label" data-reveal><span class="idx">05</span><span class="slash" aria-hidden="true">/</span>Before and after</p>
-          <h2 id="ba-h" class="h2" data-split>From dated <em>to sharp.</em></h2>
-        </div>
-        <div>
-          <p class="lead" data-reveal>Same business, two first impressions. Drag the handle, or use the arrow keys.</p>
-          <div class="compare-meta" data-reveal><span class="chip">Example, not a real customer</span><span class="tiny">Both sides are mock-ups made for this comparison.</span></div>
-        </div>
-      </div>
-      <div class="compare" data-reveal data-compare>
-        <img src="img/compare-before.webp" width="1600" height="1000" loading="lazy" decoding="async" alt="Before: a dated, cluttered barbershop homepage with small text and no clear booking button">
-        <img class="after" src="img/compare-after.webp" width="1600" height="1000" loading="lazy" decoding="async" alt="After: the Brass and Blade concept homepage, dark and clean with a clear Book a chair button">
-        <span class="compare-tag l" aria-hidden="true">Before</span><span class="compare-tag r" aria-hidden="true">After</span>
-        <span class="handle" aria-hidden="true"><span class="disc"><i></i><i></i></span><span class="drag-hint">Drag</span></span>
-        <label class="sr-only" for="compare-range">Compare before and after</label>
-        <input id="compare-range" type="range" min="0" max="100" value="50">
-      </div>
-    </div>
-  </section>
-
-  {process_stack(P)}
-
-  {standard_band(P)}
-
-  <section class="section has-grid pricing-sec" aria-labelledby="price-h">
+def gl_work(P=''):
+    items = ''.join(f"""<li><a class="gl-shot" href="{P}work/{slug}">{pic('img/work/' + slug + '-desktop-1600', 1600, 1000, f'The {name} concept homepage', P, sizes='(min-width: 900px) 44vw, 100vw', small=('img/work/' + slug + '-desktop-800', 800))}
+        <span class="gl-shot-name">{name}</span><span class="gl-shot-trade">{trade} concept</span></a></li>""" for slug, name, trade in GL_WORK)
+    return f"""<section class="gl-sec gl-work" id="work" aria-labelledby="work-h">
     <div class="container">
-      {head_block('Pricing', '<span id="price-h">Clear prices. <em>Set before we start.</em></span>', 'One price per package, agreed in writing before any work begins. Bigger projects are quoted.', split=True, idx='08')}
-      {statement(P)}
-      <p class="pricing-more" data-reveal><a class="text-btn" href="pricing">Pricing, add-ons and the calculator</a></p>
+      <div class="gl-head"><h2 id="work-h" class="gilt gl-h2">Six shopfronts, built as concepts.</h2>
+      <p>Each is a full website for a made-up business. Click through one before you ask for yours.</p></div>
+      <ul class="gl-shots" role="list">{items}</ul>
+      <p class="gl-more"><a class="text-btn" href="{P}work">All six case studies</a></p>
     </div>
-  </section>
+  </section>"""
 
-  {melbourne(P)}
 
-  <section class="section offer-sec" aria-labelledby="case-h">
-    <div class="container offer-split">
-      <div class="offer-copy">
-        <p class="label" data-reveal><span class="idx">10</span><span class="slash" aria-hidden="true">/</span>An honest offer</p>
-        <h2 id="case-h" class="h2" data-split>Be our first <em>case study.</em></h2>
-        <p class="lead" data-reveal>We are new, so there are no customer reviews to show yet, and we will never invent any. The first few local shops we work with get a discount, in return for an honest quote about the experience and permission to show their site here.</p>
-        <p data-reveal><a class="btn btn-ghost" href="contact">Ask about the offer</a></p>
+def gl_door(P=''):
+    steps = ''.join(f'<li><h3>{t}</h3><p>{x}</p></li>' for t, x in GL_STEPS)
+    prices = [('One Page', money(ONE), 'onePage', 'one-off'), ('Full Website', money(FULL), 'fullSite', 'up to about 5 pages'), ('Care plan', money(CARE), 'carePlan', 'a month, optional')]
+    rows = ''.join(f'<tr><th scope="row">{n}</th><td><span data-price="{k}">{v}</span><small>{note}</small></td></tr>' for n, v, k, note in prices)
+    return f"""<section class="gl-sec gl-door" aria-labelledby="door-h">
+    <div class="container gl-door-grid">
+      <div>
+        <h2 id="door-h" class="gilt gl-h2">How it works.</h2>
+        <ol class="gl-steps">{steps}</ol>
       </div>
-      <figure class="offer-visual" data-reveal>{duo('barber', P, parallax='0.04')}<figcaption class="tiny">Your site could sit here. Shown: Brass &amp; Blade, a made-up barbershop concept.</figcaption></figure>
+      <div class="gl-prices">
+        <h3 class="gilt gl-h3">Prices, in writing.</h3>
+        <table><caption class="sr-only">KB Web Designs prices, in Australian dollars</caption><tbody>{rows}<tr><th scope="row">Custom</th><td>By quote<small>bigger or unusual projects</small></td></tr></tbody></table>
+        <p class="gl-fine">Your domain is about $20 a year, in your name. Hosting setup is included. Prices in AUD.</p>
+        <p><a class="text-btn" href="{P}pricing">Pricing in full</a></p>
+      </div>
+    </div>
+  </section>"""
+
+
+page('index.html', 'KB Web Designs: premium sites for local businesses', f'Premium websites for Melbourne barbers, cafes, gyms, salons and trades. We design your homepage first, free. One Page {money(ONE)}, Full Website {money(FULL)}.', f"""<main id="main" class="gl">
+  {gl_hero(P)}
+
+  {gl_trades(P)}
+
+  {gl_work(P)}
+
+  {gl_door(P)}
+
+  <section class="gl-sec gl-faq" aria-labelledby="faq-h">
+    <div class="container gl-faq-grid">
+      <div><h2 id="faq-h" class="gilt gl-h2">Straight answers.</h2>
+      <p>We are new, so there are no reviews to show yet. We will never invent any.</p></div>
+      <div>{faq_list(FAQS[:5], P)}<p class="gl-more"><a class="text-btn" href="faq">All questions</a></p></div>
     </div>
   </section>
 
-  <section class="section-tight band" aria-labelledby="faq-h">
-    <div class="container faq-split">
-      {head_block('FAQ', '<span id="faq-h">Straight <em>answers.</em></span>', 'The questions everyone asks before they start.', idx='11')}
-      <div data-reveal>{faq_list(FAQS[:5], P)}<p style="margin-top:22px"><a class="link" href="faq">All questions {icon('arrow')}</a></p></div>
-    </div>
-  </section>
-
-  {cta_final('See it <em>before</em> you pay.', 'Tell us about your business. We reply within 1 business day and design your homepage for free.', secondary=('contact', 'Ask a question'))}
-</main>''', ld=[ORG], vendor=('gsap/Flip.min.js',), pre=True, first=HERO_PRELOAD)
+  {cta_final('See it before you pay.', 'Tell us about your business. We reply within 1 business day and design your homepage for free.', primary=('free-concept', 'Get my free concept'), secondary=('contact', 'Ask a question'))}
+</main>""", ld=[ORG], pre=True, first=GL_PRELOAD)
 
 
 # ================================================================= Concept Lab
@@ -1157,13 +1176,14 @@ page('work.html', 'Work: concept sites by KB Web Designs', 'Six concept websites
 P = ''
 _NEW_CREDIT = ', '.join(f'<a class="link" href="{v["credit"][1]}" rel="noopener">{v["credit"][0]}</a> ({k.capitalize().replace("Cafes", "Cafés")})' for k, v in NEW_PHOTOS.items())
 CREDIT_ROWS = [
-    ('Trade chapter photos (home page)', 'All five are from Unsplash, under the Unsplash License. '
+    ('Trade photos', 'All five are from Unsplash, under the Unsplash License. '
      + (f'Photographers: {_NEW_CREDIT}.' if NEW_PHOTOS else '')
      + ('' if 'barbers' in NEW_PHOTOS else ' The Barbers photo comes from the barber concept site; its photographer was not recorded when it was first collected and will be added here when found.')),
     ('Hero imagery', 'Hero imagery: digital render made for KB Web Designs. The card and the KB Ventures plaque are renders of the brand marks, not photographs of real objects.'),
+    ('Home page shopfronts and gilded shield', 'The three night shopfronts (barber, cafe, gym) on the home page are AI-generated illustrations, made with ImagineArt and Higgsfield in November 2026. They show kinds of shop, not real businesses. The gilded KB shield, the gold leaf texture and the blurred street behind the glass are made in code; the street is the cafe photo by Samiul Islam (Unsplash License).'),
     ('Concept site screenshots and the showreel', 'Captured by KB Web Designs from our own six concept sites.'),
     ('The 3D card, the concept collection and their stills', 'Made by KB Web Designs with Three.js: the card from the KB hallmark, the stone and brushed metal drawn in code, and the phones showing screenshots of our own concepts.'),
-    ('Typefaces', 'Cormorant Garamond, under the SIL Open Font License, and Switzer by the Indian Type Foundry, under the ITF Free Font License (Fontshare). Both are served from this site.'),
+    ('Typefaces', 'Marcellus SC by Astigmatic, under the SIL Open Font License, and Switzer by the Indian Type Foundry, under the ITF Free Font License (Fontshare). Both are served from this site.'),
     ('Code libraries', 'GSAP 3.14.2 (ScrollTrigger, SplitText, Flip) under the GSAP standard licence, Lenis 1.3.27 (MIT) and Three.js 0.170.0 (MIT), all served from this site.'),
 ]
 page('credits.html', 'Credits: KB Web Designs', 'Where the photos, data, typefaces and code libraries on the KB Web Designs site come from.', f'''<main id="main">

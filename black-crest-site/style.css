@@ -1,12 +1,13 @@
-/* KB Web Designs: one stylesheet for every page. Phone first. */
+/* KB Web Designs: one stylesheet for every page. Phone first.
+   The look (Nov 2026 redesign): a black glass shop window at night, sign-written in gold leaf. Headings are
+   Marcellus SC lettered in a gold-leaf texture (assets/plates/gold-leaf.*) with a sign-writer's dark shade line. */
 
 /* ==========================================================================
    1. Tokens
    ========================================================================== */
 
 /* ---------- Fonts (Google Fonts, served from this folder: no requests to Google) ---------- */
-@font-face { font-family: "Cormorant Garamond"; src: url("fonts/cormorant-garamond.woff2") format("woff2"); font-weight: 300 700; font-style: normal; font-display: swap; }
-@font-face { font-family: "Cormorant Garamond"; src: url("fonts/cormorant-garamond-italic.woff2") format("woff2"); font-weight: 300 700; font-style: italic; font-display: optional; /* not preloaded: never swapped in late, so headlines never re-wrap */ }
+@font-face { font-family: "Marcellus SC"; src: url("fonts/marcellus-sc-400.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; } /* SIL Open Font License, fonts/marcellus-sc-OFL.txt */
 @font-face { font-family: "Switzer"; src: url("fonts/switzer-400.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
 @font-face { font-family: "Switzer"; src: url("fonts/switzer-500.woff2") format("woff2"); font-weight: 500 700; font-style: normal; font-display: swap; }
 
@@ -37,7 +38,9 @@
   --section-tight: clamp(72px, 10vw, 136px);
   --hair: rgba(228, 230, 237, .08);
   --hair-2: rgba(228, 230, 237, .15);
-  --serif: "Cormorant Garamond", "Iowan Old Style", Georgia, serif;
+  --serif: "Marcellus SC", "Trajan Pro", "Times New Roman", serif;
+  --leaf: url("assets/plates/gold-leaf.webp");
+  --shade: #1a1208;
   --sans: "Switzer", "General Sans", "Helvetica Neue", Arial, sans-serif; --radius: 2px; --radius-sm: 2px;
   --gutter: 20px;
   --max: 1240px;
@@ -47,6 +50,7 @@
   --bar-h: 0px;
   color-scheme: dark;
 }
+html { font-synthesis: none; } /* never a faked bold or italic */
 @media (min-width: 720px) { :root { --gutter: 36px; --header-h: 76px; } }
 @media (min-width: 1440px) { :root { --gutter: 56px; --max: 1400px; } }
 
@@ -64,8 +68,13 @@ img { height: auto; }
 a { color: inherit; }
 p { margin: 0 0 1em; max-width: 62ch; }
 .center p { margin-left: auto; margin-right: auto; }
-h1, h2, h3, h4 { margin: 0; font-family: var(--serif); font-weight: 500; line-height: 1; letter-spacing: -.015em; text-wrap: balance; }
-h1 em, h2 em, h3 em, .display em { font-style: italic; font-weight: 400; color: #F1F2F6; }
+h1, h2, h3, h4 { margin: 0; font-family: var(--serif); font-weight: 400; line-height: 1.08; letter-spacing: .02em; text-wrap: balance; }
+h1 em, h2 em, h3 em, .display em { font-style: normal; font-weight: 400; }
+/* gold leaf lettering: the leaf texture clipped to the letters, with the sign-writer's shade line below-right */
+.gilt, h1, .h1, .h2, .display, .site-header + main h1 { color: #E2C46F; }
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .gilt, h1, .h1, .h2, .display { background: var(--leaf) 30% 40% / 900px auto, #D9B451; -webkit-background-clip: text; background-clip: text; color: transparent; filter: drop-shadow(.035em .05em 0 var(--shade)); }
+}
 ul, ol { padding-left: 1.2em; }
 ::selection { background: rgba(212, 175, 55, .32); color: #fff; }
 :focus-visible { outline: 2px solid var(--gold); outline-offset: 4px; border-radius: 2px; }
@@ -88,7 +97,7 @@ picture { display: contents; }
 .grain { position: fixed; inset: -50%; z-index: 300; pointer-events: none; opacity: .035; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1.1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); animation: grain 1.2s steps(6) infinite; }
 @keyframes grain { 0% { transform: translate(0, 0); } 20% { transform: translate(-3%, 2%); } 40% { transform: translate(2%, -3%); } 60% { transform: translate(-2%, -1%); } 80% { transform: translate(3%, 3%); } 100% { transform: translate(0, 0); } }
 /* hairline grid: only on technical sections (pricing, process) */
-.has-grid { background-image: linear-gradient(90deg, rgba(228, 230, 237, .04) 1px, transparent 1px), linear-gradient(rgba(228, 230, 237, .04) 1px, transparent 1px); background-size: calc(100% / 12) 100%, 100% 96px; }
+.has-grid { background-image: none; } /* the old hairline grid; the gold-leaf world uses plain black glass */
 .vignette { position: relative; }
 .vignette::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(120% 90% at 50% 40%, transparent 55%, rgba(0, 0, 0, .55)); }
 main, .site-footer, .site-header { position: relative; z-index: 1; }
@@ -97,8 +106,7 @@ main, .site-footer, .site-header { position: relative; z-index: 1; }
 /* ---------- Type ---------- */
 .label { display: inline-flex; align-items: center; gap: 14px; margin: 0 0 22px; font: 500 var(--fs-label)/1.4 var(--sans); letter-spacing: var(--track-label); text-transform: uppercase; color: var(--silver); }
 .label::before { content: ""; width: 28px; height: 1px; background: var(--gold); opacity: .85; }
-.label .idx { color: var(--gold-2); letter-spacing: .14em; font-variant-numeric: tabular-nums; }
-.label .slash { margin: 0 -4px; color: var(--silver); opacity: .7; }
+.label .idx, .label .slash { display: none; } /* no index numbers in the gold-leaf world */
 .center .label::after { content: ""; width: 28px; height: 1px; background: var(--gold); opacity: .85; }
 .display { font-family: var(--serif); font-weight: 500; font-size: var(--fs-display); line-height: .92; letter-spacing: -.03em; }
 .h1 { font-size: clamp(48px, 9.6vw, 128px); line-height: .92; letter-spacing: -.03em; }
@@ -135,7 +143,7 @@ main, .site-footer, .site-header { position: relative; z-index: 1; }
 .crest-letters { fill: var(--platinum); }
 .brand .crest-outline { stroke-dasharray: 1; stroke-dashoffset: 1; animation: draw 1.4s var(--ease) .2s forwards; }
 .brand-name { display: grid; line-height: 1; white-space: nowrap; }
-.brand-name b { font-family: var(--serif); font-weight: 600; font-size: 21px; letter-spacing: .01em; }
+.brand-name b { font-family: var(--serif); font-weight: 400; font-size: 21px; letter-spacing: .01em; }
 .brand-name small { margin-top: 5px; font-size: 13px; font-weight: 500; letter-spacing: .36em; text-transform: uppercase; color: var(--silver); }
 
 /* ---------- Header ---------- */
@@ -229,8 +237,10 @@ main, .site-footer, .site-header { position: relative; z-index: 1; }
 
 /* ---------- Buttons ---------- */
 .btn { position: relative; display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 54px; padding: 0 28px; border: 1px solid transparent; border-radius: 2px; font: 600 14.5px/1.1 var(--sans); letter-spacing: .02em; text-decoration: none; text-align: center; cursor: pointer; transition: box-shadow .35s, background .3s, border-color .3s, color .2s, transform .5s var(--ease-out); }
-.btn-gold { background: var(--gold); color: #111214; transition: background .4s var(--ease-out); }
-.btn-gold:hover, .btn-gold:focus-visible { background: #E2C25A; }
+/* the primary button: outlined in gold leaf, like a sign-written panel; it fills with a warm glow of light on hover */
+.btn-gold { border-color: #C9A34A; background: rgba(8, 8, 8, .55); color: #F2D48E; letter-spacing: .06em; text-transform: uppercase; font-size: 13.5px; transition: background .4s var(--ease-out), border-color .4s var(--ease-out), color .3s; }
+.btn-gold:hover, .btn-gold:focus-visible { background: rgba(212, 175, 55, .16); border-color: #E9CF73; color: #FBE7B0; }
+.btn:active { transform: scale(.98); transition-duration: .12s; }
 .btn-ghost { border-color: var(--hair-2); background: transparent; color: var(--platinum); transition: border-color .4s var(--ease-out); }
 .btn-ghost:hover, .btn-ghost:focus-visible { border-color: rgba(228, 230, 237, .5); }
 .btn-sm { min-height: 44px; padding: 0 20px; font-size: 13.5px; }
@@ -276,14 +286,14 @@ svg[viewBox="0 0 24 24"] { fill: none; stroke: currentColor; stroke-width: 1.6; 
 .balance { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 10px; margin: 4px 0 6px; font: 300 clamp(48px, 8vw, 66px)/1 var(--sans); letter-spacing: -.045em; font-variant-numeric: tabular-nums lining-nums; color: var(--platinum); }
 .balance .per { font-size: 14px; font-weight: 400; letter-spacing: .02em; color: var(--silver-2); }
 .balance .from { font-size: 13px; font-weight: 500; letter-spacing: .24em; text-transform: uppercase; color: var(--silver); }
-.balance-quote { font: italic 500 clamp(38px, 5vw, 50px)/1 var(--serif); letter-spacing: -.01em; }
+.balance-quote { font: 400 clamp(38px, 5vw, 50px)/1 var(--serif); letter-spacing: -.01em; }
 .acct { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 20px; padding-top: 14px; border-top: 1px dashed var(--hair-2); font-size: 13px; letter-spacing: .2em; text-transform: uppercase; color: var(--silver); font-variant-numeric: tabular-nums; }
 
 /* ---------- Marquee ---------- */
 .marquee { overflow: hidden; border-top: 1px solid var(--hair); border-bottom: 1px solid var(--hair); background: rgba(26, 28, 35, .4); -webkit-mask: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); mask: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
 .marquee-track { display: flex; width: max-content; will-change: transform; }
 .marquee ul { display: flex; flex: none; margin: 0; padding: 0; list-style: none; }
-.marquee li { display: flex; align-items: center; gap: 34px; padding: 22px 17px; font: italic 500 clamp(26px, 3.4vw, 40px)/1 var(--serif); color: var(--silver-2); white-space: nowrap; }
+.marquee li { display: flex; align-items: center; gap: 34px; padding: 22px 17px; font: 400 clamp(26px, 3.4vw, 40px)/1 var(--serif); color: var(--silver-2); white-space: nowrap; }
 .marquee li::after { content: ""; width: 7px; height: 7px; transform: rotate(45deg); border: 1px solid var(--gold); }
 
 /* ---------- Device mockups ---------- */
@@ -657,7 +667,7 @@ thead .col-us { color: var(--gold-2); }
 .reel-row > * { min-width: 0; }
 .reel-copy p { color: var(--silver-2); }
 .reel .laptop-screen video { display: block; width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; background: var(--graphite); }
-.reel-cap { margin-top: 22px; font: italic 500 clamp(19px, 1.8vw, 23px)/1.3 var(--serif); color: var(--silver-2); }
+.reel-cap { margin-top: 22px; font: 400 clamp(19px, 1.8vw, 23px)/1.3 var(--serif); color: var(--silver-2); }
 
 /* ---------- Calm text buttons: an underline that draws in ---------- */
 .text-btn { position: relative; display: inline-flex; align-items: center; min-height: 44px; padding: 0; border: 0; background: none; color: var(--platinum); font: 500 13px/1 var(--sans); letter-spacing: .14em; text-transform: uppercase; text-decoration: none; cursor: pointer; }
@@ -757,9 +767,9 @@ thead .col-us { color: var(--gold-2); }
 /* ---------- Process: stacked sticky cards ---------- */
 .stack { display: grid; gap: 24px; margin: 0; padding: 0; list-style: none; }
 .stack-card { position: sticky; top: calc(var(--header-h) + 16px + var(--i) * 14px); }
-.stack-inner { display: grid; gap: 20px; padding: 28px; border-radius: 2px; border: 1px solid var(--hair-2); background: linear-gradient(160deg, #22252d, #15171c 55%, #101115); }
+.stack-inner { display: grid; gap: 20px; padding: 28px; border-radius: 2px; border: 1px solid var(--hair-2); background: #15171C; }
 @media (min-width: 900px) { .stack-inner { grid-template-columns: minmax(0, 1fr) 540px; align-items: center; gap: 56px; padding: 24px 40px; } }
-.stack-n { display: block; margin-bottom: 18px; font: 500 clamp(56px, 6vw, 88px)/.8 var(--serif); background: var(--gold-metal); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.stack-n { display: block; margin-bottom: 18px; font: 500 clamp(56px, 6vw, 88px)/.8 var(--serif); background: var(--leaf) 30% 40% / 600px auto, #D9B451; -webkit-background-clip: text; background-clip: text; color: transparent; }
 .stack-copy h3 { margin: 14px 0 10px; }
 .stack-copy p { margin: 0; color: var(--silver-2); }
 .process-sec { padding: clamp(64px, 7vw, 96px) 0; }
@@ -1045,11 +1055,101 @@ html.lenis, html.lenis body { height: auto; }
 .lenis.lenis-smooth iframe { pointer-events: none; }
 
 /* ==========================================================================
+   Home: the shop window, lettered in gold leaf (Nov 2026 redesign)
+   ========================================================================== */
+.gl { --win: #0A0A0A; }
+.gl-hero { position: relative; isolation: isolate; overflow: hidden; margin-top: calc(var(--header-h) * -1); padding: calc(var(--header-h) + 40px) 0 56px; background: var(--win); text-align: center; }
+.gl-street { position: absolute; inset: 0; z-index: -2; }
+.gl-street picture { display: contents; }
+.gl-street img { width: 100%; height: 100%; object-fit: cover; object-position: 70% 40%; }
+.gl-window { display: grid; justify-items: center; }
+.gl-crest img { width: clamp(64px, 6.4vw, 96px); height: auto; margin: 0 auto 22px; }
+.gl-hero .gl-h1 { max-width: 15ch; font-size: clamp(2.2rem, 3.6vw, 4rem); line-height: 1.04; letter-spacing: .03em; }
+.gl-lead { max-width: 34ch; margin: 28px auto 0; font-size: clamp(18px, 1.45vw, 23px); line-height: 1.45; color: #F4F4F2; }
+.gl-lead span { white-space: nowrap; }
+.gl-lead .gl-lead-prices { display: block; white-space: normal; }
+.gl-actions { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 14px 30px; margin-top: 34px; }
+.gl-reply { margin: 30px auto 0; font-size: 14px; color: #C9CBD2; }
+/* the titanium card behind the glass: our render, and its looping film once it plays */
+.gl-card { position: relative; width: min(76vw, 380px); aspect-ratio: 4 / 5; margin: 40px auto 0; overflow: hidden; }
+.gl-card picture { display: contents; }
+.gl-card-img { width: 100%; height: 100%; object-fit: cover; }
+.gl-card .hero-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .9s var(--ease-out); }
+.gl-hero.has-video .hero-video { opacity: 1; }
+.gl-hero > .gl-card { order: 2; }
+.gl-film { order: 3; align-self: center; margin-top: 18px; padding: 10px 14px; border: 0; background: none; color: var(--silver-2); font: 500 12.5px/1 var(--sans); letter-spacing: .14em; text-transform: uppercase; cursor: pointer; }
+.gl-film:hover { color: var(--platinum); }
+@media (min-width: 720px) and (min-aspect-ratio: 1001/1000) { .gl-film { position: absolute; right: var(--gutter); bottom: 22px; margin: 0; } }
+.gl-hero { display: flex; flex-direction: column; }
+@media (min-width: 720px) and (min-aspect-ratio: 1001/1000) {
+  .gl-hero { display: grid; align-content: center; min-height: clamp(600px, 90svh, 920px); padding: calc(var(--header-h) + 24px) 0 64px; }
+  /* the card sits right of centre, out of the text's way, its dark render melting into the street */
+  .gl-card { position: absolute; z-index: -1; left: 74%; top: 31%; width: 19.5%; aspect-ratio: 1120 / 1032; margin: 0;
+    -webkit-mask-image: radial-gradient(closest-side, #000 62%, transparent); mask-image: radial-gradient(closest-side, #000 62%, transparent); }
+  /* the film is the whole render; it is placed so the card crop lines up with the still */
+  .gl-card .hero-video { inset: auto; left: -123.6%; top: -30.4%; width: 245.7%; height: 148.8%; object-fit: fill; }
+}
+
+.gl-sec { padding: clamp(64px, 7vw, 120px) 0; }
+.cta-final .display { font-size: clamp(2.4rem, 4.4vw, 4.6rem); line-height: 1.05; }
+.gl-h2 { font-size: clamp(2rem, 3.4vw, 3.4rem); line-height: 1.06; max-width: 22ch; }
+.gl-h3 { font-size: clamp(1.4rem, 2vw, 2rem); }
+.gl-head { display: grid; gap: 18px; margin-bottom: clamp(36px, 4vw, 56px); }
+.gl-head p { margin: 0; color: #D6D8DE; }
+@media (min-width: 900px) { .gl-head { grid-template-columns: 1.2fr 1fr; align-items: end; gap: 48px; } }
+.gl-more { margin: 36px 0 0; }
+
+/* trade tiles: a row of shopfronts at night, each lettered with its trade */
+.gl-trades { padding: clamp(56px, 6vw, 96px) 0 clamp(24px, 3vw, 48px); }
+.gl-tiles { display: grid; gap: 18px; margin: 36px 0 0; padding: 0; list-style: none; }
+@media (min-width: 900px) { .gl-tiles { grid-template-columns: repeat(3, 1fr); } }
+.gl-tile { position: relative; display: grid; text-decoration: none; color: inherit; }
+.gl-tile picture { display: contents; }
+.gl-tile img { grid-area: 1 / 1; width: 100%; aspect-ratio: 2 / 1; object-fit: cover; filter: brightness(.7); transition: filter .6s var(--ease-out); }
+.gl-tile-name { grid-area: 1 / 1; align-self: center; justify-self: center; font: 400 clamp(1.6rem, 2.5vw, 2.5rem)/1 var(--serif); letter-spacing: .06em; }
+@media (min-width: 900px) { .gl-tile img { aspect-ratio: 1340 / 436; } }
+.gl-tile-line { margin-top: 14px; font-size: 15.5px; color: #C9CBD2; }
+.gl-tile:hover img, .gl-tile:focus-visible img { filter: brightness(.95); }
+.gl-also { margin: 26px 0 0; font-size: 15px; color: var(--silver-2); }
+
+/* the work: six concept sites, framed like goods in a lit window */
+.gl-shots { display: grid; gap: clamp(28px, 3vw, 44px) clamp(20px, 2.4vw, 36px); margin: 0; padding: 0; list-style: none; }
+@media (min-width: 720px) { .gl-shots { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1200px) { .gl-shots { grid-template-columns: repeat(3, 1fr); } }
+.gl-shot { display: grid; gap: 6px; text-decoration: none; color: inherit; }
+.gl-shot picture { display: contents; }
+.gl-shot img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: top; border: 1px solid rgba(212, 175, 55, .28); margin-bottom: 12px; transition: border-color .5s var(--ease-out), filter .5s var(--ease-out); filter: brightness(.9); }
+.gl-shot:hover img, .gl-shot:focus-visible img { border-color: rgba(233, 207, 115, .7); filter: brightness(1); }
+.gl-shot-name { font: 400 clamp(1.25rem, 1.6vw, 1.6rem)/1.1 var(--serif); letter-spacing: .04em; color: #EAD08A; }
+.gl-shot-trade { font-size: 15px; color: var(--silver-2); }
+
+/* how it works and the prices, lettered like the opening hours on a shop door */
+.gl-door { background: #0B0B0C; }
+.gl-door-grid { display: grid; gap: 64px; }
+@media (min-width: 960px) { .gl-door-grid { grid-template-columns: 1.15fr 1fr; gap: clamp(56px, 7vw, 120px); } }
+.gl-steps { margin: 40px 0 0; padding: 0; list-style: none; }
+.gl-steps li { padding: 22px 0; border-bottom: 1px solid rgba(212, 175, 55, .22); }
+.gl-steps li:first-child { border-top: 1px solid rgba(212, 175, 55, .22); }
+.gl-steps h3 { font-size: clamp(1.3rem, 1.7vw, 1.7rem); color: #EAD08A; }
+.gl-steps p { margin: 8px 0 0; color: #D6D8DE; }
+.gl-prices table { width: 100%; margin: 26px 0 18px; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+.gl-prices th, .gl-prices td { padding: 18px 0; border-bottom: 1px solid rgba(212, 175, 55, .22); text-align: left; vertical-align: baseline; }
+.gl-prices th { font: 400 clamp(1.15rem, 1.5vw, 1.45rem)/1.2 var(--serif); letter-spacing: .04em; color: #F1F2F6; }
+.gl-prices td small { display: block; margin-top: 6px; font: 400 14px/1.4 var(--sans); letter-spacing: 0; color: var(--silver-2); }
+.gl-prices td { text-align: right; font: 400 clamp(1.5rem, 2.2vw, 2.2rem)/1 var(--serif); color: #EAD08A; white-space: nowrap; }
+.gl-fine { font-size: 14.5px; color: var(--silver-2); }
+
+.gl-faq-grid { display: grid; gap: 40px; }
+@media (min-width: 960px) { .gl-faq-grid { grid-template-columns: 1fr 1.3fr; gap: 96px; } }
+.gl-faq-grid > div > p { color: #D6D8DE; margin-top: 20px; }
+
+/* ==========================================================================
    7. Reduced motion and print
    ========================================================================== */
 
 /* ---------- Reduced motion: switch every effect off ---------- */
 @media (prefers-reduced-motion: reduce) {
+  .gl-card .hero-video { display: none; }
   *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
   [data-reveal] { opacity: 1 !important; transform: none !important; }
   .menu { transition: none; }
@@ -1078,6 +1178,6 @@ html.lenis, html.lenis body { height: auto; }
 
 /* ---------- Pricing notes, the calculator's count, an add-on that does not apply ---------- */
 .st-note { margin: 10px 0 0 !important; font-size: 13.5px !important; color: var(--gold-2) !important; }
-.st-honest { margin: 0; padding: 18px 0 2px; font: italic 500 clamp(19px, 1.8vw, 23px)/1.35 var(--serif); color: var(--silver-2); }
+.st-honest { margin: 0; padding: 18px 0 2px; font: 400 clamp(19px, 1.8vw, 23px)/1.35 var(--serif); color: var(--silver-2); }
 .calc-count { margin: 10px 0 0; letter-spacing: .14em; text-transform: uppercase; }
 .opt.is-off { opacity: .45; cursor: not-allowed; }

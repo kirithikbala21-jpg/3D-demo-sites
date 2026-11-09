@@ -1,0 +1,9 @@
+{
+ "gold-leaf": "drawn in code by tools/make-plates.py",
+ "hero-crest": "the KB hallmark (js/logo-mark.js), gilded in code by tools/make-plates.py",
+ "card": "crop of assets/renders/card-hero-2752.jpg (our own render)",
+ "street": "assets/chapters/originals/cafes.jpg (Unsplash, Samiul Islam), blurred and darkened",
+ "tile-barbers": "AI-generated, ImagineArt seedream-v5-lite, 9 Nov 2026 (owner approved); originals/shopfront-barbers.jpg",
+ "tile-cafes": "AI-generated, ImagineArt seedream-v5-lite, 9 Nov 2026 (owner approved); originals/shopfront-cafes.jpg",
+ "tile-gyms": "AI-generated, Higgsfield z_image, 9 Nov 2026 (owner approved); originals/shopfront-gyms.jpg"
+}

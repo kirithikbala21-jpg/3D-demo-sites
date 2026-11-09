@@ -219,13 +219,20 @@ function boot() {
     (apple ? [['mp4', 'video/mp4'], ['webm', 'video/webm']] : [['webm', 'video/webm'], ['mp4', 'video/mp4']]).forEach(([ext, type]) => { const el = document.createElement('source'); el.src = `${base}.${ext}`; el.type = type; v.append(el); });
     v.muted = true; v.defaultMuted = true; v.playsInline = true; v.load();
   };
+  // one Pause film button (WCAG 2.2.2): stops every looping film on the page, remembered for the visit
+  let filmsOff = false; try { filmsOff = sessionStorage.getItem('bc-films') === 'off'; } catch (_) {}
+  const filmBtn = $('[data-film-toggle]');
+  const setFilmBtn = () => { if (filmBtn) { filmBtn.setAttribute('aria-pressed', String(filmsOff)); filmBtn.textContent = filmsOff ? 'Play film' : 'Pause film'; } };
   const hv = $('.hero-video');
   if (hv && !lean) {
     const hero = hv.closest('.hero'), phone = matchMedia('(max-width: 719px), (max-aspect-ratio: 1/1)');
     let seen = true;
-    const play = () => { if (seen && !document.hidden) { const p = hv.play(); if (p && p.catch) p.catch(() => {}); } };
+    const play = () => { if (seen && !document.hidden && !filmsOff) { const p = hv.play(); if (p && p.catch) p.catch(() => {}); } };
     const pick = () => { const m = phone.matches; hv.poster = hv.dataset.poster + (m ? '-mobile' : '') + '.jpg'; sources(hv, hv.dataset.video + (m ? '-mobile' : '-1080')); play(); };
     hv.addEventListener('playing', () => hero.classList.add('has-video'));
+    if (filmBtn) { filmBtn.hidden = false; setFilmBtn();
+      filmBtn.addEventListener('click', () => { filmsOff = !filmsOff; try { sessionStorage.setItem('bc-films', filmsOff ? 'off' : 'on'); } catch (_) {}
+        setFilmBtn(); $$('.hero-video, .cta-video').forEach((v) => { if (filmsOff) v.pause(); else if (v === hv) play(); }); }); }
     new IntersectionObserver(([e]) => { seen = e.isIntersecting; if (seen) play(); else hv.pause(); }).observe(hero);
     document.addEventListener('visibilitychange', () => { if (document.hidden) hv.pause(); else play(); });
     phone.addEventListener('change', () => { hero.classList.remove('has-video'); pick(); });
@@ -237,7 +244,7 @@ function boot() {
     const box = v.closest('.cta-media');
     v.addEventListener('playing', () => box.classList.add('is-playing'));
     new IntersectionObserver(([e]) => {
-      if (e.isIntersecting) { if (!v.querySelector('source')) sources(v, v.dataset.video); const p = v.play(); if (p && p.catch) p.catch(() => {}); } else v.pause();
+      if (e.isIntersecting && !filmsOff) { if (!v.querySelector('source')) sources(v, v.dataset.video); const p = v.play(); if (p && p.catch) p.catch(() => {}); } else v.pause();
     }, { rootMargin: '120px 0px' }).observe(box);
   });
 

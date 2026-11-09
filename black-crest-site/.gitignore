@@ -1,1 +1,11 @@
 tools/screens/
+# Impeccable's working files (crops, scaffolds, generation downloads); the mocks and surface briefs are kept
+.impeccable/build/
+# full-size plates are rebuilt by tools/make-plates.py from assets/plates/originals and our own renders;
+# the page serves the sized versions (name-<width>.avif/webp/jpg/png)
+assets/plates/street.png
+assets/plates/card.png
+assets/plates/hero-crest.png
+assets/plates/tile-barbers.png
+assets/plates/tile-cafes.png
+assets/plates/tile-gyms.png

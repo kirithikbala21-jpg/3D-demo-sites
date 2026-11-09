@@ -4,6 +4,8 @@ This file lives at the root of the `3D-demo-sites` repo. **Claude Code: read it 
 
 The owner is a young founder. Explain what you did in short, simple words at the end of each task.
 
+> **Per-brand looks (owner, 9 Nov 2026).** The owner chose a new look for each brand. Where a brand's row in section 7 names its own look, that look replaces sections 1 to 3 for that brand; everything else here (motion care, imagery honesty, banned items, technical standards, checks) still applies. Each redesigned brand keeps its product facts in `<folder>/PRODUCT.md` and its chosen direction in `<folder>/.impeccable/surfaces/`.
+
 ---
 
 ## 1. The look in one paragraph
@@ -151,7 +153,7 @@ Every number must be a real commitment, a real price or a real measurement (with
 | Brand | Folder | Accent | Hero object | Notes |
 |---|---|---|---|---|
 | **KB Ventures** (parent company) | `kbventures-site/` | Champagne gold `#D4AF37` | A slim plaque of smoked glass and brushed metal with a fine engraved "KB" mark, standing upright on a basalt plinth under one spotlight | Its businesses are shown in a lit niche gallery: KB Study Guides (a printed guide on a stand, using the real covers) and KB Web Designs (the black metal card). "Many businesses. One standard." Brand only, no founder name or photo. |
-| **KB Web Designs** (formerly Black Crest) | `black-crest-site/` (live at web.kbventures.com.au) | Gold `#D4AF37` | A black brushed-titanium member's card with a gold-engraved fine-line crest | Concept sites are shown as lit niches, each holding a phone that displays that concept. Prices: One Page $300, Full Website $700, Care plan $30 a month, Custom by quote. "Premium sites for local businesses." |
+| **KB Web Designs** (formerly Black Crest) | `black-crest-site/` (live at web.kbventures.com.au) | Gold leaf (burnished, `#D4AF37` family) | A black brushed-titanium member's card with the gold-engraved KB shield, seen behind the glass | **Look (Nov 2026 redesign): a black glass shop window at night, sign-written in gold leaf.** Headings in Marcellus SC, lettered with the gold-leaf texture (`assets/plates/gold-leaf.*`) and a dark sign-writer's shade line; body text Switzer; outlined gold buttons; fine gold rules like door lettering. Home: the gilded KB shield and the window headline, the card and its film behind the glass, trade shopfronts, the six concepts as a window display, steps and prices lettered like a shop door. Pictures in `assets/plates/` (sources in `SOURCES.json`; the shopfronts are owner-approved AI illustrations, not real businesses). Prices: One Page $300, Full Website $700, Care plan $30 a month, Custom by quote. "Premium sites for local businesses." |
 | **KB Study Guides** (formerly AceGuides) | its pages in `kbventures-site/` | Deep ivory `#E8DFC8` with a thin gold line | The guides as printed books standing in lit niches, using the real covers as the book cover texture | Prices live in Stripe. Never change prices in the site without the owner. Keep "VCE® is a registered trademark of the VCAA." near anything that says VCE. |
 
 **Client concept and demo sites** (`barber-demo`, `cafe-demo-v2`, `gym-demo`, `plumber-demo`, `salon-demo`, `parts-store-demo`, and any new ones):

@@ -1,1 +1,4 @@
 tools/screens/
+
+# Impeccable working files; mocks and surface briefs are kept
+.impeccable/build/

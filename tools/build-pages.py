@@ -32,7 +32,7 @@ def head(title, desc, path, extra='', scripts=(), lenis=True, noindex=False, bas
     late = [f'<link rel="icon" href="{P}img/kb-favicon.svg" type="image/svg+xml">', f'<link rel="icon" href="{P}favicon.ico" sizes="32x32">',
             f'<link rel="icon" href="{P}img/icon-192.png" type="image/png" sizes="192x192">', f'<link rel="icon" href="{P}img/icon-512.png" type="image/png" sizes="512x512">',
             f'<link rel="apple-touch-icon" href="{P}apple-touch-icon.png" sizes="180x180">',
-            f'<link rel="preload" href="{P}fonts/cormorant-garamond.woff2" as="font" type="font/woff2" crossorigin>', f'<link rel="preload" href="{P}fonts/switzer-400.woff2" as="font" type="font/woff2" crossorigin>', f'<link rel="stylesheet" href="{P}styles.css">']
+            f'<link rel="preload" href="{P}fonts/bodoni-moda-500-normal.woff2" as="font" type="font/woff2" crossorigin>', f'<link rel="preload" href="{P}fonts/switzer-400.woff2" as="font" type="font/woff2" crossorigin>', f'<link rel="stylesheet" href="{P}styles.css">']
     if base_script:
         # the 404 page: files are only requested once <base> is set, so nothing is fetched from the wrong folder first
         writes = '\n'.join("    document.write('%s');" % x for x in late)
@@ -459,25 +459,36 @@ def milestones():
       </ol>'''
 
 
+def note_list():
+    rows = []
+    for i, b in enumerate([x for x in cfg['businesses'] if is_live(x) or is_preview(x)]):
+        u = b['url'].strip()
+        href = u if u.startswith('https://') else '/' + u[:-5] if u.endswith('.html') else '/' + u
+        rows.append(f'<li><a href="{E(href)}"><span class="note-name">{E(b["name"])}</span><span class="note-no">No. {i + 1}</span></a></li>')
+    rows.append(f'<li class="note-next"><span class="note-name">The next business</span><span class="note-no">No. {len(rows) + 1}</span></li>')
+    return ''.join(rows)
+
+
 hm = cfg['home']
 ld = {"@context": "https://schema.org", "@type": "Organization", "name": C['name'], "url": SITE, "email": C['email'],
       "logo": SITE + "img/icon-512.png", "description": f"{C['name']} is a Melbourne company that starts and runs businesses.",
       "sameAs": [v for v in cfg['socials'].values() if v]}
 
 home_body = f'''<main id="main">
-  <section class="hero hero-render" id="top" aria-labelledby="hero-title">
-    <div class="hero-media" data-hero-media>
-      <div class="hero-zoom">{hero_picture()}</div>
-      <video class="hero-video" autoplay muted loop playsinline disablepictureinpicture preload="none" aria-hidden="true" tabindex="-1" data-video="img/video/kb-hero" data-poster="img/video/kb-hero-poster"></video>
-    </div>
-    <div class="container hero-grid">
-      <div class="hero-text">
-        <h1 class="hero-title" id="hero-title">{italic_last(C['tagline'])}</h1>
-        <p class="hero-intro" data-c="home.hero.intro">{E(hm['hero']['intro'])}</p>
-        <p class="hero-sub" data-c="home.hero.line">{E(fill(hm['hero']['line']))}</p>
-        <div class="hero-actions">
-          <a class="pill pill-primary" href="#businesses" data-c="home.hero.primary">{E(hm['hero']['primary'])}</a>
-          <a class="pill pill-secondary" href="/contact" data-c="home.hero.secondary">{E(hm['hero']['secondary'])}</a>
+  <section class="hero note-hero" id="top" aria-labelledby="hero-title">
+    <div class="container note-grid">
+      <div class="note-text">
+        <p class="note-serial">{E(C['name'])}, Melbourne. Series 2026</p>
+        <h1 class="hero-title note-title" id="hero-title">{italic_last(C['tagline'])}</h1>
+        <p class="note-intro" data-c="home.hero.intro">{E(hm['hero']['intro'])}</p>
+        <ol class="note-list">{note_list()}</ol>
+        <div class="note-actions"><a class="btn-note" href="#businesses" data-c="home.hero.primary">{E(hm['hero']['primary'])}</a><a class="note-link" href="/contact" data-c="home.hero.secondary">{E(hm['hero']['secondary'])}</a></div>
+      </div>
+      <div class="note-art" aria-hidden="true">
+        <img class="note-rosette" src="img/engraving/rosette.svg" width="1200" height="1200" alt="">
+        <svg class="note-ring" viewBox="0 0 100 100" focusable="false"><circle cx="50" cy="50" r="49.7" fill="none" stroke="#C9A84C" stroke-width="1" vector-effect="non-scaling-stroke"/></svg>
+        <div class="note-portrait">{hero_picture()}
+          <video class="hero-video" autoplay muted loop playsinline disablepictureinpicture preload="none" aria-hidden="true" tabindex="-1" data-video="img/video/kb-hero" data-poster="img/video/kb-hero-poster"></video>
         </div>
       </div>
     </div>

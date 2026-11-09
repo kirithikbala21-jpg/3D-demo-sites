@@ -241,6 +241,9 @@ function boot() {
     }, { rootMargin: '120px 0px' }).observe(box);
   });
 
+  /* scroll-scrubbed hero (desktop, mouse, no reduced motion): see js/orbit.js */
+  const orbitHero = $('.hero-render');
+  if (orbitHero && !reduce && !lean && fine && innerWidth >= 1024 && innerWidth > innerHeight) idle(() => import('./orbit.js').then((m) => m.start(orbitHero)).catch((e) => console.warn('orbit skipped:', e && e.message)));
   const stage = $('.hero-stage[data-hero3d]');
   if (stage && can3d) {
     const run = () => import('./hero3d.js').then((m) => m.start(stage, env)).catch((e) => console.warn('3D card skipped:', e && e.message));

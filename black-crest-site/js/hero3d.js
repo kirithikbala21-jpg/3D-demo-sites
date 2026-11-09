@@ -34,15 +34,16 @@ async function engraving() {
   g.fillText('KB WEB DESIGNS', cw * 0.085, ch * 0.8);
   g.font = `500 ${Math.round(ch * 0.032)}px "Switzer", Arial, sans-serif`;
   if ('letterSpacing' in g) g.letterSpacing = `${Math.round(ch * 0.016)}px`;
-  g.fillText('WEB DESIGNS · MELBOURNE', cw * 0.088, ch * 0.88);
+  g.fillText('A KB VENTURES COMPANY', cw * 0.088, ch * 0.88);
   const t = new THREE.CanvasTexture(c); t.anisotropy = 8;
   return t;
 }
 
 export async function start(stage, env = {}) {
   const still = /[?&]still=1\b/.test(location.search);
-  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance', preserveDrawingBuffer: still });
-  renderer.setPixelRatio(still ? 2 : Math.min(devicePixelRatio || 1, 1.75));
+  const frames = /[?&]frames=1\b/.test(location.search); // tools/render-orbit.mjs: draws any point u (0 to 1) of the slow orbit
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance', preserveDrawingBuffer: still || frames });
+  renderer.setPixelRatio(still ? 2 : frames ? 1 : Math.min(devicePixelRatio || 1, 1.75));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.NeutralToneMapping;
   renderer.toneMappingExposure = 1.0;
@@ -90,6 +91,18 @@ export async function start(stage, env = {}) {
   resize(); stage.append(canvas);
 
   const pose = (ry, rx) => { card.rotation.set(rx, ry, 0); };
+  if (frames) {
+    window.__setU = (u) => {
+      const e = u * u * (3 - 2 * u), ease = 0.5 - 0.5 * Math.cos(Math.PI * u);
+      pose((-34 + 58 * ease) * DEG, (-5 + 2 * Math.sin(u * Math.PI)) * DEG);
+      const w = Math.max(1, stage.clientWidth), h = Math.max(1, stage.clientHeight);
+      const base = Math.max(10.5 / (2 * Math.tan(camera.fov * DEG / 2)) * 0.95, 11.2 / (2 * Math.tan(camera.fov * DEG / 2) * (w / h)));
+      camera.position.set(-0.5 * (1 - ease) + 0.2 * ease, 1.9 - 0.3 * e, base * (1 - 0.2 * e)); camera.lookAt(0, -0.2 + 0.2 * e, 0);
+      sweep.position.set(-7 + u * 14, 1.5, 4); sweep.intensity = Math.sin(Math.min(1, u * 1.15) * Math.PI) * 22;
+      renderer.render(scene, camera);
+    };
+    window.__setU(0); stage.classList.add('is-live'); window.__cardReady = true; return;
+  }
   if (still) {
     pose(-16 * DEG, -4 * DEG); sweep.position.set(-3.2, 2.4, 4.5); sweep.intensity = 16;
     renderer.render(scene, camera); stage.classList.add('is-live'); window.__cardReady = true; return;

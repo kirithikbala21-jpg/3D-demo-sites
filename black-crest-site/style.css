@@ -508,6 +508,14 @@ thead .col-us { color: var(--gold-2); }
   .scroll-cue i { width: 1px; height: 40px; background: linear-gradient(var(--gold), transparent); animation: cue 2.4s var(--ease) infinite; transform-origin: 50% 0; }
 }
 @media (min-width: 720px) and (max-width: 1199px) and (min-aspect-ratio: 1001/1000) { .hero-copy > * { max-width: 34vw; } }
+/* scroll-scrubbed hero (js/orbit.js): the hero becomes a tall track and the picture and words stay pinned while the card turns */
+.hero-render.orbit-on { display: block; height: 320svh; max-height: none; overflow: visible; padding: 0; }
+.orbit-on .hero-media { position: sticky; inset: auto; top: 0; height: 100svh; z-index: 0; }
+.orbit-on .hero-copy { position: sticky; top: 0; height: 100svh; margin-top: -100svh; display: grid; align-content: center; z-index: 1; pointer-events: none; opacity: calc(1 - var(--orbit-p, 0) * 3.2); }
+.orbit-on .hero-copy a { pointer-events: auto; }
+.orbit-on .scroll-cue { position: sticky; top: calc(100svh - 70px); margin-top: -40px; z-index: 2; opacity: calc(1 - var(--orbit-p, 0) * 8); }
+.hero-orbit { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; transition: opacity .9s var(--ease); z-index: 1; }
+.hero-orbit.is-on { opacity: 1; }
 @media (min-width: 1440px) { .hero-copy { padding-left: var(--gutter); padding-right: var(--gutter); } }
 @keyframes cue { 0% { transform: scaleY(0); } 50% { transform: scaleY(1); } 100% { transform: scaleY(1); opacity: 0; } }
 

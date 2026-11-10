@@ -1104,3 +1104,9 @@ a, button, input, select, textarea, label, summary, [role="tab"] { touch-action:
   .wordmark { font-size: clamp(3.6rem, 17vh, 7rem); }
   .hero-body .chip { margin-top: 12px; padding: 6px 14px; }
 }
+
+/* ---------- Polish (Nov 2026): no glass, glows or radial orbs (CLAUDE.md section 6); the brand's colours stay ---------- */
+.site-header.is-scrolled { -webkit-backdrop-filter: none; backdrop-filter: none; background-color: var(--black, #0B0B0C); }
+.hero-glow, .section-night::before, .section-dark::before { display: none; }
+.hero-panel { box-shadow: none; }
+.section-wine, .section-cta, .feature-art, .feature-card { background-image: none; }

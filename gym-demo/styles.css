@@ -850,3 +850,11 @@ a, button, input, select, textarea, label, summary, [role="tab"] { touch-action:
 .hero-bg::after { background: linear-gradient(180deg, rgba(11, 11, 12, .62), rgba(11, 11, 12, .45) 38%, rgba(11, 11, 12, .92)), linear-gradient(90deg, rgba(11, 11, 12, .82), rgba(11, 11, 12, .45) 55%, rgba(11, 11, 12, 0) 100%); }
 @media (max-width: 899px) { .hero-bg::after { background: linear-gradient(180deg, rgba(11, 11, 12, .72), rgba(11, 11, 12, .72) 35%, rgba(11, 11, 12, .94)); } }
 @media (max-width: 420px) { .hero-rating { display: none; } } /* small phones: the rating stays in the footer and on the reviews page so the hero never runs under the cookie and phone bars */
+
+/* ---------- Polish (Nov 2026): no glass, glows or radial orbs (CLAUDE.md section 6); the brand's colours stay ---------- */
+.site-header.is-scrolled { -webkit-backdrop-filter: none; backdrop-filter: none; background-color: var(--bg, #0A0B0D); }
+.hero-glow, .section-night::before, .section-dark::before { display: none; }
+.hero-panel { box-shadow: none; }
+.section-wine, .section-cta, .feature-art, .feature-card { background-image: none; }
+.plan-featured { box-shadow: 0 0 0 1px var(--accent); background-image: none; background-color: var(--card-2); }
+.mobile-cta, .search { -webkit-backdrop-filter: none; backdrop-filter: none; }

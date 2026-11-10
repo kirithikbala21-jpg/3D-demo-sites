@@ -186,3 +186,8 @@ textarea{min-height:96px}
 
 /* Torque & Co. accent: amber for deals and highlights */
 .deal-k{color:#E39B2D!important}
+
+/* Polish (Nov 2026): no resting shadows (CLAUDE.md section 6); the card is set apart by its border */
+.finder { box-shadow: none; border: 1px solid var(--line); }
+.job:hover { box-shadow: none; border-color: var(--red); }
+.hero { background-image: none; background-color: #0E5A5C; }

@@ -671,3 +671,9 @@ html.cookie-open body { padding-bottom: calc(var(--bar-h) + var(--cookie-h) + en
 .hero-links a { display: inline-flex; align-items: center; min-height: 44px; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
 .done-reminder-preview { margin: 8px 0 0; padding: 12px 14px; border-radius: 12px; border: 1px solid currentColor; font-size: .9375rem; }
 @media (max-width: 480px) { .hero-copy h1 { font-size: 2rem; line-height: 1.1; } }
+
+/* ---------- Polish (Nov 2026): no resting shadows or lifting hovers (CLAUDE.md sections 4 and 6); cards keep their borders ---------- */
+:root { --shadow: none; --shadow-sm: none; }
+.hero-chip, .step, .price-table, .review, .faq, .map, .qr-card { box-shadow: none; }
+.svc-card:hover { transform: none; box-shadow: none; }
+.hero { background-image: none; background-color: #F7F8FA; }

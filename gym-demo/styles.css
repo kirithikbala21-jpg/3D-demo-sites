@@ -856,5 +856,5 @@ a, button, input, select, textarea, label, summary, [role="tab"] { touch-action:
 .hero-glow, .section-night::before, .section-dark::before { display: none; }
 .hero-panel { box-shadow: none; }
 .section-wine, .section-cta, .feature-art, .feature-card { background-image: none; }
-.plan-featured { box-shadow: 0 0 0 1px var(--accent); background-image: none; background-color: var(--card-2); }
+.plan-featured { box-shadow: none; background-image: none; background-color: var(--card-2); }
 .mobile-cta, .search { -webkit-backdrop-filter: none; backdrop-filter: none; }

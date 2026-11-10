@@ -1050,3 +1050,25 @@ a, button, input, select, textarea, label, summary, [role="tab"] { touch-action:
 .hero-glow, .section-night::before, .section-dark::before { display: none; }
 .hero-panel { box-shadow: none; }
 .section-wine, .section-cta, .feature-art, .feature-card { background-image: none; }
+
+/* ==========================================================
+   Redesign (Nov 2026): the clear service: Aleo slab over Asap, white and a muted blue. New type, colour and corners (dealt by the Taste skill);
+   every page, word and price is unchanged.
+   ========================================================== */
+@font-face { font-family: "Aleo"; font-weight: 800; font-style: normal; font-display: swap; src: url("fonts/aleo-800.woff2") format("woff2"); }
+@font-face { font-family: "Asap"; font-weight: 400; font-style: normal; font-display: swap; src: url("fonts/asap-400.woff2") format("woff2"); }
+@font-face { font-family: "Asap"; font-weight: 600; font-style: normal; font-display: swap; src: url("fonts/asap-600.woff2") format("woff2"); }
+html:root { --cream: #FFFFFF; --paper: #F3F3F3; --tint: #F7F7F7; --ink: #171614; --black: #171614; --charcoal: #F3F3F3;
+  --wine: #4B71A1; --wine-deep: #2F4E75; --wine-night: #EEF2F7; --gold: #4B71A1; --gold-light: #4B71A1; --gold-text: #355A88;
+  --muted: #62615E; --line: rgba(23, 22, 20, .14);
+  --font: "Asap", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; --font-head: "Aleo", Georgia, serif; --radius: 4px; }
+h1, h2, h3, h4, .display { font-family: var(--font-head); font-weight: 800; text-transform: none; letter-spacing: -.015em; }
+.btn, button, .button { border-radius: 4px; }
+.btn-primary, .btn-gold, .btn-accent { background: #4B71A1; color: #fff; border-color: #4B71A1; }
+img, .frame, .card { border-radius: 4px; }
+/* the parts that stay dark (hero, ticker, photo story, sign-up band, footer, menus) keep light type */
+.site-header, .hero, .ticker, .site-footer, .section-dark, .section-night, .section-wine, .mobile-nav, .mobile-cta, .feature-card, .toast, .cookie-bar {
+  --ink: #F2F1EE; --muted: #C9C8C4; --muted-on-dark: #D6D5D1; --gold-light: #A9C0DD; --wine: #A9C0DD; --gold-text: #A9C0DD; --line: rgba(242, 241, 238, .16); --line-dark: rgba(242, 241, 238, .22); }
+.section-wine, .section-dark { background-color: #171614; }
+.site-footer { background-color: #171614; color: #F2F1EE; }
+.site-header.is-scrolled { background-color: #171614; }

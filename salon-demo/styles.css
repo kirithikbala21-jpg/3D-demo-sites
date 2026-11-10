@@ -588,3 +588,17 @@ a, button, input, select, textarea, label, summary, [role="tab"] { touch-action:
 .hero .g-rating { gap: 2px 8px; padding: 6px 12px; font-size: .8125rem; min-height: 44px; }
 .hero .g-rating .stars { height: 14px; width: auto; }
 .hero-links { margin-bottom: 4px; }
+
+/* ==========================================================
+   Redesign (Nov 2026): the pinned poster: Pathway Gothic One over Mulish, cool white and emerald. New type, colour and corners (dealt by the Taste skill);
+   every page, word and price is unchanged.
+   ========================================================== */
+@font-face { font-family: "Pathway Gothic One"; font-weight: 400; font-style: normal; font-display: swap; src: url("fonts/pathway-gothic-one-400.woff2") format("woff2"); }
+@font-face { font-family: "Mulish"; font-weight: 400; font-style: normal; font-display: swap; src: url("fonts/mulish-400.woff2") format("woff2"); }
+@font-face { font-family: "Mulish"; font-weight: 600; font-style: normal; font-display: swap; src: url("fonts/mulish-600.woff2") format("woff2"); }
+html:root { --ivory: #F0F6F9; --sand: #E6ECEF; --card: #FFFFFF; --panel: #E6ECEF; --cocoa: #13181B; --clay: #046742; --clay-text: #046742;
+  --sage: #596063; --sage-text: #3F4A4F; --line: #CFD8DC; --muted: #596063;
+  --serif: "Pathway Gothic One", "Arial Narrow", sans-serif; --sans: "Mulish", system-ui, -apple-system, "Segoe UI", sans-serif; --radius: 4px; }
+body { background-color: #F0F6F9; }
+h1, h2, h3, h4 { font-family: var(--serif); font-weight: 400; letter-spacing: -.001em; line-height: .98; }
+h1 em, h2 em { font-style: normal; color: #046742; }

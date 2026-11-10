@@ -858,3 +858,28 @@ a, button, input, select, textarea, label, summary, [role="tab"] { touch-action:
 .section-wine, .section-cta, .feature-art, .feature-card { background-image: none; }
 .plan-featured { box-shadow: none; background-image: none; background-color: var(--card-2); }
 .mobile-cta, .search { -webkit-backdrop-filter: none; backdrop-filter: none; }
+
+/* ==========================================================
+   Redesign (Nov 2026): one motif: Bricolage Grotesque, light grey, bottle-green ink and yellow. New type, colour and corners (dealt by the Taste skill);
+   every page, word and price is unchanged.
+   ========================================================== */
+@font-face { font-family: "Bricolage Grotesque"; font-weight: 400; font-style: normal; font-display: swap; src: url("fonts/bricolage-grotesque-400.woff2") format("woff2"); }
+@font-face { font-family: "Bricolage Grotesque"; font-weight: 600; font-style: normal; font-display: swap; src: url("fonts/bricolage-grotesque-600.woff2") format("woff2"); }
+html:root { --bg: #F7F7F7; --tint: #EBEBEB; --card: #FFFFFF; --card-2: #EBEBEB; --ink: #0D2A1C; --body: #2B3F34; --muted: #5F6B64;
+  --accent: #F6E016; --accent-hi: #FFF066; --on-accent: #0D2A1C; --line: rgba(13, 42, 28, .14); --line-strong: rgba(13, 42, 28, .3);
+  --font: "Bricolage Grotesque", system-ui, -apple-system, "Segoe UI", Arial, sans-serif; --font-head: "Bricolage Grotesque", system-ui, Arial, sans-serif; --radius: 0px; }
+body { background-color: #F7F7F7; color: #2B3F34; }
+h1, h2, h3, h4, .display { font-weight: 600; text-transform: none; letter-spacing: -.029em; }
+.site-header.is-scrolled { background-color: #F7F7F7; }
+/* the photo hero, the photo band and the see-through header keep light type over their dark photographs */
+.hero, .banner, .site-header:not(.is-scrolled) { --ink: #F7F7F7; --body: #E9EBE8; --muted: #CCD1CC; color: #F7F7F7; }
+.hero h1, .banner .banner-line { color: #F7F7F7; }
+/* the parts that stay dark (footer, quick actions, cookie card, search, video modal, photo captions) keep light type */
+.site-footer, .mobile-cta, .cookie, .search, .vmodal, .toast, .tile-cap, .chip { --ink: #F7F7F7; --body: #E2E5E2; --muted: #B9C0BB; --line: rgba(247, 247, 247, .14); --line-strong: rgba(247, 247, 247, .28); color: #E2E5E2; }
+.site-footer { background-color: #0D2A1C; }
+/* small labels: bottle green on the light ground (yellow fails contrast there); yellow stays on the dark parts */
+.eyebrow { color: #0D2A1C; }
+:where(.hero, .banner, .site-footer, .cookie, .vmodal, .search) .eyebrow { color: #F6E016; }
+/* Bricolage is wider than the old condensed face: keep the seven day tabs inside a small phone */
+.tablist { grid-template-columns: repeat(7, minmax(0, 1fr)); }
+@media (max-width: 420px) { .tab-day { font-size: 1rem; letter-spacing: 0; } }

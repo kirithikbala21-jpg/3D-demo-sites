@@ -330,7 +330,7 @@ if (want('func')) {
     ok(`heading scale h1/h2/h3/h4 @${w}px is about ${exp.join('/')}px`, s.every((v, i) => Math.abs(v - exp[i]) <= 0.7), s.map((v) => v.toFixed(1)).join('/'));
     if (w === 1280) {
       const fam = await p.evaluate(() => { const set = new Set(); for (const e of document.querySelectorAll('body *')) { if (e.closest('svg') || !e.offsetParent && getComputedStyle(e).position !== 'fixed') continue; if (![...e.childNodes].some((n) => n.nodeType === 3 && n.textContent.trim())) continue; set.add(getComputedStyle(e).fontFamily.split(',')[0].replace(/"/g, '').trim()); } return [...set].sort(); });
-      ok('exactly two font families are used: Cormorant Garamond and Inter', fam.join('|') === 'Cormorant Garamond|Inter', fam.join('|'));
+      ok('exactly two font families are used (Nov 2026 redesign): Pathway Gothic One and Mulish', fam.join('|') === 'Mulish|Pathway Gothic One', fam.join('|'));
       const sp = await p.evaluate(() => { const bad = []; for (const e of document.querySelectorAll('main p')) { const mw = getComputedStyle(e).maxWidth; if (mw === 'none' || (e.getBoundingClientRect().width > 68 * 12.5 * 1.45)) bad.push(e.textContent.slice(0, 20)); } return bad; });
       ok('paragraphs are capped at about 68 characters wide', !sp.length, sp.join('|'));
     }
@@ -679,7 +679,7 @@ if (want('fallback')) {
   const e = await newPage({ viewport: { width: 390, height: 844 } }, { host: await startSite(SITE, { prefix: '/salon-demo/' }).then((b) => b + 'salon-demo/') });
   await e.goto(e.base + 'no/such/page/'); await settle(e);
   const n = await e.evaluate(() => ({ bg: getComputedStyle(document.body).backgroundColor, h1: document.querySelector('h1').textContent, home: document.querySelector('a[href="index.html"]').href, css: document.styleSheets.length, base: document.querySelector('base')?.href, noindex: !!document.querySelector('meta[name=robots][content=noindex]'), overflow: document.documentElement.scrollWidth <= innerWidth }));
-  ok('404 page: themed, loads CSS from a deep missing URL via the inline <base>, home link resolves, noindex', n.bg === 'rgb(250, 246, 240)' && /slipped away/.test(n.h1) && n.home.endsWith('/salon-demo/index.html') && n.noindex && n.overflow && /\/salon-demo\/$/.test(n.base), JSON.stringify(n));
+  ok('404 page: themed, loads CSS from a deep missing URL via the inline <base>, home link resolves, noindex', n.bg === 'rgb(240, 246, 249)' && /slipped away/.test(n.h1) && n.home.endsWith('/salon-demo/index.html') && n.noindex && n.overflow && /\/salon-demo\/$/.test(n.base), JSON.stringify(n));
   await done(e);
 }
 

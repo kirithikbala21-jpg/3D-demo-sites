@@ -347,7 +347,7 @@ if (want('func')) {
   p = await newPage({ viewport: { width: 1280, height: 900 } }, { webgl: false });
   await p.goto(base + 'index.html'); await p.waitForTimeout(1200);
   const fam = await p.evaluate(async () => { await document.fonts.ready; const loaded = [...document.fonts].filter((f) => f.status === 'loaded').map((f) => f.family.replace(/"/g, '')); const used = new Set([...document.querySelectorAll('body *')].map((e) => getComputedStyle(e).fontFamily.split(',')[0].replace(/["']/g, '').trim())); return { loaded: [...new Set(loaded)], used: [...used] }; });
-  ok('fonts: only Montserrat and Mrs Saint Delafield are loaded or used as primary families', fam.loaded.every((f) => ['Montserrat', 'Mrs Saint Delafield'].includes(f)) && fam.used.every((f) => ['Montserrat', 'Mrs Saint Delafield'].includes(f)), JSON.stringify(fam));
+  ok('fonts (Nov 2026 redesign): only Brygada 1918 is loaded or used as a primary family', fam.loaded.every((f) => ['Brygada 1918'].includes(f)) && fam.used.every((f) => ['Brygada 1918'].includes(f)), JSON.stringify(fam));
   const meas = await p.evaluate(() => [...document.querySelectorAll('main p')].filter((e) => e.offsetParent && !e.closest('.join-inner,.hero-body,.form-success,.cart-done') && e.getBoundingClientRect().width > 0).map((e) => e.getBoundingClientRect().width / parseFloat(getComputedStyle(e).fontSize)).reduce((m, v) => Math.max(m, v), 0));
   ok('typography: running text is limited to about 68ch', meas <= 68 * 0.6 + 40, String(meas.toFixed(1)));
   await done(p);

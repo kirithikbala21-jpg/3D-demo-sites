@@ -191,3 +191,17 @@ textarea{min-height:96px}
 .finder { box-shadow: none; border: 1px solid var(--line); }
 .job:hover { box-shadow: none; border-color: var(--red); }
 .hero { background-image: none; background-color: #0E5A5C; }
+
+/* ==========================================================
+   Redesign (Nov 2026): the shop window: Sofia Sans Extra Condensed over Pathway Extreme, studio grey and racing green. New type, colour and corners (dealt by the Taste skill);
+   every page, word and price is unchanged.
+   ========================================================== */
+@font-face { font-family: "Sofia Sans Extra Condensed"; font-weight: 800; font-style: normal; font-display: swap; src: url("fonts/sofia-sans-extra-condensed-800.woff2") format("woff2"); }
+@font-face { font-family: "Pathway Extreme"; font-weight: 400; font-style: normal; font-display: swap; src: url("fonts/pathway-extreme-400.woff2") format("woff2"); }
+@font-face { font-family: "Pathway Extreme"; font-weight: 600; font-style: normal; font-display: swap; src: url("fonts/pathway-extreme-600.woff2") format("woff2"); }
+html:root { --red: #1F5C49; --btn: #174A3A; --grey: #B4B4B6; --char: #0E0E0E; --line: #8F8F92; }
+body { background-color: #A8A8AA; color: #0E0E0E; font-family: "Pathway Extreme", system-ui, Arial, sans-serif; }
+h1, h2, h3, h4 { font-family: "Sofia Sans Extra Condensed", "Arial Narrow", sans-serif; font-weight: 800; letter-spacing: -.001em; line-height: .92; text-transform: uppercase; }
+button, input, select, .btn { font-family: "Pathway Extreme", system-ui, Arial, sans-serif; }
+.hero { background-color: #1F5C49; }
+button, .btn { border-radius: 999px; }

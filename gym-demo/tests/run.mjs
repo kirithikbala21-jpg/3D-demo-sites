@@ -405,7 +405,7 @@ if (want('func')) {
   const a = await hs('classes.html', 1440), a2 = await hs('index.html', 1440), a3 = await hs('coaches.html', 1440), b = await hs('classes.html', 390), b2 = await hs('index.html', 390);
   ok('heading scale at 1440: inner h1 56, h2 40, h3 28, h4 20 (class names), body 17px (the home hero headline is display type)', a.h1 === 56 && a2.h2 === 40 && a3.h3 === 28 && a.h4 === 20 && a.body === 17, JSON.stringify({ a, a2, a3 }));
   ok('heading scale at 390: about 36 / 30 / 24 / 19px', Math.abs(b.h1 - 36) <= 2 && Math.abs(b2.h2 - 30) <= 2 && Math.abs(b.h4 - 19) <= 1, JSON.stringify({ b, b2 }));
-  ok('two fonts only: Barlow Condensed headings and Montserrat body', a.fam === 'Barlow Condensed' && a.bfam === 'Montserrat' && (await p.evaluate(async () => { await document.fonts.ready; return [...document.fonts].filter((f) => f.status === 'loaded').map((f) => f.family.replace(/"/g, '')); })).every((f) => ['Barlow Condensed', 'Montserrat'].includes(f)));
+  ok('one family only (Nov 2026 redesign): Bricolage Grotesque for headings and body', a.fam === 'Bricolage Grotesque' && a.bfam === 'Bricolage Grotesque' && (await p.evaluate(async () => { await document.fonts.ready; return [...document.fonts].filter((f) => f.status === 'loaded').map((f) => f.family.replace(/"/g, '')); })).every((f) => ['Bricolage Grotesque'].includes(f)));
   const lay = await p.evaluate(() => ({ lh: getComputedStyle(document.body).lineHeight, maxCh: Math.max(...[...document.querySelectorAll('main p')].map((e) => parseFloat(getComputedStyle(e).maxWidth) || 0)), pad: getComputedStyle(document.querySelector('main > .section')).paddingTop }));
   ok('body line-height 1.6 (27.2px at 17px) and mobile section padding 96px', Math.abs(parseFloat(lay.lh) - 27.2) < 0.5 && lay.pad === '96px', JSON.stringify(lay));
   await p.setViewportSize({ width: 1440, height: 900 }); await p.goto(p.base + 'index.html');
@@ -580,7 +580,7 @@ if (want('perf')) {
   ok('home page makes no third-party requests', Object.keys(sizes).every((k) => !/^https?:/.test(k)));
   const ld = await p.evaluate(() => [...document.querySelectorAll('script[type="application/ld+json"]')].map((s) => JSON.parse(s.textContent)['@type']));
   ok('home has ExerciseGym structured data', ld.includes('ExerciseGym'), JSON.stringify(ld));
-  ok('every font file is self-hosted woff2 (Barlow Condensed 600 + 700, Montserrat)', fs.existsSync(path.join(SITE, 'fonts/barlow-condensed-600.woff2')) && fs.existsSync(path.join(SITE, 'fonts/barlow-condensed-700.woff2')) && fs.existsSync(path.join(SITE, 'fonts/montserrat-latin.woff2')) && Object.keys(sizes).filter((k) => k.startsWith('fonts/')).every((k) => k.endsWith('.woff2')));
+  ok('every font file is self-hosted woff2 (Bricolage Grotesque 400 + 600)', fs.existsSync(path.join(SITE, 'fonts/bricolage-grotesque-400.woff2')) && fs.existsSync(path.join(SITE, 'fonts/bricolage-grotesque-600.woff2')) && Object.keys(sizes).filter((k) => k.startsWith('fonts/')).every((k) => k.endsWith('.woff2')));
   await done(p);
   // Third-party requests across every page: only the lazy Google map iframe is allowed
   const q = await newPage({ viewport: { width: 1440, height: 900 } }, { webgl: false });

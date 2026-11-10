@@ -1110,3 +1110,21 @@ a, button, input, select, textarea, label, summary, [role="tab"] { touch-action:
 .hero-glow, .section-night::before, .section-dark::before { display: none; }
 .hero-panel { box-shadow: none; }
 .section-wine, .section-cta, .feature-art, .feature-card { background-image: none; }
+
+/* ==========================================================
+   Redesign (Nov 2026): the dark room: Brygada 1918, graphite and flame orange. New type, colour and corners (dealt by the Taste skill);
+   every page, word and price is unchanged.
+   ========================================================== */
+@font-face { font-family: "Brygada 1918"; font-weight: 400; font-style: normal; font-display: swap; src: url("fonts/brygada-1918-400.woff2") format("woff2"); }
+@font-face { font-family: "Brygada 1918"; font-weight: 600; font-style: normal; font-display: swap; src: url("fonts/brygada-1918-600.woff2") format("woff2"); }
+@font-face { font-family: "Brygada 1918"; font-weight: 400; font-style: italic; font-display: swap; src: url("fonts/brygada-1918-400-italic.woff2") format("woff2"); }
+html:root { --cream: #18191B; --paper: #222427; --tint: #1D1E21; --ink: #EFF0F1; --body: #C9CBCF; --black: #111214;
+  --wine: #FF4A1F; --wine-deep: #FF6A45; --wine-night: #222427; --gold: #FF4A1F; --gold-light: #FF6A45; --gold-text: #FF6A45;
+  --cream-accent: #EFF0F1; --muted: #9C9EA3; --muted-on-dark: #C9CBCF; --line: rgba(239, 240, 241, .14); --line-dark: rgba(239, 240, 241, .2);
+  --font: "Brygada 1918", Georgia, serif; --font-script: "Brygada 1918", Georgia, serif; --radius: 4px; }
+body { background-color: #18191B; }
+h1, h2, h3, h4, .display { font-family: "Brygada 1918", Georgia, serif; font-weight: 400; text-transform: none; letter-spacing: -.014em; }
+h1 em, h2 em { font-style: italic; }
+.btn, button, .button { border-radius: 999px; }
+.btn-primary, .btn-gold, .btn-accent { background: #FF4A1F; color: #18191B; border-color: #FF4A1F; }
+img, .frame, .card, .feature-art { border-radius: 4px; }

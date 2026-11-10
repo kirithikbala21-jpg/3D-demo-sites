@@ -677,3 +677,26 @@ html.cookie-open body { padding-bottom: calc(var(--bar-h) + var(--cookie-h) + en
 .hero-chip, .step, .price-table, .review, .faq, .map, .qr-card { box-shadow: none; }
 .svc-card:hover { transform: none; box-shadow: none; }
 .hero { background-image: none; background-color: #F7F8FA; }
+
+/* ==========================================================
+   Redesign (Nov 2026): the name as a monument: Josefin Slab, pale green and a deep green. New type, colour and corners (dealt by the Taste skill);
+   every page, word and price is unchanged.
+   ========================================================== */
+@font-face { font-family: "Josefin Slab"; font-weight: 400; font-style: normal; font-display: swap; src: url("fonts/josefin-slab-400.woff2") format("woff2"); }
+@font-face { font-family: "Josefin Slab"; font-weight: 600; font-style: normal; font-display: swap; src: url("fonts/josefin-slab-600.woff2") format("woff2"); }
+html:root { --white: #DDF8E0; --navy: #141D15; --navy-soft: #2A3A2C; --orange: #557E5B; --orange-hi: #47704D; --grey: #D4EED6;
+  --ink: #141D15; --muted: #566157; --line: rgb(20 29 21 / .14); --line-strong: rgb(20 29 21 / .3);
+  --font: "Josefin Slab", Georgia, serif; --font-head: "Josefin Slab", Georgia, serif; --radius: 4px; }
+body { background-color: #DDF8E0; color: #141D15; }
+h1, h2, h3, h4 { font-weight: 600; text-transform: none; letter-spacing: -.019em; }
+.hero { background-color: #DDF8E0; }
+.btn, button, .button, .btn-call { border-radius: 999px; }
+/* the emergency band: deep green, with the number in a pale green that reads on it */
+.emergency { --orange: #A6E0AE; }
+.em-bg::after { background: linear-gradient(90deg, rgb(20 29 21 / .94) 0%, rgb(20 29 21 / .86) 60%, rgb(20 29 21 / .7) 100%); }
+.em-bg .slot-empty { background-color: #1E2C20; }
+.em-bg .slot-label { background: rgb(20 29 21 / .75); }
+/* the call button: deep green with pale text (dark text on the mid green failed contrast) */
+.btn-call { background-color: #2C4A31; border-color: #2C4A31; color: #F0FBF1; }
+.btn-call:hover, .btn-call:focus-visible { background-color: #141D15; border-color: #141D15; color: #F0FBF1; }
+.site-footer .btn-call { background: #A6E0AE; border-color: #A6E0AE; color: #141D15; }

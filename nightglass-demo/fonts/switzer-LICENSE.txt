@@ -1,0 +1,15 @@
+Switzer, by the Indian Type Foundry (ITF). Version 1.200.
+Copyright 2015-2021 Indian Type Foundry. All rights reserved. Switzer is a trademark of the Indian Type Foundry.
+
+Licence: ITF Free Font License (FFL), from Fontshare: https://fontshare.com/terms
+Free for personal and commercial use. The licence text embedded in the font files reads:
+
+  "This Font Software is protected under domestic and international trademark and copyright law.
+   You agree to identify the ITF fonts by name and credit the ITF's ownership of the trademarks
+   and copyrights in any design or production credits."
+
+Files here: switzer-400.woff2 and switzer-500.woff2 (Latin subset, WOFF2), taken unchanged from the npm
+package @carrot-kpi/switzer-font 0.1.0 (published 11 May 2023), a Fontsource-format bundle of the ITF files.
+Switzer is the house-style fallback for General Sans: Fontshare could not be reached from the build
+environment. To switch to General Sans later, download it from https://www.fontshare.com/fonts/general-sans,
+add the WOFF2 files and licence here, and change --sans in style.css.

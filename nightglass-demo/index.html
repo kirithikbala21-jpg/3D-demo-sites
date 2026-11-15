@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en-AU" class="no-js">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Nightglass Tint Studio: window tinting concept</title>
+<meta name="description" content="A concept website for a made-up car window tinting studio, designed by KB Web Designs.">
+<meta name="robots" content="noindex">
+<link rel="preload" href="fonts/barlow-condensed-600.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="style.css">
+<script>document.documentElement.classList.remove('no-js')</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="car" viewBox="0 0 1000 300">
+      <path fill="#0c0e11" stroke="#262b33" stroke-width="2" d="M30 226C28 196 60 184 120 176c70-10 130-58 210-80 80-22 230-26 320 2 70 22 120 52 200 64 70 10 112 26 118 54v16c0 6-6 10-14 10H850a70 70 0 0 0-140 0H300a70 70 0 0 0-140 0H46c-10 0-16-6-16-16Z"/>
+      <path fill="none" stroke="#3a4250" stroke-width="2" d="M130 182c80-8 140-62 214-80 76-18 214-20 296 4"/>
+      <path class="glass" d="M352 158c40-32 88-50 154-54v54Z"/><path class="glass" d="M520 104c70 0 130 14 192 54H520Z"/>
+      <path class="glass-dark" d="M352 158c40-32 88-50 154-54v54Z"/><path class="glass-dark" d="M520 104c70 0 130 14 192 54H520Z"/>
+      <path class="lamp" d="m930 186 32 10-4 10-38-8Z"/><path fill="#b3202a" opacity=".9" d="m36 200 34-4v10l-32 4Z"/>
+      <g fill="#050607" stroke="#2b313a" stroke-width="3"><circle cx="230" cy="242" r="56"/><circle cx="780" cy="242" r="56"/></g>
+      <g fill="none" stroke="#434b58" stroke-width="5"><circle cx="230" cy="242" r="30"/><circle cx="780" cy="242" r="30"/></g>
+    </symbol>
+    <pattern id="hexes" width="84" height="48.5" patternUnits="userSpaceOnUse" patternTransform="scale(1.6)">
+      <path d="M21 0h28l14 24.25-14 24.25H21L7 24.25Z M63 24.25h28" fill="none" stroke="#dfeeff" stroke-width="2.2" opacity=".55"/>
+    </pattern>
+  </defs>
+</svg>
+
+<header class="top">
+  <a class="mark" href="./" aria-label="Nightglass Tint Studio, home">Nightglass<small>Tint Studio</small></a>
+  <nav aria-label="Main"><a href="#why">Why tint</a><a href="#shades">Shades</a><a href="#process">Process</a><a class="btn" href="#quote">Get a quote</a></nav>
+</header>
+
+<main id="main">
+<section class="hero" aria-label="Introduction">
+  <div class="stage">
+    <div class="scene" aria-hidden="true">
+      <div class="hexwrap"><svg class="hex"><rect width="100%" height="100%" fill="url(#hexes)"/></svg></div>
+      <div class="floor"></div>
+      <div class="car"><svg viewBox="0 0 1000 300"><use href="#car"/></svg><svg class="refl" viewBox="0 0 1000 300"><use href="#car"/></svg></div>
+      <div class="beam"></div>
+    </div>
+    <div class="slot" data-footage="opener" data-then="scroll-tint" aria-hidden="true"></div>
+    <div class="copy">
+      <p class="label"><b>Window tinting</b> &nbsp;/&nbsp; <span data-suburb>Dandenong South</span></p>
+      <h1>Darker glass.<br><em>Cooler</em> drive.</h1>
+      <p>Car window tinting, fitted by hand in one visit.</p>
+      <div class="row"><a class="btn" href="#quote">Get a quote</a><a class="btn ghost" href="#shades">See the shades</a></div>
+    </div>
+    <div class="caption" aria-hidden="true"><p class="label"><b>Scroll</b> to tint</p><h2>Watch it go dark</h2></div>
+    <p class="label cue" aria-hidden="true">Scroll</p>
+  </div>
+</section>
+
+<section id="why">
+  <p class="label rise"><b>01</b> &nbsp;/&nbsp; Why tint</p>
+  <h2 class="rise">Less heat.<br>Less glare.</h2>
+  <div class="facts">
+    <div class="rise"><h3>Heat</h3><p>Film blocks a share of the sun's heat, so the cabin warms up slower when the car is parked.</p></div>
+    <div class="rise"><h3>Glare</h3><p>Low sun and headlights are softer through tinted glass.</p></div>
+    <div class="rise"><h3>Privacy</h3><p>Bags and tools on the back seat are harder to see from the street.</p></div>
+  </div>
+</section>
+
+<section id="shades" class="split">
+  <div>
+    <p class="label rise"><b>02</b> &nbsp;/&nbsp; Shades</p>
+    <h2 class="rise">Pick your shade</h2>
+    <p class="rise" style="color:var(--mute);font-size:20px;max-width:38ch;margin-top:22px">Tap a shade to see it on the glass. We only fit film that is legal on Victorian roads.</p>
+    <div class="shade rise" role="group" aria-label="Tint shade" data-shades></div>
+  </div>
+  <div class="door rise"><svg viewBox="300 60 460 130" role="img" aria-label="Side windows of a car showing the chosen tint shade" data-door><use href="#car" width="1000" height="300"/></svg></div>
+</section>
+
+<section id="process">
+  <p class="label rise"><b>03</b> &nbsp;/&nbsp; Process</p>
+  <h2 class="rise">Four steps.<br>One visit.</h2>
+  <div class="steps">
+    <div class="step"><div class="slot rise" data-footage="loop-film"><div class="standin"><span>Footage slot<br>loop-film</span></div></div><div class="rise"><span class="num">01</span><h3>Cut</h3><p>The film is cut to the shape of each window.</p></div></div>
+    <div class="step"><div class="slot rise" data-footage="loop-squeegee"><div class="standin"><span>Footage slot<br>loop-squeegee</span></div></div><div class="rise"><span class="num">02</span><h3>Lay</h3><p>The film goes on wet, and the water is pushed out by hand.</p></div></div>
+    <div class="step"><div class="slot rise" data-footage="loop-heat"><div class="standin"><span>Footage slot<br>loop-heat</span></div></div><div class="rise"><span class="num">03</span><h3>Shrink</h3><p>Heat shapes the film to curved glass so it sits flat.</p></div></div>
+    <div class="step"><div class="slot rise" data-footage="loop-driveoff"><div class="standin"><span>Footage slot<br>loop-driveoff</span></div></div><div class="rise"><span class="num">04</span><h3>Check</h3><p>Every edge is checked under the lights before you drive off.</p></div></div>
+  </div>
+</section>
+
+<section id="quote" class="quote split">
+  <div>
+    <p class="label rise"><b>04</b> &nbsp;/&nbsp; Quote</p>
+    <h2 class="rise">Get a quote</h2>
+    <p class="rise" style="color:var(--mute);font-size:20px;max-width:34ch;margin-top:22px">Three questions. Prices are quoted for your car, not guessed.</p>
+  </div>
+  <form class="rise" data-quote novalidate>
+    <label><span class="label">Your car</span><input name="car" autocomplete="off" placeholder="Make, model and year" required></label>
+    <label><span class="label">What you need</span><select name="service" data-services></select></label>
+    <label><span class="label">Mobile</span><input name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="04" required></label>
+    <button class="btn" type="submit">Send</button>
+    <p class="sent" role="status" aria-live="polite"></p>
+  </form>
+</section>
+</main>
+
+<footer>
+  <p>This is a made-up business. The website is a concept designed by <a href="https://web.kbventures.com.au/">KB Web Designs</a>.</p>
+  <p>Moving pictures on this page are concept footage, not a real customer's car.</p>
+  <p><a href="privacy.html">Privacy</a> &nbsp;·&nbsp; <a href="terms.html">Terms</a> &nbsp;·&nbsp; <a href="mailto:kb.ventures@outlook.com">kb.ventures@outlook.com</a></p>
+</footer>
+<script src="config.js"></script>
+<script type="module" src="js/site.js"></script>
+</body>
+</html>

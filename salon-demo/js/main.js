@@ -11,3 +11,5 @@ import './gallery.js';
 import './voucher.js';
 import './motion.js';
 import './smooth.js';
+
+import './footage-slot.js';

@@ -10,3 +10,5 @@ import './reviews.js';
 import './jobs.js';
 import './pipe.js';
 import './smooth.js';
+
+import './footage-slot.js';

@@ -13,3 +13,5 @@ import './js/parallax.js';
 // The intro finishes first; only then does the heavy 3D scene start (so it can never delay the intro).
 const later = () => setTimeout(initHero, 650); // after the intro has fully faded out
 startUp().then(later, later);
+
+import './js/footage-slot.js';
